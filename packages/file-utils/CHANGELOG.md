@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.0](https://github.com/TeselaGen/tg-oss/compare/file-utils-0.1.0...file-utils-0.2.0) (2023-05-30)
+
+
+### Features
+
+* more work on packaging up files ([67c8a69](https://github.com/TeselaGen/tg-oss/commit/67c8a6983b2ca772cc72700b4bf344b4adccf26d))
+
+## [0.2.0](https://github.com/TeselaGen/tg-oss/compare/file-utils-0.1.0...file-utils-0.2.0) (2023-05-30)
+
+
+### Features
+
+* more work on packaging up files ([67c8a69](https://github.com/TeselaGen/tg-oss/commit/67c8a6983b2ca772cc72700b4bf344b4adccf26d))
+
 ## 0.1.0 (2023-05-30)
 
 
