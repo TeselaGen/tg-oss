@@ -23,14 +23,10 @@ function invariant(condition, message) {
 
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-const [, , name, version, tag = 'next'] = process.argv;
+let [, , name, version, tag = 'next'] = process.argv;
 
 // A simple SemVer validation to validate the version
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
-invariant(
-  version && validVersion.test(version),
-  `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
-);
 
 const graph = readCachedProjectGraph();
 const project = graph.nodes[name];
@@ -47,6 +43,14 @@ invariant(
 );
 
 process.chdir(outputPath);
+if (!version || version === 'undefined') {
+  version = JSON.parse(readFileSync(`package.json`).toString()).version;
+}
+
+invariant(
+  version && validVersion.test(version),
+  `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
+);
 
 // Updating the version in "package.json" before publishing
 try {
