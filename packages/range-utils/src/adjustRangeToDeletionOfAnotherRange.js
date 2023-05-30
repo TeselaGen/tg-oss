@@ -1,10 +1,11 @@
-const splitRangeIntoTwoPartsIfItIsCircular = require('./splitRangeIntoTwoPartsIfItIsCircular');
-const trimRangeByAnotherRange = require('./trimRangeByAnotherRange');
-// const ac = require('ve-api-check'); 
+import splitRangeIntoTwoPartsIfItIsCircular from './splitRangeIntoTwoPartsIfItIsCircular';
+import trimRangeByAnotherRange from './trimRangeByAnotherRange';
+
+
 
 //takes in two potentially circular ranges and returns the first one trimmed by the second one
 //returns null if no range is left after the trimming
-module.exports = function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted, anotherRange, maxLength) {
+export default function adjustRangeToDeletionOfAnotherRange(rangeToBeAdjusted, anotherRange, maxLength) {
     // ac.throw(ac.range, rangeToBeAdjusted)
     // ac.throw(ac.range, anotherRange)
     // ac.throw(ac.posInt, maxLength)

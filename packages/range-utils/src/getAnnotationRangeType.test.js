@@ -1,5 +1,5 @@
-var getAnnotationRangeType = require('./getAnnotationRangeType');
-var chai = require('chai')
+import getAnnotationRangeType from './getAnnotationRangeType';
+import chai from 'chai';
 chai.should();
 
 describe('getAnnotationRangeType', function () {

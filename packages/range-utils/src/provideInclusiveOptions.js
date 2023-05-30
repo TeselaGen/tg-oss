@@ -1,8 +1,9 @@
-const { assign } = require("lodash")
-module.exports = function provideInclusiveOptions (funToWrap) {
+import {assign} from "lodash";
+
+export default function provideInclusiveOptions (funToWrap) {
     return function () {
-        var args = Array.prototype.slice.call(arguments);
-        var options = args[args.length-1]
+        const args = Array.prototype.slice.call(arguments);
+        const options = args[args.length-1];
         if (options && (options.inclusive1BasedEnd || options.inclusive1BasedStart)) {
             args.forEach(function (arg,index) {
                 if (arg && arg.start > -1 && options.inclusive1BasedStart) {
@@ -13,7 +14,7 @@ module.exports = function provideInclusiveOptions (funToWrap) {
                 }
             })
         }
-        var returnVal = funToWrap.apply(this,args)
+        let returnVal = funToWrap.apply(this,args);
         if (returnVal && returnVal.start > -1 && options && options.inclusive1BasedStart) {
             returnVal = assign(returnVal, {start: returnVal.start+1})
         }
@@ -21,5 +22,5 @@ module.exports = function provideInclusiveOptions (funToWrap) {
             returnVal = assign(returnVal, {end: returnVal.end+1})
         }
         return returnVal
-    }
-}
+    };
+};

@@ -1,6 +1,7 @@
-const getOverlapsOfPotentiallyCircularRanges = require("./getOverlapsOfPotentiallyCircularRanges.js");
-// const collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
-const assert = require("assert");
+import getOverlapsOfPotentiallyCircularRanges from "./getOverlapsOfPotentiallyCircularRanges.js";
+
+import assert from "assert";
+
 describe("getOverlapsOfPotentiallyCircularRanges", function() {
   it("doesnt return an overlap for non overlapping ranges", function() {
     assert.deepEqual(

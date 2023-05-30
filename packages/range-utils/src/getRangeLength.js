@@ -1,5 +1,5 @@
-var provideInclusiveOptions = require("./provideInclusiveOptions");
-module.exports = provideInclusiveOptions(getRangeLength);
+import provideInclusiveOptions from "./provideInclusiveOptions";
+export default provideInclusiveOptions(getRangeLength);
 function getRangeLength(range, rangeMax) {
   let toRet;
   if (range.end < range.start) {

@@ -1,7 +1,7 @@
-const getRangeLength = require("./getRangeLength");
-const normalizePositionByRangeLength = require("./normalizePositionByRangeLength");
+import getRangeLength from "./getRangeLength";
+import normalizePositionByRangeLength from "./normalizePositionByRangeLength";
 
-module.exports = function getMiddleOfRange(range, rangeMax) {
+export default function getMiddleOfRange(range, rangeMax) {
   const len = getRangeLength({ start: range.start, end: range.end }, rangeMax);
   return normalizePositionByRangeLength(
     range.start + Math.floor(len / 2),

@@ -1,8 +1,8 @@
-const {isObject, } = require("lodash");
-const isRangeWithinRange = require("./isRangeWithinRange");
-const isPositionWithinRange = require("./isPositionWithinRange");
+import {isObject} from "lodash";
+import isRangeWithinRange from "./isRangeWithinRange";
+import isPositionWithinRange from "./isPositionWithinRange";
 
-module.exports = function isRangeOrPositionWithinRange(
+export default function isRangeOrPositionWithinRange(
   rangeOrPositionToCheck,
   containingRange,
   maxLength,

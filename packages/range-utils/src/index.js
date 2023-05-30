@@ -1,51 +1,51 @@
-module.exports.adjustRangeToDeletionOfAnotherRange = require("./adjustRangeToDeletionOfAnotherRange")
-module.exports.adjustRangeToInsert = require("./adjustRangeToInsert")
-module.exports.checkIfNonCircularRangesOverlap = require("./checkIfNonCircularRangesOverlap")
-module.exports.checkIfPotentiallyCircularRangesOverlap = require("./checkIfPotentiallyCircularRangesOverlap")
-module.exports.collapseOverlapsGeneratedFromRangeComparisonIfPossible = require("./collapseOverlapsGeneratedFromRangeComparisonIfPossible")
-module.exports.convertRangeIndices = require("./convertRangeIndices")
-module.exports.convertRangeTo0Based = require("./convertRangeTo0Based")
-module.exports.convertRangeTo1Based = require("./convertRangeTo1Based")
-module.exports.doesRangeSpanEntireSequence = require("./doesRangeSpanEntireSequence")
-module.exports.isRangeOrPositionWithinRange = require("./isRangeOrPositionWithinRange")
-module.exports.doesRangeSpanOrigin = require("./doesRangeSpanOrigin")
-module.exports.expandOrContractCircularRangeToPosition = require("./expandOrContractCircularRangeToPosition")
-module.exports.expandOrContractNonCircularRangeToPosition = require("./expandOrContractNonCircularRangeToPosition")
-module.exports.expandOrContractRangeByLength = require("./expandOrContractRangeByLength")
-module.exports.expandOrContractRangeToPosition = require("./expandOrContractRangeToPosition")
-module.exports.flipContainedRange = require("./flipContainedRange")
-module.exports.generateRandomRange = require("./generateRandomRange")
-module.exports.getAnnotationRangeType = require("./getAnnotationRangeType")
-module.exports.getEachPositionInRangeAsArray = require("./getEachPositionInRangeAsArray")
-module.exports.getLengthOfOverlappingRegionsBetweenTwoRanges = require("./getLengthOfOverlappingRegionsBetweenTwoRanges")
-module.exports.getOverlapOfNonCircularRanges = require("./getOverlapOfNonCircularRanges")
-module.exports.getOverlapsOfPotentiallyCircularRanges = require("./getOverlapsOfPotentiallyCircularRanges")
-module.exports.getPositionFromAngle = require("./getPositionFromAngle")
-module.exports.getRangeAngles = require("./getRangeAngles")
-module.exports.getRangeLength = require("./getRangeLength")
-module.exports.getMiddleOfRange = require("./getMiddleOfRange")
-module.exports.getRangesBetweenTwoRanges = require("./getRangesBetweenTwoRanges")
-module.exports.getSequenceWithinRange = require("./getSequenceWithinRange")
-module.exports.getShortestDistanceBetweenTwoPositions = require("./getShortestDistanceBetweenTwoPositions")
-module.exports.getYOffsetForPotentiallyCircularRange = require("./getYOffsetForPotentiallyCircularRange")
-module.exports.getYOffsetsForPotentiallyCircularRanges = require("./getYOffsetsForPotentiallyCircularRanges")
-module.exports.invertRange = require("./invertRange")
-module.exports.isPositionCloserToRangeStartThanRangeEnd = require("./isPositionCloserToRangeStartThanRangeEnd")
-module.exports.isPositionWithinRange = require("./isPositionWithinRange")
-module.exports.isRangeWithinRange = require("./isRangeWithinRange")
-module.exports.loopEachPositionInRange = require("./loopEachPositionInRange")
-module.exports.modulatePositionByRange = require("./modulatePositionByRange")
-module.exports.modulateRangeBySequenceLength = require("./modulateRangeBySequenceLength")
-module.exports.normalizePositionByRangeLength = require("./normalizePositionByRangeLength")
-module.exports.normalizePositionByRangeLength1Based = require("./normalizePositionByRangeLength1Based")
-module.exports.normalizeRange = require("./normalizeRange")
-module.exports.provideInclusiveOptions = require("./provideInclusiveOptions")
-module.exports.reversePositionInRange = require("./reversePositionInRange")
-module.exports.splitRangeIntoTwoPartsIfItIsCircular = require("./splitRangeIntoTwoPartsIfItIsCircular")
-module.exports.translateRange = require("./translateRange")
-module.exports.trimNonCicularRangeByAnotherNonCircularRange = require("./trimNonCicularRangeByAnotherNonCircularRange")
-module.exports.trimNumberToFitWithin0ToAnotherNumber = require("./trimNumberToFitWithin0ToAnotherNumber")
-module.exports.trimRangeByAnotherRange = require("./trimRangeByAnotherRange")
-module.exports.zeroSubrangeByContainerRange = require("./zeroSubrangeByContainerRange")
-module.exports.adjustRangeToRotation = require("./adjustRangeToRotation")
-module.exports.getZeroedRangeOverlaps = require("./getZeroedRangeOverlaps")
+export { default as adjustRangeToDeletionOfAnotherRange } from './adjustRangeToDeletionOfAnotherRange';
+export { default as adjustRangeToInsert } from './adjustRangeToInsert';
+export { default as checkIfNonCircularRangesOverlap } from './checkIfNonCircularRangesOverlap';
+export { default as checkIfPotentiallyCircularRangesOverlap } from './checkIfPotentiallyCircularRangesOverlap';
+export { default as collapseOverlapsGeneratedFromRangeComparisonIfPossible } from './collapseOverlapsGeneratedFromRangeComparisonIfPossible';
+export { default as convertRangeIndices } from './convertRangeIndices';
+export { default as convertRangeTo0Based } from './convertRangeTo0Based';
+export { default as convertRangeTo1Based } from './convertRangeTo1Based';
+export { default as doesRangeSpanEntireSequence } from './doesRangeSpanEntireSequence';
+export { default as isRangeOrPositionWithinRange } from './isRangeOrPositionWithinRange';
+export { default as doesRangeSpanOrigin } from './doesRangeSpanOrigin';
+export { default as expandOrContractCircularRangeToPosition } from './expandOrContractCircularRangeToPosition';
+export { default as expandOrContractNonCircularRangeToPosition } from './expandOrContractNonCircularRangeToPosition';
+export { default as expandOrContractRangeByLength } from './expandOrContractRangeByLength';
+export { default as expandOrContractRangeToPosition } from './expandOrContractRangeToPosition';
+export { default as flipContainedRange } from './flipContainedRange';
+export { default as generateRandomRange } from './generateRandomRange';
+export { default as getAnnotationRangeType } from './getAnnotationRangeType';
+export { default as getEachPositionInRangeAsArray } from './getEachPositionInRangeAsArray';
+export { default as getLengthOfOverlappingRegionsBetweenTwoRanges } from './getLengthOfOverlappingRegionsBetweenTwoRanges';
+export { default as getOverlapOfNonCircularRanges } from './getOverlapOfNonCircularRanges';
+export { default as getOverlapsOfPotentiallyCircularRanges } from './getOverlapsOfPotentiallyCircularRanges';
+export { default as getPositionFromAngle } from './getPositionFromAngle';
+export { default as getRangeAngles } from './getRangeAngles';
+export { default as getRangeLength } from './getRangeLength';
+export { default as getMiddleOfRange } from './getMiddleOfRange';
+export { default as getRangesBetweenTwoRanges } from './getRangesBetweenTwoRanges';
+export { default as getSequenceWithinRange } from './getSequenceWithinRange';
+export { default as getShortestDistanceBetweenTwoPositions } from './getShortestDistanceBetweenTwoPositions';
+export { default as getYOffsetForPotentiallyCircularRange } from './getYOffsetForPotentiallyCircularRange';
+export { default as getYOffsetsForPotentiallyCircularRanges } from './getYOffsetsForPotentiallyCircularRanges';
+export { default as invertRange } from './invertRange';
+export { default as isPositionCloserToRangeStartThanRangeEnd } from './isPositionCloserToRangeStartThanRangeEnd';
+export { default as isPositionWithinRange } from './isPositionWithinRange';
+export { default as isRangeWithinRange } from './isRangeWithinRange';
+export { default as loopEachPositionInRange } from './loopEachPositionInRange';
+export { default as modulatePositionByRange } from './modulatePositionByRange';
+export { default as modulateRangeBySequenceLength } from './modulateRangeBySequenceLength';
+export { default as normalizePositionByRangeLength } from './normalizePositionByRangeLength';
+export { default as normalizePositionByRangeLength1Based } from './normalizePositionByRangeLength1Based';
+export { default as normalizeRange } from './normalizeRange';
+export { default as provideInclusiveOptions } from './provideInclusiveOptions';
+export { default as reversePositionInRange } from './reversePositionInRange';
+export { default as splitRangeIntoTwoPartsIfItIsCircular } from './splitRangeIntoTwoPartsIfItIsCircular';
+export { default as translateRange } from './translateRange';
+export { default as trimNonCicularRangeByAnotherNonCircularRange } from './trimNonCicularRangeByAnotherNonCircularRange';
+export { default as trimNumberToFitWithin0ToAnotherNumber } from './trimNumberToFitWithin0ToAnotherNumber';
+export { default as trimRangeByAnotherRange } from './trimRangeByAnotherRange';
+export { default as zeroSubrangeByContainerRange } from './zeroSubrangeByContainerRange';
+export { default as adjustRangeToRotation } from './adjustRangeToRotation';
+export { default as getZeroedRangeOverlaps } from './getZeroedRangeOverlaps';

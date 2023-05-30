@@ -1,11 +1,12 @@
-var {clone} = require('lodash');
-var normalizeRange = require('./normalizeRange');
-module.exports = function expandOrContractRangeByLength(range, shiftBy, shiftStart, sequenceLength) {
-    var rangeToReturn = clone(range)
+import {clone} from 'lodash';
+import normalizeRange from './normalizeRange';
+
+export default function expandOrContractRangeByLength(range, shiftBy, shiftStart, sequenceLength) {
+    const rangeToReturn = clone(range);
     if (shiftStart) {
     	rangeToReturn.start -=shiftBy
     } else {
     	rangeToReturn.end +=shiftBy
     }
     return normalizeRange(rangeToReturn,sequenceLength)
-}
+};

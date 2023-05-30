@@ -1,8 +1,9 @@
-const { flatMap } = require("lodash");
-const splitRangeIntoTwoPartsIfItIsCircular = require("./splitRangeIntoTwoPartsIfItIsCircular");
-const getOverlapOfNonCircularRanges = require("./getOverlapOfNonCircularRanges");
+import {flatMap} from "lodash";
+import splitRangeIntoTwoPartsIfItIsCircular from "./splitRangeIntoTwoPartsIfItIsCircular";
+import getOverlapOfNonCircularRanges from "./getOverlapOfNonCircularRanges";
+
 //returns an array of the overlaps between two potentially circular ranges
-module.exports = function getOverlapsOfPotentiallyCircularRanges(
+export default function getOverlapsOfPotentiallyCircularRanges(
   rangeA,
   rangeB,
   maxRangeLength,

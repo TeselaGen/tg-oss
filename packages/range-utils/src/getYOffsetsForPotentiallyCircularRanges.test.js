@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const getYOffsetsForPotentiallyCircularRanges = require('./getYOffsetsForPotentiallyCircularRanges.js');
+import {expect} from 'chai';
+import getYOffsetsForPotentiallyCircularRanges from './getYOffsetsForPotentiallyCircularRanges.js';
 describe('getYOffsetsForPotentiallyCircularRanges', function() {
     it('returns correct yOffset for overlapping ranges', function() {
         expect(getYOffsetsForPotentiallyCircularRanges([{

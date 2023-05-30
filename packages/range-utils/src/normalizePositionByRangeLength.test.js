@@ -1,5 +1,5 @@
-var expect = require('chai').expect
-var normalizePositionByRangeLength = require('./normalizePositionByRangeLength')
+import {expect} from 'chai';
+import normalizePositionByRangeLength from './normalizePositionByRangeLength';
 describe('normalizePositionByRangeLength', function() {
     it('should normalize positions by their max length, assuming 0-based inclusive indices', function() {
         expect(normalizePositionByRangeLength(10,9)).to.equal(1)

@@ -1,4 +1,5 @@
-var getEachPositionInRangeAsArray = require('./getEachPositionInRangeAsArray');
-module.exports = function loopEachPositionInRange(range, rangeMax, func) {
+import getEachPositionInRangeAsArray from './getEachPositionInRangeAsArray';
+
+export default function loopEachPositionInRange(range, rangeMax, func) {
     getEachPositionInRangeAsArray(range,rangeMax).map(func)
-}
+};

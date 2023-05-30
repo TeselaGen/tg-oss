@@ -1,5 +1,5 @@
-const modulatePositionByRange = require('./modulatePositionByRange')
-const expect = require('chai').expect
+import modulatePositionByRange from './modulatePositionByRange';
+import {expect} from 'chai';
 
 describe('modulatePositionByRange', function() {
     it('should modulate positions by their min and max', function() {

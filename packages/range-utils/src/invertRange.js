@@ -1,6 +1,6 @@
-const normalizePositionByRangeLength = require('./normalizePositionByRangeLength');
-const provideInclusiveOptions = require('./provideInclusiveOptions')
-module.exports = provideInclusiveOptions(invertRange)
+import normalizePositionByRangeLength from './normalizePositionByRangeLength';
+import provideInclusiveOptions from './provideInclusiveOptions';
+export default provideInclusiveOptions(invertRange);
 function invertRange(rangeOrCaret, rangeMax) {
 	if (rangeOrCaret.start > -1) {
 	    const start = rangeOrCaret.end + 1;

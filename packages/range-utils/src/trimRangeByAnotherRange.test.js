@@ -1,9 +1,6 @@
-//var tap = require('tap');
-//tap.mochaGlobals();
+import trimRangeByAnotherRange from "./trimRangeByAnotherRange.js";
+import assert from "assert";
 
-let trimRangeByAnotherRange = require("./trimRangeByAnotherRange.js");
-// var trimRangeByAnotherRange = require('./trimRangeByAnotherRange.js');
-let assert = require("assert");
 describe("trimRangeByAnotherRange", function() {
   it(`returns nothing if invalid inputs are sent in`, () => {
     assert.equal(
@@ -252,8 +249,8 @@ describe("trimRangeByAnotherRange", function() {
         },
         // rrrrrrrrrr
         // 0123456789
-        // --es------ 
-        // --e s----- 
+        // --es------
+        // --e s-----
         {
           start: 4,
           end: 2

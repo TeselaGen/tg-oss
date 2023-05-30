@@ -1,5 +1,5 @@
-const isRangeOrPositionWithinRange = require("./isRangeOrPositionWithinRange");
-const expect = require("chai").expect;
+import isRangeOrPositionWithinRange from "./isRangeOrPositionWithinRange";
+import {expect} from "chai";
 
 describe("isRangeOrPositionWithinRange", function() {
   it("should correctly determine whether a position is within a range", function() {

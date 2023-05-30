@@ -1,4 +1,4 @@
-module.exports = function getOverlapOfNonCircularRanges(rangeA, rangeB) {
+export default function getOverlapOfNonCircularRanges(rangeA, rangeB) {
     if (rangeA.start < rangeB.start) {
         if (rangeA.end < rangeB.start) {
       //no overlap
@@ -32,4 +32,4 @@ module.exports = function getOverlapOfNonCircularRanges(rangeA, rangeB) {
             }
         }
     }
-}
+};

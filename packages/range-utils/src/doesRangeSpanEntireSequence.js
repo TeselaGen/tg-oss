@@ -1,6 +1,7 @@
-var getRangeLength = require('./getRangeLength');
-module.exports = function doesRangeSpanEntireSequence (range, sequenceLength) {
+import getRangeLength from './getRangeLength';
+
+export default function doesRangeSpanEntireSequence (range, sequenceLength) {
   if (getRangeLength(range) === sequenceLength) {
   	return true
   }
-}
+};

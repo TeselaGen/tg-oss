@@ -1,5 +1,6 @@
-const checkIfPotentiallyCircularRangesOverlap = require('./checkIfPotentiallyCircularRangesOverlap');
-module.exports = function getYOffsetForPotentiallyCircularRange(range, YOffsetLevelsWithRanges, assignYOffsetToRange) {
+import checkIfPotentiallyCircularRangesOverlap from './checkIfPotentiallyCircularRangesOverlap';
+
+export default function getYOffsetForPotentiallyCircularRange(range, YOffsetLevelsWithRanges, assignYOffsetToRange) {
     //adjust the yOffset of the range being pushed in by checking its range against other range already in the row
     let yOffset = [];
     //YOffsetLevelsWithRanges is an array of arrays (array of yOffset levels holding arrays of range)
@@ -20,4 +21,4 @@ module.exports = function getYOffsetForPotentiallyCircularRange(range, YOffsetLe
         if (assignYOffsetToRange) range.yOffset = YOffsetLevelsWithRanges.length
     }
     return yOffset
-}
+};

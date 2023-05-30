@@ -2,7 +2,7 @@
 
 //this function is a little confusing, but basically it takes an array of overlaps 
 //generated from a range overlaps calculation, and it sews them together if possible
-module.exports = function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength, optionalOriginalRange) {
+export default function collapseOverlapsGeneratedFromRangeComparisonIfPossible(overlaps, sequenceLength, optionalOriginalRange) {
     const originalRangeLinear = optionalOriginalRange && (optionalOriginalRange.start <= optionalOriginalRange.end)
     if (overlaps.length === 1 || overlaps.length === 0) {
         return overlaps;

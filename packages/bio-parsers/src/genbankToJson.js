@@ -4,8 +4,6 @@ import { convertAACaretPositionOrRangeToDna } from "@teselagen/sequence-utils";
 import constants, { gbDivisions } from "./utils/constants";
 import flattenSequenceArray from "./utils/flattenSequenceArray";
 import validateSequenceArray from "./utils/validateSequenceArray";
-
-// var some = require('lodash/collection/some');
 import splitStringIntoLines from "./utils/splitStringIntoLines.js";
 
 import createInitialSequence from "./utils/createInitialSequence";

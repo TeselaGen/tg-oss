@@ -1,8 +1,8 @@
-var normalizePositionByRangeLength = require('./normalizePositionByRangeLength');
+import normalizePositionByRangeLength from './normalizePositionByRangeLength';
 
-module.exports = function generateRandomRange(minStart, maxEnd, maxLength) {
-	var start = getRandomInt(minStart, maxEnd); 
-	var end
+export default function generateRandomRange(minStart, maxEnd, maxLength) {
+	const start = getRandomInt(minStart, maxEnd); 
+	let end;
 	if (maxLength) {
 		end = normalizePositionByRangeLength(getRandomInt(start, start + maxLength), maxEnd)
 	} else {
@@ -12,7 +12,7 @@ module.exports = function generateRandomRange(minStart, maxEnd, maxLength) {
 		start: start,
 		end: end,
 	}
-}
+};
 
 
 function getRandomInt(min, max) {

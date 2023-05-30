@@ -1,4 +1,4 @@
-module.exports = function getRangesBetweenTwoRanges(range1, range2) {
+export default function getRangesBetweenTwoRanges(range1, range2) {
     // {
     //     start: 85,
     //     end: 92
@@ -13,7 +13,7 @@ module.exports = function getRangesBetweenTwoRanges(range1, range2) {
 
     // start2 - end1
 
-    var newRanges = []	
+    const newRanges = [];	
     if (!(range1.start > -1 && range1.end > -1 && range2.start > -1 && range2.end > -1)) {
         return newRanges
     }

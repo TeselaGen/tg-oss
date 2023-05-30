@@ -1,7 +1,7 @@
-var normalizePositionByRangeLength = require('./normalizePositionByRangeLength')
-var provideInclusiveOptions = require('./provideInclusiveOptions')
-const { assign } = require("lodash")
-module.exports = provideInclusiveOptions(modulateRangeBySequenceLength)
+import normalizePositionByRangeLength from './normalizePositionByRangeLength';
+import provideInclusiveOptions from './provideInclusiveOptions';
+import {assign} from "lodash";
+export default provideInclusiveOptions(modulateRangeBySequenceLength);
 
 function modulateRangeBySequenceLength(range, seqLen) {
     return assign(range, {

@@ -1,11 +1,11 @@
-//var tap = require('tap');
-//tap.mochaGlobals();
-var expect = require('chai').expect;
-var zeroSubrangeByContainerRange = require('./zeroSubrangeByContainerRange.js');
-// var collapseOverlapsGeneratedFromRangeComparisonIfPossible = require('./collapseOverlapsGeneratedFromRangeComparisonIfPossible.js');
+
+
+import {expect} from 'chai';
+
+import zeroSubrangeByContainerRange from './zeroSubrangeByContainerRange.js';
 describe('zeroSubrangeByContainerRange', function() {
     it('throws an error if circular subRange does not fit within container range', function() {
-        var error = false;
+        let error = false;
         try {
             zeroSubrangeByContainerRange({
                 start: 20,
@@ -20,7 +20,7 @@ describe('zeroSubrangeByContainerRange', function() {
         expect(error).to.be.true;
     });
     it('throws an error if non circular subRange does not fit within container range', function() {
-        var error = false;
+        let error = false;
         try {
             zeroSubrangeByContainerRange({
                 start: 9,
@@ -35,7 +35,7 @@ describe('zeroSubrangeByContainerRange', function() {
         expect(error).to.be.true;
     });
     it('zeros non circular range if fully overlapped', function() {
-        var zeroedSubrange = zeroSubrangeByContainerRange({
+        const zeroedSubrange = zeroSubrangeByContainerRange({
             start: 10,
             end: 20
         }, {

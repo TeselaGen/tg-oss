@@ -1,5 +1,6 @@
-const { assign } = require("lodash")
-module.exports = function convertRangeIndices(range, inputType, outputType) {
+import {assign} from "lodash";
+
+export default function convertRangeIndices(range, inputType, outputType) {
     inputType = inputType || {}
     outputType = outputType || {}
     return assign({},range,{

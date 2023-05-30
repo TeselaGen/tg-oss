@@ -1,0 +1,2 @@
+import insertSequenceDataAtPositionOrRange from "./insertSequenceDataAtPositionOrRange";
+export default insertSequenceDataAtPositionOrRange;

@@ -1,6 +1,6 @@
-const getRangeLength = require("./getRangeLength");
+import getRangeLength from "./getRangeLength";
 
-module.exports = function getRangeAngles(range, rangeMax) {
+export default function getRangeAngles(range, rangeMax) {
   const { startAngle, totalAngle, endAngle } = getStartEndAndTotalAngle(
     range,
     rangeMax

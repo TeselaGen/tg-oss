@@ -1,5 +1,5 @@
-const normalizeRange = require('./normalizeRange');
-const expect = require('chai').expect
+import normalizeRange from './normalizeRange';
+import {expect} from 'chai';
 describe('normalizeRange', function () {
     it('should normalize range correctly', function() {
         const normalizedRange = normalizeRange({start: 0, end: -1},10)

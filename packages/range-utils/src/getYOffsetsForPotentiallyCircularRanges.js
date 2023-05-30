@@ -1,5 +1,6 @@
-const getYOffsetForPotentiallyCircularRange = require('./getYOffsetForPotentiallyCircularRange');
-module.exports = function getYOffsetsForPotentiallyCircularRanges(ranges, assignYOffsetToRange) {
+import getYOffsetForPotentiallyCircularRange from './getYOffsetForPotentiallyCircularRange';
+
+export default function getYOffsetsForPotentiallyCircularRanges(ranges, assignYOffsetToRange) {
     //adjust the yOffset of the range being pushed in by checking its range against other ranges already in the row
     const yOffsets = [];
     let maxYOffset = 0;
@@ -16,4 +17,4 @@ module.exports = function getYOffsetsForPotentiallyCircularRanges(ranges, assign
         yOffsetLevels[yOffset].push(range);
     });
     return {yOffsets:yOffsets, maxYOffset: maxYOffset};
-}
+};

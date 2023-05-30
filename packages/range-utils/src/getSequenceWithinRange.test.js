@@ -1,8 +1,9 @@
-//var tap = require('tap');
-//tap.mochaGlobals();
-var getSequenceWithinRange = require('./getSequenceWithinRange.js');
-var assert = require('assert');
-var subseq;
+
+
+import getSequenceWithinRange from './getSequenceWithinRange.js';
+
+import assert from 'assert';
+let subseq;
 
 describe('getSequenceWithinRange', function() {
     it('works with an array (translation amino acids for example) as well', function() {

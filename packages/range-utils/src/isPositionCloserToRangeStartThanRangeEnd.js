@@ -1,7 +1,8 @@
 //function to calculate whether a position is closer to the range start than the range end
-var getShortestDistanceBetweenTwoPositions = require('./getShortestDistanceBetweenTwoPositions')
-module.exports = function isPositionCloserToRangeStartThanRangeEnd(position, range, maxLength) {
-    var distanceFromStart = getShortestDistanceBetweenTwoPositions(range.start, position, maxLength)
-    var distanceFromEnd = getShortestDistanceBetweenTwoPositions(range.end, position, maxLength)
+import getShortestDistanceBetweenTwoPositions from './getShortestDistanceBetweenTwoPositions';
+
+export default function isPositionCloserToRangeStartThanRangeEnd(position, range, maxLength) {
+    const distanceFromStart = getShortestDistanceBetweenTwoPositions(range.start, position, maxLength);
+    const distanceFromEnd = getShortestDistanceBetweenTwoPositions(range.end, position, maxLength);
     return distanceFromStart <= distanceFromEnd
-}
+};

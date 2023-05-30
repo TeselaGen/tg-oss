@@ -1,5 +1,5 @@
 //function that returns the annotation range type
-module.exports = function getAnnotationRangeType(annotationRange, enclosingRangeType, forward) {
+export default function getAnnotationRangeType(annotationRange, enclosingRangeType, forward) {
     if (annotationRange.start === enclosingRangeType.start) {
         if (annotationRange.end === enclosingRangeType.end) {
             return 'beginningAndEnd';

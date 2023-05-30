@@ -1,7 +1,7 @@
-const getOverlapsOfPotentiallyCircularRanges = require("./getOverlapsOfPotentiallyCircularRanges");
-const splitRangeIntoTwoPartsIfItIsCircular = require("./splitRangeIntoTwoPartsIfItIsCircular");
-const trimNonCicularRangeByAnotherNonCircularRange = require("./trimNonCicularRangeByAnotherNonCircularRange");
-const { extend } = require("lodash");
+import getOverlapsOfPotentiallyCircularRanges from "./getOverlapsOfPotentiallyCircularRanges";
+import splitRangeIntoTwoPartsIfItIsCircular from "./splitRangeIntoTwoPartsIfItIsCircular";
+import trimNonCicularRangeByAnotherNonCircularRange from "./trimNonCicularRangeByAnotherNonCircularRange";
+import {extend} from "lodash";
 
 /**
  * trims range, but does *not* adjust it
@@ -17,7 +17,7 @@ const { extend } = require("lodash");
  *                                  end:
  *                                  }
  */
-module.exports = function trimRangeByAnotherRange(
+export default function trimRangeByAnotherRange(
   rangeToBeTrimmed,
   trimmingRange,
   sequenceLength

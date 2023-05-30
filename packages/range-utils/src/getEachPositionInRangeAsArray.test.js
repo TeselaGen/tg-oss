@@ -1,5 +1,5 @@
-var getEachPositionInRangeAsArray = require('./getEachPositionInRangeAsArray')
-var expect = require('chai').expect
+import getEachPositionInRangeAsArray from './getEachPositionInRangeAsArray';
+import {expect} from 'chai';
 
 describe('getEachPositionInRangeAsArray', function() {
     it('should correctly determine whether a position is within a range', function() {

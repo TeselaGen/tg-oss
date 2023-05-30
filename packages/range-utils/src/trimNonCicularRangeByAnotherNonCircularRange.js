@@ -1,5 +1,5 @@
-// var ac = require('ve-api-check'); 
-module.exports = function trimNonCicularRangeByAnotherNonCircularRange(rangeToBeTrimmed, trimmingRange) {
+//
+export default function trimNonCicularRangeByAnotherNonCircularRange(rangeToBeTrimmed, trimmingRange) {
     // ac.throw([ac.range, ac.range], arguments);
     let outputTrimmedRange;
     if (!rangeToBeTrimmed) {
@@ -54,4 +54,4 @@ module.exports = function trimNonCicularRangeByAnotherNonCircularRange(rangeToBe
         }
     }
     return outputTrimmedRange;
-}
+};

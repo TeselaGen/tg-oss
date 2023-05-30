@@ -1,13 +1,14 @@
-var normalizePositionByRangeLength = require('./normalizePositionByRangeLength');
-const { assign } = require("lodash");
-module.exports = function expandOrContractCircularRangeToPosition(range, position, maxLength) {
+import normalizePositionByRangeLength from './normalizePositionByRangeLength';
+import {assign} from "lodash";
+
+export default function expandOrContractCircularRangeToPosition(range, position, maxLength) {
 
     // 0 1 2 3 4 5 6 7 8 9
     // r r r r r - - r r r
     //0 1 2 3 4 5 6 7 8 9 10
     //        | 
-    var newRange = assign({}, range);
-    var endMoved = true;
+    const newRange = assign({}, range);
+    let endMoved = true;
     if (range.end >= position) {
         if (position + maxLength - range.start > range.end - position) {
             newRange.end = normalizePositionByRangeLength(position - 1, maxLength, false);
@@ -37,4 +38,4 @@ module.exports = function expandOrContractCircularRangeToPosition(range, positio
         newRange: newRange, 
         endMoved: endMoved
     })
-}
+};

@@ -1,8 +1,9 @@
-//const tap = require('tap');
-//tap.mochaGlobals();
+;
 
-const adjustRangeToRotation = require('./adjustRangeToRotation.js');
-const assert = require('assert');
+
+import adjustRangeToRotation from './adjustRangeToRotation.js';
+
+import assert from 'assert';
 describe('adjustRangeToRotation', function() {
     it('defaults to a rotateBy=0 if a null or undefined is passed ', () => {
         assert.deepEqual(adjustRangeToRotation({
@@ -12,7 +13,7 @@ describe('adjustRangeToRotation', function() {
             start: 1,
             end: 2
         });
-        
+
         assert.deepEqual(adjustRangeToRotation({
             start: 1,
             end: 2
@@ -44,15 +45,15 @@ describe('adjustRangeToRotation', function() {
             start: 0,
             end: 1
         });
-        
-        
+
+
 
     });
     it('shifts start and end if rotating before non circular range', function() {
         //0123456789
         //atgcatgccc
         // rr
-        // 
+        //
         assert.deepEqual(adjustRangeToRotation({
             start: 1,
             end: 2
@@ -84,7 +85,7 @@ describe('adjustRangeToRotation', function() {
         //0123456789
         //atgcatgccc
         //rrrrr  rrr
-        // 
+        //
         assert.deepEqual(adjustRangeToRotation({
             start: 7,
             end: 4
@@ -109,7 +110,7 @@ describe('adjustRangeToRotation', function() {
         //0123456 789
         //atgcatg ccc
         //rrrrrrr rrr
-        // 
+        //
         assert.deepEqual(adjustRangeToRotation({
             start: 7,
             end: 6
@@ -118,5 +119,5 @@ describe('adjustRangeToRotation', function() {
             end: 3
         });
     });
-    
+
 });

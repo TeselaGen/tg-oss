@@ -1,4 +1,4 @@
-const splitRangeIntoTwoPartsIfItIsCircular = require("./splitRangeIntoTwoPartsIfItIsCircular");
+import splitRangeIntoTwoPartsIfItIsCircular from "./splitRangeIntoTwoPartsIfItIsCircular";
 /**
  * 
  * @param {*} position //assumed to be a 0 based "caretPosition"
@@ -28,4 +28,4 @@ function isPositionWithinRange(
   return positionFits;
 }
 
-module.exports = isPositionWithinRange;
+export default isPositionWithinRange;

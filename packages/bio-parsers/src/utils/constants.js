@@ -1,6 +1,4 @@
-export default {
-    untitledSequenceName: 'Untitled Sequence'
-};
+export const untitledSequenceName = 'Untitled Sequence';
 
 export const gbDivisions = {
     // https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html#GenBankDivisionB

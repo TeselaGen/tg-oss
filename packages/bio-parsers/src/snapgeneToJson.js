@@ -3,6 +3,8 @@
 
 import bufferpack from "bufferpack";
 import { StringDecoder } from "string_decoder";
+import buffer from "buffer";
+
 import getArrayBufferFromFile from "./utils/getArrayBufferFromFile";
 import createInitialSequence from "./utils/createInitialSequence";
 import validateSequenceArray from "./utils/validateSequenceArray";
@@ -11,7 +13,7 @@ import { get } from "lodash";
 import { XMLParser } from "fast-xml-parser";
 import extractFileExtension from "./utils/extractFileExtension";
 
-const Buffer = require("buffer/").Buffer;
+const Buffer = buffer.Buffer
 
 async function snapgeneToJson(fileObj, options = {}) {
   try {

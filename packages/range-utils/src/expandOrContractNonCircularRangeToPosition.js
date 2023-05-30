@@ -1,7 +1,8 @@
-const { assign } = require("lodash");
-module.exports = function expandOrContractNonCircularRangeToPosition (range, position) {
-    var newRange = assign({},range);
-    var endMoved = true;
+import {assign} from "lodash";
+
+export default function expandOrContractNonCircularRangeToPosition (range, position) {
+    const newRange = assign({},range);
+    let endMoved = true;
     if (range.start > position) {
         newRange.start = position;
         endMoved = false;
@@ -21,4 +22,4 @@ module.exports = function expandOrContractNonCircularRangeToPosition (range, pos
         newRange: newRange,
         endMoved: endMoved
     })
-}
+};
