@@ -1,5 +1,11 @@
 {
   "name": "@teselagen/sequence-utils",
   "version": "0.0.1",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "bson-objectid": "^1.1.1",
+    "escape-string-regexp": "^1.0.5",
+    "jsondiffpatch": "^0.3.11",
+    "string-splice": "^1.3.0"
+  }
 }

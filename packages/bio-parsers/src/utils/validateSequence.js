@@ -1,6 +1,5 @@
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 import { getFeatureTypes } from "@teselagen/sequence-utils";
-import NameUtils from "./NameUtils.js";
 import {
   filterAminoAcidSequenceString,
   filterSequenceString,
@@ -11,6 +10,7 @@ import pragmasAndTypes from "./pragmasAndTypes.js";
 import { forEach } from "lodash";
 import { map } from "lodash";
 import { unmangleUrls } from "./unmangleUrls";
+import { reformatName } from "./NameUtils.js";
 
 //validation checking
 /**
@@ -57,7 +57,7 @@ export default function validateSequence(sequence, options = {}) {
   }
   const oldName = sequence.name;
   if (reformatSeqName) {
-    sequence.name = NameUtils.reformatName(sequence.name);
+    sequence.name = reformatName(sequence.name);
   }
   if (oldName !== sequence.name) {
     response.messages.push(

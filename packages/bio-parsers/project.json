@@ -4,6 +4,12 @@
   "sourceRoot": "packages/bio-parsers/src",
   "projectType": "library",
   "targets": {
+ "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
+      }
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],

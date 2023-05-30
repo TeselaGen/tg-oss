@@ -1,7 +1,7 @@
 /* eslint-disable no-var*/
 import { convertAACaretPositionOrRangeToDna } from "@teselagen/sequence-utils";
 
-import constants, { gbDivisions } from "./utils/constants";
+import  { gbDivisions, untitledSequenceName } from "./utils/constants";
 import flattenSequenceArray from "./utils/flattenSequenceArray";
 import validateSequenceArray from "./utils/validateSequenceArray";
 import splitStringIntoLines from "./utils/splitStringIntoLines.js";
@@ -358,7 +358,7 @@ function genbankToJson(string, options = {}) {
     //don't use "exported as a file name unless it is out last option"
     if (
       locusName !== "Exported" ||
-      result.parsedSequence.name === constants.untitledSequenceName
+      result.parsedSequence.name === untitledSequenceName
     ) {
       result.parsedSequence.name = locusName;
     }

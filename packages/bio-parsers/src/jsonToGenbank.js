@@ -2,10 +2,10 @@
 import { get, cloneDeep, map, each, isObject, flatMap } from "lodash";
 import color from "color";
 
-import nameUtils from "./utils/NameUtils.js";
 import pragmasAndTypes from "./utils/pragmasAndTypes.js";
-import { getFeatureToColorMap } from "@teselagen/sequence-utils";
 import { mangleOrStripUrls } from "./utils/unmangleUrls.js";
+import { reformatName } from "./utils/NameUtils.js";
+import { getFeatureToColorMap } from "@teselagen/sequence-utils";
 const StringUtil = {
   /** Trims white space at beginning and end of string
    * @param {string} line
@@ -214,7 +214,7 @@ function createGenbankLocus(serSeq, options) {
   let line = StringUtil.rpad("LOCUS", " ", 12);
   let nameToUse = serSeq.name || "Untitled_Sequence";
   nameToUse = options.reformatSeqName
-    ? nameUtils.reformatName(nameToUse)
+    ? reformatName(nameToUse)
     : nameToUse;
   line += StringUtil.rpad(nameToUse, " ", 16);
   line += " "; // T.H line 2778 of GenbankFormat.as col 29 space

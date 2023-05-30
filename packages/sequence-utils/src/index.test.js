@@ -1,4 +1,4 @@
-import * as src from "./index";
+import * as src from ".";
 import fs from "fs";
 
 describe("index.js", () => {
