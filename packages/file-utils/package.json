@@ -1,5 +1,11 @@
 {
   "name": "@teselagen/file-utils",
-  "version": "0.0.3",
-  "type": "commonjs"
+  "version": "0.1.0",
+  "type": "commonjs",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "jszip": "^3.10.1",
+    "lodash": "^4.17.21",
+    "papaparse": "^5.4.1"
+  }
 }
