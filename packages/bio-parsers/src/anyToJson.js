@@ -120,12 +120,12 @@ async function anyToJson(fileContentStringOrFileObj, options) {
 
     //try to guess the file type based on the first non-whitespace char in the filestring
     if (firstChar === ">") {
-      parsersToTry = parsersToTry.sort((a, b) => {
+      parsersToTry = parsersToTry.sort((a) => {
         if (a.name === "Fasta Parser") return -1;
         return 1;
       });
     } else if (firstChar === "L") {
-      parsersToTry = parsersToTry.sort((a, b) => {
+      parsersToTry = parsersToTry.sort((a) => {
         if (a.name === "Genbank Parser") return -1;
         return 1;
       });

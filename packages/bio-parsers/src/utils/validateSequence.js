@@ -299,7 +299,7 @@ export default function validateSequence(sequence, options = {}) {
           //remove it after we're parsed it out
           feature.notes.note = filter(
             feature.notes.note,
-            (p) => n && !n.toLowerCase().includes("sequence:")
+            (p) => p && !p.toLowerCase().includes("sequence:")
           );
           if (feature.notes.note.length === 0) {
             delete feature.notes.note;

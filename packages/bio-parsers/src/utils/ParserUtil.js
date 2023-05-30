@@ -1,9 +1,9 @@
 const ParserUtil = {};
 ParserUtil.postProcessGenbankFeature = function(feat) {
 	let name = null;
-	let nameIndex = null;
+	// let nameIndex = null;
 
-	let hasName = false;
+	// let hasName = false;
 	let usingLabel = false;
 	let usingGene = false;
 
@@ -24,7 +24,7 @@ ParserUtil.postProcessGenbankFeature = function(feat) {
 				// Label has top priority.
 
 				name = value;
-				nameIndex = j;
+				// nameIndex = j;
 
 				usingLabel = true;
 			}
@@ -37,7 +37,7 @@ ParserUtil.postProcessGenbankFeature = function(feat) {
 				if (!usingLabel) {
 
 					name = value;
-					nameIndex = j;
+					// nameIndex = j;
 
 					usingGene = true;
 				}
@@ -47,11 +47,11 @@ ParserUtil.postProcessGenbankFeature = function(feat) {
 				// 'label' field, use the current field as the name.
 
 				name = value;
-				nameIndex = j;
+				// nameIndex = j;
 
 			}
 
-			hasName = true;
+			// hasName = true;
 		}
 	}
 
@@ -59,7 +59,7 @@ ParserUtil.postProcessGenbankFeature = function(feat) {
 	// if(nameIndex !== null) {
 	// 	feat.notes.splice(nameIndex, 1);
 	// }
-	// 
+	//
 	// if(feat.locations.length > 0) {
 	// 	var loc = feat.locations[0];
 	// 	feat.start = loc.start;

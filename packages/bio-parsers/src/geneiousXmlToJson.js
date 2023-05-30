@@ -72,7 +72,7 @@ async function geneiousXmlToJson(string, options) {
     });
   }
 }
-function parseGeneiousJson(geneiousJson, options) {
+function parseGeneiousJson(geneiousJson) {
   const circular = searchWholeObjByNameSimple("isCircular", geneiousJson);
 
   let geneiousJsonInner = searchWholeObjByNameSimple(

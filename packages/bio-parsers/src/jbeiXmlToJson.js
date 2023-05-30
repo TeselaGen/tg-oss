@@ -60,7 +60,7 @@ async function jbeiXmlToJson(string, options) {
     });
   }
 }
-function parseJbeiXml(jbeiJson, options) {
+function parseJbeiXml(jbeiJson) {
   const {
     "seq:sequence": sequence,
     "seq:name": name,

@@ -28,7 +28,7 @@ export function mangleOrStripUrls(
     });
   }
   //if no options passed, strip all URLs from the string
-  return str.replace(urlRegex, function (url) {
+  return str.replace(urlRegex, function () {
     return ``;
   });
 }

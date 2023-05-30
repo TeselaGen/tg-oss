@@ -12,7 +12,6 @@ export default function adjustBpsToReplaceOrInsert(
   bpString,
   insertString = "",
   caretPositionOrRange,
-  isProtein
 ) {
   let stringToReturn = bpString;
 

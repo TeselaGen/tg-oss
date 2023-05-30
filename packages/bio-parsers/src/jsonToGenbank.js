@@ -156,7 +156,7 @@ export default function (_serSeq, options) {
     });
 
     let printedFeatureHeader;
-    each(serSeq.features, function (feat, index) {
+    each(serSeq.features, function (feat) {
       if (!printedFeatureHeader) {
         printedFeatureHeader = true;
         lines.push("FEATURES             Location/Qualifiers");

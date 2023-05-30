@@ -255,6 +255,7 @@ const calcTmMethods = {
     let numFound = 0;
     let seqOffset = 0; // Search offset for finding multiple matches.
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const foundSeq = sequence.indexOf(target, seqOffset);
 

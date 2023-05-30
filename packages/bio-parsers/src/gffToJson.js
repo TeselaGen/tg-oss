@@ -1,7 +1,7 @@
 import gff from "@gmod/gff";
 import _ from "lodash";
 
-function gffToJson(string, onFileParsed) {
+function gffToJson(string) {
   const arrayOfThings = gff.parseStringSync(string);
   const results = [];
   const sequences = [];

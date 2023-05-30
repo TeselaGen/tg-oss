@@ -115,7 +115,7 @@ async function snapgeneToJson(fileObj, options = {}) {
         data.features = [];
         Feature.forEach((feat) => {
           const { directionality, Segment = [], name, type } = feat;
-          let color;
+          // let color;
           let maxStart = 0;
           let maxEnd = 0;
           const locations =
@@ -123,7 +123,7 @@ async function snapgeneToJson(fileObj, options = {}) {
             Segment.map((seg) => {
               if (!seg) throw new Error("invalid feature definition");
               const { range } = seg;
-              color = seg.color;
+              // color = seg.color;
               let { start, end } = getStartAndEndFromRangeString(range);
               start = isProtein ? start * 3 : start;
               end = isProtein ? end * 3 + 2 : end;

@@ -50,6 +50,7 @@ export default function searchWholeObjByName(what, where) {
     for (const prop in where) {
       // IE may throw errors when accessing/coercing some properties
       try {
+        // eslint-disable-next-line no-prototype-builtins
         if (where.hasOwnProperty(prop)) {
           // inspect objects
           if ([where[prop]] == "[object Object]") {
