@@ -1,0 +1,325 @@
+LOCUS       Exported                6033 bp ds-DNA     circular SYN 24-JUN-2017
+DEFINITION  synthetic circular DNA
+ACCESSION   .
+VERSION     .
+KEYWORDS    .
+SOURCE      synthetic DNA construct
+  ORGANISM  synthetic DNA construct
+REFERENCE   1  (bases 1 to 6033)
+  AUTHORS   Raluca Fleischer
+  TITLE     Direct Submission
+  JOURNAL   Exported May 16, 2018 from SnapGene 4.1.9
+            http://www.snapgene.com
+FEATURES             Location/Qualifiers
+     source          1..6033
+                     /organism="synthetic DNA construct"
+                     /mol_type="other DNA"
+     primer_bind     1..45
+                     /label=oligoRF583
+                     /note="CMV promoter fwd Tm(part) 59.5"
+     misc_feature    1..15
+                     /label=LCR stuffer
+     misc_feature    16..1018
+                     /label=sequenced
+                     /note="RFLGCSeq536"
+     old_sequence    16..1018
+                     /compare="pCI Promega"
+                     /label=pCI (Promega)
+     promoter        16..757
+                     /label=CMV promoter
+                     /note="NC_006273.2(175784..175043)rc"
+     primer_bind     699..718
+                     /label=oligoRF912
+                     /note="sequencing/ID primer 3' CMV promoter; fwd Tm 54.4"
+     TATA_signal     722..728
+     misc_feature    747..1018
+                     /label=sequenced
+                     /note="RFLGCSeq527"
+     misc_feature    751..756
+                     /label=Inr
+     misc_feature    753
+                     /label=TSS +1
+     regulatory      join(868..962,976..1018)
+                     /regulatory_class="enhancer"
+                     /note="hsHBB: NC_000011.10(5226925..5226839)rc
+                     mmIghv1-53: NC_000078.6(115158736.. 115158694)rc"
+     intron          872..1004
+                     /label=chimeric intron
+     primer_bind     complement(1000..1027)
+                     /label=oligoRF587
+                     /note="CMV promoter rev Tm(part) 59.2"
+     primer_bind     complement(1000..1024)
+                     /label=oligoRF584
+                     /note="CMV promoter rev Tm(part) 59.2"
+     primer_bind     1004..1055
+                     /label=RFLCR131
+     misc_feature    1019..1024
+                     /label=Kozak
+     CDS             1025..1027
+                     /codon_start=1
+                     /label=start
+                     /translation="M"
+     CDS             1028..1090
+                     /codon_start=1
+                     /label=GFP11
+                     /note="GFP11M4
+                     
+                     Eurofins/Geneius optimized"
+                     /translation="EKRDHMVLLEYVTAAGITDAS"
+     primer_bind     1028..1057
+                     /label=oligoRF378
+                     /note="GFP11 5' fwd Tm 69.9"
+     CDS             1091..1150
+                     /codon_start=1
+                     /label=L11
+                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D., 
+                     Koraichi, F., Chaudhary, A., Ganguly, K., … Waldo, G. S. 
+                     (2013). A New Protein-Protein Interaction Sensor Based on 
+                     Tripartite Split-GFP Association. Scientific Reports, 3, 
+                     2854."
+                     /translation="GSPGGGSGGSGSSASGGSTS"
+     CDS             1091..1120
+                     /codon_start=1
+                     /label=L9
+                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D., 
+                     Koraichi, F., Chaudhary, A., Ganguly, K., … Waldo, G. S. 
+                     (2013). A New Protein-Protein Interaction Sensor Based on 
+                     Tripartite Split-GFP Association. Scientific Reports, 3, 
+                     2854.  "
+                     /translation="GSPGGGSGGS"
+     CDS             1121..1150
+                     /codon_start=1
+                     /label=L10
+                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D., 
+                     Koraichi, F., Chaudhary, A., Ganguly, K., … Waldo, G. S. 
+                     (2013). A New Protein-Protein Interaction Sensor Based on 
+                     Tripartite Split-GFP Association. Scientific Reports, 3, 
+                     2854.  "
+                     /translation="GSSASGGSTS"
+     primer_bind     complement(1129..1149)
+                     /label=oligoRF379
+                     /note="L10 3' rev Tm 69.7"
+     primer_bind     1131..1169
+                     /label=RFLCR132
+     misc_feature    1151..1175
+                     /label=BsmBI stuffer
+     primer_bind     1176..1199
+                     /label=oligoRF345
+                     /note="IRES 5' (w/. STOP) fwd Tm 59.8"
+     misc_feature    1176..1178
+                     /label=stop
+     RBS             1189..1778
+                     /label=IRES
+                     /note="NC_001479.1(257..845)
+                     A7-variant"
+     misc_feature    1671
+                     /label=mut.
+                     /note="non deleterious G-to-A mutation"
+     primer_bind     1738..1802
+                     /label=RFLCR104
+                     /note="RFpart083-RFpart036"
+     primer_bind     complement(1755..1778)
+                     /label=oligoRF346
+                     /note="IRES 3' (w/o ATG) rev Tm 59.7"
+     CDS             1779..2495
+                     /codon_start=1
+                     /label=eBFP2
+                     /label=BFP
+                     /note="Ai, Hui-wang, Nathan C. Shaner, Zihao Cheng, Roger 
+                     Y. Tsien, and Robert E. Campbell. "Exploration of New 
+                     Chromophore Structures Leads to the Identification of 
+                     Improved Blue Fluorescent Proteins." Biochemistry 46, no. 
+                     20 (May 22, 2007): 5904–10.
+                     
+                     ABP88743.1"
+                     /translation="MVSKGEELFTGVVPILVELDGDVNGHKFSVRGEGEGDATNGKLTL
+                     KFICTTGKLPVPWPTLVTTLSHGVQCFARYPDHMKQHDFFKSAMPEGYVQERTIFFKDD
+                     GTYKTRAEVKFEGDTLVNRIELKGVDFKEDGNILGHKLEYNFNSHNIYIMAVKQKNGIK
+                     VNFKIRHNVEDGSVQLADHYQQNTPIGDGPVLLPDSHYLSTQSVLSKDPNEKRDHMVLL
+                     EFRTAAGITLGMDELYK"
+     primer_bind     1779..1796
+                     /label=oligoRF271
+                     /note="TdTomato fwd Tm 59.3"
+     primer_bind     2467..2526
+                     /label=RFLCR128
+     primer_bind     complement(2475..2495)
+                     /label=oligoRF260
+                     /note="LifeAct-mCherry rev (w/o stop), Tm 60.9"
+     primer_bind     2496..2515
+                     /label=oligoRF323
+                     /note="stop+int/ex+WPRE+btGH1pA+ocHbb2pA - fwd Tm 59.1"
+     misc_feature    2496..2498
+                     /label=stop
+     misc_feature    2533
+                     /label=mut.
+                     /note="probably inocuous C-to-A mutation"
+     regulatory      2540..2684
+                     /regulatory_class="enhancer"
+                     /note="hsHBB: NC_000011.10(1..95)
+                     mmIghv1-53: NC_000078.6(109..145)"
+     3'UTR           2685..3276
+                     /label=WPRE
+                     /note="NC_004107.1(1093..1684), 7x point mutations"
+     primer_bind     complement(3163..3180)
+                     /label=oligoRF995
+                     /note="sequencing WPRE 3' rev Tm 56.2"
+     polyA_signal    3306..3499
+                     /label=btGH1 polyA
+                     /note="NC_007317.6 (48967034..48966841)   "
+     primer_bind     complement(3477..3499)
+                     /label=oligoRF572
+                     /note="btGH1 rev Tm 59.8"
+     polyA_signal    3588..4116
+                     /label=ocHbb2 polyA
+                     /note="NC_013669.1(146237189..146236661)rc"
+     primer_bind     4081..4130
+                     /label=RFLCR129
+     primer_bind     complement(4092..4116)
+                     /label=oligoRF324
+                     /note="stop+int/ex+WPRE+btGH1pA+ocHbb2pA - rev Tm 59.3"
+     primer_bind     4117..4178
+                     /label=oligoRF585
+                     /note="RFpart107 fwd (8ntCutterMCS) Tm(part) 60.2"
+     misc_feature    4117..4156
+                     /label=MCS
+     primer_bind     complement(4118..4130)
+                     /label=RFLCR129
+     primer_bind     4120..4136
+                     /label=8cutterMCS 5' Tm 70.6
+     primer_bind     4137..4150
+                     /label=8cutterMCS 3' Tm 70.5
+     rep_origin      complement(4169..4757)
+                     /direction=LEFT
+                     /label=pBR322 Ori
+     primer_bind     complement(4767..4789)
+                     /label=oligoRF576
+                     /note="pBR322 Ori rev Tm(part) 58.7"
+     primer_bind     4790..4809
+                     /label=oligoRF577
+                     /note="AmpR rev Tm(part) 58.4"
+     CDS             complement(4931..5788)
+                     /codon_start=1
+                     /label=AmpR
+                     /translation="MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYI
+                     ELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRIDAGQEQLGRRIHYSQNDLVEYS
+                     PVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRW
+                     EPELNEAIPNDERDTTMPVAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSA
+                     LPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGAS
+                     LIKHW"
+     promoter        complement(5789..5989)
+                     /label=AmpR promoter
+     primer_bind     5825..5844
+                     /label=oligoRF992
+                     /note="sequencing Amp promoter rev Tm 55.9"
+     primer_bind     complement(5969..6033)
+                     /label=oligoRF586
+                     /note="RFpart107 rev (8ntCutterMCS) Tm(part) 60.5"
+     misc_feature    5991..6033
+                     /label=MCS
+     primer_bind     join(6020..6033,1..26)
+                     /label=RFLCR130
+     primer_bind     complement(join(6024..6033,1..2))
+                     /label=8cutterMCS 3' Tm 70.5
+ORIGIN
+        1 gcctgcctcc aggcctcaat attggccatt agccatatta ttcattggtt atatagcata
+       61 aatcaatatt ggctattggc cattgcatac gttgtatcta tatcataata tgtacattta
+      121 tattggctca tgtccaatat gaccgccatg ttggcattga ttattgacta gttattaata
+      181 gtaatcaatt acggggtcat tagttcatag cccatatatg gagttccgcg ttacataact
+      241 tacggtaaat ggcccgcctg gctgaccgcc caacgacccc cgcccattga cgtcaataat
+      301 gacgtatgtt cccatagtaa cgccaatagg gactttccat tgacgtcaat gggtggagta
+      361 tttacggtaa actgcccact tggcagtaca tcaagtgtat catatgccaa gtccgccccc
+      421 tattgacgtc aatgacggta aatggcccgc ctggcattat gcccagtaca tgaccttacg
+      481 ggactttcct acttggcagt acatctacgt attagtcatc gctattacca tggtgatgcg
+      541 gttttggcag tacaccaatg ggcgtggata gcggtttgac tcacggggat ttccaagtct
+      601 ccaccccatt gacgtcaatg ggagtttgtt ttggcaccaa aatcaacggg actttccaaa
+      661 atgtcgtaat aaccccgccc cgttgacgca aatgggcggt aggcgtgtac ggtgggaggt
+      721 ctatataagc agagctcgtt tagtgaaccg tcagatcact agaagcttta ttgcggtagt
+      781 ttatcacagt taaattgcta acgcagtcag tgcttctgac acaacagtct cgaacttaag
+      841 ctgcagaagt tggtcgtgag gcactgggca ggtaagtatc aaggttacaa gacaggttta
+      901 aggagaccaa tagaaactgg gcttgtcgag acagagaaga ctcttgcgtt tctgataggc
+      961 acctattggt cttactgaca tccactttgc ctttctctcc acaggtgtcc actcccaggc
+     1021 caccatggaa aagagggacc acatggtgct gctcgagtac gtcacagcag ctggcatcac
+     1081 cgatgccagc gggagtcctg gcggtggatc cggaggctct gggagctctg ccagcggtgg
+     1141 cagcacctcc cgagacgccg aggcacgccg tctcctaaga attcagatcc gcccctctcc
+     1201 ctcccccccc cctaacgtta ctggccgaag ccgcttggaa taaggccggt gtgcgtttgt
+     1261 ctatatgtta ttttccacca tattgccgtc ttttggcaat gtgagggccc ggaaacctgg
+     1321 ccctgtcttc ttgacgagca ttcctagggg tctttcccct ctcgccaaag gaatgcaagg
+     1381 tctgttgaat gtcgtgaagg aagcagttcc tctggtagct tcttgaagac aaacaacgtc
+     1441 tgtagcgacc ctttgcaggc agcggaaccc cccacctggc gacaggtgcc tctgcggcca
+     1501 aaagccacgt gtataagata cacctgcaaa ggcggcacaa ccccagtgcc acgttgtgag
+     1561 ttggatagtt gtggaaagag tcaaatggct ctcctcaagc gtattcaaca aggggctgaa
+     1621 ggatgcccag aaggtacccc attgtatggg atctgatctg gggcctcggt acacatgctt
+     1681 tacatgtgtt tagtcgaggt taaaaaaacg tctaggcccc ccgaaccacg gggacgtggt
+     1741 tttcctttga aaaacacgat gataatatgg ccacaaccat ggtgagcaag ggcgaggagc
+     1801 tgttcaccgg ggtggtgccc atcctggtcg agctggacgg cgacgtaaac ggccacaagt
+     1861 tcagcgtgag gggcgagggc gagggcgatg ccaccaacgg caagctgacc ctgaagttca
+     1921 tctgcaccac cggcaagctg cccgtgccct ggcccaccct cgtgaccacc ctgagccacg
+     1981 gcgtgcagtg cttcgcccgc taccccgacc acatgaagca gcacgacttc ttcaagtccg
+     2041 ccatgcccga aggctacgtc caggagcgca ccatcttctt caaggacgac ggcacctaca
+     2101 agacccgcgc cgaggtgaag ttcgagggcg acaccctggt gaaccgcatc gagctgaagg
+     2161 gcgtcgactt caaggaggac ggcaacatcc tggggcacaa gctggagtac aacttcaaca
+     2221 gccacaacat ctatatcatg gccgtcaagc agaagaacgg catcaaggtg aacttcaaga
+     2281 tccgccacaa cgtggaggac ggcagcgtgc agctcgccga ccactaccag cagaacaccc
+     2341 ccatcggcga cggccccgtg ctgctgcccg acagccacta cctgagcacc cagtccgtgc
+     2401 tgagcaaaga ccccaacgag aagcgcgatc acatggtcct gctggagttc cgcaccgccg
+     2461 ccgggatcac tctcggcatg gacgagctgt acaagtaaac cggtgctcga ggtaccgatg
+     2521 aatagctaag gtagaggccg caggtaagta tcaaggttac aagacaggtt taaggagacc
+     2581 aatagaaact gggcttgtcg agacagagaa gactcttgcg tttctgatag gcacctattg
+     2641 gtcttactga catccacttt gcctttctct ccacaggtgt cgacaatcaa cctctggatt
+     2701 acaaaatttg tgaaagattg actggtattc ttaactatgt tgctcctttt acgctatgtg
+     2761 gatacgctgc tttaatgcct ttgtatcatg ctattgcttc ccgtatggct ttcattttct
+     2821 cctccttgta taaatcctgg ttgctgtctc tttatgagga gttgtggccc gttgtcaggc
+     2881 aacgtggcgt ggtgtgcact gtgtttgctg acgcaacccc cactggttgg ggcattgcca
+     2941 ccacctgtca gctcctttcc gggactttcg ctttccccct ccctattgcc acggcggaac
+     3001 tcatcgccgc ctgccttgcc cgctgctgga caggggctcg gctgttgggc actgacaatt
+     3061 ccgtggtgtt gtcggggaag ctgacgtcct ttccatggct gctcgcctgt gttgccacct
+     3121 ggattctgcg cgggacgtcc ttctgctacg tcccttcggc cctcaatcca gcggaccttc
+     3181 cttcccgcgg cctgctgccg gctctgcggc ctcttccgcg tcttcgcctt cgccctcaga
+     3241 cgagtcggat ctccctttgg gccgcctccc cgcctggaat tcgagctcgg tacgatcagc
+     3301 ctcgactgtg ccttctagtt gccagccatc tgttgtttgc ccctcccccg tgccttcctt
+     3361 gaccctggaa ggtgccactc ccactgtcct ttcctaataa aatgaggaaa ttgcatcgca
+     3421 ttgtctgagt aggtgtcatt ctattctggg gggtggggtg gggcaggaca gcaaggggga
+     3481 ggattgggaa gacaatagcc cagcttttgt tccctttagt gagggttaat tgcgcgcttg
+     3541 gcgtaatcat ggtcatagct gtttcctgtg tgaaattgtt atccgctaat tcactcctca
+     3601 ggtgcaggct gcctatcaga aggtggtggc tggtgtggcc aatgccctgg ctcacaaata
+     3661 ccactgagat ctttttccct ctgccaaaaa ttatggggac atcatgaagc cccttgagca
+     3721 tctgacttct ggctaataaa ggaaatttat tttcattgca atagtgtgtt ggaatttttt
+     3781 gtgtctctca ctcggaagga catatgggag ggcaaatcat ttaaaacatc agaatgagta
+     3841 tttggtttag agtttggcaa catatgccca tatgctggct gccatgaaca aaggttggct
+     3901 ataaagaggt catcagtata tgaaacagcc ccctgctgtc cattccttat tccatagaaa
+     3961 agccttgact tgaggttaga ttttttttat attttgtttt gtgttatttt tttctttaac
+     4021 atccctaaaa ttttccttac atgttttact agccagattt ttcctcctct cctgactact
+     4081 cccagtcata gctgtccctc ttctcttatg gagatcggcc ggccgccggc gtcgacgcgc
+     4141 gcggccgcgg cgcgccgttg ctggcgtttt tccataggct ccgcccccct gacgagcatc
+     4201 acaaaaatcg acgctcaagt cagaggtggc gaaacccgac aggactataa agataccagg
+     4261 cgtttccccc tggaagctcc ctcgtgcgct ctcctgttcc gaccctgccg cttaccggat
+     4321 acctgtccgc ctttctccct tcgggaagcg tggcgctttc tcatagctca cgctgtaggt
+     4381 atctcagttc ggtgtaggtc gttcgctcca agctgggctg tgtgcacgaa ccccccgttc
+     4441 agcccgaccg ctgcgcctta tccggtaact atcgtcttga gtccaacccg gtaagacacg
+     4501 acttatcgcc actggcagca gccactggta acaggattag cagagcgagg tatgtaggcg
+     4561 gtgctacaga gttcttgaag tggtggccta actacggcta cactagaaga acagtatttg
+     4621 gtatctgcgc tctgctgaag ccagttacct tcggaaaaag agttggtagc tcttgatccg
+     4681 gcaaacaaac caccgctggt agcggtggtt tttttgtttg caagcagcag attacgcgca
+     4741 gaaaaaaagg atctcaagaa gatcctttga tcttttctac ggggtctgac gctcagtgga
+     4801 acgaaaactc acgttaaggg attttggtca tgagattatc aaaaaggatc ttcacctaga
+     4861 tccttttaaa ttaaaaatga agttttaaat caatctaaag tatatatgag taaacttggt
+     4921 ctgacagtta ccaatgctta atcagtgagg cacctatctc agcgatctgt ctatttcgtt
+     4981 catccatagt tgcctgactc cccgtcgtgt agataactac gatacgggag ggcttaccat
+     5041 ctggccccag tgctgcaatg ataccgcgag acccacgctc accggctcca gatttatcag
+     5101 caataaacca gccagccgga agggccgagc gcagaagtgg tcctgcaact ttatccgcct
+     5161 ccatccagtc tattaattgt tgccgggaag ctagagtaag tagttcgcca gttaatagtt
+     5221 tgcgcaacgt tgttgccatt gctacaggca tcgtggtgtc acgctcgtcg tttggtatgg
+     5281 cttcattcag ctccggttcc caacgatcaa ggcgagttac atgatccccc atgttgtgca
+     5341 aaaaagcggt tagctccttc ggtcctccga tcgttgtcag aagtaagttg gccgcagtgt
+     5401 tatcactcat ggttatggca gcactgcata attctcttac tgtcatgcca tccgtaagat
+     5461 gcttttctgt gactggtgag tactcaacca agtcattctg agaatagtgt atgcggcgac
+     5521 cgagttgctc ttgcccggcg tcaatacggg ataataccgc gccacatagc agaactttaa
+     5581 aagtgctcat cattggaaaa cgttcttcgg ggcgaaaact ctcaaggatc ttaccgctgt
+     5641 tgagatccag ttcgatgtaa cccactcgtg cacccaactg atcttcagca tcttttactt
+     5701 tcaccagcgt ttctgggtga gcaaaaacag gaaggcaaaa tgccgcaaaa aagggaataa
+     5761 gggcgacacg gaaatgttga atactcatac tcttcctttt tcaatattat tgaagcattt
+     5821 atcagggtta ttgtctcatg agcggataca tatttgaatg tatttagaaa aataaacaaa
+     5881 taggggttcc gcgcacattt ccccgaaaag tgccacctga cgtctaagaa accattatta
+     5941 tcatgacatt aacctataaa aataggcgta tcacgaggcc ctttcgtcta cgcgcgcgcc
+     6001 ggcggcgcgc cgtcgacggc cggccgcggc cgc
+//

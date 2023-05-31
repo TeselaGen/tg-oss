@@ -1,0 +1,813 @@
+LOCUS       AcsBmut-3pCRISPR       17595 bp    DNA     linear   UNA 12-FEB-2018
+DEFINITION  .
+ACCESSION   urn.local...97b-8pymc0b
+VERSION     urn.local...97b-8pymc0b
+KEYWORDS    .
+SOURCE      
+  ORGANISM  
+            .
+FEATURES             Location/Qualifiers
+     misc_feature    1..82
+                     /note="Geneious type: concatenated sequence"
+     terminator      9..62
+                     /gene="""CD0164 terminator; CD0164 terminator"
+     primer_bind     63..80
+                     /gene="M13R"
+     primer_bind     63..80
+                     /gene="""M13R"
+     primer_bind     63..80
+     misc_feature    63..80
+     misc_feature    <81..>86
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    83..645
+                     /note="Geneious type: promoter prokaryotic"
+     misc_feature    complement(<83..>88)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    87..645
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(89..107)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    139..144
+                     /note="Geneious type: -35"
+     misc_feature    381..386
+                     /note="Geneious type: -35"
+     misc_feature    395..400
+     misc_feature    423..428
+     promoter        complement(434..439)
+     promoter        complement(448..453)
+     misc_feature    466..471
+     misc_feature    497..502
+     promoter        520..525
+     promoter        complement(524..529)
+     promoter        526..531
+     misc_feature    536..541
+     misc_feature    complement(554..559)
+     misc_feature    complement(605..610)
+     misc_feature    complement(615..646)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(615..659)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(621..646)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(631..659)
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     631..675
+     misc_feature    646..>2773
+                     /note="Geneious type: ligation"
+     primer_bind     647..675
+     source          complement(<647..>2773)
+                     /organism="Clostridium autoethanogenum LZ1561"
+                     /mol_type="genomic DNA"
+                     /strain="LZ1561"
+                     /isolation_source="Single colony from gas fermenter
+                     population"
+                     /culture_collection="DSMZ"
+                     /country="New Zealand"
+                     /collection_date=2010
+     gene            647..2773
+                     /locus_tag="CAETHG_1608"
+                     /pseudo
+     misc_feature    647..2773
+                     /note="Geneious type: CDS; cds"
+                     /locus_tag="BASys_1642; Blast2GO_1608; CAETHG_1608;
+                     RAST_1610"
+                     /inference="EXISTENCE: similar to AA
+                     sequence:RefSeq:WP_013240359.1"
+                     /note="Derived by automated computational analysis using
+                     gene prediction method: Protein Homology.; in acetogenic
+                     organisms, this enzyme complex converts carbon dioxide to
+                     acetyl-CoA while in methanogenic organisms this enzyme is
+                     used to degrade acetyl-CoA to form methane and carbon
+                     dioxide; part of an enzyme complex"
+                     /product="CO dehydrogenase/acetyl-CoA synthase,acetyl-CoA
+                     synthase subunit (EC 2.3.1.169); Carbon monoxide
+                     dehydrogenase/acetyl-CoA synthase subunit alpha;
+                     bifunctional acetyl-CoA decarbonylase/synthase complex
+                     subunit alpha/beta; co dehydrogenase co-methylating
+                     acetyl- synthasebeta subunit"
+                     /pseudo
+                     /note="Geneious type: cds"
+     misc_feature    647..2773
+                     /note="Geneious type: locus"
+     misc_feature    652..657
+     misc_feature    657..662
+                     /note="Geneious type: -35"
+     misc_feature    676..681
+                     /note="Geneious type: -35"
+     promoter        857..862
+     promoter        879..884
+     promoter        complement(926..931)
+     promoter        complement(1097..1102)
+     promoter        complement(1109..1114)
+     misc_feature    1529..2765
+                     /note="Geneious type: pfam"
+     misc_feature    1535..2756
+                     /note="Geneious type: cog"
+     misc_feature    complement(1559..1564)
+                     /note="Geneious type: -35"
+     misc_feature    complement(1883..1888)
+                     /note="Geneious type: -35"
+     promoter        1978..1983
+     promoter        2082..2087
+     misc_feature    2296..2301
+                     /note="Geneious type: -35"
+     promoter        complement(2332..2337)
+     promoter        2392..2397
+     misc_feature    2542..2547
+                     /note="Geneious type: -35"
+     promoter        complement(2647..2652)
+     promoter        2651..2656
+     misc_feature    complement(2745..2773)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(2745..2784)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(2762..2784)
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     2762..2792
+     primer_bind     2774..2792
+     CDS             <2774..2917
+                     /note="Geneious type: cds"
+                     /gene="""lacZ alpha"
+     misc_feature    complement(2845..2863)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(2865..2882)
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     2865..2882
+     primer_bind     2876..2896
+     primer_bind     2918..2942
+     terminator      2919..2960
+                     /gene="""Cpa fdx terminator; Cpa fdx terminator"
+     misc_feature    complement(2919..2943)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(2946..2968)
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     2949..>2968
+     misc_feature    <2961..>2966
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(<2963..>2968)
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     primer_bind     2969..2999
+     misc_feature    complement(<2969..2988)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    2969..7032
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(2980..2985)
+                     /note="Geneious type: -35"
+     misc_feature    3010..3015
+     promoter        complement(3073..3078)
+     promoter        complement(3095..3100)
+     misc_feature    complement(3189..3194)
+     misc_feature    3306..3311
+                     /note="Geneious type: -35"
+     misc_feature    3451..3456
+     promoter        3456..3461
+     misc_feature    3477..3482
+     promoter        complement(3546..3551)
+     CDS             3687..4004
+                     /note="Geneious type: cds"
+                     /gene="""repH"
+     misc_feature    3732..3737
+     misc_feature    3860..3865
+                     /note="Geneious type: -35"
+     misc_feature    4005..4010
+     misc_feature    4009..4014
+     misc_feature    complement(4163..4168)
+     promoter        4319..4324
+     misc_feature    complement(4435..4440)
+     misc_feature    complement(4448..4453)
+                     /note="Geneious type: -35"
+     misc_feature    complement(4483..4488)
+     promoter        complement(4573..4578)
+     misc_feature    <4580..>4585
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    4584..5380
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    <4584..>5380
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    4588..7032
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(4594..4612)
+                     /note="Geneious type: primer_bind_reverse"
+     promoter        4623..4628
+     CDS             4676..5299
+                     /note="Geneious type: cds"
+                     /gene="""catP"
+     misc_feature    complement(4682..4687)
+                     /note="Geneious type: -35"
+     promoter        4692..4697
+     misc_feature    complement(4707..4729)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(4789..4794)
+     misc_feature    4827..4832
+     promoter        complement(4830..4835)
+     promoter        complement(5181..5186)
+     promoter        complement(5201..5206)
+     promoter        5285..5290
+     misc_feature    5381..7032
+                     /note="Geneious type: concatenated sequence"
+     promoter        5391..5396
+     rep_origin      5512..6057
+     misc_feature    complement(5905..5924)
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     5905..5924
+     primer_bind     5906..5925
+     misc_feature    <6077..>6082
+                     /note="Geneious type: concatenated sequence"
+     promoter        complement(6281..6286)
+     primer_bind     6415..6434
+     CDS             6458..6898
+                     /gene="""traJ; traJ"
+                     /note="Geneious type: cds"
+     promoter        complement(6568..6573)
+     misc_feature    <6623..>6628
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(<6737..>6742)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    <6747..>6752
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(6756..6775)
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     6756..6775
+     misc_feature    <6787..>6792
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     primer_bind     6941..6958
+     primer_bind     6956..6975
+     primer_bind     6997..7015
+     promoter        complement(7054..>7130)
+     misc_feature    complement(7054..13375)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    7065..7070
+     misc_feature    7083..7088
+     promoter        complement(7109..7114)
+     misc_difference complement(7116..7130)
+     misc_feature    7116..7130
+                     /note="Geneious type: motif"
+     promoter        complement(7118..7123)
+     primer_bind     complement(7152..7174)
+     misc_feature    complement(<7173..>7178)
+                     /note="Geneious type: concatenated sequence"
+     primer_bind     7241..7867
+     promoter        7254..7259
+     promoter        complement(7270..7275)
+     primer_bind     complement(7781..7797)
+     promoter        7817..7822
+     misc_feature    complement(7907..7912)
+     misc_feature    complement(7928..7933)
+     misc_feature    7951..7956
+     misc_feature    7956..7961
+     promoter        7984..7989
+     misc_feature    8016..8021
+     misc_feature    <8101..>8106
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(<8103..>8108)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(<8103..>13048)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(8107..>13379)
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    order(complement(<10747..>13048),complement(<8107..>9840))
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(8107..8188)
+                     /note="Geneious type: concatenated sequence"
+     primer_bind     complement(8109..8126)
+                     /gene="M13R"
+     primer_bind     complement(8109..8126)
+                     /gene="""M13R"
+     primer_bind     complement(8109..8126)
+     misc_feature    complement(8109..8126)
+     terminator      complement(8127..8180)
+                     /gene="""CD0164 terminator; CD0164 terminator"
+     misc_feature    complement(8189..>10750)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(8189..9840)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(8189..>13048)
+                     /note="Geneious type: concatenated sequence"
+     primer_bind     complement(8206..8224)
+     primer_bind     complement(8246..8265)
+     primer_bind     complement(8263..8280)
+     CDS             complement(8323..8763)
+                     /gene="""traJ; traJ"
+                     /note="Geneious type: cds"
+     misc_feature    complement(<8429..>8434)
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    8446..8465
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     complement(8446..8465)
+     misc_feature    complement(<8469..>8474)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    <8479..>8484
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(<8593..>8598)
+                     /note="Geneious type: concatenated sequence"
+     promoter        8648..8653
+     primer_bind     complement(8787..8806)
+     promoter        8935..8940
+     misc_feature    complement(<9139..>9144)
+                     /note="Geneious type: concatenated sequence"
+     rep_origin      complement(9164..9709)
+     primer_bind     complement(9296..9315)
+     misc_feature    9297..9316
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     complement(9297..9316)
+     promoter        complement(9825..9830)
+     misc_feature    complement(9841..10750)
+                     /note="Geneious type: concatenated sequence"
+     CDS             complement(9899..10636)
+                     /gene="""ermB; ermB"
+                     /note="Geneious type: cds"
+     misc_feature    complement(10050..10055)
+                     /note="Geneious type: -35"
+     misc_feature    10116..10121
+     misc_feature    10206..10225
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    10207..10226
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    10289..10294
+                     /note="Geneious type: -35"
+     misc_feature    10319..10338
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    10569..10574
+     promoter        complement(10692..10697)
+     promoter        complement(10719..10724)
+     misc_feature    10727..10745
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(10762..10767)
+     promoter        10842..10847
+     misc_feature    complement(10963..10968)
+     CDS             10982..11485
+                     /gene="""orf2; orf2"
+                     /note="Geneious type: cds"
+     promoter        11020..11025
+     promoter        complement(11160..11165)
+     promoter        11194..11199
+     misc_feature    complement(11197..11202)
+     promoter        complement(11232..11237)
+     promoter        complement(11313..11318)
+     misc_feature    complement(11454..11462)
+                     /note="Geneious type: -10"
+     misc_feature    complement(11493..11498)
+     misc_feature    complement(11502..11507)
+     misc_feature    11535..11540
+     CDS             complement(11576..12631)
+                     /gene="""repA; repA"
+                     /note="Geneious type: cds"
+     promoter        complement(11678..11683)
+     promoter        11680..11685
+     misc_feature    complement(11683..11688)
+     misc_feature    11822..11827
+                     /note="Geneious type: -35"
+     promoter        11893..11898
+     promoter        11989..11994
+     misc_feature    12006..>12014
+                     /note="Geneious type: primer"
+     misc_feature    12017..12022
+     promoter        complement(12050..12055)
+     promoter        complement(12058..12063)
+     promoter        12101..12106
+     misc_feature    12117..12122
+     misc_feature    12236..12241
+     promoter        complement(12239..12244)
+     misc_feature    12314..12319
+     misc_feature    12599..12604
+     promoter        complement(12617..12622)
+     promoter        12619..12624
+     misc_feature    complement(12645..12653)
+                     /note="Geneious type: -10"
+     promoter        complement(12698..12703)
+     promoter        complement(12725..12730)
+     misc_feature    12795..12822
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    12822..12851
+                     /note="Geneious type: primer_bind_reverse"
+     promoter        complement(12828..12833)
+     misc_feature    12893..12898
+                     /note="Geneious type: -35"
+     misc_feature    12903..12931
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    12925..12949
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    12977..12982
+                     /note="Geneious type: -35"
+     misc_feature    complement(12987..12992)
+                     /note="Geneious type: -35"
+     misc_feature    <13144..>13149
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(<13146..>13151)
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(13151..>13167)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    13152..13187
+                     /note="Geneious type: promoter prokaryotic"
+     misc_feature    <13152..>13187
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(<13152..>13332)
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(<13152..13326)
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    13152..>13167
+                     /note="Geneious type: promoter prokaryotic"
+     misc_feature    <13152..>13167
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(13154..13207)
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    13160..13165
+     misc_feature    <13168..>13187
+                     /note="Geneious type: promoter prokaryotic"
+     misc_feature    <13168..>13187
+                     /note="Geneious type: concatenated sequence"
+     primer_bind     13188..13230
+     misc_feature    13208..13324
+                     /note="Geneious type: motif"
+     primer_bind     13208..13241
+     promoter        complement(13251..13256)
+     misc_feature    complement(13298..13318)
+                     /note="Geneious type: attB2"
+     misc_feature    <13325..>13330
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     primer_bind     complement(<13325..13344)
+     misc_feature    13325..13347
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    complement(<13327..>13332)
+                     /note="Geneious type: Concatenated sequence"
+                     /note="Geneious type: concatenated sequence"
+     terminator      complement(13333..13374)
+                     /gene="""Cpa fdx terminator; Cpa fdx terminator"
+     misc_feature    13350..13374
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     complement(13351..13375)
+     misc_feature    complement(13380..>13623)
+                     /note="Geneious type: concatenated sequence"
+     misc_feature    complement(13380..17519)
+                     /note="Geneious type: concatenated sequence"
+     CDS             complement(13381..>13623)
+                     /note="Geneious type: cds"
+     CDS             complement(13381..17520)
+                     /note="Geneious type: cds"
+     promoter        complement(13524..13529)
+     promoter        complement(13536..13541)
+     promoter        13591..13596
+     primer_bind     complement(13598..13623)
+     misc_feature    13633..13638
+     promoter        complement(13636..13641)
+     promoter        complement(13656..13661)
+     misc_feature    complement(13688..13693)
+                     /note="Geneious type: -35"
+     promoter        13711..13716
+     misc_feature    13906..13911
+                     /note="Geneious type: -35"
+     misc_feature    complement(13910..13915)
+     misc_feature    13996..14001
+                     /note="Geneious type: -35"
+     promoter        complement(14015..14020)
+     misc_feature    complement(14201..14206)
+                     /note="Geneious type: -35"
+     misc_feature    complement(14217..14222)
+                     /note="Geneious type: -35"
+     misc_feature    14231..14255
+                     /note="Geneious type: primer_bind_reverse"
+     promoter        complement(14393..14398)
+     misc_feature    complement(14399..14404)
+                     /note="Geneious type: -35"
+     misc_feature    complement(14403..14408)
+     promoter        14481..14486
+     misc_feature    14525..14530
+     promoter        complement(14784..14789)
+     promoter        complement(14826..14831)
+     misc_feature    14956..14961
+     promoter        complement(15033..15038)
+     misc_feature    complement(15078..15083)
+     misc_feature    complement(15303..15308)
+                     /note="Geneious type: -35"
+     misc_feature    15627..15651
+                     /note="Geneious type: primer_bind_reverse"
+     misc_feature    15640..15645
+                     /note="Geneious type: -35"
+     promoter        complement(15696..15701)
+     promoter        15718..15723
+     promoter        complement(15792..15797)
+     misc_feature    complement(15955..15963)
+     promoter        complement(15955..15960)
+     promoter        complement(16023..16028)
+     misc_feature    complement(16045..16050)
+     promoter        complement(16071..16076)
+     misc_feature    16084..16089
+                     /note="Geneious type: -35"
+     promoter        complement(16302..16307)
+     misc_feature    complement(16393..16398)
+     misc_feature    complement(16652..16657)
+     promoter        16869..16874
+     primer_bind     complement(16874..16898)
+     misc_feature    16930..16935
+                     /note="Geneious type: -35"
+     promoter        complement(16942..16947)
+     primer_bind     complement(17480..17502)
+     misc_feature    17483..17507
+                     /note="Geneious type: primer_bind_reverse"
+     primer_bind     complement(17483..17502)
+ORIGIN      
+        1 cctgcaggat aaaaaaattg tagataaatt ttataaaata gttttatcta caattttttt
+       61 atcaggaaac agctatgacc gcggccgcag atagtcataa tagttccaga atagttcaat
+      121 ttagaaatta gactaaactt caaaatgttt gttaaatata taccaaacta gtatagatat
+      181 tttttaaata ctggacttaa acagtagtaa tttgcctaaa aaattttttc aatttttttt
+      241 aaaaaatcct tttcaagttg tacattgtta tggtaatatg taattgaaga agttatgtag
+      301 taatattgta aacgtttctt gattttttta catccatgta gtgcttaaaa aaccaaaata
+      361 tgtcacatgc aattgtatat ttcaaataac aatatttatt ttctcgttaa attcacaaat
+      421 aatttattaa taatatcaat aaccaagatt atacttaaat ggatgtttat tttttaacac
+      481 ttttatagta aatatattta ttttatgtag taaaaaggtt ataattataa ttgtatttat
+      541 tacaattaat taaaataaaa aatagggttt taggtaaaat taagttattt taagaagtaa
+      601 ttacaataaa aattgaagtt atttctttaa ggagggaatt attcatatga atttatttca
+      661 aactgtattc actggttcaa agcaagcttt agcagctgct gaaggcatag ttaagcaagc
+      721 tgttgacgag aagggtagag actataaagt agcatttcct gatactgaat attcattacc
+      781 agtaattttt gcagctacag gaaaaaagat aactaatgta ggagaattag aaggtgcatt
+      841 agatatagta agaagtttga tagttgagga ggaaatgctt gataagcttt taaattcagg
+      901 acttgcaaca gctgttgcag cagaaattat agaagctgca aagtatgttc tttccgatgc
+      961 tccttatgca gaaccatgtg taggatttat atctgaccca ataattcgtt ctcttggtgt
+     1021 accacttgtt accggagata taccaggtgt agcagttata ttaggagaat gtccagattc
+     1081 agaaaccgca gctaaaatta taaaggatta tcaatcaaaa ggtcttttaa catgcttagt
+     1141 tggaaaagta attgatcagg caatagaagg aaaagttaag atgggtcttg acctcagagt
+     1201 tattccactt ggatatgatg ttacatctgt aattcacgtt gtaactatag ctataagagc
+     1261 tgcacttata ttcggaggaa ttaagggtgg tcagttaaat gacatattga aatatacagc
+     1321 agaaagggta cctgcttttg taaatgcatt tggaccatta agtgaacttg tagtttcagc
+     1381 tggtgcagga gctatagcac ttggattccc tgtattaact gatcaggttg taccagaagt
+     1441 tcctacattg ttgttaactc aaaaagatta tgataaaatg gttaaaactt cattagaagc
+     1501 tagaaatata aagataaaga taactgagat cccaattcca gtttcctttg cagcagcatt
+     1561 tgaaggtgaa agaataagaa agaatgatat gcttgcagag tttggtggaa ataagactaa
+     1621 agcttgggaa ttagttatgt gtgcagatca gggagaagtt gaagatcaca agatagaagt
+     1681 tataggacca gatatagata ctatagataa ggctcctgga agaatgcctc ttggaatgct
+     1741 tattaaagta agtggaacaa atatgcagaa ggattttgag ccagtgcttg aaagaagact
+     1801 tcactacttc ttaaactata tagaaggagt aatgcatgtt ggtcagagaa atcttacttg
+     1861 ggtaagaata ggtaaggaag cttttgaaaa gggatttaga ttgaaacatt ttggtgaagt
+     1921 aatatatgct aaaatgttag atgaatttgg ttcagttgta gataaatgtg aagtaactat
+     1981 aataactgat ccaggtaagg ctgaagaatt ggaaggcaaa tatgctgtac caagatataa
+     2041 agaaagagat gcaagacttg aatcattagt tgatgaaaaa gttgatactt tctattcatg
+     2101 taatttgtgt caatcctttg cacctgcaca tgtatgtata gtaactcctg aaagacttgg
+     2161 actttgcggt gcagtttcat ggcttgatgc taaagctaca cttgaattaa atcctacagg
+     2221 accatgtcag gccgttccaa aagaaggcgt ggttgatgaa aatttaggta tttgggaaaa
+     2281 agtaaatgaa actgtttcaa aaatttctca aggtgctgta actagtgtta cattatacag
+     2341 tatattacaa gatccaatga cttcctgtgg atgttttgag tgtattacag gtataatgcc
+     2401 agaagcaaat ggtgttgtaa tggtaaacag agaatttggt gcaacaactc ctcttggaat
+     2461 gacatttggt gaacttgcat ctatgacagg tggtggagtt cagactccag gatttatggg
+     2521 acatggaaga caattcatag cttcaaagaa gtttatgaaa ggtgaaggcg gacttggcag
+     2581 aatagtttgg atgccaaaag aattaaaaga ctttgttgca gaaaaattaa ataagacagc
+     2641 aaaggaatta tataatatag ataattttgc agatatgatc tgtgatgaaa ctatagctac
+     2701 agaatctgaa gaagtagtaa aattcttgga agaaaaaggt catcctgcat taaagatgga
+     2761 tccaataatg tagcgtcgtg actgggaaaa ccctggcgtt acccaactta atcgccttgc
+     2821 agcacatccc cctttcgcca gctggcgtaa tagcgaagag gcccgcaccg atcgcccttc
+     2881 ccaacagttg cgcagcctga atggcgaatg gcgctagcat aaaaataaga agcctgcatt
+     2941 tgcaggcttc ttatttttat ggcgcgccgc cattattttt ttgaacaatt gacaattcat
+     3001 ttcttatttt ttattaagtg atagtcaaaa ggcataacag tgctgaatag aaagaaattt
+     3061 acagaaaaga aaattataga atttagtatg attaattata ctcatttatg aatgtttaat
+     3121 tgaatacaaa aaaaaatact tgttatgtat tcaattacgg gttaaaatat agacaagttg
+     3181 aaaaatttaa taaaaaaata agtcctcagc tcttatatat taagctacca acttagtata
+     3241 taagccaaaa cttaaatgtg ctaccaacac atcaagccgt tagagaactc tatctatagc
+     3301 aatatttcaa atgtaccgac atacaagaga aacattaact atatatattc aatttatgag
+     3361 attatcttaa cagatataaa tgtaaattgc aataagtaag atttagaagt ttatagcctt
+     3421 tgtgtattgg aagcagtacg caaaggcttt tttatttgat aaaaattaga agtatattta
+     3481 ttttttcata attaatttat gaaaatgaaa gggggtgagc aaagtgacag aggaaagcag
+     3541 tatcttatca aataacaagg tattagcaat atcattattg actttagcag taaacattat
+     3601 gacttttata gtgcttgtag ctaagtagta cgaaaggggg agctttaaaa agctccttgg
+     3661 aatacataga attcataaat taatttatga aaagaagggc gtatatgaaa acttgtaaaa
+     3721 attgcaaaga gtttattaaa gatactgaaa tatgcaaaat acattcgttg atgattcatg
+     3781 ataaaacagt agcaacctat tgcagtaaat acaatgagtc aagatgttta cataaaggga
+     3841 aagtccaatg tattaattgt tcaaagatga accgatatgg atggtgtgcc ataaaaatga
+     3901 gatgttttac agaggaagaa cagaaaaaag aacgtacatg cattaaatat tatgcaagga
+     3961 gctttaaaaa agctcatgta aagaagagta aaaagaaaaa ataatttatt tattaattta
+     4021 atattgagag tgccgacaca gtatgcacta aaaaatatat ctgtggtgta gtgagccgat
+     4081 acaaaaggat agtcactcgc attttcataa tacatcttat gttatgatta tgtgtcggtg
+     4141 ggacttcacg acgaaaaccc acaataaaaa aagagttcgg ggtagggtta agcatagttg
+     4201 aggcaactaa acaatcaagc taggatatgc agtagcagac cgtaaggtcg ttgtttaggt
+     4261 gtgttgtaat acatacgcta ttaagatgta aaaatacgga taccaatgaa gggaaaagta
+     4321 taatttttgg atgtagtttg tttgttcatc tatgggcaaa ctacgtccaa agccgtttcc
+     4381 aaatctgcta aaaagtatat cctttctaaa atcaaagtca agtatgaaat cataaataaa
+     4441 gtttaatttt gaagttatta tgatattatg tttttctatt aaaataaatt aagtatatag
+     4501 aatagtttaa taatagtata tacttaatgt gataagtgtc tgacagtgtc acagaaagga
+     4561 tgattgttat ggattataag cggccggcca gtgggcaagt tgaaaaattc acaaaaatgt
+     4621 ggtataatat ctttgttcat tagagcgata aacttgaatt tgagagggaa cttagatggt
+     4681 atttgaaaaa attgataaaa atagttggaa cagaaaagag tattttgacc actactttgc
+     4741 aagtgtacct tgtacctaca gcatgaccgt taaagtggat atcacacaaa taaaggaaaa
+     4801 gggaatgaaa ctatatcctg caatgcttta ttatattgca atgattgtaa accgccattc
+     4861 agagtttagg acggcaatca atcaagatgg tgaattgggg atatatgatg agatgatacc
+     4921 aagctataca atatttcaca atgatactga aacattttcc agcctttgga ctgagtgtaa
+     4981 gtctgacttt aaatcatttt tagcagatta tgaaagtgat acgcaacggt atggaaacaa
+     5041 tcatagaatg gaaggaaagc caaatgctcc ggaaaacatt tttaatgtat ctatgatacc
+     5101 gtggtcaacc ttcgatggct ttaatctgaa tttgcagaaa ggatatgatt atttgattcc
+     5161 tatttttact atggggaaat attataaaga agataacaaa attatacttc ctttggcaat
+     5221 tcaagttcat cacgcagtat gtgacggatt tcacatttgc cgttttgtaa acgaattgca
+     5281 ggaattgata aatagttaac ttcaggtttg tctgtaacta aaaacaagta tttaagcaaa
+     5341 aacatcgtag aaatacggtg ttttttgtta ccctaagttt aaactccttt ttgataatct
+     5401 catgaccaaa atcccttaac gtgagttttc gttccactga gcgtcagacc ccgtagaaaa
+     5461 gatcaaagga tcttcttgag atcctttttt tctgcgcgta atctgctgct tgcaaacaaa
+     5521 aaaaccaccg ctaccagcgg tggtttgttt gccggatcaa gagctaccaa ctctttttcc
+     5581 gaaggtaact ggcttcagca gagcgcagat accaaatact gttcttctag tgtagccgta
+     5641 gttaggccac cacttcaaga actctgtagc accgcctaca tacctcgctc tgctaatcct
+     5701 gttaccagtg gctgctgcca gtggcgataa gtcgtgtctt accgggttgg actcaagacg
+     5761 atagttaccg gataaggcgc agcggtcggg ctgaacgggg ggttcgtgca cacagcccag
+     5821 cttggagcga acgacctaca ccgaactgag atacctacag cgtgagctat gagaaagcgc
+     5881 cacgcttccc gaagggagaa aggcggacag gtatccggta agcggcaggg tcggaacagg
+     5941 agagcgcacg agggagcttc cagggggaaa cgcctggtat ctttatagtc ctgtcgggtt
+     6001 tcgccacctc tgacttgagc gtcgattttt gtgatgctcg tcaggggggc ggagcctatg
+     6061 gaaaaacgcc agcaacgcgg cctttttacg gttcctggcc ttttgctggc cttttgctca
+     6121 catgttcttt cctgcgttat cccctgattc tgtggataac cgtattaccg cctttgagtg
+     6181 agctgatacc gctcgccgca gccgaacgac cgagcgcagc gagtcagtga gcgaggaagc
+     6241 ggaagagcgc ccaatacgca gggccccctg cttcggggtc attatagcga ttttttcggt
+     6301 atatccatcc tttttcgcac gatatacagg attttgccaa agggttcgtg tagactttcc
+     6361 ttggtgtatc caacggcgtc agccgggcag gataggtgaa gtaggcccac ccgcgagcgg
+     6421 gtgttccttc ttcactgtcc cttattcgca cctggcggtg ctcaacggga atcctgctct
+     6481 gcgaggctgg ccggctaccg ccggcgtaac agatgagggc aagcggatgg ctgatgaaac
+     6541 caagccaacc aggaagggca gcccacctat caaggtgtac tgccttccag acgaacgaag
+     6601 agcgattgag gaaaaggcgg cggcggccgg catgagcctg tcggcctacc tgctggccgt
+     6661 cggccagggc tacaaaatca cgggcgtcgt ggactatgag cacgtccgcg agctggcccg
+     6721 catcaatggc gacctgggcc gcctgggcgg cctgctgaaa ctctggctca ccgacgaccc
+     6781 gcgcacggcg cggttcggtg atgccacgat cctcgccctg ctggcgaaga tcgaagagaa
+     6841 gcaggacgag cttggcaagg tcatgatggg cgtggtccgc ccgagggcag agccatgact
+     6901 tttttagccg ctaaaacggc cggggggtgc gcgtgattgc caagcacgtc cccatgcgct
+     6961 ccatcaagaa gagcgacttc gcggagctgg tgaagtacat caccgacgag caaggcaaga
+     7021 ccgatcgggc ccaaaaaaaa aaaaaaaaaa aaatgtgttc ctcctttatt taaaattctt
+     7081 tctttattat gggaattcta caatgttcat tataacctat caatgataga agctcaatac
+     7141 ttaatagcaa acttttaaga tcgatatcga ccggccgcca tgggagctcc gatcaggatc
+     7201 cgatcagtcg acttaaatat attgaagagg aggatattaa atgatgtcta gacttgataa
+     7261 aagtaaagtt atcaatagtg cattggaatt actaaatgaa gttggaatag aaggactaac
+     7321 tacaagaaag ttagctcaga aacttggagt agaacaacct acgttgtatt ggcatgtgaa
+     7381 gaataagaga gctttacttg acgccttagc tattgaaatg ttagatagac atcacactca
+     7441 cttttgtcct ttagaaggtg aatcatggca agattttctt aggaataacg ctaaatcttt
+     7501 tcgttgtgct ctattatcac atagagatgg ggctaaagta catttaggaa ctagaccaac
+     7561 tgaaaaacaa tatgaaacat tagaaaatca attagcattc ttatgtcaac agggttttag
+     7621 tttagaaaat gccttatacg cactaagtgc tgtaggacat tttactttag gttgcgtatt
+     7681 ggaggatcaa gaacatcaag ttgcaaaaga ggaaagagaa acaccaacaa cagattcaat
+     7741 gcctccattg ttaagacaag caatagagtt atttgatcat caaggcgcag aaccagcatt
+     7801 tctttttgga cttgaattga taatctgtgg tttagagaaa caacttaaat gtgaatctgg
+     7861 tagctaacaa gaattccacg atctcagcta tagcatcgac atatagaata aaaaggggtc
+     7921 gtctcaaaat aaaattttga gacacccctt tttattttat tcaggattct tttttatctt
+     7981 atttataatt taagaaaagc aaaggtgttt aaaaatttat tttttaaaca cctttgcttt
+     8041 tcttaataat ttaattctct taaagctact tcttatttat atttttctaa gcttggcgcc
+     8101 gcggccgcgg tcatagctgt ttcctgataa aaaaattgta gataaaacta ttttataaaa
+     8161 tttatctaca atttttttat cctgcagggg gcccgatcgg tcttgccttg ctcgtcggtg
+     8221 atgtacttca ccagctccgc gaagtcgctc ttcttgatgg agcgcatggg gacgtgcttg
+     8281 gcaatcacgc gcaccccccg gccgttttag cggctaaaaa agtcatggct ctgccctcgg
+     8341 gcggaccacg cccatcatga ccttgccaag ctcgtcctgc ttctcttcga tcttcgccag
+     8401 cagggcgagg atcgtggcat caccgaaccg cgccgtgcgc gggtcgtcgg tgagccagag
+     8461 tttcagcagg ccgcccaggc ggcccaggtc gccattgatg cgggccagct cgcggacgtg
+     8521 ctcatagtcc acgacgcccg tgattttgta gccctggccg acggccagca ggtaggccga
+     8581 caggctcatg ccggccgccg ccgccttttc ctcaatcgct cttcgttcgt ctggaaggca
+     8641 gtacaccttg ataggtgggc tgcccttcct ggttggcttg gtttcatcag ccatccgctt
+     8701 gccctcatct gttacgccgg cggtagccgg ccagcctcgc agagcaggat tcccgttgag
+     8761 caccgccagg tgcgaataag ggacagtgaa gaaggaacac ccgctcgcgg gtgggcctac
+     8821 ttcacctatc ctgcccggct gacgccgttg gatacaccaa ggaaagtcta cacgaaccct
+     8881 ttggcaaaat cctgtatatc gtgcgaaaaa ggatggatat accgaaaaaa tcgctataat
+     8941 gaccccgaag cagggggccc tgcgtattgg gcgctcttcc gcttcctcgc tcactgactc
+     9001 gctgcgctcg gtcgttcggc tgcggcgagc ggtatcagct cactcaaagg cggtaatacg
+     9061 gttatccaca gaatcagggg ataacgcagg aaagaacatg tgagcaaaag gccagcaaaa
+     9121 ggccaggaac cgtaaaaagg ccgcgttgct ggcgtttttc cataggctcc gcccccctga
+     9181 cgagcatcac aaaaatcgac gctcaagtca gaggtggcga aacccgacag gactataaag
+     9241 ataccaggcg tttccccctg gaagctccct cgtgcgctct cctgttccga ccctgccgct
+     9301 taccggatac ctgtccgcct ttctcccttc gggaagcgtg gcgctttctc atagctcacg
+     9361 ctgtaggtat ctcagttcgg tgtaggtcgt tcgctccaag ctgggctgtg tgcacgaacc
+     9421 ccccgttcag cccgaccgct gcgccttatc cggtaactat cgtcttgagt ccaacccggt
+     9481 aagacacgac ttatcgccac tggcagcagc cactggtaac aggattagca gagcgaggta
+     9541 tgtaggcggt gctacagagt tcttgaagtg gtggcctaac tacggctaca ctagaagaac
+     9601 agtatttggt atctgcgctc tgctgaagcc agttaccttc ggaaaaagag ttggtagctc
+     9661 ttgatccggc aaacaaacca ccgctggtag cggtggtttt tttgtttgca agcagcagat
+     9721 tacgcgcaga aaaaaaggat ctcaagaaga tcctttgatc ttttctacgg ggtctgacgc
+     9781 tcagtggaac gaaaactcac gttaagggat tttggtcatg agattatcaa aaaggagttt
+     9841 aaacacattc cctttagtaa cgtgtaactt tccaaattta caaaagcgac tcatagaatt
+     9901 atttcctccc gttaaataat agataactat taaaaataga caatacttgc tcataagtaa
+     9961 cggtacttaa attgtttact ttggcgtgtt tcattgcttg atgaaactga tttttagtaa
+    10021 acagttgacg atattctcga ttgacccatt ttgaaacaaa gtacgtatat agcttccaat
+    10081 atttatctgg aacatctgtg gtatggcggg taagttttat taagacactg tttacttttg
+    10141 gtttaggatg aaagcattcc gctggcagct taagcaattg ctgaatcgag acttgagtgt
+    10201 gcaagagcaa ccctagtgtt cggtgaatat ccaaggtacg cttgtagaat ccttcttcaa
+    10261 caatcagata gatgtcagac gcatggcttt caaaaaccac ttttttaata atttgtgtgc
+    10321 ttaaatggta aggaatactc ccaacaattt tatacctctg tttgttaggg aattgaaact
+    10381 gtagaatatc ttggtgaatt aaagtgacac gagtattcag ttttaatttt tctgacgata
+    10441 agttgaatag atgactgtct aattcaatag acgttacctg tttacttatt ttagccagtt
+    10501 tcgtcgttaa atgcccttta cctgttccaa tttcgtaaac ggtatcggtt tcttttaaat
+    10561 tcaattgttt tattatttgg ttgagtactt tttcactcgt taaaaagttt tgagaatatt
+    10621 ttatattttt gttcatgtaa tcactccttc ttaattacaa atttttagca tctaatttaa
+    10681 cttcaattcc tattatacaa aattttaaga tactgcacta tcaacacact cttaagtttg
+    10741 cttcggccgg ccgaatttgt aaataaacca caaactatta aagttaaaca taaaaataac
+    10801 atcgaaaacc tttttttcat aaatttttat ccccctaatt tttgatagtt tgctataaaa
+    10861 tttaaacaaa cacttccttt ctttatattt atgtaaaatt ttgtctacat taaaaatatt
+    10921 ctacatattc ccgttatgtc ctttttatgg taacataaat ttaataaaaa ggaggccaat
+    10981 aatgaaattt aaaaagataa tcctatatat ttttatagtt ataattcctt taagtataac
+    11041 tggttgttcg attaatcaaa ttacaacacc agttcccaaa aattatttag ataatatagt
+    11101 aaaaaaatat gttggaccag aaggagtaca accttctttt ggtggtaaaa ctttttatga
+    11161 ttataaaata atagattcag aaaaaagtaa aaatataata aaaatatatt tatactatat
+    11221 aggtcaagaa tattatattg aagatgataa actagttgaa ggaacaggtt cagcttcttt
+    11281 tgcaactgtt acaattaaaa aagaaaataa taattataaa ttagtaagtt atgaagttcc
+    11341 aaaatcaccg gcgcaagaag atactgttaa aatatttcct aagtctgtta gaaaaaaggc
+    11401 aattcatgca aatactcctt ctttaaaaaa tattgaaaaa gaggctgaaa cttattttaa
+    11461 aaaagaacta aaaactaaaa attaaaaaaa ttaataaaga aaataaaaaa caacaaccta
+    11521 ataggctgtt gttttttatt tttttaatca tatatatata aagtatagtt acactttaat
+    11581 ctatttctat ttcatctatt aaatcttgat ttaattcttc tttttcatct tccgtaagtt
+    11641 cccttattct agttttttca tattgttttt tgcaccaatt ataataaact atatagacat
+    11701 atttaatttc atctttcttt ttataaacat caagttttcc ttgcttgtac aatttgtgtg
+    11761 catctttaaa aaatccacta aaaactaata cctgcttgcc ttttaatgct ttataaaaaa
+    11821 tttcaaatac tggcctcgat attaaataat cagtgtcttt agctgaatat ttcgcaagtt
+    11881 cgtaaacctc tttataatca ttaatttttg cttttctaac atcaacttga gttatagaat
+    11941 catccttagt agcaaacttc cataattcca accatctttc tcgatttata taataatttt
+    12001 tatctgtaaa ataactttta ttaactgcaa taactacatg aaaatgagga ttataagtat
+    12061 caaaattagg ttctaaatca ccaatttcaa gtcctttttt ttgataataa tcttttttta
+    12121 ttttccataa atcctttgtt atgtattttt ccttttggta agttacttct aattttctta
+    12181 tataaccttt agttatatcc ttaacttcct tacgctccat taatttttta aaagatttat
+    12241 tatattgttt aatagaataa ttaagatcat aactttttac atttggagtt gtaagagtta
+    12301 aaaatataaa ctctttattt tcttcttttc ttaaatgctc cataagaata gatatttcta
+    12361 aactatcctt acaagcaagt cgccaactac acattggaca aaatctatta ccgcaaaaat
+    12421 tacctttatg taatttaaaa tgttctaagt ctgcatcact caacataaac aaataatctc
+    12481 cacaagtgga agtcctttca atatttttct tagtagttaa aggtgctatg tatgacgtaa
+    12541 atctaggatt ttttcttttt ttatcagtac atttctctaa agcagttttt acctcttgtt
+    12601 tattttcatt tttttgatta taattagtca tataacgaaa tagaatttta aaaggaaaaa
+    12661 tttttcctta ttaaaaaact tgctcctttc ctggtaaatt atacttttaa actcgacact
+    12721 taaaattata aattactagg tagaaaaatg caagtttttt gttttttaac cattgatttt
+    12781 actagcttaa ttgacaatga agtcaaatcg aaaatagtta cgtatagtat caagaatgaa
+    12841 gaaactcctc cggagtttta aaaaaaaggg gctaaaaagc ccctttttat atttcaaaaa
+    12901 caaaagtgaa cagaagattc tataggtatc gagatagcca atagaaaaaa tatattaaat
+    12961 taaactacca atcaatttca aaaccatttg aactcatttt aggctctttt aacgcatttt
+    13021 ctttttcatt agcacatttt atatacacgt cttcattaaa tgccttagaa tccattacag
+    13081 acttatccag ggtgctatct tcgtcatagt tacctgttga accattagct aaggattcag
+    13141 aacggcgcgc cttgacaaat ttatttttta aagttaaaat taagttggta attattttta
+    13201 attatgtgtt ttagagctag aaatagcaag ttaaaataag gctagtccgt tatcaacttg
+    13261 aaaaagtggc accgagtcgg tgcttttttt ctagacccag ctttcttgta caaagttggc
+    13321 attaggcgcg ccataaaaat aagaagcctg caaatgcagg cttcttattt ttatgctagc
+    13381 ttatactttt cttttctttt ttggatctgc tcttgaatca ccacctaact gacttaaatc
+    13441 tattcttgtt tcataaagtc cagttatact ctgatgaata agagtagcat caagtacttc
+    13501 ttttgttgaa gtatatcttt ttctatcaat tgtagtatca aaatatttaa aagctgctgg
+    13561 tgctcctaaa tttgtaagag taaaaagatg tataatattt tcagcttgtt ctcttatagg
+    13621 tttatctcta tgtttattat atgcactaag aactttatca agattagcat ctgcaagtat
+    13681 tactcttttt gaaaattcag aaatttgttc tataatttca tctaaataat gtttatgctg
+    13741 ttcaacaaaa agctgttttt gttcattatc ttctggagat cctttaagtt tttcataatg
+    13801 actagcaaga taaagaaaat ttacatattt actaggaagt gctaattcat tacccttttg
+    13861 taattctcca gctgatgcaa gcattctttt tcttccattt tcaagttcaa ataaagaata
+    13921 ttttggaagt ttaataatta aatctttttt aacttcttta tatccttttg cttcaagaaa
+    13981 atctatagga ttcttttcaa aagaacttct ttccattata gtaataccaa gtaattcttt
+    14041 aacacttttt aattttttac tttttccttt ttctacttta gcaactacaa gaacactata
+    14101 tgctactgtt ggtgaatcaa aacctccata ttttttaggg tcccaatctt tctttcttgc
+    14161 tataagttta tcagaatttc tttttggaag tatactttct tttgaaaaac ctcctgtttg
+    14221 aacttcagtt ttctttacaa tatttacttg aggcatacta agaacttttc ttactgtagc
+    14281 aaaatctcta cctttatccc atactatttc acctgtttct ccattagttt caattaatgg
+    14341 tctttttctt atttctccat ttgcaagtgt tatttcagtt ttaaagaaat tcattatatt
+    14401 tgaataaaag aaatatttag cagttgcttt tccaatttct tgttcagatt ttgcaatcat
+    14461 ttttctaaca tcatatactt tataatcacc atatacaaat tcagattcta atttaggata
+    14521 tttctttatt aaagctgttc caactactgc atttaaataa gcatcatgtg catgatgata
+    14581 attattaatt tctctaactt tataaaactg aaaatctttt ctaaaatcac ttacaagttt
+    14641 tgatttaaga gtaataactt ttacttctct tataagttta tcattttcat catattttgt
+    14701 attcattctt gaatctaaaa tttgagcaac atgttttgtt atttgtctag tttctacaag
+    14761 ctgtcttttt ataaatccag ctttatcaag ttcagaaaga cctcctcttt ctgctttagt
+    14821 aagattatca aattttcttt gtgttataag ttttgcatta agaagctgtc tccaataatt
+    14881 tttcattttc tttactactt cttcagatgg aacattatca ctttttcctc tatttttatc
+    14941 acttctagtt aatactttat tatctataga atcatcttta agaaaacttt gaggaactat
+    15001 agcatctaca tcataatctg aaagtctatt aatatcaagt tcttgatcaa catacatatc
+    15061 tcttccattc tgtaaataat aaagataaag tttttcattc tgaagttgtg tattttctac
+    15121 aggatgttct tttaatattt gagaaccaag ttctttaatt ccttcttcta ttcttttcat
+    15181 tctttctcta ctatttttct gacccttctg tgtagtttga ttttctcttg ccatttctat
+    15241 aactatattt tctggtttat gtcttcccat aacttttact aattcatcaa ctacttttac
+    15301 agtttgaaga atacctttct ttatagcagg tgatccagct aaatttgcaa tatgttcatg
+    15361 aagtgaatca ccctgtccag atacctgtgc tttttgtata tcttctttaa aagtaagaga
+    15421 atcatcatga ataagttgca taaaatttct attagcaaat ccatcacttt taagaaaatc
+    15481 taatattgtt ttacctgact gtttatctct aattccatta ataagttttc tactaagtct
+    15541 accccatcca gtatatcttc ttctttttaa ttgtttcata actttatcat caaaaagatg
+    15601 tgcataagtt ttaagtcttt cttctatcat ttctctatct tcaaaaagtg ttaaagtaag
+    15661 tacaatatct tctaatatat cttcattttc ttcattatca agaaaatctt tatcttttat
+    15721 aattttaaga agatcatgat aagtacctaa tgatgcatta aatctatctt caactccaga
+    15781 tatttctaca ctatcaaaac attctatttt cttaaaataa tcttctttta attgtttaac
+    15841 tgttactttt ctattagttt taaaaagtaa atctactata gcttttttct gttcaccact
+    15901 taaaaatgct ggttttctca ttccttcagt aacatatttt acttttgtta attcattata
+    15961 aacagtaaaa tattcataaa gaagtgaatg ttttggtaaa actttttcat taggaagatt
+    16021 tttatcaaaa tttgtcattc tttcaataaa agattgagca cttgctcctt tatcaactac
+    16081 ttcttcaaaa ttccaaggtg taatagtttc ttcagatttt ctagtcatcc aagcaaatct
+    16141 actattacct cttgctaatg gtcctacata ataaggtatt ctaaatgtaa gaattttttc
+    16201 tattttttct ctattatctt ttaaaaatgg ataaaaatct tcttgtcttc taagtattgc
+    16261 atgaagttca cctaaatgta tttgatgagg tattgatcca ttatcaaaag ttctctgttt
+    16321 tctaagtaaa tcttctctat taagttttac aagtaattct tctgttccat ccattttttc
+    16381 taaaataggt ttaataaatt tataaaattc ttcttgagaa gcacctccat ctatataacc
+    16441 tgcatatcca tttttactct gatcgaaaaa tatttcttta tatttttctg gaagctgttg
+    16501 tctaacaaga gctttaagta aagttaaatc ttgatgatgt tcatcatatc tttttatcat
+    16561 tgaagcagaa agaggtgctt ttgttatttc agtatttact ctaagaatat ctgaaagaag
+    16621 aattgcatca gaaagatttt tagctgctaa aaataaatct gcatattgat ctccaatctg
+    16681 tgcaagtaaa ttatctaaat catcatcata agtatcttta gaaagttgaa gtttagcatc
+    16741 ttctgcaaga tcaaaatttg atttaaaatt tggtgtaaga ccaagagata aagcaataag
+    16801 attaccaaaa agtccatttt tcttttctcc aggtaactgt gcaataagat tttctaatct
+    16861 tctacttttt gataatctag cactaagtat agcttttgca tctactcctg atgcattaat
+    16921 tggattttct tcaaaaagtt gattatatgt ctgaactaat tgtataaaaa gtttatctac
+    16981 atcagaatta tcaggattta aatcaccttc tataagaaaa tgtcctctaa atttaatcat
+    17041 gtgagcaagt gcaagatata taagtcttaa atcagcttta tcagtactat ctactaattt
+    17101 ctttctaaga tgataaattg ttggatattt ttcatgatat gcaacttcat ctacaatatt
+    17161 tccaaatata ggatgtcttt catgtttttt atcttcttca actaaaaatg attcttcaag
+    17221 tctatgaaag aaactatcat ctacttttgc catttcatta ctaaaaattt cttgtaaata
+    17281 acatattcta ttttttcttc ttgtatatct tcttctagca gttcttttaa gtcttgtagc
+    17341 ttctgctgtt tcacctgaat caaaaagtaa tgctccaatt aaatttttct ttatagaatg
+    17401 tctatctgta tttccaagta ctttaaattt tttagaaggt actttatatt catctgttat
+    17461 tactgcccat cctacactat ttgttcctat agcaagacca atactatatt ttttatccat
+    17521 aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa
+    17581 aaaaaaaaaa aaaaa
+//

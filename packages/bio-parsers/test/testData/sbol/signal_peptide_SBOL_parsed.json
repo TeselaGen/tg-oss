@@ -1,0 +1,34 @@
+{
+  "rdf:RDF": {
+    "_xmlns": "http://sbols.org/v1#",
+    "_xmlns:rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "_xmlns:rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "_xmlns_so": "http://purl.obolibrary.org/obo/",
+    "DnaComponent": [
+      {
+        "_rdf:about": "http://j5.jbei.org/dc#97A98D05-96EF-489F-B338-0B30B1AB59BC",
+        "displayId": "signal_pep",
+        "dnaSequence": {
+          "DnaSequence": {
+            "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
+            "nucleotides": "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
+          }
+        },
+        "annotation": {
+          "SequenceAnnotation": [
+            {
+              "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
+              "bioStart": 1,
+              "bioEnd": 63,
+              "strand": "+",
+              "subComponent": {
+                "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
+                "displayId": "signal_peptide"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

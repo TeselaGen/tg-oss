@@ -1,0 +1,287 @@
+LOCUS       pDual_Gibson_lin._Backbone        5508 bp    DNA     linear   UNA 11-JUL-2022
+DEFINITION  VB220330-1203dms.
+ACCESSION   urn.local...1u-f1nu6rx
+VERSION     urn.local...1u-f1nu6rx
+KEYWORDS    .
+SOURCE      
+  ORGANISM  .
+FEATURES             Location/Qualifiers
+     source          join(4217..>5508,<1..4216)
+                     /label="source"
+     misc_feature    <1..5
+                     /note="/application_notes="
+                     /note="/official_designation={RE site}"
+                     /note="/uuid=e9cd34c1414443f587002f20408de72b"
+                     /label="{RE site}"
+     overhang        1..4
+                     /label="SalI overhang"
+     polyA_signal    48..269
+                     /note="/application_notes=Allows transcription termination
+                     and polyadenylation of mRNA transcribed by Pol II RNA
+                     polymerase."
+                     /note="/description=Simian virus 40 late polyadenylation
+                     signal"
+                     /note="/official_designation=SV40 late pA"
+                     /note="/uuid=d23bf533e0924dfcb932fc3ddd77e791"
+                     /label="SV40 late pA"
+     promoter        273..860
+                     /note="/application_notes=Strong promoter; may have
+                     variable strength in some cell types."
+                     /note="/description=Human cytomegalovirus immediate early
+                     enhancer/promoter"
+                     /note="/full_name=Human cytomegalovirus immediate early
+                     promoter"
+                     /note="/official_designation=CMV"
+                     /note="/uuid=5257af780b9a4261b6ff271ec041eff9"
+                     /label="CMV promoter"
+     misc_feature    892..1917
+                     /note="/application_notes=Allows cells to be resistant to
+                     hygromycin B."
+                     /note="/description=Hygromycin resistance gene"
+                     /note="/full_name=Hygromycin resistance gene"
+                     /note="/official_designation=Hygro"
+                     /note="/uuid=9135dd0aa64645f3aa3c381325794022"
+                     /label="Hygro"
+     polyA_signal    1961..2185
+                     /note="/application_notes=Allows transcription termination
+                     and polyadenylation of mRNA transcribed by Pol II RNA
+                     polymerase."
+                     /note="/description=Bovine growth hormone polyadenylation
+                     signal"
+                     /note="/full_name=Bovine growth hormone polyadenylation"
+                     /note="/official_designation=BGH pA"
+                     /note="/uuid=4dab41530ef84813b9bdcb81afeec302"
+                     /label="BGH pA"
+     rep_origin      complement(2381..2969)
+                     /note="/application_notes=Facilitates plasmid replication
+                     in E. coli; regulates high-copy plasmid number (500-700)."
+                     /note="/description=pUC origin of replication"
+                     /note="/full_name=pUC origin of replication"
+                     /note="/official_designation=pUC ori"
+                     /note="/uuid=41c627938a364ebfa136b55444385c5b"
+                     /label="pUC ori"
+     CDS             join(complement(3932..4000),complement(3140..3931))
+                     /codon_start=1
+                     /gene="<i>bla</i>"
+                     /note="confers resistance to ampicillin, carbenicillin,
+                     and related antibiotics"
+                     /product="ß-lactamase"
+                     /transl_table=1
+                     /X-Transferred_Translation="MSIQHFRVALIPFFAAFCLPVFAHPETLVK
+                     VKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRIDAGQEQ
+                     LGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKEL
+                     TAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPVAMATTLRKLLTGELLTLASRQQ
+                     LIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTT
+                     GSQATMDERNRQIAEIGASLIKHW*"
+                     /X-Transferred_From="pcDNA3.4-"
+                     /X-Transferred_Similarity="100.00%"
+                     /X-Primary_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (pcDNA3.4-)"
+                     /X-Alternative_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (pcDNA3.4-)"
+                     /X-Alternative_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (pcDNA™3.4-TOPO® (digested
+                     by XbaI, EcoRV) Fragment 2)"
+                     /note="Derived using Geneious Prime 2021.2.2 'Annotate
+                     from Database' based on nucleotide similarity"
+                     /Transferred_From="hygro single ORF vector with mCherry
+                     adapted (orig. Kozak removed)"
+                     /Transferred_Similarity="100.00%"
+                     /Primary_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (<a
+                     href=""urn:local:.:ee-emusmnl"">hygro single ORF vector
+                     with mCherry adapted (orig. Kozak removed)</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (<a
+                     href=""urn:local:.:28-ennw7l6"">VB220331-1062gfj.</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (<a
+                     href=""urn:local:.:nw-emuu3sl"">hygro single ORF vector
+                     Dummy</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (<a
+                     href=""urn:local:.:n8-emuu29z"">purosingle ORF vector
+                     Dummy</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (<a
+                     href=""urn:local:.:ef-emusmnl"">purosingle ORF vector with
+                     eGFP adapted (orig. Kozak removed)</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (<a
+                     href=""urn:local:.:r9-emuunei"">Dual ORF vector
+                     Dummy</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0,
+                     Adjusted-Interval-1:0/0; AmpR (<a
+                     href=""urn:local:.:ed-emusmnl"">Dual ORF vector with adapt
+                     mCherry&eGFP (orig. Kozak removed)</a>)"
+                     /label="AmpR"
+     misc_feature    complement(3140..4000)
+                     /note="/application_notes=Allows E. coli to be resistant
+                     to ampiciIIin."
+                     /note="/description=AmpiciIIin resistance gene"
+                     /note="/full_name=Ampicillin resistance gene"
+                     /note="/official_designation=Ampicillin"
+                     /note="/uuid=0bc7d58885794858b29e98fe171ff1d5"
+                     /label="AmpiciIIin"
+     enhancer        4238..4617
+                     /note="human cytomegalovirus immediate early enhancer"
+                     /X-Transferred_From="pcDNA3.4-"
+                     /X-Transferred_Similarity="100.00%"
+                     /X-Primary_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (pcDNA3.4-)"
+                     /X-Alternative_Match="100.00%; Adjusted-Interval-0:0/0;
+                     CMV enhancer (pcDNA3.4-)"
+                     /X-Alternative_Match="100.00%; Adjusted-Interval-0:0/0;
+                     CMV enhancer (pcDNA™3.4-TOPO® (digested by XbaI, EcoRV)
+                     Fragment 2)"
+                     /note="Derived using Geneious Prime 2021.2.2 'Annotate
+                     from Database' based on nucleotide similarity"
+                     /Transferred_From="hygro single ORF vector with mCherry
+                     adapted (orig. Kozak removed)"
+                     /Transferred_Similarity="100.00%"
+                     /Primary_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a href=""urn:local:.:ee-emusmnl"">hygro single
+                     ORF vector with mCherry adapted (orig. Kozak
+                     removed)</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a href=""urn:local:.:ee-emusmnl"">hygro single
+                     ORF vector with mCherry adapted (orig. Kozak
+                     removed)</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a
+                     href=""urn:local:.:28-ennw7l6"">VB220331-1062gfj.</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a
+                     href=""urn:local:.:28-ennw7l6"">VB220331-1062gfj.</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a href=""urn:local:.:nw-emuu3sl"">hygro single
+                     ORF vector Dummy</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a href=""urn:local:.:nw-emuu3sl"">hygro single
+                     ORF vector Dummy</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a href=""urn:local:.:n8-emuu29z"">purosingle
+                     ORF vector Dummy</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a href=""urn:local:.:n8-emuu29z"">purosingle
+                     ORF vector Dummy</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a href=""urn:local:.:ef-emusmnl"">purosingle
+                     ORF vector with eGFP adapted (orig. Kozak removed)</a>)"
+                     /Alternative_Match="100.00%; Adjusted-Interval-0:0/0; CMV
+                     enhancer (<a href=""urn:local:.:ef-emusmnl"">purosingle
+                     ORF vector with eGFP adapted (orig. Kozak removed)</a>)"
+                     /label="CMV enhancer"
+     promoter        4238..5479
+                     /note="/application_notes=Strong promoter; may have
+                     variable strength in some cell types; presence of the
+                     beta-globin intron facilitates the nuclear export of mRNA
+                     by splicing and is predicted to enhance gene expression in
+                     eukaryotes."
+                     /note="/description=Human cytomegalovirus immediate early
+                     enhancer/promoter fused with the splicing signal from the
+                     human beta-globin intron 2"
+                     /note="/official_designation=CMV+intron"
+                     /note="/uuid=42a06359202d413c9dac993e9f33a93d"
+                     /label="CMV+intron"
+     misc_feature    5504..>5508
+                     /note="/application_notes="
+                     /note="/official_designation={mCherry adapt. ext.}"
+                     /note="/uuid=ecdf6c26ae1a4cd6bf0b63e46115dbe0"
+                     /label="{mCherry adapt. ext.}"
+     overhang        complement(5505..5508)
+                     /label="AgeI overhang"
+ORIGIN      
+        1 tcgactagca actttattat acatagttga tggccggccg cttcgagcag acatgataag
+       61 atacattgat gagtttggac aaaccacaac tagaatgcag tgaaaaaaat gctttatttg
+      121 tgaaatttgt gatgctattg ctttatttgt aaccattata agctgcaata aacaagttaa
+      181 caacaacaat tgcattcatt ttatgtttca ggttcagggg gaggtgtggg aggtttttta
+      241 aagcaagtaa aacctctaca aatgtggtac gcgttgacat tgattattga ctagttatta
+      301 atagtaatca attacggggt cattagttca tagcccatat atggagttcc gcgttacata
+      361 acttacggta aatggcccgc ctggctgacc gcccaacgac ccccgcccat tgacgtcaat
+      421 aatgacgtat gttcccatag taacgccaat agggactttc cattgacgtc aatgggtgga
+      481 gtatttacgg taaactgccc acttggcagt acatcaagtg tatcatatgc caagtacgcc
+      541 ccctattgac gtcaatgacg gtaaatggcc cgcctggcat tatgcccagt acatgacctt
+      601 atgggacttt cctacttggc agtacatcta cgtattagtc atcgctatta ccatggtgat
+      661 gcggttttgg cagtacatca atgggcgtgg atagcggttt gactcacggg gatttccaag
+      721 tctccacccc attgacgtca atgggagttt gttttggcac caaaatcaac gggactttcc
+      781 aaaatgtcgt aacaactccg ccccattgac gcaaatgggc ggtaggcgtg tacggtggga
+      841 ggtctatata agcagagctc tctggctaac tagagaaccc actgcgccac catgaaaaag
+      901 cctgaactca ccgcgacgtc tgtcgagaag tttctgatcg aaaagttcga cagcgtctcc
+      961 gacctgatgc agctctcgga gggcgaagaa tctcgtgctt tcagcttcga tgtaggaggg
+     1021 cgtggatatg tcctgcgggt aaatagctgc gccgatggtt tctacaaaga tcgttatgtt
+     1081 tatcggcact ttgcatcggc cgcgctcccg attccggaag tgcttgacat tggggaattt
+     1141 agcgagagcc tgacctattg catctcccgc cgtgcacagg gtgtcacgtt gcaagacctg
+     1201 cctgaaaccg aactgcccgc tgttctgcag ccggtcgcgg aggccatgga tgcgatcgct
+     1261 gcggccgatc ttagccagac gagcgggttc ggcccattcg gaccgcaagg aatcggtcaa
+     1321 tacactacat ggcgtgattt catatgcgcg attgctgatc cccatgtgta tcactggcaa
+     1381 actgtgatgg acgacaccgt cagtgcgtcc gtcgcgcagg ctctcgatga gctgatgctt
+     1441 tgggccgagg actgccccga agtccggcac ctcgtgcacg cggatttcgg ctccaacaat
+     1501 gtcctgacgg acaatggccg cataacagcg gtcattgact ggagcgaggc gatgttcggg
+     1561 gattcccaat acgaggtcgc caacatcttc ttctggaggc cgtggttggc ttgtatggag
+     1621 cagcagacgc gctacttcga gcggaggcat ccggagcttg caggatcgcc gcggctccgg
+     1681 gcgtatatgc tccgcattgg tcttgaccaa ctctatcaga gcttggttga cggcaatttc
+     1741 gatgatgcag cttgggcgca gggtcgatgc gacgcaatcg tccgatccgg agccgggact
+     1801 gtcgggcgta cacaaatcgc ccgcagaagc gcggccgtct ggaccgatgg ctgtgtagaa
+     1861 gtactcgccg atagtggaaa ccgacgcccc agcactcgtc cgagggcaaa ggaatagctc
+     1921 gagtctagag ggcccgttta aacccgctga tcagcctcga ctgtgccttc tagttgccag
+     1981 ccatctgttg tttgcccctc ccccgtgcct tccttgaccc tggaaggtgc cactcccact
+     2041 gtcctttcct aataaaatga ggaaattgca tcgcattgtc tgagtaggtg tcattctatt
+     2101 ctggggggtg gggtggggca ggacagcaag ggggaggatt gggaagacaa tagcaggcat
+     2161 gctggggatg cggtgggctc tatgggcggc cgcggcgctc ttccgcttcc tcgctcactg
+     2221 actcgctgcg ctcggtcgtt cggctgcggc gagcggtatc agctcactca aaggcggtaa
+     2281 tacggttatc cacagaatca ggggataacg caggaaagaa catgtgagca aaaggccagc
+     2341 aaaaggccag gaaccgtaaa aaggccgcgt tgctggcgtt tttccatagg ctccgccccc
+     2401 ctgacgagca tcacaaaaat cgacgctcaa gtcagaggtg gcgaaacccg acaggactat
+     2461 aaagatacca ggcgtttccc cctggaagct ccctcgtgcg ctctcctgtt ccgaccctgc
+     2521 cgcttaccgg atacctgtcc gcctttctct cttcgggaag cgtggcgctt tctcatagct
+     2581 cacgctgtag gtatctcagt tcggtgtagg tcgttcgctc caagctgggc tgtgtgcacg
+     2641 aaccccccgt tcagcccgac cgctgcgcct tatccggtaa ctatcgtctt gagtccaacc
+     2701 cggtaagaca cgacttatcg ccactggcag cagccactgg taacaggatt agcagagcga
+     2761 ggtatgtagg cggtgctaca gagttcttga agtggtggcc taactacggc tacactagaa
+     2821 gaacagtatt tggtatctgc gctctgctga agccagttac cttcggaaaa agagttggta
+     2881 gctcttgatc cggcaaacaa accaccgctg gtagcggtgg tttttttgtt tgcaagcagc
+     2941 agattacgcg cagaaaaaaa ggatctcaag aagatccttt gatcttttct acggggtctg
+     3001 acgctcagtg gaacgaaaac tcacgttaag ggattttggt catgagatta tcaaaaagga
+     3061 tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa agtatatatg
+     3121 agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc tcagcgatct
+     3181 gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact acgatacggg
+     3241 agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc tcaccggctc
+     3301 cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt ggtcctgcaa
+     3361 ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta agtagttcgc
+     3421 cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg tcacgctcgt
+     3481 cgtttggtat ggcttcattc agctccggtt cccaacgatc aaggcgagtt acatgatccc
+     3541 ccatgttgtg caaaaaagcg gttagctcct tcggtcctcc gatcgttgtc agaagtaagt
+     3601 tggccgcagt gttatcactc atggttatgg cagcactgca taattctctt actgtcatgc
+     3661 catccgtaag atgcttttct gtgactggtg agtactcaac caagtcattc tgagaatagt
+     3721 gtatgcggcg accgagttgc tcttgcccgg cgtcaatacg ggataatacc gcgccacata
+     3781 gcagaacttt aaaagtgctc atcattggaa aacgttcttc ggggcgaaaa ctctcaagga
+     3841 tcttaccgct gttgagatcc agttcgatgt aacccactcg tgcacccaac tgatcttcag
+     3901 catcttttac tttcaccagc gtttctgggt gagcaaaaac aggaaggcaa aatgccgcaa
+     3961 aaaagggaat aagggcgaca cggaaatgtt gaatactcat actcttcctt tttcaatatt
+     4021 attgaagcat ttatcagggt tattgtctca tgagcggata catatttgaa tgtatttaga
+     4081 aaaataaaca aataggggtt ccgcgcacat ttccccgaaa agtgccacct gacgtctaag
+     4141 aaaccattat tatcatgaca ttaacctata aaaataggcg tatcacgagg ccctttcgtc
+     4201 ggcgcgccgc ggccgccaac tttgtataga aaagttggac attgattatt gactagttat
+     4261 taatagtaat caattacggg gtcattagtt catagcccat atatggagtt ccgcgttaca
+     4321 taacttacgg taaatggccc gcctggctga ccgcccaacg acccccgccc attgacgtca
+     4381 ataatgacgt atgttcccat agtaacgcca atagggactt tccattgacg tcaatgggtg
+     4441 gagtatttac ggtaaactgc ccacttggca gtacatcaag tgtatcatat gccaagtacg
+     4501 ccccctattg acgtcaatga cggtaaatgg cccgcctggc attatgccca gtacatgacc
+     4561 ttatgggact ttcctacttg gcagtacatc tacgtattag tcatcgctat taccatggtg
+     4621 atgcggtttt ggcagtacat caatgggcgt ggatagcggt ttgactcacg gggatttcca
+     4681 agtctccacc ccattgacgt caatgggagt ttgttttggc accaaaatca acgggacttt
+     4741 ccaaaatgtc gtaacaactc cgccccattg acgcaaatgg gcggtaggcg tgtacggtgg
+     4801 gaggtctata taagcagagc tcgtttagtg aaccgtcaga tcgcctggag acgccatcca
+     4861 cgctgttttg acctccatag aagacaccgg gaccgatcca gcctcccctc gaagcttaca
+     4921 tgtggtaccg agctcggatc ctgagaactt cagggtgagt ctatgggacc cttgatgttt
+     4981 tctttcccct tcttttctat ggttaagttc atgtcatagg aaggggagaa gtaacagggt
+     5041 acacatattg accaaatcag ggtaattttg catttgtaat tttaaaaaat gctttcttct
+     5101 tttaatatac ttttttgttt atcttatttc taatactttc cctaatctct ttctttcagg
+     5161 gcaataatga tacaatgtat catgcctctt tgcaccattc taaagaataa cagtgataat
+     5221 ttctgggtta aggcaatagc aatatttctg catataaata tttctgcata taaattgtaa
+     5281 ctgatgtaag aggtttcata ttgctaatag cagctacaat ccagctacca ttctgctttt
+     5341 attttatggt tgggataagg ctggattatt ctgagtccaa gctaggccct tttgctaatc
+     5401 atgttcatac ctcttatctt cctcccacag ctcctgggca acgtgctggt ctgtgtgctg
+     5461 gcccatcact ttggcaaagc aagtttgtac aaaaaagcag gctaccgg
+//

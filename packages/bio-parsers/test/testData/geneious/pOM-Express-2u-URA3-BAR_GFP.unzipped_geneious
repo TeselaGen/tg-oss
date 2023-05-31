@@ -1,0 +1,2966 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<geneious version="2023.0.1">
+	<versions version="2023.0.1" minimumVersion="7.1" />
+	<geneiousDocument class="com.biomatters.plugins.ncbi.documents.GenBankNucleotideSequence" version="1.3-11" revisionNumber="9" pluginDocumentRevisionNumber="5" geneiousVersion="2023.0.1" geneiousVersionMinimum="7.1" PluginDocument_FormatLastChanged="7.1" PluginDocument_FormatLastExtended="8.1" PluginDocument_OldestVersionSerializableTo="6.0" isReferenceOnly="false">
+		<hiddenFields>
+			<cache_plugin_document_urn>
+				urn:sequence:genbank:urn.local...1oa-3ctgz81
+			</cache_plugin_document_urn>
+			<cache_urn type="urn">
+				urn:local:.:3l-f8s2kbe
+			</cache_urn>
+			<nucleotideSequenceWithQualityCount type="int">
+				0
+			</nucleotideSequenceWithQualityCount>
+			<description>
+			</description>
+			<cache_name>
+				pOM-Express-2u-URA3-BAR:GFP Copy
+			</cache_name>
+			<override_description>
+				pBF-2u-ADH2-URA3
+			</override_description>
+			<override_modified_date type="date">
+				1661754741515
+			</override_modified_date>
+			<cache_created type="date">
+				1292331600000
+			</cache_created>
+			<override_cache_name>
+				pOM-Express-2u-URA3-BAR:GFP
+			</override_cache_name>
+			<trimmedSequencesCount type="int">
+				0
+			</trimmedSequencesCount>
+		</hiddenFields>
+		<fields>
+			<document_size type="bytes">
+				46240
+			</document_size>
+			<molType>
+				DNA
+			</molType>
+			<topology>
+				circular
+			</topology>
+			<sequence_length type="int">
+				8023
+			</sequence_length>
+			<roughTm type="double">
+				87.83072416801694
+			</roughTm>
+			<commonName>
+			</commonName>
+			<geneticCode>
+				Standard
+			</geneticCode>
+			<sequence_residues>
+				CATATGATTTAGCGCTAGTGGAGGTCAACACATCAATGCTATTTTGGTTTAGTCGTCCAGGCGGATCACAAAATTTGTGTCGTTTGACAAGATGGTTCATTTAGGCAACTGGTCAGATCAGCCCACTTGTAAGCAGTAGCGGCGGCGCTCGAAGTGTGACTCTTATTAGCAGACAGGAACGAGGACATTATTATCATCTGCTGCTTGGTGCACGATAACTTGTGCGTTTGTCAAGCAAGGTAAGTGAACGACCCGGTCATACCTTCTTAAGTTCGCCCTTCCTCCCTTTATTTCAGATTCAATCTGACTTACCTATTCTACCCAAGCATCCAAATGGCGGCCGCTGAGCGGACATTCGATTTATGCCGTTATGACTTCCTTAAAAAAGCCTTTACGAATGAAAGAAATGGAATTAGACTTGTTATGTAGTTGATTCTACAATGGATTATGATTCCTGAACTTCAAATCCGCTGTTCATTATTAATCTCAGCTCTTCCCGT
+			</sequence_residues>
+			<gcPercent decimalPlacesDisplayed="1" type="percent">
+				45.39449083883834
+			</gcPercent>
+			<modified_date type="date">
+				1292331600000
+			</modified_date>
+			<accession>
+				urn.local...1oa-3ctgz81
+			</accession>
+			<field code="Molecular Weight (kDa)" type="double">
+				2479.0146799999047
+			</field>
+		</fields>
+		<notes>
+			<note code="importedFrom" type="note">
+				<path>
+					/Volumes/Major_Tom/2. Solomon Lab [PhD]/Data/BACKUP USB DRIVE/ZYMO/Sequences and Primers
+				</path>
+				<filename>
+					pBF-2u-ADH2-URA3.gb
+				</filename>
+			</note>
+		</notes>
+		<displayableFields>
+			<value class="com.biomatters.core.documents.Field">
+				<field>
+					<name>
+						Molecular Weight (kDa)
+					</name>
+					<description>
+						Molecular Weight (kDa, single strand if DNA)
+					</description>
+					<code>
+						Molecular Weight (kDa)
+					</code>
+					<neverEditable>
+						true
+					</neverEditable>
+					<versionIntroduced>
+						2021.0.0
+					</versionIntroduced>
+					<type>
+						java.lang.Double
+					</type>
+					<constraints />
+				</field>
+			</value>
+			<value class="com.biomatters.core.documents.Field">
+				<field>
+					<name>
+						Rough Temperature (°C)
+					</name>
+					<description>
+						Rough Melting Temperature (°C)
+					</description>
+					<code>
+						roughTm
+					</code>
+					<visible>
+						false
+					</visible>
+					<neverEditable>
+						true
+					</neverEditable>
+					<versionIntroduced>
+						2021.0.0
+					</versionIntroduced>
+					<type>
+						java.lang.Double
+					</type>
+					<constraints />
+				</field>
+			</value>
+		</displayableFields>
+		<originalElement>
+			<XMLSerialisableRootElement cachedCountGC="3642" cachedCountAT="4381" charSequenceRevision="2" annotationsRevision="6" charSequenceValidated="true">
+				<fields>
+					<commonName />
+					<hasBeenModified type="boolean">
+						true
+					</hasBeenModified>
+					<isCircular>
+						true
+					</isCircular>
+					<topology>
+						circular
+					</topology>
+					<geneticCode>
+						Standard
+					</geneticCode>
+					<accession>
+						urn.local...1oa-3ctgz81
+					</accession>
+					<modified_date type="date">
+						1292331600000
+					</modified_date>
+					<molType>
+						DNA
+					</molType>
+				</fields>
+				<urn type="urn">
+					urn:sequence:genbank:urn.local...1oa-3ctgz81
+				</urn>
+				<created type="date">
+					1292331600000
+				</created>
+				<storedFields>
+					<standardField code="modified_date" />
+					<standardField code="accession" />
+					<standardField code="molType" />
+					<standardField code="organism" />
+					<standardField code="taxonomy" />
+					<standardField code="topology" />
+					<standardField code="commonName" />
+					<standardField code="geneticCode" />
+				</storedFields>
+				<name>
+					pOM-Express-2u-URA3-BAR:GFP Copy
+				</name>
+				<sequenceAnnotations>
+					<annotation>
+						<description>
+							GFP
+						</description>
+						<type>
+							exon
+						</type>
+						<intervals>
+							<interval beginsBeforeMinimumIndex="true">
+								<minimumIndex>
+									1898
+								</minimumIndex>
+								<maximumIndex>
+									2614
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers />
+					</annotation>
+					<annotation>
+						<description>
+							Extracted region from pCas9-hyg (modified) (pFC332
+						</description>
+						<type>
+							extracted region
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									14
+								</minimumIndex>
+								<maximumIndex>
+									336
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Extracted interval
+								</name>
+								<value>
+									12648 -&gt; 12970
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Original Circular Sequence Length
+								</name>
+								<value>
+									15567
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							misc
+						</description>
+						<type>
+							misc. marker
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									3086
+								</minimumIndex>
+								<maximumIndex>
+									4201
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc. marker
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							misc
+						</description>
+						<type>
+							promoter uukaryotic
+						</type>
+						<intervals>
+							<interval endsAfterMaximumIndex="true">
+								<minimumIndex>
+									7
+								</minimumIndex>
+								<maximumIndex>
+									13
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									promoter uukaryotic
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							NotI
+						</description>
+						<type>
+							motif
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									337
+								</minimumIndex>
+								<maximumIndex>
+									344
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									created by
+								</name>
+								<value>
+									mea084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							XhoI
+						</description>
+						<type>
+							motif
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									839
+								</minimumIndex>
+								<maximumIndex>
+									844
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									created by
+								</name>
+								<value>
+									mea084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							BamHI
+						</description>
+						<type>
+							restriction site
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									2641
+								</minimumIndex>
+								<maximumIndex>
+									2646
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Recognition pattern
+								</name>
+								<value>
+									G^GATCC
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							NcoI
+						</description>
+						<type>
+							restriction site
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									2066
+								</minimumIndex>
+								<maximumIndex>
+									2071
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Recognition pattern
+								</name>
+								<value>
+									C^CATGG
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							Ttef (nid)
+						</description>
+						<type>
+							terminator
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									348
+								</minimumIndex>
+								<maximumIndex>
+									836
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									terminator
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							TrpC Terminator
+						</description>
+						<type>
+							terminator
+						</type>
+						<intervals>
+							<interval endsAfterMaximumIndex="true">
+								<minimumIndex>
+									2631
+								</minimumIndex>
+								<maximumIndex>
+									3041
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers />
+					</annotation>
+					<annotation>
+						<description>
+							Fungal Exp cassette - R
+						</description>
+						<type>
+							primer_bind
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									3340
+								</minimumIndex>
+								<maximumIndex>
+									3360
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									# Off-target Sites
+								</name>
+								<value>
+									0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Off-target Template
+								</name>
+								<value>
+									pBF-2u-ADH2-URA3 Copy
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Sequence
+								</name>
+								<value>
+									GGATGAGTAGCAGCACGTTCC
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Tm
+								</name>
+								<value>
+									61.1
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									%GC
+								</name>
+								<value>
+									57.1
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Hairpin Tm
+								</name>
+								<value>
+									33.6
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Self Dimer Tm
+								</name>
+								<value>
+									None
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Pair Dimer Tm
+								</name>
+								<value>
+									None
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Product Size
+								</name>
+								<value>
+									3457
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									annotation group
+								</name>
+								<value>
+									3877913438757600996257a6-9a39-4a09-bdb2-46e794dd9508
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									mea084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							pBF-R
+						</description>
+						<type>
+							primer_bind
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5817
+								</minimumIndex>
+								<maximumIndex>
+									5836
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									# Off-target Sites
+								</name>
+								<value>
+									0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Off-target Template
+								</name>
+								<value>
+									pBF-2u-ADH2-URA3
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Sequence
+								</name>
+								<value>
+									CCCAATACGCAAACCGCCTC
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Tm
+								</name>
+								<value>
+									62.0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									%GC
+								</name>
+								<value>
+									60.0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Hairpin Tm
+								</name>
+								<value>
+									41.8
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Self Dimer Tm
+								</name>
+								<value>
+									None
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Pair Dimer Tm
+								</name>
+								<value>
+									14.0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Product Size
+								</name>
+								<value>
+									2836
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									annotation group
+								</name>
+								<value>
+									3874403321292800acc3152f-db52-4365-8ebc-d3f7913133d9
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									mea084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							Fungal Exp cassette - F
+						</description>
+						<type>
+							primer_bind
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									7927
+								</minimumIndex>
+								<maximumIndex>
+									7946
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									# Off-target Sites
+								</name>
+								<value>
+									0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Off-target Template
+								</name>
+								<value>
+									pBF-2u-ADH2-URA3 Copy
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Sequence
+								</name>
+								<value>
+									GAGCAGACAAGCCCGTCAGG
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									annotation group
+								</name>
+								<value>
+									3877913438757600996257a6-9a39-4a09-bdb2-46e794dd9508
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									mea084
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Tm
+								</name>
+								<value>
+									63.1
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									%GC
+								</name>
+								<value>
+									65.0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Hairpin Tm
+								</name>
+								<value>
+									38.4
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Self Dimer Tm
+								</name>
+								<value>
+									6.0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Pair Dimer Tm
+								</name>
+								<value>
+									None
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Product Size
+								</name>
+								<value>
+									3457
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							CAP BS
+						</description>
+						<type>
+							regulatory
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5713
+								</minimumIndex>
+								<maximumIndex>
+									5734
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									catabolite activator protein binding site
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									regulatory_class
+								</name>
+								<value>
+									other
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									CAP BS
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									100.00%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									100.00%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:1ct-c1l7ix3"&gt;CAP BS&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							STOP
+						</description>
+						<type>
+							regulatory
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									345
+								</minimumIndex>
+								<maximumIndex>
+									347
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									created by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							START
+						</description>
+						<type>
+							regulatory
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									334
+								</minimumIndex>
+								<maximumIndex>
+									336
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									created by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							rep origin
+						</description>
+						<type>
+							rep_origin
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									4252
+								</minimumIndex>
+								<maximumIndex>
+									5610
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									rep_origin
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							RSF ori
+						</description>
+						<type>
+							rep_origin
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5841
+								</minimumIndex>
+								<maximumIndex>
+									6625
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									RSF1030 origin of replication
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									RSF ori
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									80.76%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									CTTCCGCTTCCTCGCTCACTGACTCGCTACGCTCGGTCGTTCGACTGCGGCGAGCGGTGTCAGCTCACTCAAAAGCGGTAATACGGTTATCCACAGAATCAGGGGATAAAGCCGGAAAGAACATGTGAGCAAAAAGCAAA-----------GCACCGGAAGAAGCCAACGCCGCAGGCGTTTTTCCATAGGCTCCGCCCCCCTGACGAGCATCACAAAAATCGACGCTCAAGCCAGAGGTGGCGAAACCCGACAGGACTATAAAGATACCAGGCGTTTCCCCCTGGAAGCTCCCTCGTGCGCTCTCCTGTTCCGACCCTGCCGCTTACCGGATACCTGTCCGCCTTTCTCCCTTCGGGAAGCGTGGCGCTTTCTCATAGCTCACGCTGTTGGTATCTCAGTTCGGTGTAGGTCGTTCGCTCCAAGCTGGGCTGTGTGCACGAACCCCCCGTTCAGCCCGACCGCTGCGCCTTATCCGGTAACTATCGTCTTGAGTCCAACCCGGTAAGACACGACTTATCGCCACTGGCAGCAGCCATTGGTAACTGATTTAGAGGACTTTG-----------------------TCTTGAAGTTATGCACCTGTTAAGGCTAAACTGAAAGAACAGATTTTGGTGAGTGCGGTCCTCC-AACCCACTTACCTTGGTTCAAAGAGTTGGTAGCTCAGCGAACCTTGAGAAAACCACCGTTGGTAGCGGTGGTTTTTCTTTATTTATGAGATGATGAATCAATCGGTCTATCAAGTCAACGAACAGCTATTCCGTT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									CTTCCGCTTCCTCGCTCACTGACTCGCTGCGCTCGGTCGTTCGGCTGCGGCGAGCGGTATCAGCTCACTCAAAGGCGGTAATACGGTTATCCACAGAATCAGGGGATAACGCAGGAAAGAACATGTGAGCAAAAGGCCAGCAAAAGGCCAGGAACCGTAAAAAGGCCGCGTTGCTGGCGTTTTTCCATAGGCTCCGCCCCCCTGACGAGCATCACAAAAATCGACGCTCAAGTCAGAGGTGGCGAAACCCGACAGGACTATAAAGATACCAGGCGTTTCCCCCTGGAAGCTCCCTCGTGCGCTCTCCTGTTCCGACCCTGCCGCTTACCGGATACCTGTCCGCCTTTCTCCCTTCGGGAAGCGTGGCGCTTTCTCATAGCTCACGCTGTAGGTATCTCAGTTCGGTGTAGGTCGTTCGCTCCAAGCTGGGCTGTGTGCACGAACCCCCCGTTCAGCCCGACCGCTGCGCCTTATCCGGTAACTATCGTCTTGAGTCCAACCCGGTAAGACACGACTTATCGCCACTGGCAGCAGCCACTGGTAACAGGATTAGCAGAGCGAGGTATGTAGGCGGTGCTACAGAGTTCTTGAAGTGGTGGCCTAACTACGGCTACACTAGAAGGACAGTATTTGGTATCTGCGCTCTGCTGAAGCCAGTTACCTTCGGAAAAAGAGTTGGTAGCTCTTGATCCGGCAAACAAACCACCGCTGGTAGCGGTGGTTTTTTTGTTTGCAAGCAGCAGATTACGCGCAGAAAAAAAGGATCTCAAGAAGATCCTTTGATC
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									80.76%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:26n-c1l7j0d"&gt;RSF ori&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							ColE1
+						</description>
+						<type>
+							rep_origin
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									6022
+								</minimumIndex>
+								<maximumIndex>
+									6610
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									origin of replication from pBR322 (also known as pMB1, pUC origin)
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									ColE1
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									99.83%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									TTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCTTGCAAACAAAAAAACCACCGCTACCAGCGGTGGTTTGTTTGCCGGATCAAGAGCTACCAACTCTTTTTCCGAAGGTAACTGGCTTCAGCAGAGCGCAGATACCAAATACTGTTCTTCTAGTGTAGCCGTAGTTAGGCCACCACTTCAAGAACTCTGTAGCACCGCCTACATACCTCGCTCTGCTAATCCTGTTACCAGTGGCTGCTGCCAGTGGCGATAAGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAACTGAGATACCTACAGCGTGAGCTATGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTGTGATGCTCGTCAGGGGGGCGGAGCCTATGGAAA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									TTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCTTGCAAACAAAAAAACCACCGCTACCAGCGGTGGTTTGTTTGCCGGATCAAGAGCTACCAACTCTTTTTCCGAAGGTAACTGGCTTCAGCAGAGCGCAGATACCAAATACTGTCCTTCTAGTGTAGCCGTAGTTAGGCCACCACTTCAAGAACTCTGTAGCACCGCCTACATACCTCGCTCTGCTAATCCTGTTACCAGTGGCTGCTGCCAGTGGCGATAAGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAACTGAGATACCTACAGCGTGAGCTATGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTGTGATGCTCGTCAGGGGGGCGGAGCCTATGGAAA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									99.83%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:23y-c1l7j00"&gt;ColE1&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							ampR
+						</description>
+						<type>
+							CDS
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									6781
+								</minimumIndex>
+								<maximumIndex>
+									7641
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									selectable marker
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									confers ampicillin resistance
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Color
+								</name>
+								<value>
+									#797979
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									product
+								</name>
+								<value>
+									beta-lactamase
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									gene
+								</name>
+								<value>
+									bla
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									ampR
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									99.88%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									ATGAGTATTCAACATTTCCGTGTCGCCCTTATTCCCTTTTTTGCGGCATTTTGCCTTCCTGTTTTTGCTCACCCAGAAACGCTGGTGAAAGTAAAAGATGCTGAAGATCAGTTGGGTGCACGAGTGGGTTACATCGAACTGGATCTCAACAGCGGTAAGATCCTTGAGAGTTTTCGCCCCGAAGAACGTTTTCCAATGATGAGCACTTTTAAAGTTCTGCTATGTGGCGCGGTATTATCCCGTGTTGACGCCGGGCAAGAGCAACTCGGTCGCCGCATACACTATTCTCAGAATGACTTGGTTGAGTACTCACCAGTCACAGAAAAGCATCTTACGGATGGCATGACAGTAAGAGAATTATGCAGTGCTGCCATAACCATGAGTGATAACACTGCGGCCAACTTACTTCTGACAACGATCGGAGGACCGAAGGAGCTAACCGCTTTTTTGCACAACATGGGGGATCATGTAACTCGCCTTGATCGTTGGGAACCGGAGCTGAATGAAGCCATACCAAACGACGAGCGTGACACCACGATGCCTGTAGCAATGGCAACAACGTTGCGCAAACTATTAACTGGCGAACTACTTACTCTAGCTTCCCGGCAACAATTAATAGACTGGATGGAGGCGGATAAAGTTGCAGGACCACTTCTGCGCTCGGCCCTTCCGGCTGGCTGGTTTATTGCTGATAAATCTGGAGCCGGTGAGCGTGGGTCTCGCGGTATCATTGCAGCACTGGGGCCAGATGGTAAGCCCTCCCGTATCGTAGTTATCTACACGACGGGGAGTCAGGCAACTATGGATGAACGAAATAGACAGATCGCTGAGATAGGTGCCTCACTGATTAAGCATTGGTAA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									ATGAGTATTCAACATTTCCGTGTCGCCCTTATTCCCTTTTTTGCGGCATTTTGCCTTCCTGTTTTTGCTCACCCAGAAACGCTGGTGAAAGTAAAAGATGCTGAAGATCAGTTGGGTGCACGAGTGGGTTACATCGAACTGGATCTCAACAGCGGTAAGATCCTTGAGAGTTTTCGCCCCGAAGAACGTTTTCCAATGATGAGCACTTTTAAAGTTCTGCTATGTGGCGCGGTATTATCCCGTATTGACGCCGGGCAAGAGCAACTCGGTCGCCGCATACACTATTCTCAGAATGACTTGGTTGAGTACTCACCAGTCACAGAAAAGCATCTTACGGATGGCATGACAGTAAGAGAATTATGCAGTGCTGCCATAACCATGAGTGATAACACTGCGGCCAACTTACTTCTGACAACGATCGGAGGACCGAAGGAGCTAACCGCTTTTTTGCACAACATGGGGGATCATGTAACTCGCCTTGATCGTTGGGAACCGGAGCTGAATGAAGCCATACCAAACGACGAGCGTGACACCACGATGCCTGTAGCAATGGCAACAACGTTGCGCAAACTATTAACTGGCGAACTACTTACTCTAGCTTCCCGGCAACAATTAATAGACTGGATGGAGGCGGATAAAGTTGCAGGACCACTTCTGCGCTCGGCCCTTCCGGCTGGCTGGTTTATTGCTGATAAATCTGGAGCCGGTGAGCGTGGGTCTCGCGGTATCATTGCAGCACTGGGGCCAGATGGTAAGCCCTCCCGTATCGTAGTTATCTACACGACGGGGAGTCAGGCAACTATGGATGAACGAAATAGACAGATCGCTGAGATAGGTGCCTCACTGATTAAGCATTGGTAA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									99.88%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:ft-c1l7irw"&gt;ampR&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							URA3
+						</description>
+						<type>
+							CDS
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									3320
+								</minimumIndex>
+								<maximumIndex>
+									4123
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									selectable marker
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									pyrimidine auxotrophic marker
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Color
+								</name>
+								<value>
+									#797979
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									product
+								</name>
+								<value>
+									orotidine 5′-phosphate decarboxylase
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									gene
+								</name>
+								<value>
+									URA3
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									URA3
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									99.38%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									ATGTCGAAAGCTACATATAAGGAACGTGCTGCTACTCATCCTAGTCCTGTTGCTGCCAAGCTATTTAATATCATGCACGAAAAGCAAACAAACTTGTGTGCTTCATTGGATGTTCGTACCACCAAGGAATTACTGGAGTTAGTTGAAGCATTAGGTCCCAAAATTTGTTTACTAAAAACACATGTGGATATCTTGACTGATTTTTCCATGGAGGGCACAGTTAAGCCGCTAAAGGCATTATCCGCCAAGTACAATTTTTTACTCTTCGAGGACAGAAAATTTGCTGACATTGGTAATACAGTCAAATTGCAGTACTCTGCGGGTGTATACAGAATAGCAGAATGGGCAGACATTACGAATGCACACGGTGTGGTGGGCCCAGGTATTGTTAGCGGTTTGAAGCAGGCGGCAGAAGAAGTAACAAAGGAACCTAGAGGCCTTTTGATGTTAGCAGAATTGTCATGCAAGGGCTCCCTATCTACTGGAGAATATACTAAGGGTACTGTTGACATTGCGAAGAGCGACAAAGATTTTGTTATCGGCTTTATTGCTCAAAGAGACATGGGTGGAAGAGATGAAGGTTACGATTGGTTGATTATGACACCCGGTGTGGGTTTAGATGACAAGGGAGATGCATTGGGTCAACAGTATAGAACCGTGGATGATGTGGTTTCTACAGGATCTGACATTATTATTGTTGGAAGAGGACTATTTGCAAAGGGAAGGGATGCTAAGGTAGAGGGTGAACGTTACAGAAAAGCAGGCTGGGAAGCATATTTGAGAAGATGCGGCCAGCAAAACTAA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									ATGTCGAAAGCTACATATAAGGAACGTGCTGCTACTCATCCTAGTCCTGTTGCTGCCAAGCTATTTAATATCATGCACGAAAAGCAAACAAACTTGTGTGCTTCATTGGATGTTCGTACCACCAAGGAATTACTGGAGTTAGTTGAAGCATTAGGTCCCAAAATTTGTTTACTAAAAACACATGTGGATATCTTGACTGATTTTTCCATGGAGGGCACAGTTAAGCCGCTAAAGGCATTATCCGCCAAGTACAATTTTTTACTCTTCGAAGACAGAAAATTTGCTGACATTGGTAATACAGTCAAATTGCAGTACTCTGCGGGTGTATACAGAATAGCAGAATGGGCAGACATTACGAATGCACACGGTGTGGTGGGCCCAGGTATTGTTAGCGGTTTGAAGCAGGCGGCGGAAGAAGTAACAAAGGAACCTAGAGGCCTTTTGATGTTAGCAGAATTGTCATGCAAGGGCTCCCTAGCTACTGGAGAATATACTAAGGGTACTGTTGACATTGCGAAGAGCGACAAAGATTTTGTTATCGGCTTTATTGCTCAAAGAGACATGGGTGGAAGAGATGAAGGTTACGATTGGTTGATTATGACACCCGGTGTGGGTTTAGATGACAAGGGAGACGCATTGGGTCAACAGTATAGAACCGTGGATGATGTGGTCTCTACAGGATCTGACATTATTATTGTTGGAAGAGGACTATTTGCAAAGGGAAGGGATGCTAAGGTAGAGGGTGAACGTTACAGAAAAGCAGGCTGGGAAGCATATTTGAGAAGATGCGGCCAGCAAAACTAA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									99.38%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:jh-c1l7isd"&gt;URA3&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							GFP
+						</description>
+						<type>
+							CDS
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									1901
+								</minimumIndex>
+								<maximumIndex>
+									2617
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									reporter
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Green fluorescent reporter protein - Ex:488, Em:510
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Color
+								</name>
+								<value>
+									#05fd14
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									product
+								</name>
+								<value>
+									GFP
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									gene
+								</name>
+								<value>
+									GFP
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									GFP
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									97.77%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									ATGAGTAAAGGAGAAGAACTTTTCACTGGAGTTGTCCCAATTCTTGTTGAATTAGATGGCGATGTTAATGGGCAAAAATTCTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGGAAGCTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCAAGATACCCAGATCATATGAAACAGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAAAGAACTATATTTTACAAAGATGACGGGAACTACAAGACACGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATAGAATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTTGGACACAAAATGGAATACAACTATAACTCACATAATGTATACATCATGGCAGACAAACCAAAGAATGGAATCAAAGTTAACTTCAAAATTAGACACAACATTAAAGATGGAAGCGTTCAATTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCCACACAATCTGCCCTTTCCAAAGATCCCAACGAAAAGAGAGATCACATGATCCTTCTTGAGTTTGTAACAGCTGCTGGGATTACACATGGCATGGATGAACTATACAAATAA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									ATGAGTAAAGGAGAAGAACTTTTCACTGGAGTTGTCCCAATTCTTGTTGAATTAGATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCAAGATACCCAGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAAAGAACTATATTTTTCAAAGATGACGGGAACTACAAGACACGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATAGAATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTTGGACACAAATTGGAATACAACTATAACTCACACAATGTATACATCATGGCAGACAAACAAAAGAATGGAATCAAAGTTAACTTCAAAATTAGACACAACATTGAAGATGGAAGCGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCCACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGAGAGACCACATGGTCCTTCTTGAGTTTGTAACAGCTGCTGGGATTACACATGGCATGGATGAACTATACAAATAG
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									97.77%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:77-c1l7iqd"&gt;GFP&lt;/a&gt;
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Alternative Match
+								</name>
+								<value>
+									94.49%; Adjusted-Interval-0:0/27 (adjusted to 93.28%; Adjusted-Interval-0:0/0); &lt;a href="urn:local:.:7a-c1l7iqd"&gt;GFP cyc3&lt;/a&gt;
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Alternative Match
+								</name>
+								<value>
+									90.53%; Adjusted-Interval-0:0/33; &lt;a href="urn:local:.:dq-c1l7irm"&gt;Superfolder GFP&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							GpdA
+						</description>
+						<type>
+							promoter
+						</type>
+						<intervals>
+							<interval beginsBeforeMinimumIndex="true">
+								<minimumIndex>
+									845
+								</minimumIndex>
+								<maximumIndex>
+									1345
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									created by
+								</name>
+								<value>
+									mea084
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									mea084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							PtrpC
+						</description>
+						<type>
+							promoter
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									14
+								</minimumIndex>
+								<maximumIndex>
+									333
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									promoter
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							URA3
+						</description>
+						<type>
+							promoter
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									3097
+								</minimumIndex>
+								<maximumIndex>
+									3318
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									promoter for URA3 (pyrimidine auxotrophic marker)
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									regulatory_class
+								</name>
+								<value>
+									promoter
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									URA3
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									94.71%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									TAGCTTTTCAATTCAATTCATCATTTTTTTTTTA-TTCTTTTTTTTGATTTCGGTTTCTTTGAAATTTTTTTGATTCGGTAATCTCCGAACAGAAGGAAGAACGAAGGAAGGAGCACAGACTTAGATTGGTATATATACGCATATGTAGTGTTGAAGAAACATGAAATTGCCCAGTATTCTTAACCCAACTGCACAGAACAAAAACCTGCAGGAAACGAAGATAAAT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									AAGCTTTTCAATTCA-----TCTTTTTTTTTTTTGTTCTTTTTTTTGATTCCGGTTTCTTTGAAATTTTTTTGATTCGGTAATCTCCGAGCAGAAGGAAGAACGAAGGAAGGAGCACAGACTTAGATTGGTATATATACGCATATGTGGTGTTGAAGAAACATGAAATTGCCCAGTATTCTTAACCCAACTGCACAGAACAAAAACCTGCAGGAAACGAAGATAAAT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									94.71%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:18w-c1l7iwk"&gt;URA3&lt;/a&gt;
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Alternative Match
+								</name>
+								<value>
+									93.69%; Adjusted-Interval-0:1/1; &lt;a href="urn:local:.:18t-c1l7iwk"&gt;URA3&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							amp
+						</description>
+						<type>
+							promoter
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									7642
+								</minimumIndex>
+								<maximumIndex>
+									7746
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Promoter for ampicillin resistance gene (b-lactamase)
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									regulatory_class
+								</name>
+								<value>
+									promoter
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									amp
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									100.00%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									100.00%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:108-c1l7ivc"&gt;amp&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							trc
+						</description>
+						<type>
+							promoter
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5624
+								</minimumIndex>
+								<maximumIndex>
+									5698
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									hybrid of the trp and lac promoters that is stronger than the lac promoter
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									regulatory_class
+								</name>
+								<value>
+									promoter
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									trc
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									82.67%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									TTGACAATTAAT-CATCCGGTCCGTATAATCTGTGGAATTGTGAGCGGATAACAATTTCACACAGGAAACAGACC
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									TTTACACTTTATGCTTCCGGCTCGTATGTTGTGTGGAATTGTGAGCGGATAACAATTTCACACAGGAAACAGCTA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									82.67%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:18e-c1l7iwi"&gt;trc&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							lac
+						</description>
+						<type>
+							promoter
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5668
+								</minimumIndex>
+								<maximumIndex>
+									5698
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									promoter sequence of the lac operon
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									regulatory_class
+								</name>
+								<value>
+									promoter
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									lac
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									100.00%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									100.00%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:13k-c1l7ivx"&gt;lac&lt;/a&gt;
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Alternative Match
+								</name>
+								<value>
+									93.55%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:13q-c1l7ivy"&gt;lacUV5&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							FRT
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5221
+								</minimumIndex>
+								<maximumIndex>
+									5268
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									recognition site
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Flp recombinase target site used for site-directed recombination
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									FRT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									100.00%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									100.00%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:pz-c1l7itf"&gt;FRT&lt;/a&gt;
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Alternative Match
+								</name>
+								<value>
+									100.00%; Adjusted-Interval-0:-14/0; &lt;a href="urn:local:.:qh-c1l7iti"&gt;min FRT&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							misc
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									3052
+								</minimumIndex>
+								<maximumIndex>
+									3085
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							misc
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									4202
+								</minimumIndex>
+								<maximumIndex>
+									4235
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							loxP
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									4202
+								</minimumIndex>
+								<maximumIndex>
+									4235
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									recognition site
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									LoxP site for Cre-Lox recombination
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									loxP
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									82.35%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									ATAACTTCGTATAGCATACATTATACGAAGTTAT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									ATAACTTCGTATAATGTATGCTATACGAAGTTAT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									82.35%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:qe-c1l7iti"&gt;loxP&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							loxP
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									3052
+								</minimumIndex>
+								<maximumIndex>
+									3085
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									recognition site
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									LoxP site for Cre-Lox recombination
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									loxP
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									82.35%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									ATAACTTCGTATAGCATACATTATACGAAGTTAT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									ATAACTTCGTATAATGTATGCTATACGAAGTTAT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									82.35%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:qe-c1l7iti"&gt;loxP&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							min FRT
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5221
+								</minimumIndex>
+								<maximumIndex>
+									5254
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									recognition site
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									minimal FRT site that allows excision but not integration
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									min FRT
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									82.35%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Source
+								</name>
+								<value>
+									GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									.hidden_NucleotideAlignment___Primary Match Alignment___Target
+								</name>
+								<value>
+									GAAGTTCCTATACTTTCTAGAGAATAGGAACTTC
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									82.35%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:qh-c1l7iti"&gt;min FRT&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							lacO
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5644
+								</minimumIndex>
+								<maximumIndex>
+									5660
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									operator
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Lac operon operator
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on nucleotide similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									lacO
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									100.00%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									100.00%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:ph-c1l7itd"&gt;lacO&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							C
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5676
+								</minimumIndex>
+								<maximumIndex>
+									5687
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									kind
+								</name>
+								<value>
+									tag
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									C-tag used for protein purification
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Color
+								</name>
+								<value>
+									#FFFFB9
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									note
+								</name>
+								<value>
+									Derived using Geneious Prime 2020.1.2 'Annotate from Database' based on protein similarity
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									C
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Translation Similarity
+								</name>
+								<value>
+									100.00%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Primary Match
+								</name>
+								<value>
+									100.00%; Adjusted-Interval-0:0/0; &lt;a href="urn:local:.:te-c1l7iu3"&gt;C&lt;/a&gt;
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							GCCGCAAAACGTAGGGGCAAACAAACGGAAAAATCGTTTCTCAAATTTTCTGATGCCAAGAACTCTAACCAGTCTTATCTAAAAATTGCCTTATGATCCGTCTCTCCGGTTACAGCCTGTGTAACTGATTAATCCTGCCTTTCTAATCACCATTCTAATGTTTTAATTAAGGGATTTTGTCTTCATTAACGGCTTTCGCTCATAAAAATGTTATGACGTTTTGCCCGCAGGCGGGAAACCATCCACTTCACGAGACTGATCTCCTCTGCCGGAACACCGGGCATCTCCAACTTATAAGTTGGAGAAATAAGAGAATTTCAGATTGAGAGAATGAAAAAAAAAAAAAAAAAAAAGGCAGAGGAGAGCATAGAAATGGGGTTCACTTTTTGGTAAAGCTATAGCATGCCTATCACATATAAATAGAGTGCCAGTAGCGACTTTTTTCACACTCGAAATACTCTTACTACTGCTCTCTTGTTGTTTTTATCACTTCTTGTTTCTTCTTGGTAAATAGAATATCAAGCTACAAAAAGCATACAATCAACTATCAACTATTAACTATATCGTAATACACAACTAGTCTCGAGTCATGTAATTAGTTATGTCACGCTTACATTCACGCCCTCCCCCCACATCCGCTCTAACCGAAAAGGAAGGAGTTAGACAACCTGAAGTCTAGGTCCCTATTTATTTTTTTATAGTTATGTTAGTATTAAGAACGTTATTTATATTTCAAATTTTTCTTTTTTTTCTGTACAGACGCGTGTACGCATGTAACATTATACTGAAAACCTTGCTTGAGAAGGTTTTGGGACGCTCGAAGGCTTTAATTTGCGGCCAAGCTTGCATGCCTGCAGGTCGACTCTAGAG
+						</description>
+						<type>
+							Editing History Replacement
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									15
+								</minimumIndex>
+								<maximumIndex>
+									3041
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Original Bases
+								</name>
+								<value>
+									GCCGCAAAACGTAGGGGCAAACAAACGGAAAAATCGTTTCTCAAATTTTCTGATGCCAAGAACTCTAACCAGTCTTATCTAAAAATTGCCTTATGATCCGTCTCTCCGGTTACAGCCTGTGTAACTGATTAATCCTGCCTTTCTAATCACCATTCTAATGTTTTAATTAAGGGATTTTGTCTTCATTAACGGCTTTCGCTCATAAAAATGTTATGACGTTTTGCCCGCAGGCGGGAAACCATCCACTTCACGAGACTGATCTCCTCTGCCGGAACACCGGGCATCTCCAACTTATAAGTTGGAGAAATAAGAGAATTTCAGATTGAGAGAATGAAAAAAAAAAAAAAAAAAAAGGCAGAGGAGAGCATAGAAATGGGGTTCACTTTTTGGTAAAGCTATAGCATGCCTATCACATATAAATAGAGTGCCAGTAGCGACTTTTTTCACACTCGAAATACTCTTACTACTGCTCTCTTGTTGTTTTTATCACTTCTTGTTTCTTCTTGGTAAATAGAATATCAAGCTACAAAAAGCATACAATCAACTATCAACTATTAACTATATCGTAATACACAACTAGTCTCGAGTCATGTAATTAGTTATGTCACGCTTACATTCACGCCCTCCCCCCACATCCGCTCTAACCGAAAAGGAAGGAGTTAGACAACCTGAAGTCTAGGTCCCTATTTATTTTTTTATAGTTATGTTAGTATTAAGAACGTTATTTATATTTCAAATTTTTCTTTTTTTTCTGTACAGACGCGTGTACGCATGTAACATTATACTGAAAACCTTGCTTGAGAAGGTTTTGGGACGCTCGAAGGCTTTAATTTGCGGCCAAGCTTGCATGCCTGCAGGTCGACTCTAGAG
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							BAR
+						</description>
+						<type>
+							motif
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									1346
+								</minimumIndex>
+								<maximumIndex>
+									1894
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									created by
+								</name>
+								<value>
+									mea084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+				</sequenceAnnotations>
+				<charSequence>
+					CATATGATTTAGCGCTAGTGGAGGTCAACACATCAATGCTATTTTGGTTTAGTCGTCCAGGCGGATCACAAAATTTGTGTCGTTTGACAAGATGGTTCATTTAGGCAACTGGTCAGATCAGCCCACTTGTAAGCAGTAGCGGCGGCGCTCGAAGTGTGACTCTTATTAGCAGACAGGAACGAGGACATTATTATCATCTGCTGCTTGGTGCACGATAACTTGTGCGTTTGTCAAGCAAGGTAAGTGAACGACCCGGTCATACCTTCTTAAGTTCGCCCTTCCTCCCTTTATTTCAGATTCAATCTGACTTACCTATTCTACCCAAGCATCCAAATGGCGGCCGCTGAGCGGACATTCGATTTATGCCGTTATGACTTCCTTAAAAAAGCCTTTACGAATGAAAGAAATGGAATTAGACTTGTTATGTAGTTGATTCTACAATGGATTATGATTCCTGAACTTCAAATCCGCTGTTCATTATTAATCTCAGCTCTTCCCGTAAAGCCAATGTTGAAACTATTCGTAAATGTACCTCGTTTTGCGTGTACCTTGCTTATCACGTGATATTACATGACCTGGACAGAGTTCTGCGCGAAAGTCATAACGTAAATCCCGGGCGGTAGGTGCGTCCCGGGCGGAAGGTAGTTTTCTCGTCCACCCCAACGCGTTTATCAACCTCAACTTTCAACAACCATCATGCCACCAAAAGCGCGTAAAACAAAGCGAGATTTGATTGAGCAAGAGGGCAGGATCCAATGCGCGATTCAAGACATTAAAAATGGAAAATTTCAAAAAATTGCGCCCGCAGCGCGTGCATACAAAATTCATCCCAATACAACTCGAGCCGGCGCGTAAGCTCCCTAATTGGCCCATCCGGCATCTGTAGGGCGTCCAAATATCGTGCCTCTCCTGCTTTGCCCGGTGTATGAAACCGGAAAGGCCGCTCAGGAGCTGGCCAGCGGCGCAGACCGGGAACACAAGCTGGCAGTCGACCCATCCGGTGCTCTGCACTCGACCTGCTGAGGTCCCTCAGTCCCTGGTAGGCAGCTTTGCCCCGTCTGTCCGCCCGGTGTGTCGGCGGGGTTGACAAGGTCGTTGCGTCAGTCCAACATTTGTTGCCATATTTTCCTGCTCTCCCCACCAGCTGCTCTTTTCTTTTCTCTTTCTTTTCCCATCTTCAGTATATTCATCTTCCCATCCAAGAACCTTTATTTCCCCTAAGTAAGTACTTTGCTACATCCATACTCCATCCTTCCCATCCCTTATTCCTTTGAACCTTTCAGTTCGAGCTTTCCCACTTCATCGCAGCTTGACTAACAGCTACCCCGCTTGAGCAGACATCACCATGAGCCCAGAACGGCGACCTGCGGACATCCGCCGCGCAACGGAGGCTGATATGCCCGCTGTATGTACGATCGTGAACCATTATATAGAAACTAGTACCGTAAACTTTAGGACCGAACCGCAGGAACCTCAGGAGTGGACCGATGACCTGGTAAGACTCCGTGAACGCTACCCGTGGCTCGTAGCTGAGGTCGACGGCGAAGTTGCAGGTATTGCCTATGCTGGCCCCTGGAAGGCCCGAAACGCATATGATTGGACAGCGGAAAGTACCGTGTACGTATCGCCGCGACATCAGCGAACGGGGCTGGGTTCGACGCTTTATACACACCTTCTGAAGTCGTTGGAAGCTCAAGGGTTTAAGTCTGTCGTAGCTGTAATCGGCCTCCCAAATGACCCGAGTGTGAGAATGCACGAGGCACTTGGGTACGCTCCCAGAGGTATGCTGAGAGCCGCCGGGTTCAAACACGGAAATTGGCATGACGTTGGATTTTGGCAGTTGGATTTCAGTCTGCCTGTCCCCCCACGCCCCGTTTTGCCGGTTACAGAAATTGGGCCCATGAGTAAAGGAGAAGAACTTTTCACTGGAGTTGTCCCAATTCTTGTTGAATTAGATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCAAGATACCCAGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAAAGAACTATATTTTTCAAAGATGACGGGAACTACAAGACACGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATAGAATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTTGGACACAAATTGGAATACAACTATAACTCACACAATGTATACATCATGGCAGACAAACAAAAGAATGGAATCAAAGTTAACTTCAAAATTAGACACAACATTGAAGATGGAAGCGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCCACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGAGAGACCACATGGTCCTTCTTGAGTTTGTAACAGCTGCTGGGATTACACATGGCATGGATGAACTATACAAATAGGGGCCCAGTAGATGCCGACCGCGGGATCCACTTAACGTTACTGAAATCATCAAACAGCTTGACGAATCTGGATATAAGATCGTTGGTGTCGATGTCAGCTCCGGAGTTGAGACAAATGGTGTTCAGGATCTCGATAAGATACGTTCATTTGTCCAAGCAGCAAAGAGTGCCTTCTAGTGATTTAATAGCTCCATGTCAACAAGAATAAAACGCGTTTTCGGGTTTACCTCTTCCAGATACAGCTCATCTGCAATGCATTAATGCATTGACTGCAACCTAGTAACGCCTTCAGGCTCCGGCGAAGAGAAGAATAGCTTAGCAGAGCTATTTTCATTTTCGGGAGACGAGATCAAGCAGATCAACGGTCGTCAAGAGACCTACGAGACTGAGGAATCCGCTCTTGGCTCCACGCGACTATATATTTGATCCCCGGGATAACTTCGTATAGCATACATTATACGAAGTTATCAGGGTCCATAAAGCTTTTCAATTCATCTTTTTTTTTTTTGTTCTTTTTTTTGATTCCGGTTTCTTTGAAATTTTTTTGATTCGGTAATCTCCGAGCAGAAGGAAGAACGAAGGAAGGAGCACAGACTTAGATTGGTATATATACGCATATGTGGTGTTGAAGAAACATGAAATTGCCCAGTATTCTTAACCCAACTGCACAGAACAAAAACCTGCAGGAAACGAAGATAAATCATGTCGAAAGCTACATATAAGGAACGTGCTGCTACTCATCCTAGTCCTGTTGCTGCCAAGCTATTTAATATCATGCACGAAAAGCAAACAAACTTGTGTGCTTCATTGGATGTTCGTACCACCAAGGAATTACTGGAGTTAGTTGAAGCATTAGGTCCCAAAATTTGTTTACTAAAAACACATGTGGATATCTTGACTGATTTTTCCATGGAGGGCACAGTTAAGCCGCTAAAGGCATTATCCGCCAAGTACAATTTTTTACTCTTCGAAGACAGAAAATTTGCTGACATTGGTAATACAGTCAAATTGCAGTACTCTGCGGGTGTATACAGAATAGCAGAATGGGCAGACATTACGAATGCACACGGTGTGGTGGGCCCAGGTATTGTTAGCGGTTTGAAGCAGGCGGCGGAAGAAGTAACAAAGGAACCTAGAGGCCTTTTGATGTTAGCAGAATTGTCATGCAAGGGCTCCCTAGCTACTGGAGAATATACTAAGGGTACTGTTGACATTGCGAAGAGCGACAAAGATTTTGTTATCGGCTTTATTGCTCAAAGAGACATGGGTGGAAGAGATGAAGGTTACGATTGGTTGATTATGACACCCGGTGTGGGTTTAGATGACAAGGGAGACGCATTGGGTCAACAGTATAGAACCGTGGATGATGTGGTCTCTACAGGATCTGACATTATTATTGTTGGAAGAGGACTATTTGCAAAGGGAAGGGATGCTAAGGTAGAGGGTGAACGTTACAGAAAAGCAGGCTGGGAAGCATATTTGAGAAGATGCGGCCAGCAAAACTAAAAAACTGTATTATAAGTAAATGCATGTATACTAAACTCACAAATTAGAGCTTCAATTTAATTATATCAGTTATTACCCATAACTTCGTATAGCATACATTATACGAAGTTATCCCGGGTACCGAGCTCGAATTCAACGAAGCATCTGTGCTTCATTTTGTAGAACAAAAATGCAACGCGAGAGCGCTAATTTTTCAAACAAAGAATCTGAGCTGCATTTTTACAGAACAGAAATGCAACGCGAAAGCGCTATTTTACCAACGAAGAATCTGTGCTTCATTTTTGTAAAACAAAAATGCAACGCGAGAGCGCTAATTTTTCAAACAAAGAATCTGAGCTGCATTTTTACAGAACAGAAATGCAACGCGAGAGCGCTATTTTACCAACAAAGAATCTATACTTCTTTTTTGTTCTACAAAAATGCATCCCGAGAGCGCTATTTTTCTAACAAAGCATCTTAGATTACTTTTTTTCTCCTTTGTGCGCTCTATAATGCAGTCTCTTGATAACTTTTTGCACTGTAGGTCCGTTAAGGTTAGAAGAAGGCTACTTTGGTGTCTATTTTCTCTTCCATAAAAAAAGCCTGACTCCACTTCCCGCGTTTACTGATTACTAGCGAAGCTGCGGGTGCATTTTTTCAAGATAAAGGCATCCCCGATTATATTCTATACCGATGTGGATTGCGCATACTTTGTGAACAGAAAGTGATAGCGTTGATGATTCTTCATTGGTCAGAAAATTATGAACGGTTTCTTCTATTTTGTCTCTATATACTACGTATAGGAAATGTTTACATTTTCGTATTGTTTTCGATTCACTCTATGAATAGTTCTTACTACAATTTTTTTGTCTAAAGAGTAATACTAGAGATAAACATAAAAAATGTAGAGGTCGAGTTTAGATGCAAGTTCAAGGAGCGAAAGGTGGATGGGTAGGTTATATAGGGATATAGCACAGAGATATATAGCAAAGAGATACTTTTGAGCAATGTTTGTGGAAGCGGTATTCGCAATATTTTAGTAGCTCGTTACAGTCCGGTGCGTTTTTGGTTTTTTGAAAGTGCGTCTTCAGAGCGCTTTTGGTTTTCAAAAGCGCTCTGAAGTTCCTATACTTTCTAGAGAATAGGAACTTCGGAATAGGAACTTCAAAGCGTTTCCGAAAACGAGCGCTTCCGAAAATGCAACGCGAGCTGCGCACATACAGCTCACTGTTCACGTCGCACCTATATCTGCGTGTTGCCTGTATATATATATACATGAGAAGAACGGCATAGTGCGTGTTTATGCTTAAATGCGTACTTATATGCGTCTATTTATGTAGGATGAAAGGTAGTCTAGTACCTCCTGTGATATTATCCCATTCCATGCGGGGTATCGTATGCTTCCTTCAGCACTACCCTTTAGCTGTTCTATATGCTGCCACTCCTCAATTGGATTAGTCTCATCCTTCAATGCTATCATTTCCTTTGATATTGGATCATACGAATTCGTAATCATGGTCATAGCTGTTTCCTGTGTGAAATTGTTATCCGCTCACAATTCCACACAACATACGAGCCGGAAGCATAAAGTGTAAAGCCTGGGGTGCCTAATGAGTGAGCTAACTCACATTAATTGCGTTGCGCTCACTGCCCGCTTTCCAGTCGGGAAACCTGTCGTGCCAGCTGCATTAATGAATCGGCCAACGCGCGGGGAGAGGCGGTTTGCGTATTGGGCGCTCTTCCGCTTCCTCGCTCACTGACTCGCTGCGCTCGGTCGTTCGGCTGCGGCGAGCGGTATCAGCTCACTCAAAGGCGGTAATACGGTTATCCACAGAATCAGGGGATAACGCAGGAAAGAACATGTGAGCAAAAGGCCAGCAAAAGGCCAGGAACCGTAAAAAGGCCGCGTTGCTGGCGTTTTTCCATAGGCTCCGCCCCCCTGACGAGCATCACAAAAATCGACGCTCAAGTCAGAGGTGGCGAAACCCGACAGGACTATAAAGATACCAGGCGTTTCCCCCTGGAAGCTCCCTCGTGCGCTCTCCTGTTCCGACCCTGCCGCTTACCGGATACCTGTCCGCCTTTCTCCCTTCGGGAAGCGTGGCGCTTTCTCATAGCTCACGCTGTAGGTATCTCAGTTCGGTGTAGGTCGTTCGCTCCAAGCTGGGCTGTGTGCACGAACCCCCCGTTCAGCCCGACCGCTGCGCCTTATCCGGTAACTATCGTCTTGAGTCCAACCCGGTAAGACACGACTTATCGCCACTGGCAGCAGCCACTGGTAACAGGATTAGCAGAGCGAGGTATGTAGGCGGTGCTACAGAGTTCTTGAAGTGGTGGCCTAACTACGGCTACACTAGAAGGACAGTATTTGGTATCTGCGCTCTGCTGAAGCCAGTTACCTTCGGAAAAAGAGTTGGTAGCTCTTGATCCGGCAAACAAACCACCGCTGGTAGCGGTGGTTTTTTTGTTTGCAAGCAGCAGATTACGCGCAGAAAAAAAGGATCTCAAGAAGATCCTTTGATCTTTTCTACGGGGTCTGACGCTCAGTGGAACGAAAACTCACGTTAAGGGATTTTGGTCATGAGATTATCAAAAAGGATCTTCACCTAGATCCTTTTAAATTAAAAATGAAGTTTTAAATCAATCTAAAGTATATATGAGTAAACTTGGTCTGACAGTTACCAATGCTTAATCAGTGAGGCACCTATCTCAGCGATCTGTCTATTTCGTTCATCCATAGTTGCCTGACTCCCCGTCGTGTAGATAACTACGATACGGGAGGGCTTACCATCTGGCCCCAGTGCTGCAATGATACCGCGAGACCCACGCTCACCGGCTCCAGATTTATCAGCAATAAACCAGCCAGCCGGAAGGGCCGAGCGCAGAAGTGGTCCTGCAACTTTATCCGCCTCCATCCAGTCTATTAATTGTTGCCGGGAAGCTAGAGTAAGTAGTTCGCCAGTTAATAGTTTGCGCAACGTTGTTGCCATTGCTACAGGCATCGTGGTGTCACGCTCGTCGTTTGGTATGGCTTCATTCAGCTCCGGTTCCCAACGATCAAGGCGAGTTACATGATCCCCCATGTTGTGCAAAAAAGCGGTTAGCTCCTTCGGTCCTCCGATCGTTGTCAGAAGTAAGTTGGCCGCAGTGTTATCACTCATGGTTATGGCAGCACTGCATAATTCTCTTACTGTCATGCCATCCGTAAGATGCTTTTCTGTGACTGGTGAGTACTCAACCAAGTCATTCTGAGAATAGTGTATGCGGCGACCGAGTTGCTCTTGCCCGGCGTCAATACGGGATAATACCGCGCCACATAGCAGAACTTTAAAAGTGCTCATCATTGGAAAACGTTCTTCGGGGCGAAAACTCTCAAGGATCTTACCGCTGTTGAGATCCAGTTCGATGTAACCCACTCGTGCACCCAACTGATCTTCAGCATCTTTTACTTTCACCAGCGTTTCTGGGTGAGCAAAAACAGGAAGGCAAAATGCCGCAAAAAAGGGAATAAGGGCGACACGGAAATGTTGAATACTCATACTCTTCCTTTTTCAATATTATTGAAGCATTTATCAGGGTTATTGTCTCATGAGCGGATACATATTTGAATGTATTTAGAAAAATAAACAAATAGGGGTTCCGCGCACATTTCCCCGAAAAGTGCCACCTGACGTCTAAGAAACCATTATTATCATGACATTAACCTATAAAAATAGGCGTATCACGAGGCCCTTTCGTCTCGCGCGTTTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCTCCCGGAGACGGTCACAGCTTGTCTGTAAGCGGATGCCGGGAGCAGACAAGCCCGTCAGGGCGCGTCAGCGGGTGTTGGCGGGTGTCGGGGCTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCAC
+				</charSequence>
+				<INSD_originalElements>
+					<INSDSeq_length>
+						5866
+					</INSDSeq_length>
+					<INSDSeq_locus>
+						pBF-2u-ADH2-URA3
+					</INSDSeq_locus>
+					<INSDSeq_division>
+						UNA
+					</INSDSeq_division>
+					<INSDSeq_other-seqids />
+					<INSDSeq_source />
+				</INSD_originalElements>
+			</XMLSerialisableRootElement>
+		</originalElement>
+		<additionalXml perUser="true" />
+		<additionalXml perUser="false">
+			<sequenceViewOptions geneiousVersion="2022.2.2" additionalXmlKey="sequenceViewOptions">
+				<SequenceViewerState>
+					<zoom>
+						0.4561009520021174
+					</zoom>
+					<SequenceViewerSelectionState>
+						<selectedRegions>
+							<element class="com.biomatters.plugins.sequenceviewer.selection.SelectedRegion">
+								<SelectedRegion>
+									<residues>
+										<XMLSerialisableRootElement>
+											<from>
+												2630
+											</from>
+											<to>
+												3041
+											</to>
+										</XMLSerialisableRootElement>
+									</residues>
+									<sequences>
+										<XMLSerialisableRootElement>
+											<from>
+												0
+											</from>
+											<to>
+												1
+											</to>
+										</XMLSerialisableRootElement>
+									</sequences>
+								</SelectedRegion>
+							</element>
+						</selectedRegions>
+						<annotation annotationIndex="8" sequenceIndex="0" trackIndex="-1" />
+					</SequenceViewerSelectionState>
+					<SequenceViewerLocation>
+						<sequenceNumber>
+							0
+						</sequenceNumber>
+						<residueNumber>
+							2657
+						</residueNumber>
+						<xOffset>
+							1
+						</xOffset>
+						<yOffset>
+							-131
+						</yOffset>
+					</SequenceViewerLocation>
+				</SequenceViewerState>
+				<translation>
+					<option name="frame">
+						SelectionOrAnnotation
+					</option>
+					<option name="relativeTo">
+						sequence
+					</option>
+				</translation>
+				<liveAnnotators>
+					<option name="com.biomatters.plugins.featureFinder.FeatureFinder_NUCLEOTIDEOn">
+						false
+					</option>
+					<option name="ORF_Annotation_GeneratorOn">
+						false
+					</option>
+				</liveAnnotators>
+				<restrictionSites>
+					<childOption name="com.biomatters.plugins.restrictionAnalysis.RestrictionSiteAnnotationGenerator">
+						<childOption name="com.biomatters.plugins.restrictionAnalysis.RestrictionSiteAnnotationGenerator">
+							<option name="excluded">
+								(2, 5866)
+							</option>
+							<option name="grabExcludeRangeOption">
+								[1,5866)
+							</option>
+						</childOption>
+					</childOption>
+				</restrictionSites>
+			</sequenceViewOptions>
+			<sequenceViewOptions geneiousVersion="2022.1.1" additionalXmlKey="sequenceViewOptionsuk-e020squ">
+				<SequenceViewerState>
+					<zoom isMinimumZoom="true">
+						0.004907520453454894
+					</zoom>
+					<SequenceViewerSelectionState>
+						<selectedRegions />
+					</SequenceViewerSelectionState>
+					<SequenceViewerLocation>
+						<sequenceNumber>
+							1
+						</sequenceNumber>
+						<residueNumber>
+							5743
+						</residueNumber>
+						<xOffset>
+							1
+						</xOffset>
+						<yOffset>
+							42
+						</yOffset>
+					</SequenceViewerLocation>
+				</SequenceViewerState>
+				<translation>
+					<option name="frame">
+						SelectionOrAnnotation
+					</option>
+					<option name="relativeTo">
+						sequence
+					</option>
+				</translation>
+				<liveAnnotators>
+					<option name="com.biomatters.plugins.featureFinder.FeatureFinder_NUCLEOTIDEOn">
+						false
+					</option>
+					<option name="ORF_Annotation_GeneratorOn">
+						false
+					</option>
+				</liveAnnotators>
+				<restrictionSites>
+					<option name="com.biomatters.plugins.restrictionAnalysis.RestrictionSiteAnnotationGeneratorOn">
+						false
+					</option>
+					<childOption name="com.biomatters.plugins.restrictionAnalysis.RestrictionSiteAnnotationGenerator">
+						<childOption name="com.biomatters.plugins.restrictionAnalysis.RestrictionSiteAnnotationGenerator">
+							<option name="excluded">
+								(1, 11462)
+							</option>
+							<option name="grabExcludeRangeOption">
+								[1,11462)
+							</option>
+						</childOption>
+					</childOption>
+				</restrictionSites>
+			</sequenceViewOptions>
+			<annotations_sequenceViewDedicatedAnnotationsOptions geneiousVersion="2022.1.1" additionalXmlKey="annotations_sequenceViewDedicatedAnnotationsOptions">
+				<SequenceViewerState>
+					<zoom isMinimumZoom="true">
+						0.0
+					</zoom>
+					<SequenceViewerSelectionState>
+						<selectedRegions>
+							<element class="com.biomatters.plugins.sequenceviewer.selection.SelectedRegion">
+								<SelectedRegion>
+									<residues>
+										<XMLSerialisableRootElement>
+											<from>
+												3359
+											</from>
+											<to>
+												3338
+											</to>
+										</XMLSerialisableRootElement>
+									</residues>
+									<sequences>
+										<XMLSerialisableRootElement>
+											<from>
+												0
+											</from>
+											<to>
+												1
+											</to>
+										</XMLSerialisableRootElement>
+									</sequences>
+								</SelectedRegion>
+							</element>
+							<element class="com.biomatters.plugins.sequenceviewer.selection.SelectedRegion">
+								<SelectedRegion>
+									<residues>
+										<XMLSerialisableRootElement>
+											<from>
+												5835
+											</from>
+											<to>
+												5815
+											</to>
+										</XMLSerialisableRootElement>
+									</residues>
+									<sequences>
+										<XMLSerialisableRootElement>
+											<from>
+												0
+											</from>
+											<to>
+												1
+											</to>
+										</XMLSerialisableRootElement>
+									</sequences>
+								</SelectedRegion>
+							</element>
+							<element class="com.biomatters.plugins.sequenceviewer.selection.SelectedRegion">
+								<SelectedRegion>
+									<residues>
+										<XMLSerialisableRootElement>
+											<from>
+												7926
+											</from>
+											<to>
+												7946
+											</to>
+										</XMLSerialisableRootElement>
+									</residues>
+									<sequences>
+										<XMLSerialisableRootElement>
+											<from>
+												0
+											</from>
+											<to>
+												1
+											</to>
+										</XMLSerialisableRootElement>
+									</sequences>
+								</SelectedRegion>
+							</element>
+						</selectedRegions>
+						<annotation annotationIndex="12" sequenceIndex="0" trackIndex="-1" />
+						<annotation annotationIndex="13" sequenceIndex="0" trackIndex="-1" />
+						<annotation annotationIndex="14" sequenceIndex="0" trackIndex="-1" />
+					</SequenceViewerSelectionState>
+				</SequenceViewerState>
+				<translation>
+					<option name="frame">
+						SelectionOrAnnotation
+					</option>
+					<option name="relativeTo">
+						sequence
+					</option>
+				</translation>
+			</annotations_sequenceViewDedicatedAnnotationsOptions>
+			<DocumentHistory geneiousVersion="2022.1.1" additionalXmlKey="DocumentHistory">
+				<entryFields>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.date fieldName="Saved">
+							1661733574379
+						</com.biomatters.date>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.user fieldName="User">
+							mea084
+						</com.biomatters.user>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.geneiousVersion fieldName="Geneious Version">
+							2022.1.1
+						</com.biomatters.geneiousVersion>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.autogeneratedEntry fieldName="" />
+					</DocumentHistoryEntryField>
+				</entryFields>
+				<entryFields>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.date fieldName="Saved">
+							1661736981927
+						</com.biomatters.date>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.user fieldName="User">
+							mea084
+						</com.biomatters.user>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.geneiousVersion fieldName="Geneious Version">
+							2022.1.1
+						</com.biomatters.geneiousVersion>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.autogeneratedEntry fieldName="" />
+					</DocumentHistoryEntryField>
+				</entryFields>
+				<entryFields>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.date fieldName="Saved">
+							1661737076944
+						</com.biomatters.date>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.user fieldName="User">
+							mea084
+						</com.biomatters.user>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.geneiousVersion fieldName="Geneious Version">
+							2022.1.1
+						</com.biomatters.geneiousVersion>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.autogeneratedEntry fieldName="" />
+					</DocumentHistoryEntryField>
+				</entryFields>
+				<entryFields>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.date fieldName="Saved">
+							1661737120838
+						</com.biomatters.date>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.user fieldName="User">
+							mea084
+						</com.biomatters.user>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.geneiousVersion fieldName="Geneious Version">
+							2022.1.1
+						</com.biomatters.geneiousVersion>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.autogeneratedEntry fieldName="" />
+					</DocumentHistoryEntryField>
+				</entryFields>
+				<entryFields>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.date fieldName="Saved">
+							1661739296855
+						</com.biomatters.date>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.user fieldName="User">
+							mea084
+						</com.biomatters.user>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.geneiousVersion fieldName="Geneious Version">
+							2022.1.1
+						</com.biomatters.geneiousVersion>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.autogeneratedEntry fieldName="" />
+					</DocumentHistoryEntryField>
+				</entryFields>
+				<entryFields>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.date fieldName="Saved">
+							1661754741528
+						</com.biomatters.date>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.user fieldName="User">
+							mea084
+						</com.biomatters.user>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.geneiousVersion fieldName="Geneious Version">
+							2022.1.1
+						</com.biomatters.geneiousVersion>
+					</DocumentHistoryEntryField>
+					<DocumentHistoryEntryField class="com.biomatters.geneious.publicapi.documents.DocumentHistoryEntryFieldImplementation">
+						<com.biomatters.autogeneratedEntry fieldName="" />
+					</DocumentHistoryEntryField>
+				</entryFields>
+			</DocumentHistory>
+		</additionalXml>
+	</geneiousDocument>
+	<fullDocument class="com.biomatters.iseek.application.NeedToUpgradeDummyDocumentForOldVersions" version="1.3-11" revisionNumber="0" geneiousVersion="2023.0.1" geneiousVersionMinimum="6.0" PluginDocument_FormatLastChanged="6.0" PluginDocument_FormatLastExtended="6.0" PluginDocument_OldestVersionSerializableTo="6.0">
+		<hiddenFields>
+			<override_modified_date type="date">
+				1674634653603
+			</override_modified_date>
+			<cache_name>
+				This file was created using Geneious 6.0 or later.
+			</cache_name>
+			<cache_created type="date">
+				1674634653603
+			</cache_created>
+			<cache_urn type="urn">
+				urn:local:.:n-ftyno28
+			</cache_urn>
+			<cache_plugin_document_urn>
+			</cache_plugin_document_urn>
+			<description>
+			</description>
+		</hiddenFields>
+		<fields>
+			<document_size type="bytes">
+				30
+			</document_size>
+		</fields>
+		<originalElement>
+			<XMLSerialisableRootElement />
+		</originalElement>
+	</fullDocument>
+	<specialRepositories>
+		<annotationDefinitions>
+			<NoteType>
+				<name>
+					Imported From
+				</name>
+				<code>
+					importedFrom
+				</code>
+				<description>
+					Imported From
+				</description>
+				<isVisible>
+					true
+				</isVisible>
+				<isDefaultVisibleInTable>
+					true
+				</isDefaultVisibleInTable>
+				<modifiedDate>
+					1673242993818
+				</modifiedDate>
+				<fields>
+					<field>
+						<name>
+							Path
+						</name>
+						<description>
+						</description>
+						<code>
+							path
+						</code>
+						<editable>
+							true
+						</editable>
+						<userModifiable>
+							false
+						</userModifiable>
+						<type>
+							java.lang.String
+						</type>
+						<constraints />
+					</field>
+					<field>
+						<name>
+							Filename
+						</name>
+						<description>
+						</description>
+						<code>
+							filename
+						</code>
+						<editable>
+							true
+						</editable>
+						<userModifiable>
+							false
+						</userModifiable>
+						<type>
+							java.lang.String
+						</type>
+						<constraints />
+					</field>
+				</fields>
+			</NoteType>
+		</annotationDefinitions>
+	</specialRepositories>
+</geneious>

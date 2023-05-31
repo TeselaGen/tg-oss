@@ -18,7 +18,9 @@
       "@teselagen/bio-parsers": ["packages/bio-parsers/src/index.js"],
       "@teselagen/file-utils": ["packages/file-utils/src/index.js"],
       "@teselagen/range-utils": ["packages/range-utils/src/index.js"],
-      "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.js"]
+      "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.js"],
+      "@teselagen/ui": ["packages/ui/src/index.js"],
+      "@teselagen/uploader": ["packages/uploader/src/index.js"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<seq:seq
+  xmlns:seq="http://jbei.org/sequence"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://jbei.org/sequence seq.xsd"
+>
+<seq:name>5_flank</seq:name>
+<seq:circular>false</seq:circular>
+<seq:sequence>tagagtgccttggactagcgacgcaaagtttttgctatcaggaaaggtgctagttccaggttggaactagccaatagttagccaacggtaagctgaacgattaatttctcaatattatatgaataaatgtatgcatagttcagagacgccatgcacgttgtccaatactatgaggctttagcaagacaaagtggagcacacgccacctggtaaaagtgaacaccgtctgctgcaaaagcacatggagttttattttgattactagacggaacactatcccccctcctgaatattgcaaaacaggggacattgaataattaagctgggcctccagtgcatgctaagaacagggagcctaccagagtagatcccttcgtatttcaactgtggcaggacagcgatctgcggagctacctaaatgctccgacagctagccgtacggcattgacagtgaaggacattggaatctctactccggagtacattccgaaaagctattattattattcggatgtacggaatacggaggagtgataagcgttagaagtacggtggattctactagaattcggatcctttagattgtgctaacgtgtcaagctagggtatcctgtagtccgtgctactcctatagctttactgcctatatccatctggtggagccagtggcccctgcacctctctgcaggacacgcggccccttcaaaaagtcaaaatagcagtcgagatcagtgaaggagacccatgctgtctcatagaaaagcaaggaacctcggaatccacatggggccgatccacatgattctacttcaagttggccattatttgctgtcacctgagacatgagatacttagtagctaaggtatgatacatggtattgatcagatgatatgagagtcatgttgggtgaatactaaggaacagttctaccaacagcctcgcggtgaatagaaaactgaccttcaaattccagcacggcgaacgaacagcatccatttt</seq:sequence>
+<seq:features>
+    <seq:feature>
+        <seq:label></seq:label>
+        <seq:complement>false</seq:complement>
+        <seq:type>width</seq:type>
+        <seq:location>
+            <seq:genbankStart>5</seq:genbankStart>
+            <seq:end>5</seq:end>
+        </seq:location>
+        <seq:seqHash>709e80c88487a2411e1ee4dfb9f22a861492d20c4765150c0c794abd70f8147c</seq:seqHash>
+    </seq:feature>
+    <seq:feature>
+        <seq:label>1kb_5_prime_flank</seq:label>
+        <seq:complement>false</seq:complement>
+        <seq:type>misc_feature</seq:type>
+        <seq:location>
+            <seq:genbankStart>1</seq:genbankStart>
+            <seq:end>1000</seq:end>
+        </seq:location>
+        <seq:attribute name="ApEinfo_fwdcolor" quoted="true" >#0080ff</seq:attribute>
+        <seq:attribute name="label" quoted="false" >1kb_5_prime_flank</seq:attribute>
+        <seq:attribute name="ApEinfo_graphicformat" quoted="false" >"arrow_data {{0 1 2 0 0 -1} {} 0}</seq:attribute>
+        <seq:attribute name="ApEinfo_revcolor" quoted="true" >green</seq:attribute>
+        <seq:seqHash>5f0abf2094d34e1c2e12d036a25f45fa1db39620818891ff82e84cd815f74da1</seq:seqHash>
+    </seq:feature>
+</seq:features>
+</seq:seq>

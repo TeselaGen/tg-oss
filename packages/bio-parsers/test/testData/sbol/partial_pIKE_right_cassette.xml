@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:sbol="http://sbols.org/v1#"
+	xmlns:sublime="http://clarkparsia.com/sublime#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+<sbol:DnaComponent rdf:about="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8">
+	<sbol:displayId>pIKERightCasette</sbol:displayId>
+	<sbol:name>pIKE Right Casette</sbol:name>
+	<sbol:description></sbol:description>
+	<sbol:annotation>
+		<sbol:SequenceAnnotation rdf:about="urn:dd88ec76-734a-40eb-8594-a4e26aa7b595">
+			<sbol:precedes rdf:resource="urn:139fd881-e36b-4b19-acbe-6ed372f18676"/>
+			<sbol:bioStart>1</sbol:bioStart>
+			<sbol:bioEnd>200</sbol:bioEnd>
+			<sbol:strand>+</sbol:strand>
+			<sbol:subComponent>
+				<sbol:DnaComponent rdf:about="http://partsregistry.org/part/BBa_R0010">
+					<sbol:displayId>BBa_R0010</sbol:displayId>
+					<sbol:name>LacI</sbol:name>
+					<sbol:description>promoter (lacI regulated)</sbol:description>
+					<sbol:dnaSequence>
+						<sbol:DnaSequence rdf:about="http://partsregistry.org/seq/partseq_185">
+							<sbol:nucleotides>caatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcagtgagcgcaacgcaattaatgtgagttagctcactcattaggcaccccaggctttacactttatgcttccggctcgtatgttgtgtggaattgtgagcggataacaatttcacaca</sbol:nucleotides>
+						</sbol:DnaSequence>
+					</sbol:dnaSequence>
+					<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+				</sbol:DnaComponent>
+			</sbol:subComponent>
+		</sbol:SequenceAnnotation>
+	</sbol:annotation>
+	<sbol:annotation>
+		<sbol:SequenceAnnotation rdf:about="urn:139fd881-e36b-4b19-acbe-6ed372f18676">
+			<sbol:precedes rdf:resource="urn:5596babc-99de-478a-964d-425f14926186"/>
+			<sbol:strand>+</sbol:strand>
+			<sbol:subComponent>
+				<sbol:DnaComponent rdf:about="urn:c951c2cc-8caa-46eb-9439-4680574ee169">
+					<sbol:displayId>Repressor1</sbol:displayId>
+					<sbol:name></sbol:name>
+					<sbol:description></sbol:description>
+					<sbol:annotation>
+						<sbol:SequenceAnnotation rdf:about="urn:f864600d-52c9-459f-bc49-4b4133695b01">
+							<sbol:precedes rdf:resource="urn:d1e2df30-12bf-499a-85d2-95736ec9a183"/>
+							<sbol:strand>+</sbol:strand>
+							<sbol:subComponent>
+								<sbol:DnaComponent rdf:about="urn:d544b3f6-0a37-45ac-83a9-5b7a6b0b19bd">
+									<sbol:displayId>RBS</sbol:displayId>
+									<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000139"/>
+								</sbol:DnaComponent>
+							</sbol:subComponent>
+						</sbol:SequenceAnnotation>
+					</sbol:annotation>
+					<sbol:annotation>
+						<sbol:SequenceAnnotation rdf:about="urn:d1e2df30-12bf-499a-85d2-95736ec9a183">
+							<sbol:strand>+</sbol:strand>
+							<sbol:subComponent>
+								<sbol:DnaComponent rdf:about="http://partsregistry.org/part/BBa_C0040">
+									<sbol:displayId>BBa_C0040</sbol:displayId>
+									<sbol:name>tetR</sbol:name>
+									<sbol:description>tetracycline repressor from transposon Tn10 (+LVA)</sbol:description>
+									<sbol:dnaSequence>
+										<sbol:DnaSequence rdf:about="http://partsregistry.org/seq/partseq_154">
+											<sbol:nucleotides>atgtccagattagataaaagtaaagtgattaacagcgcattagagctgcttaatgaggtcggaatcgaaggtttaacaacccgtaaactcgcccagaagctaggtgtagagcagcctacattgtattggcatgtaaaaaataagcgggctttgctcgacgccttagccattgagatgttagataggcaccatactcacttttgccctttagaaggggaaagctggcaagattttttacgtaataacgctaaaagttttagatgtgctttactaagtcatcgcgatggagcaaaagtacatttaggtacacggcctacagaaaaacagtatgaaactctcgaaaatcaattagcctttttatgccaacaaggtttttcactagagaatgcattatatgcactcagcgctgtggggcattttactttaggttgcgtattggaagatcaagagcatcaagtcgctaaagaagaaagggaaacacctactactgatagtatgccgccattattacgacaagctatcgaattatttgatcaccaaggtgcagagccagccttcttattcggccttgaattgatcatatgcggattagaaaaacaacttaaatgtgaaagtgggtccgctgcaaacgacgaaaactacgctttagtagcttaataa</sbol:nucleotides>
+										</sbol:DnaSequence>
+									</sbol:dnaSequence>
+									<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+								</sbol:DnaComponent>
+							</sbol:subComponent>
+						</sbol:SequenceAnnotation>
+					</sbol:annotation>
+					<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000110"/>
+				</sbol:DnaComponent>
+			</sbol:subComponent>
+		</sbol:SequenceAnnotation>
+	</sbol:annotation>
+	<sbol:annotation>
+		<sbol:SequenceAnnotation rdf:about="urn:5596babc-99de-478a-964d-425f14926186">
+			<sbol:precedes rdf:resource="urn:663cb06c-ae84-4eb6-aca1-bd7c83ed32cb"/>
+			<sbol:strand>+</sbol:strand>
+			<sbol:subComponent>
+				<sbol:DnaComponent rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b">
+					<sbol:displayId>Reporter</sbol:displayId>
+					<sbol:name></sbol:name>
+					<sbol:description></sbol:description>
+					<sbol:annotation>
+						<sbol:SequenceAnnotation rdf:about="urn:f6071601-1d80-4bd1-9142-21cd931cc545">
+							<sbol:precedes rdf:resource="urn:3aec1249-b602-47e1-b919-8826ee71d6be"/>
+							<sbol:strand>+</sbol:strand>
+							<sbol:subComponent>
+								<sbol:DnaComponent rdf:about="urn:a8ebdf89-b8ad-48d5-a7e2-6cba33225e17">
+									<sbol:displayId>rbsB</sbol:displayId>
+									<sbol:name></sbol:name>
+									<sbol:description></sbol:description>
+									<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000139"/>
+								</sbol:DnaComponent>
+							</sbol:subComponent>
+						</sbol:SequenceAnnotation>
+					</sbol:annotation>
+					<sbol:annotation>
+						<sbol:SequenceAnnotation rdf:about="urn:3aec1249-b602-47e1-b919-8826ee71d6be">
+							<sbol:strand>+</sbol:strand>
+							<sbol:subComponent>
+								<sbol:DnaComponent rdf:about="http://partsregistry.org/part/BBa_E0040">
+									<sbol:displayId>BBa_E0040</sbol:displayId>
+									<sbol:name>GFP</sbol:name>
+									<sbol:description>green fluorescent protein derived from jellyfish Aequeora victoria wild-type GFP (SwissProt: P42212</sbol:description>
+									<sbol:dnaSequence>
+										<sbol:DnaSequence rdf:about="http://partsregistry.org/seq/partseq_5309">
+											<sbol:nucleotides>atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa</sbol:nucleotides>
+										</sbol:DnaSequence>
+									</sbol:dnaSequence>
+									<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000104"/>
+								</sbol:DnaComponent>
+							</sbol:subComponent>
+						</sbol:SequenceAnnotation>
+					</sbol:annotation>
+					<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000110"/>
+				</sbol:DnaComponent>
+			</sbol:subComponent>
+		</sbol:SequenceAnnotation>
+	</sbol:annotation>
+	<sbol:annotation>
+		<sbol:SequenceAnnotation rdf:about="urn:663cb06c-ae84-4eb6-aca1-bd7c83ed32cb">
+			<sbol:strand>+</sbol:strand>
+			<sbol:subComponent>
+				<sbol:DnaComponent rdf:about="urn:22544a89-264a-4b59-b7a7-8137b262bbc2">
+					<sbol:displayId>Terminator</sbol:displayId>
+					<sbol:name></sbol:name>
+					<sbol:description></sbol:description>
+					<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
+				</sbol:DnaComponent>
+			</sbol:subComponent>
+		</sbol:SequenceAnnotation>
+	</sbol:annotation>
+	<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000110"/>
+</sbol:DnaComponent>
+
+</rdf:RDF>

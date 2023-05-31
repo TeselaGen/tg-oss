@@ -1,0 +1,1375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<geneious version="2023.0.1">
+	<versions version="2023.0.1" minimumVersion="7.1" />
+	<geneiousDocument class="com.biomatters.geneious.publicapi.documents.OperationRecordDocument" version="1.3-11" revisionNumber="2" pluginDocumentRevisionNumber="1" geneiousVersion="2023.0.1" geneiousVersionMinimum="6.0" PluginDocument_FormatLastChanged="6.0" PluginDocument_FormatLastExtended="6.0" PluginDocument_OldestVersionSerializableTo="6.0" isReferenceOnly="true">
+		<hiddenFields>
+			<cache_plugin_document_urn>
+			</cache_plugin_document_urn>
+			<cache_urn type="urn">
+				urn:local:.:82-e020sjd
+			</cache_urn>
+			<weak_referenced_documents type="list">
+				<weak_referenced_documents type="int">
+					0
+				</weak_referenced_documents>
+				<weak_referenced_documents type="int">
+					1
+				</weak_referenced_documents>
+				<weak_referenced_documents type="int">
+					2
+				</weak_referenced_documents>
+			</weak_referenced_documents>
+			<description>
+			</description>
+			<override_modified_date type="date">
+				1579654925809
+			</override_modified_date>
+			<cache_name>
+				Old Gibson Assembly
+			</cache_name>
+			<cache_created type="date">
+				1405391017726
+			</cache_created>
+			<referenced_documents type="list">
+				<referenced_documents>
+					urn:local:.:1k6-e020t2f@0
+				</referenced_documents>
+				<referenced_documents>
+					urn:local:.:1k7-e020t2f@0
+				</referenced_documents>
+				<referenced_documents>
+					urn:local:.:v4-e020sqw@28
+				</referenced_documents>
+			</referenced_documents>
+		</hiddenFields>
+		<fields>
+			<document_size type="bytes">
+				1733
+			</document_size>
+		</fields>
+		<originalElement>
+			<XMLSerialisableRootElement willActivelyLinkNewOutputDocuments="true" finishedAddingOutputDocuments="true">
+				<inputDocument class="urn" weakReference="true">
+					urn:local:.:1k6-e020t2f
+				</inputDocument>
+				<inputDocument class="urn" weakReference="true">
+					urn:local:.:1k7-e020t2f
+				</inputDocument>
+				<outputDocument class="urn" weakReference="true">
+					urn:local:.:v4-e020sqw
+				</outputDocument>
+				<operationId>
+					com.biomatters.plugins.cloning.gibson.GibsonAssemblyOperation
+				</operationId>
+				<optionsForRecreatingDescendants>
+					<reconstitutedGibsonOptions>
+						<vector>
+							<urn>
+								urn:local:.:1k3-e020t2f
+							</urn>
+							<name>
+								Digestion of pKW20088_pKW1903 (modified) - Fragment 3
+							</name>
+							<index>
+								0
+							</index>
+						</vector>
+						<inserts>
+							<insert>
+								<urn>
+									urn:local:.:1k4-e020t2f
+								</urn>
+								<index>
+									0
+								</index>
+								<name>
+									pBF-CA-ADH2-URA3@revised extraction (reversed) 2
+								</name>
+								<position>
+									1
+								</position>
+							</insert>
+						</inserts>
+						<gibsonCloningOptions>
+							<option name="choseMyVector">
+								urn:local:.:6u-3goe0in
+							</option>
+							<option name="insertSeparatelyVsSequential">
+								sequential
+							</option>
+							<childOption name="settingOptions">
+								<option name="minimumLength">
+									38
+								</option>
+								<option name="minimumTm">
+									48
+								</option>
+								<option name="saveInSubfolder">
+									true
+								</option>
+								<option name="subFolder">
+									Gibson Assembly
+								</option>
+							</childOption>
+							<childOption name="saltConcentrationOptions">
+								<option name="tmFormula">
+									1
+								</option>
+								<option name="saltCorrectionFormula">
+									1
+								</option>
+								<option name="divider_1" />
+								<option name="monovalentSaltConcentration">
+									50.0
+								</option>
+								<option name="annealingConc">
+									50.0
+								</option>
+								<option name="divalentSaltConcentration">
+									1.5
+								</option>
+								<option name="dntpConcentration">
+									0.6
+								</option>
+							</childOption>
+						</gibsonCloningOptions>
+					</reconstitutedGibsonOptions>
+				</optionsForRecreatingDescendants>
+				<timeAtWhichOperationWasRun>
+					1405391017726
+				</timeAtWhichOperationWasRun>
+			</XMLSerialisableRootElement>
+		</originalElement>
+		<additionalXml perUser="true" />
+		<additionalXml perUser="false" />
+	</geneiousDocument>
+	<geneiousDocument class="com.biomatters.geneious.publicapi.implementations.sequence.DefaultNucleotideSequence" version="1.3-11" revisionNumber="32" pluginDocumentRevisionNumber="2" geneiousVersion="2023.0.1" geneiousVersionMinimum="7.1" PluginDocument_FormatLastChanged="7.1" PluginDocument_FormatLastExtended="7.1" PluginDocument_OldestVersionSerializableTo="6.0" isReferenceOnly="false">
+		<hiddenFields>
+			<parent_operation_record_document type="int">
+				0
+			</parent_operation_record_document>
+			<cache_urn type="urn">
+				urn:local:.:v4-e020sqw
+			</cache_urn>
+			<nucleotideSequenceWithQualityCount type="int">
+				0
+			</nucleotideSequenceWithQualityCount>
+			<cache_plugin_document_urn>
+			</cache_plugin_document_urn>
+			<description>
+				Gibson Assembly of pBF-CA-ADH2-URA3@revised extraction (reversed) 2 into Digestion of pKW20088_pKW1903 (modified) - Fragment 3
+			</description>
+			<strong_referenced_documents type="list">
+				<strong_referenced_documents type="int">
+					0
+				</strong_referenced_documents>
+			</strong_referenced_documents>
+			<override_cache_name>
+				pKW-CA-URA3 - template
+			</override_cache_name>
+			<cache_name>
+				pKW-CA-URA3 - template
+			</cache_name>
+			<override_modified_date type="date">
+				1585785645401
+			</override_modified_date>
+			<cache_created type="date">
+				1416260364100
+			</cache_created>
+			<referenced_documents type="list">
+				<referenced_documents>
+					urn:local:.:82-e020sjd@0
+				</referenced_documents>
+			</referenced_documents>
+			<trimmedSequencesCount type="int">
+				0
+			</trimmedSequencesCount>
+		</hiddenFields>
+		<fields>
+			<document_size type="bytes">
+				24241
+			</document_size>
+			<molType>
+				DNA
+			</molType>
+			<sequence_length type="int">
+				12489
+			</sequence_length>
+			<topology>
+				circular
+			</topology>
+			<sequence_residues>
+				GCCTGATGCGGTATTTTCTCCTTACGCATCTGTGCGGTATTTCACACCGCATACGTCAAAGCAACCATAGTACGCGCCCTGTAGCGGCGCATTAAGCGCGGCGGGTGTGGTGGTTACGCGCAGCGTGACCGCTACACTTGCCAGCGCCTTAGCGCCCGCTCCTTTCGCTTTCTTCCCTTCCTTTCTCGCCACGTTCGCCAGCTTATTTTTTGTATACTGTTTTGTGATAGCACGAAGTTTTTCCACGGTATCTTGTTAAAAATATATATTTGTGGCGGGCTTACCTACATCAAATTAATAAGAGACTAATTATAAACTAAACACACAAGCAAGCTACTTTAGGGTAAAAGTTTATAAATGCTTTTGACGTATAAACGTTGCTTGTATTTATTATTACAATTAAAGGTGGATAGAAAACCTAGAGACTAGTTAGAAACTAATCTCAGGTTTGCGTTAAACTAAATCAGAGCCCGAGAGGTTAACAGAACCTAGAAGGGGAC
+			</sequence_residues>
+			<gcPercent decimalPlacesDisplayed="1" type="percent">
+				45.375930819120825
+			</gcPercent>
+			<modified_date type="date">
+				1416260364100
+			</modified_date>
+		</fields>
+		<originalElement>
+			<XMLSerialisableRootElement annotationsRevision="10" charSequenceValidated="true">
+				<fields>
+					<isCircular>
+						true
+					</isCircular>
+				</fields>
+				<created type="date">
+					1416260364100
+				</created>
+				<name>
+					pKW-CA-URA3 - template
+				</name>
+				<description>
+					Gibson Assembly of pBF-CA-ADH2-URA3@revised extraction (reversed) 2 into Digestion of pKW20088_pKW1903 (modified) - Fragment 3
+				</description>
+				<sequenceAnnotations>
+					<annotation>
+						<description>
+							URA3p
+						</description>
+						<type>
+							CDS
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									11453
+								</minimumIndex>
+								<maximumIndex>
+									12256
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers />
+					</annotation>
+					<annotation>
+						<description>
+							6Bo5HeX8YVvNHUsVIlU6sTMPobU.1415857363385.0
+						</description>
+						<type>
+							invisible_Parent
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									6193
+								</minimumIndex>
+								<maximumIndex>
+									18681
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers />
+					</annotation>
+					<annotation>
+						<description>
+							origin
+						</description>
+						<type>
+							origin
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									2817
+								</minimumIndex>
+								<maximumIndex>
+									2816
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers />
+					</annotation>
+					<annotation>
+						<description>
+							CEN/ARS
+						</description>
+						<type>
+							rep_origin
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									10827
+								</minimumIndex>
+								<maximumIndex>
+									11318
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers />
+					</annotation>
+					<annotation>
+						<description>
+							NotI
+						</description>
+						<type>
+							restriction site
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									6191
+								</minimumIndex>
+								<maximumIndex>
+									6198
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Recognition pattern
+								</name>
+								<value>
+									GC^GGCCGC
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									annotation group
+								</name>
+								<value>
+									GCGGCCGC
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							MscI
+						</description>
+						<type>
+							restriction site
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									8079
+								</minimumIndex>
+								<maximumIndex>
+									8084
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Recognition pattern
+								</name>
+								<value>
+									TGG^CCA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									annotation group
+								</name>
+								<value>
+									TGGCCA
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							Extracted region from pKW20088_pKW1903 (modified)
+						</description>
+						<type>
+							extracted region
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									2817
+								</minimumIndex>
+								<maximumIndex>
+									10813
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Extracted interval
+								</name>
+								<value>
+									1 -&gt; 7997
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Original Circular Sequence Length
+								</name>
+								<value>
+									14245
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							Extracted region from pKW20088_pKW1903 (modified)
+						</description>
+						<type>
+							extracted region
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									1
+								</minimumIndex>
+								<maximumIndex>
+									2816
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Extracted interval
+								</name>
+								<value>
+									11430 -&gt; 14245
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Original Circular Sequence Length
+								</name>
+								<value>
+									14245
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							Extracted region from pBF-CA-ADH2-URA3@revised
+						</description>
+						<type>
+							extracted region
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									10814
+								</minimumIndex>
+								<maximumIndex>
+									12489
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Extracted interval
+								</name>
+								<value>
+									928 &lt;- 2603
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Original Circular Sequence Length
+								</name>
+								<value>
+									5009
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							ptrA(1)
+						</description>
+						<type>
+							promoter
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									9105
+								</minimumIndex>
+								<maximumIndex>
+									9118
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+							<interval>
+								<minimumIndex>
+									5767
+								</minimumIndex>
+								<maximumIndex>
+									6190
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_label
+								</name>
+								<value>
+									ptrA
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									#80ff00
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Join Type
+								</name>
+								<value>
+									join
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							AMA1 ori for Aspergillus(1)
+						</description>
+						<type>
+							rep_origin
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									200
+								</minimumIndex>
+								<maximumIndex>
+									2816
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_label
+								</name>
+								<value>
+									AMA1 ori for Aspergillus
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									cyan
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							AMA1 ori for Aspergillus
+						</description>
+						<type>
+							rep_origin
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									2817
+								</minimumIndex>
+								<maximumIndex>
+									5093
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									cyan
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							PyrG(A.fumigatus)_1kb_downstream
+						</description>
+						<type>
+							terminator
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									8105
+								</minimumIndex>
+								<maximumIndex>
+									9104
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									cyan
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							PyrG(A.fumigatus)_1kb_upstream
+						</description>
+						<type>
+							promoter
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									6200
+								</minimumIndex>
+								<maximumIndex>
+									7199
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									cyan
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							Afu2g08360(PyrG)
+						</description>
+						<type>
+							CDS
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									7200
+								</minimumIndex>
+								<maximumIndex>
+									8104
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									#80ff00
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							AMA1 ori for Aspergillus(2)
+						</description>
+						<type>
+							rep_origin
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									5094
+								</minimumIndex>
+								<maximumIndex>
+									5447
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_label
+								</name>
+								<value>
+									AMA1 ori for Aspergillus
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									cyan
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							ptrA
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									6199
+								</minimumIndex>
+								<maximumIndex>
+									6199
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									#80ff00
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							EagI
+						</description>
+						<type>
+							misc_feature
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									6199
+								</minimumIndex>
+								<maximumIndex>
+									6199
+								</maximumIndex>
+								<direction>
+									none
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									ApEinfo_fwdcolor
+								</name>
+								<value>
+									cyan
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_revcolor
+								</name>
+								<value>
+									green
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									ApEinfo_graphicformat
+								</name>
+								<value>
+									arrow_data {{0 1 2 0 0 -1} {} 0} width 5 offset 0
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									NCBI Feature Key
+								</name>
+								<value>
+									misc_feature
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							URA3 prom
+						</description>
+						<type>
+							Promoter
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									12258
+								</minimumIndex>
+								<maximumIndex>
+									12483
+								</maximumIndex>
+								<direction>
+									rightToLeft
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Imported from
+								</name>
+								<value>
+									&lt;a href="http://wishart.biology.ualberta.ca/PlasMapper"&gt;PlasMapper&lt;/a&gt;
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									URA3 prom
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									98.67%
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							amp marker
+						</description>
+						<type>
+							CDS
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									9138
+								</minimumIndex>
+								<maximumIndex>
+									9998
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Imported from
+								</name>
+								<value>
+									&lt;a href="http://wishart.biology.ualberta.ca/PlasMapper"&gt;PlasMapper&lt;/a&gt;
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									amp marker
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									99.88%
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									modified by
+								</name>
+								<value>
+									MEA084
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+					<annotation>
+						<description>
+							pBR322 origin
+						</description>
+						<type>
+							Origin of Replication
+						</type>
+						<intervals>
+							<interval>
+								<minimumIndex>
+									10153
+								</minimumIndex>
+								<maximumIndex>
+									10772
+								</maximumIndex>
+								<direction>
+									leftToRight
+								</direction>
+							</interval>
+						</intervals>
+						<qualifiers>
+							<qualifier>
+								<name>
+									Imported from
+								</name>
+								<value>
+									&lt;a href="http://wishart.biology.ualberta.ca/PlasMapper"&gt;PlasMapper&lt;/a&gt;
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred From
+								</name>
+								<value>
+									pBR322 origin
+								</value>
+							</qualifier>
+							<qualifier>
+								<name>
+									Transferred Similarity
+								</name>
+								<value>
+									99.52%
+								</value>
+							</qualifier>
+						</qualifiers>
+					</annotation>
+				</sequenceAnnotations>
+				<charSequence>
+					GCCTGATGCGGTATTTTCTCCTTACGCATCTGTGCGGTATTTCACACCGCATACGTCAAAGCAACCATAGTACGCGCCCTGTAGCGGCGCATTAAGCGCGGCGGGTGTGGTGGTTACGCGCAGCGTGACCGCTACACTTGCCAGCGCCTTAGCGCCCGCTCCTTTCGCTTTCTTCCCTTCCTTTCTCGCCACGTTCGCCAGCTTATTTTTTGTATACTGTTTTGTGATAGCACGAAGTTTTTCCACGGTATCTTGTTAAAAATATATATTTGTGGCGGGCTTACCTACATCAAATTAATAAGAGACTAATTATAAACTAAACACACAAGCAAGCTACTTTAGGGTAAAAGTTTATAAATGCTTTTGACGTATAAACGTTGCTTGTATTTATTATTACAATTAAAGGTGGATAGAAAACCTAGAGACTAGTTAGAAACTAATCTCAGGTTTGCGTTAAACTAAATCAGAGCCCGAGAGGTTAACAGAACCTAGAAGGGGACTAGATATCCGGGTAGGGAAACAAAAAAAAAAAACAAGACAGCCACATATTAGGGAGACTAGTTAGAAGCTAGTTCCAGGACTAGGAAAATAAAAGACAATGATACCACAGTCTAGTTGACAACTAGATAGATTCTAGATTGAGGCCAAAGTCTCTGAGATCCAGGTTAGTTGCAACTAATACTAGTTAGTATCTAGTCTCCTATAACTCTGAAGCTAGAATAACTTACTACTATTATCCTCACCACTGTTCAGCTGCGCAAACGGAGTGATTGCAAGGTGTTCAGAGACTAGTTATTGACTAGTCAGTGACTAGCAATAACTAACAAGGTATTAACCTACCATGTCTGCCATCACCCTGCACTTCCTCGGGCTCAGCAGCCTTTTCCTCCTCATTTTCATGCTCATTTTCCTTGTTTAAGACTGTGACTAGTCAAAGACTAGTCCAGAACCACAAAGGAGAAATGTCTTACCACTTTCTTCATTGCTTGTCTCTTTTGCATTATCCATGTCTGCAACTAGTTAGAGTCTAGTTAGTGACTAGTCCGACGAGGACTTGCTTGTCTCCGGATTGTTGGAGGAACTCTCCAGGGCCTCAAGATCCACAACAGAGCCTTCTAGAAGACTGGTCAATAACTAGTTGGTCTTTGTCTGAGTCTGACTTACGAGGTTGCATACTCGCTCCCTTTGCCTCGTCAATCGATGAGAAAAAGCGCCAAAACTCGCAATATGGCTTTGAACCACACGGTGCTGAGACTAGTTAGAATCTAGTCCCAAACTAGCTTGGATAGCTTACCTTTGCCCTTTGCGTTGCGACAGGTCTTGCAGGGTATGGTTCCTTTCTCACCAGCTGATTTAGCTGCCTTGCTACCCTCACGGCGGATCTGCATAAAGAGTGGCTAGAGGTTATAAATTAGCACTGATCCTAGGTACGGGGCTGAATGTAACTTGCCTTTCCTTTCTCATCGCGCGGCAAGACAGGCTTGCTCAAATTCCTACCAGTCACAGGGGTATGCACGGCGTACGGACCACTTGAACTAGTCACAGATTAGTTAGCAACTAGTCTGCATTGAATGGCTGTACTTACGGGCCCTCGCCATTGTCCTGATCATTTCCAGCTTCACCCTCGTTGCTGCAAAGTAGTTAGTGACTAGTCAAGGACTAGTTGAAATGGGAGAAGAAACTCACGAATTCTCGACACCCTTAGTATTGTGGTCCTTGGACTTGGTGCTGCTATATATTAGCTAATACACTAGTTAGACTCACAGAAACTTACGCAGCTCGCTTGCGCTTCTTGGTAGGAGTCGGGGTTGGGAGAACAGTGCCTTCAAACAAGCCTTCATACCATGCTACTTGACTAGTCAGGGACTAGTCACCAAGTAATCTAGATAGGACTTGCCTTTGGCCTCCATCAGTTCCTTCATAGTGGGAGGTCCATTGTGCAATGTAAACTCCATGCCGTGGGAGTTCTTGTCCTTCAAGTGCTTGACCAATATGTTTCTGTTGGCAGAGGGAACCTGTCAACTAGTTAATAACTAGTCAGAAACTAGTATAGCAGTAGACTCACTGTACGCTTGAGGCATCCCTTCACTCGGCAGTAGACTTCATATGGATGGATATCAGGCACGCCATTGTCGTCCTGTGGACTAGTCAGTAACTAGGCTTAAAGCTAGTCGGGTCGGCTTACTATCTTGAAATCCGGCAGCGTAAGCTCCCCGTCCTTAACTGCCTCGAGATAGTGACAGTACTCTGGGGACTTTCGGAGATCGTTATCGCGAATGCTCGGCATACTAATCGTTGACTAGTCTTGGACTAGTCCCGAGCAAAAAGGATTGGAGGAGGAGGAGGAAGGTGAGAGTGAGACAAAGAGCGAAATAAGAGCTTCAAAGGCTATCTCTAAGCAGTATGAAGGTTAAGTATCTAGTTCTTGACTAGATTTAAAAGAGATTTCGACTAGTTATGTACCTGGAGTTTGGATATAGGAATGTGTTGTGGTAACGAAATGTAAGGGGGAGGAAAGAAAAAGTCGGTCAAGAGGTAACTCTAAGTCGGCCATTCCTTTTTGGGAGGCGCTAACCATAAACGGCATGGTCGACTTAGAGTTAGCTCAGGGAATTTAGGGAGTTATCTGCGACCACTGGACTCTCAGGCTTTCCATTGGGGTACTAACATAGCCATCAAATGCCGGCCCGTGTTTAATCTCCTCGAGATGGCTGGGCTCACATGCGTTCTACTCAAAAACTCTTATACCTAGGCCCTCTCCCAATCGTGTATGTTTGGACCTTCCTCTCTCACACTTTGGATAACATCAAGCATACCTGCAGATTTTGACCTAGTTAACAAGGCACATCATGCTATCACTTCCAACACTCTTGCTGAGCGCGTTCTGCCTTGCCTTTCTGGTTCTACGAAGTATCCAGTCCCGCCTGCAACGCCGCAGAAACGCCAAAAGGTGGGGTTGTCAACCGCCAGCTAGAGCTCCATCGGGATTCTTTGGCATTCCGCCGTTCCTCGGTGGTCGCAGATAACTCCCTAAATTCCCTGAGCTAACTCTAAGTCGACCATGCCGTTTATGGTTAGCGCCTCCCAAAAAGGAATGGCCGACTTAGAGTTACCTCTTGACCGACTTTTTCTTTCCTCCCCCTTACATTTCGTTACCACAACACATTCCTATATCCAAACTCCAGGTACATAACTAGTCGAAATCTCTTTTAAATCTAGTCAAGAACTAGATACTTAACCTTCATACTGCTTAGAGATAGCCTTTGAAGCTCTTATTTCGCTCTTTGTCTCACTCTCACCTTCCTCCTCCTCCTCCAATCCTTTTTGCTCGGGACTAGTCCAAGACTAGTCAACGATTAGTATGCCGAGCATTCGCGATAACGATCTCCGAAAGTCCCCAGAGTACTGTCACTATCTCGAGGCAGTTAAGGACGGGGAGCTTACGCTGCCGGATTTCAAGATAGTAAGCCGACCCGACTAGCTTTAAGCCTAGTTACTGACTAGTCCACAGGACGACAATGGCGTGCCTGATATCCATCCATATGAAGTCTACTGCCGAGTGAAGGGATGCCTCAAGCGTACAGTGAGTCTACTGCTATACTAGTTTCTGACTAGTTATTAACTAGTTGACAGGTTCCCTCTGCCAACAGAAACATATTGGTCAAGCACTTGAAGGACAAGAACTCCCACGGCATGGAGTTTACATTGCACAATGGACCTCCCACTATGAAGGAACTGATGGAGGCCAAAGGCAAGTCCTATCTAGATTACTTGGTGACTAGTCCCTGACTAGTCAAGTAGCATGGTATGAAGGCTTGTTTGAAGGCACTGTTCTCCCAACCCCGACTCCTACCAAGAAGCGCAAGCGAGCTGCGTAAGTTTCTGTGAGTCTAACTAGTGTATTAGCTAATATATAGCAGCACCAAGTCCAAGGACCACAATACTAAGGGTGTCGAGAATTCGTGAGTTTCTTCTCCCATTTCAACTAGTCCTTGACTAGTCACTAACTACTTTGCAGCAACGAGGGTGAAGCTGGAAATGATCAGGACAATGGCGAGGGCCCGTAAGTACAGCCATTCAATGCAGACTAGTTGCTAACTAATCTGTGACTAGTTCAAGTGGTCCGTACGCCGTGCATACCCCTGTGACTGGTAGGAATTTGAGCAAGCCTGTCTTGCCGCGCGATGAGAAAGGAAAGGCAAGTTACATTCAGCCCCGTACCTAGGATCAGTGCTAATTTATAACCTCTAGCCACTCTTTATGCAGATCCGCCGTGAGGGTAGCAAGGCAGCTAAATCAGCTGGTGAGAAAGGAACCATACCCTGCAAGACCTGTCGCAACGCAAAGGGCAAAGGTAAGCTATCCAAGCTAGTTTGGGACTAGATTCTAACTAGTCTCAGCACCGTGTGGTTCAAAGCCATATTGCGAGTTTTGGCGCTTTTTCTCATCGATTGACGAGGCAAAGGGAGCGAGTATGCAACCTCGTAAGTCAGACTCAGACAAAGACCAACTAGTTATTGACCAGTCTTCTAGAAGGCTCTGTTGTGGATCTTGAGGCCCTGGAGAGTTCCTCCAACAATCCGGAGACAAGCAAGTCCTCGTCGGACTAGTCACTAACTAGACTCTAACTAGTTGCAGACATGGATAATGCAAAAGAGACAAGCAATGAAGAAAGTGGTAAGACATTTCTCCTTTGTGGTTCTGGACTAGTCTTTGACTAGTCACAGTCTTAAACAAGGAAAATGAGCATGAAAATGAGGAGGAAAAGGCTGCTGAGCCCGAGGAAGTGCAGGGTGATGGCAGACATGGTAGGTTAATACCTTGTTAGTTATTGCTAGTCACTGACTAGTCAATAACTAGTCTCTGAACACCTTGCAATCACTCCGTTTGCGCAGCTGAACAGTGGTGAGGATAATAGTAGTAAGTTATTCTAGCTTCAGAGTTATAGGAGACTAGATACTAACTAGTATTAGTTGCAACTAACCTGGATCTCAGAGACTTTGGCCTCAATCTAGAATCTATCTAGTTGTCAACTAGACTGTGGTATCATTGTCTTTTATTTTCCTAGTCCTGGAACTAGCTTCTAACTAGTCTCCCTAATATGTGGCTGTCTTGTTTTTTTTTTTTGTTTCCCTACCCGGATATCTAGTCCCCTTCTAGGTTCTGTTAACCTCTCGGGCTCTGATTTAGTTTAACGCAAACCTGAGATTAGTTTCTAACTAGTCTCTAGGTTTTCTATCCACCTTTAATTGTAATAATAAATACAAGCAACGTTTATACGTCAAAAGCATTTATAAACTTTTACCCTAAAGTAGCTTGCTTGTGTGTTTAGTTTATAATTAGTCTCTTATTAATTTGATGTAGGTAAGCCCGCCACAAATATATATTTTTAACAAGATACCGTGGAAAAACTTCGTGCTATCACAAAACAGTATACAAAAAATAAGCTGGCTTTCCCCGTCAAGCTCTAAATCGGGGGCTCCCTTTAGGGTTCCGATTTAGTGCTTTACGGCACCTCGACCCCAAAAAACTTGATTTGGGTGATGGTTCACGTAGTGGGCCATCGCCCTGATAGACGGTTTTTCGCCCTTTGACGTTGGAGTCCACGTTCTTTAATAGTGGACTCTTGTTCCAAACTGGAACAACACTCAACTCTATCTCGGGCTATTCTTTTGATTTATAAGGGATTTTGCCGATTTCGGTCTATTGGTTAAAAAATGAGCTGATTTAACAAAAATTTAACGCGAATTTTAACAAAATGGGGTGACGATGAGCCGCTCTTGCATCTTTGTTTGTATTATACTGTCTTTCTTGTTACACATAATTATTCTAGAATGCCCCACCGTTACATACGGGACACAGCCATTTACATATGCATGTGGATTACGAGCTAACGAGTTCATTCAAATCTCAGAACTATCACATAATCATCATTCCCCTATCGTCAAAGACCGTAAGACAAATCCGGTTCATGCACTGAACCCATTCGGGTAGTGAGTCATTTACTCAGCACACTCGCGCTGACGCTCGTCGAACACCTTCAATGCCTCCTCGGCAGCCTTGACACCACTGAGAACCATGGCACCGAAGGTAGGGCCCATGCGGTTAAAGCCATCAATTTCAGACAGCTCCATACCGCCGATTATCAAGCCCTTAGTAACCTCGCGGGTGTTCTTGACGATGGCATCCTGCGGCCGCCCAGAAAATTACGGGTATGTCCTCCACTGTGTTGAAGTCAGAAAAACAATCGATAATTTGAAGCTCATTAAAATGCCAGTTCCGTCGTCGCCGTTGCCCTAGGAGCTATTCCAGTGCTTAGCTTCATTCATGGATGTATCGTGACTGGCCTTCGGAAGGATGCCAAGGTCCCCTATCCGCACAGCTATGCGACCGTTGAGCAATGCAAGTCAAATGTGTGCATACCTGGTCTTTGGTTTGGTACACCGCTATGTGAAGATTATTAATGCTGAAGTCATGATACAGGCCAAAGCCGAGCAATTTAACTGCGCGCAGCGGGCCCACGCTAACTACCTCGAGAATATGCCTCAAACAATGCTCTTCACCCTCTTCGCGGGTCTGAAATACCCTCACCTGGCAACAGCAATTGGCGCTTCATGGCTGTTTTTCCGATCTCTCTACTTGTACGGCTATGTGTACTCGGGTAAGCCACAAGGCAAGGGCAGATTGCTGGGAGGTTTCTTCTGGTTTTCTCAAGGCGCTCTGTGGGCTCTGAGTGTGTTTGGTGTTGCCAAAGACATGATCTCTTACTGAGAGTTATTCTGTGTCTGACGAAATATGTTGTGTATATATATATATGTACGTTAAAAGTTCCGTGGAGTTACCAGTGATTGACCAATGTTTTATCTTCTACAGTTCTGCCTGTCTACCCCATTCTAGCTGTACCTGACTACAGAGTAGTTTAATTGTGGTTGACCCCACAGTCGGAGGCGGAGGAATACAGCACCGATGTGGCCTGTCTCCATCCAGATTGGCACGCAATTTTTACACGCGGAAAAGATCGAGATAGAGTACGACTTTAAATTTAGTCCCCGGCGGCTTCTATTTTAGAATATTTGAGATTTGATTCTCAAGCAATTGATTTGGTTGGGTCACCCTCAATTGGATAATATACCTCATTGCTCGGCTACTTCAACTCATCAATCACCGTCATACCCCGCATATAACCCTCCATTCCCACGATGTCGTCCAAGTCGCAATTGACTTACGGTGCTCGAGCCAGCAAGCACCCCAATCCTCTGGCAAAGAGACTTTTTGAGATTGCCGAAGCAAAGAAGACAAACGTTACCGTCTCTGCTGATGTGACGACAACCCGAGAACTCCTGGACCTCGCTGACCGTACGGAAGCTGTTGGATCCAATACATATGCCGTCTAGCAATGGACTAATCAACTTTTGATGATACAGGTCTCGGTCCCTACATCGCCGTCATCAAGACACACATCGACATCCTCACCGATTTCAGCGTCGACACTATCAATGGCCTGAATGTGCTGGCTCAAAAGCACAACTTTTTGATCTTCGAGGACCGCAAATTCATCGACATCGGCAATACCGTCCAGAAGCAATACCACGGCGGTGCTCTGAGGATCTCCGAATGGGCCCACATTATCAACTGCAGCGTTCTCCCTGGCGAGGGCATCGTCGAGGCTCTGGCCCAGACCGCATCTGCGCAAGACTTCCCCTATGGTCCTGAGAGAGGACTGTTGGTCCTGGCAGAGATGACCTCCAAAGGATCGCTGGCTACGGGCGAGTATACCAAGGCATCGGTTGACTACGCTCGCAAATACAAGAACTTCGTTATGGGTTTCGTGTCGACGCGGGCCCTGACGGAAGTGCAGTCGGATGTGTCTTCAGCCTCGGAGGATGAAGATTTCGTGGTCTTCACGACGGGTGTGAACCTCTCTTCCAAAGGAGATAAGCTTGGACAGCAATACCAGACTCCTGCATCGGCTATTGGACGCGGTGCCGACTTTATCATCGCCGGTCGAGGCATCTACGCTGCTCCCGACCCGGTTGAAGCTGCACAGCGGTACCAGAAAGAAGGCTGGGAAGCTTATATGGCCAGAGTATGCGGCAAGTCATGATTTCCTCTTGGAGCAAAAGTGTAGTGCCAGTACGAGTGTTGTGGAGGAAGGCTGCATACATTGTGCCTGTCATTAAACGATGAGCTCGTCCGTATTGGCCCCTGTAATGCCATGTTTTCCGCCCCCAATCGTCAAGGTTTTCCCTTTGTTAGATTCCTACCAGTCATCTAGCAAGTGAGGTAAGCTTTGCCAGAAACGCCAAGGCTTTATCTATGTAGTCGATAAGCAAAGTGGACTGATAGCTTAATATGGAAGGTCCCTCAGGACAAGTCGACCTGTGCAGAAGAGATAACAGCTTGGCATCACGCATCAGTGCCTCCTCTCAGACAGAATAAGTCGCCATAAGTTATCGACCGAACCTAGGTAGGGTATATTTGGTGACGACAATACCTCCCGACGATACCTGGATTAGACACCGTATGCCGCGAATTAACGCCTTCCGACCAAGTCCCTTTTGGTGATCGACACTTTAGGATCATCTCCTGCCAGTCGCCCAGACTGACGGTGTTATGGTGGCGCGCTATGGCTTTCCTAGCCGGTCAAGCTCCGTGCACTAGAGAGCGGAGAAGGAGGGGGAGTTGATAGGGAATGATATCTAGGTAGAGAAGTACTCCAACCAGAGATATGCGGATCAATGCTCCGGCAGTTGTTAGCATACCCCAACCTCGTTTAAGTATCCTCTTCTTCCATCCATCTTTATCATTATTTGTCTATGTGCATCCCTAGATCACGTCAATTATTTCGATAAATGGATACGTGCACTCGGGAATGCGTGATTGGCTCGTCTCGTGTTCTCAGTTCCTCATTCCCCCCCACGTTACATTGACAACGGAGTATTAGCCTATGGTCCTGTTCGATAAGCTTGCTCCATCGCCTCCACTACGTCAAGCGGAGTATCAGACATGAGCTCTACCCCAGATATCGCCTGCTTATCGCTGGTTGCTTTGTCATGCAAGTACAGATCACATCGGCAATTCTGATAACAGATGGTGCCATTGTCCCGTAATCAATTGCCCATTGAAAAAGGAAGAGTATGAGTATTCAACATTTCCGTGTCGCCCTTATTCCCTTTTTTGCGGCATTTTGCCTTCCTGTTTTTGCTCACCCAGAAACGCTGGTGAAAGTAAAAGATGCTGAAGATCAGTTGGGTGCACGAGTGGGTTACATCGAACTGGATCTCAACAGCGGTAAGATCCTTGAGAGTTTTCGCCCCGAAGAACGTTTTCCAATGATGAGCACTTTTAAAGTTCTGCTATGTGGCGCGGTATTATCCCGTATTGACGCCGGGCAAGAGCAACTCGGTCGCCGCATACACTATTCTCAGAATGACTTGGTTGAGTACTCACCAGTCACAGAAAAGCATCTTACGGATGGCATGACAGTAAGAGAATTATGCAGTGCTGCCATAACCATGAGTGATAACACTGCGGCCAACTTACTTCTGACAACGATCGGAGGACCGAAGGAGCTAACCGCTTTTTTGCACAACATGGGGGATCATGTAACTCGCCTTGATCGTTGGGAACCGGAGCTGAATGAAGCCATACCAAACGACGAGCGTGACACCACGATGCCTGTAGCAATGGCAACAACGTTGCGCAAACTATTAACTGGCGAACTACTTACTCTAGCTTCCCGGCAACAATTAATAGACTGGATGGAGGCGGATAAAGTTGCAGGACCACTTCTGCGCTCGGCCCTTCCGGCTGGCTGGTTTATTGCTGATAAATCTGGAGCCGGTGAGCGTGGGTCTCGCGGTATCATTGCAGCACTGGGGCCAGATGGTAAGCCCTCCCGTATCGTAGTTATCTACACGACGGGGAGTCAGGCAACTATGGATGAACGAAATAGACAGATCGCTGAGATAGGTGCCTCACTGATTAAGCATTGGTAACTGTCAGACCAAGTTTACTCATATATACTTTAGATTGATTTAAAACTTCATTTTTAATTTAAAAGGATCTAGGTGAAGATCCTTTTTGATAATCTCATGACCAAAATCCCTTAACGTGAGTTTTCGTTCCACTGAGCGTCAGACCCCGTAGAAAAGATCAAAGGATCTTCTTGAGATCCTTTTTTTCTGCGCGTAATCTGCTGCTTGCAAACAAAAAAACCACCGCTACCAGCGGTGGTTTGTTTGCCGGATCAAGAGCTACCAACTCTTTTTCCGAAGGTAACTGGCTTCAGCAGAGCGCAGATACCAAATACTGTTCTTCTAGTGTAGCCGTAGTTAGGCCACCACTTCAAGAACTCTGTAGCACCGCCTACATACCTCGCTCTGCTAATCCTGTTACCAGTGGCTGCTGCCAGTGGCGATAAGTCGTGTCTTACCGGGTTGGACTCAAGACGATAGTTACCGGATAAGGCGCAGCGGTCGGGCTGAACGGGGGGTTCGTGCACACAGCCCAGCTTGGAGCGAACGACCTACACCGAACTGAGATACCTACAGCGTGAGCTATGAGAAAGCGCCACGCTTCCCGAAGGGAGAAAGGCGGACAGGTATCCGGTAAGCGGCAGGGTCGGAACAGGAGAGCGCACGAGGGAGCTTCCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCTCTGACTTGAGCGTCGATTTTTGTGATGCTCGTCAGGGGGGCGGAGCCTATGGAAAAACGCCAGCAACGCGGCCTTTTTACGGTTCCTGGCCTTTTGCTGGCCTTTTGCTCATGATTACGAATTCATCACGTGCTATAAAAATAATTATAATTTAAATTTTTTAATATAAATATATAAATTAAAAATAGAAAGTAAAAAAAGAAATTAAAGAAAAAATAGTTTTTGTTTTCCGAAGATGTAAAAGACTCTAGGGGGATCGCCAACAAATACTACCTTTTATCTTGCTCTTCCTGCTCTCAGGTATTAATGCCGAATTGTTTCATCTTGTCTGTGTAGAAGACCACACACGAAAATCCTGTGATTTTACATTTTACTTATCGTTAATCGAATGTATATCTATTTAATCTGCTTTTCTTGTCTAATAAATATATATGTAAAGTACGCTTTTTGTTGAAATTTTTTAAACCTTTGTTTATTTTTTTTTCTTCATTCCGTAACTCTTCTACCTTCTTTATTTACTTTCTAAAATCCAAATACAAAACATAAAAATAAATAAACACAGAGTAAATTCCCAAATTATTCCATCATTAAAAGATACGAGGCGCGTGTAAGTTACGAATTCGAGCTCGGTACCCGGGATAACTTCGTATAATGTATGCTATACGAAGTTATGGGTAATAACTGATATAATTAAATTGAAGCTCTAATTTGTGAGTTTAGTATACATGCATTTACTTATAATACAGTTTTTTAGTTTTGCTGGCCGCATCTTCTCAAATATGCTTCCCAGCCTGCTTTTCTGTAACGTTCACCCTCTACCTTAGCATCCCTTCCCTTTGCAAATAGTCCTCTTCCAACAATAATAATGTCAGATCCTGTAGAGACCACATCATCCACGGTTCTATACTGTTGACCCAATGCGTCTCCCTTGTCATCTAAACCCACACCGGGTGTCATAATCAACCAATCGTAACCTTCATCTCTTCCACCCATGTCTCTTTGAGCAATAAAGCCGATAACAAAATCTTTGTCGCTCTTCGCAATGTCAACAGTACCCTTAGTATATTCTCCAGTAGATAGGGAGCCCTTGCATGACAATTCTGCTAACATCAAAAGGCCTCTAGGTTCCTTTGTTACTTCTTCTGCCGCCTGCTTCAAACCGCTAACAATACCTGGGCCCACCACACCGTGTGCATTCGTAATGTCTGCCCATTCTGCTATTCTGTATACACCCGCAGAGTACTGCAATTTGACTGTATTACCAATGTCAGCAAATTTTCTGTCTTCGAAGAGTAAAAAATTGTACTTGGCGGATAATGCCTTTAGCGGCTTAACTGTGCCCTCCATGGAAAAATCAGTCAAGATATCCACATGTGTTTTTAGTAAACAAATTTTGGGACCTAATGCTTCAACTAACTCCAGTAATTCCTTGGTGGTACGAACATCCAATGAAGCACACAAGTTTGTTTGCTTTTCGTGCATGATATTAAATAGCTTGGCAGCAACAGGACTAGGATGAGTAGCAGCACGTTCCTTATATGTAGCTTTCGACATGATTTATCTTCGTTTCCTGCAGGTTTTTGTTCTGTGCAGTTGGGTTAAGAATACTGGGCAATTTCATGTTTCTTCAACACTACATATGCGTATATATACCAATCTAAGTCTGTGCTCCTTCCTTCGTTCTTCCTTCTGTTCGGAGATTACCGAATCAAAAAAATTTCAAGGAAACCGAAATCAAAAAAAAGAATAAAAAAAAAATGATGAATTGAATTGAAAAGCGTGGTGCA
+				</charSequence>
+			</XMLSerialisableRootElement>
+		</originalElement>
+		<additionalXml perUser="true" />
+		<additionalXml perUser="false">
+			<sequenceViewOptions geneiousVersion="2023.0.1" additionalXmlKey="sequenceViewOptions">
+				<SequenceViewerState>
+					<zoom>
+						0.003347289263528043
+					</zoom>
+					<SequenceViewerSelectionState>
+						<selectedRegions>
+							<element class="com.biomatters.plugins.sequenceviewer.selection.SelectedRegion">
+								<SelectedRegion>
+									<residues>
+										<XMLSerialisableRootElement>
+											<from>
+												5761
+											</from>
+											<to>
+												6192
+											</to>
+										</XMLSerialisableRootElement>
+									</residues>
+									<sequences>
+										<XMLSerialisableRootElement>
+											<from>
+												0
+											</from>
+											<to>
+												1
+											</to>
+										</XMLSerialisableRootElement>
+									</sequences>
+								</SelectedRegion>
+							</element>
+						</selectedRegions>
+					</SequenceViewerSelectionState>
+					<SequenceViewerLocation>
+						<sequenceNumber>
+							0
+						</sequenceNumber>
+						<residueNumber>
+							6597
+						</residueNumber>
+						<xOffset>
+							0
+						</xOffset>
+						<yOffset>
+							-202
+						</yOffset>
+					</SequenceViewerLocation>
+				</SequenceViewerState>
+				<translation>
+					<option name="frame">
+						SelectionOrAnnotation
+					</option>
+					<option name="relativeTo">
+						sequence
+					</option>
+				</translation>
+				<liveAnnotators>
+					<option name="com.biomatters.plugins.featureFinder.FeatureFinder_NUCLEOTIDEOn">
+						false
+					</option>
+					<option name="ORF_Annotation_GeneratorOn">
+						false
+					</option>
+				</liveAnnotators>
+				<restrictionSites>
+					<childOption name="com.biomatters.plugins.restrictionAnalysis.RestrictionSiteAnnotationGenerator">
+						<childOption name="com.biomatters.plugins.restrictionAnalysis.RestrictionSiteAnnotationGenerator">
+							<option name="excluded">
+								(1, 12489)
+							</option>
+							<option name="grabExcludeRangeOption">
+								[1,12489)
+							</option>
+						</childOption>
+					</childOption>
+				</restrictionSites>
+			</sequenceViewOptions>
+		</additionalXml>
+	</geneiousDocument>
+	<excludedDocument class="urn">
+		urn:local:.:1k6-e020t2f
+	</excludedDocument>
+	<excludedDocument class="urn">
+		urn:local:.:1k7-e020t2f
+	</excludedDocument>
+	<fullDocument class="com.biomatters.iseek.application.NeedToUpgradeDummyDocumentForOldVersions" version="1.3-11" revisionNumber="0" geneiousVersion="2023.0.1" geneiousVersionMinimum="6.0" PluginDocument_FormatLastChanged="6.0" PluginDocument_FormatLastExtended="6.0" PluginDocument_OldestVersionSerializableTo="6.0">
+		<hiddenFields>
+			<override_modified_date type="date">
+				1674634764542
+			</override_modified_date>
+			<cache_name>
+				This file was created using Geneious 6.0 or later.
+			</cache_name>
+			<cache_created type="date">
+				1674634764542
+			</cache_created>
+			<cache_urn type="urn">
+				urn:local:.:z-ftynwme
+			</cache_urn>
+			<cache_plugin_document_urn>
+			</cache_plugin_document_urn>
+			<description>
+			</description>
+		</hiddenFields>
+		<fields>
+			<document_size type="bytes">
+				30
+			</document_size>
+		</fields>
+		<originalElement>
+			<XMLSerialisableRootElement />
+		</originalElement>
+	</fullDocument>
+</geneious>

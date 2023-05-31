@@ -1,7 +1,7 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
 import { camelCase, flatMap, remove, startsWith, snakeCase } from "lodash";
 import { loadAsync } from "jszip";
-import Promise from "bluebird";
+import * as Promise from "bluebird";
 import { parse, unparse } from "papaparse";
 
 const logDebug = (...args) => {
