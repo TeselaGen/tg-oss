@@ -12,8 +12,6 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.14.5",
-    "@commitlint/cli": "^17.0.0",
-    "@commitlint/config-conventional": "^17.0.0",
     "@gmod/gff": "^1.2.1",
     "@jscutlery/semver": "^3.0.0",
     "@nx/cypress": "16.2.2",
