@@ -1,5 +1,4 @@
 import jbeiXmlToJson from "../src/jbeiXmlToJson";
-import anyToJson from "../src/anyToJson";
 import path from "path";
 import fs from "fs";
 import chai from "chai";

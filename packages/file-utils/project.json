@@ -23,7 +23,7 @@
     },
     "publish": {
       "command": "node tools/scripts/publish.mjs file-utils {args.ver} {args.tag}",
-      "dependsOn": ["build"]
+      "dependsOn": ["test", "build"]
     },
     "lint": {
       "executor": "@nx/linter:eslint",

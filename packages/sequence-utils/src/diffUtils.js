@@ -3,7 +3,7 @@ import {
   diff,
   patch,
   reverse,
-} from 'jsondiffpatch';
+} from 'jsondiffpatch-rc';
 
 import tidyUpSequenceData from './tidyUpSequenceData';
 

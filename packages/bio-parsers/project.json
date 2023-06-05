@@ -19,7 +19,7 @@
     },
     "publish": {
       "command": "node tools/scripts/publish.mjs bio-parsers {args.ver} {args.tag}",
-      "dependsOn": ["build"]
+      "dependsOn": ["test", "build"]
     },
     "test": {
       "executor": "@nx/vite:test",
