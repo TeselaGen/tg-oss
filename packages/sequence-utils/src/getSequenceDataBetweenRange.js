@@ -4,7 +4,7 @@ import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRange
 import insertSequenceDataAtPosition from "./insertSequenceDataAtPosition";
 import {getSequenceWithinRange, getZeroedRangeOverlaps} from "@teselagen/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
-import annotationTypes from "./annotationTypes";
+import { annotationTypes } from "./annotationTypes";
 
 export default function getSequenceDataBetweenRange(
   seqData,

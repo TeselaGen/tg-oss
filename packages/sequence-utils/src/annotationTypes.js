@@ -1,4 +1,4 @@
-export default [
+export const annotationTypes = [
   "features",
   "warnings",
   "assemblyPieces",

@@ -13,6 +13,7 @@ import {
 
 export * from './computeDigestFragments';
 export * from './diffUtils';
+export * from './annotationTypes';
 
 /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
 //tnr: these are deprecated exports and should no longer be used!
@@ -40,7 +41,6 @@ export { default as getVirtualDigest } from './getVirtualDigest';
 export { default as isEnzymeType2S } from './isEnzymeType2S';
 export { default as insertGapsIntoRefSeq } from './insertGapsIntoRefSeq';
 export { default as adjustBpsToReplaceOrInsert } from './adjustBpsToReplaceOrInsert';
-export { default as annotationTypes } from './annotationTypes';
 export { default as calculatePercentGC } from './calculatePercentGC';
 export { default as calculateTm } from './calculateTm';
 export { default as cutSequenceByRestrictionEnzyme } from './cutSequenceByRestrictionEnzyme';

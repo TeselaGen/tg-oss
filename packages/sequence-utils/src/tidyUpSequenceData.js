@@ -3,7 +3,7 @@ import bsonObjectId from "bson-objectid";
 
 import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
 import {cloneDeep, flatMap} from "lodash";
-import annotationTypes from "./annotationTypes";
+import { annotationTypes } from "./annotationTypes";
 import filterSequenceString from "./filterSequenceString";
 import tidyUpAnnotation from "./tidyUpAnnotation";
 import filterAminoAcidSequenceString from "./filterAminoAcidSequenceString";

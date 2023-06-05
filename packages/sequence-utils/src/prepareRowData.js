@@ -2,7 +2,7 @@
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 import mapAnnotationsToRows from "./mapAnnotationsToRows";
 
-import annotationTypes from "./annotationTypes";
+import { annotationTypes } from "./annotationTypes";
 
 export default function prepareRowData(sequenceData, bpsPerRow) {
   // ac.throw([ac.sequenceData, ac.posInt], arguments);
