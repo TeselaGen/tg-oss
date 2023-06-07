@@ -5,7 +5,7 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { joinPathFragments } from '@nx/devkit';
 
-export default defineConfig({
+const conf = defineConfig({
   cacheDir: '../../node_modules/.vite/sequence-utils',
 
   plugins: [
@@ -28,7 +28,6 @@ export default defineConfig({
   //    }),
   //  ],
   // },
-
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
@@ -39,7 +38,7 @@ export default defineConfig({
       fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forgot to update your package.json as well.
-      formats: ['es', 'cjs'],
+      formats: ['es', 'umd', 'cjs'],
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
@@ -56,3 +55,5 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
 });
+
+export default conf
