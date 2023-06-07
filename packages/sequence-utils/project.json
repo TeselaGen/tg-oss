@@ -15,6 +15,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "target": "es2015",
+        "minify": false,
         "outputPath": "dist/packages/sequence-utils"
       }
     },

@@ -14,6 +14,7 @@
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "minify": false,
         "outputPath": "dist/packages/file-utils",
         "main": "packages/file-utils/src/index.js",
         "tsConfig": "packages/file-utils/tsconfig.lib.json",

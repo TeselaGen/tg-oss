@@ -12,6 +12,9 @@ import { readFileSync, writeFileSync } from 'fs';
 import chalk from 'chalk';
 
 import devkit from '@nx/devkit';
+import path from 'path';
+
+
 const { readCachedProjectGraph } = devkit;
 
 function invariant(condition, message) {
@@ -35,33 +38,65 @@ invariant(
   project,
   `Could not find project "${name}" in the workspace. Is the project.json configured correctly?`
 );
-
+console.log(`project:`,project)
 const outputPath = project.data?.targets?.build?.options?.outputPath;
+const packagePath = project.data?.root
 invariant(
   outputPath,
-  `Could not find "build.options.outputPath" of project "${name}". Is project.json configured  correctly?`
+  `Could not find "build.options.outputPath" of project "${name}". Is project.json configured correctly?`
+);
+invariant(
+  outputPath,
+  `Could not find "packagePath" of project "${name}". Is project.json configured correctly?`
 );
 
-process.chdir(outputPath);
+
 if (!version || version === 'undefined') {
-  version = JSON.parse(readFileSync(`package.json`).toString()).version;
+  process.chdir(packagePath);
+  let json = JSON.parse(readFileSync(`package.json`).toString());
+  version = json.version;
+
+  // Bump the version
+  let versionParts = version.split('.');
+  versionParts[2] = Number(versionParts[2]) + 1; // increase patch version
+  version = versionParts.join('.');
+
+  // Updating the version in "package.json" before publishing
+  try {
+    json.version = version;
+    writeFileSync(`package.json`, JSON.stringify(json, null, 2));
+  } catch (e) {
+    console.error(
+      chalk.bold.red(
+        `Error writing package.json file from library build output.`
+      )
+    );
+  }
+  process.chdir(path.resolve("../../", outputPath));
+  json = JSON.parse(readFileSync(`package.json`).toString());
+  try {
+    json.version = version;
+    writeFileSync(`package.json`, JSON.stringify(json, null, 2));
+  } catch (e) {
+    console.error(
+      chalk.bold.red(
+        `Error writing package.json file from library build output.`
+      )
+    );
+  }
+
+} else {
+  process.chdir(outputPath);
 }
+
+
 
 invariant(
   version && validVersion.test(version),
   `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
 );
 
-// Updating the version in "package.json" before publishing
-try {
-  const json = JSON.parse(readFileSync(`package.json`).toString());
-  json.version = version;
-  writeFileSync(`package.json`, JSON.stringify(json, null, 2));
-} catch (e) {
-  console.error(
-    chalk.bold.red(`Error reading package.json file from library build output.`)
-  );
-}
-
 // Execute "npm publish" to publish
-execSync(`npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`);
+execSync(
+  `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
+);

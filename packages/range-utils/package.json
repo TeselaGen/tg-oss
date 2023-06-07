@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/range-utils",
-  "version": "0.1.6",
+  "version": "0.1.11",
   "type": "commonjs",
   "dependencies": {
     "lodash": "^4.17.21"

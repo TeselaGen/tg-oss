@@ -4,7 +4,7 @@
   "sourceRoot": "packages/bio-parsers/src",
   "projectType": "library",
   "targets": {
- "version": {
+    "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional"
@@ -14,6 +14,7 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "minify": false,
         "target": "es2015",
         "outputPath": "dist/packages/bio-parsers"
       }

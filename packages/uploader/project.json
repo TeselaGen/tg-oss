@@ -17,6 +17,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
+        "minify": false,
+        "target": "es2015",
         "outputPath": "dist/packages/uploader"
       },
       "configurations": {

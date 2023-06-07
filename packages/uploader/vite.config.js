@@ -17,6 +17,11 @@ export default defineConfig({
       root: '../../',
     }),
   ],
+  esbuild: {
+    keepNames: true,
+    minifyIdentifiers: false,
+    minifySyntax: false,
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [
