@@ -14,7 +14,6 @@ import chalk from 'chalk';
 import devkit from '@nx/devkit';
 import path from 'path';
 
-
 const { readCachedProjectGraph } = devkit;
 
 function invariant(condition, message) {
@@ -38,9 +37,9 @@ invariant(
   project,
   `Could not find project "${name}" in the workspace. Is the project.json configured correctly?`
 );
-console.log(`project:`,project)
+console.log(`project:`, project);
 const outputPath = project.data?.targets?.build?.options?.outputPath;
-const packagePath = project.data?.root
+const packagePath = project.data?.root;
 invariant(
   outputPath,
   `Could not find "build.options.outputPath" of project "${name}". Is project.json configured correctly?`
@@ -50,7 +49,9 @@ invariant(
   `Could not find "packagePath" of project "${name}". Is project.json configured correctly?`
 );
 
-
+if (!tag || tag === 'undefined') {
+  tag = 'latest';
+}
 if (!version || version === 'undefined') {
   process.chdir(packagePath);
   let json = JSON.parse(readFileSync(`package.json`).toString());
@@ -72,7 +73,7 @@ if (!version || version === 'undefined') {
       )
     );
   }
-  process.chdir(path.resolve("../../", outputPath));
+  process.chdir(path.resolve('../../', outputPath));
   json = JSON.parse(readFileSync(`package.json`).toString());
   try {
     json.version = version;
@@ -84,12 +85,9 @@ if (!version || version === 'undefined') {
       )
     );
   }
-
 } else {
   process.chdir(outputPath);
 }
-
-
 
 invariant(
   version && validVersion.test(version),
