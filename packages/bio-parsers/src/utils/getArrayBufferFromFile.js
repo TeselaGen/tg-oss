@@ -1,7 +1,9 @@
-import isBrowser from "./isBrowser";
+import { Buffer } from 'buffer';
+import isBrowser from './isBrowser';
 
 export default function getArrayBufferFromFile(file) {
-  if (!isBrowser) { //node environment
+  if (!isBrowser) {
+    //node environment
     return toArrayBuffer(Buffer.isBuffer(file) ? file : file.buffer || file);
   }
 
@@ -11,10 +13,12 @@ export default function getArrayBufferFromFile(file) {
       resolve(e.target.result);
     };
     reader.onerror = (err) => {
-      console.error("err:", err);
+      console.error('err:', err);
       reject(err);
     };
-    reader.readAsArrayBuffer(Buffer.isBuffer(file) ? file : file.buffer || file);
+    reader.readAsArrayBuffer(
+      Buffer.isBuffer(file) ? file : file.buffer || file
+    );
   });
 }
 
