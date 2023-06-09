@@ -9,6 +9,7 @@ import tidyUpSequenceData from './tidyUpSequenceData';
 
 
 const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
+
   oldData = tidyUpSequenceData(oldData, {
     annotationsAsObjects: true,
     noTranslationData: true,
