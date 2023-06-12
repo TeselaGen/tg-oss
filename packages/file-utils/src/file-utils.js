@@ -1,7 +1,7 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
 import { camelCase, flatMap, remove, startsWith, snakeCase } from 'lodash';
 import { loadAsync } from 'jszip';
-import * as Promise from 'bluebird';
+// import * as Promise from 'bluebird';
 import { parse, unparse } from 'papaparse';
 
 const logDebug = (...args) => {
@@ -134,8 +134,6 @@ export const parseCsvFile = (csvFile, parserOptions = {}) => {
       ...defaultCsvParserOptions,
       ...setupCsvParserOptions(parserOptions),
       complete: (results) => {
-        console.log(`results.errors[0].code:`,results.errors[0].code)
-        console.log(`results:`,results)
         if (
           results &&
           results.data?.length &&
@@ -143,16 +141,13 @@ export const parseCsvFile = (csvFile, parserOptions = {}) => {
           results.errors.length === 1 &&
           results.errors[0].code === `UndetectableDelimiter`
         ) {
-          console.log(`asdfasdf`)
           return resolve(results);
         } else if (results && results.errors && results.errors.length) {
-          console.log(`fuug`)
           return reject('Error in csv: ' + JSON.stringify(results.errors));
         }
         return resolve(results);
       },
       error: (error) => {
-        console.log(`error:`, error);
         reject(error);
       },
     };

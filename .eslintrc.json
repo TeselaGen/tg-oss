@@ -6,6 +6,31 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "no-var": 2,
+        "no-console": [1, { "allow": ["warn", "error", "info"] }],
+        "no-debugger": 2,
+        "no-empty": [2],
+        "no-extra-boolean-cast": 2,
+        "no-extra-semi": 1,
+        "no-inner-declarations": [2, "functions"],
+        "no-undef": 2,
+        "no-unneeded-ternary": 1,
+        "no-unsafe-negation": 2,
+        "prefer-const": [1, { "destructuring": "all" }],
+        "no-unused-vars": 0,
+        "@typescript-eslint/no-unused-vars": [
+          1,
+          { "ignoreRestSiblings": true }
+        ],
+        "no-use-before-define": 0,
+        "@typescript-eslint/no-use-before-define": [
+          "error",
+          {
+            "functions": false,
+            "classes": false,
+            "variables": false
+          }
+        ],
         "@nx/enforce-module-boundaries": [
           "error",
           {
@@ -32,7 +57,16 @@
       "rules": {}
     },
     {
-      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx", "*.test.ts", "*.test.tsx", "*.test.js", "*.test.jsx"],
+      "files": [
+        "*.spec.ts",
+        "*.spec.tsx",
+        "*.spec.js",
+        "*.spec.jsx",
+        "*.test.ts",
+        "*.test.tsx",
+        "*.test.js",
+        "*.test.jsx"
+      ],
       "env": {
         "jest": true
       },
