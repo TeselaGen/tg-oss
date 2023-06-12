@@ -1,11 +1,12 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
 import { camelCase, flatMap, remove, startsWith, snakeCase } from 'lodash';
 import { loadAsync } from 'jszip';
-// import * as Promise from 'bluebird';
+import Promise from 'bluebird';
 import { parse, unparse } from 'papaparse';
 
+const debug = false;
 const logDebug = (...args) => {
-  if (process.env.DEBUG_CSV_PARSING) {
+  if (debug) {
     // eslint-disable-next-line no-console
     console.log(...args);
   }
