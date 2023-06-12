@@ -8,8 +8,7 @@
           "build",
           "lint",
           "test",
-          "e2e",
-          "build-storybook"
+          "e2e"
         ],
         "accessToken": "N2UyMWU2MjktZTIwNy00MTc2LTk4OTMtNDBjYzBkNGFkYTQ4fHJlYWQtd3JpdGU="
       }
@@ -32,9 +31,6 @@
     },
     "e2e": {
       "inputs": ["default", "^production"]
-    },
-    "build-storybook": {
-      "inputs": ["default", "^production", "!{projectRoot}/.storybook/**/*"]
     }
   },
   "namedInputs": {
@@ -46,7 +42,6 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)",
-      "!{projectRoot}/.storybook/**/*"
     ],
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"]
   },

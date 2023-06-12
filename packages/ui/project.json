@@ -32,6 +32,14 @@
     },
     "start": {
       "command": "cd packages/ui && yarn vite --open --port 4200"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/packages/sequence-utils"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/sequence-utils"
+      }
     }
 
   }
