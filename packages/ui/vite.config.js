@@ -1,9 +1,22 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
+import fs from "node:fs";
 import react from '@vitejs/plugin-react';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { joinPathFragments } from '@nx/devkit';
+import * as esbuild from "esbuild";
+
+const sourceJSPattern = /\/src\/.*\.js$/;
+const rollupPlugin = (matchers) => ({
+  name: "js-in-jsx",
+  load(id) {
+    if (matchers.some(matcher => matcher.test(id))) {
+      const file = fs.readFileSync(id, { encoding: "utf-8" });
+      return esbuild.transformSync(file, { loader: "jsx" });
+    }
+  }
+});
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ui',
@@ -20,9 +33,19 @@ export default defineConfig({
     }),
   ],
   esbuild: {
+    loader: "jsx",
+    include: [sourceJSPattern],
+    exclude: [],
     keepNames: true,
     minifyIdentifiers: false,
     minifySyntax: false,
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      loader: {
+        ".js": "jsx",
+      },
+    },
   },
 
   // Uncomment this if you are using workers.
@@ -47,8 +70,13 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
+      plugins: [
+        rollupPlugin([sourceJSPattern])
+      ],
       // External packages that should not be bundled into your library.
       external: ['react', 'react-dom', 'react/jsx-runtime'],
     },
   },
 });
+
+
