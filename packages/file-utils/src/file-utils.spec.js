@@ -8,10 +8,30 @@ import {
   validateCSVRow,
   removeExt,
   filterFilesInZip,
+  parseCsvFile,
 } from './file-utils'; // replace 'yourFile' with the path of your actual file
 
 import * as JSZip from 'jszip';
 import * as mock from 'mock-fs';
+
+describe('parseCsvFile', () => {
+  it('resolves with results when parsing is successful', async () => {
+    const results = await parseCsvFile({
+      originFileObj: new File(
+        [
+          `Material name
+mat 1
+mat 2`,
+        ],
+        'dummyFile'
+      ),
+    });
+    expect(results.data).toEqual([
+      { 'Material name': 'mat 1' },
+      { 'Material name': 'mat 2' },
+    ]);
+  });
+});
 
 describe.skip('filterFilesInZip', () => {
   beforeAll(async () => {
