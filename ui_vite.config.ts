@@ -18,13 +18,16 @@ const rollupPlugin = (matchers) => ({
   }
 });
 
-export default defineConfig({
-  cacheDir: '../../node_modules/.vite/ui',
+export default ({
+  name,
+  dir
+})=> defineConfig({
+  cacheDir: `../../node_modules/.vite/${name}`,
 
   plugins: [
     dts({
       entryRoot: 'src',
-      tsConfigFilePath: joinPathFragments(__dirname, 'tsconfig.lib.json'),
+      tsConfigFilePath: joinPathFragments(dir, 'tsconfig.lib.json'),
       skipDiagnostics: true,
     }),
     react(),
@@ -63,7 +66,7 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.js',
-      name: 'ui',
+      name,
       fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forgot to update your package.json as well.

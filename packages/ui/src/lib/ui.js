@@ -3,7 +3,7 @@ import {Zoink} from './zoink/zoink';
 
 import './ui.css';
 
-export function Ui(props) {
+export function Ui() {
   return (
     <div>
       <h1>Wee thomas to Ui!</h1>
