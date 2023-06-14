@@ -8,5 +8,5 @@
     "outDir": "./build"
   },
   "include": ["**/*.*"],
-  "exclude": ["./.eslintrc.js"]
+  "exclude": ["UNUSED_.eslintrc.js"]
 }
