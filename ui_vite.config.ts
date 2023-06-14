@@ -8,12 +8,12 @@ import { joinPathFragments } from '@nx/devkit';
 import * as esbuild from "esbuild";
 
 const sourceJSPattern = /\/src\/.*\.js$/;
-const rollupPlugin = (matchers) => ({
+const rollupPlugin = (matchers: RegExp[]) => ({
   name: "js-in-jsx",
-  load(id) {
+  load(id: string) {
     if (matchers.some(matcher => matcher.test(id))) {
       const file = fs.readFileSync(id, { encoding: "utf-8" });
-      return esbuild.transformSync(file, { loader: "jsx" });
+      return esbuild.transformSync(file, { loader: "jsx" }).code;
     }
   }
 });
@@ -21,6 +21,9 @@ const rollupPlugin = (matchers) => ({
 export default ({
   name,
   dir
+}:{
+  name: string;
+  dir: string;
 })=> defineConfig({
   cacheDir: `../../node_modules/.vite/${name}`,
 
