@@ -15,11 +15,13 @@ const logDebug = (...args) => {
 export const allowedCsvFileTypes = ['.csv', '.txt', '.xlsx'];
 
 export const isZipFile = (file) => {
+  if (getExt(file) === 'zip') return true;
+  if (getExt(file) === 'geneious') return false;
   const type = file.mimetype || file.type;
   return type === 'application/zip' || type === 'application/x-zip-compressed';
 };
 
-export const getExt = (file) => file.name.split('.').pop();
+export const getExt = (file) => file?.name?.split('.').pop();
 export const isExcelFile = (file) => getExt(file) === 'xlsx';
 export const isCsvFile = (file) => getExt(file) === 'csv';
 export const isTextFile = (file) => ['text', 'txt'].includes(getExt(file));

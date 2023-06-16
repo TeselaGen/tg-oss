@@ -98,7 +98,7 @@ async function anyToJson(fileContentStringOrFileObj, options) {
     return genbankToJson(fileContentString, { ...options, isProtein: true });
   } else if (/^(xml|rdf)$/.test(ext)) {
     // XML/RDF
-    return sbolXmlToJson(fileContentStringOrFileObj, options);
+    return sbolXmlToJson(fileContentString || fileContentStringOrFileObj, options);
   } else if (/^(gff|gff3)$/.test(ext)) {
     // GFF
     return gffToJson(fileContentStringOrFileObj, options);

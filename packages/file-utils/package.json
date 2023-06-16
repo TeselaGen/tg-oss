@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/file-utils",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "type": "commonjs",
   "dependencies": {
     "bluebird": "^3.7.2",

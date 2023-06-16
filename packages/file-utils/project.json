@@ -37,8 +37,7 @@
       "options": {
         "lintFilePatterns": ["packages/file-utils/**/*.js"]
       }
-    },
-
+    }
   },
   "tags": []
 }
