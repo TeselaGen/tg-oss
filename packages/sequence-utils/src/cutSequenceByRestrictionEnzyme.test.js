@@ -2,10 +2,10 @@
 
 
 import chai from "chai";
-
-const should = chai.should();
 import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme.js";
 import enzymeList from "./aliasedEnzymesByName";
+
+const should = chai.should();
 describe("a simple, palindromic enzyme", () => {
   //bamhi
   // "bamhi": {

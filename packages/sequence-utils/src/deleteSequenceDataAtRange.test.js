@@ -5,12 +5,12 @@ import chai from "chai";
 
 import {getRangeLength} from "@teselagen/range-utils";
 import {cloneDeep} from "lodash";
-
-chai.should();
 import chaiSubset from "chai-subset";
-chai.use(chaiSubset);
 
 import deleteSequenceDataAtRange from "./deleteSequenceDataAtRange";
+
+chai.should();
+chai.use(chaiSubset);
 
 describe("deleteSequenceDataAtRange", () => {
   it("Deletes everything if the range spans the whole sequence", () => {

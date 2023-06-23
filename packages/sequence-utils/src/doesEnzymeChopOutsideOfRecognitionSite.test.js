@@ -1,10 +1,10 @@
 
 
 import chai from "chai";
-
-chai.should();
 import doesEnzymeChopOutsideOfRecognitionSite from "./doesEnzymeChopOutsideOfRecognitionSite.js";
 import enzymeList from "./aliasedEnzymesByName";
+
+chai.should();
 
 describe("doesEnzymeChopOutsideOfRecognitionSite", () => {
   //bamhi

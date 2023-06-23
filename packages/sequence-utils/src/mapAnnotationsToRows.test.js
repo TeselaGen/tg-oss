@@ -4,8 +4,8 @@ import chai from "chai";
 
 import {expect} from "chai";
 import chaiSubset from "chai-subset";
-chai.use(chaiSubset);
 import mapAnnotationsToRows from "./mapAnnotationsToRows.js";
+chai.use(chaiSubset);
 describe("mapAnnotationsToRows", () => {
   it("maps overlapsSelf=true annotations to the same y-offset correctly", () => {
     const annotation1 = {

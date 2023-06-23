@@ -1,4 +1,3 @@
-import prepareCircularViewData from "./prepareCircularViewData";
 import {expect} from "chai";
 import mapAnnotationsToRows from "./mapAnnotationsToRows.js";
 describe("prepareCircularViewData", () => {

@@ -3,9 +3,9 @@ import assert from "assert";
 import {map} from "lodash";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import {getDiffFromSeqs, patchSeqWithDiff, reverseSeqDiff} from "./diffUtils";
+import chaiSubset from "chai-subset";
 
 chai.should();
-import chaiSubset from "chai-subset";
 chai.use(chaiSubset);
 
 describe("getDiffFromSeqs patchSeqWithDiff reverseSeqDiff", () => {

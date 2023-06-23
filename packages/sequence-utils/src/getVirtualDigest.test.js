@@ -1,11 +1,11 @@
 import chaiSubset from "chai-subset";
 import chai from "chai";
 
-chai.should();
-chai.use(chaiSubset);
-
 //UNDER CONSTRUCTION
 import getVirtualDigest from "./getVirtualDigest";
+
+chai.should();
+chai.use(chaiSubset);
 
 describe("getVirtualDigest", () => {
   // it('should be further developed', function() {

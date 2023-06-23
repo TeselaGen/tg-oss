@@ -2,12 +2,12 @@
 
 
 import chai from "chai";
-
-chai.should();
 import chaiSubset from "chai-subset";
-chai.use(chaiSubset);
 
 import getSequenceDataBetweenRange from "./getSequenceDataBetweenRange";
+
+chai.should();
+chai.use(chaiSubset);
 
 describe("getSequenceDataBetweenRange", () => {
   it("should handle range.overlapsSelf flag", () => {

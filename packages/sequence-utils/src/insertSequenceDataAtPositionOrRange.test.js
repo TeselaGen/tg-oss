@@ -5,12 +5,12 @@ import chai from "chai";
 
 import {getRangeLength} from "@teselagen/range-utils";
 import assert from "assert";
-
-chai.should();
 import chaiSubset from "chai-subset";
-chai.use(chaiSubset);
 
 import insertSequenceDataAtPositionOrRange from "./insertSequenceDataAtPositionOrRange";
+
+chai.should();
+chai.use(chaiSubset);
 
 describe("insertSequenceData", () => {
   it("adjusts annotations to protein-only inserts correctly", () => {

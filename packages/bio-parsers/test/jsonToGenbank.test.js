@@ -172,9 +172,9 @@ describe("genbank exporter/parser conversion", function () {
     const breakingJSON = require("./testData/json/1.json");
     const string = jsonToGenbank(breakingJSON);
     const result = parseGenbank(string);
-
     result[0].parsedSequence.features[0].notes.should.to.not.be.null;
   });
+
   it("should mangle URLs correctly mangleUrls=true", function () {
     const feat1 = {
       notes: {

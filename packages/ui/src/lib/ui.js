@@ -5,7 +5,7 @@ import './ui.css';
 
 export function Ui() {
   return (
-    <div>
+    <div a="wee">
       <h1>Wee thomas to Ui!</h1>
       <Uploader />
       <Zoink />

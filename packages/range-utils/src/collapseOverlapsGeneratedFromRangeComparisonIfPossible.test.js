@@ -1,10 +1,10 @@
-;
-
-
 import getOverlapsOfPotentiallyCircularRanges from './getOverlapsOfPotentiallyCircularRanges.js';
 
 import collapseOverlapsGeneratedFromRangeComparisonIfPossible from './collapseOverlapsGeneratedFromRangeComparisonIfPossible.js';
 import assert from 'assert';
+
+
+;
 describe('collapseOverlapsGeneratedFromRangeComparisonIfPossible', function() {
     it('returns an empty array if passed an empty array of overlaps', function() {
         assert.deepEqual(collapseOverlapsGeneratedFromRangeComparisonIfPossible([], 1000), []);

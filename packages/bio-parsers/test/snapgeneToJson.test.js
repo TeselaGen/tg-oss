@@ -119,7 +119,7 @@ describe("snapgene file parser", function () {
     );
   });
   it(`an invalid file should return an unsuccessful response`, async () => {
-    console.log(
+    console.info(
       `^^^^^^^^^^^^^^^^^^^^^^^THIS SHOULD FAIL!! ^^^^^^^^^^^^^^^^^^^^^^^`
     );
     const results = await snapgeneToJson(
@@ -129,7 +129,7 @@ describe("snapgene file parser", function () {
       }
     );
     results[0].success.should.equal(false);
-    console.log(
+    console.info(
       `^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`
     );
   });

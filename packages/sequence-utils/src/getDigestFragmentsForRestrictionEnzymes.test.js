@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-expressions */
 import chai from "chai";
-
-chai.should();
 import getDigestFragmentsForRestrictionEnzymes from "./getDigestFragmentsForRestrictionEnzymes.js";
 import enzymeList from "./aliasedEnzymesByName";
+
+chai.should();
 describe("getDigestFragmentsForRestrictionEnzymes", () => {
   //bamhi
   // "bamhi": {

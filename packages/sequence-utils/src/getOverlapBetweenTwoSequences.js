@@ -11,9 +11,7 @@ import {modulatePositionByRange} from "@teselagen/range-utils";
 export default function getOverlapBetweenTwoSequences(
   sequenceToFind,
   sequenceToSearchIn,
-  options
 ) {
-  options = options || {};
   sequenceToSearchIn = sequenceToSearchIn.toLowerCase();
   sequenceToFind = sequenceToFind.toLowerCase();
   const lengthenedSeqToSearch = sequenceToSearchIn + sequenceToSearchIn;

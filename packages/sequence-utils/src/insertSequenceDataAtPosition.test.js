@@ -2,13 +2,13 @@
 
 
 import chai from "chai";
-
-chai.should();
 import chaiSubset from "chai-subset";
-chai.use(chaiSubset);
 
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import insertSequenceDataAtPosition from "./insertSequenceDataAtPosition";
+
+chai.should();
+chai.use(chaiSubset);
 
 describe("insertSequenceData", () => {
   it("inserts characters at correct caret position", () => {

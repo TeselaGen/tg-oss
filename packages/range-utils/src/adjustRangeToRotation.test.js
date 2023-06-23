@@ -1,9 +1,9 @@
-;
-
-
 import adjustRangeToRotation from './adjustRangeToRotation.js';
 
 import assert from 'assert';
+
+
+;
 describe('adjustRangeToRotation', function() {
     it('defaults to a rotateBy=0 if a null or undefined is passed ', () => {
         assert.deepEqual(adjustRangeToRotation({

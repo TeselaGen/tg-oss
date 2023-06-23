@@ -1,6 +1,7 @@
 {
   "root": true,
   "plugins": ["@nx"],
+  "extends": ["plugin:@nx/react"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -90,7 +91,9 @@
       "env": {
         "jest": true
       },
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-unused-expressions": 0
+      }
     }
   ]
 }

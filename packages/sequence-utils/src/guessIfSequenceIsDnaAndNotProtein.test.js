@@ -1,6 +1,6 @@
 import chai from "chai";
-chai.should();
 import guessIfSequenceIsDnaAndNotProtein from "./guessIfSequenceIsDnaAndNotProtein";
+chai.should();
 describe("guessIfSequenceIsDnaAndNotProtein", () => {
   it("should default to DNA for a length 0 sequecne", () => {
     guessIfSequenceIsDnaAndNotProtein("").should.equal(true);

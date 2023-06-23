@@ -1,8 +1,8 @@
 import chai from "chai";
-chai.should();
 import chaiSubset from "chai-subset";
-chai.use(chaiSubset);
 import getReverseComplementSequenceAndAnnotations from "./getReverseComplementSequenceAndAnnotations";
+chai.should();
+chai.use(chaiSubset);
 describe("getReverseComplementSequenceAndAnnotations", () => {
   it("reverse complements an annotation ", () => {
     const newSeq = getReverseComplementSequenceAndAnnotations({

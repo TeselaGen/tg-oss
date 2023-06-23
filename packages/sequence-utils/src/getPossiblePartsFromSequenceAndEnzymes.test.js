@@ -1,9 +1,9 @@
 import chai from "chai";
-chai.should();
 import chaiSubset from "chai-subset";
-chai.use(chaiSubset);
 import getPossiblePartsFromSequenceAndEnzymes from "./getPossiblePartsFromSequenceAndEnzymes";
 import enzymeList from "./aliasedEnzymesByName";
+chai.should();
+chai.use(chaiSubset);
 describe("getPossiblePartsFromSequenceAndEnzymes", () => {
   //bamhi
   // "bamhi": {

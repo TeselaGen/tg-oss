@@ -15,8 +15,7 @@ export default function findSequenceMatches(
 
   if (searchReverseStrand) {
     const sequenceLength = sequence.length;
-    let reverseSeq;
-    reverseSeq = getReverseComplementSequenceString(sequence);
+    const reverseSeq = getReverseComplementSequenceString(sequence);
     const reverseMatches = findSequenceMatchesTopStrand(
       reverseSeq,
       searchString,

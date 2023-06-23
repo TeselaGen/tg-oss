@@ -2,12 +2,12 @@
 
 
 import chai from "chai";
-
-chai.should();
 import chaiSubset from "chai-subset";
-chai.use(chaiSubset);
 
 import adjustBpsToReplaceOrInsert from "./adjustBpsToReplaceOrInsert";
+
+chai.should();
+chai.use(chaiSubset);
 
 describe("adjustBpsToReplaceOrInsert", () => {
   it("inserts characters at correct caret position", () => {

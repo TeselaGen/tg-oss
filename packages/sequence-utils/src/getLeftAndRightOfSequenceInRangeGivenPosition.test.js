@@ -1,11 +1,11 @@
 
 
 import chai from "chai";
-
-chai.should();
 import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme.js";
 import enzymeList from "./aliasedEnzymesByName";
 import getLeftAndRightOfSequenceInRangeGivenPosition from "./getLeftAndRightOfSequenceInRangeGivenPosition";
+
+chai.should();
 describe("getLeftAndRightOfSequenceInRangeGivenPosition", () => {
   it("gets the left and right of the range correctly given a position inside the range", () => {
     const sequence = "aaaaaaaaaattttttttttgggggggggg";

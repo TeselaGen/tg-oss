@@ -75,7 +75,6 @@ export default function mapAnnotationsToRows(
 };
 
 function mapAnnotationToRows({
-  wrappedAnnotations,
   annotation,
   sequenceLength,
   bpsPerRow,
