@@ -31,15 +31,14 @@
       }
     },
     "start": {
-      "command": "cd packages/ui && yarn vite --open --port 4200"
+      "command": "cd packages/ui && yarn vite --port 4200"
     },
     "launch-e2e": {
-      "dependsOn": ["start"],
-      "command": "cd packages/ui && yarn cypress open --e2e --browser chrome"
+      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/ui && yarn cypress open --e2e --browser chrome\" \"nx run ui:start\""
     },
-    "run-e2e": {
-      "dependsOn": ["start"],
-      "command": "nx run ui:start cd packages/ui && yarn cypress run --e2e --browser chrome"
+
+    "e2e": {
+      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/ui && yarn cypress run --config video=false --e2e --browser chrome\" \"nx run ui:start\" "
     },
     "test": {
       "executor": "@nx/vite:test",

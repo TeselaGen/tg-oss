@@ -30,7 +30,7 @@ export default ({
   plugins: [
     dts({
       entryRoot: 'src',
-      tsConfigFilePath: joinPathFragments(dir, 'tsconfig.lib.json'),
+      tsConfigFilePath: joinPathFragments(dir, 'tsconfig.json'),
       skipDiagnostics: true,
     }),
     react(),

@@ -8,7 +8,8 @@
   "private": true,
   "dependencies": {
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "wait-on": "^7.0.1"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.14.5",
@@ -41,6 +42,7 @@
     "@vitest/ui": "^0.31.0",
     "chai-subset": "^1.6.0",
     "chai-things": "0.2.0",
+    "concurrently": "^8.2.0",
     "cypress": "^12.14.0",
     "esbuild": "^0.17.17",
     "eslint": "~8.15.0",

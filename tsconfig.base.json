@@ -3,13 +3,13 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
-    "declaration": false,
+    // "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
-    "module": "esnext",
+    // "module": "esnext",
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -21,7 +21,44 @@
       "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.js"],
       "@teselagen/ui": ["packages/ui/src/index.js"],
       "@teselagen/uploader": ["packages/uploader/src/index.js"]
-    }
+    },
+
+    "module": "commonjs",
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["node", "vitest"],
+    "outDir": "./dist/out-tsc",
+    "declaration": true
+    // "types": []
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "jest.config.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.js",
+    "src/**/*.test.js"
+  ],
+  // "compilerOptions": {
+  //   "module": "commonjs",
+  //   "allowJs": true,
+  //   "forceConsistentCasingInFileNames": true,
+  //   "strict": true,
+  //   "noImplicitOverride": true,
+  //   "noPropertyAccessFromIndexSignature": true,
+  //   "noImplicitReturns": true,
+  //   "noFallthroughCasesInSwitch": true,
+  //   "types": ["node","vitest"],
+  //   "outDir": "../../dist/out-tsc",
+  //   "declaration": true,
+  //   // "types": []
+  // },
+  "include": ["src/**/*.ts", "src/**/*.js"],
+  "files": []
 }

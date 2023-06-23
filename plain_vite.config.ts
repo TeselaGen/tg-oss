@@ -12,7 +12,7 @@ const conf = ({ name, dir, testEnvironment }: { testEnvironment?: string, name: 
   plugins: [
     dts({
       entryRoot: 'src',
-      tsConfigFilePath: joinPathFragments(dir, 'tsconfig.lib.json'),
+      tsConfigFilePath: joinPathFragments(dir, 'tsconfig.json'),
       skipDiagnostics: true,
     }),
 
