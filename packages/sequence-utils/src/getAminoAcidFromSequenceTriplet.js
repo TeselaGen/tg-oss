@@ -9,7 +9,7 @@ export default function getAminoAcidFromSequenceTriplet(sequenceString) {
   if (sequenceString.length !== 3) {
     throw new Error("must pass a string of length 3");
   }
-  let aa = threeLetterSequenceStringToAminoAcidMap[sequenceString];
+  const aa = threeLetterSequenceStringToAminoAcidMap[sequenceString];
   if (aa) {
     return aa;
   }

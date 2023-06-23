@@ -1,5 +1,5 @@
 import {assign} from "lodash";
-import bsonObjectId from "bson-objectid";
+import shortid from "shortid";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 import {
@@ -17,15 +17,15 @@ export default function cutSequenceByRestrictionEnzyme(
     restrictionEnzyme.forwardRegex.length === 0 ||
     restrictionEnzyme.reverseRegex.length === 0
   ) {
-    let returnArray = [];
+    const returnArray = [];
     returnArray.error =
       "Cannot cut sequence. Enzyme restriction site must be at least 1 bp long.";
     return returnArray;
   }
-  let forwardRegExpPattern = new RegExp(restrictionEnzyme.forwardRegex, "ig");
-  let sequence = pSequence;
+  const forwardRegExpPattern = new RegExp(restrictionEnzyme.forwardRegex, "ig");
+  const sequence = pSequence;
 
-  let cutsitesForward = cutSequence(
+  const cutsitesForward = cutSequence(
     forwardRegExpPattern,
     restrictionEnzyme,
     sequence,
@@ -33,7 +33,7 @@ export default function cutSequenceByRestrictionEnzyme(
   );
   let cutsitesReverse = [];
   if (restrictionEnzyme.forwardRegex !== restrictionEnzyme.reverseRegex) {
-    let revSequence = getReverseComplementSequenceString(sequence);
+    const revSequence = getReverseComplementSequenceString(sequence);
     cutsitesReverse = cutSequence(
       forwardRegExpPattern,
       restrictionEnzyme,
@@ -106,24 +106,24 @@ function cutSequence(
   sequence,
   circular
 ) {
-  let restrictionCutSites = [];
+  const restrictionCutSites = [];
   let restrictionCutSite;
-  let recognitionSiteLength = restrictionEnzyme.site.length;
-  let originalSequence = sequence;
-  let originalSequenceLength = sequence.length;
+  const recognitionSiteLength = restrictionEnzyme.site.length;
+  const originalSequence = sequence;
+  const originalSequenceLength = sequence.length;
   if (circular) {
     //if the sequence is circular, we send in double the sequence
     //we'll deduplicate the results afterwards!
     sequence += sequence;
   }
-  let currentSequenceLength = sequence.length;
+  const currentSequenceLength = sequence.length;
 
   let matchIndex = sequence.search(forwardRegExpPattern);
   let startIndex = 0;
   let subSequence = sequence;
 
   while (matchIndex !== -1) {
-    let recognitionSiteRange = {};
+    const recognitionSiteRange = {};
     let start; //start and end should fully enclose the enzyme snips and the recognition site!
     let end;
     let upstreamTopSnip = null; //upstream top snip position
@@ -265,10 +265,10 @@ function cutSequence(
               )
             };
       }
-      let overhangBps = getSequenceWithinRange(cutRange, originalSequence);
+      const overhangBps = getSequenceWithinRange(cutRange, originalSequence);
 
       restrictionCutSite = {
-        id: bsonObjectId().str,
+        id: shortid(),
         start,
         end,
         topSnipPosition,

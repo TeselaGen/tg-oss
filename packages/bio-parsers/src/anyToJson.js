@@ -132,7 +132,7 @@ async function anyToJson(fileContentStringOrFileObj, options) {
     }
 
     for (const parser of parsersToTry) {
-      let toReturn = await parser.fn(fileContentString, options);
+      const toReturn = await parser.fn(fileContentString, options);
       if (successfulParsing(toReturn)) {
         //continue on to through the normal flow
         toReturn.forEach(function (result) {

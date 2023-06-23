@@ -84,7 +84,7 @@ function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
     ];
   }
 
-  let ranges = [];
+  const ranges = [];
   sequencesToCheck.forEach(({ seqToCheck, offset }) => {
     const reg = new RegExp(searchStringToUse, "ig");
     let match;

@@ -1,5 +1,5 @@
+import shortid from "shortid";
 import {flatMap, cloneDeep} from "lodash";
-import bsonObjectId from "bson-objectid";
 import {normalizePositionByRangeLength, getRangeLength} from "@teselagen/range-utils";
 import getCutsitesFromSequence from "./getCutsitesFromSequence";
 
@@ -24,7 +24,7 @@ function computeDigestFragments({
   });
   if (!circular && cutsites.length) {
     sortedCutsites.push({
-      id: "seqTerm_" + bsonObjectId().str,
+      id: "seqTerm_" + shortid(),
       start: 0,
       end: 0,
       overhangBps: "",

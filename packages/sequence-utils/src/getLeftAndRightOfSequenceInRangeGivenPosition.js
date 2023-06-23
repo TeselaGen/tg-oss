@@ -10,7 +10,7 @@ export default function getLeftAndRightOfSequenceInRangeGivenPosition(
   position,
   sequence
 ) {
-  let result = {
+  const result = {
     leftHandSide: "",
     rightHandSide: ""
   };

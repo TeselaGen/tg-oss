@@ -3,8 +3,8 @@
   "version": "0.1.12",
   "type": "commonjs",
   "dependencies": {
-    "bson-objectid": "^1.1.1",
-    "escape-string-regexp": "^1.0.5",
+    "bson-objectid": "^2.0.4",
+    "escape-string-regexp": "^5.0.0",
     "jsondiffpatch-rc": "0.4.2",
     "string-splice": "^1.3.0"
   }

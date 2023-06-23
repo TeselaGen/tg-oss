@@ -21,15 +21,15 @@ export default function getPossiblePartsFromSequenceAndEnzyme(
   restrictionEnzymes = restrictionEnzymes.length
     ? restrictionEnzymes
     : [restrictionEnzymes];
-  let bps = seqData.sequence;
-  let seqLen = bps.length;
-  let circular = seqData.circular;
+  const bps = seqData.sequence;
+  const seqLen = bps.length;
+  const circular = seqData.circular;
   let cutsites = [];
   restrictionEnzymes.forEach(enzyme => {
-    let newCutsites = cutSequenceByRestrictionEnzyme(bps, circular, enzyme);
+    const newCutsites = cutSequenceByRestrictionEnzyme(bps, circular, enzyme);
     cutsites = cutsites.concat(newCutsites);
   });
-  let parts = [];
+  const parts = [];
   if (cutsites.length < 1) {
     return parts;
   } else if (cutsites.length === 1) {
@@ -42,16 +42,16 @@ export default function getPossiblePartsFromSequenceAndEnzyme(
     );
     return parts;
   } else {
-    let pairs = pairwise(cutsites);
+    const pairs = pairwise(cutsites);
     pairs.forEach(pair => {
-      let cut1 = pair[0];
-      let cut2 = pair[1];
-      let part1 = getPartBetweenEnzymesWithInclusiveOverhangs(
+      const cut1 = pair[0];
+      const cut2 = pair[1];
+      const part1 = getPartBetweenEnzymesWithInclusiveOverhangs(
         cut1,
         cut2,
         seqLen
       );
-      let part2 = getPartBetweenEnzymesWithInclusiveOverhangs(
+      const part2 = getPartBetweenEnzymesWithInclusiveOverhangs(
         cut2,
         cut1,
         seqLen
@@ -70,12 +70,12 @@ export default function getPossiblePartsFromSequenceAndEnzyme(
 };
 
 function getPartBetweenEnzymesWithInclusiveOverhangs(cut1, cut2, seqLen) {
-  let firstCutOffset = getEnzymeRelativeOffset(cut1.restrictionEnzyme);
-  let secondCutOffset = getEnzymeRelativeOffset(cut2.restrictionEnzyme);
-  let start = cut1.topSnipBeforeBottom
+  const firstCutOffset = getEnzymeRelativeOffset(cut1.restrictionEnzyme);
+  const secondCutOffset = getEnzymeRelativeOffset(cut2.restrictionEnzyme);
+  const start = cut1.topSnipBeforeBottom
     ? cut1.topSnipPosition
     : cut1.bottomSnipPosition;
-  let end = normalizePositionByRangeLength(
+  const end = normalizePositionByRangeLength(
     (cut2.topSnipBeforeBottom
       ? cut2.bottomSnipPosition
       : cut2.topSnipPosition) - 1,
@@ -112,7 +112,7 @@ function pairwise(list) {
   if (list.length < 2) {
     return [];
   }
-  let first = list[0],
+  const first = list[0],
     rest = list.slice(1),
     pairs = rest.map(x => {
       return [first, x];

@@ -1,5 +1,5 @@
 import {generateRandomRange} from "@teselagen/range-utils";
-import bsonObjectId from "bson-objectid";
+import shortid from "shortid";
 
 function generateAnnotations(
   numberOfAnnotationsToGenerate,
@@ -21,7 +21,7 @@ function generateAnnotation(start, end, maxLength) {
     ...range,
     name: getRandomInt(0, 100000).toString(),
     type: "misc_feature",
-    id: bsonObjectId().str,
+    id: shortid(),
     forward: Math.random() > 0.5,
     notes: {}
   };

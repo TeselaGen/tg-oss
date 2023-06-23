@@ -24,7 +24,7 @@ export default function getAminoAcidDataForEachBaseOfDna(
   optionalSubrangeRange,
   isProteinSequence
 ) {
-  let originalSequenceStringLength = isProteinSequence
+  const originalSequenceStringLength = isProteinSequence
     ? originalSequenceString.length * 3
     : originalSequenceString.length;
   let sequenceString = originalSequenceString;
@@ -36,12 +36,12 @@ export default function getAminoAcidDataForEachBaseOfDna(
     );
     startOffset = optionalSubrangeRange.start;
   }
-  let sequenceStringLength = isProteinSequence
+  const sequenceStringLength = isProteinSequence
     ? sequenceString.length * 3
     : sequenceString.length;
 
   // ac.throw([ac.string,ac.bool],arguments);
-  let aminoAcidDataForEachBaseOfDNA = [];
+  const aminoAcidDataForEachBaseOfDNA = [];
   let codonRange;
   let revCompGapLength = 0;
   let aminoAcidIndex = 0;
@@ -135,7 +135,7 @@ export default function getAminoAcidDataForEachBaseOfDna(
 
   //compute the end of the sequence
   //we'll never hit the following logic if translating in the reverse direction
-  let lengthOfEndBpsNotCoveredByAminoAcids =
+  const lengthOfEndBpsNotCoveredByAminoAcids =
     sequenceStringLength - aminoAcidDataForEachBaseOfDNA.length;
   codonRange = translateRange(
     {

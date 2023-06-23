@@ -7,7 +7,7 @@ export default function isRangeWithinRange(
   maxLength
 ) {
     
-  let ranges = trimRangeByAnotherRange(
+  const ranges = trimRangeByAnotherRange(
     rangeToCheck,
     containingRange,
     maxLength

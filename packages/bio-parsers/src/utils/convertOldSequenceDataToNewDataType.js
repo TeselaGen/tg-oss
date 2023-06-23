@@ -14,7 +14,7 @@ export default function convertOldSequenceDataToNewDataType(
               //start at index 1, not 0!
               //for every location except for the first one,
               const location = feature.locations[i];
-              let clonedFeature = JSON.parse(JSON.stringify(feature));
+              const clonedFeature = JSON.parse(JSON.stringify(feature));
               clonedFeature.start = location.start;
               clonedFeature.end = location.end;
               delete clonedFeature.locations; //This array is no longer used to get start and end bp and doesn't need to be in db

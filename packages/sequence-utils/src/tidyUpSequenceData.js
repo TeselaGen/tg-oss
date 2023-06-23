@@ -1,5 +1,5 @@
 // tnrtodo: figure out where to insert this validation exactly..
-import bsonObjectId from "bson-objectid";
+import shortid from "shortid";
 
 import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
 import {cloneDeep, flatMap} from "lodash";
@@ -152,7 +152,7 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
         if (item.id || item.id === 0) {
           itemId = item.id;
         } else {
-          itemId = bsonObjectId().str;
+          itemId = shortid();
           if (!doNotProvideIdsForAnnotations) {
             item.id = itemId; //assign the newly created id to the item
           }

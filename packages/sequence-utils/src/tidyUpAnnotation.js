@@ -1,6 +1,6 @@
 import {cloneDeep, get, some} from "lodash";
 import {getFeatureToColorMap, getFeatureTypes} from "./featureTypesAndColors";
-import bsonObjectId from "bson-objectid";
+import shortid from "shortid";
 
 export default function tidyUpAnnotation(
   _annotation,
@@ -34,10 +34,10 @@ export default function tidyUpAnnotation(
     annotation.name = "Untitled annotation";
   }
   if (provideNewIdsForAnnotations) {
-    annotation.id = bsonObjectId().str;
+    annotation.id = shortid();
   }
   if (!annotation.id && annotation.id !== 0 && !doNotProvideIdsForAnnotations) {
-    annotation.id = bsonObjectId().str;
+    annotation.id = shortid();
     messages.push(
       "Unable to detect valid ID for annotation, setting ID to " + annotation.id
     );

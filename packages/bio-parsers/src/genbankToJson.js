@@ -18,7 +18,7 @@ function genbankToJson(string, options = {}) {
     // isProtein,
   } = options;
 
-  let resultsArray = [];
+  const resultsArray = [];
   let result;
   let currentFeatureNote;
 
@@ -441,7 +441,7 @@ function genbankToJson(string, options = {}) {
         }
 
         newFeature();
-        let feat = getCurrentFeature();
+        const feat = getCurrentFeature();
         feat.type = key;
         feat.strand = strand;
 
@@ -494,7 +494,7 @@ function genbankToJson(string, options = {}) {
         start: start,
         end: end,
       };
-      let feat = getCurrentFeature();
+      const feat = getCurrentFeature();
       feat.locations.push(
         options.isProtein
           ? convertAACaretPositionOrRangeToDna(location)
@@ -524,7 +524,7 @@ function genbankToJson(string, options = {}) {
       }
     }
     const key = lineArr[0];
-    let currentNotes = getCurrentFeature().notes;
+    const currentNotes = getCurrentFeature().notes;
     if (currentNotes[key]) {
       //array already exists, so push value into it
       currentNotes[key].push(val);

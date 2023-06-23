@@ -4,7 +4,7 @@ import getAllInsertionsInSeqReads from "./getAllInsertionsInSeqReads.js";
 // add gaps in reference sequence where there are insertions
 export default function insertGapsIntoRefSeq(refSeq, seqReads) {
   // turn ref seq into an array ["A", "T", "C", "G"...]
-  let refSeqWithGaps = refSeq.split("");
+  const refSeqWithGaps = refSeq.split("");
   const allInsertionsInSeqReads = getAllInsertionsInSeqReads(seqReads);
   for (let i = 0; i < allInsertionsInSeqReads.length; i++) {
     const bpPosOfInsertion = allInsertionsInSeqReads[i].bpPos;

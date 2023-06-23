@@ -1,6 +1,6 @@
 // seqReads should be an array of objects [{name, seq, pos, cigar}, {name, seq, pos, cigar}, ...]
 export default function getAllInsertionsInSeqReads(seqReads) {
-  let allInsertionsInSeqReads = [];
+  const allInsertionsInSeqReads = [];
   seqReads.forEach(seqRead => {
     // split cigar string at M, D, or I (match, deletion, or insertion), e.g. ["2M", "3I", "39M", "3D"...]
     const splitSeqRead = seqRead.cigar.match(/([0-9]*[MDI])/g);
@@ -19,7 +19,7 @@ export default function getAllInsertionsInSeqReads(seqReads) {
             bpPosOfInsertion += previousComponentNumber;
           }
         }
-        let insertionInfo = {
+        const insertionInfo = {
           // keeping bpPos 1-based
           bpPos: bpPosOfInsertion,
           number: numberOfInsertions
@@ -29,7 +29,7 @@ export default function getAllInsertionsInSeqReads(seqReads) {
     }
   });
   // sort insertions by ascending bp pos
-  let sortedInsertions = allInsertionsInSeqReads.sort((a, b) => {
+  const sortedInsertions = allInsertionsInSeqReads.sort((a, b) => {
     return a.bpPos - b.bpPos;
   });
   // combine duplicate or overlapping insertions from seq reads

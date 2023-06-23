@@ -10,7 +10,7 @@ chai.use(chaiSubset);
 
 describe("getDiffFromSeqs patchSeqWithDiff reverseSeqDiff", () => {
   it("ignores translation amino acids, cutsites, orfs, filteredFeatures, and works as expected", () => {
-    let originalSeq = tidyUpSequenceData(
+    const originalSeq = tidyUpSequenceData(
       {
         sequence: "atagatagatagatagatagatagatagatagatagatagatagatagatagatag",
         translations: [{ id: 10, start: 10, end: 24 }],
@@ -22,7 +22,7 @@ describe("getDiffFromSeqs patchSeqWithDiff reverseSeqDiff", () => {
       { annotationsAsObjects: true }
     );
 
-    let alteredSeq = tidyUpSequenceData(
+    const alteredSeq = tidyUpSequenceData(
       {
         sequence: "agatagatagatagatagatagatagatagatagatagatagatagatagatag",
         translations: [

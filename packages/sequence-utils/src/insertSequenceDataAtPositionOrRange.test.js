@@ -14,11 +14,11 @@ import insertSequenceDataAtPositionOrRange from "./insertSequenceDataAtPositionO
 
 describe("insertSequenceData", () => {
   it("adjusts annotations to protein-only inserts correctly", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       proteinSequence: "IDR",
       isProtein: true
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       //  012345
       features: [{ name: "feat2", start: 0, end: 5 }],
       //         M  R  E  K
@@ -30,8 +30,8 @@ describe("insertSequenceData", () => {
     //         M  I  D  R  R  E  K
     //         012345678901234567890
     //         atgauhgaymngagagagaaa
-    let caret = 3;
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const caret = 3;
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       caret
@@ -43,19 +43,19 @@ describe("insertSequenceData", () => {
     ]);
   });
   it("inserts protein and dna characters at correct caret", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       isProtein: true,
       sequence: "atagatagg",
       proteinSequence: "IDR"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       //  012345
       isProtein: true,
       sequence: "atgagagagaaa",
       proteinSequence: "MREK"
     };
-    let caret = 3;
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const caret = 3;
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       caret
@@ -64,19 +64,19 @@ describe("insertSequenceData", () => {
     postInsertSeq.proteinSequence.should.equal("MIDRREK");
   });
   it("inserts protein and dna characters at correct range", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       isProtein: true,
       sequence: "atagatagg",
       proteinSequence: "IDR"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       //  012345
       isProtein: true,
       sequence: "atgagagagaaa",
       proteinSequence: "MREK"
     };
-    let range = { start: 3, end: 5 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 3, end: 5 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range
@@ -85,14 +85,14 @@ describe("insertSequenceData", () => {
     postInsertSeq.proteinSequence.should.equal("MIDREK");
   });
   it("inserts characters at correct range and computes the new size correctly", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "rrrrrrr"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       sequence: "atgagagaga"
     };
-    let range = { start: 3, end: 5 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 3, end: 5 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range
@@ -106,18 +106,18 @@ describe("insertSequenceData", () => {
     postInsertSeq.sequence.length.should.equal(postInsertSeq.size);
   });
   it("inserts characters at correct origin spanning range", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "rrrrrrr",
       //         fffffff
       features: [{ name: "feat1", start: 0, end: 6 }]
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       sequence: "atgagagaga",
       //             fff
       features: [{ name: "feat2", start: 4, end: 6 }]
     };
-    let range = { start: 8, end: 2 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 8, end: 2 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range
@@ -135,19 +135,19 @@ describe("insertSequenceData", () => {
     );
   });
   it("inserts characters at correct origin spanning range with {maintainOriginSplit: true} option", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "xrrrrry",
       //         fffffff
       features: [{ name: "feat1", start: 0, end: 6 }]
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       //         sss     ss
       sequence: "atgagagaga",
       //             fff
       features: [{ name: "feat2", start: 4, end: 6 }]
     };
-    let range = { start: 8, end: 2 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 8, end: 2 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range,
@@ -168,19 +168,19 @@ describe("insertSequenceData", () => {
     );
   });
   it("inserts characters at correct origin spanning range with {maintainOriginSplit: true} option", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "r",
       //         fffffff
       features: [{ name: "feat1", start: 0, end: 0 }]
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       //         sss     ss
       sequence: "atgagagaga",
       //             fff
       features: [{ name: "feat2", start: 4, end: 6 }]
     };
-    let range = { start: 8, end: 2 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 8, end: 2 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range,
@@ -201,16 +201,16 @@ describe("insertSequenceData", () => {
     );
   });
   it("inserts characters at correct range, and doesn't clobber other properties on the existing sequence data", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "atgagagaga"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       sequence: "atagatag",
       name: "thomasDaMan!",
       circular: true
     };
-    let range = { start: 3, end: 5 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 3, end: 5 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range
@@ -224,14 +224,14 @@ describe("insertSequenceData", () => {
     postInsertSeq.circular.should.equal(true);
   });
   it("inserts characters at correct caret position", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "atgagagaga"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       sequence: "g"
     };
-    let caretPosition = 0;
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const caretPosition = 0;
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       caretPosition
@@ -241,16 +241,16 @@ describe("insertSequenceData", () => {
     );
   });
   it("inserts characters when whole sequence is selected but maintains properties like circularity, name", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "atgagagaga"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       sequence: "ggggaaaa",
       circular: true,
       name: "testName"
     };
-    let range = { start: 0, end: 7 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 0, end: 7 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range
@@ -263,16 +263,16 @@ describe("insertSequenceData", () => {
   });
 
   it("inserts characters at correct caret position", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "atgagagaga"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       sequence: "atgagagaga",
       features: [{ start: 0, end: 9 }],
       warnings: [{ start: 0, end: 9 }]
     };
-    let caretPosition = 0;
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const caretPosition = 0;
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       caretPosition
@@ -290,15 +290,15 @@ describe("insertSequenceData", () => {
     );
   });
   it("deletes the whole sequence if nothing is being inserted and the range spans the entire sequence ", () => {
-    let sequenceToInsert = {};
-    let sequenceToInsertInto = {
+    const sequenceToInsert = {};
+    const sequenceToInsertInto = {
       sequence: "atgagagaga",
       chromatogramData: { baseTraces: [] },
       features: [{ start: 0, end: 9 }],
       warnings: [{ start: 0, end: 9 }]
     };
-    let range = { start: 0, end: 9 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 0, end: 9 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range
@@ -309,8 +309,8 @@ describe("insertSequenceData", () => {
     assert.deepStrictEqual(postInsertSeq.chromatogramData, undefined);
   });
   it("deletes chromatogramData correctly", () => {
-    let sequenceToInsert = {};
-    let sequenceToInsertInto = {
+    const sequenceToInsert = {};
+    const sequenceToInsertInto = {
       sequence: "atgagagaga",
       chromatogramData: {
         baseCalls: ["G", "G", "C", "G", "T", "G", "G", "A", "C", "G"],
@@ -378,8 +378,8 @@ describe("insertSequenceData", () => {
         ]
       }
     };
-    let range = { start: 2, end: 3 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 2, end: 3 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range
@@ -389,10 +389,10 @@ describe("insertSequenceData", () => {
     postInsertSeq.chromatogramData.baseTraces.length.should.equal(8);
   });
   it("properly inserts into chromatogramData", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "rrr"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       sequence: "atgagag",
       chromatogramData: {
         baseCalls: ["G", "G", "C", "G", "T", "G", "G"],
@@ -442,8 +442,8 @@ describe("insertSequenceData", () => {
         ]
       }
     };
-    let range = { start: 3, end: 4 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 3, end: 4 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range
@@ -466,10 +466,10 @@ describe("insertSequenceData", () => {
     ]);
   });
   it("properly inserts into chromatogramData, keeping the chromatogramData intact if the insert length is the same length as the selection range", () => {
-    let sequenceToInsert = {
+    const sequenceToInsert = {
       sequence: "rrr"
     };
-    let sequenceToInsertInto = {
+    const sequenceToInsertInto = {
       sequence: "atgagag",
       chromatogramData: {
         baseCalls: ["G", "G", "C", "G", "T", "G", "G"],
@@ -519,8 +519,8 @@ describe("insertSequenceData", () => {
         ]
       }
     };
-    let range = { start: 3, end: 5 };
-    let postInsertSeq = insertSequenceDataAtPositionOrRange(
+    const range = { start: 3, end: 5 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
       sequenceToInsert,
       sequenceToInsertInto,
       range

@@ -23,7 +23,7 @@ export default function insertSequenceDataAtPositionOrRange(
     _sequenceDataToInsert,
     options
   );
-  let newSequenceData = cloneDeep(existingSequenceData);
+  const newSequenceData = cloneDeep(existingSequenceData);
   const insertLength = sequenceDataToInsert.proteinSequence
     ? sequenceDataToInsert.proteinSequence.length * 3
     : sequenceDataToInsert.sequence.length;
@@ -210,8 +210,8 @@ function insertIntoChromatogram({
     return chromatogramData;
   }
 
-  let baseTracesToInsert = [];
-  let qualNumsToInsert = [];
+  const baseTracesToInsert = [];
+  const qualNumsToInsert = [];
 
   for (let index = 0; index < seqToInsert.length; index++) {
     qualNumsToInsert.push(0);

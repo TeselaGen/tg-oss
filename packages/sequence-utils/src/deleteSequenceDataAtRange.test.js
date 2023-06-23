@@ -14,38 +14,38 @@ import deleteSequenceDataAtRange from "./deleteSequenceDataAtRange";
 
 describe("deleteSequenceDataAtRange", () => {
   it("Deletes everything if the range spans the whole sequence", () => {
-    let existingSequence = {
+    const existingSequence = {
       sequence: "atagatag"
     };
-    let range = { start: 0, end: 7 };
-    let postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const range = { start: 0, end: 7 };
+    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
     postDeleteSeqData.sequence.length.should.equal(
       existingSequence.sequence.length - getRangeLength(range)
     );
   });
   it("Deletes everything if the range spans the whole sequence (circular selection)", () => {
-    let existingSequence = {
+    const existingSequence = {
       sequence: "atagatag"
     };
-    let range = { start: 4, end: 3 };
-    let postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const range = { start: 4, end: 3 };
+    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
     postDeleteSeqData.sequence.length.should.equal(
       existingSequence.sequence.length -
         getRangeLength(range, existingSequence.sequence.length)
     );
   });
   it("Delete characters at correct range", () => {
-    let existingSequence = {
+    const existingSequence = {
       sequence: "atagatag"
     };
-    let range = { start: 3, end: 5 };
-    let postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const range = { start: 3, end: 5 };
+    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
     postDeleteSeqData.sequence.length.should.equal(
       existingSequence.sequence.length - getRangeLength(range)
     );
   });
   it("does not mutate the original sequence", () => {
-    let existingSequence = {
+    const existingSequence = {
       sequence: "atagatag",
       features: {
         "1": {
@@ -55,15 +55,15 @@ describe("deleteSequenceDataAtRange", () => {
       }
     };
     const clonedExistingSeq = cloneDeep(existingSequence);
-    let range = { start: 3, end: 5 };
-    let postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const range = { start: 3, end: 5 };
+    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
     existingSequence.should.deep.equal(clonedExistingSeq);
     postDeleteSeqData.sequence.length.should.equal(
       existingSequence.sequence.length - getRangeLength(range)
     );
   });
   it("Handles a non valid range by returning the original sequence", () => {
-    let existingSequence = {
+    const existingSequence = {
       sequence: "atgagagaga",
 
       features: [
@@ -77,8 +77,8 @@ describe("deleteSequenceDataAtRange", () => {
         }
       ]
     };
-    let range = { start: -1, end: -1 };
-    let postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const range = { start: -1, end: -1 };
+    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
     postDeleteSeqData.should.containSubset({
       sequence: "atgagagaga",
       features: [
@@ -95,7 +95,7 @@ describe("deleteSequenceDataAtRange", () => {
     postDeleteSeqData.features.length.should.equal(1);
   });
   it("Delete characters and features (with joined locations) at correct range", () => {
-    let existingSequence = {
+    const existingSequence = {
       sequence: "atgagagaga",
       features: [
         {
@@ -109,7 +109,7 @@ describe("deleteSequenceDataAtRange", () => {
         }
       ]
     };
-    let postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, {
+    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, {
       start: 3,
       end: 7
     });
@@ -129,11 +129,11 @@ describe("deleteSequenceDataAtRange", () => {
     postDeleteSeqData.features.length.should.equal(1);
   });
   it("Moves annotations when delete occurs before annotation", () => {
-    let existingSequence = {
+    const existingSequence = {
       sequence: "atgagagaga",
       parts: [{ start: 5, end: 9 }]
     };
-    let postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, {
+    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, {
       start: 3,
       end: 3
     });

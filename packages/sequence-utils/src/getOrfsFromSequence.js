@@ -1,4 +1,4 @@
-import bsonObjectId from "bson-objectid";
+import shortid from "shortid";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 
@@ -71,7 +71,7 @@ export default function getOrfsFromSequence(options) {
           forward: forward,
           annotationTypePlural: "orfs",
           isOrf: true,
-          id: bsonObjectId().str
+          id: shortid()
         });
       }
     }

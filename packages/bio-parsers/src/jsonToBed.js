@@ -1,7 +1,7 @@
 import { tidyUpSequenceData } from "@teselagen/sequence-utils";
 
 function jsonToBed(jsonSequence, options = {}) {
-  let sequenceInfo = options.featuresOnly
+  const sequenceInfo = options.featuresOnly
     ? jsonSequence
     : tidyUpSequenceData(jsonSequence);
   const { name, features, size, description, circular } = sequenceInfo;

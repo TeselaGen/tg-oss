@@ -2,7 +2,7 @@ export default function condensePairwiseAlignmentDifferences(
   referenceSeq,
   alignedSeq
 ) {
-  let overviewMinimapTrack = [];
+  const overviewMinimapTrack = [];
   const referenceSeqSplit = referenceSeq.toLowerCase().split("");
   const alignedSeqSplit = alignedSeq.toLowerCase().split("");
   const seqLength = alignedSeq.length;

@@ -1,6 +1,5 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
   "plugins": ["@nx"],
   "overrides": [
     {
@@ -55,6 +54,27 @@
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/javascript"],
       "rules": {}
+    },
+    {
+      "files": [
+        "**/cypress/**/*.ts",
+        "**/cypress/**/*.tsx",
+        "**/cypress/**/*.js",
+        "**/cypress/**/*.jsx"
+      ],
+      "extends": ["plugin:cypress/recommended"],
+      "plugins": ["cypress", "no-only-tests", "@typescript-eslint"],
+      "env": {
+        "cypress/globals": true
+      },
+      "rules": {
+        "no-only-tests/no-only-tests": [
+          1,
+          {
+            "fix": true
+          }
+        ]
+      }
     },
     {
       "files": [
