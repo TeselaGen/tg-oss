@@ -1,5 +1,5 @@
-import plainVite from '../../plain_vite.config'
-export default plainVite({
+import viteConfig from '../../vite.config'
+export default viteConfig({
   name: 'bio-parsers',
   dir: __dirname,
 })

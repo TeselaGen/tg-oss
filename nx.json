@@ -31,6 +31,9 @@
     },
     "e2e": {
       "inputs": ["default", "^production"]
+    },
+    "launch-e2e": {
+      "inputs": ["default", "^production"]
     }
   },
   "namedInputs": {

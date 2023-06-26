@@ -1,6 +1,6 @@
-import uiVite from '../../ui_vite.config'
+import viteReactConfig from '../../vite.react.config'
 
-export default uiVite({
+export default viteReactConfig({
   name: 'uploader',
   dir: __dirname,
 })

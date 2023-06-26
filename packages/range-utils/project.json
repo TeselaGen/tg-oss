@@ -4,7 +4,7 @@
   "sourceRoot": "packages/range-utils/src",
   "projectType": "library",
   "targets": {
- "version": {
+    "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional"
