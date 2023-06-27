@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.base.json",
+
+  "compilerOptions": {
+    "types": ["cypress"],
+    "outDir": "./build"
+  },
+  "include": ["**/*.*"],
+  "exclude": [".eslintrc.js"]
+}

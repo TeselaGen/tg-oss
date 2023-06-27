@@ -1,0 +1,53 @@
+{
+  "name": "bounce-loader",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/bounce-loader/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/bounce-loader/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "minify": false,
+        "target": "es2015",
+        "outputPath": "dist/packages/bounce-loader"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "start": {
+      "command": "cd packages/bounce-loader && yarn vite --port 4200"
+    },
+    "launch-e2e": {
+      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
+    },
+
+    "e2e": {
+      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --config video=false --e2e --browser chrome\" \"nx run bounce-loader:start\" "
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/packages/sequence-utils"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/sequence-utils"
+      }
+    }
+
+  }
+}

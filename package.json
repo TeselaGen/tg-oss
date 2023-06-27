@@ -43,6 +43,7 @@
     "@vitest/ui": "^0.32.2",
     "chai-subset": "^1.6.0",
     "chai-things": "0.2.0",
+    "classnames": "^2.3.2",
     "concurrently": "^8.2.0",
     "cypress": "^12.15.0",
     "esbuild": "^0.18.6",
