@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn nx run-many --targets=lint,test --all --fix
+yarn nx affected --target=lint,test,e2e --fix

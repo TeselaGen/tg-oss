@@ -15,6 +15,7 @@ const rollupPlugin = (matchers: RegExp[]) => ({
       const file = fs.readFileSync(id, { encoding: "utf-8" });
       return esbuild.transformSync(file, { loader: "jsx" }).code;
     }
+    return null;
   }
 });
 
