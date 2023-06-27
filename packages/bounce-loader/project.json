@@ -42,10 +42,10 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/sequence-utils"],
+      "outputs": ["coverage/packages/bounce-loader"],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/packages/sequence-utils"
+        "reportsDirectory": "../../coverage/packages/bounce-loader"
       }
     }
 

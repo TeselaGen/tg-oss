@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import Ui from './ui';
+import Ui from '.';
 
 describe('Ui', () => {
   it('should render successfully', () => {

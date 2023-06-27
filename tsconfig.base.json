@@ -20,6 +20,7 @@
       "@teselagen/range-utils": ["packages/range-utils/src/index.js"],
       "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.js"],
       "@teselagen/ui": ["packages/ui/src/index.js"],
+      "@teselagen/bounce-loader": ["packages/bounce-loader/src/index.js"],
       "@teselagen/uploader": ["packages/uploader/src/index.js"]
     },
 

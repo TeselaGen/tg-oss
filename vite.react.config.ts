@@ -6,8 +6,10 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { joinPathFragments } from '@nx/devkit';
 import * as esbuild from "esbuild";
+import vitePluginVirtualHtml from 'vite-plugin-virtual-html';
 
-const sourceJSPattern = /\/src\/.*\.js$/;
+
+const sourceJSPattern = [/\/src\/.*\.js$/, /\/demo\/.*\.js$/, /\/helperUtils\/.*\.js$/, ];
 const rollupPlugin = (matchers: RegExp[]) => ({
   name: "js-in-jsx",
   load(id: string) {
@@ -22,10 +24,10 @@ const rollupPlugin = (matchers: RegExp[]) => ({
 export default ({
   name,
   dir
-}:{
+}: {
   name: string;
   dir: string;
-})=> defineConfig({
+}) => defineConfig({
   cacheDir: `../../node_modules/.vite/${name}`,
 
   plugins: [
@@ -38,10 +40,19 @@ export default ({
     viteTsConfigPaths({
       root: '../../',
     }),
+    vitePluginVirtualHtml({
+      pages: {
+       index: {
+         entry: './demo/index.js', // MUST
+         title: `${name} demo`,// optional, default: ''
+         body: '<div id="app"><div id="demo"></div></div>' // optional, default: '<div id="app"></div>'
+       }
+      },
+   })
   ],
   esbuild: {
     loader: "jsx",
-    include: [sourceJSPattern],
+    include: sourceJSPattern,
     exclude: [],
     keepNames: true,
     minifyIdentifiers: false,
@@ -78,7 +89,7 @@ export default ({
     },
     rollupOptions: {
       plugins: [
-        rollupPlugin([sourceJSPattern])
+        rollupPlugin(sourceJSPattern),
       ],
       // External packages that should not be bundled into your library.
       external: ['react', 'react-dom', 'react/jsx-runtime'],

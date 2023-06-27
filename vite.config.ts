@@ -7,8 +7,7 @@ import { joinPathFragments } from '@nx/devkit';
 import { camelCase } from 'lodash';
 
 const conf = ({ name, dir, testEnvironment }: { testEnvironment?: string, name: string, dir: string }) => defineConfig({
-  cacheDir: '../../node_modules/.vite/bio-parsers',
-
+  cacheDir: `../../node_modules/.vite/${name}`,
   plugins: [
     dts({
       entryRoot: 'src',
