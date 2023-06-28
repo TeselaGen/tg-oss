@@ -7,9 +7,11 @@ import dts from 'vite-plugin-dts';
 import { joinPathFragments } from '@nx/devkit';
 import * as esbuild from "esbuild";
 import vitePluginVirtualHtml from 'vite-plugin-virtual-html';
+import libCss from 'vite-plugin-libcss';
+import { camelCase } from 'lodash';
 
-
-const sourceJSPattern = [/\/src\/.*\.js$/, /\/demo\/.*\.js$/, /\/helperUtils\/.*\.js$/,];
+const justSrc = /\/src\/.*\.js$/;
+const sourceJSPattern = [justSrc, /\/demo\/.*\.js$/, /\/helperUtils\/.*\.js$/,];
 const rollupPlugin = (matchers: RegExp[]) => ({
   name: "js-in-jsx",
   load(id: string) {
@@ -17,7 +19,7 @@ const rollupPlugin = (matchers: RegExp[]) => ({
       const file = fs.readFileSync(id, { encoding: "utf-8" });
       return esbuild.transformSync(file, { loader: "jsx" }).code;
     }
-    return null;
+    return undefined;
   }
 });
 
@@ -27,9 +29,7 @@ export default ({
 }: {
   name: string;
   dir: string;
-}) => defineConfig(({ command, mode }) => {
-  console.log(`mode:`, mode)
-  console.log(`command:`, command)
+}) => defineConfig(({ command }) => {
   return {
     cacheDir: `../../node_modules/.vite/${name}`,
 
@@ -40,10 +40,11 @@ export default ({
         skipDiagnostics: true,
       }),
       react(),
+      libCss(),
       viteTsConfigPaths({
         root: '../../',
       }),
-      ...mode === 'build' ? [] : [vitePluginVirtualHtml({
+      ...command === 'build' ? [] : [vitePluginVirtualHtml({
         pages: {
           index: {
             entry: './demo/index.js', // MUST
@@ -77,23 +78,29 @@ export default ({
     //    }),
     //  ],
     // },
-
     // Configuration for building your library.
     // See: https://vitejs.dev/guide/build.html#library-mode
     build: {
       lib: {
+
         // Could also be a dictionary or array of multiple entry points.
         entry: 'src/index.js',
         name,
+
         fileName: 'index',
         // Change this to the formats you want to support.
         // Don't forgot to update your package.json as well.
-        formats: ['es', 'cjs'],
+        formats: ['es', 'cjs', 'umd'],
       },
+
       rollupOptions: {
+
         plugins: [
-          rollupPlugin(sourceJSPattern),
+          rollupPlugin([justSrc]),
         ],
+        output: {
+          name: camelCase(name)
+        },
         // External packages that should not be bundled into your library.
         external: ['react', 'react-dom', 'react/jsx-runtime'],
       },

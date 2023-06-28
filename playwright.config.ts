@@ -16,7 +16,6 @@ export default ({
 }: { name: string }) => {
   // const port = 4200
   const port = getPort(name )
-  console.log(`port:`, port)
   return defineConfig({
     testDir: './e2e',
     /* Run tests in files in parallel */

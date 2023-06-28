@@ -8144,6 +8144,13 @@ minimatch@^7.4.3:
   dependencies:
     brace-expansion "^2.0.1"
 
+minimatch@^9.0.1:
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.2.tgz#397e387fff22f6795844d00badc903a3d5de7057"
+  integrity sha512-PZOT9g5v2ojiTL7r1xF6plNHLtOeTpSlDI007As2NlA2aYBMfVom17yqa6QzhmDP8QOhn7LjHTg7DFCVSSa6yg==
+  dependencies:
+    brace-expansion "^2.0.1"
+
 minimist-options@4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/minimist-options/-/minimist-options-4.1.0.tgz"
@@ -10338,6 +10345,13 @@ vite-plugin-eslint@^1.8.1:
     "@rollup/pluginutils" "^4.2.1"
     "@types/eslint" "^8.4.5"
     rollup "^2.77.2"
+
+vite-plugin-libcss@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-libcss/-/vite-plugin-libcss-1.1.1.tgz#e0cf3addd19d7676b7f08cd7dbfd383c2108f4b3"
+  integrity sha512-WAk6U9iYWMbcu7cdw4wACpVebZiLHMyyE9KTcBzzkTt1cnXj3a7loIoIGNblx+xMb9quPpO3iRbNTOnIFDzgmg==
+  dependencies:
+    minimatch "^9.0.1"
 
 vite-plugin-virtual-html@^1.1.10:
   version "1.1.10"
