@@ -31,13 +31,18 @@
       }
     },
     "start": {
-      "command": "cd packages/bounce-loader && yarn vite --port 4200"
+      "command": "cd packages/bounce-loader && yarn vite"
     },
     "launch-e2e": {
+      "command": "cd packages/bounce-loader && npx playwright test --ui --timeout 60000"
+    },
+    "launch-e2e2": {
       "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
     },
-
     "e2e": {
+      "command": "cd packages/bounce-loader && npx playwright test --timeout 60000"
+    },
+    "e2e2": {
       "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --config video=false --e2e --browser chrome\" \"nx run bounce-loader:start\" "
     },
     "test": {
@@ -47,7 +52,10 @@
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/packages/bounce-loader"
       }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs bounce-loader {args.ver} {args.tag}",
+      "dependsOn": ["e2e", "build"]
     }
-
   }
 }

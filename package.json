@@ -27,6 +27,7 @@
     "@nx/vite": "16.4.0",
     "@nx/web": "16.4.0",
     "@nx/workspace": "16.4.0",
+    "@playwright/test": "^1.35.1",
     "@testing-library/react": "14.0.0",
     "@types/bluebird": "^3.5.38",
     "@types/jest": "^29.5.2",

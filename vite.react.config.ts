@@ -9,7 +9,7 @@ import * as esbuild from "esbuild";
 import vitePluginVirtualHtml from 'vite-plugin-virtual-html';
 
 
-const sourceJSPattern = [/\/src\/.*\.js$/, /\/demo\/.*\.js$/, /\/helperUtils\/.*\.js$/, ];
+const sourceJSPattern = [/\/src\/.*\.js$/, /\/demo\/.*\.js$/, /\/helperUtils\/.*\.js$/,];
 const rollupPlugin = (matchers: RegExp[]) => ({
   name: "js-in-jsx",
   load(id: string) {
@@ -27,82 +27,87 @@ export default ({
 }: {
   name: string;
   dir: string;
-}) => defineConfig({
-  cacheDir: `../../node_modules/.vite/${name}`,
+}) => defineConfig(({ command, mode }) => {
+  console.log(`mode:`, mode)
+  console.log(`command:`, command)
+  return {
+    cacheDir: `../../node_modules/.vite/${name}`,
 
-  plugins: [
-    dts({
-      entryRoot: 'src',
-      tsConfigFilePath: joinPathFragments(dir, 'tsconfig.json'),
-      skipDiagnostics: true,
-    }),
-    react(),
-    viteTsConfigPaths({
-      root: '../../',
-    }),
-    vitePluginVirtualHtml({
-      pages: {
-       index: {
-         entry: './demo/index.js', // MUST
-         title: `${name} demo`,// optional, default: ''
-         body: '<div id="app"><div id="demo"></div></div>' // optional, default: '<div id="app"></div>'
-       }
+    plugins: [
+      dts({
+        entryRoot: 'src',
+        tsConfigFilePath: joinPathFragments(dir, 'tsconfig.json'),
+        skipDiagnostics: true,
+      }),
+      react(),
+      viteTsConfigPaths({
+        root: '../../',
+      }),
+      ...mode === 'build' ? [] : [vitePluginVirtualHtml({
+        pages: {
+          index: {
+            entry: './demo/index.js', // MUST
+            title: `${name} demo`,// optional, default: ''
+            body: '<div id="app"><div id="demo"></div></div>' // optional, default: '<div id="app"></div>'
+          }
+        },
+      })]
+    ],
+    esbuild: {
+      loader: "jsx",
+      include: sourceJSPattern,
+      exclude: [],
+      keepNames: true,
+      minifyIdentifiers: false,
+      minifySyntax: false,
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        loader: {
+          ".js": "jsx",
+        },
       },
-   })
-  ],
-  esbuild: {
-    loader: "jsx",
-    include: sourceJSPattern,
-    exclude: [],
-    keepNames: true,
-    minifyIdentifiers: false,
-    minifySyntax: false,
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      loader: {
-        ".js": "jsx",
+    },
+
+    // Uncomment this if you are using workers.
+    // worker: {
+    //  plugins: [
+    //    viteTsConfigPaths({
+    //      root: '../../',
+    //    }),
+    //  ],
+    // },
+
+    // Configuration for building your library.
+    // See: https://vitejs.dev/guide/build.html#library-mode
+    build: {
+      lib: {
+        // Could also be a dictionary or array of multiple entry points.
+        entry: 'src/index.js',
+        name,
+        fileName: 'index',
+        // Change this to the formats you want to support.
+        // Don't forgot to update your package.json as well.
+        formats: ['es', 'cjs'],
+      },
+      rollupOptions: {
+        plugins: [
+          rollupPlugin(sourceJSPattern),
+        ],
+        // External packages that should not be bundled into your library.
+        external: ['react', 'react-dom', 'react/jsx-runtime'],
       },
     },
-  },
+    test: {
+      globals: true,
+      cache: {
+        dir: '../../node_modules/.vitest',
+      },
+      environment: 'jsdom',
+      include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    },
+  }
+})
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [
-  //    viteTsConfigPaths({
-  //      root: '../../',
-  //    }),
-  //  ],
-  // },
-
-  // Configuration for building your library.
-  // See: https://vitejs.dev/guide/build.html#library-mode
-  build: {
-    lib: {
-      // Could also be a dictionary or array of multiple entry points.
-      entry: 'src/index.js',
-      name,
-      fileName: 'index',
-      // Change this to the formats you want to support.
-      // Don't forgot to update your package.json as well.
-      formats: ['es', 'cjs'],
-    },
-    rollupOptions: {
-      plugins: [
-        rollupPlugin(sourceJSPattern),
-      ],
-      // External packages that should not be bundled into your library.
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
-    },
-  },
-  test: {
-    globals: true,
-    cache: {
-      dir: '../../node_modules/.vitest',
-    },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-  },
-});
 
 
