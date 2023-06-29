@@ -11,8 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
-        with:
-          working-directory: .
       - name: e2e tests
         run: yarn nx affected -t e2e --base=main~1 --head=main
         env:
