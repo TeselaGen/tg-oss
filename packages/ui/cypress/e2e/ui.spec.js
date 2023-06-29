@@ -13,7 +13,6 @@ describe("zoomCircularView 1.spec", function () {
     cy.visit("");
     //a bunch of things should exist/not exist
     cy.get("div:contains(Zoink)")
-
   });
   it(`should work 4`, function () {
     cy.visit("");

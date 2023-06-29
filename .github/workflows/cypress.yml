@@ -4,12 +4,6 @@ jobs:
   cypress-run:
     name: Cypress run
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        # the actual items in the array do not matter,
-        # just the number - to force CI to sping 3 copies
-        # of the current job in parallel
-        machines: [1, 2, 3]
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -20,7 +14,7 @@ jobs:
         with:
           working-directory: .
       - name: e2e tests
-        run: nx affected -t e2e --base=main~1 --head=main
+        run: yarn nx affected -t e2e --base=main~1 --head=main
         env:
           WITH_COVERAGE: true
           # pass the Dashboard record key as an environment variable
