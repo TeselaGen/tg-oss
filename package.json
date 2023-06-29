@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "e2e": "nx affected -t e2e --base=main~1 --head=main"
+    "e2e": "nx affected -t e2e"
   },
   "private": true,
   "dependencies": {

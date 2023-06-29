@@ -10,7 +10,9 @@ jobs:
           node-version: 16
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: bahmutov/npm-install@v1
+      - uses: c-hive/gha-yarn-cache@v2
+      - name: Install JS dependencies
+        run: yarn install
       - name: e2e tests
         run: yarn e2e
         env:
