@@ -18,9 +18,9 @@ jobs:
         uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
         with:
-          working-directory: addons/AutoAnnotate
+          working-directory: .
       - name: e2e tests
-        run:  nx affected -t e2e --base=main~1 --head=main
+        run: nx affected -t e2e --base=main~1 --head=main
         env:
           WITH_COVERAGE: true
           # pass the Dashboard record key as an environment variable
