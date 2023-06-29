@@ -13,6 +13,9 @@ jobs:
         with:
           # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
+      - uses: c-hive/gha-yarn-cache@v2
+      - name: Install JS dependencies
+        run: yarn install
       - uses: mansagroup/nrwl-nx-action@v3
         with:
           targets: e2e
