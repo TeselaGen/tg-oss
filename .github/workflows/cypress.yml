@@ -10,11 +10,12 @@ jobs:
           node-version: 16
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: c-hive/gha-yarn-cache@v2
-      - name: Install JS dependencies
-        run: yarn install
-      - name: e2e tests
-        run: yarn e2e
+          with:
+            # We need to fetch all branches and commits so that Nx affected has a base to compare against.
+            fetch-depth: 0
+      - uses: mansagroup/nrwl-nx-action@v3
+        with:
+          targets: e2e
         env:
           WITH_COVERAGE: true
           # pass the Dashboard record key as an environment variable
