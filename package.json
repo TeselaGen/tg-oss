@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "e2e": "nx affected -t e2e --base=main~1 --head=main"
   },
   "private": true,
   "dependencies": {
