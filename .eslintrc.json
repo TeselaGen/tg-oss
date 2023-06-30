@@ -69,6 +69,7 @@
         "cypress/globals": true
       },
       "rules": {
+        "cypress/unsafe-to-chain-command": 0,
         "no-only-tests/no-only-tests": [
           1,
           {

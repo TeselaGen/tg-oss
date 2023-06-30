@@ -35,11 +35,11 @@ export default ({
     cacheDir: `../../node_modules/.vite/${name}`,
 
     plugins: [
-      dts({
-        entryRoot: 'src',
-        tsConfigFilePath: joinPathFragments(dir, 'tsconfig.json'),
-        skipDiagnostics: true,
-      }),
+      // dts({
+      //   entryRoot: 'src',
+      //   tsConfigFilePath: joinPathFragments(dir, 'tsconfig.json'),
+      //   skipDiagnostics: true,
+      // }),
       react(),
       libCss(),
       viteTsConfigPaths({

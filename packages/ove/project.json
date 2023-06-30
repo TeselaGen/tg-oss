@@ -1,0 +1,57 @@
+{
+  "name": "ove",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/ove/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/ove/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
+      "dependsOn": ["test", "build"]
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "minify": false,
+        "target": "es2015",
+        "outputPath": "dist/packages/ove"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "start": {
+      "command": "cd packages/ove && yarn vite --port 3344"
+    },
+    "launch-e2e": {
+      "command": "npx concurrently -k \"wait-on tcp:3344 && cd packages/ove && yarn cypress open --e2e --browser chrome\" \"nx run ove:start\""
+    },
+
+    "e2e": {
+      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:3344 && cd packages/ove && yarn cypress run --config --e2e --browser chrome\" \"nx run ove:start\" "
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/packages/ove"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/ove"
+      }
+    }
+
+  }
+}
