@@ -1,0 +1,29 @@
+/* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
+.tg-timeline {
+  position: relative;
+  white-space: nowrap;
+}
+
+.tg-timeline-line {
+  position: absolute;
+  height: 90%;
+  border-left: 2px solid #bfccd6;
+  top: 3px;
+  left: 5px;
+}
+
+.tg-timeline-event {
+  margin-bottom: 15px;
+}
+
+.tg-timeline-circle {
+  width: 12px;
+  min-width: 12px;
+  height: 12px;
+  min-height: 12px;
+  z-index: 1;
+  margin-right: 10px;
+  border-radius: 100px;
+  background: #e1e8ed;
+  border: 2px solid #137cbd;
+}

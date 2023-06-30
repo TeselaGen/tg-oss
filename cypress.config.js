@@ -7,7 +7,9 @@ module.exports = ({
   viewportHeight: 800,
   viewportWidth: 1280,
   video: false,
+  pageLoadTimeout: 10000,
   e2e: {
+    supportFile: 'cypress/support/index.js',
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     // setupNodeEvents(on, config) {

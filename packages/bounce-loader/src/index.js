@@ -5,7 +5,11 @@ import "./style.css";
 
 export function BounceLoader({ style, className }) {
   return (
-    <div className={classNames("tg-bounce-loader", className)} style={style}>
+    <div
+      data-testid="bounce-loader"
+      className={classNames("tg-bounce-loader", className)}
+      style={style}
+    >
       <div className="rect1" />
       <div className="rect2" />
       <div className="rect3" />

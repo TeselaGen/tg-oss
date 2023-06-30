@@ -9,9 +9,10 @@ import * as esbuild from "esbuild";
 import vitePluginVirtualHtml from 'vite-plugin-virtual-html';
 import libCss from 'vite-plugin-libcss';
 import { camelCase } from 'lodash';
+import path from 'node:path';
 
-const justSrc = /\/src\/.*\.js$/;
-const sourceJSPattern = [justSrc, /\/demo\/.*\.js$/, /\/helperUtils\/.*\.js$/,];
+const justSrc = [/\/src\/.*\.js$/, /\/src\/.*\.jsx$/, /\/src\/.*\.ts$/, /\/src\/.*\.tsx$/];
+const sourceJSPattern = [...justSrc, /\/demo\/.*\.js$/, /\/helperUtils\/.*\.js$/,];
 const rollupPlugin = (matchers: RegExp[]) => ({
   name: "js-in-jsx",
   load(id: string) {
@@ -66,6 +67,7 @@ export default ({
       esbuildOptions: {
         loader: {
           ".js": "jsx",
+          ".ts": "tsx",
         },
       },
     },
@@ -96,7 +98,7 @@ export default ({
       rollupOptions: {
 
         plugins: [
-          rollupPlugin([justSrc]),
+          rollupPlugin(justSrc),
         ],
         output: {
           name: camelCase(name)
@@ -105,11 +107,33 @@ export default ({
         external: ['react', 'react-dom', 'react/jsx-runtime'],
       },
     },
+    resolve: {
+      alias: {
+        // "teselagen-react-components": console.log(`comment me out!`) || path.resolve(__dirname, "../teselagen-react-components/src"),
+        react: path.join(__dirname, "node_modules/react"),
+        "@blueprintjs/core": path.join(
+          __dirname,
+          "node_modules/@blueprintjs/core"
+        ),
+        "@blueprintjs/datetime": path.join(
+          __dirname,
+          "node_modules/@blueprintjs/datetime"
+        ),
+        "react-dom": path.join(__dirname, "node_modules/react-dom"),
+        "react-redux": path.join(__dirname, "node_modules/react-redux"),
+        "redux-form": path.join(__dirname, "node_modules/redux-form"),
+        redux: path.join(__dirname, "node_modules/redux")
+        // "@teselagen/range-utils": path.resolve(__dirname, "../tg-oss/packages/range-utils/src"),
+        // "@teselagen/sequence-utils": path.resolve(__dirname, "../tg-oss/packages/sequence-utils/src"),
+        // "@teselagen/bio-parsers": path.resolve(__dirname, "../tg-oss/packages/bio-parsers/src"),
+      }
+    },
     test: {
       globals: true,
       cache: {
         dir: '../../node_modules/.vitest',
       },
+      setupFiles: ['../../vitest.setup.ts'],
       environment: 'jsdom',
       include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     },

@@ -1,0 +1,6 @@
+name,description,sequence,isRegex,matchType,type,ext-zoink,ext-prop1,ext-prop2
+seq1,,gagagaga,true,dna,misc_feature,z1,ext-prop1-1,ext-prop2-1
+,,gagagaga,true,dna,misc_feature,z2,ext-prop1-2,ext-prop2-2
+seq3,,gagagaga,false,dna,misc_feature,z3,ext-prop1-3,ext-prop2-3
+seq4,,gagagaga,false,dna,misc_feature,z4,ext-prop1-4,ext-prop2-4
+seq5,,gagagaga,false,dna,misc_feature,z5,ext-prop1-5,ext-prop2-5

@@ -1,0 +1,247 @@
+.tg-flex-form-content .bp3-form-content {
+  display: flex;
+}
+
+.error-popover {
+  margin: 5px;
+  color: red;
+}
+
+.te-file-upload-input {
+  min-width: 140px;
+}
+
+.ant-upload.ant-upload-drag {
+  border-width: 2px;
+}
+
+.tg-upload-inner {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+}
+.tg-dropzone.tg-dropzone-minimal {
+  height: 30px !important;
+  width: fit-content !important;
+}
+.tg-dropzone-minimal .tg-upload-inner {
+  flex-direction: row;
+  margin: 4px;
+}
+.tg-dropzone-minimal .bp3-icon {
+  flex-direction: row;
+  margin-right: 5px;
+}
+
+.tg-hide-drop-target .ant-upload.ant-upload-drag {
+  display: none;
+}
+
+.tg-dropzone {
+  width: 100% !important;
+  height: 100% !important;
+  border-width: 2px;
+  border-color: #d9d9d9;
+  border-style: dashed;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 1s;
+}
+.tg-dropzone:hover {
+  border-color: rgb(91, 157, 211);
+}
+.tg-dropzone-active {
+  border-color: rgb(91, 157, 211);
+}
+.tg-dropzone-accept {
+  border-color: rgb(123, 214, 150);
+}
+.tg-dropzone-reject {
+  border-color: rgb(91, 157, 211);
+}
+.tg-dropzone-disabled {
+  border-color: rgb(136, 133, 132) !important;
+  opacity: 0.8;
+}
+.tg-upload-file-list-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 2px;
+  border-radius: 3px;
+  padding: 2px;
+}
+.tg-upload-file-list-item:hover {
+  background: rgb(215, 238, 255);
+}
+.clickableIcon {
+  cursor: pointer;
+}
+.clickableIcon:hover {
+  opacity: 0.7;
+}
+
+.tg-upload-file-list-item a {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tg-upload-file-list-item-overflow {
+  overflow: auto;
+  height: 150px;
+}
+
+.tg-upload-file-list-counter {
+  position: absolute;
+  padding: 5px;
+}
+
+.tg-spin {
+  animation-name: spin;
+  animation-duration: 1500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* .Select-multi-value-wrapper {
+  max-height: 100px;
+  overflow: scroll;
+} */
+
+/* dark styles */
+.bp3-dark .Select.is-open > .Select-control,
+.bp3-dark .Select-control,
+.bp3-dark .Select.is-disabled > .Select-control {
+  background: rgba(16, 22, 26, 0.3);
+  box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 0 0 0 0 rgba(19, 124, 189, 0),
+    0 0 0 0 rgba(19, 124, 189, 0), inset 0 0 0 1px rgba(16, 22, 26, 0.3),
+    inset 0 1px 1px rgba(16, 22, 26, 0.4);
+  background: rgba(16, 22, 26, 0.3);
+  color: #f5f8fa;
+}
+
+.bp3-dark .Select.is-focused:not(.is-open) > .Select-control {
+  background: rgba(16, 22, 26, 0.3);
+  color: #f5f8fa;
+}
+
+.bp3-dark .Select-placeholder,
+.bp3-dark .Select--single > .Select-control .Select-value {
+  color: rgb(191, 204, 214, 0.5); /*#bfccd6*/
+}
+
+.bp3-dark .Select-control {
+  border: none !important;
+}
+
+.bp3-dark
+  .Select.has-value.Select--single
+  > .Select-control
+  .Select-value
+  .Select-value-label,
+.bp3-dark
+  .Select.has-value.is-pseudo-focused.Select--single
+  > .Select-control
+  .Select-value
+  .Select-value-label,
+.bp3-dark .Select-option.is-selected {
+  color: #f5f8fa;
+}
+
+.bp3-dark .Select-option {
+  background: #30404d;
+  color: #f5f8fa;
+}
+
+.bp3-dark .Select-menu-outer {
+  border: 1px solid #26738cb0;
+  background: #202b33;
+}
+
+.bp3-dark .Select-option.is-focused {
+  background: rgba(0, 126, 255, 0.08);
+  color: #f5f8fa;
+}
+
+.bp3-dark .tg-upload-file-list-item:hover {
+  background: #26738cb0;
+}
+
+.tg-tooltipError .bp3-popover-wrapper {
+  width: 100%;
+}
+
+.tg-no-fill-field {
+  display: table !important;
+}
+
+.item-upload-container {
+  padding: 5px;
+  width: 290px;
+}
+
+.item-upload {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* .bp3-control {
+  display: flex;
+  align-items: center;
+} */
+
+.bp3-form-group.bp3-inline .bp3-form-content {
+  flex: 1;
+}
+
+.bp3-dark input {
+  color: #f5f8fa;
+}
+
+.tg-no-fill-field .bp3-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.bp3-form-group .info-helper-wrapper:not(.info-helper-wrapper-noMarginTop) {
+  margin-top: -9px !important;
+}
+
+.generateDefaultDot {
+  cursor: pointer;
+  border-radius: 50%;
+  background: #ffca00;
+  box-shadow: 0px 0px 2px black;
+  height: 8px;
+  width: 8px;
+}
+.bp3-dark .generateDefaultDot {
+  background: yellow;
+}
+
+.bp3-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+:not(.no-inline-label-margins).bp3-inline .bp3-label {
+  /* text-align: right; */
+  padding-right: 20px;
+  min-width: 100px;
+}
+
+.bp3-dark .tg-color-picker-selector input {
+  color: #222222;
+}

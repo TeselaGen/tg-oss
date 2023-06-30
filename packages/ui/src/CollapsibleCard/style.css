@@ -1,0 +1,21 @@
+/* Use in the place of .bp3-card */
+.tg-card {
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+.tg-card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tg-card-header-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

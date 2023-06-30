@@ -1,0 +1,9 @@
+.tg-dialog-footer-error {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5;
+}
+
+.tg-dialog-footer-error .bp3-form-group {
+  margin-bottom: 0;
+}

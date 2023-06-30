@@ -1,0 +1,45 @@
+.tg-menu-bar {
+  /* background: white; */
+  color: inherit;
+  text-decoration: none;
+  z-index: 19;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 34px;
+  width: 100%;
+  padding-left: 15px;
+}
+
+.tg-menu-bar-item {
+  margin: 2px;
+}
+
+.tg-menu-bar .bp3-popover {
+  margin-top: -1px !important;
+}
+
+.tg-menu-bar-popover .bp3-popover .bp3-popover-arrow {
+  display: none;
+}
+
+/* removing the display inline styling because they broke menu positioning: https://github.com/TeselaGen/lims/issues/2563 */
+/* .tg-menu-bar-popover .bp3-popover-wrapper {
+  display: inline;
+}
+.tg-menu-search-suggestions .bp3-popover-wrapper {
+  display: inline;
+} */
+/* add a fix here that applies the above logic to only the first child of the menu */
+.tg-menu-search-suggestions .bp3-menu > .bp3-popover-wrapper {
+  display: inline;
+}
+
+li.bp3-menu-divider + li.bp3-menu-divider,
+li.bp3-menu-divider:first-child,
+li.bp3-menu-divider:last-child {
+  display: none;
+}
+.tg_search_highlight {
+  font-weight: bold;
+}

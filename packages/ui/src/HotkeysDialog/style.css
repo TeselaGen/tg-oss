@@ -1,0 +1,54 @@
+.tg-hotkeys-dialog .bp3-tab-list {
+  /* border-top: 1px solid #ddd; */
+  display: flex;
+  justify-content: center;
+  padding-left: 10px;
+  margin-top: 5px;
+}
+
+.tg-hotkeys-dialog table {
+  table-layout: fixed;
+  margin: 0 5px 5px;
+  width: calc(100% - 10px);
+  border-spacing: 0;
+}
+
+.tg-hotkeys-dialog .bp3-tab-panel {
+  margin-top: 5px;
+  padding: 10px;
+}
+.tg-hotkeys-dialog thead,
+.tg-hotkeys-dialog tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; /* even columns width , fix width of table too*/
+}
+
+.tg-hotkeys-dialog .tg-table-wrapper tbody {
+  display: block;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.tg-hotkeys-dialog th {
+  width: 50%;
+  font-weight: bold;
+  color: black;
+  border-bottom: 3px solid #ddd;
+}
+
+.tg-hotkeys-dialog tr:nth-child(2n) td {
+  background-color: #f8f8f8;
+}
+.bp3-dark .tg-hotkeys-dialog tr:nth-child(2n) td {
+  background-color: #3e4b6d;
+}
+
+.tg-hotkeys-dialog td,
+.tg-hotkeys-dialog th {
+  padding: 8px 12px;
+}
+
+.tg-hotkeys-dialog td:first-child {
+  border-right: 1px solid lightgrey;
+}
