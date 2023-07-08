@@ -344,6 +344,9 @@ function genbankToJson(string, options = {}) {
           options.isProtein = false;
         }
         options.sequenceTypeFromLocus = item;
+        if (item.match(/ss-dna/i)) {
+          options.isSingleStrandedDNA = true;
+        }
       }
 
       // Division
@@ -364,6 +367,7 @@ function genbankToJson(string, options = {}) {
     }
     result.parsedSequence.gbDivision = gbDivision;
     result.parsedSequence.sequenceTypeFromLocus = options.sequenceTypeFromLocus;
+    result.parsedSequence.isSingleStrandedDNA = options.isSingleStrandedDNA;
     result.parsedSequence.date = date;
     result.parsedSequence.circular = circular;
   }
