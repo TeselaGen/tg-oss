@@ -3,7 +3,7 @@ import classNames from "classnames";
 import React from "react";
 
 import { reduxForm } from "redux-form";
-import { wrapDialog } from "@teselagen/ui";
+import { tgFormValues, wrapDialog } from "@teselagen/ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 
@@ -11,7 +11,6 @@ import { NumericInputField } from "@teselagen/ui";
 import { get } from "lodash";
 import { getRangeLength } from "@teselagen/range-utils";
 import { tryToRefocusEditor } from "../utils/editorUtils";
-import tgFormValues from "../utils/tgFormValues";
 
 // Single validation function - from & to have the same range
 const validate = (val, vals, props) => {

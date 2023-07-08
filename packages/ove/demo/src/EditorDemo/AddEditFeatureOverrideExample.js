@@ -8,7 +8,8 @@ import {
   NumericInputField,
   ReactSelectField,
   TextareaField,
-  wrapDialog
+  wrapDialog,
+  tgFormValues
 } from "@teselagen/ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
@@ -25,7 +26,6 @@ import {
 import classNames from "classnames";
 
 import { withEditorProps } from "../../../src";
-import tgFormValues from "../../../src/utils/tgFormValues";
 
 export class AddOrEditFeatureDialog extends React.Component {
   renderLocations = (props) => {

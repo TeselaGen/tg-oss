@@ -7,7 +7,8 @@ import {
   InputField,
   ReactSelectField,
   wrapDialog,
-  InfoHelper
+  InfoHelper,
+  tgFormValues
 } from "@teselagen/ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
@@ -16,7 +17,6 @@ import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { CheckboxField } from "@teselagen/ui";
 import "./style.css";
-import tgFormValues from "../../utils/tgFormValues";
 
 class MergeFeaturesDialog extends React.Component {
   render() {

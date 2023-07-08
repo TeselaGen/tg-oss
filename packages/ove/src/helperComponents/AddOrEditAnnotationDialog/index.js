@@ -11,7 +11,8 @@ import {
   generateField,
   reverseFeatureIcon,
   bluntFeatureIcon,
-  featureIcon
+  featureIcon,
+  tgFormValues
 } from "@teselagen/ui";
 import { compose } from "redux";
 import {
@@ -39,7 +40,6 @@ import withEditorProps from "../../withEditorProps";
 import { withProps } from "recompose";
 import { map, flatMap } from "lodash";
 import "./style.css";
-import tgFormValues from "../../utils/tgFormValues";
 
 class AddOrEditAnnotationDialog extends React.Component {
   componentDidMount() {

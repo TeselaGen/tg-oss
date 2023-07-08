@@ -5,7 +5,8 @@ import {
   wrapDialog,
   DataTable,
   withSelectedEntities,
-  SwitchField
+  SwitchField,
+  tgFormValues
 } from "@teselagen/ui";
 import { compose } from "redux";
 import { Button, Classes, Popover } from "@blueprintjs/core";
@@ -15,7 +16,6 @@ import withEditorProps from "../../withEditorProps";
 import { forEach, camelCase, startCase } from "lodash";
 import { sizeSchema } from "../PropertiesDialog/utils";
 import { getRangeLength } from "@teselagen/range-utils";
-import tgFormValues from "../../utils/tgFormValues";
 
 const schema = {
   fields: [
