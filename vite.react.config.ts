@@ -104,7 +104,7 @@ export default ({
           name: camelCase(name)
         },
         // External packages that should not be bundled into your library.
-        external: ['react', 'react-dom', 'react/jsx-runtime'],
+        external: ['react', 'react-dom', 'react/jsx-runtime', "redux", "react-redux", "redux-form"],
       },
     },
     resolve: {
