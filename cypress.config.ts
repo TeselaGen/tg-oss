@@ -4,9 +4,10 @@ import { defineConfig } from "cypress";
 
 
 export default ({
-  port = '4200'
-})=> defineConfig({
-  projectId: 'mp89gp',
+  port = '4200',
+  projectId = 'pass_a_cypress_project_id_here'
+}) => defineConfig({
+  projectId,
   viewportHeight: 800,
   viewportWidth: 1280,
   video: false,
