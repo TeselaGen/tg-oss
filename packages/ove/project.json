@@ -42,7 +42,7 @@
     },
 
     "e2e": {
-      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:3344 && cd packages/ove && yarn cypress run --config --e2e --browser chrome\" \"nx run ove:start\" "
+      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:3344 && cd packages/ove && yarn cypress run --record --config --e2e --browser chrome\" \"nx run ove:start\" "
     },
     "test": {
       "executor": "@nx/vite:test",

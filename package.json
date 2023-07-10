@@ -63,7 +63,7 @@
     "recompose": "npm:react-recompose@0.31.1",
     "redux": "^4.1.2",
     "redux-act": "^1.8.0",
-    "redux-form": "8.3.8",
+    "redux-form": "^8.3.10",
     "redux-ignore": "^1.2.5",
     "redux-thunk": "2.4.1",
     "remark-gfm": "^3.0.1",
