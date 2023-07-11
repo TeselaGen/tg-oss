@@ -4,3 +4,4 @@ export default viteReactConfig({
   name: 'ui',
   dir: __dirname,
 })
+
