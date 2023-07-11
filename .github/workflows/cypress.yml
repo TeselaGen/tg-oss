@@ -1,5 +1,11 @@
 name: Cypress tests
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "packages/ui/**"
+  pull_request:
+    paths:
+      - "packages/ui/**"
 jobs:
   cypress-run:
     name: Cypress run
