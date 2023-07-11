@@ -42,7 +42,7 @@
     },
 
     "e2e": {
-      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:3344 && cd packages/ove && yarn cypress run --record --key 373658d4-4931-4ffd-9263-8eb78a838ab9 --config --e2e --browser chrome\" \"nx run ove:start\" "
+      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:3344 && cd packages/ove && yarn cypress run --record --key 373658d4-4931-4ffd-9263-8eb78a838ab9 --config --e2e\" \"nx run ove:start\" "
     },
     "test": {
       "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts"

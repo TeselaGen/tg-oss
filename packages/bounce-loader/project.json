@@ -43,7 +43,7 @@
       "command": "cd packages/bounce-loader && npx playwright test --timeout 60000"
     },
     "e2e2": {
-      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e --browser chrome\" \"nx run bounce-loader:start\" "
+      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
     },
     "test": {
       "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
