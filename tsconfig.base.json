@@ -3,25 +3,23 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
-    // "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
-    // "module": "esnext",
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@teselagen/bio-parsers": ["packages/bio-parsers/src/index.js"],
+      "@teselagen/bounce-loader": ["packages/bounce-loader/src/index.js"],
       "@teselagen/file-utils": ["packages/file-utils/src/index.js"],
+      "@teselagen/ove": ["packages/ove/src/index.js"],
       "@teselagen/range-utils": ["packages/range-utils/src/index.js"],
       "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.js"],
       "@teselagen/ui": ["packages/ui/src/index.js"],
-      "@teselagen/ove": ["packages/ove/src/index.js"],
-      "@teselagen/bounce-loader": ["packages/bounce-loader/src/index.js"],
       "@teselagen/uploader": ["packages/uploader/src/index.js"]
     },
     "module": "commonjs",
@@ -35,7 +33,6 @@
     "types": ["node", "vitest"],
     "outDir": "./dist/out-tsc",
     "declaration": true
-    // "types": []
   },
   "exclude": [
     "node_modules",
@@ -46,20 +43,6 @@
     "src/**/*.spec.js",
     "src/**/*.test.js"
   ],
-  // "compilerOptions": {
-  //   "module": "commonjs",
-  //   "allowJs": true,
-  //   "forceConsistentCasingInFileNames": true,
-  //   "strict": true,
-  //   "noImplicitOverride": true,
-  //   "noPropertyAccessFromIndexSignature": true,
-  //   "noImplicitReturns": true,
-  //   "noFallthroughCasesInSwitch": true,
-  //   "types": ["node","vitest"],
-  //   "outDir": "../../dist/out-tsc",
-  //   "declaration": true,
-  //   // "types": []
-  // },
   "include": ["src/**/*.ts", "src/**/*.js"],
   "files": []
 }

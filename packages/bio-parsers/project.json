@@ -24,12 +24,7 @@
       "dependsOn": ["test", "build"]
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/bio-parsers"],
-      "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/packages/bio-parsers"
-      }
+      "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
     },
     "lint": {
       "executor": "@nx/linter:eslint",

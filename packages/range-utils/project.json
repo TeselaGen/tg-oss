@@ -24,12 +24,7 @@
       "dependsOn": ["test", "build"]
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/range-utils"],
-      "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/packages/range-utils"
-      }
+      "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts"
     },
     "lint": {
       "executor": "@nx/linter:eslint",

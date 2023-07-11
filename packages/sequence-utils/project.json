@@ -4,7 +4,7 @@
   "sourceRoot": "packages/sequence-utils/src",
   "projectType": "library",
   "targets": {
- "version": {
+    "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional"
@@ -24,12 +24,7 @@
       "dependsOn": ["test", "build"]
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/sequence-utils"],
-      "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/packages/sequence-utils"
-      }
+      "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
     },
     "lint": {
       "executor": "@nx/linter:eslint",
