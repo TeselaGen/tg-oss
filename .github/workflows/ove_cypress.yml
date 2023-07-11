@@ -40,8 +40,8 @@ jobs:
         with:
           record: true
           parallel: true
-          start: yarn vite --port 4200
-          wait-on: http://localhost:4200
+          start: yarn vite --port 3344
+          wait-on: http://localhost:3344
           # we have already installed all dependencies above
           install: false
           working-directory: packages/ove
