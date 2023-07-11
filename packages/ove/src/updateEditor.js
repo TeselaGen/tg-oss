@@ -1,6 +1,5 @@
 import { set, isEqual } from "lodash";
 import { tidyUpSequenceData } from "@teselagen/sequence-utils";
-
 import { annotationTypes } from "@teselagen/sequence-utils";
 
 export default function updateEditor(
