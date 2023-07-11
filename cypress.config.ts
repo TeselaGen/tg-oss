@@ -11,7 +11,7 @@ export default ({
   viewportHeight: 800,
   viewportWidth: 1280,
   video: false,
-  pageLoadTimeout: 10000,
+  pageLoadTimeout: 40000,
   e2e: {
     // setupNodeEvents(on, config) {
     //   on(

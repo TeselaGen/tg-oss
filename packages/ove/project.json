@@ -38,7 +38,7 @@
       "command": "cd packages/ove && yarn vite --port 3344"
     },
     "launch-e2e": {
-      "command": "npx concurrently -k \"wait-on tcp:3344 && cd packages/ove && yarn cypress open --e2e --browser chrome\" \"nx run ove:start\""
+      "command": "npx concurrently -k \"wait-on tcp:3344 && cd packages/ove && yarn cypress open --e2e --browser chrome --config\" \"nx run ove:start\""
     },
 
     "e2e": {

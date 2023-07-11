@@ -38,7 +38,7 @@
       "command": "cd packages/ui && yarn vite --port 4200"
     },
     "launch-e2e": {
-      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/ui && yarn cypress open --e2e --browser chrome\" \"nx run ui:start\""
+      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/ui && yarn cypress open --e2e --browser chrome --config\" \"nx run ui:start\""
     },
 
     "e2e": {
