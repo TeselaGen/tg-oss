@@ -21,6 +21,10 @@ jobs:
       - name: Run e2e tests
         uses: cypress-io/github-action@v5
         with:
+          record: true
+          parallel: true
+          start: yarn vite --port 4200
+          wait-on: http://localhost:4200
           # we have already installed all dependencies above
           install: false
           working-directory: packages/ui
