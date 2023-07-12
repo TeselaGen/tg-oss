@@ -4,7 +4,13 @@
     "default": {
       "runner": "nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "e2e-playwright"
+        ],
         "accessToken": "N2UyMWU2MjktZTIwNy00MTc2LTk4OTMtNDBjYzBkNGFkYTQ4fHJlYWQtd3JpdGU="
       }
     }
@@ -25,6 +31,9 @@
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
     },
     "e2e": {
+      "inputs": ["default", "^production"]
+    },
+    "e2e-playwright": {
       "inputs": ["default", "^production"]
     },
     "launch-e2e": {

@@ -1,6 +1,6 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
-import getPort from './getPort';
+import { defineConfig, devices } from "@playwright/test";
+import getPort from "./getPort";
 
 /**
  * Read environment variables from file.
@@ -11,32 +11,31 @@ import getPort from './getPort';
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-export default ({
-  name,
-}: { name: string }) => {
+export default ({ name }: { name: string }) => {
   // const port = 4200
-  const port = getPort(name )
+  const port = getPort(name);
   return defineConfig({
-    testDir: './e2e',
+    testDir: "./e2e",
     /* Run tests in files in parallel */
     fullyParallel: true,
+    retries: 0,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-    reporter: 'html',
+    reporter: "html",
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
       /* Base URL to use in actions like `await page.goto('/')`. */
       baseURL: `http://127.0.0.1:${port}`,
 
       /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-      trace: 'on-first-retry',
+      trace: "on-first-retry"
     },
 
     /* Configure projects for major browsers */
     projects: [
       {
-        name: 'chromium',
-        use: { ...devices['Desktop Chrome'] },
-      },
+        name: "chromium",
+        use: { ...devices["Desktop Chrome"] }
+      }
 
       // {
       //   name: 'firefox',
@@ -73,7 +72,7 @@ export default ({
     webServer: {
       command: `nx run ${name}:start --port ${port}`,
       url: `http://127.0.0.1:${port}`,
-      reuseExistingServer: true,
-    },
+      reuseExistingServer: true
+    }
   });
-}
+};

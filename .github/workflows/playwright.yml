@@ -1,15 +1,15 @@
-name: Cypress tests
+name: Playwright tests
 on: [push, pull_request]
 jobs:
-  cypress-run:
-    name: Cypress run
+  playwright-run:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
         # the actual items in the array do not matter,
         # just the number - to force CI to sping 3 copies
         # of the current job in parallel
-        machines: [1, 2, 3, 4, 5, 6]
+        machines: [1]
+        # machines: [1, 2, 3, 4, 5, 6]
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -24,7 +24,14 @@ jobs:
         with:
           # just perform install
           runTests: false
+      - name: Install Playwright
+        run: npx playwright install chromium --with-deps
       - uses: mansagroup/nrwl-nx-action@v3
         with:
-          parallel: 1
-          targets: e2e
+          targets: e2e-playwright
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
