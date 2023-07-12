@@ -26,4 +26,6 @@ jobs:
           runTests: false
       - uses: mansagroup/nrwl-nx-action@v3
         with:
+          all: true
+          parallel: 1
           targets: e2e

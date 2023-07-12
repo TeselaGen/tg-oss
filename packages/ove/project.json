@@ -51,7 +51,6 @@
       "executor": "@nx/cypress:cypress",
       "options": {
         "parallel": true,
-        "port": 3344,
         "key": "373658d4-4931-4ffd-9263-8eb78a838ab9",
         "record": true,
         "cypressConfig": "packages/ove/cypress.config.ts",
