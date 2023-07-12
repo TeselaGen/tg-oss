@@ -7,7 +7,7 @@ export { default as jbeiXmlToJson } from "./jbeiXmlToJson";
 export { default as jsonToGenbank } from "./jsonToGenbank";
 export {
   default as ab1ToJson,
-  convertBasePosTraceToPerBpTrace,
+  convertBasePosTraceToPerBpTrace
 } from "./ab1ToJson";
 export { default as jsonToFasta } from "./jsonToFasta";
 export { default as snapgeneToJson } from "./snapgeneToJson";
@@ -16,7 +16,8 @@ export { default as cleanUpTeselagenJsonForExport } from "./utils/cleanUpTeselag
 export {
   default as searchWholeObjByName,
   searchWholeObjByNameSimple,
-  searchWholeObjByNameSimpleArray,
+  searchWholeObjByNameSimpleArray
 } from "./utils/searchWholeObjByName";
 export { default as parseUracilFeatures } from "./utils/parseUracilFeatures";
 export { default as jsonToJsonString } from "./jsonToJsonString";
+export { default as validateSequenceArray } from "./utils/validateSequenceArray";
