@@ -47,7 +47,11 @@
         "readyWhen": "ready in"
       }
     },
+    "install": {
+      "command": "yarn install --frozen-lockfile --ignore-engines"
+    },
     "e2e": {
+      "dependsOn": ["install"],
       "executor": "@nx/cypress:cypress",
       "options": {
         "parallel": true,
@@ -56,6 +60,11 @@
         "cypressConfig": "packages/ui/cypress.config.ts",
         "devServerTarget": "ui:serve",
         "testingType": "e2e"
+      },
+      "configurations": {
+        "dev": {
+          "parallel": false
+        }
       }
     },
     "e2e_old": {
