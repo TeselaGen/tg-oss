@@ -5,6 +5,7 @@ export default function getRangeAngles(range, rangeMax) {
     range,
     rangeMax
   );
+
   return {
     startAngle,
     totalAngle,
@@ -14,9 +15,9 @@ export default function getRangeAngles(range, rangeMax) {
       range.locations &&
       range.locations.map((location) => {
         return getRangeAngles(location, rangeMax);
-      }),
+      })
   };
-};
+}
 
 function getStartEndAndTotalAngle(range, rangeMax) {
   const rangeLength = getRangeLength(
@@ -27,6 +28,6 @@ function getStartEndAndTotalAngle(range, rangeMax) {
   return {
     startAngle: 2 * Math.PI * (range.start / rangeMax),
     totalAngle: (rangeLength / rangeMax) * Math.PI * 2,
-    endAngle: (2 * Math.PI * (range.end + 1)) / rangeMax, //use a +1 here because the angle must encompass the end of the annotation
+    endAngle: (2 * Math.PI * (range.end + 1)) / rangeMax //use a +1 here because the angle must encompass the end of the annotation
   };
 }

@@ -40,8 +40,27 @@
     "launch-e2e": {
       "command": "npx concurrently -k \"wait-on tcp:3344 && cd packages/ove && yarn cypress open --e2e --browser chrome --config\" \"nx run ove:start\""
     },
-
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx run ove:start"],
+        "readyWhen": "ready in"
+      }
+    },
     "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "parallel": true,
+        "port": 3344,
+        "key": "373658d4-4931-4ffd-9263-8eb78a838ab9",
+        "record": true,
+        "cypressConfig": "packages/ove/cypress.config.ts",
+        "devServerTarget": "ove:serve",
+        "testingType": "e2e"
+      }
+    },
+
+    "e2e_old": {
       "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:3344 && cd packages/ove && yarn cypress run --record --key 373658d4-4931-4ffd-9263-8eb78a838ab9 --config --e2e\" \"nx run ove:start\" "
     },
     "test": {

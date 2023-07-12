@@ -23,7 +23,7 @@ describe("UploadCsvWizard.spec", () => {
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then(win => {
+      cy.window().then((win) => {
         expect(win.parsedData).to.deep.equal([
           {
             name: "a",
@@ -199,7 +199,7 @@ describe("UploadCsvWizard.spec", () => {
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then(win => {
+      cy.window().then((win) => {
         expect(win.parsedData).to.deep.equal([
           {
             name: "a",
@@ -381,7 +381,7 @@ josh,,g,false,dna,misc_feature
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then(win => {
+      cy.window().then((win) => {
         expect(win.parsedData).to.deep.equal([
           {
             ID: undefined,
@@ -412,10 +412,10 @@ josh,,g,false,dna,misc_feature
       `name,description,sequence,isRegex,matchType,type,ID\r\nabby,,g,false,dna,misc_feature,\r\njosh,,g,false,dna,misc_feature,`
     );
   });
-  it(`error if "id" passed as path in validateAgainstSchema`, done => {
+  it(`error if "id" passed as path in validateAgainstSchema`, (done) => {
     cy.visit("#/UploadCsvWizard");
 
-    cy.on("uncaught:exception", err => {
+    cy.on("uncaught:exception", (err) => {
       assert(
         err.message.includes(
           `Uploader was passed a validateAgainstSchema with a fields array that contains a field with a path of "id". This is not allowed.`
@@ -513,18 +513,17 @@ a,,desc,,false,dna,misc_feature
     cy.visit("#/UploadCsvWizard");
     cy.tgToggle("enforceNameUnique");
     cy.contains("Build CSV File").click();
-    cy.get(`[data-test="tgCell_name"]`)
-      .eq(4)
-      .click({ force: true });
+    cy.get(`[data-test="tgCell_name"]`).eq(4).click({ force: true });
     cy.focused().paste(`pj5_0002	new	cloudy	6	dna
     pj5_0003	new	HOT	6	dna
     pj5_0004	old	rainy	4	dna
     pj5_0004	old	snowy	4	dna`);
     cy.get(`[data-tip="This value must be unique"]`);
     cy.get(`button:contains(Add File).bp3-disabled`);
-    cy.get(`.hasCellError:last [data-test="tgCell_name"]`)
-      .click({ force: true })
-      cy.focused().type("haha{enter}");
+    cy.get(`.hasCellError:last [data-test="tgCell_name"]`).click({
+      force: true
+    });
+    cy.focused().type("haha{enter}");
     cy.get(`button:contains(Add File).bp3-disabled`).should("not.exist");
     const IS_LINUX =
       window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -635,12 +634,8 @@ a,,desc,,false,dna,misc_feature
     cy.get(".bp3-menu-item:contains(typo)").click();
 
     cy.contains("Review and Edit Data").click();
-    cy.get(".bp3-button:contains(Add 10 Rows)")
-      .eq(1)
-      .click();
-    cy.get(`.bp3-button:contains(Finalize Files)`)
-      .eq(1)
-      .click();
+    cy.get(".bp3-button:contains(Add 10 Rows)").eq(1).click();
+    cy.get(`.bp3-button:contains(Finalize Files)`).eq(1).click();
 
     cy.get(
       `.tg-upload-file-list-item:contains(testUploadWizard_invalidDataNonUnique.csv) .tg-upload-file-list-item-edit`
@@ -665,7 +660,7 @@ a,,desc,,false,dna,misc_feature
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then(win => {
+      cy.window().then((win) => {
         expect(win.exampleFile[0].parsedData).to.deep.equal([
           {
             name: "a",
@@ -857,9 +852,7 @@ a,,g,false,dna,misc_feature`,
 
     cy.focused().type("haha{enter}");
 
-    cy.get(`.bp3-button:contains(Finalize Files)`)
-      .eq(1)
-      .click();
+    cy.get(`.bp3-button:contains(Finalize Files)`).eq(1).click();
     cy.contains(`Added Fixed Up Files test.csv, test2.csv, test3.csv`);
 
     cy.uploadBlobFiles(
@@ -911,13 +904,9 @@ a,,g,false,dna,misc_feature`,
     cy.get(
       ".bp3-dialog tr:contains(Sequence BPs) .bp3-multi-select-tag-input-input"
     ).click();
-    cy.get(".bp3-menu-item:contains(zonk)")
-      .first()
-      .click();
+    cy.get(".bp3-menu-item:contains(zonk)").first().click();
     cy.contains("Review and Edit Data").click();
-    cy.contains("Finalize Files")
-      .first()
-      .click();
+    cy.contains("Finalize Files").first().click();
     cy.contains(`Added Fixed Up Files test4.csv, test5.csv, test6.csv`);
   });
   it(`csv file headers should be matched up correctly`, () => {
@@ -1060,7 +1049,7 @@ thomas,,g,false,dna,misc_feature`,
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then(win => {
+      cy.window().then((win) => {
         expect(win.exampleFile[0].parsedData).to.deep.equal([
           {
             name: "Thomas",
@@ -1197,7 +1186,7 @@ thomas,,g,false,dna,misc_feature`,
     );
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then(win => {
+      cy.window().then((win) => {
         expect(win.parsedData).to.deep.equal([
           {
             name: "a",
