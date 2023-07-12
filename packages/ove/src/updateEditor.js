@@ -1,4 +1,4 @@
-import { set, isEqual } from "lodash";
+import { set } from "lodash";
 import { tidyUpSequenceData } from "@teselagen/sequence-utils";
 import { annotationTypes } from "@teselagen/sequence-utils";
 
@@ -26,16 +26,12 @@ export default function updateEditor(
   const reverseSequenceShouldBeUpdate =
     currentEditor.sequenceData?.isSingleStrandedDNA !==
     sequenceData?.isSingleStrandedDNA;
-  const annotationVisibilityUpdated =
-    !isEqual(annotationVisibility, currentEditor.annotationVisibility) ||
-    !isEqual(annotationsToSupport, currentEditor.annotationsToSupport);
 
   const isAlreadySpecialEditor =
     isAlreadyProteinEditor ||
     isAlreadyRnaEditor ||
     isAlreadyOligoEditor ||
-    reverseSequenceShouldBeUpdate ||
-    annotationVisibilityUpdated;
+    reverseSequenceShouldBeUpdate;
 
   let toSpread = {};
   let payload;

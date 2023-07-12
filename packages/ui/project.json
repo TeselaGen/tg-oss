@@ -35,30 +35,35 @@
       }
     },
     "start": {
-      "command": "cd packages/ui && yarn vite --port 4200"
-    },
-    "launch-e2e": {
-      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/ui && yarn cypress open --e2e --browser chrome --config\" \"nx run ui:start\""
-    },
-    "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx run ui:start"],
-        "readyWhen": "ready in"
+        "commands": ["cd packages/ui && yarn vite --port 4200"]
+      },
+      "configurations": {
+        "ci": {
+          "readyWhen": "ready in"
+        }
       }
     },
-    "install": {
-      "command": "yarn install --frozen-lockfile --ignore-engines"
+    "launch-e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "watch": true,
+        "headed": true,
+        "browser": "chrome",
+        "cypressConfig": "packages/ui/cypress.config.ts",
+        "devServerTarget": "ui:start:ci",
+        "testingType": "e2e"
+      }
     },
     "e2e": {
-      "dependsOn": ["install"],
       "executor": "@nx/cypress:cypress",
       "options": {
         "parallel": true,
-        "key": "1ced39be-1a3a-4fd8-b2d5-a88951d9b766",
+        "key": "373658d4-4931-4ffd-9263-8eb78a838ab9",
         "record": true,
         "cypressConfig": "packages/ui/cypress.config.ts",
-        "devServerTarget": "ui:serve",
+        "devServerTarget": "ui:start:ci",
         "testingType": "e2e"
       },
       "configurations": {
@@ -66,9 +71,6 @@
           "parallel": false
         }
       }
-    },
-    "e2e_old": {
-      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/ui && yarn cypress run --record --key 1ced39be-1a3a-4fd8-b2d5-a88951d9b766 --config --e2e\" \"nx run ui:start\" "
     },
     "test": {
       "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts"
