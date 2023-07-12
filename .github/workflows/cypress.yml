@@ -30,3 +30,9 @@ jobs:
           project: bounce-loader
           parallel: 1
           targets: e2e
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

@@ -34,13 +34,13 @@
       "command": "cd packages/bounce-loader && yarn vite"
     },
     "launch-e2e": {
-      "command": "cd packages/bounce-loader && npx playwright test --ui --timeout 60000"
+      "command": "cd packages/bounce-loader && npx playwright test --ui"
     },
     "launch-e2e2": {
       "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
     },
     "e2e": {
-      "command": "cd packages/bounce-loader && npx playwright install chromium && npx playwright test --timeout 60000"
+      "command": "cd packages/bounce-loader && npx playwright install chromium && npx playwright test && echo FINITO"
     },
     "e2e2": {
       "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
