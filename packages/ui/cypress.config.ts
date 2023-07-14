@@ -1,7 +1,6 @@
-import cypress from '../../cypress.config'
-
+import cypress from "../../cypress.config";
 
 export default cypress({
-  port: '4200',
+  name: "ui",
   projectId: "gwixeq"
 });

@@ -23,9 +23,14 @@
       "options": {
         "minify": false,
         "target": "es2015",
-        "outputPath": "dist/packages/ove"
+        "outputPath": "dist/ove"
       },
       "configurations": {
+        "demo": {
+          "mode": "demo",
+          "base": "./",
+          "outputPath": "demo-dist/ove"
+        },
         "development": {
           "mode": "development"
         },
@@ -34,10 +39,15 @@
         }
       }
     },
+    "pushToGhPages": {
+      //tnw: waiting for https://github.com/nrwl/nx/issues/15064 to be able to work with "build:demo"
+      "dependsOn": ["build:demo"],
+      "command": "yarn gh-pages -a -d demo-dist"
+    },
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["cd packages/ove && yarn vite --port 3344"]
+        "commands": ["cd packages/ove && yarn vite"]
       },
       "configurations": {
         "ci": {

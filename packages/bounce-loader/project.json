@@ -19,7 +19,7 @@
       "options": {
         "minify": false,
         "target": "es2015",
-        "outputPath": "dist/packages/bounce-loader"
+        "outputPath": "dist/bounce-loader"
       },
       "configurations": {
         "development": {

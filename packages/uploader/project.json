@@ -19,7 +19,7 @@
       "options": {
         "minify": false,
         "target": "es2015",
-        "outputPath": "dist/packages/uploader"
+        "outputPath": "dist/uploader"
       },
       "configurations": {
         "development": {

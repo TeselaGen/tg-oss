@@ -21,7 +21,8 @@ describe("enzymeFilter.spec", () => {
     });
 
     cy.contains(".tg-select-option", "AauI").click();
-    cy.reload();
+    cy.visit(`/zoink`);
+    cy.visit("");
     //after reload we should get the enzymes that we had last chosen by default (not the global default that we set)
     cy.get(".ve-tool-container-cutsiteTool .veToolbarDropdown").click();
     cy.contains(".tg-select-value", "Single cutters");

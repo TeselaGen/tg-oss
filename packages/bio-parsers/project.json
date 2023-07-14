@@ -16,7 +16,7 @@
       "options": {
         "minify": false,
         "target": "es2015",
-        "outputPath": "dist/packages/bio-parsers"
+        "outputPath": "dist/bio-parsers"
       }
     },
     "publish": {

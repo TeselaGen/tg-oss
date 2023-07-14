@@ -2,6 +2,7 @@
 
 # compiled output
 dist
+demo-dist
 tmp
 /out-tsc
 
