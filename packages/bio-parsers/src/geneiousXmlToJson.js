@@ -3,7 +3,7 @@
 import validateSequenceArray from "./utils/validateSequenceArray";
 import {
   searchWholeObjByNameSimple,
-  searchWholeObjByNameSimpleArray,
+  searchWholeObjByNameSimpleArray
 } from "./utils/searchWholeObjByName";
 
 import { XMLParser } from "fast-xml-parser";
@@ -26,7 +26,7 @@ async function geneiousXmlToJson(string, options) {
 
   try {
     const result = new XMLParser({
-      isArray: () => true,
+      isArray: () => true
     }).parse(string);
     const geneiousJsonMatches = searchWholeObjByNameSimpleArray(
       "geneiousDocument",
@@ -37,38 +37,38 @@ async function geneiousXmlToJson(string, options) {
     if (!geneiousJsonMatches?.length) {
       return onFileParsed({
         success: false,
-        messages: ["Error: XML is not valid geneious format"],
+        messages: ["Error: XML is not valid geneious format"]
       });
     }
     forEach(geneiousJsonMatches, (geneiousJson) => {
       const response = {
         parsedSequence: null,
         messages: [],
-        success: true,
+        success: true
       };
       try {
-        response.parsedSequence = parseGeneiousJson(
-          geneiousJson,
-          options
-        );
+        response.parsedSequence = parseGeneiousJson(geneiousJson, options);
         resultArray.push(response);
       } catch (e) {
         console.error("error:", e);
         console.error("error.stack: ", e.stack);
         resultArray.push({
           success: false,
-          messages: ["Error while parsing Geneious format"],
+          messages: ["Error while parsing Geneious format"]
         });
       }
     });
-    const toRet = filter(resultArray, (r) => r?.parsedSequence?.sequence?.length);
+    const toRet = filter(
+      resultArray,
+      (r) => r?.parsedSequence?.sequence?.length
+    );
     if (toRet.length) return toRet;
     return onFileParsed(resultArray);
   } catch (e) {
     console.error(`e:`, e);
     return onFileParsed({
       success: false,
-      messages: ["Error parsing geneious to JSON"],
+      messages: ["Error parsing geneious to JSON"]
     });
   }
 }
@@ -92,7 +92,9 @@ function parseGeneiousJson(geneiousJson) {
     searchWholeObjByNameSimpleArray("annotation", geneiousJsonInner),
     function (feature) {
       if (feature) {
-        const name = searchWholeObjByNameSimple("description", feature);
+        const name = (
+          searchWholeObjByNameSimple("description", feature) || ""
+        ).substring(0, 255);
         const intervals = searchWholeObjByNameSimpleArray("interval", feature);
         const type = searchWholeObjByNameSimple("type", feature);
         const firstInterval = intervals[0];
@@ -108,7 +110,7 @@ function parseGeneiousJson(geneiousJson) {
             const end = searchWholeObjByNameSimple("maximumIndex", i) - 1;
             return {
               start,
-              end,
+              end
             };
           });
         }
@@ -128,7 +130,7 @@ function parseGeneiousJson(geneiousJson) {
           arrowheadType,
           start,
           end,
-          strand,
+          strand
         };
       }
     }
@@ -138,7 +140,7 @@ function parseGeneiousJson(geneiousJson) {
     sequence,
     circular,
     name: name,
-    features,
+    features
   };
 }
 

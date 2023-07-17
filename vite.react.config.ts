@@ -8,7 +8,7 @@ import vitePluginVirtualHtml from "vite-plugin-virtual-html";
 import libCss from "vite-plugin-libcss";
 import { camelCase } from "lodash";
 import path from "node:path";
-import getPort from "./getPort";
+import { getPort } from "./getPort";
 
 const justSrc = [
   /\/src\/.*\.js$/,

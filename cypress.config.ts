@@ -1,5 +1,5 @@
 import { defineConfig } from "cypress";
-import * as getPort from "./getPort";
+import { getPort } from "./getPort";
 // import vitePreprocessor from "cypress-vite";
 // import path from "path";
 

@@ -1,6 +1,6 @@
 import * as crypto from "crypto";
 
-export default function getPort(inputString: string) {
+export function getPort(inputString: string) {
   const hash = crypto.createHash("sha256");
   hash.update(inputString);
   let hashValue = parseInt(hash.digest("hex").substring(0, 15), 16); // Get a large number from the hash.

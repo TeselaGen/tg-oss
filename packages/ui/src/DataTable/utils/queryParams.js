@@ -1,6 +1,4 @@
 import queryString from "qs";
-import QueryBuilder from "tg-client-query-builder";
-
 import {
   uniqBy,
   uniq,
@@ -76,7 +74,7 @@ function orderEntitiesLocal(orderArray, entities, schema, ownProps) {
   if (orderArray && orderArray.length) {
     const orderFuncs = [];
     const ascOrDescArray = [];
-    orderArray.forEach(order => {
+    orderArray.forEach((order) => {
       const ccDisplayName = order.replace(/^-/gi, "");
       const ccFields = getFieldsMappedByCCDisplayName(schema);
       const field = ccFields[ccDisplayName];
@@ -97,24 +95,24 @@ function orderEntitiesLocal(orderArray, entities, schema, ownProps) {
       //push the actual sorting function
       if (field.type === "timestamp") {
         //with the timestamp logic above, make sure empty dates always end up on the bottom of the stack
-        orderFuncs.push(r => {
+        orderFuncs.push((r) => {
           const val = get(r, path);
           return !!val;
         });
       }
       if (path && endsWith(path.toLowerCase(), "id")) {
-        orderFuncs.push(o => {
+        orderFuncs.push((o) => {
           return parseInt(get(o, path), 10);
         });
       } else if (sortFn) {
         const toOrder = Array.isArray(sortFn) ? sortFn : [sortFn];
         orderFuncs.push(...toOrder);
       } else if (getValueToFilterOn) {
-        orderFuncs.push(o => {
+        orderFuncs.push((o) => {
           return getValueToFilterOn(o, ownProps);
         });
       } else {
-        orderFuncs.push(r => {
+        orderFuncs.push((r) => {
           const val = get(r, path);
           return val && val.toLowerCase ? val.toLowerCase() : val;
         });
@@ -130,7 +128,7 @@ function getAndAndOrFilters(allFilters) {
   const andFilters = [];
   const otherOrFilters = [];
 
-  allFilters.forEach(filter => {
+  allFilters.forEach((filter) => {
     if (
       filter.isOrFilter &&
       typeof filter.filterValue === "string" &&
@@ -177,11 +175,10 @@ function filterEntitiesLocal(
 
   if (allFilters.length) {
     const ccFields = getFieldsMappedByCCDisplayName(schema);
-    const { andFilters, orFilters, otherOrFilters } = getAndAndOrFilters(
-      allFilters
-    );
+    const { andFilters, orFilters, otherOrFilters } =
+      getAndAndOrFilters(allFilters);
     //filter ands first
-    andFilters.forEach(filter => {
+    andFilters.forEach((filter) => {
       entities = getEntitiesForGivenFilter(
         entities,
         filter,
@@ -192,7 +189,7 @@ function filterEntitiesLocal(
     //then filter ors
     if (orFilters.length) {
       let orEntities = [];
-      orFilters.concat(...otherOrFilters).forEach(filter => {
+      orFilters.concat(...otherOrFilters).forEach((filter) => {
         orEntities = orEntities.concat(
           getEntitiesForGivenFilter(entities, filter, ccFields, ownProps)
         );
@@ -207,7 +204,7 @@ function cleanFilterValue(_filterValue, type) {
   let filterValue = _filterValue;
   if (type === "number" || type === "integer") {
     filterValue = Array.isArray(filterValue)
-      ? filterValue.map(val => Number(val))
+      ? filterValue.map((val) => Number(val))
       : Number(filterValue);
   }
   return filterValue;
@@ -219,7 +216,7 @@ function getEntitiesForGivenFilter(entities, filter, ccFields, ownProps) {
   const { path, getValueToFilterOn } = field;
   const filterValue = cleanFilterValue(_filterValue, field.type);
   const subFilter = getSubFilter(false, selectedFilter, filterValue);
-  entities = entities.filter(entity => {
+  entities = entities.filter((entity) => {
     const fieldVal = getValueToFilterOn
       ? getValueToFilterOn(entity, ownProps)
       : get(entity, path);
@@ -236,7 +233,7 @@ function getFiltersFromSearchTerm(searchTerm, schema) {
       isOrFilter: true,
       isSearchTermFilter: true
     };
-    schema.fields.forEach(field => {
+    schema.fields.forEach((field) => {
       const { type, displayName, path, searchDisabled } = field;
       if (searchDisabled || field.filterDisabled || type === "color") return;
       const nameToUse = camelCase(displayName || path);
@@ -313,7 +310,7 @@ function getSubFilter(
   if (ccSelectedFilter === "startsWith") {
     return qb
       ? qb.startsWith(stringFilterValue) //filter using qb (aka we're backend connected)
-      : fieldVal => {
+      : (fieldVal) => {
           //filter using plain old javascript (aka we've got a local table that isn't backend connected)
           if (!fieldVal || !fieldVal.toLowerCase) return false;
           return startsWith(fieldVal.toLowerCase(), filterValLower);
@@ -321,7 +318,7 @@ function getSubFilter(
   } else if (ccSelectedFilter === "endsWith") {
     return qb
       ? qb.endsWith(stringFilterValue) //filter using qb (aka we're backend connected)
-      : fieldVal => {
+      : (fieldVal) => {
           //filter using plain old javascript (aka we've got a local table that isn't backend connected)
           if (!fieldVal || !fieldVal.toLowerCase) return false;
           return endsWith(fieldVal.toLowerCase(), filterValLower);
@@ -334,7 +331,7 @@ function getSubFilter(
       ? ccSelectedFilter === "contains"
         ? qb.contains(stringFilterValue.replace(/_/g, "\\_"))
         : qb.notContains(stringFilterValue.replace(/_/g, "\\_"))
-      : fieldVal => {
+      : (fieldVal) => {
           if (!fieldVal || !fieldVal.toLowerCase) return false;
           return ccSelectedFilter === "contains"
             ? fieldVal.toLowerCase().replace(filterValLower, "") !==
@@ -345,56 +342,56 @@ function getSubFilter(
   } else if (ccSelectedFilter === "inList") {
     return qb
       ? qb.inList(arrayFilterValue) //filter using qb (aka we're backend connected)
-      : fieldVal => {
+      : (fieldVal) => {
           //filter using plain old javascript (aka we've got a local table that isn't backend connected)
           if (!fieldVal?.toString) return false;
           return (
             arrayFilterValue
-              .map(val => val && val.toLowerCase())
+              .map((val) => val && val.toLowerCase())
               .indexOf(fieldVal.toString().toLowerCase()) > -1
           );
         };
   } else if (ccSelectedFilter === "notInList") {
     return qb
       ? qb.notInList(arrayFilterValue) //filter using qb (aka we're backend connected)
-      : fieldVal => {
+      : (fieldVal) => {
           //filter using plain old javascript (aka we've got a local table that isn't backend connected)
           if (!fieldVal?.toString) return false;
           return (
             arrayFilterValue
-              .map(val => val && val.toLowerCase())
+              .map((val) => val && val.toLowerCase())
               .indexOf(fieldVal.toString().toLowerCase()) === -1
           );
         };
   } else if (ccSelectedFilter === "isEmpty") {
     return qb
       ? qb.isEmpty()
-      : fieldVal => {
+      : (fieldVal) => {
           return !fieldVal;
         };
   } else if (ccSelectedFilter === "notEmpty") {
     return qb
       ? [qb.notNull(), qb.notEquals("")]
-      : fieldVal => {
+      : (fieldVal) => {
           return !!fieldVal;
         };
   } else if (ccSelectedFilter === "isExactly") {
     return qb
       ? filterValue
-      : fieldVal => {
+      : (fieldVal) => {
           return fieldVal === filterValue;
         };
   } else if (ccSelectedFilter === "true") {
     return qb
       ? qb.equals(true) //filter using qb (aka we're backend connected)
-      : fieldVal => {
+      : (fieldVal) => {
           //filter using plain old javascript (aka we've got a local table that isn't backend connected)
           return !!fieldVal;
         };
   } else if (ccSelectedFilter === "false") {
     return qb
       ? qb.equals(false) //filter using qb (aka we're backend connected)
-      : fieldVal => {
+      : (fieldVal) => {
           //filter using plain old javascript (aka we've got a local table that isn't backend connected)
           return !fieldVal;
         };
@@ -404,7 +401,7 @@ function getSubFilter(
           new Date(arrayFilterValue[0]),
           new Date(new Date(arrayFilterValue[1]).setHours(23, 59)) // set end of day for more accurate filtering
         )
-      : fieldVal => {
+      : (fieldVal) => {
           return (
             dayjs(arrayFilterValue[0]).valueOf() <= dayjs(fieldVal).valueOf() &&
             dayjs(fieldVal).valueOf() <= dayjs(arrayFilterValue[1]).valueOf()
@@ -416,7 +413,7 @@ function getSubFilter(
           new Date(arrayFilterValue[0]),
           new Date(new Date(arrayFilterValue[1]).setHours(23, 59)) // set end of day for more accurate filtering
         )
-      : fieldVal => {
+      : (fieldVal) => {
           return (
             dayjs(arrayFilterValue[0]).valueOf() > dayjs(fieldVal).valueOf() ||
             dayjs(fieldVal).valueOf() > dayjs(arrayFilterValue[1]).valueOf()
@@ -425,49 +422,49 @@ function getSubFilter(
   } else if (ccSelectedFilter === "isBefore") {
     return qb
       ? qb.lessThan(new Date(filterValue))
-      : fieldVal => {
+      : (fieldVal) => {
           return dayjs(fieldVal).valueOf() < dayjs(filterValue).valueOf();
         };
   } else if (ccSelectedFilter === "isAfter") {
     return qb
       ? qb.greaterThan(new Date(new Date(filterValue).setHours(23, 59))) // set end of day for more accurate filtering
-      : fieldVal => {
+      : (fieldVal) => {
           return dayjs(fieldVal).valueOf() > dayjs(filterValue).valueOf();
         };
   } else if (ccSelectedFilter === "greaterThan") {
     return qb
       ? qb.greaterThan(filterValue)
-      : fieldVal => {
+      : (fieldVal) => {
           return fieldVal > filterValue;
         };
   } else if (ccSelectedFilter === "lessThan") {
     return qb
       ? qb.lessThan(filterValue)
-      : fieldVal => {
+      : (fieldVal) => {
           return fieldVal < filterValue;
         };
   } else if (ccSelectedFilter === "inRange") {
     return qb
       ? qb.between(filterValue[0], filterValue[1])
-      : fieldVal => {
+      : (fieldVal) => {
           return filterValue[0] <= fieldVal && fieldVal <= filterValue[1];
         };
   } else if (ccSelectedFilter === "outsideRange") {
     return qb
       ? qb.notBetween(filterValue[0], filterValue[1])
-      : fieldVal => {
+      : (fieldVal) => {
           return filterValue[0] > fieldVal || fieldVal > filterValue[1];
         };
   } else if (ccSelectedFilter === "equalTo") {
     return qb
       ? filterValue
-      : fieldVal => {
+      : (fieldVal) => {
           return fieldVal === filterValue;
         };
   } else if (ccSelectedFilter === "regex") {
     return qb
       ? qb.matchesRegex(filterValue)
-      : fieldVal => {
+      : (fieldVal) => {
           new RegExp(filterValue).test(fieldVal);
           return fieldVal;
         };
@@ -533,10 +530,10 @@ function parseFilters(newParams) {
     order: newParams.order && newParams.order.split("___"),
     filters:
       newParams.filters &&
-      newParams.filters.split("::").map(filter => {
+      newParams.filters.split("::").map((filter) => {
         const splitFilter = filter.split("__");
         const [filterOn, selectedFilter, filterValue] = splitFilter;
-        const parseFilterValue = filterValue => {
+        const parseFilterValue = (filterValue) => {
           if (selectedFilter === "inList" || selectedFilter === "notInList") {
             return filterValue.split(";");
           }
@@ -608,7 +605,7 @@ export function makeDataTableHandlers({
   }
   function removeSingleFilter(filterOn, currentParams) {
     const filters = currentParams.filters
-      ? currentParams.filters.filter(filter => {
+      ? currentParams.filters.filter((filter) => {
           return filter.filterOn !== filterOn;
         })
       : undefined;
@@ -624,7 +621,7 @@ export function makeDataTableHandlers({
       searchTerm: undefined,
       tags: undefined
     };
-    additionalFilterKeys.forEach(key => {
+    additionalFilterKeys.forEach((key) => {
       toClear[key] = undefined;
     });
     setNewParams(toClear);
@@ -642,7 +639,7 @@ export function makeDataTableHandlers({
     let newOrder = [];
     if (shiftHeld) {
       //first remove the old order
-      newOrder = [...(currentParams.order || [])].filter(value => {
+      newOrder = [...(currentParams.order || [])].filter((value) => {
         const shouldRemove =
           value.replace(/^-/, "") === order.replace(/^-/, "");
         return !shouldRemove;
@@ -706,7 +703,7 @@ function getAllFilters(filters, searchTerm, schema) {
     ...getFiltersFromSearchTerm(searchTerm, schema)
   ];
 
-  allFilters = allFilters.filter(val => {
+  allFilters = allFilters.filter((val) => {
     return val !== "";
   }); //get rid of erroneous filters
 
@@ -728,7 +725,7 @@ export function getQueryParams({
   isCodeModel,
   ownProps
 }) {
-  Object.keys(currentParams).forEach(function(key) {
+  Object.keys(currentParams).forEach(function (key) {
     if (currentParams[key] === undefined) {
       delete currentParams[key]; //we want to use the default value if any of these are undefined
     }
@@ -803,7 +800,7 @@ export function getQueryParams({
     }
 
     const { model } = schema;
-    const qb = new QueryBuilder(model);
+    const qb = new window.QueryBuilder(model);
     // qb = qb.filter('user')
     // qb = qb.whereAny({
     //   userStatus: qb.related('userStatus').whereAny({
@@ -819,7 +816,7 @@ export function getQueryParams({
     const ccFields = getFieldsMappedByCCDisplayName(schema);
 
     if (tableQueryParams.order && tableQueryParams.order.length) {
-      tableQueryParams.order.forEach(orderVal => {
+      tableQueryParams.order.forEach((orderVal) => {
         const ccDisplayName = orderVal.replace(/^-/gi, "");
         const schemaForField = ccFields[ccDisplayName];
         if (schemaForField) {
@@ -851,13 +848,12 @@ export function getQueryParams({
     }
 
     const allFilters = getAllFilters(filters, searchTerm, schema);
-    const { andFilters, orFilters, otherOrFilters } = getAndAndOrFilters(
-      allFilters
-    );
+    const { andFilters, orFilters, otherOrFilters } =
+      getAndAndOrFilters(allFilters);
     try {
-      const flattenFilters = filterObj => {
-        return flatMap(Object.keys(filterObj), key => {
-          return filterObj[key].map(filter => ({
+      const flattenFilters = (filterObj) => {
+        return flatMap(Object.keys(filterObj), (key) => {
+          return filterObj[key].map((filter) => ({
             [key]: filter
           }));
         });
@@ -866,19 +862,19 @@ export function getQueryParams({
       const orFiltersObject = getQueries(orFilters, qb, ccFields);
       let allOrFilters = flattenFilters(orFiltersObject);
 
-      otherOrFilters.forEach(orFilters => {
+      otherOrFilters.forEach((orFilters) => {
         const otherOrFiltersObject = getQueries(orFilters, qb, ccFields);
         allOrFilters = allOrFilters.concat(
           flattenFilters(otherOrFiltersObject)
         );
       });
       allOrFilters.push(additionalOrFilterToUse);
-      allOrFilters = allOrFilters.filter(obj => !isEmpty(obj));
+      allOrFilters = allOrFilters.filter((obj) => !isEmpty(obj));
 
       const unflattenedAndQueries = getQueries(andFilters, qb, ccFields);
       let allAndFilters = flattenFilters(unflattenedAndQueries);
       allAndFilters.push(additionalFilterToUse);
-      allAndFilters = allAndFilters.filter(obj => !isEmpty(obj));
+      allAndFilters = allAndFilters.filter((obj) => !isEmpty(obj));
       if (allAndFilters.length) {
         qb.whereAll(...allAndFilters);
       }
@@ -961,7 +957,7 @@ function getSubFiltersAndPath(filter, qb, ccFields) {
   }
   const subFiltersToUse = [];
   const subFilters = Array.isArray(_subFilters) ? _subFilters : [_subFilters];
-  subFilters.forEach(subFilter => {
+  subFilters.forEach((subFilter) => {
     let subFilterToUse = subFilter;
     if (fieldSchema) {
       const { path, reference } = fieldSchema;
@@ -1026,7 +1022,7 @@ function getColumnCustomFilters(filters, qb, ccFields) {
 
       is possible because the returned accumulator will be passed to whereAny
   */
-    subFilters.forEach(subFilter => {
+    subFilters.forEach((subFilter) => {
       acc.push(fieldSchema.additionalColumnFilter(qb, subFilter, path));
     });
     return acc;

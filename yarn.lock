@@ -11626,10 +11626,10 @@ text-table@^0.2.0:
   resolved "https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-tg-client-query-builder@^2.14.2:
-  version "2.14.3"
-  resolved "https://registry.yarnpkg.com/tg-client-query-builder/-/tg-client-query-builder-2.14.3.tgz#7ff578214da50cf20de0c8d5928cd7ef95966f9d"
-  integrity sha512-Kiivjct4/CK/FDuTnNP4ngzzuNBEchxnZ/x9b30hims2q/1yccHxwn1G+oY4b2bj3CA7HqKt68WuAnLI8rNqvw==
+tg-client-query-builder@2.14.2:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/tg-client-query-builder/-/tg-client-query-builder-2.14.2.tgz#47c0cc7eaf67f68773b059228537e8c2f8f092ef"
+  integrity sha512-gYDXwZj1lc9T4qF5l04+zLVpOGsNEDQbttjbIEhyRMV0bPM4f7XdLMNod86XBZw/4fpbePpzrgYQbCycxA5vFw==
   dependencies:
     lodash "^4.17.4"
 

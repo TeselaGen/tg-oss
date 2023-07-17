@@ -26,7 +26,7 @@ describe("geneiousXmlToJson", function () {
         name: "HygR",
         start: 2301,
         strand: 1,
-        type: "CDS",
+        type: "CDS"
       },
       {
         arrowheadType: "NONE",
@@ -34,7 +34,7 @@ describe("geneiousXmlToJson", function () {
         name: "trpC terminator",
         start: 3338,
         strand: -1,
-        type: "terminator",
+        type: "terminator"
       },
       {
         start: 4718,
@@ -45,27 +45,45 @@ describe("geneiousXmlToJson", function () {
         locations: [
           {
             start: 4718,
-            end: 4786,
+            end: 4786
           },
           {
             start: 4787,
-            end: 5578,
-          },
-        ],
-      },
+            end: 5578
+          }
+        ]
+      }
     ]);
     result[0].parsedSequence.sequence.length.should.equal(6749);
+  });
+  it("anyToJson should parse pAN7 correctly ", async function () {
+    // var string = fs.readFileSync(path.join(__dirname, '../ext_tests/data/sequences/pBbE0c-RFP.xml'), "utf8");
+    const string = fs.readFileSync(
+      path.join(__dirname, "./testData/geneious/pAN7-1.geneious")
+    );
+    const result = await anyToJson(string, {
+      fileName: "pAN7-1.geneious"
+    });
+
+    result[0].parsedSequence.name.should.equal("pAN7-1");
+    result[0].parsedSequence.circular.should.equal(true);
+    result[0].parsedSequence.features.length.should.equal(7);
   });
   it("should parse another geneious xml file, pOM-Express to our json representation correctly", async function () {
     // var string = fs.readFileSync(path.join(__dirname, '../ext_tests/data/sequences/pBbE0c-RFP.xml'), "utf8");
     const string = fs.readFileSync(
-      path.join(__dirname, "./testData/geneious/pOM-Express-2u-URA3-BAR_GFP.geneious"),
+      path.join(
+        __dirname,
+        "./testData/geneious/pOM-Express-2u-URA3-BAR_GFP.geneious"
+      )
     );
     const result = await anyToJson(string, {
-      fileName: "pOM-Express-2u-URA3-BAR_GFP.geneious",
+      fileName: "pOM-Express-2u-URA3-BAR_GFP.geneious"
     });
 
-    result[0].parsedSequence.name.should.equal("pOM-Express-2u-URA3-BAR:GFP Copy");
+    result[0].parsedSequence.name.should.equal(
+      "pOM-Express-2u-URA3-BAR:GFP Copy"
+    );
     result[0].parsedSequence.circular.should.equal(true);
     result[0].parsedSequence.features.length.should.equal(38);
     // result[0].parsedSequence.features.should.containSubset([]);
@@ -74,10 +92,10 @@ describe("geneiousXmlToJson", function () {
   it("should parse another geneious xml file, pKW-CA-URA3, to our json representation correctly", async function () {
     // var string = fs.readFileSync(path.join(__dirname, '../ext_tests/data/sequences/pBbE0c-RFP.xml'), "utf8");
     const string = fs.readFileSync(
-      path.join(__dirname, "./testData/geneious/pKW-CA-URA3.geneious"),
+      path.join(__dirname, "./testData/geneious/pKW-CA-URA3.geneious")
     );
     const result = await anyToJson(string, {
-      fileName: "pOM-Express-2u-URA3-BAR_GFP.geneious",
+      fileName: "pOM-Express-2u-URA3-BAR_GFP.geneious"
     });
 
     result[0].parsedSequence.name.should.equal("pKW-CA-URA3 - template");

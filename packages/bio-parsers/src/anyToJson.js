@@ -48,9 +48,18 @@ async function anyToJson(fileContentStringOrFileObj, options) {
       return snapgeneToJson(fileContentStringOrFileObj, options);
     } else if (/^(geneious)$/.test(ext)) {
       const a = await getUint8ArrayFromFile(fileContentStringOrFileObj);
-      const b = unzipSync(a);
-      const c = Object.values(b)[0];
-      const d = new TextDecoder().decode(c, { stream: false });
+      let d;
+      try {
+        d = new TextDecoder().decode(a, { stream: false });
+        if (!d.includes("<geneious")) {
+          throw new Error("not geneious");
+        }
+      } catch (e) {
+        //catch the above error and try to unzip the file and see if it works
+        const b = unzipSync(a);
+        const c = Object.values(b)[0];
+        d = new TextDecoder().decode(c, { stream: false });
+      }
       return geneiousXmlToJson(d, options);
     } else {
       // we want to get the string from the file obj
@@ -60,8 +69,8 @@ async function anyToJson(fileContentStringOrFileObj, options) {
       );
     }
   }
-// console.log(`fileContentString.includes("seq:seq"):`,fileContentString.includes("seq:seq"))
-// console.log(`fileContentString.includes("jbei")):`,fileContentString.includes("jbei"))
+  // console.log(`fileContentString.includes("seq:seq"):`,fileContentString.includes("seq:seq"))
+  // console.log(`fileContentString.includes("jbei")):`,fileContentString.includes("jbei"))
   if (/^(fasta|fas|fa|fna|ffn)$/.test(ext)) {
     // FASTA
     return fastaToJson(fileContentString, options);
@@ -80,7 +89,7 @@ async function anyToJson(fileContentStringOrFileObj, options) {
     // TG JSON Probably
     const failure = {
       messages: [`Unable to parse JSON file ${fileName}`],
-      success: false,
+      success: false
     };
     try {
       const cleaned = tidyUpSequenceData(
@@ -98,7 +107,10 @@ async function anyToJson(fileContentStringOrFileObj, options) {
     return genbankToJson(fileContentString, { ...options, isProtein: true });
   } else if (/^(xml|rdf)$/.test(ext)) {
     // XML/RDF
-    return sbolXmlToJson(fileContentString || fileContentStringOrFileObj, options);
+    return sbolXmlToJson(
+      fileContentString || fileContentStringOrFileObj,
+      options
+    );
   } else if (/^(gff|gff3)$/.test(ext)) {
     // GFF
     return gffToJson(fileContentStringOrFileObj, options);
@@ -109,12 +121,12 @@ async function anyToJson(fileContentStringOrFileObj, options) {
     let parsersToTry = [
       {
         fn: genbankToJson,
-        name: "Genbank Parser",
+        name: "Genbank Parser"
       },
       {
         fn: fastaToJson,
-        name: "Fasta Parser",
-      },
+        name: "Fasta Parser"
+      }
     ];
     const firstChar = fileContentString[fileContentString.search(/\S|$/)];
 
@@ -146,10 +158,10 @@ async function anyToJson(fileContentStringOrFileObj, options) {
     return [
       {
         messages: [
-          "Unable to parse file as FASTA, genbank, JBEI, or SBOL formats",
+          "Unable to parse file as FASTA, genbank, JBEI, or SBOL formats"
         ],
-        success: false,
-      },
+        success: false
+      }
     ];
   }
 

@@ -69,7 +69,6 @@
     "remark-gfm": "^3.0.1",
     "reselect": "^4.1.7",
     "shortid": "^2.2.16",
-    "tg-client-query-builder": "^2.14.2",
     "tg-use-local-storage-state": "^16.0.3",
     "tippy.js": "^6.3.7",
     "url-join": "^4.0.1",

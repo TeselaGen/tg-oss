@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from "@playwright/test";
-import getPort from "./getPort";
+import { getPort } from "./getPort";
 
 /**
  * Read environment variables from file.
