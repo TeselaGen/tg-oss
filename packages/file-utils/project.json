@@ -14,8 +14,6 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "target": "es2015",
-        "minify": false,
         "outputPath": "dist/file-utils"
       }
     },

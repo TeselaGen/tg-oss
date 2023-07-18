@@ -15,19 +15,9 @@
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+
       "options": {
-        "minify": false,
-        "target": "es2015",
         "outputPath": "dist/bounce-loader"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
-        }
       }
     },
     "start": {

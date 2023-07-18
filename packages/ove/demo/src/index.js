@@ -62,7 +62,8 @@ const Demo = () => {
         key="umdDemo"
         style={{ marginLeft: 10 }}
         href={
-          window.location.href.includes("localhost")
+          window.location.href.includes("localhost") ||
+          window.location.href.includes("127.0.0.1")
             ? `${window.location.origin}/UMDDemo.html`
             : "http://teselagen.github.io/openVectorEditor/UMDDemo.html"
         }
@@ -185,7 +186,7 @@ const Demo = () => {
                         return {
                           sequence: "thomaswashere"
                         };
-                      } else if ((versionId === 3)) {
+                      } else if (versionId === 3) {
                         return {
                           features: [{ start: 4, end: 6 }],
                           sequence:

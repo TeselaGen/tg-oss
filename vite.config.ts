@@ -20,8 +20,7 @@ const conf = ({
     plugins: [
       dts({
         entryRoot: "src",
-        tsConfigFilePath: joinPathFragments(dir, "tsconfig.json"),
-        skipDiagnostics: true
+        tsconfigPath: joinPathFragments(dir, "tsconfig.json")
       }),
 
       viteTsConfigPaths({
@@ -46,6 +45,8 @@ const conf = ({
     // Configuration for building your library.
     // See: https://vitejs.dev/guide/build.html#library-mode
     build: {
+      minify: false,
+      target: "es2015",
       lib: {
         // Could also be a dictionary or array of multiple entry points.
         entry: "src/index.js",

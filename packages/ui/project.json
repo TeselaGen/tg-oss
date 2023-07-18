@@ -20,9 +20,8 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
+
       "options": {
-        "minify": false,
-        "target": "es2015",
         "outputPath": "dist/ui"
       },
       "configurations": {
@@ -30,9 +29,6 @@
           "mode": "demo",
           "base": "./",
           "outputPath": "demo-dist/ui"
-        },
-        "development": {
-          "mode": "development"
         },
         "production": {
           "mode": "production"

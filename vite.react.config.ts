@@ -39,7 +39,7 @@ export default ({ name }: { name: string; dir: string }) =>
       ...(command === "build"
         ? {
             define: {
-              "process.env.NODE_ENV": mode
+              "process.env.NODE_ENV": JSON.stringify("production")
             }
           }
         : {}),
@@ -104,6 +104,8 @@ export default ({ name }: { name: string; dir: string }) =>
       // Configuration for building your library.
       // See: https://vitejs.dev/guide/build.html#library-mode
       build: {
+        minify: false,
+        target: "es2015",
         ...(mode === "demo"
           ? {}
           : {
@@ -112,54 +114,53 @@ export default ({ name }: { name: string; dir: string }) =>
                 entry: "src/index.js",
                 name,
 
-                fileName: "index",
+                fileName: "index"
                 // Change this to the formats you want to support.
                 // Don't forgot to update your package.json as well.
-                formats: ["es", "cjs", "umd"]
               }
             }),
         rollupOptions: {
           plugins: [rollupPlugin(justSrc)],
           output: {
             name: camelCase(name)
-          },
+          }
           // External packages that should not be bundled into your library.
-          external:
-            mode === "demo"
-              ? []
-              : [
-                  "react",
-                  "react-dom",
-                  "react/jsx-runtime",
-                  "redux",
-                  "react-redux",
-                  "redux-form",
-                  "@blueprintjs/core",
-                  "@blueprintjs/select",
-                  "@blueprintjs/datetime"
-                ]
+          // external:
+          //   mode === "demo"
+          //     ? []
+          //     : [
+          //         "react",
+          //         "react-dom",
+          //         "react/jsx-runtime",
+          //         "redux",
+          //         "react-redux",
+          //         "redux-form",
+          //         "@blueprintjs/core",
+          //         "@blueprintjs/select",
+          //         "@blueprintjs/datetime"
+          //       ]
         }
       },
       resolve: {
-        alias: {
-          // "teselagen-react-components": console.log(`comment me out!`) || path.resolve(__dirname, "../teselagen-react-components/src"),
-          react: path.join(__dirname, "node_modules/react"),
-          "@blueprintjs/core": path.join(
-            __dirname,
-            "node_modules/@blueprintjs/core"
-          ),
-          "@blueprintjs/datetime": path.join(
-            __dirname,
-            "node_modules/@blueprintjs/datetime"
-          ),
-          "react-dom": path.join(__dirname, "node_modules/react-dom"),
-          "react-redux": path.join(__dirname, "node_modules/react-redux"),
-          "redux-form": path.join(__dirname, "node_modules/redux-form"),
-          redux: path.join(__dirname, "node_modules/redux")
-          // "@teselagen/range-utils": path.resolve(__dirname, "../tg-oss/packages/range-utils/src"),
-          // "@teselagen/sequence-utils": path.resolve(__dirname, "../tg-oss/packages/sequence-utils/src"),
-          // "@teselagen/bio-parsers": path.resolve(__dirname, "../tg-oss/packages/bio-parsers/src"),
-        }
+        // alias: {
+        //   // "teselagen-react-components": console.log(`comment me out!`) || path.resolve(__dirname, "../teselagen-react-components/src"),
+        //   // react: path.join(__dirname, "node_modules/react"),
+        //   // "@blueprintjs/core": path.join(
+        //   //   __dirname,
+        //   //   "node_modules/@blueprintjs/core"
+        //   // ),
+        //   // "@blueprintjs/datetime": path.join(
+        //   //   __dirname,
+        //   //   "node_modules/@blueprintjs/datetime"
+        //   // ),
+        //   // "react-dom": path.join(__dirname, "node_modules/react-dom"),
+        //   // "react-redux": path.join(__dirname, "node_modules/react-redux"),
+        //   // "redux-form": path.join(__dirname, "node_modules/redux-form"),
+        //   // redux: path.join(__dirname, "node_modules/redux")
+        //   // "@teselagen/range-utils": path.resolve(__dirname, "../tg-oss/packages/range-utils/src"),
+        //   // "@teselagen/sequence-utils": path.resolve(__dirname, "../tg-oss/packages/sequence-utils/src"),
+        //   // "@teselagen/bio-parsers": path.resolve(__dirname, "../tg-oss/packages/bio-parsers/src"),
+        // }
       },
       test: {
         globals: true,
