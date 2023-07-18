@@ -70,7 +70,7 @@
       "executor": "@nx/cypress:cypress",
       "options": {
         "parallel": true,
-        "key": "373658d4-4931-4ffd-9263-8eb78a838ab9",
+        "key": "1ced39be-1a3a-4fd8-b2d5-a88951d9b766",
         "record": true,
         "cypressConfig": "packages/ui/cypress.config.ts",
         "devServerTarget": "ui:start:ci",
