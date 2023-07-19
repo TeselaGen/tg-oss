@@ -7,7 +7,6 @@ import * as esbuild from "esbuild";
 import vitePluginVirtualHtml from "vite-plugin-virtual-html";
 import libCss from "vite-plugin-libcss";
 import { camelCase } from "lodash";
-import path from "node:path";
 import { getPort } from "./getPort";
 
 const justSrc = [
@@ -33,7 +32,11 @@ const rollupPlugin = (matchers: RegExp[]) => ({
 });
 
 export default ({ name }: { name: string; dir: string }) =>
-  defineConfig(({ command, mode }) => {
+  defineConfig(({ command, mode = "production" }) => {
+    const isDemo = mode === "demo";
+    if (!isDemo) {
+      mode = "production";
+    }
     const port = getPort(name);
     return {
       ...(command === "build"
@@ -106,6 +109,7 @@ export default ({ name }: { name: string; dir: string }) =>
       build: {
         minify: false,
         target: "es2015",
+        outDir: `../../${isDemo ? "demo-dist" : "dist"}/${name}`,
         ...(mode === "demo"
           ? {}
           : {

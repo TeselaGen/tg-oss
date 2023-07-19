@@ -17,21 +17,10 @@
       "dependsOn": ["test", "build"]
     },
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-
-      "options": {
-        "outputPath": "dist/ui"
-      },
+      "command": "cd packages/ui && vite build --mode={args.mode}",
       "configurations": {
         "demo": {
-          "mode": "demo",
-          "base": "./",
-          "outputPath": "demo-dist/ui"
-        },
-        "production": {
-          "mode": "production"
+          "args": "--mode=demo"
         }
       }
     },

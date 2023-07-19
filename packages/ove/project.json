@@ -17,19 +17,10 @@
       "dependsOn": ["test", "build"]
     },
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/ove"
-      },
+      "command": "cd packages/ove && vite build --mode={args.mode}",
       "configurations": {
         "demo": {
-          "mode": "demo",
-          "base": "./",
-          "outputPath": "demo-dist/ove"
-        },
-        "production": {
-          "mode": "production"
+          "args": "--mode=demo"
         }
       }
     },
