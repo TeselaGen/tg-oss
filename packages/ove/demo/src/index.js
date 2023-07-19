@@ -65,7 +65,7 @@ const Demo = () => {
           window.location.href.includes("localhost") ||
           window.location.href.includes("127.0.0.1")
             ? `${window.location.origin}/UMDDemo.html`
-            : "http://teselagen.github.io/openVectorEditor/UMDDemo.html"
+            : "http://teselagen.github.io/tg-oss/ove/UMDDemo.html"
         }
       >
         UMD demo

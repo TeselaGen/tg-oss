@@ -37,7 +37,7 @@ class DemoHeader extends Component {
           justifyContent: "space-between",
           padding: "5px 20px",
           height: 50,
-          zIndex:20,
+          zIndex: 20,
           alignItems: "center"
         }}
       >
@@ -45,7 +45,7 @@ class DemoHeader extends Component {
 
         <a
           style={{ fontSize: 16, color: "white" }}
-          href="https://github.com/TeselaGen/teselagen-react-components"
+          href="https://github.com/TeselaGen/tg-oss/tree/master/packages/ui"
         >
           TeselaGen React Components <Icon icon="link" />
         </a>

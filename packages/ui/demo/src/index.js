@@ -259,13 +259,13 @@ const demoPropsSchema = [
     displayName: "Name",
     path: "name",
     width: 200,
-    render: v => <span style={{ color: "#5bc0de" }}>{v}</span>
+    render: (v) => <span style={{ color: "#5bc0de" }}>{v}</span>
   },
   {
     displayName: "Type",
     width: 200,
     path: "type",
-    render: v => <span style={{ color: "#ff758d" }}>{v}</span>
+    render: (v) => <span style={{ color: "#ff758d" }}>{v}</span>
   },
   {
     displayName: "Description",
@@ -320,9 +320,7 @@ function DemoComponentWrapper(
           <h4>{demoTitle}</h4>
           <br></br>
           <a
-            href={
-              "https://github.com/TeselaGen/teselagen-react-components/tree/master/src"
-            }
+            href={"https://github.com/TeselaGen/tg-oss/tree/master/packages/ui"}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -365,7 +363,7 @@ const Demo = () => {
                 path="/"
                 render={() => <Redirect to={Object.keys(demos)[0]} />}
               />
-              {Object.keys(demos).map(function(key, index) {
+              {Object.keys(demos).map(function (key, index) {
                 const demo = demos[key];
                 return (
                   <React.Fragment key={key}>

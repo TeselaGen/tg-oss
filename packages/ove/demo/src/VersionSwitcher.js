@@ -54,7 +54,7 @@ export default function VersionSwitcher() {
       <HTMLSelect
         minimal
         onChange={function onChange(e) {
-          window.location.href = `https://teselagen.github.io/openVectorEditor/version/${e.currentTarget.value}/#/Editor`;
+          window.location.href = `https://teselagen.github.io/tg-oss/ove/version/${e.currentTarget.value}/#/Editor`;
         }}
         value={pjson.version}
         options={options}
@@ -63,7 +63,7 @@ export default function VersionSwitcher() {
         target="_blank"
         rel="noopener noreferrer"
         style={{ marginLeft: 10 }}
-        href="https://github.com/TeselaGen/openVectorEditor/blob/master/CHANGELOG.md"
+        href="https://github.com/TeselaGen/tg-oss/blob/master/CHANGELOG.md"
       >
         Changelog
       </a>

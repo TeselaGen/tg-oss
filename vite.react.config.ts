@@ -143,7 +143,6 @@ export default ({ name }: { name: string; dir: string }) =>
       },
       resolve: {
         // alias: {
-        //   // "teselagen-react-components": console.log(`comment me out!`) || path.resolve(__dirname, "../teselagen-react-components/src"),
         //   // react: path.join(__dirname, "node_modules/react"),
         //   // "@blueprintjs/core": path.join(
         //   //   __dirname,

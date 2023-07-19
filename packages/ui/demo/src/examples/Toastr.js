@@ -10,7 +10,7 @@ export default function Demo() {
       to do is add
       <br></br>
       <br></br>
-      <code>import "teselagen-react-components"</code>
+      <code>import "@teselagen/ui"</code>
       <br></br>
       <br></br>
       in a top level file like /src/index and you'll have it
