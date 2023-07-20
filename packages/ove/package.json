@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.0.9",
+  "version": "0.0.14",
   "main": "./index.js",
   "types": "./index.d.ts",
   "type": "commonjs",

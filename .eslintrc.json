@@ -2,6 +2,10 @@
   "root": true,
   "plugins": ["@nx"],
   "extends": ["plugin:@nx/react"],
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

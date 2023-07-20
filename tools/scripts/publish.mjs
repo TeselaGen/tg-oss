@@ -7,12 +7,11 @@
  * You might need to authenticate with NPM before running this script.
  */
 
-import { execSync } from 'child_process';
-import { readFileSync, writeFileSync } from 'fs';
-import chalk from 'chalk';
-
-import devkit from '@nx/devkit';
-import path from 'path';
+import { execSync } from "child_process";
+import { readFileSync, writeFileSync } from "fs";
+import chalk from "chalk";
+import devkit from "@nx/devkit";
+import path from "path";
 
 const { readCachedProjectGraph } = devkit;
 
@@ -25,7 +24,7 @@ function invariant(condition, message) {
 
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-let [, , name, version, tag = 'next'] = process.argv;
+let [, , name, version, tag = "next"] = process.argv;
 
 // A simple SemVer validation to validate the version
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
@@ -39,27 +38,19 @@ invariant(
 );
 const outputPath = project.data?.targets?.build?.options?.outputPath;
 const packagePath = project.data?.root;
-invariant(
-  outputPath,
-  `Could not find "build.options.outputPath" of project "${name}". Is project.json configured correctly?`
-);
-invariant(
-  outputPath,
-  `Could not find "packagePath" of project "${name}". Is project.json configured correctly?`
-);
 
-if (!tag || tag === 'undefined') {
-  tag = 'latest';
+if (!tag || tag === "undefined") {
+  tag = "latest";
 }
-if (!version || version === 'undefined') {
+if (!version || version === "undefined") {
   process.chdir(packagePath);
   let json = JSON.parse(readFileSync(`package.json`).toString());
   version = json.version;
 
   // Bump the version
-  let versionParts = version.split('.');
+  const versionParts = version.split(".");
   versionParts[2] = Number(versionParts[2]) + 1; // increase patch version
-  version = versionParts.join('.');
+  version = versionParts.join(".");
 
   // Updating the version in "package.json" before publishing
   try {
@@ -72,7 +63,7 @@ if (!version || version === 'undefined') {
       )
     );
   }
-  process.chdir(path.resolve('../../', outputPath));
+  process.chdir(path.resolve(`../../dist/${name}`));
   json = JSON.parse(readFileSync(`package.json`).toString());
   try {
     json.version = version;
@@ -85,7 +76,7 @@ if (!version || version === 'undefined') {
     );
   }
 } else {
-  process.chdir(outputPath);
+  process.chdir(path.resolve("../../", `dist/${name}`));
 }
 
 invariant(

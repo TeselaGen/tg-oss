@@ -8,6 +8,8 @@ import vitePluginVirtualHtml from "vite-plugin-virtual-html";
 import libCss from "vite-plugin-libcss";
 import { camelCase } from "lodash";
 import { getPort } from "./getPort";
+import { viteStaticCopy } from "vite-plugin-static-copy";
+import path from "node:path";
 
 const justSrc = [
   /\/src\/.*\.js$/,
@@ -50,7 +52,7 @@ export default ({ name }: { name: string; dir: string }) =>
       server: {
         port
       },
-
+      base: "./",
       plugins: [
         // dts({
         //   entryRoot: 'src',
@@ -62,8 +64,17 @@ export default ({ name }: { name: string; dir: string }) =>
         viteTsConfigPaths({
           root: "../../"
         }),
-        ...(command === "build" && mode !== "demo"
-          ? []
+        ...(command === "build" && !isDemo
+          ? [
+              viteStaticCopy({
+                targets: [
+                  {
+                    src: "./package.json",
+                    dest: "."
+                  }
+                ]
+              })
+            ]
           : [
               vitePluginVirtualHtml({
                 pages: {
@@ -110,14 +121,13 @@ export default ({ name }: { name: string; dir: string }) =>
         minify: false,
         target: "es2015",
         outDir: `../../${isDemo ? "demo-dist" : "dist"}/${name}`,
-        ...(mode === "demo"
+        ...(isDemo
           ? {}
           : {
               lib: {
                 // Could also be a dictionary or array of multiple entry points.
                 entry: "src/index.js",
                 name,
-
                 fileName: "index"
                 // Change this to the formats you want to support.
                 // Don't forgot to update your package.json as well.
@@ -146,24 +156,24 @@ export default ({ name }: { name: string; dir: string }) =>
         }
       },
       resolve: {
-        // alias: {
-        //   // react: path.join(__dirname, "node_modules/react"),
-        //   // "@blueprintjs/core": path.join(
-        //   //   __dirname,
-        //   //   "node_modules/@blueprintjs/core"
-        //   // ),
-        //   // "@blueprintjs/datetime": path.join(
-        //   //   __dirname,
-        //   //   "node_modules/@blueprintjs/datetime"
-        //   // ),
-        //   // "react-dom": path.join(__dirname, "node_modules/react-dom"),
-        //   // "react-redux": path.join(__dirname, "node_modules/react-redux"),
-        //   // "redux-form": path.join(__dirname, "node_modules/redux-form"),
-        //   // redux: path.join(__dirname, "node_modules/redux")
-        //   // "@teselagen/range-utils": path.resolve(__dirname, "../tg-oss/packages/range-utils/src"),
-        //   // "@teselagen/sequence-utils": path.resolve(__dirname, "../tg-oss/packages/sequence-utils/src"),
-        //   // "@teselagen/bio-parsers": path.resolve(__dirname, "../tg-oss/packages/bio-parsers/src"),
-        // }
+        alias: {
+          react: path.join(__dirname, "node_modules/react"),
+          "@blueprintjs/core": path.join(
+            __dirname,
+            "node_modules/@blueprintjs/core"
+          ),
+          "@blueprintjs/datetime": path.join(
+            __dirname,
+            "node_modules/@blueprintjs/datetime"
+          ),
+          "react-dom": path.join(__dirname, "node_modules/react-dom"),
+          "react-redux": path.join(__dirname, "node_modules/react-redux"),
+          "redux-form": path.join(__dirname, "node_modules/redux-form"),
+          redux: path.join(__dirname, "node_modules/redux")
+          // "@teselagen/range-utils": path.resolve(__dirname, "../tg-oss/packages/range-utils/src"),
+          // "@teselagen/sequence-utils": path.resolve(__dirname, "../tg-oss/packages/sequence-utils/src"),
+          // "@teselagen/bio-parsers": path.resolve(__dirname, "../tg-oss/packages/bio-parsers/src"),
+        }
       },
       test: {
         globals: true,

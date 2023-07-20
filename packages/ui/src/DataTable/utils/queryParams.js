@@ -800,6 +800,7 @@ export function getQueryParams({
     }
 
     const { model } = schema;
+    if (!window.QueryBuilder) return toReturn;
     const qb = new window.QueryBuilder(model);
     // qb = qb.filter('user')
     // qb = qb.whereAny({
