@@ -6,7 +6,7 @@ import { merge } from "lodash";
 export default function getComplementSequenceString(sequence, isRna) {
   // ac.throw([ac.string],arguments);
   let complementSeqString = "";
-  const complementMap = isRna ? merge(DNAComplementMap, { a: 'u', A: 'U'}) : DNAComplementMap;
+  const complementMap = merge(DNAComplementMap, isRna ? { a: 'u', A: 'U'} : {a: 't', A: 'T'});
   for (let i = 0; i < sequence.length; i++) {
     let complementChar = complementMap[sequence[i]];
     if (!complementChar) {
