@@ -205,9 +205,9 @@ function createGenbankLocus(serSeq, options) {
   if (serSeq.isProtein) {
     dnaType = "";
   } else if (serSeq.type === "RNA") {
-    dnaType = serSeq?.sequenceTypeFromLocus ?? "RNA";
+    dnaType = serSeq?.doubleStranded ? 'RNA' : serSeq?.sequenceTypeFromLocus ?? "ss-RNA";
   } else {
-    dnaType = serSeq?.sequenceTypeFromLocus ?? "DNA";
+    dnaType = serSeq?.doubleStranded ? 'DNA' : serSeq?.sequenceTypeFromLocus ?? "DNA";
   }
   const date = getCurrentDateString();
 
