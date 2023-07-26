@@ -58,6 +58,70 @@ ORIGIN
       },
     ]);
   });
+
+  it(`correctly handles the single-stranded/double-stranded RNA/DNA in LOCUS line`, () => {
+    const ss_DNA_string = `LOCUS       Tt2-PstI-SphI-rev(dna)        20 bp    ss-DNA     circular
+    04-FEB-2021
+DEFINITION  [Heavy] lalalal
+            more description here
+            and still more
+ACCESSION   Tt2-PstI-SphI-rev
+VERSION     Tt2-PstI-SphI-rev.0
+KEYWORDS    .
+SOURCE      Homo sapiens
+ORGANISM  Homo sapiens
+    .
+COMMENT     Chain:Heavy
+    Numbering:Kabat
+    AnnotationCategory:VREGION
+    Plasmid: pAETEST
+    ClonedAnnotationCategory:VREGION
+ORIGIN
+1 tcgcgcgttt cggtgatgac
+//`;
+
+  const ds_DNA_string = ss_DNA_string.replace('ss-DNA', 'DNA');
+
+  const ss_RNA_string = `LOCUS       Tt2-PstI-SphI-rev(rna)        20 bp    ss-RNA     circular
+    04-FEB-2021
+DEFINITION  [Heavy] lalalal
+            more description here
+            and still more
+ACCESSION   Tt2-PstI-SphI-rev
+VERSION     Tt2-PstI-SphI-rev.0
+KEYWORDS    .
+SOURCE      Homo sapiens
+ORGANISM  Homo sapiens
+    .
+COMMENT     Chain:Heavy
+    Numbering:Kabat
+    AnnotationCategory:VREGION
+    Plasmid: pAETEST
+    ClonedAnnotationCategory:VREGION
+ORIGIN
+1 ucgcgcguuu cggugaugac
+//`;
+
+  const ds_RNA_string = ss_RNA_string.replace('ss-RNA', 'RNA');
+
+
+  const ss_DNA_result = genbankToJson(ss_DNA_string);
+  ss_DNA_result[0].parsedSequence.isSingleStrandedDNA.should.equal(true);
+
+
+  const ds_DNA_result = genbankToJson(ds_DNA_string);
+  Boolean(ds_DNA_result[0].parsedSequence.isSingleStrandedDNA).should.equal(false);
+
+  const ss_RNA_result = genbankToJson(ss_RNA_string);
+  Boolean(ss_RNA_result[0].parsedSequence.isDoubleStrandedRNA).should.equal(false);
+
+
+  const ds_RNA_result = genbankToJson(ds_RNA_string);
+  ds_RNA_result[0].parsedSequence.isDoubleStrandedRNA.should.equal(true);
+});
+
+  
+
   it(`correctly handles a multi-line DEFINITION converting it to description`, () => {
     const string = `LOCUS       Tt2-PstI-SphI-rev(dna)        7628 bp    DNA     circular
     04-FEB-2021

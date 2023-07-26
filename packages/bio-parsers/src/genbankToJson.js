@@ -338,7 +338,7 @@ function genbankToJson(string, options = {}) {
 
       if (
         j === 4 &&
-        (item.match(/ds-dna/i) || item.match(/ss-dna/i) || item.match(/dna/i))
+        (item.match(/ds-dna/i) || item.match(/ss-dna/i) || item.match(/dna/i) || item.match(/rna/i))
       ) {
         if (options.isProtein === undefined) {
           options.isProtein = false;
@@ -346,6 +346,9 @@ function genbankToJson(string, options = {}) {
         options.sequenceTypeFromLocus = item;
         if (item.match(/ss-dna/i)) {
           options.isSingleStrandedDNA = true;
+        }
+        if (item.match(/rna/i) && !item.match(/ss-rna/i)) {
+          options.isDoubleStrandedRNA = true;
         }
       }
 
@@ -368,6 +371,7 @@ function genbankToJson(string, options = {}) {
     result.parsedSequence.gbDivision = gbDivision;
     result.parsedSequence.sequenceTypeFromLocus = options.sequenceTypeFromLocus;
     result.parsedSequence.isSingleStrandedDNA = options.isSingleStrandedDNA;
+    result.parsedSequence.isDoubleStrandedRNA = options.isDoubleStrandedRNA;
     result.parsedSequence.date = date;
     result.parsedSequence.circular = circular;
   }
