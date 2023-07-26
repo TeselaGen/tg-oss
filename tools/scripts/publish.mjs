@@ -26,6 +26,24 @@ function invariant(condition, message) {
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
 let [, , name, version, tag = "next"] = process.argv;
 
+// Get all internal dependencies to write them to the package.json in the dist folder
+execSync(`yarn nx graph --file=output.json`);
+const r = readFileSync(`output.json`).toString();
+const simpleGraph = JSON.parse(r).graph;
+
+const deps = {};
+const getDeps = (name) => {
+  simpleGraph.dependencies[name].forEach(({ target }) => {
+    const key = `@teselagen/${target}`;
+    if (!deps[key]) {
+      const p = readFileSync(`./packages/${target}/package.json`).toString();
+      deps[key] = JSON.parse(p).version;
+      getDeps(target);
+    }
+  });
+};
+getDeps(name);
+
 // A simple SemVer validation to validate the version
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
 
@@ -67,6 +85,7 @@ if (!version || version === "undefined") {
   json = JSON.parse(readFileSync(`package.json`).toString());
   try {
     json.version = version;
+    json.dependencies = { ...deps, ...json.dependencies };
     writeFileSync(`package.json`, JSON.stringify(json, null, 2));
   } catch (e) {
     console.error(
@@ -85,6 +104,6 @@ invariant(
 );
 
 // Execute "npm publish" to publish
-execSync(
-  `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
-);
+// execSync(
+//   `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
+// );

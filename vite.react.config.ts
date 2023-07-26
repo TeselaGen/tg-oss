@@ -66,10 +66,11 @@ export default ({ name }: { name: string; dir: string }) =>
         }),
         ...(command === "build" && !isDemo
           ? [
+              // noBundlePlugin({ copy: "**/*.css" }),
               viteStaticCopy({
                 targets: [
                   {
-                    src: "./package.json",
+                    src: "./src",
                     dest: "."
                   }
                 ]
@@ -128,7 +129,8 @@ export default ({ name }: { name: string; dir: string }) =>
                 // Could also be a dictionary or array of multiple entry points.
                 entry: "src/index.js",
                 name,
-                fileName: "index"
+                fileName: "index",
+                formats: ["umd"]
                 // Change this to the formats you want to support.
                 // Don't forgot to update your package.json as well.
               }

@@ -16,11 +16,30 @@
       "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
       "dependsOn": ["test", "build"]
     },
-    "build": {
+    "build_simple": {
       "command": "cd packages/ove && vite build --mode={args.mode}",
       "configurations": {
         "demo": {
           "args": "--mode=demo"
+        }
+      }
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "generatePackageJson": true,
+        "outputPath": "dist/ove"
+      },
+      "configurations": {
+        "demo": {
+          "mode": "demo",
+          "base": "./",
+          "outputPath": "demo-dist/ove"
+        },
+        "production": {
+          "mode": "production"
         }
       }
     },

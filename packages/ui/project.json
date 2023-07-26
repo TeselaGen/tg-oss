@@ -16,11 +16,30 @@
       "command": "node tools/scripts/publish.mjs ui {args.ver} {args.tag}",
       "dependsOn": ["test", "build"]
     },
-    "build": {
+    "build_simple": {
       "command": "cd packages/ui && vite build --mode={args.mode}",
       "configurations": {
         "demo": {
           "args": "--mode=demo"
+        }
+      }
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "generatePackageJson": true,
+        "outputPath": "dist/ui"
+      },
+      "configurations": {
+        "demo": {
+          "mode": "demo",
+          "base": "./",
+          "outputPath": "demo-dist/ui"
+        },
+        "production": {
+          "mode": "production"
         }
       }
     },
@@ -40,6 +59,7 @@
         }
       }
     },
+
     "launch-e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {
