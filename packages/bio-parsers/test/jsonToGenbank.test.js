@@ -39,6 +39,54 @@ describe("genbank exporter/parser conversion", function () {
     result[0].parsedSequence.features[0].start.should.equal(3);
     result[0].parsedSequence.features[0].end.should.equal(29);
   });
+
+  it(`should has ss-RNA/RNA/ss-DNA/DNA in the LOCUS line`, () => {
+    const dnaSequence = 'agctttgggttt';
+    const rnaSequence = 'agcuuuggguuu';
+    const dsDNAString1 = jsonToGenbank({
+      sequence: dnaSequence,
+      type: 'DNA'
+    });
+    const dsDNAString2 = jsonToGenbank({
+      sequence: dnaSequence,
+      doubleStranded: true,
+      type: 'DNA'
+    });
+    const ssDNAString = jsonToGenbank({
+      sequence: dnaSequence,
+      sequenceTypeFromLocus: 'ss-DNA',
+      type: 'DNA'
+    });
+
+    assert(dsDNAString1.indexOf('DNA') !== -1);
+    assert(dsDNAString1.indexOf('ss-DNA') === -1);
+    assert(dsDNAString2.indexOf('DNA') !== -1);
+    assert(dsDNAString2.indexOf('ss-DNA') === -1);
+    assert(ssDNAString.indexOf('ss-DNA') !== -1);
+
+    const dsRNAString1 = jsonToGenbank({
+      sequence: rnaSequence,
+      doubleStranded: true,
+      type: 'RNA'
+    });
+    const dsRNAString2 = jsonToGenbank({
+      sequence: rnaSequence,
+      sequenceTypeFromLocus: 'RNA',
+      type: 'RNA'
+    });
+    const ssRNAString = jsonToGenbank({
+      sequence: rnaSequence,
+      sequenceTypeFromLocus: 'ss-RNA',
+      type: 'RNA'
+    });
+
+    assert(dsRNAString1.indexOf('RNA') !== -1);
+    assert(dsRNAString1.indexOf('ss-RNA') === -1);
+    assert(dsRNAString2.indexOf('RNA') !== -1);
+    assert(dsRNAString2.indexOf('ss-RNA') === -1);
+    assert(ssRNAString.indexOf('ss-RNA') !== -1);
+  });
+
   it(`should have a space at the 68 position in the genbank locus `, () => {
     const string = jsonToGenbank({
       sequence: "agagagagagag",
