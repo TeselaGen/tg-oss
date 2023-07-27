@@ -367,6 +367,7 @@ class _RowView extends React.Component {
               },
               isRowView: true,
               isProtein: sequenceData.isProtein,
+              isRna: sequenceData.isRna,
               chromatogramData: sequenceData.chromatogramData,
               sequenceLength: sequenceData.sequence.length,
               bpsPerRow,
