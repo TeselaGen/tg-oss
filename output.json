@@ -96,10 +96,16 @@
               "inputs": ["production", "^production"],
               "executor": "@nx/vite:build",
               "outputs": ["{options.outputPath}"],
+              "defaultConfiguration": "production",
               "options": {
+                "generatePackageJson": true,
                 "outputPath": "dist/bounce-loader"
               },
-              "configurations": {}
+              "configurations": {
+                "production": {
+                  "mode": "production"
+                }
+              }
             },
             "start": {
               "command": "cd packages/bounce-loader && yarn vite",
@@ -423,6 +429,17 @@
               },
               "configurations": {}
             },
+            "start": {
+              "executor": "nx:run-commands",
+              "options": {
+                "commands": ["cd packages/ove && yarn vite"]
+              },
+              "configurations": {
+                "ci": {
+                  "readyWhen": "ready in"
+                }
+              }
+            },
             "publish": {
               "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
               "dependsOn": ["test", "build"],
@@ -469,17 +486,6 @@
               "executor": "nx:run-commands",
               "options": {
                 "command": "yarn gh-pages -a -d demo-dist"
-              }
-            },
-            "start": {
-              "executor": "nx:run-commands",
-              "options": {
-                "commands": ["cd packages/ove && yarn vite"]
-              },
-              "configurations": {
-                "ci": {
-                  "readyWhen": "ready in"
-                }
               }
             },
             "launch-e2e": {

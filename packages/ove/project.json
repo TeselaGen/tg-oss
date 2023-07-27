@@ -12,6 +12,17 @@
         "lintFilePatterns": ["packages/ove/**/*.{ts,tsx,js,jsx}"]
       }
     },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["cd packages/ove && yarn vite"]
+      },
+      "configurations": {
+        "ci": {
+          "readyWhen": "ready in"
+        }
+      }
+    },
     "publish": {
       "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
       "dependsOn": ["test", "build"]
@@ -48,17 +59,7 @@
       // "dependsOn": ["build:demo"],
       "command": "yarn gh-pages -a -d demo-dist"
     },
-    "start": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["cd packages/ove && yarn vite"]
-      },
-      "configurations": {
-        "ci": {
-          "readyWhen": "ready in"
-        }
-      }
-    },
+
     "launch-e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {

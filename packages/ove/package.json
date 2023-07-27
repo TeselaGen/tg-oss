@@ -1,6 +1,5 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.0.17",
-  "main": "./src/index.js",
-  "type": "commonjs"
+  "version": "0.0.19",
+  "main": "./src/index.js"
 }

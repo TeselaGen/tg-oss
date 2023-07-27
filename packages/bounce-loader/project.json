@@ -15,9 +15,15 @@
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
-
+      "defaultConfiguration": "production",
       "options": {
+        "generatePackageJson": true,
         "outputPath": "dist/bounce-loader"
+      },
+      "configurations": {
+        "production": {
+          "mode": "production"
+        }
       }
     },
     "start": {
