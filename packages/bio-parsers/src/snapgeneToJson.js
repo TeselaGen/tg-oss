@@ -104,7 +104,13 @@ async function snapgeneToJson(fileObj, options = {}) {
         data.sequence = await read(size, "utf8");
       } else if (ord(next_byte) === 10) {
         //   # READ THE FEATURES
-        const strand_dict = { 0: ".", 1: "+", 2: "-", 3: "=" };
+        const strand_dict = {
+          // [strand, arrowheadType]
+          0: [1, "NONE"], // non-directional feature (in that case, the attribute is generally absent altogether)
+          1: [1, "TOP"], // forward strand
+          2: [-1, "BOTTOM"], // reverse strand
+          3: [1, "BOTH"], // bi-directional feature
+        };
         const xml = await read(block_size, "utf8");
         const b = new XMLParser({
           ignoreAttributes: false,
@@ -139,7 +145,8 @@ async function snapgeneToJson(fileObj, options = {}) {
             name,
             type,
             ...(locations?.length > 1 && { locations }),
-            strand: strand_dict[directionality],
+            strand: directionality ? strand_dict[directionality][0] : 1,
+            arrowheadType: directionality ? strand_dict[directionality][1] : "NONE",
             start: maxStart,
             end: maxEnd,
             // color,
