@@ -90,7 +90,7 @@ const Demo = () => {
           }}
         >
           <Drawer
-            size={Drawer.SIZE_SMALL}
+            size={Drawer.SMALL}
             isOpen={isSidebarOpen}
             onClose={() => {
               setSidebarOpen(false);
@@ -185,7 +185,7 @@ const Demo = () => {
                         return {
                           sequence: "thomaswashere"
                         };
-                      } else if ((versionId === 3)) {
+                      } else if (versionId === 3) {
                         return {
                           features: [{ start: 4, end: 6 }],
                           sequence:
