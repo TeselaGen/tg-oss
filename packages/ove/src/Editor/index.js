@@ -342,46 +342,46 @@ export class Editor extends React.Component {
     const { previewModeFullscreen: uncontrolledPreviewModeFullscreen } =
       this.state;
     const {
-      ToolBarProps = {},
-      StatusBarProps = {},
-      extraRightSidePanel,
-      editorName,
-      height: _height,
-      showCircularity,
-      hideSingleImport,
-      minHeight = 400,
-      showMenuBar,
+      allowPanelTabDraggable = true,
       annotationsToSupport,
+      caretPositionUpdate,
+      closePanel,
+      collapseSplitScreen,
+      displayMenuBarAboveTools = true,
+      editorName,
+      fullScreenOffsets,
+      expandTabToSplitScreen,
+      extraRightSidePanel,
+      getSequenceAtVersion,
+      getVersionList,
+      handleFullscreenClose,
+      height: _height,
+      hideSingleImport,
+      hideStatusBar,
+      hoveredId,
+      isFullscreen,
+      maxAnnotationsToDisplay,
+      minHeight = 400,
+      onlyShowLabelsThatDoNotFit = true,
+      onSave,
+      previewModeButtonMenu,
+      previewModeFullscreen: controlledPreviewModeFullscreen,
+      readOnly,
+      selectionLayer,
+      sequenceData = {},
+      setPanelAsActive,
+      showCircularity,
+      showMenuBar,
+      StatusBarProps = {},
+      style = {},
+      togglePanelFullScreen,
+      ToolBarProps = {},
+      updateSequenceData,
+      VersionHistoryViewProps,
       withRotateCircularView = true,
       withZoomCircularView = true,
       withZoomLinearView = true,
-      displayMenuBarAboveTools = true,
-      updateSequenceData,
-      readOnly,
-      setPanelAsActive,
-      style = {},
-      maxAnnotationsToDisplay,
-      togglePanelFullScreen,
-      collapseSplitScreen,
-      expandTabToSplitScreen,
-      closePanel,
-      onSave,
-      hideStatusBar,
-      caretPositionUpdate,
-      getVersionList,
-      getSequenceAtVersion,
-      selectionLayer,
-      VersionHistoryViewProps,
-      sequenceData = {},
-      fullScreenOffsets,
-      withPreviewMode,
-      isFullscreen,
-      hoveredId,
-      handleFullscreenClose,
-      onlyShowLabelsThatDoNotFit = true,
-      previewModeFullscreen: controlledPreviewModeFullscreen,
-      previewModeButtonMenu,
-      allowPanelTabDraggable = true
+      withPreviewMode
     } = this.props;
     if (
       !this.props.noVersionHistory &&
@@ -898,12 +898,11 @@ export class Editor extends React.Component {
             closeFullscreen={
               !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
             }
-            {...{
-              modifyTools: this.props.modifyTools,
-              contentLeft: this.props.contentLeft,
-              editorName
-            }}
+            modifyTools={this.props.modifyTools}
+            contentLeft={this.props.contentLeft}
+            editorName={editorName}
             withDigestTool
+            onChangeEditLock={this.props.onChangeEditLock}
             {...ToolBarProps}
           />
 
