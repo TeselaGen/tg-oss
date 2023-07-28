@@ -86,6 +86,7 @@ if (!version || version === "undefined") {
   try {
     json.version = version;
     json.type = "commonjs";
+    json.license = "MIT";
     json.dependencies = { ...deps, ...json.dependencies };
     writeFileSync(`package.json`, JSON.stringify(json, null, 2));
   } catch (e) {

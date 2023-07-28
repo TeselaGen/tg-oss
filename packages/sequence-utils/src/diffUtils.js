@@ -1,34 +1,28 @@
-import { cloneDeep, forEach } from 'lodash';
-import {
-  diff,
-  patch,
-  reverse,
-} from 'jsondiffpatch-rc';
+import { cloneDeep, forEach } from "lodash";
+import { diff, patch, reverse } from "jsondiffpatch/dist/jsondiffpatch.umd";
 
-import tidyUpSequenceData from './tidyUpSequenceData';
-
+import tidyUpSequenceData from "./tidyUpSequenceData";
 
 const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
-
   oldData = tidyUpSequenceData(oldData, {
     annotationsAsObjects: true,
-    noTranslationData: true,
+    noTranslationData: true
   });
   newData = tidyUpSequenceData(newData, {
     annotationsAsObjects: true,
-    noTranslationData: true,
+    noTranslationData: true
   });
 
   [oldData, newData].forEach((d) => {
     [
-      'cutsites',
-      'orfs',
-      'filteredFeatures',
-      'size',
-      'fromFileUpload',
-      'description',
-      'materiallyAvailable',
-      ...ignoreKeys,
+      "cutsites",
+      "orfs",
+      "filteredFeatures",
+      "size",
+      "fromFileUpload",
+      "description",
+      "materiallyAvailable",
+      ...ignoreKeys
     ].forEach((prop) => {
       delete d[prop];
     });
@@ -36,7 +30,7 @@ const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
       forEach(d.translations, (translation, key) => {
         if (
           translation.translationType &&
-          translation.translationType !== 'User Created'
+          translation.translationType !== "User Created"
         ) {
           delete d.translations[key];
         } else {

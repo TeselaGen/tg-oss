@@ -11,6 +11,8 @@ import { getPort } from "./getPort";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import path from "node:path";
 
+//vite config for react packages
+
 const justSrc = [
   /\/src\/.*\.js$/,
   /\/src\/.*\.jsx$/,

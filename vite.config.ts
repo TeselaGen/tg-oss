@@ -5,6 +5,9 @@ import viteTsConfigPaths from "vite-tsconfig-paths";
 import dts from "vite-plugin-dts";
 import { joinPathFragments } from "@nx/devkit";
 import { camelCase } from "lodash";
+import { viteStaticCopy } from "vite-plugin-static-copy";
+
+//vite config for simple iso packages
 
 const conf = ({
   name,
@@ -15,17 +18,29 @@ const conf = ({
   name: string;
   dir: string;
 }) =>
-  defineConfig({
+  defineConfig(({ command }) => ({
     cacheDir: `../../node_modules/.vite/${name}`,
     plugins: [
       dts({
         entryRoot: "src",
         tsconfigPath: joinPathFragments(dir, "tsconfig.json")
       }),
-
       viteTsConfigPaths({
         root: "../../"
-      })
+      }),
+      ...(command === "build"
+        ? [
+            // noBundlePlugin({ copy: "**/*.css" }),
+            viteStaticCopy({
+              targets: [
+                {
+                  src: "./src",
+                  dest: "."
+                }
+              ]
+            })
+          ]
+        : [])
     ],
     esbuild: {
       keepNames: true,
@@ -47,6 +62,7 @@ const conf = ({
     build: {
       minify: false,
       target: "es2015",
+      outDir: `../../dist/${name}`,
       lib: {
         // Could also be a dictionary or array of multiple entry points.
         entry: "src/index.js",
@@ -75,6 +91,6 @@ const conf = ({
         "test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
       ]
     }
-  });
+  }));
 
 export default conf;
