@@ -78,6 +78,7 @@ const defaultState = {
   isProtein: false,
   forceHeightMode: false,
   adjustCircularLabelSpacing: false,
+  bpLimit: undefined,
   nameFontSizeCircularView: false,
   withVersionHistory: true,
   withRotateCircularView: true,
@@ -295,6 +296,7 @@ export default class EditorDemo extends React.Component {
       withAutoAnnotateAddon,
       withGetCustomAutoAnnotateList,
       adjustCircularLabelSpacing,
+      bpLimit,
       withVersionHistory,
       shouldAutosave,
       generatePng,
@@ -1058,6 +1060,12 @@ rightClickOverrides: {
                 type: "adjustCircularLabelSpacing",
                 label: "Adjust circular label spacing",
                 info: "You can adjust the spacing between labels in circular view as a function of the multiple of the font height by passing `fontHeightMultiplier: 2` (value is restricted to between 1.5 and 3.5; default is 2.4, 2.0 when toggle is true)"
+              })}
+              {renderToggle({
+                that: this,
+                type: "bpLimit",
+                label: "Add a BP Limit",
+                info: "You can add a bp limit to the editor by passing `bpLimit: 1000`"
               })}
               {renderToggle({
                 that: this,
@@ -2373,13 +2381,14 @@ clickOverrides: {
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}
+            {...(bpLimit && { bpLimit: 8000 })}
             {...(withVersionHistory && {
               getSequenceAtVersion: (versionId) => {
                 if (versionId === 2) {
                   return {
                     sequence: "thomaswashere"
                   };
-                } else if ((versionId === 3)) {
+                } else if (versionId === 3) {
                   return {
                     features: [{ start: 4, end: 6 }],
                     sequence:

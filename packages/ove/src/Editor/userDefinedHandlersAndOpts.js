@@ -12,6 +12,7 @@ export const userDefinedHandlersAndOpts = [
   "smartCircViewLabelRender",
   "onConfigureFeatureTypesClick",
   "allPartTags",
+  "bpLimit",
   "editTagsLink",
   "readOnly",
   "shouldAutosave",

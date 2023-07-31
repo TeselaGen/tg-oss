@@ -261,7 +261,7 @@ function VectorInteractionHOC(Component /* options */) {
         copyOptions,
         readOnly
       } = this.props;
-      const onCut = this.props.onCut || this.props.onCopy || (noop);
+      const onCut = this.props.onCut || this.props.onCopy || noop;
       const seqData = tidyUpSequenceData(
         this.sequenceDataToCopy ||
           getSequenceDataBetweenRange(
@@ -516,9 +516,9 @@ function VectorInteractionHOC(Component /* options */) {
         // onCancel: undefined,
         text: (
           <div style={{ wordBreak: "break-word" }}>
-              <h3>{annotation.name}:</h3>
-              {annotation.message}
-            </div>
+            <h3>{annotation.name}:</h3>
+            {annotation.message}
+          </div>
         )
       });
       this.updateSelectionOrCaret(event.shiftKey, annotation);
@@ -1195,7 +1195,8 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
     sequenceData,
     selectionLayerUpdate,
     caretPosition,
-    selectionLayer
+    selectionLayer,
+    bpLimit
   } = props;
 
   // sequenceData,
@@ -1222,6 +1223,14 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
       sequenceData,
       caretPosition > -1 ? caretPosition : selectionLayer
     );
+  if (bpLimit) {
+    if (newSeqData.sequence.length > bpLimit) {
+      window.toastr.error(
+        `Sorry, you cannot go over the limit of ${bpLimit} base pairs`
+      );
+      throw new Error("bpLimit exceeded");
+    }
+  }
   updateSequenceData(newSeqData);
   const seqDataInsertLength = seqDataToInsert.sequence
     ? seqDataToInsert.sequence.length
