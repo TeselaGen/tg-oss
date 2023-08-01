@@ -99,7 +99,8 @@ const defaultState = {
   truncateLabelsThatDoNotFit: true,
   withPartTags: true,
   onCopy: true,
-  onPaste: true
+  onPaste: true,
+  onChangeEditLock: false
 };
 
 export default class EditorDemo extends React.Component {
@@ -125,6 +126,7 @@ export default class EditorDemo extends React.Component {
     this.setState({
       isFullscreen: e.target.checked
     });
+
   changeReadOnly = (e) =>
     this.setState({
       readOnly: e.target.checked
@@ -1748,6 +1750,11 @@ hide or show the menubar (false by default)
               })}
               {renderToggle({
                 that: this,
+                type: "onChangeEditLock",
+                info: `pass onChangeEditLock={(lock)=>{}} to the <Editor> to get a callback when the user changes the edit lock state`
+              })}
+              {renderToggle({
+                that: this,
                 type: "showReadOnly",
                 info: `pass showReadOnly=false to the <Editor> to not display the read-only <--> editable mode toggle, true by default`
               })}
@@ -2189,6 +2196,11 @@ clickOverrides: {
                 // return myPromiseBasedApiCall()
               }
             })}
+            {...(this.state.onChangeEditLock && {
+              onChangeEditLock: () => {
+                window.toastr.success("onChangeEditLock callback triggered");
+              }
+            })}
             {...(this.state.onSaveAs && {
               onSaveAs: function (
                 opts,
@@ -2379,7 +2391,7 @@ clickOverrides: {
                   return {
                     sequence: "thomaswashere"
                   };
-                } else if ((versionId === 3)) {
+                } else if (versionId === 3) {
                   return {
                     features: [{ start: 4, end: 6 }],
                     sequence:

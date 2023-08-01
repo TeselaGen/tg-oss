@@ -28,7 +28,7 @@ export default connectToEditor((editorState) => {
           disabled: disableSetReadOnly,
           Icon: <Icon icon={readOnly ? "lock" : "unlock"} />,
           onIconClick: () => {
-            onChangeEditLock(!readOnly);
+            if (onChangeEditLock) onChangeEditLock(!readOnly);
             toggleReadOnlyMode();
           },
           tooltip: readOnlyTooltip({ readOnly, disableSetReadOnly }),
