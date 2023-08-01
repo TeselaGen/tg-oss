@@ -13,12 +13,9 @@ import { noop } from "lodash";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
-connect(
-  noop,
-  (dispatch) => {
-    dispatch();
-  }
-);
+connect(noop, (dispatch) => {
+  dispatch();
+});
 
 export default class StandaloneDemo extends React.Component {
   state = {
@@ -102,7 +99,7 @@ export default class StandaloneDemo extends React.Component {
               return {
                 sequence: "thomaswashere"
               };
-            } else if ((versionId === 3)) {
+            } else if (versionId === 3) {
               return {
                 features: [{ start: 4, end: 6 }],
                 sequence:

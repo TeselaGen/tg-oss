@@ -91,7 +91,7 @@ const Demo = () => {
           }}
         >
           <Drawer
-            size={Drawer.SIZE_SMALL}
+            size={Drawer.SMALL}
             isOpen={isSidebarOpen}
             onClose={() => {
               setSidebarOpen(false);

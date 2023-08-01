@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  InputField,
-  BPSelect,
-  TextareaField
-} from "@teselagen/ui";
+import { InputField, BPSelect, TextareaField } from "@teselagen/ui";
 import { reduxForm } from "redux-form";
 import withEditorProps from "../../withEditorProps";
 import { compose } from "recompose";

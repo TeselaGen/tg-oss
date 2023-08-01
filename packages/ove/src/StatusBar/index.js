@@ -235,11 +235,9 @@ export function StatusBar({
       )}
       <EditReadOnlyItem
         editorName={editorName}
-        {...{
-          onSave,
-          disableSetReadOnly,
-          showReadOnly
-        }}
+        onSave={onSave}
+        disableSetReadOnly={disableSetReadOnly}
+        showReadOnly={showReadOnly}
       />
       <EditCircularityItem
         editorName={editorName}
