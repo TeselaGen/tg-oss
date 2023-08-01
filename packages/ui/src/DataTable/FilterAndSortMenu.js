@@ -21,9 +21,35 @@ import "@teselagen/react-table/react-table.css";
 import "./style.css";
 import "../toastr";
 
-const isInvalidFilterValue = value => {
+const filterTypesDictionary = {
+  none: "",
+  startsWith: "text",
+  endsWith: "text",
+  contains: "text",
+  notContains: "text",
+  isExactly: "text",
+  isEmpty: "text",
+  notEmpty: "text",
+  inList: "list",
+  notInList: "list",
+  true: "boolean",
+  false: "boolean",
+  dateIs: "date",
+  notBetween: "dateRange",
+  isBetween: "dateRange",
+  isBefore: "date",
+  isAfter: "date",
+  greaterThan: "number",
+  lessThan: "number",
+  inRange: "numberRange",
+  outsideRange: "numberRange",
+  equalTo: "number",
+  regex: "text"
+};
+
+const isInvalidFilterValue = (value) => {
   if (Array.isArray(value) && value.length) {
-    return value.some(item => isInvalidFilterValue(item));
+    return value.some((item) => isInvalidFilterValue(item));
   }
   return value === "" || value === undefined || value.length === 0;
 };
@@ -38,10 +64,27 @@ export default class FilterAndSortMenu extends React.Component {
       ...this.props.currentFilter
     };
   }
-  handleFilterChange = selectedFilter => {
+  handleFilterChange = (selectedFilter) => {
+    const { filterValue } = this.state;
+    if (
+      filterValue &&
+      !Array.isArray(filterValue) &&
+      filterTypesDictionary[selectedFilter] === "list"
+    ) {
+      this.setState({
+        filterValue: filterValue?.split(" ") || []
+      });
+    } else if (
+      filterTypesDictionary[selectedFilter] === "text" &&
+      Array.isArray(filterValue)
+    ) {
+      this.setState({
+        filterValue: filterValue.join(" ")
+      });
+    }
     this.setState({ selectedFilter: camelCase(selectedFilter) });
   };
-  handleFilterValueChange = filterValue => {
+  handleFilterValueChange = (filterValue) => {
     this.setState({ filterValue });
   };
   handleFilterSubmit = () => {
@@ -65,7 +108,7 @@ export default class FilterAndSortMenu extends React.Component {
       if (dataType === "number") {
         filterValToUse =
           filterValue &&
-          filterValue.map(val => parseFloat(val.replaceAll(",", "")));
+          filterValue.map((val) => parseFloat(val.replaceAll(",", "")));
       }
     }
 
@@ -91,36 +134,9 @@ export default class FilterAndSortMenu extends React.Component {
   render() {
     const { selectedFilter, filterValue } = this.state;
     const { dataType, currentFilter, removeSingleFilter } = this.props;
-    const {
-      handleFilterChange,
-      handleFilterValueChange,
-      handleFilterSubmit
-    } = this;
-    const filterTypesDictionary = {
-      none: "",
-      startsWith: "text",
-      endsWith: "text",
-      contains: "text",
-      notContains: "text",
-      isExactly: "text",
-      isEmpty: "text",
-      notEmpty: "text",
-      inList: "list",
-      notInList: "list",
-      true: "boolean",
-      false: "boolean",
-      dateIs: "date",
-      notBetween: "dateRange",
-      isBetween: "dateRange",
-      isBefore: "date",
-      isAfter: "date",
-      greaterThan: "number",
-      lessThan: "number",
-      inRange: "numberRange",
-      outsideRange: "numberRange",
-      equalTo: "number",
-      regex: "text"
-    };
+    const { handleFilterChange, handleFilterValueChange, handleFilterSubmit } =
+      this;
+
     const filterMenuItems = getFilterMenuItems(dataType);
     const ccSelectedFilter = camelCase(selectedFilter);
     const requiresValue = ccSelectedFilter && ccSelectedFilter !== "none";
@@ -130,13 +146,13 @@ export default class FilterAndSortMenu extends React.Component {
         <div className="custom-menu-item">
           <div className={classNames(Classes.SELECT, Classes.FILL)}>
             <select
-              onChange={function(e) {
+              onChange={function (e) {
                 const ccSelectedFilter = camelCase(e.target.value);
                 handleFilterChange(ccSelectedFilter);
               }}
               value={ccSelectedFilter}
             >
-              {filterMenuItems.map(function(menuItem, index) {
+              {filterMenuItems.map(function (menuItem, index) {
                 return (
                   <option key={index} value={camelCase(menuItem)}>
                     {menuItem}
@@ -176,12 +192,8 @@ export default class FilterAndSortMenu extends React.Component {
 }
 
 const dateMinMaxHelpers = {
-  minDate: dayjs()
-    .subtract(25, "years")
-    .toDate(),
-  maxDate: dayjs()
-    .add(25, "years")
-    .toDate()
+  minDate: dayjs().subtract(25, "years").toDate(),
+  maxDate: dayjs().add(25, "years").toDate()
 };
 const renderCreateNewOption = (query, active, handleClick) => (
   <MenuItem
@@ -213,7 +225,7 @@ class FilterInput extends React.Component {
             <div className="custom-menu-item">
               <InputGroup
                 placeholder="Value"
-                onChange={function(e) {
+                onChange={function (e) {
                   handleFilterValueChange(e.target.value);
                 }}
                 autoFocus
@@ -232,15 +244,15 @@ class FilterInput extends React.Component {
               noResults={null}
               multi={true}
               creatable={true}
-              value={(filterValue || []).map(val => ({
+              value={(filterValue || []).map((val) => ({
                 label: val,
                 value: val
               }))}
-              onChange={selectedOptions => {
-                selectedOptions.some(opt => opt.value === "")
+              onChange={(selectedOptions) => {
+                selectedOptions.some((opt) => opt.value === "")
                   ? handleFilterSubmit()
                   : handleFilterValueChange(
-                      selectedOptions.map(opt => opt.value)
+                      selectedOptions.map((opt) => opt.value)
                     );
               }}
               options={[]}
@@ -253,7 +265,7 @@ class FilterInput extends React.Component {
           <div className="custom-menu-item">
             <NumericInput
               placeholder="Value"
-              onValueChange={function(numVal) {
+              onValueChange={function (numVal) {
                 handleFilterValueChange(isNaN(numVal) ? 0 : numVal);
               }}
               autoFocus
@@ -268,7 +280,7 @@ class FilterInput extends React.Component {
           <div className="custom-menu-item">
             <NumericInput
               placeholder="Low"
-              onValueChange={function(numVal) {
+              onValueChange={function (numVal) {
                 handleFilterValueChange([
                   isNaN(numVal) ? 0 : numVal,
                   filterValue[1]
@@ -279,7 +291,7 @@ class FilterInput extends React.Component {
             />
             <NumericInput
               placeholder="High"
-              onValueChange={function(numVal) {
+              onValueChange={function (numVal) {
                 handleFilterValueChange([
                   filterValue[0],
                   isNaN(numVal) ? 0 : numVal
@@ -298,7 +310,7 @@ class FilterInput extends React.Component {
               value={filterValue ? dayjs(filterValue).toDate() : undefined}
               {...getDayjsFormatter("L")}
               {...dateMinMaxHelpers}
-              onChange={selectedDates => {
+              onChange={(selectedDates) => {
                 handleFilterValueChange(selectedDates);
               }}
             />
@@ -312,7 +324,7 @@ class FilterInput extends React.Component {
           filterValueToUse = filterValue;
         } else {
           filterValueToUse =
-            filterValue && filterValue.split && filterValue.split(".");
+            filterValue && filterValue.split && filterValue.split(";");
         }
         inputGroup = (
           <div className="custom-menu-item">
@@ -329,13 +341,13 @@ class FilterInput extends React.Component {
                 captureDismiss: true
               }}
               {...{
-                formatDate: date =>
+                formatDate: (date) =>
                   date == null ? "" : date.toLocaleDateString(),
-                parseDate: str => new Date(Date.parse(str)),
+                parseDate: (str) => new Date(Date.parse(str)),
                 placeholder: "JS Date"
               }}
               {...dateMinMaxHelpers}
-              onChange={selectedDates => {
+              onChange={(selectedDates) => {
                 if (selectedDates[0] && selectedDates[1]) {
                   handleFilterValueChange(selectedDates);
                 }

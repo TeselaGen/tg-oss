@@ -306,7 +306,7 @@ function getSubFilter(
     stringFilterValue.toLowerCase && stringFilterValue.toLowerCase();
   const arrayFilterValue = Array.isArray(filterValue)
     ? filterValue
-    : stringFilterValue.split(".");
+    : stringFilterValue.split(";");
   if (ccSelectedFilter === "startsWith") {
     return qb
       ? qb.startsWith(stringFilterValue) //filter using qb (aka we're backend connected)
