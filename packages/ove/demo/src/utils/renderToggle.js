@@ -148,7 +148,6 @@ export default function renderToggle({
     </div>
   );
 }
-
 function HandleHotkeys({ combo, onKeyDown }) {
   const hotkeys = useMemo(
     () => [

@@ -13,8 +13,7 @@ export default connectToEditor((editorState) => {
     readOnly,
     toggleReadOnlyMode,
     disableSetReadOnly,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    onChangeEditLock = () => {}
+    onChangeEditLock
   }) => {
     const readOnlyTooltip = ({ readOnly, disableSetReadOnly }) => {
       if (disableSetReadOnly) {

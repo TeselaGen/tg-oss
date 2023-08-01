@@ -1,9 +1,14 @@
-describe("template spec", () => {
+describe("editLocking", () => {
   beforeEach(() => {
     cy.visit("");
   });
+  it("unlocking/locking should trigger the onChangeEditLock", () => {
+    cy.tgToggle("onChangeEditLock");
+    cy.get('span[icon="unlock"]').click();
+    cy.contains("onChangeEditLock callback triggered");
+  });
   it("disabled edit lock tooltip should show forbiden message", () => {
-    cy.contains("disableSetReadOnly").click();
+    cy.tgToggle("disableSetReadOnly");
     cy.get('span[icon="unlock"]').trigger("mouseover");
     cy.contains("You do not have permission to edit locks on this sequence");
   });
