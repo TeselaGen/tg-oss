@@ -1,7 +1,7 @@
 /* eslint-disable no-var*/
 import { convertAACaretPositionOrRangeToDna } from "@teselagen/sequence-utils";
 
-import  { gbDivisions, untitledSequenceName } from "./utils/constants";
+import { gbDivisions, untitledSequenceName } from "./utils/constants";
 import flattenSequenceArray from "./utils/flattenSequenceArray";
 import validateSequenceArray from "./utils/validateSequenceArray";
 import splitStringIntoLines from "./utils/splitStringIntoLines.js";
@@ -11,7 +11,7 @@ import createInitialSequence from "./utils/createInitialSequence";
 function genbankToJson(string, options = {}) {
   const {
     inclusive1BasedStart,
-    inclusive1BasedEnd,
+    inclusive1BasedEnd
     //these are also valid options:
     // primersAsFeatures,
     // sequenceTypeFromLocus,
@@ -43,7 +43,7 @@ function genbankToJson(string, options = {}) {
     BASE_COUNT_TAG: "BASE COUNT",
     //CONTIG_TAG: "CONTIG"
     ORIGIN_TAG: "ORIGIN",
-    END_SEQUENCE_TAG: "//",
+    END_SEQUENCE_TAG: "//"
   };
   let hasFoundLocus = false;
   let featureLocationIndentation;
@@ -214,7 +214,7 @@ function genbankToJson(string, options = {}) {
     console.error("Error trying to parse file as .gb:", e);
     result = {
       success: false,
-      messages: ["Import Error: Invalid File"],
+      messages: ["Import Error: Invalid File"]
     };
   }
 
@@ -338,18 +338,25 @@ function genbankToJson(string, options = {}) {
 
       if (
         j === 4 &&
-        (item.match(/ds-dna/i) || item.match(/ss-dna/i) || item.match(/dna/i) || item.match(/rna/i))
+        (item.match(/ds-dna/i) ||
+          item.match(/ss-dna/i) ||
+          item.match(/dna/i) ||
+          item.match(/rna/i))
       ) {
         if (options.isProtein === undefined) {
           options.isProtein = false;
         }
         options.sequenceTypeFromLocus = item;
         if (item.match(/ss-dna/i)) {
+          options.isDNA = true;
           options.isSingleStrandedDNA = true;
-        }
-        if (item.match(/rna/i)) {
+        } else if (item.match(/rna/i)) {
           options.isRna = true;
+        } else if (item.match(/ds-dna/i) || item.match(/dna/i)) {
+          options.isDNA = true;
+          options.isDoubleStrandedDNA = true;
         }
+
         if (item.match(/rna/i) && !item.match(/ss-rna/i)) {
           options.isDoubleStrandedRNA = true;
         }
@@ -373,6 +380,8 @@ function genbankToJson(string, options = {}) {
     }
     result.parsedSequence.gbDivision = gbDivision;
     result.parsedSequence.sequenceTypeFromLocus = options.sequenceTypeFromLocus;
+    result.parsedSequence.isDNA = options.isDNA;
+    result.parsedSequence.isDoubleStrandedDNA = options.isDoubleStrandedDNA;
     result.parsedSequence.isSingleStrandedDNA = options.isSingleStrandedDNA;
     result.parsedSequence.isRna = options.isRna;
     result.parsedSequence.isDoubleStrandedRNA = options.isDoubleStrandedRNA;
@@ -466,7 +475,7 @@ function genbankToJson(string, options = {}) {
   function newFeature() {
     result.parsedSequence.features.push({
       locations: [],
-      notes: {},
+      notes: {}
     });
   }
 
@@ -504,7 +513,7 @@ function genbankToJson(string, options = {}) {
       }
       const location = {
         start: start,
-        end: end,
+        end: end
       };
       const feat = getCurrentFeature();
       feat.locations.push(

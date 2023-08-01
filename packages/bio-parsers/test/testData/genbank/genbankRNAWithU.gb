@@ -1,0 +1,9 @@
+LOCUS       genbankRNAWithU             120 bp    rna     circular UNK 26-OCT-2009
+DEFINITION  promoter seq from pBAD33
+FEATURES             Location/Qualifiers
+     CDS             complement(7..22)
+                     /label=araC
+ORIGIN      
+        1 gacgtcttat gacaucttga cggctacatc attcactttt tcttcacaac cggcacggaa
+       61 ctcgctcggg ctggccccgg tgcatttttt aaatauccgc gagaaataga gttgatcgtc
+//

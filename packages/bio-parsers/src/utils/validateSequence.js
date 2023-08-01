@@ -3,7 +3,7 @@ import { getFeatureTypes } from "@teselagen/sequence-utils";
 import {
   filterAminoAcidSequenceString,
   filterSequenceString,
-  guessIfSequenceIsDnaAndNotProtein,
+  guessIfSequenceIsDnaAndNotProtein
 } from "@teselagen/sequence-utils";
 import { filter, some, upperFirst } from "lodash";
 import pragmasAndTypes from "./pragmasAndTypes.js";
@@ -22,9 +22,7 @@ import { reformatName } from "./NameUtils.js";
   };
  */
 export default function validateSequence(sequence, options = {}) {
-  let {
-    isProtein,
-    isOligo,
+  const {
     guessIfProtein,
     guessIfProteinOptions,
     reformatSeqName,
@@ -32,11 +30,25 @@ export default function validateSequence(sequence, options = {}) {
     inclusive1BasedEnd,
     additionalValidChars,
     allowOverflowAnnotations,
-    coerceFeatureTypes,
+    coerceFeatureTypes
   } = options;
+  [
+    "isDNA",
+    "isOligo",
+    "isRNA",
+    "isDoubleStrandedDNA",
+    "isSingleStrandedDNA",
+    "isDoubleStrandedRNA",
+    "isProtein"
+  ].forEach((k) => {
+    if (options[k] !== undefined && sequence[k] === undefined) {
+      sequence[k] = options[k];
+    }
+  });
+
   const response = {
     validatedAndCleanedSequence: {},
-    messages: [],
+    messages: []
   };
   if (!sequence || typeof sequence !== "object") {
     throw new Error("Invalid sequence");
@@ -73,13 +85,13 @@ export default function validateSequence(sequence, options = {}) {
     sequence.sequence = "";
   }
   let validChars;
-  if (isProtein === undefined && guessIfProtein) {
-    isProtein = !guessIfSequenceIsDnaAndNotProtein(
+  if (sequence.isProtein === undefined && guessIfProtein) {
+    sequence.isProtein = !guessIfSequenceIsDnaAndNotProtein(
       sequence.sequence,
       guessIfProteinOptions
     );
   }
-  if (isProtein) {
+  if (sequence.isProtein) {
     //tnr: add code to strip invalid protein data..
     validChars = filterAminoAcidSequenceString(sequence.sequence);
     if (validChars !== sequence.sequence) {
@@ -97,12 +109,12 @@ export default function validateSequence(sequence, options = {}) {
   } else {
     //todo: this logic won't catch every case of RNA, so we should probably handle RNA conversion at another level..
     const temp = sequence.sequence;
-    if (!isOligo) {
+    if (!sequence.isOligo) {
       sequence.sequence = sequence.sequence.replace(/u/gi, (u) =>
         u === "U" ? "T" : "t"
       );
     }
-    if (temp !== sequence.sequence) {
+    if (temp !== sequence.sequence && !sequence.isDNA && !sequence.isProtein) {
       sequence.type = "RNA";
       sequence.sequence = temp;
     } else {
@@ -119,7 +131,7 @@ export default function validateSequence(sequence, options = {}) {
   }
 
   if (!sequence.size) {
-    sequence.size = isProtein
+    sequence.size = sequence.isProtein
       ? sequence.proteinSequence.length * 3
       : sequence.sequence.length;
   }
