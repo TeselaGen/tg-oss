@@ -104,6 +104,7 @@ export default function validateSequence(sequence, options = {}) {
     }
     if (temp !== sequence.sequence) {
       sequence.type = "RNA";
+      sequence.sequence = temp;
     } else {
       sequence.type = "DNA";
     }

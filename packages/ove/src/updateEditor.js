@@ -118,7 +118,7 @@ export default function updateEditor(
             caret: true,
             sequence: true,
             cutsites: false,
-            reverseSequence: sequenceData?.isDoubleStrandedRNA,
+            reverseSequence: Boolean(sequenceData?.isDoubleStrandedRNA),
             translations: false,
             aminoAcidNumbers: false,
             primaryProteinSequence: false,
