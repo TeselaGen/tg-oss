@@ -114,7 +114,12 @@ export default function validateSequence(sequence, options = {}) {
         u === "U" ? "T" : "t"
       );
     }
-    if (temp !== sequence.sequence && !sequence.isDNA && !sequence.isProtein) {
+    if (
+      temp !== sequence.sequence &&
+      !sequence.isDNA &&
+      !sequence.isProtein &&
+      sequence.isRNA !== false
+    ) {
       sequence.type = "RNA";
       sequence.sequence = temp;
     } else {

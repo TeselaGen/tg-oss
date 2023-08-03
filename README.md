@@ -53,3 +53,10 @@ Install vscode extension for nx
 Run commands (build/start/test/lint etc..) from the nx extension in vscode or from the command line
 
 Profit!
+
+## How to Publish
+
+using the vscode command prompt (cmd+shift+p):
+Nx: run-many
+publish
+Execute: nx run-many --target=publish
