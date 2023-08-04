@@ -14,13 +14,14 @@ export function CellDragHandle({
   const rowsToSelect = useRef();
   const rectangleCellPaths = useRef();
 
-  const handleDrag = useRef(e => {
+  const handleDrag = useRef((e) => {
     const table = ReactDOM.findDOMNode(thisTable).querySelector(".rt-table");
     const trs = table.querySelectorAll(`.rt-tr-group.with-row-data`);
     const [rowId, path] = cellId.split(":");
     const selectedTr = table.querySelector(
       `.rt-tr-group.with-row-data[data-test-id="${rowId}"]`
     );
+    if (!selectedTr) return;
     const selectedIndex = selectedTr.dataset.index;
 
     if (selectedTr && trs.length) {
@@ -59,7 +60,7 @@ export function CellDragHandle({
             //add dashed borders
 
             if (rectangleCellPaths.current) {
-              rectangleCellPaths.current.forEach(path => {
+              rectangleCellPaths.current.forEach((path) => {
                 changeDashedBorder(path, true);
               });
             } else {
@@ -69,7 +70,7 @@ export function CellDragHandle({
         }
         if (!isSelectedForUpdate) {
           if (rectangleCellPaths.current) {
-            rectangleCellPaths.current.forEach(path => {
+            rectangleCellPaths.current.forEach((path) => {
               changeDashedBorder(path, false);
             });
           } else {
@@ -86,9 +87,9 @@ export function CellDragHandle({
     const trs = table.querySelectorAll(`.rt-tr-group.with-row-data`);
     const [, path] = cellId.split(":");
     //remove the dashed borders
-    forEach(trs, tr => {
+    forEach(trs, (tr) => {
       if (rectangleCellPaths.current) {
-        rectangleCellPaths.current.forEach(path => {
+        rectangleCellPaths.current.forEach((path) => {
           const el = tr.querySelector(`[data-test="tgCell_${path}"]`);
           el.parentNode.classList.remove("selectedForUpdate");
         });
@@ -100,9 +101,9 @@ export function CellDragHandle({
     document.removeEventListener("mousemove", handleDrag.current, false);
     document.removeEventListener("mouseup", mouseup.current, false);
     onDragEnd(
-      flatMap(rowsToSelect.current, id => {
+      flatMap(rowsToSelect.current, (id) => {
         if (rectangleCellPaths.current) {
-          return rectangleCellPaths.current.map(path => {
+          return rectangleCellPaths.current.map((path) => {
             return `${id}:${path}`;
           });
         } else {
@@ -114,7 +115,7 @@ export function CellDragHandle({
 
   return (
     <div
-      onMouseDown={e => {
+      onMouseDown={(e) => {
         rowsToSelect.current = [];
         xStart.current = e.clientX;
         const { isRect, selectedPaths } = isSelectionARectangle();
