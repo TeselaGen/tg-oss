@@ -298,7 +298,10 @@ const Demo = () => {
             render={() => {
               return (
                 <WrapSimpleDemo>
-                  <RowView editorName="DemoEditor" />
+                  <RowView
+                    dimensions={{ width: 800 }}
+                    editorName="DemoEditor"
+                  />
                 </WrapSimpleDemo>
               );
             }}

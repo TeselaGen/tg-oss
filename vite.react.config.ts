@@ -10,7 +10,7 @@ import { camelCase } from "lodash";
 import { getPort } from "./getPort";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import path from "node:path";
-
+// import million from "million/compiler";
 //vite config for react packages
 
 const justSrc = [
@@ -56,6 +56,10 @@ export default ({ name }: { name: string; dir: string }) =>
       },
       base: "./",
       plugins: [
+        //tnw - maybe add this back later after adding performance metrics https://twitter.com/aidenybai/status/1689773623827943424
+        // million.vite({
+        //   auto: true
+        // }),
         // dts({
         //   entryRoot: 'src',
         //   tsConfigFilePath: joinPathFragments(dir, 'tsconfig.json'),
