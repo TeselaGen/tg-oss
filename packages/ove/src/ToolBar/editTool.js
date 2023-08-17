@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Icon } from "@blueprintjs/core";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
@@ -15,8 +15,11 @@ export default connectToEditor((editorState) => {
     disableSetReadOnly,
     onChangeEditLock
   }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const readOnlyTooltip = ({ readOnly, disableSetReadOnly }) => {
-      if (disableSetReadOnly) {
+      if (isLoading) {
+        return "Loading...";
+      } else if (disableSetReadOnly) {
         return "You do not have permission to edit locks on this sequence";
       }
       return readOnly ? "Click to enable editing" : "Click to disable editing";
@@ -24,10 +27,14 @@ export default connectToEditor((editorState) => {
     return (
       <ToolbarItem
         {...{
-          disabled: disableSetReadOnly,
+          disabled: isLoading || disableSetReadOnly,
           Icon: <Icon icon={readOnly ? "lock" : "unlock"} />,
-          onIconClick: () => {
-            if (onChangeEditLock) onChangeEditLock(!readOnly);
+          onIconClick: async () => {
+            if (onChangeEditLock) {
+              setIsLoading(true);
+              await onChangeEditLock(!readOnly);
+              setIsLoading(false);
+            }
             toggleReadOnlyMode();
           },
           tooltip: readOnlyTooltip({ readOnly, disableSetReadOnly }),

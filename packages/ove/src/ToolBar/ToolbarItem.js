@@ -187,8 +187,6 @@ class ToolbarItem extends React.Component {
   }
 }
 
-
-
 export default connectToEditor(({ toolBar = {} }, { toolName }) => ({
   isOpen: toolBar.openItem === toolName
 }))(ToolbarItem);
