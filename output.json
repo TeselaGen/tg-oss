@@ -695,28 +695,6 @@
       "range-utils": [],
       "file-utils": [],
       "uploader": [],
-      "ove-lib": [
-        {
-          "source": "ove-lib",
-          "target": "sequence-utils",
-          "type": "static"
-        },
-        {
-          "source": "ove-lib",
-          "target": "ui",
-          "type": "static"
-        },
-        {
-          "source": "ove-lib",
-          "target": "range-utils",
-          "type": "static"
-        },
-        {
-          "source": "ove-lib",
-          "target": "bio-parsers",
-          "type": "static"
-        }
-      ],
       "ove": [
         {
           "source": "ove",
@@ -736,11 +714,6 @@
         {
           "source": "ove",
           "target": "bio-parsers",
-          "type": "static"
-        },
-        {
-          "source": "ove",
-          "target": "ove-lib",
           "type": "static"
         }
       ],

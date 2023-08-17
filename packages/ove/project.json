@@ -35,6 +35,24 @@
         }
       }
     },
+    "build-lib": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "configFile": "packages/ove/vite.config.lib.ts",
+        "generatePackageJson": true,
+        "outputPath": "dist/ove"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
