@@ -35,7 +35,7 @@
         }
       }
     },
-    "build-lib": {
+    "build_lib": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -70,7 +70,8 @@
         "production": {
           "mode": "production"
         }
-      }
+      },
+      "dependsOn": ["build_lib"]
     },
     "pushToGhPages": {
       //tnw: waiting for https://github.com/nrwl/nx/issues/15064 to be able to work with "build:demo", until then just run build:demo manually first
