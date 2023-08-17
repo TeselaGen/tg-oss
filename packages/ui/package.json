@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.3.10",
+  "version": "0.3.7",
   "main": "index.js",
   "module": "index.mjs",
   "export": {
@@ -9,10 +9,12 @@
   },
   "peerDependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5"
   }
 }
