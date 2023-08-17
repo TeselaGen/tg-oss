@@ -139,7 +139,6 @@
     "nx": "16.4.1",
     "nx-cloud": "latest",
     "prettier": "^2.6.2",
-    "sass": "^1.55.0",
     "string-splice": "^1.3.0",
     "string_decoder": "^1.3.0",
     "ts-jest": "^29.1.1",
