@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/bounce-loader",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "main": "index.js",
   "module": "index.mjs",
   "export": {

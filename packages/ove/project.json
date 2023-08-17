@@ -41,7 +41,9 @@
       "defaultConfiguration": "production",
       "options": {
         "generatePackageJson": true,
-        "outputPath": "dist/ove"
+        "outputPath": "dist/ove",
+        "target": "es2015",
+        "configFile": "packages/ove/vite.config.ts"
       },
       "configurations": {
         "demo": {

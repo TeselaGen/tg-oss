@@ -139,7 +139,7 @@ export default ({ name }: { name: string; dir: string }) =>
             }),
         rollupOptions: {
           plugins: [rollupPlugin(justSrc)],
-          external: ['react', 'react-dom'],
+          external: ['react', 'react-dom', 'react-redux'],
           output: {
             name: camelCase(name)
           }
