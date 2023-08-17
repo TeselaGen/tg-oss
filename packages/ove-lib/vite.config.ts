@@ -3,6 +3,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
+import packageJson from "../../package.json";
+
 const justSrc = [
   /\/src\/.*\.js$/,
   /\/src\/.*\.jsx$/,
@@ -10,11 +12,15 @@ const justSrc = [
   /\/src\/.*\.tsx$/
 ];
 
+const dependencyKeys = Object.keys(packageJson.dependencies).filter(
+  (item) => item !== "node-interval-tree"
+);
+
 export default defineConfig({
   cacheDir: "../../node_modules/.vite/ove-lib",
 
   plugins: [
-    react(),
+    react({ include: /\.(mdx|js|jsx|ts|tsx)$/ }),
     viteTsConfigPaths({
       root: "../../"
     })
@@ -59,7 +65,7 @@ export default defineConfig({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: ["react", "react-dom", "react/jsx-runtime"]
+      external: dependencyKeys
     }
   }
 });

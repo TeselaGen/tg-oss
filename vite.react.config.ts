@@ -80,7 +80,23 @@ export default ({ name }: { name: string; dir: string }) =>
                     dest: "."
                   }
                 ]
-              })
+              }),
+              ...(name === "ove"
+                ? [
+                    viteStaticCopy({
+                      targets: [
+                        {
+                          src: "../ove-lib/index.js",
+                          dest: "."
+                        },
+                        {
+                          src: "../ove-lib/index.mjs",
+                          dest: "."
+                        }
+                      ]
+                    })
+                  ]
+                : [])
             ]
           : [
               vitePluginVirtualHtml({
