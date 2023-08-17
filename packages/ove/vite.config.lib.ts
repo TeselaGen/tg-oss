@@ -64,20 +64,18 @@ export default defineConfig({
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.
     },
-    cssCodeSplit: true,
+    copyPublicDir: false,
     rollupOptions: {
       // External packages that should not be bundled into your library.
       external: dependencyKeys,
       output: [
         {
-          name: "ove",
           format: "cjs",
-          dir: "./dist/lib/cjs/"
+          dir: "./dist/lib/"
         },
         {
-          name: "ove",
           format: "es",
-          dir: "./dist/lib/es/"
+          dir: "./dist/lib/"
         }
       ]
     }
