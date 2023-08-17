@@ -105,6 +105,6 @@ invariant(
 );
 
 // Execute "npm publish" to publish
-// execSync(
-//   `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
-// );
+execSync(
+  `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
+);
