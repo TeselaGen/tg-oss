@@ -1,0 +1,55 @@
+.veLabels {
+  font-weight: lighter;
+}
+
+.labelTspan:hover {
+  fill: red !important;
+}
+
+.labelText {
+  cursor: pointer;
+}
+
+.veEditor .veAnnotationHovered:not(.topLevelLabelGroup) {
+  font-weight: bold;
+}
+.veEditor
+  .veAnnotationHovered:not(.topLevelLabelGroup):not(
+    .veCircularViewInternalLabelText
+  ) {
+  text-decoration: underline;
+}
+
+.veEditor .veAnnotationHovered.veCutsiteLabel {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.bp3-dark .veLabels .veAnnotationHovered:not(.topLevelLabelGroup) {
+  /* fill: white !important; */
+  font-weight: normal;
+}
+.bp3-dark .veLabels .veAnnotationHovered rect {
+  fill: rgb(64, 64, 92) !important;
+}
+
+.partWithSelectedTag {
+  font-size: 14px !important;
+  font-weight: 900;
+  text-decoration: underline;
+}
+.veCircularView .partWithSelectedTag.vePart .veLabelText {
+  /* stroke: #ac68cc; */
+  font-size: 15px !important;
+}
+.vePartLabel.partWithSelectedTag {
+  font-size: large !important;
+}
+
+.partWithSelectedTag path,
+path.partWithSelectedTag {
+  stroke-width: 1.5 !important;
+}
+/* .veLabelLine {
+  opacity: 0.1;
+} */

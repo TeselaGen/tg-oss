@@ -1,0 +1,21 @@
+.veRowViewSelectionLayer {
+  height: 100%;
+  border: none;
+  background: #0099ff;
+  opacity: 0.3;
+  top: -2px;
+  position: absolute;
+  z-index: 10;
+}
+
+.veCaret {
+  background: black;
+  stroke: black;
+  opacity: 1;
+  cursor: ew-resize;
+  z-index: 10;
+}
+
+.veCaret.veSelectionLayer.cutsiteLabelSelectionLayer {
+  display: none !important;
+}

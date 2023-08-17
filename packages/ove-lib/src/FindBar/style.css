@@ -1,0 +1,46 @@
+/* .veFindBar {
+  z-index: 20000;
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+} */
+.veFindBar > .bp3-control {
+  margin-bottom: 0px;
+}
+.veFindBar > * {
+  margin-right: 10px;
+  width: fit-content;
+}
+
+.ve-find-options-popover > * {
+  margin: 10px 5px;
+}
+.veAnnotationFindMatches {
+  width: 250px;
+  padding: 10px;
+  max-height: 180px;
+  overflow-y: scroll;
+  min-width: 313px;
+}
+
+.veAnnotationFoundType {
+  font-weight: bold;
+}
+.veAnnotationFoundResult {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+.veAnnotationFoundResult:hover {
+  background: lightblue;
+}
+.veAnnotationFoundResultRange {
+  font-size: 10;
+  color: gray;
+}

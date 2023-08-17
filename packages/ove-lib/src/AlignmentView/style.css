@@ -1,0 +1,100 @@
+.ove-slider .bp3-slider {
+  min-width: 10px !important;
+  margin-bottom: 4px;
+}
+.alignmentViewTrackContainer:hover .alignmentViewSelectTrackPopover {
+  opacity: 0.9 !important;
+}
+.alignmentViewTrackContainer {
+  position: relative;
+}
+.alignmentViewTrackContainer,
+.alignmentViewTrackContainer .veVectorInteractionWrapper,
+.alignmentViewTrackContainer .veVectorInteractionWrapper > div {
+  width: stretch;
+  width: fit-content;
+}
+
+.alignmentViewTrackContainer .veLinearView .veRowItemWrapper {
+  display: block;
+}
+
+.alignmentHolder::-webkit-scrollbar {
+  display: none;
+}
+.alignmentHolder {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.alignmentTrackName {
+  background: white;
+}
+.alignmentTrackName {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.alignmentTrackName::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+.alignmentMinimapTracks {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.alignmentMinimapTracks::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+.bp3-dark .alignmentTrackName {
+  background: #30404d;
+}
+/* .alignmentViewTrackContainer:hover .alignmentTrackNameDiv {
+  opacity: 1 !important;
+} */
+.ve-alignment-top-bar > * {
+  overflow-wrap: normal;
+  flex: 0 0 auto;
+  max-width: 100%;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.veAlignmentSelectionLayer {
+  top: 0;
+  height: 100% !important;
+  overflow: hidden;
+}
+.alignmentView .veSelectionLayer {
+  top: 0;
+}
+
+.veTracksAndAlignmentHolder {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+}
+/* .isTrackDragging.veTracksAndAlignmentHolder {
+  transform: none !important;
+} */
+.veTracksAndAlignmentHolder {
+  transform: none !important;
+}
+.alignmentMinimapTracks {
+  background: #8a9ba8;
+}
+.minimapLane.lane-hovered .miniBluePath {
+  fill: rgb(169, 169, 245) !important;
+}
+
+.veAlignmentName {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin-top: 2px;
+  margin-bottom: 5px;
+  margin-left: 3px;
+  font-weight: bold;
+  font-size: 14px;
+  max-width: 300px;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

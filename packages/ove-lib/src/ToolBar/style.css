@@ -1,0 +1,138 @@
+.Popover-body {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 10px;
+  background: white;
+  color: black;
+  box-shadow: 0px 1px 9px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  margin-top: 10px;
+}
+
+.Popover-tipShape {
+  fill: white;
+}
+
+.Popover-tip {
+  display: none;
+}
+
+.veToolbar .veToolbarItemOuter {
+  display: flex;
+  height: 32px;
+}
+.veToolbar .veToolbarItemOuter .veToolbarItem {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+.veToolbarSpacer {
+  height: 80%;
+  width: 1px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon {
+  padding: 3px;
+  border-radius: 3px;
+  height: 32px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #006cab;
+}
+.veToolbarItemOuter.disabled .veToolbarIcon {
+  color: #c0c0c0;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon.veToolbarItemToggled {
+  background: lightgrey;
+  border-color: #006cab;
+}
+
+.veToolbar :not(.disabled).veToolbarItemOuter .veToolbarIcon:hover {
+  border-color: #006cab;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon:active {
+  opacity: 0.7;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon img,
+.veToolbar .veToolbarItemOuter .veToolbarIcon svg,
+.veToolbar .veToolbarItemOuter .veToolbarIcon object {
+  cursor: pointer;
+}
+.veToolbar .veToolbarItemOuter .veToolbarIcon img svg,
+.veToolbar .veToolbarItemOuter .veToolbarIcon svg svg,
+.veToolbar .veToolbarItemOuter .veToolbarIcon object svg {
+  color: #006baa;
+}
+
+.minOrfSizeInput::-webkit-inner-spin-button,
+.minOrfSizeInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.minOrfSizeInput {
+  padding-bottom: 0.25em;
+  width: 5em;
+  margin-left: 10px;
+  text-align: center;
+  padding-top: 0.25em;
+  border: 1px solid lightgrey;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.veToolbarDropdown {
+  cursor: pointer;
+  padding: 0px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-radius: 3px;
+}
+.veToolbarDropdown:hover {
+  background: lightgrey;
+}
+.veToolbarDropdown.isOpen {
+  background: lightgrey;
+}
+
+.veToolbarCutsiteFilterHolder {
+  min-width: 300px;
+}
+.veToolbarCutsiteFilterHolder > div {
+  margin: 10px;
+}
+.veToolbarCutsiteFilterHolder .title {
+  margin: 10px;
+  background: blue;
+  width: 100%;
+}
+
+.translateInfoSpan {
+  font-size: 0.8em;
+  padding: 4px;
+}
+
+.showOrfTranslateSpan {
+  padding: 8px;
+}
+
+.veToolbarOrfOptionsHolder {
+  min-width: 300px;
+  margin-bottom: 10px;
+}
+
+.veToolbarViewOptionsHolder div {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.veToolbarViewOptionsHolder label {
+  margin: 40px 10px;
+}
+.ve-toolbar-item-popover {
+  /* the z-index has to be high for it to work with ice */
+  z-index: 4000;
+}

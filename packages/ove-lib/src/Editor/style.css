@@ -1,0 +1,235 @@
+@import url(darkmode.css);
+.veEditor {
+  position: relative;
+  flex-grow: 1;
+}
+
+.taProductViewer {
+  display: flex;
+}
+
+.RowViewSide,
+.CircularViewSide {
+  width: 100%;
+}
+.ve-clickable {
+  cursor: pointer;
+  opacity: 0.7;
+}
+.ve-clickable:hover {
+  opacity: 1;
+}
+.ve-clickable-black {
+  cursor: pointer;
+  color: rgb(78, 78, 78);
+}
+.ve-clickable-black:hover {
+  color: black;
+}
+
+.veRightClickTabMenu {
+  opacity: 0.4;
+}
+.veRightClickTabMenu:hover {
+  opacity: 1;
+}
+
+.reflex-layout > .reflex-element {
+  overflow: hidden !important;
+}
+.reflex-layout.reflex-container {
+  height: inherit !important;
+}
+
+.preview-mode-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+  width: fit-content;
+  height: fit-content;
+
+  /* border: 1px solid black; */
+}
+.preview-mode-container > div {
+  -moz-box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 3px #ccc;
+  padding: 2px;
+}
+
+.preview-mode-view-fullscreen {
+  top: 1%;
+  left: 1%;
+  /* transform: translateX(-50%) translateY(-50%); */
+  position: absolute;
+  display: flex;
+
+  /* opacity: .9; */
+}
+
+/* .preview-mode-container>div:hover .preview-mode-view-fullscreen {
+ opacity: 1;
+} */
+
+.preview-mode-view-fullscreen:hover {
+  background: #0e5a8a;
+}
+.bp3-tag.tg-smallTag {
+  transform: scale(0.8);
+}
+
+.veSearchLayer {
+  cursor: pointer;
+
+  stroke: gold !important;
+  fill: gold !important;
+  background: gold !important;
+  border-right-color: yellow !important;
+}
+.veSearchLayerActive {
+  stroke: red !important;
+  fill: red !important;
+  background: red !important;
+}
+.notCaret.veSearchLayerBottomStrand:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 0px;
+  bottom: -15px;
+  opacity: 1 !important;
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-right: 15px solid gold;
+}
+.veSearchLayerActive.veSearchLayerBottomStrand:after {
+  border-right-color: red !important;
+}
+.notCaret.veSearchLayerBottomStrand:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 1px;
+  bottom: -15px;
+  opacity: 1 !important;
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-right: 15px solid gold;
+}
+.veSearchLayerActive.veSearchLayerBottomStrand:before {
+  border-right-color: red !important;
+}
+
+.veSearchLayer.veCaret {
+  cursor: pointer;
+}
+
+.veRowView,
+.veCircularView {
+  outline: none;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.veVectorInteractionWrapper .veSelectionLayer:not(.veCaret) {
+  background: gray;
+  fill: gray;
+}
+.veVectorInteractionWrapper:focus .veSelectionLayer:not(.veCaret) {
+  fill: #0099ff;
+  background: #0099ff;
+}
+.tg-simple-dna-view .veSelectionLayer:not(.veCaret) {
+  fill: #0099ff;
+  background: #0099ff;
+}
+
+.veVectorInteractionWrapper:focus .veCaret:not(.selectionLayerCaret) {
+  animation: blinker 1s step-start infinite;
+}
+/* this is the little handles above the selection carets */
+.veEditor :not(.veSearchLayer).selectionLayerCaret::after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid black;
+  position: absolute;
+  z-index: 1000;
+  top: -7px;
+  left: -4px;
+}
+.bp3-dark .veEditor :not(.veSearchLayer).selectionLayerCaret::after {
+  border-top: 10px solid white;
+}
+.vePolygonCaretHandle,
+.veEditor .veSearchLayer .vePolygonCaretHandle {
+  display: none;
+}
+.veEditor .vePolygonCaretHandle {
+  display: inherit;
+}
+.bp3-dark .veEditor .vePolygonCaretHandle {
+  fill: white;
+}
+.bp3-dark .veTabActive {
+  color: #48aff0 !important;
+  border-bottom-color: #48aff0 !important;
+}
+
+[cmd="filterPartsByTagCmd"] > .bp3-text-overflow-ellipsis {
+  overflow: visible;
+}
+.vePart {
+  fill-opacity: 0;
+}
+
+.vePart text,
+text.vePart,
+tspan.vePart {
+  fill-opacity: 1;
+}
+.veTopRightContainer {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+}
+
+.ve-draggable-tabs {
+  display: flex;
+  align-items: flex-end;
+  flex: 0 0 auto;
+  flex-direction: row;
+  overflow-x: auto;
+  border-bottom: 1px solid #f5f8fa;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.ve-draggable-tabs.is-dragging-over {
+  background: #e5f3ff;
+}
+
+.bp3-dark .veEditor .ve-draggable-tabs {
+  color: #f5f8fa !important;
+  border-bottom: 1px solid #4a4b4b;
+}
+
+.bp3-dark .veEditor .ve-draggable-tabs.is-dragging-over {
+  background: #0c5174;
+}
+.ve-draggable-tabs::-webkit-scrollbar {
+  display: none;
+}

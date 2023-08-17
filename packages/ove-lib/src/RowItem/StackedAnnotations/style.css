@@ -1,0 +1,14 @@
+.veAnnotationHovered .veRowViewFeature path {
+  stroke-width: 2 !important;
+}
+
+.veAnnotationHovered:not(text) path {
+  stroke-width: 2 !important;
+}
+
+.veRowViewAnnotationPosition {
+  z-index: 20;
+}
+.veLabelText {
+  user-select: none;
+}
