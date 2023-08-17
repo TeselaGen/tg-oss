@@ -85,7 +85,6 @@ if (!version || version === "undefined") {
   json = JSON.parse(readFileSync(`package.json`).toString());
   try {
     json.version = version;
-    json.type = "commonjs";
     json.license = "MIT";
     json.dependencies = { ...deps, ...json.dependencies };
     writeFileSync(`package.json`, JSON.stringify(json, null, 2));
@@ -106,6 +105,6 @@ invariant(
 );
 
 // Execute "npm publish" to publish
-execSync(
-  `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
-);
+// execSync(
+//   `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
+// );

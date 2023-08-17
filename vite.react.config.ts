@@ -132,13 +132,14 @@ export default ({ name }: { name: string; dir: string }) =>
                 entry: "src/index.js",
                 name,
                 fileName: "index",
-                formats: ["umd"]
+                formats: ["es", "cjs", "umd"]
                 // Change this to the formats you want to support.
                 // Don't forgot to update your package.json as well.
               }
             }),
         rollupOptions: {
           plugins: [rollupPlugin(justSrc)],
+          external: ['react', 'react-dom'],
           output: {
             name: camelCase(name)
           }
