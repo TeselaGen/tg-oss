@@ -61,9 +61,7 @@
       "application": {
         "babel": true
       },
-      "library": {
-        "unitTestRunner": "jest"
-      }
+      "library": {}
     }
   }
 }
