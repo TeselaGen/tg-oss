@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import libCss from "vite-plugin-libcss";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
 import packageJson from "../../package.json";
@@ -17,10 +18,11 @@ const dependencyKeys = Object.keys(packageJson.dependencies).filter(
 );
 
 export default defineConfig({
-  cacheDir: "../../node_modules/.vite/ove-lib",
+  cacheDir: "./node_modules/.vite/ove",
 
   plugins: [
     react({ include: /\.(mdx|js|jsx|ts|tsx)$/ }),
+    libCss(),
     viteTsConfigPaths({
       root: "../../"
     })
@@ -57,15 +59,27 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: "src/index.js",
-      name: "ove-lib",
-      fileName: "index",
+      name: "ove",
+      fileName: "index"
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.
-      formats: ["es", "cjs"]
     },
+    cssCodeSplit: true,
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: dependencyKeys
+      external: dependencyKeys,
+      output: [
+        {
+          name: "ove",
+          format: "cjs",
+          dir: "./dist/lib/cjs/"
+        },
+        {
+          name: "ove",
+          format: "es",
+          dir: "./dist/lib/es/"
+        }
+      ]
     }
   }
 });
