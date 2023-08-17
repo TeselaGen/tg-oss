@@ -17,7 +17,9 @@ export default connectToEditor((editorState) => {
   }) => {
     const [isLoading, setIsLoading] = useState(false);
     const readOnlyTooltip = ({ readOnly, disableSetReadOnly }) => {
-      if (disableSetReadOnly) {
+      if (isLoading) {
+        return "Loading...";
+      } else if (disableSetReadOnly) {
         return "You do not have permission to edit locks on this sequence";
       }
       return readOnly ? "Click to enable editing" : "Click to disable editing";
