@@ -78,7 +78,15 @@ export default ({ name }: { name: string; dir: string }) =>
                   {
                     src: "./src",
                     dest: "."
-                  }
+                  },
+                  ...(name === "ove"
+                    ? [
+                        {
+                          src: "../../dist/lib/",
+                          dest: "."
+                        }
+                      ]
+                    : [])
                 ]
               })
             ]
