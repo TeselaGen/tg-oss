@@ -1,13 +1,13 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.3.7",
+  "version": "0.3.9",
   "main": "./src/index.js",
   "exports": {
     ".": {
-      "import": "./lib/index.mjs",
-      "require": "./lib/index.js"
+      "import": "./index.mjs",
+      "require": "./index.js"
     },
-    "./style.css": "./lib/style.css"
+    "./style.css": "./style.css"
   },
   "volta": {
     "node": "16.20.2"

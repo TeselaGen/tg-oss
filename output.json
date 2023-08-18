@@ -445,10 +445,17 @@
             },
             "publish": {
               "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}"
+              }
+            },
+            "build_umd": {
+              "command": "nx run ove:build --mode=umd",
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "nx run ove:build --mode=umd"
               }
             },
             "build_simple": {
@@ -464,16 +471,20 @@
               }
             },
             "build": {
-              "dependsOn": ["^build"],
+              "dependsOn": ["build_lib"],
               "inputs": ["production", "^production"],
               "executor": "@nx/vite:build",
               "outputs": ["{options.outputPath}"],
               "defaultConfiguration": "production",
               "options": {
+                "emptyOutDir": false,
                 "generatePackageJson": true,
                 "outputPath": "dist/ove"
               },
               "configurations": {
+                "umd": {
+                  "mode": "umd"
+                },
                 "demo": {
                   "mode": "demo",
                   "base": "./",
