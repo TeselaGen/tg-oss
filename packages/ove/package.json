@@ -8,5 +8,8 @@
       "require": "./lib/index.js"
     },
     "./style.css": "./lib/style.css"
+  },
+  "volta": {
+    "node": "16.20.2"
   }
 }
