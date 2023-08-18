@@ -38,6 +38,7 @@ const rollupPlugin = (matchers: RegExp[]) => ({
 export default ({ name }: { name: string; dir: string }) =>
   defineConfig(({ command, mode = "production" }) => {
     const isDemo = mode === "demo";
+    const isUmd = mode === "umd";
     if (!isDemo) {
       mode = "production";
     }
@@ -136,7 +137,7 @@ export default ({ name }: { name: string; dir: string }) =>
                 entry: "src/index.js",
                 name,
                 fileName: "index",
-                formats: ["umd"]
+                formats: isUmd ? ["umd"] : ["es", "cjs"]
                 // Change this to the formats you want to support.
                 // Don't forgot to update your package.json as well.
               }
@@ -145,22 +146,22 @@ export default ({ name }: { name: string; dir: string }) =>
           plugins: [rollupPlugin(justSrc)],
           output: {
             name: camelCase(name)
-          }
+          },
           // External packages that should not be bundled into your library.
-          // external:
-          //   mode === "demo"
-          //     ? []
-          //     : [
-          //         "react",
-          //         "react-dom",
-          //         "react/jsx-runtime",
-          //         "redux",
-          //         "react-redux",
-          //         "redux-form",
-          //         "@blueprintjs/core",
-          //         "@blueprintjs/select",
-          //         "@blueprintjs/datetime"
-          //       ]
+          external:
+            mode === "demo" || isUmd
+              ? []
+              : [
+                  "react",
+                  "react-dom",
+                  "react/jsx-runtime",
+                  "redux",
+                  "react-redux",
+                  "redux-form",
+                  "@blueprintjs/core",
+                  "@blueprintjs/select",
+                  "@blueprintjs/datetime"
+                ]
         }
       },
       resolve: {

@@ -25,7 +25,10 @@
     },
     "publish": {
       "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
-      "dependsOn": ["test", "build"]
+      "dependsOn": ["test", "build", "build_umd"]
+    },
+    "build_umd": {
+      "command": "nx run ove:build --mode=umd"
     },
     "build_simple": {
       "command": "cd packages/ove && vite build --mode={args.mode}",
@@ -40,10 +43,14 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
+        "emptyOutDir": false,
         "generatePackageJson": true,
         "outputPath": "dist/ove"
       },
       "configurations": {
+        "umd": {
+          "mode": "umd"
+        },
         "demo": {
           "mode": "demo",
           "base": "./",
@@ -52,7 +59,8 @@
         "production": {
           "mode": "production"
         }
-      }
+      },
+      "dependsOn": ["build_lib"]
     },
     "pushToGhPages": {
       //tnw: waiting for https://github.com/nrwl/nx/issues/15064 to be able to work with "build:demo", until then just run build:demo manually first
