@@ -36,7 +36,12 @@ export const extractZipFiles = async (allFiles) => {
   if (!zipFiles.length) return allFiles;
   const zipFilesArray = Array.isArray(zipFiles) ? zipFiles : [zipFiles];
   const parsedZips = await Promise.map(zipFilesArray, (file) =>
-    loadAsync(file instanceof Blob ? file : file.originFileObj)
+    loadAsync(
+      file instanceof
+        (typeof Blob !== "undefined" ? Blob : require("buffer").Blob)
+        ? file
+        : file.originFileObj
+    )
   );
   const zippedFiles = flatMap(parsedZips, (zip) =>
     Object.keys(zip.files).map((key) => zip.files[key])
