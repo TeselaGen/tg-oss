@@ -31,8 +31,6 @@ import { store } from "@risingstack/react-easy-state";
 
 const defaultMarginWidth = 10;
 
-
-
 class _LinearView extends React.Component {
   state = {};
   bindOutsideChangeHelper = {};
@@ -309,7 +307,7 @@ class _LinearView extends React.Component {
                   updateLabelsForInViewFeatures();
                 },
                 rowContainerStyle: {
-                  height: height - 36,
+                  height: isNaN(height - 36) ? "auto" : height - 36,
                   width: innerWidth + 26,
                   paddingRight: marginWidth / 2,
                   ...(isLinViewZoomed &&
