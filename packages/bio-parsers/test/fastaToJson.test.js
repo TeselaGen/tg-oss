@@ -12,6 +12,21 @@ chai.use(require("chai-things"));
 chai.should();
 
 describe("FASTA tests", function () {
+  it("should automatically treat .faa files as protein", async function () {
+    const string = fs.readFileSync(
+      path.join(__dirname, "./testData/fasta/proteinFasta.faa"),
+      "utf8"
+    );
+    const result = await fastaToJson(string, { fileName: "proteinFasta.faa" });
+    result[0].parsedSequence.name.should.equal("gi");
+    result[0].parsedSequence.description.should.equal(
+      "359950697|gb|AEV91138.1| Rfp (plasmid) [synthetic construct]"
+    );
+    result[0].parsedSequence.sequence.should.equal(
+      "MRSSKNVIKEFMRFKVRMEGTVNGHEFEIEGEGEGRPYEGHNTVKLKVTKGGPLPFAWDILSPQFQYGSKVYVKHPADIPDYKKLSFPEGFKWERVMNFEDGGVVTVTQDSSLQDGCFIYKVKFIGVNFPSDGPVMQKKTMGWEASTERLYPRDGVLKGEIHKALKLKDGGHYLVEFKSIYMAKKPVQLPGYYYVDSKLDITSHNEDYTIVEQYERTEGRHHLFL"
+    );
+    result[0].parsedSequence.isProtein.should.equal(true);
+  });
   it("import protein fasta file without replacing spaces to underscore in name", async function () {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/fasta/proteinFasta.fas"),

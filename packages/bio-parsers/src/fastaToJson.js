@@ -1,4 +1,5 @@
 import createInitialSequence from "./utils/createInitialSequence";
+import extractFileExtension from "./utils/extractFileExtension";
 import splitStringIntoLines from "./utils/splitStringIntoLines.js";
 import validateSequenceArray from "./utils/validateSequenceArray";
 
@@ -9,7 +10,12 @@ import validateSequenceArray from "./utils/validateSequenceArray";
  * @author Joshua P Nixon
  */
 
-function fastaToJson(fileString, options) {
+function fastaToJson(fileString, options = {}) {
+  const ext = extractFileExtension(options.fileName);
+  if (/^(faa)$/.test(ext)) {
+    options.isProtein = true;
+  }
+
   let resultArray = [];
   let result = null;
   try {
@@ -28,8 +34,8 @@ function fastaToJson(fileString, options) {
     resultArray = [
       {
         success: false,
-        messages: ["Import Error: Invalid File"],
-      },
+        messages: ["Import Error: Invalid File"]
+      }
     ];
   }
   return validateSequenceArray(resultArray, options);
@@ -71,10 +77,9 @@ function fastaToJson(fileString, options) {
   }
 
   function parseTitle(line) {
-
-    if (options && 'parseName' in options && !options.parseName){
-      result.parsedSequence.name = line.slice(1)
-      return
+    if (options && "parseName" in options && !options.parseName) {
+      result.parsedSequence.name = line.slice(1);
+      return;
     }
 
     const pipeIndex = line.indexOf("|");

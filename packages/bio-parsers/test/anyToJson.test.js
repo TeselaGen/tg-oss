@@ -32,7 +32,7 @@ describe("anyToJson", function () {
     const results = await anyToJson("LQNKMVSDKGRAHKPAWYMGMVNNAYNLSIISTMIL", {
       fileName: "randomString.txt",
       isProtein: true,
-      emulateBrowser: true, //this shouldn't make it to the getFileString fn
+      emulateBrowser: true //this shouldn't make it to the getFileString fn
     });
     results[0].parsedSequence.sequence.length.should.equal(36);
     results[0].parsedSequence.name.should.equal("randomString");
@@ -43,7 +43,7 @@ describe("anyToJson", function () {
     );
 
     const result = await anyToJson(fileObj, {
-      fileName: "3DHZ_B.prot",
+      fileName: "3DHZ_B.prot"
     });
 
     result[0].parsedSequence.isProtein.should.equal(true);
@@ -79,13 +79,28 @@ describe("anyToJson", function () {
       {
         fileName: "pBbS0c-RFP_no_name.txt",
         parseFastaAsCircular: true,
-        isProtein: false,
+        isProtein: false
       }
     );
 
     result[0].parsedSequence.sequence.length.should.equal(4224);
     result[0].parsedSequence.circular.should.equal(true);
     result[0].parsedSequence.name.should.equal("pBbS0c-RFP_no_name");
+  });
+  it("should automatically treat .faa files as protein", async function () {
+    const string = fs.readFileSync(
+      path.join(__dirname, "./testData/fasta/proteinFasta.faa"),
+      "utf8"
+    );
+    const result = await anyToJson(string, { fileName: "proteinFasta.faa" });
+    result[0].parsedSequence.name.should.equal("gi");
+    result[0].parsedSequence.description.should.equal(
+      "359950697|gb|AEV91138.1| Rfp (plasmid) [synthetic construct]"
+    );
+    result[0].parsedSequence.sequence.should.equal(
+      "MRSSKNVIKEFMRFKVRMEGTVNGHEFEIEGEGEGRPYEGHNTVKLKVTKGGPLPFAWDILSPQFQYGSKVYVKHPADIPDYKKLSFPEGFKWERVMNFEDGGVVTVTQDSSLQDGCFIYKVKFIGVNFPSDGPVMQKKTMGWEASTERLYPRDGVLKGEIHKALKLKDGGHYLVEFKSIYMAKKPVQLPGYYYVDSKLDITSHNEDYTIVEQYERTEGRHHLFL"
+    );
+    result[0].parsedSequence.isProtein.should.equal(true);
   });
   it("handles parseFastaAsCircular=true", async function () {
     const result = await anyToJson(
@@ -106,7 +121,7 @@ describe("anyToJson", function () {
     result[0].parsedSequence.circular.should.equal(true);
     result[0].parsedSequence.name.should.equal("pRS414__modified");
     result[0].parsedSequence.features.should.containSubset([
-      { name: "Ampicillin", type: "CDS", start: 714 },
+      { name: "Ampicillin", type: "CDS", start: 714 }
     ]);
     result[0].parsedSequence.features[0].notes.gene[0].should.equal(
       "Ampicillin"
@@ -166,7 +181,7 @@ describe("anyToJson", function () {
       fastaFilePath: "pBbE0c-RFP.fasta",
       genbankFilePath: "pBbE0c-RFP.gb",
       sbolFilePath: "pBbE0c-RFP.xml",
-      jbeiFilePath: "pBbE0c-RFP.seq",
+      jbeiFilePath: "pBbE0c-RFP.seq"
     };
 
     const fastaResult = await anyToJson(
@@ -176,7 +191,7 @@ describe("anyToJson", function () {
       ),
       {
         fileName: options.fastaFilePath,
-        isProtein: false,
+        isProtein: false
       }
     );
 
@@ -187,7 +202,7 @@ describe("anyToJson", function () {
       ),
       {
         fileName: options.genbankFilePath,
-        isProtein: false,
+        isProtein: false
       }
     );
 
@@ -198,7 +213,7 @@ describe("anyToJson", function () {
       ),
       {
         fileName: options.sbolFilePath,
-        isProtein: false,
+        isProtein: false
       }
     );
     const jbeiXMLResult = await anyToJson(
@@ -208,7 +223,7 @@ describe("anyToJson", function () {
       ),
       {
         fileName: options.jbeiFilePath,
-        isProtein: false,
+        isProtein: false
       }
     );
 

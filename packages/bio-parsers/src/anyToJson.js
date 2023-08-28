@@ -71,7 +71,7 @@ async function anyToJson(fileContentStringOrFileObj, options) {
   }
   // console.log(`fileContentString.includes("seq:seq"):`,fileContentString.includes("seq:seq"))
   // console.log(`fileContentString.includes("jbei")):`,fileContentString.includes("jbei"))
-  if (/^(fasta|fas|fa|fna|ffn)$/.test(ext)) {
+  if (/^(fasta|fas|fa|fna|ffn|faa)$/.test(ext)) {
     // FASTA
     return fastaToJson(fileContentString, options);
   } else if (/^(gb|gbk)$/.test(ext)) {
