@@ -892,10 +892,11 @@ function UploaderInner({
                       }, 200);
                     }
                   }
+                } else {
+                  toKeep.push(...cleanedAccepted);
                 }
 
                 if (toKeep.length === 0) {
-                  console.log(`asdfasdfas`);
                   window.toastr &&
                     window.toastr.error(
                       `It looks like there wasn't any data in your file. Please add some data and try again`
