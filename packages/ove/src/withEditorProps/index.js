@@ -261,7 +261,7 @@ export const importSequenceFromFile =
     }
     async function finishDisplayingSeq(seqData) {
       if (onImport) {
-        seqData = await onImport(seqData);
+        seqData = await onImport(seqData, file, props);
       }
 
       if (seqData) {
