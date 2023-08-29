@@ -14,7 +14,7 @@ const justSrc = [
 ];
 
 const dependencyKeys = Object.keys(packageJson.dependencies).filter(
-  (item) => item !== "node-interval-tree"
+  item => item !== "node-interval-tree"
 );
 
 export default defineConfig({

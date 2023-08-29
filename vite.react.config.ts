@@ -27,7 +27,7 @@ const sourceJSPattern = [
 const rollupPlugin = (matchers: RegExp[]) => ({
   name: "js-in-jsx",
   load(id: string) {
-    if (matchers.some((matcher) => matcher.test(id))) {
+    if (matchers.some(matcher => matcher.test(id))) {
       const file = fs.readFileSync(id, { encoding: "utf-8" });
       return esbuild.transformSync(file, { loader: "jsx" }).code;
     }

@@ -40,7 +40,7 @@ export default function validateSequence(sequence, options = {}) {
     "isSingleStrandedDNA",
     "isDoubleStrandedRNA",
     "isProtein"
-  ].forEach((k) => {
+  ].forEach(k => {
     if (options[k] !== undefined && sequence[k] === undefined) {
       sequence[k] = options[k];
     }
@@ -110,7 +110,7 @@ export default function validateSequence(sequence, options = {}) {
     //todo: this logic won't catch every case of RNA, so we should probably handle RNA conversion at another level..
     const temp = sequence.sequence;
     if (!sequence.isOligo) {
-      sequence.sequence = sequence.sequence.replace(/u/gi, (u) =>
+      sequence.sequence = sequence.sequence.replace(/u/gi, u =>
         u === "U" ? "T" : "t"
       );
     }
@@ -299,16 +299,16 @@ export default function validateSequence(sequence, options = {}) {
     }
     if (
       feature.notes.pragma &&
-      some(feature.notes.pragma, (p) => p === "overlapsSelf")
+      some(feature.notes.pragma, p => p === "overlapsSelf")
     ) {
       feature.overlapsSelf = true;
       feature.notes.pragma = filter(
         feature.notes.pragma,
-        (p) => p !== "overlapsSelf"
+        p => p !== "overlapsSelf"
       );
     }
     feature.notes.note &&
-      some(feature.notes.note, (n) => {
+      some(feature.notes.note, n => {
         if (
           n &&
           typeof n === "string" &&
@@ -317,7 +317,7 @@ export default function validateSequence(sequence, options = {}) {
           //remove it after we're parsed it out
           feature.notes.note = filter(
             feature.notes.note,
-            (p) => p && !p.toLowerCase().includes("sequence:")
+            p => p && !p.toLowerCase().includes("sequence:")
           );
           if (feature.notes.note.length === 0) {
             delete feature.notes.note;
@@ -333,7 +333,7 @@ export default function validateSequence(sequence, options = {}) {
       });
 
     feature.notes.primerBindsOn &&
-      some(feature.notes.primerBindsOn, (n) => {
+      some(feature.notes.primerBindsOn, n => {
         if (n) {
           feature.primerBindsOn = n;
           delete feature.notes.primerBindsOn;
@@ -344,7 +344,7 @@ export default function validateSequence(sequence, options = {}) {
       if (
         options[`accept${upperFirst(type)}`] !== false && //acceptParts, acceptWarnings,
         feature.notes.pragma &&
-        some(feature.notes.pragma, (p) => p === pragma)
+        some(feature.notes.pragma, p => p === pragma)
       ) {
         if (!sequence[type]) {
           sequence[type] = []; //initialize an empty array if necessary
@@ -356,7 +356,7 @@ export default function validateSequence(sequence, options = {}) {
       }
     }
     forEach(feature.notes, (noteArray, key) => {
-      feature.notes[key] = map(noteArray, (note) => {
+      feature.notes[key] = map(noteArray, note => {
         return unmangleUrls(note);
       });
     });

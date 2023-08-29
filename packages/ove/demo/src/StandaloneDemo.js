@@ -13,7 +13,7 @@ import { noop } from "lodash";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
-connect(noop, (dispatch) => {
+connect(noop, dispatch => {
   dispatch();
 });
 
@@ -64,7 +64,7 @@ export default class StandaloneDemo extends React.Component {
             //or
             // return myPromiseBasedApiCall()
           },
-          onDelete: (data) => {
+          onDelete: data => {
             console.warn("would delete", data);
           },
           onCopy: function (event, copiedSequenceData /* , editorState */) {
@@ -94,7 +94,7 @@ export default class StandaloneDemo extends React.Component {
             };
             return sequenceData;
           },
-          getSequenceAtVersion: (versionId) => {
+          getSequenceAtVersion: versionId => {
             if (versionId === 2) {
               return {
                 sequence: "thomaswashere"
@@ -495,7 +495,7 @@ export default class StandaloneDemo extends React.Component {
           zIndex: 1050,
           flexGrow: 1
         }}
-        ref={(node) => {
+        ref={node => {
           this.node = node;
         }}
       />

@@ -54,18 +54,18 @@ const getUpperOrLowerSeq = defaultMemoize(
       : sequence
 );
 
-const getTypesToOmit = (annotationsToSupport) => {
+const getTypesToOmit = annotationsToSupport => {
   const typesToOmit = {};
-  allTypes.forEach((type) => {
+  allTypes.forEach(type => {
     if (!annotationsToSupport[type]) typesToOmit[type] = false;
   });
   return typesToOmit;
 };
 
 const getVisibilities = createSelector(
-  (ed) => ed.annotationVisibility,
-  (ed) => ed.annotationLabelVisibility,
-  (ed) => ed.annotationsToSupport,
+  ed => ed.annotationVisibility,
+  ed => ed.annotationLabelVisibility,
+  ed => ed.annotationsToSupport,
   (annotationVisibility, annotationLabelVisibility, annotationsToSupport) => {
     const typesToOmit = getTypesToOmit(annotationsToSupport);
     const annotationVisibilityToUse = {
@@ -85,7 +85,7 @@ const getVisibilities = createSelector(
 );
 
 async function getSaveDialogEl() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     showDialog({
       dialogType: "PrintDialog",
       props: {
@@ -113,17 +113,17 @@ async function getSaveDialogEl() {
  *
  * @return {object} - Blob (png) | Error
  */
-const generatePngFromPrintDialog = async (props) => {
+const generatePngFromPrintDialog = async props => {
   const saveDialog = await getSaveDialogEl(props);
 
   const printArea = saveDialog.querySelector(".bp3-dialog-body");
 
   const result = await domtoimage
     .toBlob(printArea)
-    .then((blob) => {
+    .then(blob => {
       return blob;
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       return error;
     });
@@ -132,7 +132,7 @@ const generatePngFromPrintDialog = async (props) => {
 };
 
 export const handleSave =
-  (props) =>
+  props =>
   async (opts = {}) => {
     const {
       onSave,
@@ -170,7 +170,7 @@ export const handleSave =
     }
   };
 
-export const handleInverse = (props) => () => {
+export const handleInverse = props => () => {
   const {
     sequenceLength,
     selectionLayer,
@@ -208,7 +208,7 @@ export const handleInverse = (props) => () => {
   }
 };
 
-export const updateCircular = (props) => async (isCircular) => {
+export const updateCircular = props => async isCircular => {
   const { _updateCircular, updateSequenceData, sequenceData } = props;
   if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
     const doAction = await showConfirmationDialog({
@@ -226,7 +226,7 @@ export const updateCircular = (props) => async (isCircular) => {
 };
 
 export const importSequenceFromFile =
-  (props) =>
+  props =>
   async (file, opts = {}) => {
     const { onImport } = props;
     const result = await anyToJson(file, { acceptParts: true, ...opts });
@@ -234,7 +234,7 @@ export const importSequenceFromFile =
     const failed = !result[0].success;
     const messages = result[0].messages;
     if (isArray(messages)) {
-      messages.forEach((msg) => {
+      messages.forEach(msg => {
         const type = msg.substr(0, 20).toLowerCase().includes("error")
           ? failed
             ? "error"
@@ -281,7 +281,7 @@ export const importSequenceFromFile =
     }
   };
 
-export const exportSequenceToFile = (props) => (format) => {
+export const exportSequenceToFile = props => format => {
   const { sequenceData } = props;
   let convert, fileExt;
 
@@ -320,7 +320,7 @@ export default compose(
       if (mapProps.annotationToAdd) {
         toSpread.original_selectionLayerUpdate =
           dispatchProps.selectionLayerUpdate;
-        toSpread.selectionLayerUpdate = (sel) => {
+        toSpread.selectionLayerUpdate = sel => {
           dispatchProps.dispatch({
             type: "@@redux-form/CHANGE",
             meta: {
@@ -348,7 +348,7 @@ export default compose(
     }
   ),
   withHandlers({
-    wrappedInsertSequenceDataAtPositionOrRange: (props) => {
+    wrappedInsertSequenceDataAtPositionOrRange: props => {
       return (
         _sequenceDataToInsert,
         _existingSequenceData,
@@ -380,13 +380,13 @@ export default compose(
       };
     },
 
-    upsertTranslation: (props) => {
-      return async (translationToUpsert) => {
+    upsertTranslation: props => {
+      return async translationToUpsert => {
         if (!translationToUpsert) return;
         const { _upsertTranslation, sequenceData } = props;
         if (
           !translationToUpsert.id &&
-          some(sequenceData.translations || [], (existingTranslation) => {
+          some(sequenceData.translations || [], existingTranslation => {
             if (
               //check if an identical existingTranslation exists already
               existingTranslation.translationType === "User Created" &&
@@ -416,7 +416,7 @@ export default compose(
     exportSequenceToFile,
     updateCircular,
     //add additional "computed handlers here"
-    selectAll: (props) => () => {
+    selectAll: props => () => {
       const { sequenceLength, selectionLayerUpdate } = props;
       sequenceLength > 0 &&
         selectionLayerUpdate({
@@ -426,7 +426,7 @@ export default compose(
     },
     //handleNewPrimer handleNewFeature handleNewPart
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
-      acc[`handleNew${key}`] = (props) => () => {
+      acc[`handleNew${key}`] = props => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
 
         if (readOnly) {
@@ -460,7 +460,7 @@ export default compose(
       return acc;
     }, {}),
 
-    handleRotateToCaretPosition: (props) => () => {
+    handleRotateToCaretPosition: props => () => {
       const {
         caretPosition,
         readOnly,
@@ -478,7 +478,7 @@ export default compose(
       caretPositionUpdate(0);
     },
 
-    handleReverseComplementSelection: (props) => () => {
+    handleReverseComplementSelection: props => () => {
       const {
         sequenceData,
         updateSequenceData,
@@ -505,7 +505,7 @@ export default compose(
       updateSequenceData(newSeqData);
     },
 
-    handleComplementSelection: (props) => () => {
+    handleComplementSelection: props => () => {
       const {
         sequenceData,
         updateSequenceData,
@@ -529,7 +529,7 @@ export default compose(
       updateSequenceData(newSeqData);
     },
 
-    handleReverseComplementSequence: (props) => () => {
+    handleReverseComplementSequence: props => () => {
       const { sequenceData, updateSequenceData } = props;
       updateSequenceData(
         getReverseComplementSequenceAndAnnotations(sequenceData)
@@ -537,7 +537,7 @@ export default compose(
       window.toastr.success("Reverse Complemented Sequence Successfully");
     },
 
-    handleComplementSequence: (props) => () => {
+    handleComplementSequence: props => () => {
       const { sequenceData, updateSequenceData } = props;
       updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
       window.toastr.success("Complemented Sequence Successfully");
@@ -547,7 +547,7 @@ export default compose(
 );
 
 const getEditorState = createSelector(
-  (state) => state.VectorEditor,
+  state => state.VectorEditor,
   (state, editorName) => editorName,
   (VectorEditor, editorName) => {
     return VectorEditor[editorName];
@@ -673,7 +673,7 @@ export function mapDispatchToActions(dispatch, ownProps) {
   return {
     ...actionsToPass,
     selectionLayerUpdate: ownProps.onSelectionOrCaretChanged
-      ? (selectionLayer) => {
+      ? selectionLayer => {
           ownProps.onSelectionOrCaretChanged({
             selectionLayer,
             caretPosition: -1
@@ -682,7 +682,7 @@ export function mapDispatchToActions(dispatch, ownProps) {
         }
       : updateSel,
     caretPositionUpdate: ownProps.onSelectionOrCaretChanged
-      ? (caretPosition) => {
+      ? caretPosition => {
           ownProps.onSelectionOrCaretChanged({
             caretPosition,
             selectionLayer: { start: -1, end: -1 }
@@ -766,7 +766,7 @@ function truncateOriginSpanningAnnotations(seqData) {
 }
 
 function truncateOriginSpanners(annotations, sequenceLength) {
-  return map(annotations, (annotation) => {
+  return map(annotations, annotation => {
     const { start = 0, end = 0 } = annotation;
     if (start > end) {
       return {
@@ -798,7 +798,7 @@ function doAnySpanOrigin(annotations) {
   });
 }
 
-export const connectToEditor = (fn) => {
+export const connectToEditor = fn => {
   return connect(
     (state, ownProps, ...rest) => {
       const editor = state.VectorEditor[ownProps.editorName] || {};
@@ -824,7 +824,7 @@ export const connectToEditor = (fn) => {
 //so they can still render things like translations, ..etc
 
 //Currently only supporting translations
-export const withEditorPropsNoRedux = withProps((props) => {
+export const withEditorPropsNoRedux = withProps(props => {
   const {
     sequenceData,
     sequenceDataWithRefSeqCdsFeatures,
@@ -877,7 +877,7 @@ function jsonToJson(incomingJson) {
 }
 
 const getSearchLayersAndMatch = createSelector(
-  (ed) => ed.findTool,
+  ed => ed.findTool,
   s.searchLayersSelector,
   (findTool, _searchLayers) => {
     let searchLayers;
@@ -909,7 +909,7 @@ const getSearchLayersAndMatch = createSelector(
 );
 const getSequenceDataToUse = createSelector(
   (a, b, __allEditorsOptions) => __allEditorsOptions.uppercaseSequenceMapFont,
-  (ed) => ed.sequenceData,
+  ed => ed.sequenceData,
   (ed, cutsites) => cutsites,
   s.translationsSelector,
   s.filteredFeaturesSelector,
@@ -943,7 +943,7 @@ const getSequenceDataToUse = createSelector(
 );
 
 const getFindTool = createSelector(
-  (f) => f,
+  f => f,
   (f, m) => m,
   (findTool, matchesTotal) => {
     return {

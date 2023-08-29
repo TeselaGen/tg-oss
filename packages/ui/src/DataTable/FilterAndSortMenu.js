@@ -47,9 +47,9 @@ const filterTypesDictionary = {
   regex: "text"
 };
 
-const isInvalidFilterValue = (value) => {
+const isInvalidFilterValue = value => {
   if (Array.isArray(value) && value.length) {
-    return value.some((item) => isInvalidFilterValue(item));
+    return value.some(item => isInvalidFilterValue(item));
   }
   return value === "" || value === undefined || value.length === 0;
 };
@@ -64,7 +64,7 @@ export default class FilterAndSortMenu extends React.Component {
       ...this.props.currentFilter
     };
   }
-  handleFilterChange = (selectedFilter) => {
+  handleFilterChange = selectedFilter => {
     const { filterValue } = this.state;
     if (
       filterValue &&
@@ -84,7 +84,7 @@ export default class FilterAndSortMenu extends React.Component {
     }
     this.setState({ selectedFilter: camelCase(selectedFilter) });
   };
-  handleFilterValueChange = (filterValue) => {
+  handleFilterValueChange = filterValue => {
     this.setState({ filterValue });
   };
   handleFilterSubmit = () => {
@@ -108,7 +108,7 @@ export default class FilterAndSortMenu extends React.Component {
       if (dataType === "number") {
         filterValToUse =
           filterValue &&
-          filterValue.map((val) => parseFloat(val.replaceAll(",", "")));
+          filterValue.map(val => parseFloat(val.replaceAll(",", "")));
       }
     }
 
@@ -244,15 +244,15 @@ class FilterInput extends React.Component {
               noResults={null}
               multi={true}
               creatable={true}
-              value={(filterValue || []).map((val) => ({
+              value={(filterValue || []).map(val => ({
                 label: val,
                 value: val
               }))}
-              onChange={(selectedOptions) => {
-                selectedOptions.some((opt) => opt.value === "")
+              onChange={selectedOptions => {
+                selectedOptions.some(opt => opt.value === "")
                   ? handleFilterSubmit()
                   : handleFilterValueChange(
-                      selectedOptions.map((opt) => opt.value)
+                      selectedOptions.map(opt => opt.value)
                     );
               }}
               options={[]}
@@ -310,7 +310,7 @@ class FilterInput extends React.Component {
               value={filterValue ? dayjs(filterValue).toDate() : undefined}
               {...getDayjsFormatter("L")}
               {...dateMinMaxHelpers}
-              onChange={(selectedDates) => {
+              onChange={selectedDates => {
                 handleFilterValueChange(selectedDates);
               }}
             />
@@ -341,13 +341,13 @@ class FilterInput extends React.Component {
                 captureDismiss: true
               }}
               {...{
-                formatDate: (date) =>
+                formatDate: date =>
                   date == null ? "" : date.toLocaleDateString(),
-                parseDate: (str) => new Date(Date.parse(str)),
+                parseDate: str => new Date(Date.parse(str)),
                 placeholder: "JS Date"
               }}
               {...dateMinMaxHelpers}
-              onChange={(selectedDates) => {
+              onChange={selectedDates => {
                 if (selectedDates[0] && selectedDates[1]) {
                   handleFilterValueChange(selectedDates);
                 }

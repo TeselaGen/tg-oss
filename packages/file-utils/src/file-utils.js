@@ -14,28 +14,28 @@ const logDebug = (...args) => {
 
 export const allowedCsvFileTypes = [".csv", ".txt", ".xlsx"];
 
-export const isZipFile = (file) => {
+export const isZipFile = file => {
   if (getExt(file) === "zip") return true;
   if (getExt(file) === "geneious") return false;
   const type = file.mimetype || file.type;
   return type === "application/zip" || type === "application/x-zip-compressed";
 };
 
-export const getExt = (file) => file?.name?.split(".").pop();
-export const isExcelFile = (file) => getExt(file) === "xlsx";
-export const isCsvFile = (file) => getExt(file) === "csv";
-export const isTextFile = (file) => ["text", "txt"].includes(getExt(file));
+export const getExt = file => file?.name?.split(".").pop();
+export const isExcelFile = file => getExt(file) === "xlsx";
+export const isCsvFile = file => getExt(file) === "csv";
+export const isTextFile = file => ["text", "txt"].includes(getExt(file));
 
-export const isCsvOrExcelFile = (file) => isCsvFile(file) || isExcelFile(file);
+export const isCsvOrExcelFile = file => isCsvFile(file) || isExcelFile(file);
 
-export const extractZipFiles = async (allFiles) => {
+export const extractZipFiles = async allFiles => {
   if (!Array.isArray(allFiles)) allFiles = [allFiles];
   // make a copy so we don't mutate the form value
   allFiles = [...allFiles];
   const zipFiles = remove(allFiles, isZipFile);
   if (!zipFiles.length) return allFiles;
   const zipFilesArray = Array.isArray(zipFiles) ? zipFiles : [zipFiles];
-  const parsedZips = await Promise.map(zipFilesArray, (file) =>
+  const parsedZips = await Promise.map(zipFilesArray, file =>
     loadAsync(
       file instanceof
         (typeof Blob !== "undefined" ? Blob : require("buffer").Blob)
@@ -43,10 +43,10 @@ export const extractZipFiles = async (allFiles) => {
         : file.originFileObj
     )
   );
-  const zippedFiles = flatMap(parsedZips, (zip) =>
-    Object.keys(zip.files).map((key) => zip.files[key])
+  const zippedFiles = flatMap(parsedZips, zip =>
+    Object.keys(zip.files).map(key => zip.files[key])
   );
-  const unzippedFiles = await Promise.map(zippedFiles, (file) => {
+  const unzippedFiles = await Promise.map(zippedFiles, file => {
     // converts the compressed file to a string of its contents
     return file.async("blob").then(function (fileData) {
       const newFileObj = new File([fileData], file.name);
@@ -86,7 +86,7 @@ export const setupCsvParserOptions = (parserOptions = {}) => {
   const papaParseOpts = { ...rest };
   if (camelCaseHeaders) {
     logDebug("[CSV-PARSER] camelCasing headers");
-    papaParseOpts.transformHeader = (header) => {
+    papaParseOpts.transformHeader = header => {
       let transHeader = header;
       if (!startsWith(header.trim(), "ext-")) {
         transHeader = camelCase(header);
@@ -104,7 +104,7 @@ export const setupCsvParserOptions = (parserOptions = {}) => {
       return transHeader;
     };
   } else if (lowerCaseHeaders) {
-    papaParseOpts.transformHeader = (header) => {
+    papaParseOpts.transformHeader = header => {
       let transHeader = header;
       if (!startsWith(header, "ext-")) {
         transHeader = header.toLowerCase();
@@ -126,8 +126,7 @@ export const setupCsvParserOptions = (parserOptions = {}) => {
   return papaParseOpts;
 };
 
-const normalizeCsvHeaderHelper = (h) =>
-  snakeCase(h.toUpperCase()).toUpperCase();
+const normalizeCsvHeaderHelper = h => snakeCase(h.toUpperCase()).toUpperCase();
 
 export function normalizeCsvHeader(header) {
   if (header.startsWith("ext-") || header.startsWith("EXT-")) {
@@ -141,7 +140,7 @@ export const parseCsvFile = (csvFile, parserOptions = {}) => {
     const opts = {
       ...defaultCsvParserOptions,
       ...setupCsvParserOptions(parserOptions),
-      complete: (results) => {
+      complete: results => {
         if (
           results &&
           results.data?.length &&
@@ -155,7 +154,7 @@ export const parseCsvFile = (csvFile, parserOptions = {}) => {
         }
         return resolve(results);
       },
-      error: (error) => {
+      error: error => {
         reject(error);
       }
     };
@@ -233,7 +232,7 @@ export const validateCSVRequiredHeaders = (
   requiredHeaders,
   filename
 ) => {
-  const missingRequiredHeaders = requiredHeaders.filter((field) => {
+  const missingRequiredHeaders = requiredHeaders.filter(field => {
     return !fields.includes(field);
   });
   if (missingRequiredHeaders.length) {
@@ -245,7 +244,7 @@ export const validateCSVRequiredHeaders = (
 };
 
 export const validateCSVRow = (row, requiredHeaders, index) => {
-  const missingRequiredFields = requiredHeaders.filter((field) => !row[field]);
+  const missingRequiredFields = requiredHeaders.filter(field => !row[field]);
   if (missingRequiredFields.length) {
     if (missingRequiredFields.length === 1) {
       return `Row ${index + 1} is missing the required field "${
@@ -259,11 +258,11 @@ export const validateCSVRow = (row, requiredHeaders, index) => {
   }
 };
 
-export const cleanCommaSeparatedCell = (cellData) =>
+export const cleanCommaSeparatedCell = cellData =>
   (cellData || "")
     .split(",")
-    .map((n) => n.trim())
-    .filter((n) => n);
+    .map(n => n.trim())
+    .filter(n => n);
 
 /**
  * Because the csv rows might not have the same header keys in some cases (extended properties)
@@ -271,17 +270,17 @@ export const cleanCommaSeparatedCell = (cellData) =>
  * does not drop fields
  * @param {*} rows
  */
-export const cleanCsvExport = (rows) => {
+export const cleanCsvExport = rows => {
   const allHeaders = [];
-  rows.forEach((row) => {
-    Object.keys(row).forEach((header) => {
+  rows.forEach(row => {
+    Object.keys(row).forEach(header => {
       if (!allHeaders.includes(header)) {
         allHeaders.push(header);
       }
     });
   });
-  rows.forEach((row) => {
-    allHeaders.forEach((header) => {
+  rows.forEach(row => {
+    allHeaders.forEach(header => {
       row[header] = row[header] || "";
     });
   });
@@ -292,7 +291,7 @@ export const filterFilesInZip = async (file, accepted) => {
   const zipExtracted = await extractZipFiles(file);
   const acceptedFiles = [];
   for (const extFile of zipExtracted) {
-    if (accepted.some((ext) => ext?.replace(".", "") === getExt(extFile))) {
+    if (accepted.some(ext => ext?.replace(".", "") === getExt(extFile))) {
       acceptedFiles.push(extFile);
     }
   }
@@ -322,7 +321,7 @@ export async function uploadAndProcessFiles(files = []) {
 
   const response = await window.api.post("/user_uploads/", formData);
 
-  return response.data.map((d) => ({
+  return response.data.map(d => ({
     encoding: d.encoding,
     mimetype: d.mimetype,
     originalname: d.originalname,
@@ -345,8 +344,8 @@ export async function encodeFilesForRequest(files) {
   return encodedFiles;
 }
 
-const fileToBase64 = (file) => {
-  return new Promise((resolve) => {
+const fileToBase64 = file => {
+  return new Promise(resolve => {
     const reader = new FileReader();
     // Read file content on file loaded event
     reader.onload = function (event) {

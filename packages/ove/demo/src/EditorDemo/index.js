@@ -108,7 +108,7 @@ export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
     setupOptions({ that: this, defaultState, props });
-    window.ove_updateEditor = (vals) => {
+    window.ove_updateEditor = vals => {
       updateEditor(store, "DemoEditor", vals);
     };
     window.ove_getEditorState = () => {
@@ -123,12 +123,12 @@ export default class EditorDemo extends React.Component {
     setParamsIfNecessary({ that: this, defaultState });
   }
 
-  changeFullscreenMode = (e) =>
+  changeFullscreenMode = e =>
     this.setState({
       isFullscreen: e.target.checked
     });
 
-  changeReadOnly = (e) =>
+  changeReadOnly = e =>
     this.setState({
       readOnly: e.target.checked
     });
@@ -217,10 +217,10 @@ export default class EditorDemo extends React.Component {
   menuOverrideExample = {
     menuFilter:
       // Menu customization example
-      (menuDef) => {
+      menuDef => {
         menuDef.push({ text: "Custom", submenu: ["copy"] });
         menuDef[0].submenu
-          .find((i) => i.text && i.text.includes("Export"))
+          .find(i => i.text && i.text.includes("Export"))
           .submenu.push({
             text: "Custom export option!",
             onClick: () => window.toastr.success("Custom export hit!")
@@ -275,7 +275,7 @@ export default class EditorDemo extends React.Component {
   };
   extraAnnotationPropsExample = {
     extraAnnotationProps: {
-      part: (annotation) => {
+      part: annotation => {
         return {
           customName: `${annotation.name} (digest)`,
           fivePrimeOverhang: "tgca",
@@ -431,7 +431,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
         that: this,
         type: "onPaste"
       })
-    ].filter((i) => i);
+    ].filter(i => i);
     return (
       <React.Fragment>
         {/* <AutoAnnotateModal editorName={"DemoEditor"}></AutoAnnotateModal> */}
@@ -499,7 +499,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                   leftIcon="filter"
                   placeholder="Search Options.."
                   value={this.state.searchInput || ""}
-                  onChange={(e) => {
+                  onChange={e => {
                     this.setState({ searchInput: e.target.value });
                   }}
                 />
@@ -591,7 +591,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
 
                 `,
-                hook: (val) => {
+                hook: val => {
                   if (val === "Protein") {
                     updateEditor(store, "DemoEditor", {
                       readOnly: false,
@@ -661,7 +661,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
                 ],
                 hidden:
                   this.state.moleculeType !== "DNA" && this.state.moleculeType,
-                hook: (val) => {
+                hook: val => {
                   if (!val) return;
                   updateEditor(store, "DemoEditor", {
                     sequenceDataHistory: {},
@@ -713,7 +713,7 @@ ToolBarProps: {
                 that: this,
                 label: "Focus Properties",
                 type: "focusProperties",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       propertiesTool: {
@@ -758,7 +758,7 @@ ToolBarProps: {
                 that: this,
                 label: "Focus Digest Tool",
                 type: "focusDigestTool",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       panelsShown: [
@@ -798,7 +798,7 @@ ToolBarProps: {
                 that: this,
                 label: "Focus PCR Tool",
                 type: "focusPCRTool",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       panelsShown: [
@@ -839,7 +839,7 @@ ToolBarProps: {
                 that: this,
                 label: "Customize tabs",
                 type: "customizeTabs",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       panelsShown: [
@@ -1137,7 +1137,7 @@ updateEditor(store, "DemoEditor", {
                 `,
                 type: "setDefaultVisibilities",
                 label: "Set Default Visibilities",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       annotationVisibility: {
@@ -1184,7 +1184,7 @@ sequenceData: {
 }
 \`\`\`
 `,
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   updateEditor(store, "DemoEditor", {
                     justPassingPartialSeqData: true,
                     sequenceData: {
@@ -1219,7 +1219,7 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "allowPartOverhangs",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       justPassingPartialSeqData: true,
@@ -1257,7 +1257,7 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "extraAnnotationPropsExample",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       justPassingPartialSeqData: true,
@@ -1306,7 +1306,7 @@ sequenceData: {
 \`\`\`
 `,
 
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       justPassingPartialSeqData: true,
@@ -1370,7 +1370,7 @@ sequenceData: {
 \`\`\`
 `,
 
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   updateEditor(store, "DemoEditor", {
                     justPassingPartialSeqData: true,
                     sequenceData: {
@@ -1416,7 +1416,7 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "longSequenceName",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       justPassingPartialSeqData: true,
@@ -1470,7 +1470,7 @@ additionalEnzymes: {
               {renderToggle({
                 that: this,
                 type: "allowPartsToOverlapSelf",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       justPassingPartialSeqData: true,
@@ -1505,7 +1505,7 @@ additionalEnzymes: {
               {renderToggle({
                 that: this,
                 type: "chromatogramExample",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       annotationVisibility: {
@@ -1567,7 +1567,7 @@ additionalEnzymes: {
               {renderToggle({
                 that: this,
                 type: "readOnly",
-                hook: (readOnly) => {
+                hook: readOnly => {
                   updateEditor(store, "DemoEditor", {
                     readOnly
                   });
@@ -1586,7 +1586,7 @@ updateEditor(store, "DemoEditor", {
                 disabled:
                   this.state.moleculeType === "RNA" ||
                   this.state.moleculeType === "Protein",
-                hook: (linear) => {
+                hook: linear => {
                   if (isNotDna) {
                     return;
                   }
@@ -1630,7 +1630,7 @@ other options are:
                 that: this,
                 type: "focusLinearView",
                 label: "Focus Linear View",
-                hook: (show) => {
+                hook: show => {
                   show && this.setLinearPanelAsActive();
                 }
               })}
@@ -1885,7 +1885,7 @@ clickOverrides: {
               {renderToggle({
                 that: this,
                 type: "allowPrimerBasesToBeEdited",
-                hook: (shouldUpdate) => {
+                hook: shouldUpdate => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       justPassingPartialSeqData: true,
@@ -2158,7 +2158,7 @@ clickOverrides: {
               }
             })}
             {...(this.state.onImport && {
-              onImport: (sequence) => {
+              onImport: sequence => {
                 window.toastr.success(
                   `onImport callback triggered for sequence: ${sequence.name}`
                 );
@@ -2207,7 +2207,7 @@ clickOverrides: {
             {...(this.state.onChangeEditLock && {
               onChangeEditLock: () => {
                 window.toastr.success("onChangeEditLock callback triggered");
-                return new Promise((resolve) => setTimeout(resolve, 1000));
+                return new Promise(resolve => setTimeout(resolve, 1000));
               }
             })}
             {...(this.state.onSaveAs && {
@@ -2232,7 +2232,7 @@ clickOverrides: {
               alwaysAllowSave: true
             })}
             {...(this.state.onRename && {
-              onRename: (newName) =>
+              onRename: newName =>
                 window.toastr.success("onRename callback triggered: " + newName)
             })}
             {...(this.state.onDuplicate && {
@@ -2245,12 +2245,12 @@ clickOverrides: {
               }
             })}
             {...(this.state.onHiddenEnzymeAdd && {
-              onHiddenEnzymeAdd: (e) => {
+              onHiddenEnzymeAdd: e => {
                 window.toastr.success(`onHiddenEnzymeAdd clicked -- ${e.name}`);
               }
             })}
             {...(this.state.withGetAdditionalCreateOpts && {
-              getAdditionalCreateOpts: (props) => {
+              getAdditionalCreateOpts: props => {
                 return [
                   {
                     text: "Additional Create Option",
@@ -2311,7 +2311,7 @@ clickOverrides: {
                     ...["parts", "features", "primers"].reduce((acc, key) => {
                       const annotations = existingSequenceData[key];
                       acc[key] = annotations.filter(
-                        (a) =>
+                        a =>
                           !isRangeOrPositionWithinRange(
                             caretPositionOrRange,
                             a,
@@ -2396,7 +2396,7 @@ clickOverrides: {
             {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}
             {...(bpLimit && { bpLimit: 8000 })}
             {...(withVersionHistory && {
-              getSequenceAtVersion: (versionId) => {
+              getSequenceAtVersion: versionId => {
                 if (versionId === 2) {
                   return {
                     sequence: "thomaswashere"
@@ -2482,7 +2482,7 @@ function exampleConversion(seq) {
 }
 
 function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function SlowComp({ annotationTypePlural }) {

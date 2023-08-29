@@ -132,12 +132,12 @@ async function anyToJson(fileContentStringOrFileObj, options) {
 
     //try to guess the file type based on the first non-whitespace char in the filestring
     if (firstChar === ">") {
-      parsersToTry = parsersToTry.sort((a) => {
+      parsersToTry = parsersToTry.sort(a => {
         if (a.name === "Fasta Parser") return -1;
         return 1;
       });
     } else if (firstChar === "L") {
-      parsersToTry = parsersToTry.sort((a) => {
+      parsersToTry = parsersToTry.sort(a => {
         if (a.name === "Genbank Parser") return -1;
         return 1;
       });
@@ -188,10 +188,10 @@ function getUtf8StringFromFile(file, { emulateBrowser } = {}) {
   const reader = new window.FileReader();
   reader.readAsText(file, "UTF-8");
   return new Promise((resolve, reject) => {
-    reader.onload = (evt) => {
+    reader.onload = evt => {
       resolve(evt.target.result);
     };
-    reader.onerror = (err) => {
+    reader.onerror = err => {
       console.error("err:", err);
       reject(err);
     };
@@ -212,12 +212,12 @@ function getUint8ArrayFromFile(file, { emulateBrowser } = {}) {
   reader.readAsArrayBuffer(file);
 
   return new Promise((resolve, reject) => {
-    reader.onload = (evt) => {
+    reader.onload = evt => {
       const arrayBuffer = evt.target.result;
       const bytes = new Uint8Array(arrayBuffer);
       resolve(bytes);
     };
-    reader.onerror = (err) => {
+    reader.onerror = err => {
       console.error("err:", err);
       reject(err);
     };

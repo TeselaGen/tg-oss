@@ -218,14 +218,14 @@ class _LinearView extends React.Component {
       <Draggable
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        onDrag={(event) => {
+        onDrag={event => {
           this.getNearestCursorPositionToMouseEvent(
             rowData,
             event,
             this.props.editorDragged || editorDragged
           );
         }}
-        onStart={(event) => {
+        onStart={event => {
           this.getNearestCursorPositionToMouseEvent(
             rowData,
             event,
@@ -235,7 +235,7 @@ class _LinearView extends React.Component {
         onStop={this.props.editorDragStopped || editorDragStopped}
       >
         <div
-          ref={(ref) => (this.linearView = ref)}
+          ref={ref => (this.linearView = ref)}
           className={classNames("veLinearView", className, {
             isLinViewZoomed
           })}
@@ -245,14 +245,14 @@ class _LinearView extends React.Component {
             paddingLeft: marginWidth / 2,
             ...(paddingBottom && { paddingBottom })
           }}
-          onContextMenu={(event) => {
+          onContextMenu={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
               backgroundRightClicked
             );
           }}
-          onClick={(event) => {
+          onClick={event => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
@@ -267,7 +267,7 @@ class _LinearView extends React.Component {
               minCharWidth={minCharWidth}
               smallSlider={smallSlider}
               editorName={editorName}
-              setCharWidth={(v) => {
+              setCharWidth={v => {
                 this.setState({
                   charWidthInLinearView: v === initialCharWidth ? undefined : v
                 });
@@ -354,7 +354,7 @@ class _LinearView extends React.Component {
   }
 }
 
-const WithAnnotationLimitsHoc = (Component) => (props) => {
+const WithAnnotationLimitsHoc = Component => props => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [limits = {}] = useAnnotationLimits();
   return <Component limits={limits} {...props}></Component>;

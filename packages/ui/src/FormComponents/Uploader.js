@@ -64,7 +64,7 @@ const helperSchema = [
   {
     column: undefined,
     type: String,
-    value: (student) => student,
+    value: student => student,
     width: 200
   }
 ];
@@ -85,7 +85,7 @@ class ValidateAgainstSchema {
     }
     const schema = convertSchema(newValidateAgainstSchema);
     if (
-      schema.fields.some((f) => {
+      schema.fields.some(f => {
         if (f.path === "id") {
           return true;
         }
@@ -155,11 +155,11 @@ function UploaderInner({
   const validateAgainstSchemaStore = useRef(new ValidateAgainstSchema());
   const callout =
     _callout ||
-    (isArray(_accept) ? _accept : [_accept]).find?.((a) => a?.callout)?.callout;
+    (isArray(_accept) ? _accept : [_accept]).find?.(a => a?.callout)?.callout;
   const validateAgainstSchemaToUse =
     _validateAgainstSchema ||
     (isArray(_accept) ? _accept : [_accept]).find?.(
-      (a) => a?.validateAgainstSchema
+      a => a?.validateAgainstSchema
     )?.validateAgainstSchema;
 
   useEffect(() => {
@@ -178,11 +178,11 @@ function UploaderInner({
     ? [_accept]
     : isArray(_accept)
     ? _accept
-    : _accept.split(",").map((a) => ({ type: a }));
+    : _accept.split(",").map(a => ({ type: a }));
   if (
     validateAgainstSchemaStore.current &&
     accept &&
-    !accept.some((a) => a.type === "zip")
+    !accept.some(a => a.type === "zip")
   ) {
     accept?.unshift({
       type: "zip",
@@ -201,7 +201,7 @@ function UploaderInner({
     });
 
   function cleanupFiles() {
-    filesToClean.current.forEach((file) => URL.revokeObjectURL(file.preview));
+    filesToClean.current.forEach(file => URL.revokeObjectURL(file.preview));
   }
   useEffect(() => {
     return () => {
@@ -218,15 +218,15 @@ function UploaderInner({
   let advancedAccept;
 
   if (Array.isArray(accept)) {
-    if (accept.some((a) => isPlainObject(a))) {
+    if (accept.some(a => isPlainObject(a))) {
       //advanced accept
       advancedAccept = accept;
-      simpleAccept = flatMap(accept, (a) => {
+      simpleAccept = flatMap(accept, a => {
         if (a.validateAgainstSchema) {
           if (!a.type) {
             a.type = [".csv", ".xlsx"];
           }
-          handleManuallyEnterData = async (e) => {
+          handleManuallyEnterData = async e => {
             e.stopPropagation();
             const { newEntities } = await showSimpleInsertDataDialog(
               "onSimpleInsertDialogFinish",
@@ -283,37 +283,36 @@ function UploaderInner({
 
           const handleDownloadXlsxFile = async () => {
             const dataDictionarySchema = [
-              { value: (f) => f.displayName || f.path, column: `Column Name` },
+              { value: f => f.displayName || f.path, column: `Column Name` },
               // {
               //   value: f => f.isUnique ? "Unique" : "",
               //   column: `Unique?`
               // },
               {
-                value: (f) => (f.isRequired ? "Required" : "Optional"),
+                value: f => (f.isRequired ? "Required" : "Optional"),
                 column: `Required?`
               },
               {
-                value: (f) =>
-                  f.type === "dropdown" ? "text" : f.type || "text",
+                value: f => (f.type === "dropdown" ? "text" : f.type || "text"),
                 column: `Data Type`
               },
               {
-                value: (f) => f.description,
+                value: f => f.description,
                 column: `Notes`
               },
               {
-                value: (f) => f.example || f.defaultValue || "",
+                value: f => f.example || f.defaultValue || "",
                 column: `Example Data`
               }
             ];
 
             const mainExampleData = {};
-            const mainSchema = a.validateAgainstSchema.fields.map((f) => {
+            const mainSchema = a.validateAgainstSchema.fields.map(f => {
               mainExampleData[f.displayName || f.path] =
                 f.example || f.defaultValue;
               return {
                 column: f.displayName || f.path,
-                value: (v) => {
+                value: v => {
                   return v[f.displayName || f.path];
                 }
               };
@@ -339,12 +338,12 @@ function UploaderInner({
               exampleFile: () => {
                 const rows = [];
                 rows.push(
-                  a.validateAgainstSchema.fields.map((f) => {
+                  a.validateAgainstSchema.fields.map(f => {
                     return `${f.displayName || f.path}`;
                   })
                 );
                 rows.push(
-                  a.validateAgainstSchema.fields.map((f) => {
+                  a.validateAgainstSchema.fields.map(f => {
                     return `${f.example || f.defaultValue || ""}`;
                   })
                 );
@@ -411,7 +410,7 @@ function UploaderInner({
         const responses = [];
 
         await Promise.all(
-          acceptedFiles.map((fileToUpload) => {
+          acceptedFiles.map(fileToUpload => {
             const data = new FormData();
             data.append("file", fileToUpload);
 
@@ -420,7 +419,7 @@ function UploaderInner({
               .then(function (res) {
                 responses.push(res.data && res.data[0]);
                 onFileSuccess(res.data[0]).then(() => {
-                  cleanedFileList = cleanedFileList.map((file) => {
+                  cleanedFileList = cleanedFileList.map(file => {
                     const fileToReturn = {
                       ...file,
                       ...res.data[0]
@@ -439,7 +438,7 @@ function UploaderInner({
                   ...fileToUpload,
                   error: err && err.msg ? err.msg : err
                 });
-                cleanedFileList = cleanedFileList.map((file) => {
+                cleanedFileList = cleanedFileList.map(file => {
                   const fileToReturn = { ...file };
                   if (fileToReturn.id === fileToUpload.id) {
                     fileToReturn.loading = false;
@@ -586,7 +585,7 @@ function UploaderInner({
                                 : [a.type]
                               : [a]
                             )
-                              .map((t) => {
+                              .map(t => {
                                 if (!t.startsWith) {
                                   console.error(`Missing type here:`, a);
                                   throw new Error(
@@ -624,13 +623,13 @@ function UploaderInner({
           )}
           <Dropzone
             disabled={disabled}
-            onClick={(evt) => evt.preventDefault()}
+            onClick={evt => evt.preventDefault()}
             multiple={fileLimit !== 1}
             accept={
               simpleAccept
                 ? simpleAccept
                     .split(", ")
-                    .map((a) => (a.startsWith(".") ? a : "." + a))
+                    .map(a => (a.startsWith(".") ? a : "." + a))
                     .join(", ")
                 : undefined
             }
@@ -643,9 +642,9 @@ function UploaderInner({
                       file,
                       simpleAccept
                         ?.split(", ")
-                        ?.map((a) => (a.startsWith(".") ? a : "." + a)) || []
+                        ?.map(a => (a.startsWith(".") ? a : "." + a)) || []
                     );
-                    acceptedFiles.push(...files.map((f) => f.originFileObj));
+                    acceptedFiles.push(...files.map(f => f.originFileObj));
                   } else {
                     acceptedFiles.push(file);
                   }
@@ -653,11 +652,11 @@ function UploaderInner({
                 cleanupFiles();
                 if (rejectedFiles.length) {
                   let msg = "";
-                  rejectedFiles.forEach((file) => {
+                  rejectedFiles.forEach(file => {
                     if (msg) msg += "\n";
                     msg +=
                       `${file.file.name}: ` +
-                      file.errors.map((err) => err.message).join(", ");
+                      file.errors.map(err => err.message).join(", ");
                   });
                   window.toastr &&
                     window.toastr.warning(
@@ -670,7 +669,7 @@ function UploaderInner({
                   acceptedFiles = acceptedFiles.slice(0, fileLimit);
                 }
 
-                acceptedFiles.forEach((file) => {
+                acceptedFiles.forEach(file => {
                   file.preview = URL.createObjectURL(file);
                   file.loading = true;
                   if (!file.id) {
@@ -681,15 +680,15 @@ function UploaderInner({
 
                 if (readBeforeUpload) {
                   acceptedFiles = await Promise.all(
-                    acceptedFiles.map((file) => {
+                    acceptedFiles.map(file => {
                       return new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         reader.readAsText(file, "UTF-8");
-                        reader.onload = (evt) => {
+                        reader.onload = evt => {
                           file.parsedString = evt.target.result;
                           resolve(file);
                         };
-                        reader.onerror = (err) => {
+                        reader.onerror = err => {
                           console.error("err:", err);
                           reject(err);
                         };
@@ -697,7 +696,7 @@ function UploaderInner({
                     })
                   );
                 }
-                const cleanedAccepted = acceptedFiles.map((file) => {
+                const cleanedAccepted = acceptedFiles.map(file => {
                   return {
                     originFileObj: file,
                     originalFileObj: file,
@@ -834,7 +833,7 @@ function UploaderInner({
                   if (filesWIssues.length) {
                     const { file } = filesWIssues[0];
                     const allFiles = [...filesWIssues, ...filesWOIssues];
-                    const doAllFilesHaveSameHeaders = allFiles.every((f) => {
+                    const doAllFilesHaveSameHeaders = allFiles.every(f => {
                       if (f.userSchema.fields && f.userSchema.fields.length) {
                         return f.userSchema.fields.every((h, i) => {
                           return (
@@ -1192,7 +1191,7 @@ function getNewCsvFile(ents, fileName) {
 }
 
 function stripId(ents = []) {
-  return ents.map((ent) => {
+  return ents.map(ent => {
     const { id, ...rest } = ent;
     return rest;
   });

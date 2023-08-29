@@ -178,7 +178,7 @@ const Demo = () => {
                     exitVersionHistoryView={() => {
                       window.alert("exit requested!");
                     }}
-                    getSequenceAtVersion={(versionId) => {
+                    getSequenceAtVersion={versionId => {
                       // in a real version we'd go to server and get a real sequence based on the version id
                       // const seq = await api.getSeqAtVersion()
                       // return seq
@@ -201,7 +201,7 @@ const Demo = () => {
                     }}
                     getVersionList={() => {
                       //fake talking to some api
-                      return new Promise((resolve) => {
+                      return new Promise(resolve => {
                         setTimeout(() => {
                           resolve([
                             {

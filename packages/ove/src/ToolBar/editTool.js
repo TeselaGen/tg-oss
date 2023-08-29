@@ -3,7 +3,7 @@ import { Icon } from "@blueprintjs/core";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 
-export default connectToEditor((editorState) => {
+export default connectToEditor(editorState => {
   return {
     readOnly: editorState.readOnly
   };

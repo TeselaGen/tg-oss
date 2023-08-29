@@ -177,7 +177,7 @@ export default function updateEditor(
       })
     };
   }
-  annotationTypes.forEach((t) => {
+  annotationTypes.forEach(t => {
     if (Object.keys(sequenceData?.[t] || {}).length > 100) {
       set(payload, `annotationLabelVisibility.${t}`, false);
     }

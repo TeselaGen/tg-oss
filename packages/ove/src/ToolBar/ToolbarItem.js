@@ -125,7 +125,7 @@ class ToolbarItem extends React.Component {
     );
     const content = (
       <div
-        ref={(n) => {
+        ref={n => {
           if (n) this.dropdownNode = n;
         }}
         style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
@@ -160,7 +160,7 @@ class ToolbarItem extends React.Component {
         <Popover
           disabled={popoverDisabled}
           isOpen={!!Dropdown && isOpen}
-          onClose={(e) => {
+          onClose={e => {
             let srcElement;
             if (e) {
               srcElement = e.srcElement || e.target;
