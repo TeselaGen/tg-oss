@@ -390,8 +390,10 @@ const editCommandDefs = {
   },
   cut: {
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
-    isHidden: props => props.readOnly,
+      (props.disableBpEditing && bpEditingDisabledTooltip) ||
+      (props.readOnly && readOnlyDisabledTooltip) ||
+      props.sequenceLength === 0,
+    isHidden: props => props.readOnly || props.disableBpEditing,
     handler: () => {
       triggerClipboardCommand("cut");
     },
@@ -420,7 +422,7 @@ const editCommandDefs = {
 
   paste: {
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
-    isHidden: props => props.readOnly,
+    isHidden: props => props.readOnly || props.disableBpEditing,
 
     handler: () => triggerClipboardCommand("paste"),
     hotkey: "mod+v"
@@ -609,7 +611,8 @@ const editCommandDefs = {
   },
 
   complementSelection: {
-    isHidden: props => props.readOnly || isProtein(props),
+    isHidden: props =>
+      props.readOnly || isProtein(props) || props.disableBpEditing,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || noSelection(props),
@@ -617,7 +620,8 @@ const editCommandDefs = {
   },
 
   complementEntireSequence: {
-    isHidden: props => props.readOnly || isProtein(props),
+    isHidden: props =>
+      props.readOnly || isProtein(props) || props.disableBpEditing,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
@@ -784,7 +788,9 @@ const editCommandDefs = {
   // },
   reverseComplementSelection: {
     isDisabled: props =>
-      (props.readOnly && readOnlyDisabledTooltip) || noSelection(props),
+      (props.readOnly && readOnlyDisabledTooltip) ||
+      noSelection(props) ||
+      props.disableBpEditing,
     isHidden: props => props.readOnly || isProtein(props),
 
     handler: props => props.handleReverseComplementSelection(),
@@ -792,7 +798,8 @@ const editCommandDefs = {
   },
 
   reverseComplementEntireSequence: {
-    isHidden: props => props.readOnly || isProtein(props),
+    isHidden: props =>
+      props.readOnly || isProtein(props) || props.disableBpEditing,
 
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) || props.sequenceLength === 0,
@@ -978,7 +985,8 @@ const editCommandDefs = {
   },
 
   rotateToCaretPosition: {
-    isHidden: props => props.readOnly || isProtein(props),
+    isHidden: props =>
+      props.readOnly || isProtein(props) || props.disableBpEditing,
     isDisabled: props =>
       (props.readOnly && readOnlyDisabledTooltip) ||
       (props.caretPosition === -1 && "You must first place cursor") ||
@@ -992,15 +1000,14 @@ const editCommandDefs = {
 
 const cirularityCommandDefs = {
   circular: {
-    isHidden: props => props.readOnly || isProtein(props),
-
+    isHidden: props =>
+      props.readOnly || isProtein(props) || props.disableBpEditing,
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(true),
     isActive: props => props && props.sequenceData.circular
   },
   linear: {
-    isHidden: props => props.readOnly,
-
+    isHidden: props => props.readOnly || props.disableBpEditing,
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     handler: props => props.updateCircular(false),
     isActive: props => props && !props.sequenceData.circular

@@ -559,7 +559,8 @@ function mapStateToProps(state, ownProps) {
     editorName,
     sequenceData: sequenceDataFromProps,
     allowSeqDataOverride,
-    allowMultipleFeatureDirections
+    allowMultipleFeatureDirections,
+    readOnly
   } = ownProps;
   const editorState = getEditorState(state, editorName);
   const meta = { editorName };
@@ -633,6 +634,7 @@ function mapStateToProps(state, ownProps) {
   const f = getFindTool(findTool, matchesTotal);
   return {
     ...editorState,
+    readOnly: readOnly || editorState.readOnly,
     meta,
     annotationToAdd,
     ...(newSelection && { selectionLayer: newSelection }),

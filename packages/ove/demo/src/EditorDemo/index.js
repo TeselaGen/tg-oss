@@ -1257,6 +1257,69 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "addEditLockedPartToExample",
+                hook: shouldUpdate => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
+                      sequenceData: {
+                        parts: [
+                          {
+                            start: 1,
+                            end: 584,
+                            isEditLocked:
+                              "This part is locked because I said so",
+                            name: "Edit Locked Part 1",
+                            id: "2asdfgag"
+                          },
+                          {
+                            start: 1000,
+                            end: 2000,
+                            isEditLocked: false,
+                            name: "Editable Part Weee",
+                            id: "23g2g2"
+                          }
+                        ],
+                        features: [
+                          {
+                            start: 1,
+                            end: 3584,
+                            type: "CDS",
+                            isEditLocked:
+                              "This feature is locked since it is necessary for some specific unsaid reason",
+                            name: "Edit Locked Feature 1",
+                            id: "asdgasdgasdg"
+                          },
+                          {
+                            start: 100,
+                            end: 2500,
+                            isEditLocked: false,
+                            name: "Editable Feature Weee",
+                            id: "g3oi3j"
+                          }
+                        ],
+                        primers: [
+                          {
+                            start: 10,
+                            end: 20,
+                            isEditLocked: true,
+                            name: "Edit Locked Primer 1",
+                            id: "12o3n1"
+                          },
+                          {
+                            start: 33,
+                            end: 44,
+                            isEditLocked: false,
+                            name: "Editable Primer Weee",
+                            id: "2ofnasodf"
+                          }
+                        ]
+                      }
+                    });
+                }
+              })}
+              {renderToggle({
+                that: this,
                 type: "extraAnnotationPropsExample",
                 hook: shouldUpdate => {
                   shouldUpdate &&

@@ -63,6 +63,12 @@ export function showAddOrEditAnnotationDialog({
     overrideName: `AddOrEdit${nameUpper}DialogOverride`,
     dialogType,
     props: {
+      ...(annotation.isEditLocked && {
+        readOnly:
+          typeof annotation.isEditLocked === "string"
+            ? annotation.isEditLocked
+            : "This annotation is locked"
+      }),
       dialogProps: {
         title:
           annotation && annotation.id ? `Edit ${nameUpper}` : `New ${nameUpper}`

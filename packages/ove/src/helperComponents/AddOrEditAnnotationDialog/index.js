@@ -21,7 +21,8 @@ import {
   Classes,
   EditableText,
   FormGroup,
-  Label
+  Label,
+  Callout
 } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
@@ -209,6 +210,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       overlapsSelf,
       start,
       end,
+      readOnly,
       getAdditionalEditAnnotationComps,
       advancedOptions,
       advancedDefaultOpen,
@@ -323,8 +325,13 @@ class AddOrEditAnnotationDialog extends React.Component {
           "tg-upsert-annotation"
         )}
       >
+        {typeof readOnly === "string" ? (
+          <Callout intent="primary" style={{ marginBottom: 10 }}>
+            {readOnly}
+          </Callout>
+        ) : null}
         <InputField
-          disabled={this.props.readOnly}
+          disabled={readOnly}
           inlineLabel
           tooltipError
           autoFocus

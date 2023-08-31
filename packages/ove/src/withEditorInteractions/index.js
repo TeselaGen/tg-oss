@@ -211,9 +211,13 @@ function VectorInteractionHOC(Component /* options */) {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         readOnly,
-        onPaste
+        onPaste,
+        disableBpEditing
       } = this.props;
 
+      if (disableBpEditing) {
+        return window.toastr.warning("Sorry the underlying sequence is locked");
+      }
       if (readOnly) {
         return window.toastr.warning("Sorry the sequence is Read-Only");
       }
@@ -259,6 +263,7 @@ function VectorInteractionHOC(Component /* options */) {
         sequenceData,
         selectionLayer,
         copyOptions,
+        disableBpEditing,
         readOnly
       } = this.props;
       const onCut = this.props.onCut || this.props.onCopy || noop;
@@ -289,7 +294,9 @@ function VectorInteractionHOC(Component /* options */) {
         !seqData.sequence.length
       )
         return window.toastr.warning(
-          `No Sequence Selected To ${isCut && !readOnly ? "Cut" : "Copy"}`
+          `No Sequence Selected To ${
+            isCut && !(readOnly || disableBpEditing) ? "Cut" : "Copy"
+          }`
         );
 
       const clipboardData = e.clipboardData;
@@ -306,7 +313,7 @@ function VectorInteractionHOC(Component /* options */) {
       clipboardData.setData("application/json", JSON.stringify(seqData));
       e.preventDefault();
 
-      if (isCut && !readOnly) {
+      if (isCut && !(readOnly || disableBpEditing) && !disableBpEditing) {
         this.handleDnaDelete(false);
         onCut(
           e,
@@ -319,7 +326,11 @@ function VectorInteractionHOC(Component /* options */) {
         document.body.removeEventListener("copy", this.handleCopy);
       }
       window.toastr.success(
-        `Selection ${isCut && !readOnly ? "Cut" : "Copied"}`
+        `Selection ${
+          isCut && !(readOnly || disableBpEditing) && !disableBpEditing
+            ? "Cut"
+            : "Copied"
+        }`
       );
       this.sequenceDataToCopy = undefined;
     };
@@ -332,14 +343,18 @@ function VectorInteractionHOC(Component /* options */) {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
-        readOnly
+        readOnly,
+        disableBpEditing
         // updateSequenceData,
         // wrappedInsertSequenceDataAtPositionOrRange
         // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       const isReplace = selectionLayer.start > -1;
-      if (readOnly) {
+      if (disableBpEditing) {
+        return window.toastr.warning("Sorry the underlying sequence is locked");
+      }
+      if (readOnly || disableBpEditing) {
         window.toastr.warning("Sorry the sequence is Read-Only");
       } else {
         createSequenceInputPopup({
@@ -369,13 +384,17 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
         readOnly,
+        disableBpEditing,
         updateSequenceData,
         wrappedInsertSequenceDataAtPositionOrRange,
         caretPositionUpdate
         // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
-      if (readOnly) {
+      if (disableBpEditing) {
+        return window.toastr.warning("Sorry the underlying sequence is locked");
+      }
+      if (readOnly || disableBpEditing) {
         return window.toastr.warning("Sorry the sequence is Read-Only");
       }
       if (sequenceLength > 0) {
@@ -538,7 +557,8 @@ function VectorInteractionHOC(Component /* options */) {
 
     // eslint-disable-next-line no-unused-vars
     getCopyOptions = annotation => {
-      const { sequenceData, readOnly, selectionLayer } = this.props;
+      const { sequenceData, readOnly, disableBpEditing, selectionLayer } =
+        this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
@@ -604,7 +624,7 @@ function VectorInteractionHOC(Component /* options */) {
       // TODO: maybe stop using Clipboard.js and unify clipboard handling with
       // a more versatile approach
       return [
-        ...(readOnly
+        ...(readOnly || disableBpEditing
           ? []
           : [
               {
@@ -814,11 +834,12 @@ function VectorInteractionHOC(Component /* options */) {
       ({ nearestCaretPos, shiftHeld, event }) => {
         this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
         const {
-          readOnly
+          readOnly,
+          disableBpEditing
           // sequenceData: { circular }
         } = this.props;
         const menu = [
-          ...(readOnly
+          ...(readOnly || disableBpEditing
             ? []
             : [
                 {
@@ -868,8 +889,7 @@ function VectorInteractionHOC(Component /* options */) {
         overlapsSelf: annotation.overlapsSelf
       });
       return [
-        "editPart",
-        "deletePart",
+        ...getEditDeleteHandlers("Part", annotation),
         "--",
         ...this.getSelectionMenuOptions(annotation),
         "--",
@@ -912,8 +932,7 @@ function VectorInteractionHOC(Component /* options */) {
         event.persist();
         const { readOnly, annotationsToSupport: { parts } = {} } = this.props;
         return [
-          "editFeature",
-          "deleteFeature",
+          ...getEditDeleteHandlers("Feature", annotation),
           ...this.getSelectionMenuOptions(annotation),
           ...(readOnly
             ? []
@@ -987,8 +1006,7 @@ function VectorInteractionHOC(Component /* options */) {
           end: annotation.end
         });
         return [
-          "editPrimer",
-          "deletePrimer",
+          ...getEditDeleteHandlers("Primer", annotation),
           ...this.getSelectionMenuOptions(annotation),
           "showRemoveDuplicatesDialogPrimers",
           "viewPrimerProperties"
@@ -1252,3 +1270,30 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
     end: newSelectionLayerEnd % newSeqData.sequence.length
   });
 };
+
+function getEditDeleteHandlers(type, annotation) {
+  return [
+    ...(annotation.isEditLocked
+      ? [
+          {
+            shouldDismissPopover: false,
+            text: (
+              <div
+                style={{
+                  fontSize: 11,
+                  fontStyle: "italic",
+                  color: "rgba(0,0,0,.5)"
+                }}
+              >
+                {typeof annotation.isEditLocked === "string"
+                  ? annotation.isEditLocked
+                  : `Note: This Annotation is Locked`}
+              </div>
+            )
+          }
+        ]
+      : []),
+    `edit${type}`,
+    ...(annotation.isEditLocked ? [] : [`delete${type}`])
+  ];
+}

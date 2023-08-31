@@ -106,13 +106,25 @@ describe("editor", function () {
     cy.contains(".bp3-dialog button", "Save").should("be.disabled");
   });
   it(`you should not be able to edit bps when disableBpEditing=true`, () => {
-    cy.get(`asdfasdfasdfasdf`).click();
-    // cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`).should("not.exist");
-    // cy.get(`.ve-tool-container-editTool.disabled`).should("not.exist");
-    // cy.tgToggle("disableSetReadOnly");
-    // cy.get(`.ve-tool-container-editTool.disabled`);
-    // cy.get(`.bp3-button:contains(File)`).click();
-    // cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`);
+    cy.tgToggle("disableBpEditing");
+    cy.contains(".veCircularView text", "pj5_00001")
+      .closest(".veVectorInteractionWrapper")
+      .type("t", { passThru: true });
+    cy.focused().type("ttaaa{enter}");
+    cy.contains("Sorry the underlying sequence is locked");
+  });
+  it(`you should not be able to edit certain annotations when they have a .isEditLocked property`, () => {
+    cy.tgToggle("addEditLockedPartToExample");
+    cy.contains(".veCircularView text", "Edit Locked Primer 1").dblclick({
+      force: true
+    });
+    cy.contains("This annotation is locked");
+    cy.contains(".bp3-disabled", "Save");
+    cy.closeDialog();
+    cy.contains(".veCircularView text", "Edit Locked Part").rightclick({
+      force: true
+    });
+    cy.contains("This part is locked because I said so");
   });
   it(`you should not be able to change editability of a sequence when disableSetReadOnly=true`, () => {
     cy.get(`.bp3-button:contains(File)`).click();
