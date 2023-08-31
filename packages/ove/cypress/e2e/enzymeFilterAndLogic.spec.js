@@ -25,7 +25,7 @@ describe("enzymeFilterAndLogic.spec", () => {
 
   it(`AND/OR should not appear when custom groups without enzymes in common are selected`, () => {
     cy.visit("");
-    cy.window().then((win) => {
+    cy.window().then(win => {
       win.localStorage.clear();
     });
     cy.triggerFileCmd("Manage Enzymes");
@@ -63,7 +63,7 @@ describe("enzymeFilterAndLogic.spec", () => {
 
   it(`AND/OR should appear when custom groups that have enzymes in common are selected`, () => {
     cy.visit("");
-    cy.window().then((win) => {
+    cy.window().then(win => {
       win.localStorage.clear();
     });
     cy.triggerFileCmd("Manage Enzymes");
@@ -101,7 +101,7 @@ describe("enzymeFilterAndLogic.spec", () => {
 
   it(`When AND logic is selected only shared enzymes should appear`, () => {
     cy.visit("");
-    cy.window().then((win) => {
+    cy.window().then(win => {
       win.localStorage.clear();
     });
     cy.triggerFileCmd("Manage Enzymes");

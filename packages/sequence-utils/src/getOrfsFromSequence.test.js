@@ -1,6 +1,4 @@
-
-
-import {expect} from "chai";
+import { expect } from "chai";
 
 import getOrfsFromSequence from "./getOrfsFromSequence.js";
 // getOrfsFromSequence(frame, sequence, minimumOrfSize, forward, circular)

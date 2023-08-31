@@ -7,12 +7,12 @@ import { cloneDeep, clamp, noop } from "lodash";
 
 const fontWidthToFontSize = 1.75;
 
-const getTextLength = (text) => {
+const getTextLength = text => {
   let len = (text || "Unlabeled").length;
   // eslint-disable-next-line no-control-regex
   const nonEnInputReg = /[^\x00-\xff]+/g;
   const nonEnStrings = (text || "Unlabeled").match(nonEnInputReg) || [];
-  nonEnStrings.forEach((str) => (len += str.length * 0.5));
+  nonEnStrings.forEach(str => (len += str.length * 0.5));
   return len;
 };
 
@@ -93,8 +93,8 @@ function Labels({
 
   let maxRadius = 1;
   const groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius)
-    .filter((l) => !!l)
-    .map((originalLabel) => {
+    .filter(l => !!l)
+    .map(originalLabel => {
       if (smartCircViewLabelRender) {
         const newR = Math.sqrt(
           Math.pow(
@@ -114,7 +114,7 @@ function Labels({
       }
 
       const _highPrioritySublabel = originalLabel.labelAndSublabels.find(
-        (l) => l.highPriorityLabel
+        l => l.highPriorityLabel
       );
       if (_highPrioritySublabel) {
         const highPrioritySublabel = cloneDeep(_highPrioritySublabel);
@@ -133,7 +133,7 @@ function Labels({
           "truncatedInnerPoint",
           "x",
           "y"
-        ].forEach((k) => {
+        ].forEach(k => {
           highPrioritySublabel[k] = originalLabel[k];
         });
 
@@ -449,7 +449,7 @@ const DrawGroupInnerLabel = withHover(
         textLength={getTextLength(label.text) * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
-        onDoubleClick={(e) => {
+        onDoubleClick={e => {
           e.stopPropagation();
           label.onDoubleClick && label.onDoubleClick(e);
         }}

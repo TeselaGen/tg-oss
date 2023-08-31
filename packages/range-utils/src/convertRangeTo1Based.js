@@ -1,5 +1,9 @@
-import convertRangeIndices from './convertRangeIndices';
+import convertRangeIndices from "./convertRangeIndices";
 
-export default function convertRangeTo1Based (range) {
-  return convertRangeIndices(range, {}, {inclusive1BasedStart: true, inclusive1BasedEnd: true})
-};
+export default function convertRangeTo1Based(range) {
+  return convertRangeIndices(
+    range,
+    {},
+    { inclusive1BasedStart: true, inclusive1BasedEnd: true }
+  );
+}

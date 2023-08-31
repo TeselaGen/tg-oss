@@ -94,9 +94,7 @@ async function matchSchemas({ userSchema, officialSchema }) {
       const displayNameMatch =
         h.displayName &&
         uh.path.toLowerCase().replace(/ /g, "") ===
-          getTextFromEl(h.displayName)
-            .toLowerCase()
-            .replace(/ /g, "");
+          getTextFromEl(h.displayName).toLowerCase().replace(/ /g, "");
       const hasAlternatePathMatch =
         h.alternatePathMatch &&
         (isArray(h.alternatePathMatch)
@@ -158,8 +156,9 @@ async function matchSchemas({ userSchema, officialSchema }) {
             : undefined
         });
         if (error) {
-          hasErr = `${columnSchema.displayName ||
-            startCase(camelCase(columnSchema.path))}: ${error}`;
+          hasErr = `${
+            columnSchema.displayName || startCase(camelCase(columnSchema.path))
+          }: ${error}`;
           return true;
         }
 

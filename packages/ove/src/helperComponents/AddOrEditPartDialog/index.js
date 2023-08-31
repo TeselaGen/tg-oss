@@ -15,7 +15,7 @@ const renderTypes = ({ readOnly }) => (
     tooltipError
     disabled={readOnly}
     defaultValue="misc_feature"
-    options={getFeatureTypes().map((type) => {
+    options={getFeatureTypes().map(type => {
       return {
         label: type,
         // label: (
@@ -82,7 +82,7 @@ export default AddOrEditAnnotationDialog({
   dialogProps: {
     width: 450
   },
-  getProps: (props) => ({
+  getProps: props => ({
     upsertAnnotation: props.upsertPart,
     advancedDefaultOpen: get(props, "initialValues.overlapsSelf"),
     advancedOptions: props.allowPartsToOverlapSelf

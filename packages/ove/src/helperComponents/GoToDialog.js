@@ -17,5 +17,9 @@ export default createSimpleDialog({
       }
     }
   ],
-  withDialogProps: { title: "Go To", height: 190, onCloseHook: tryToRefocusEditor }
+  withDialogProps: {
+    title: "Go To",
+    height: 190,
+    onCloseHook: tryToRefocusEditor
+  }
 });

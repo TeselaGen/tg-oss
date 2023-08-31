@@ -14,4 +14,4 @@ export default function getCutsitesFromSequence(
     }
   }
   return cutsitesByName;
-};
+}

@@ -42,7 +42,7 @@ export const AddLaddersDialog = compose(
         accept={[".json"]}
         readBeforeUpload
         style={{ maxWidth: 400 }}
-        beforeUpload={async (files) => {
+        beforeUpload={async files => {
           try {
             const newLadder = JSON.parse(files[0].parsedString);
             if (!newLadder) {

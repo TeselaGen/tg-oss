@@ -15,7 +15,7 @@ export default createMergedDefaultStateReducer(
     [updatePartLengthsToHide]: (state, payload) => {
       return { ...state, ...payload };
     },
-    [togglePartLengthsToHide]: (state) => {
+    [togglePartLengthsToHide]: state => {
       return { ...state, enabled: !state["enabled"] };
     }
   },

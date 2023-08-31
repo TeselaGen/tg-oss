@@ -19,4 +19,4 @@ export default function getAminoAcidFromSequenceTriplet(sequenceString) {
     ] || "x";
 
   return proteinAlphabet[letter.toUpperCase()];
-};
+}

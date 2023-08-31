@@ -16,7 +16,7 @@ export default connectToEditor(editorState => {
     <ToolbarItem
       {...{
         Icon: <Icon icon="swap-horizontal" />,
-        onIconClick: function() {
+        onIconClick: function () {
           annotationVisibilityToggle("primers");
         },
         isHidden,

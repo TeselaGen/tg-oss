@@ -12,8 +12,8 @@ describe("clickDragCaretAndSelectionLogic", function () {
     //drag between the cursor at 12 and the 150 tick mark:
     cy.get(`[title="Caret Between Bases 12 and 13"]`)
       .first()
-      .then((el) => {
-        cy.get(`[data-tick-mark="50"]`).then((el2) => {
+      .then(el => {
+        cy.get(`[data-tick-mark="50"]`).then(el2 => {
           cy.dragBetweenSimple(el, el2);
         });
       });
@@ -25,8 +25,8 @@ describe("clickDragCaretAndSelectionLogic", function () {
     //drag between the cursor at 16 and the 10 tick mark:
     cy.get(`[title="Caret Between Bases 15 and 16"]`)
       .first()
-      .then((el) => {
-        cy.get(`[data-tick-mark="10"]`).then((el2) => {
+      .then(el => {
+        cy.get(`[data-tick-mark="10"]`).then(el2 => {
           cy.dragBetweenSimple(el, el2);
         });
       });
@@ -38,8 +38,8 @@ describe("clickDragCaretAndSelectionLogic", function () {
     //drag between the cursor at 16 and the 10 tick mark:
     cy.get(`[title="Caret Between Bases 15 and 16"]`)
       .first()
-      .then((el) => {
-        cy.get(`[data-tick-mark="10"]`).then((el2) => {
+      .then(el => {
+        cy.get(`[data-tick-mark="10"]`).then(el2 => {
           cy.dragBetweenSimple(el, el2);
         });
       });
@@ -52,8 +52,8 @@ describe("clickDragCaretAndSelectionLogic", function () {
     //drag between the cursor at 16 and the 10 tick mark:
     cy.get(`.vePolygonCaretHandle`)
       .first()
-      .then((el) => {
-        cy.contains(`text`, "4770").then((el2) => {
+      .then(el => {
+        cy.contains(`text`, "4770").then(el2 => {
           cy.dragBetweenSimple(el, el2);
         });
       });
@@ -74,15 +74,15 @@ describe("clickDragCaretAndSelectionLogic", function () {
   it(`should handle dragging correctly`, () => {
     /* eslint-disable cypress/no-unnecessary-waiting */
     cy.wait(100);
-    cy.get(`[data-tick-mark="10"]`).then((el) => {
-      cy.get(`[data-tick-mark="20"]`).then((el2) => {
+    cy.get(`[data-tick-mark="10"]`).then(el => {
+      cy.get(`[data-tick-mark="20"]`).then(el2 => {
         cy.dragBetweenSimple(el, el2);
       });
     });
     cy.wait(100);
 
-    cy.get(`[title="Caret Between Bases 19 and 20"]`).then((el) => {
-      cy.get(`[data-tick-mark="50"]`).then((el2) => {
+    cy.get(`[title="Caret Between Bases 19 and 20"]`).then(el => {
+      cy.get(`[data-tick-mark="50"]`).then(el2 => {
         cy.dragBetweenSimple(el, el2);
       });
     });
@@ -91,8 +91,8 @@ describe("clickDragCaretAndSelectionLogic", function () {
     cy.selectRange(4, 4);
     cy.wait(100);
 
-    cy.get(`[data-tick-mark="50"]`).then((el) => {
-      cy.get(`[data-tick-mark="60"]`).then((el2) => {
+    cy.get(`[data-tick-mark="50"]`).then(el => {
+      cy.get(`[data-tick-mark="60"]`).then(el2 => {
         cy.dragBetweenSimple(el, el2);
       });
     });

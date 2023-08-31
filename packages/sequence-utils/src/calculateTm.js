@@ -23,12 +23,13 @@ const calcTmMethods = {
    * @param  {Double} Na THe monovalent salt concentration. Defaults to 50e-3M.
    * @return {Double} Temperature for the given sequence, in Celsius.
    */
-  calculateTemperature: function(sequence, type, A, R, C, Na) {
+  calculateTemperature: function (sequence, type, A, R, C, Na) {
     if (typeof type === "undefined") {
       type = this.TABLE_BRESLAUER;
     } else if (
       type != this.TABLE_BRESLAUER &&
-      (type != this.TABLE_UNIFIED && type != this.TABLE_SUGIMOTO)
+      type != this.TABLE_UNIFIED &&
+      type != this.TABLE_SUGIMOTO
     ) {
       throw new Error("Invalid table type!");
     }
@@ -104,63 +105,21 @@ const calcTmMethods = {
    * @param {String} type Algorithm to get table for.
    * @return {Number[]} deltaH table for given algorithm.
    */
-  getDeltaHTable: function(type) {
+  getDeltaHTable: function (type) {
     if (type == this.TABLE_BRESLAUER) {
       return [
-        9.1,
-        8.6,
-        6.5,
-        7.8,
-        9.1,
-        6.0,
-        5.6,
-        5.8,
-        11.0,
-        5.8,
-        7.8,
-        11.9,
-        11.0,
-        5.6,
-        6.5,
-        11.1
+        9.1, 8.6, 6.5, 7.8, 9.1, 6.0, 5.6, 5.8, 11.0, 5.8, 7.8, 11.9, 11.0, 5.6,
+        6.5, 11.1
       ];
     } else if (type == this.TABLE_SUGIMOTO) {
       return [
-        8.0,
-        5.6,
-        6.5,
-        7.8,
-        8.0,
-        5.6,
-        5.6,
-        5.8,
-        10.9,
-        8.2,
-        6.6,
-        11.8,
-        10.9,
-        6.6,
-        9.4,
-        11.9
+        8.0, 5.6, 6.5, 7.8, 8.0, 5.6, 5.6, 5.8, 10.9, 8.2, 6.6, 11.8, 10.9, 6.6,
+        9.4, 11.9
       ];
     } else if (type == this.TABLE_UNIFIED) {
       return [
-        7.9,
-        7.2,
-        8.4,
-        7.8,
-        7.9,
-        7.2,
-        8.2,
-        8.5,
-        8.0,
-        8.5,
-        7.8,
-        10.6,
-        8.0,
-        8.2,
-        8.4,
-        9.8
+        7.9, 7.2, 8.4, 7.8, 7.9, 7.2, 8.2, 8.5, 8.0, 8.5, 7.8, 10.6, 8.0, 8.2,
+        8.4, 9.8
       ];
     } else {
       return null;
@@ -173,63 +132,21 @@ const calcTmMethods = {
    * @param {String} type Algorithm to get table for.
    * @return {Number[]} deltaS table for given algorithm.
    */
-  getDeltaSTable: function(type) {
+  getDeltaSTable: function (type) {
     if (type == this.TABLE_BRESLAUER) {
       return [
-        24.0,
-        23.9,
-        17.3,
-        20.8,
-        24.0,
-        16.9,
-        13.5,
-        12.9,
-        26.6,
-        12.9,
-        20.8,
-        27.8,
-        26.6,
-        13.5,
-        17.3,
-        26.7
+        24.0, 23.9, 17.3, 20.8, 24.0, 16.9, 13.5, 12.9, 26.6, 12.9, 20.8, 27.8,
+        26.6, 13.5, 17.3, 26.7
       ];
     } else if (type == this.TABLE_SUGIMOTO) {
       return [
-        21.9,
-        15.2,
-        17.3,
-        20.8,
-        21.9,
-        15.2,
-        13.5,
-        12.9,
-        28.4,
-        25.5,
-        23.5,
-        29.0,
-        28.4,
-        16.4,
-        25.5,
-        29.0
+        21.9, 15.2, 17.3, 20.8, 21.9, 15.2, 13.5, 12.9, 28.4, 25.5, 23.5, 29.0,
+        28.4, 16.4, 25.5, 29.0
       ];
     } else if (type == this.TABLE_UNIFIED) {
       return [
-        22.2,
-        20.4,
-        22.4,
-        21.0,
-        22.2,
-        21.3,
-        22.2,
-        22.7,
-        19.9,
-        22.7,
-        21.0,
-        27.2,
-        19.9,
-        22.2,
-        22.4,
-        24.4
+        22.2, 20.4, 22.4, 21.0, 22.2, 21.3, 22.2, 22.7, 19.9, 22.7, 21.0, 27.2,
+        19.9, 22.2, 22.4, 24.4
       ];
     } else {
       return null;
@@ -245,7 +162,7 @@ const calcTmMethods = {
    * @param  {String} target   The string to search for.
    * @return {Int} Number of occurrences of target in sequence, with repeats.
    */
-  calculateReps: function(sequence, target) {
+  calculateReps: function (sequence, target) {
     const sequenceLength = sequence.length;
 
     if (sequenceLength == 0) {
@@ -281,7 +198,7 @@ const calcTmMethods = {
    * @param  {String} target   The string to search for.
    * @return {Int} Number of occurrences of target in sequence.
    */
-  calculateNumberOfOccurrences: function(sequence, target) {
+  calculateNumberOfOccurrences: function (sequence, target) {
     const sequenceLength = sequence.length;
 
     if (sequenceLength == 0) {

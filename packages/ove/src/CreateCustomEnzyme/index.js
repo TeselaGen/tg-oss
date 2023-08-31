@@ -1,11 +1,7 @@
 import { connect } from "react-redux";
 // import {reduxForm, Field, formValueSelector} from 'redux-form'
 import React from "react";
-import {
-  DialogFooter,
-  InfoHelper,
-  wrapDialog
-} from "@teselagen/ui";
+import { DialogFooter, InfoHelper, wrapDialog } from "@teselagen/ui";
 
 // import './style.css';
 import { cutSequenceByRestrictionEnzyme } from "@teselagen/sequence-utils";

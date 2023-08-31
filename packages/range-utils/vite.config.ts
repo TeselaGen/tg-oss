@@ -1,5 +1,5 @@
-import viteConfig from '../../vite.config'
+import viteConfig from "../../vite.config";
 export default viteConfig({
-  name: 'range-utils',
-  dir: __dirname,
-})
+  name: "range-utils",
+  dir: __dirname
+});

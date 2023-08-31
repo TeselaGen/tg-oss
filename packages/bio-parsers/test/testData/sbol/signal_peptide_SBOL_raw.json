@@ -4,9 +4,7 @@
     "DnaComponent": {
       "__cnt": 8,
       "displayId": "signal_pep",
-      "displayId_asArray": [
-        "signal_pep"
-      ],
+      "displayId_asArray": ["signal_pep"],
       "dnaSequence": {
         "__cnt": 3,
         "DnaSequence": {
@@ -16,10 +14,7 @@
             "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
           ],
           "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
-          "__text": [
-            "\n        ",
-            "\n      "
-          ]
+          "__text": ["\n        ", "\n      "]
         },
         "DnaSequence_asArray": [
           {
@@ -29,16 +24,10 @@
               "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
             ],
             "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
-            "__text": [
-              "\n        ",
-              "\n      "
-            ]
+            "__text": ["\n        ", "\n      "]
           }
         ],
-        "__text": [
-          "\n      ",
-          "\n    "
-        ]
+        "__text": ["\n      ", "\n    "]
       },
       "dnaSequence_asArray": [
         {
@@ -50,10 +39,7 @@
               "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
             ],
             "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
-            "__text": [
-              "\n        ",
-              "\n      "
-            ]
+            "__text": ["\n        ", "\n      "]
           },
           "DnaSequence_asArray": [
             {
@@ -63,16 +49,10 @@
                 "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
               ],
               "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
-              "__text": [
-                "\n        ",
-                "\n      "
-              ]
+              "__text": ["\n        ", "\n      "]
             }
           ],
-          "__text": [
-            "\n      ",
-            "\n    "
-          ]
+          "__text": ["\n      ", "\n    "]
         }
       ],
       "annotation": {
@@ -80,17 +60,11 @@
         "SequenceAnnotation": {
           "__cnt": 10,
           "bioStart": "1",
-          "bioStart_asArray": [
-            "1"
-          ],
+          "bioStart_asArray": ["1"],
           "bioEnd": "63",
-          "bioEnd_asArray": [
-            "63"
-          ],
+          "bioEnd_asArray": ["63"],
           "strand": "+",
-          "strand_asArray": [
-            "+"
-          ],
+          "strand_asArray": ["+"],
           "subComponent": {
             "__cnt": 3,
             "DnaComponent": {
@@ -108,15 +82,9 @@
                 }
               ],
               "displayId": "signal_peptide",
-              "displayId_asArray": [
-                "signal_peptide"
-              ],
+              "displayId_asArray": ["signal_peptide"],
               "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-              "__text": [
-                "\n            ",
-                "\n            ",
-                "\n          "
-              ]
+              "__text": ["\n            ", "\n            ", "\n          "]
             },
             "DnaComponent_asArray": [
               {
@@ -134,21 +102,12 @@
                   }
                 ],
                 "displayId": "signal_peptide",
-                "displayId_asArray": [
-                  "signal_peptide"
-                ],
+                "displayId_asArray": ["signal_peptide"],
                 "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                "__text": [
-                  "\n            ",
-                  "\n            ",
-                  "\n          "
-                ]
+                "__text": ["\n            ", "\n            ", "\n          "]
               }
             ],
-            "__text": [
-              "\n          ",
-              "\n        "
-            ]
+            "__text": ["\n          ", "\n        "]
           },
           "subComponent_asArray": [
             {
@@ -168,15 +127,9 @@
                   }
                 ],
                 "displayId": "signal_peptide",
-                "displayId_asArray": [
-                  "signal_peptide"
-                ],
+                "displayId_asArray": ["signal_peptide"],
                 "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                "__text": [
-                  "\n            ",
-                  "\n            ",
-                  "\n          "
-                ]
+                "__text": ["\n            ", "\n            ", "\n          "]
               },
               "DnaComponent_asArray": [
                 {
@@ -194,21 +147,12 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 }
               ],
-              "__text": [
-                "\n          ",
-                "\n        "
-              ]
+              "__text": ["\n          ", "\n        "]
             }
           ],
           "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
@@ -224,17 +168,11 @@
           {
             "__cnt": 10,
             "bioStart": "1",
-            "bioStart_asArray": [
-              "1"
-            ],
+            "bioStart_asArray": ["1"],
             "bioEnd": "63",
-            "bioEnd_asArray": [
-              "63"
-            ],
+            "bioEnd_asArray": ["63"],
             "strand": "+",
-            "strand_asArray": [
-              "+"
-            ],
+            "strand_asArray": ["+"],
             "subComponent": {
               "__cnt": 3,
               "DnaComponent": {
@@ -252,15 +190,9 @@
                   }
                 ],
                 "displayId": "signal_peptide",
-                "displayId_asArray": [
-                  "signal_peptide"
-                ],
+                "displayId_asArray": ["signal_peptide"],
                 "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                "__text": [
-                  "\n            ",
-                  "\n            ",
-                  "\n          "
-                ]
+                "__text": ["\n            ", "\n            ", "\n          "]
               },
               "DnaComponent_asArray": [
                 {
@@ -278,21 +210,12 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 }
               ],
-              "__text": [
-                "\n          ",
-                "\n        "
-              ]
+              "__text": ["\n          ", "\n        "]
             },
             "subComponent_asArray": [
               {
@@ -312,15 +235,9 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 },
                 "DnaComponent_asArray": [
                   {
@@ -338,9 +255,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -349,10 +264,7 @@
                     ]
                   }
                 ],
-                "__text": [
-                  "\n          ",
-                  "\n        "
-                ]
+                "__text": ["\n          ", "\n        "]
               }
             ],
             "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
@@ -365,10 +277,7 @@
             ]
           }
         ],
-        "__text": [
-          "\n      ",
-          "\n    "
-        ]
+        "__text": ["\n      ", "\n    "]
       },
       "annotation_asArray": [
         {
@@ -376,17 +285,11 @@
           "SequenceAnnotation": {
             "__cnt": 10,
             "bioStart": "1",
-            "bioStart_asArray": [
-              "1"
-            ],
+            "bioStart_asArray": ["1"],
             "bioEnd": "63",
-            "bioEnd_asArray": [
-              "63"
-            ],
+            "bioEnd_asArray": ["63"],
             "strand": "+",
-            "strand_asArray": [
-              "+"
-            ],
+            "strand_asArray": ["+"],
             "subComponent": {
               "__cnt": 3,
               "DnaComponent": {
@@ -404,15 +307,9 @@
                   }
                 ],
                 "displayId": "signal_peptide",
-                "displayId_asArray": [
-                  "signal_peptide"
-                ],
+                "displayId_asArray": ["signal_peptide"],
                 "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                "__text": [
-                  "\n            ",
-                  "\n            ",
-                  "\n          "
-                ]
+                "__text": ["\n            ", "\n            ", "\n          "]
               },
               "DnaComponent_asArray": [
                 {
@@ -430,21 +327,12 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 }
               ],
-              "__text": [
-                "\n          ",
-                "\n        "
-              ]
+              "__text": ["\n          ", "\n        "]
             },
             "subComponent_asArray": [
               {
@@ -464,15 +352,9 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 },
                 "DnaComponent_asArray": [
                   {
@@ -490,9 +372,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -501,10 +381,7 @@
                     ]
                   }
                 ],
-                "__text": [
-                  "\n          ",
-                  "\n        "
-                ]
+                "__text": ["\n          ", "\n        "]
               }
             ],
             "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
@@ -520,17 +397,11 @@
             {
               "__cnt": 10,
               "bioStart": "1",
-              "bioStart_asArray": [
-                "1"
-              ],
+              "bioStart_asArray": ["1"],
               "bioEnd": "63",
-              "bioEnd_asArray": [
-                "63"
-              ],
+              "bioEnd_asArray": ["63"],
               "strand": "+",
-              "strand_asArray": [
-                "+"
-              ],
+              "strand_asArray": ["+"],
               "subComponent": {
                 "__cnt": 3,
                 "DnaComponent": {
@@ -548,15 +419,9 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 },
                 "DnaComponent_asArray": [
                   {
@@ -574,9 +439,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -585,10 +448,7 @@
                     ]
                   }
                 ],
-                "__text": [
-                  "\n          ",
-                  "\n        "
-                ]
+                "__text": ["\n          ", "\n        "]
               },
               "subComponent_asArray": [
                 {
@@ -608,9 +468,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -634,9 +492,7 @@
                         }
                       ],
                       "displayId": "signal_peptide",
-                      "displayId_asArray": [
-                        "signal_peptide"
-                      ],
+                      "displayId_asArray": ["signal_peptide"],
                       "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                       "__text": [
                         "\n            ",
@@ -645,10 +501,7 @@
                       ]
                     }
                   ],
-                  "__text": [
-                    "\n          ",
-                    "\n        "
-                  ]
+                  "__text": ["\n          ", "\n        "]
                 }
               ],
               "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
@@ -661,27 +514,17 @@
               ]
             }
           ],
-          "__text": [
-            "\n      ",
-            "\n    "
-          ]
+          "__text": ["\n      ", "\n    "]
         }
       ],
       "_rdf:about": "http://j5.jbei.org/dc#97A98D05-96EF-489F-B338-0B30B1AB59BC",
-      "__text": [
-        "\n    ",
-        "\n    ",
-        "\n    ",
-        "\n  "
-      ]
+      "__text": ["\n    ", "\n    ", "\n    ", "\n  "]
     },
     "DnaComponent_asArray": [
       {
         "__cnt": 8,
         "displayId": "signal_pep",
-        "displayId_asArray": [
-          "signal_pep"
-        ],
+        "displayId_asArray": ["signal_pep"],
         "dnaSequence": {
           "__cnt": 3,
           "DnaSequence": {
@@ -691,10 +534,7 @@
               "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
             ],
             "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
-            "__text": [
-              "\n        ",
-              "\n      "
-            ]
+            "__text": ["\n        ", "\n      "]
           },
           "DnaSequence_asArray": [
             {
@@ -704,16 +544,10 @@
                 "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
               ],
               "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
-              "__text": [
-                "\n        ",
-                "\n      "
-              ]
+              "__text": ["\n        ", "\n      "]
             }
           ],
-          "__text": [
-            "\n      ",
-            "\n    "
-          ]
+          "__text": ["\n      ", "\n    "]
         },
         "dnaSequence_asArray": [
           {
@@ -725,10 +559,7 @@
                 "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
               ],
               "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
-              "__text": [
-                "\n        ",
-                "\n      "
-              ]
+              "__text": ["\n        ", "\n      "]
             },
             "DnaSequence_asArray": [
               {
@@ -738,16 +569,10 @@
                   "ggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgc"
                 ],
                 "_rdf:about": "http://j5.jbei.org/ds#172ECA24-1557-4870-939E-D7C699B09170",
-                "__text": [
-                  "\n        ",
-                  "\n      "
-                ]
+                "__text": ["\n        ", "\n      "]
               }
             ],
-            "__text": [
-              "\n      ",
-              "\n    "
-            ]
+            "__text": ["\n      ", "\n    "]
           }
         ],
         "annotation": {
@@ -755,17 +580,11 @@
           "SequenceAnnotation": {
             "__cnt": 10,
             "bioStart": "1",
-            "bioStart_asArray": [
-              "1"
-            ],
+            "bioStart_asArray": ["1"],
             "bioEnd": "63",
-            "bioEnd_asArray": [
-              "63"
-            ],
+            "bioEnd_asArray": ["63"],
             "strand": "+",
-            "strand_asArray": [
-              "+"
-            ],
+            "strand_asArray": ["+"],
             "subComponent": {
               "__cnt": 3,
               "DnaComponent": {
@@ -783,15 +602,9 @@
                   }
                 ],
                 "displayId": "signal_peptide",
-                "displayId_asArray": [
-                  "signal_peptide"
-                ],
+                "displayId_asArray": ["signal_peptide"],
                 "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                "__text": [
-                  "\n            ",
-                  "\n            ",
-                  "\n          "
-                ]
+                "__text": ["\n            ", "\n            ", "\n          "]
               },
               "DnaComponent_asArray": [
                 {
@@ -809,21 +622,12 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 }
               ],
-              "__text": [
-                "\n          ",
-                "\n        "
-              ]
+              "__text": ["\n          ", "\n        "]
             },
             "subComponent_asArray": [
               {
@@ -843,15 +647,9 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 },
                 "DnaComponent_asArray": [
                   {
@@ -869,9 +667,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -880,10 +676,7 @@
                     ]
                   }
                 ],
-                "__text": [
-                  "\n          ",
-                  "\n        "
-                ]
+                "__text": ["\n          ", "\n        "]
               }
             ],
             "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
@@ -899,17 +692,11 @@
             {
               "__cnt": 10,
               "bioStart": "1",
-              "bioStart_asArray": [
-                "1"
-              ],
+              "bioStart_asArray": ["1"],
               "bioEnd": "63",
-              "bioEnd_asArray": [
-                "63"
-              ],
+              "bioEnd_asArray": ["63"],
               "strand": "+",
-              "strand_asArray": [
-                "+"
-              ],
+              "strand_asArray": ["+"],
               "subComponent": {
                 "__cnt": 3,
                 "DnaComponent": {
@@ -927,15 +714,9 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 },
                 "DnaComponent_asArray": [
                   {
@@ -953,9 +734,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -964,10 +743,7 @@
                     ]
                   }
                 ],
-                "__text": [
-                  "\n          ",
-                  "\n        "
-                ]
+                "__text": ["\n          ", "\n        "]
               },
               "subComponent_asArray": [
                 {
@@ -987,9 +763,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -1013,9 +787,7 @@
                         }
                       ],
                       "displayId": "signal_peptide",
-                      "displayId_asArray": [
-                        "signal_peptide"
-                      ],
+                      "displayId_asArray": ["signal_peptide"],
                       "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                       "__text": [
                         "\n            ",
@@ -1024,10 +796,7 @@
                       ]
                     }
                   ],
-                  "__text": [
-                    "\n          ",
-                    "\n        "
-                  ]
+                  "__text": ["\n          ", "\n        "]
                 }
               ],
               "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
@@ -1040,10 +809,7 @@
               ]
             }
           ],
-          "__text": [
-            "\n      ",
-            "\n    "
-          ]
+          "__text": ["\n      ", "\n    "]
         },
         "annotation_asArray": [
           {
@@ -1051,17 +817,11 @@
             "SequenceAnnotation": {
               "__cnt": 10,
               "bioStart": "1",
-              "bioStart_asArray": [
-                "1"
-              ],
+              "bioStart_asArray": ["1"],
               "bioEnd": "63",
-              "bioEnd_asArray": [
-                "63"
-              ],
+              "bioEnd_asArray": ["63"],
               "strand": "+",
-              "strand_asArray": [
-                "+"
-              ],
+              "strand_asArray": ["+"],
               "subComponent": {
                 "__cnt": 3,
                 "DnaComponent": {
@@ -1079,15 +839,9 @@
                     }
                   ],
                   "displayId": "signal_peptide",
-                  "displayId_asArray": [
-                    "signal_peptide"
-                  ],
+                  "displayId_asArray": ["signal_peptide"],
                   "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
-                  "__text": [
-                    "\n            ",
-                    "\n            ",
-                    "\n          "
-                  ]
+                  "__text": ["\n            ", "\n            ", "\n          "]
                 },
                 "DnaComponent_asArray": [
                   {
@@ -1105,9 +859,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -1116,10 +868,7 @@
                     ]
                   }
                 ],
-                "__text": [
-                  "\n          ",
-                  "\n        "
-                ]
+                "__text": ["\n          ", "\n        "]
               },
               "subComponent_asArray": [
                 {
@@ -1139,9 +888,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -1165,9 +912,7 @@
                         }
                       ],
                       "displayId": "signal_peptide",
-                      "displayId_asArray": [
-                        "signal_peptide"
-                      ],
+                      "displayId_asArray": ["signal_peptide"],
                       "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                       "__text": [
                         "\n            ",
@@ -1176,10 +921,7 @@
                       ]
                     }
                   ],
-                  "__text": [
-                    "\n          ",
-                    "\n        "
-                  ]
+                  "__text": ["\n          ", "\n        "]
                 }
               ],
               "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
@@ -1195,17 +937,11 @@
               {
                 "__cnt": 10,
                 "bioStart": "1",
-                "bioStart_asArray": [
-                  "1"
-                ],
+                "bioStart_asArray": ["1"],
                 "bioEnd": "63",
-                "bioEnd_asArray": [
-                  "63"
-                ],
+                "bioEnd_asArray": ["63"],
                 "strand": "+",
-                "strand_asArray": [
-                  "+"
-                ],
+                "strand_asArray": ["+"],
                 "subComponent": {
                   "__cnt": 3,
                   "DnaComponent": {
@@ -1223,9 +959,7 @@
                       }
                     ],
                     "displayId": "signal_peptide",
-                    "displayId_asArray": [
-                      "signal_peptide"
-                    ],
+                    "displayId_asArray": ["signal_peptide"],
                     "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                     "__text": [
                       "\n            ",
@@ -1249,9 +983,7 @@
                         }
                       ],
                       "displayId": "signal_peptide",
-                      "displayId_asArray": [
-                        "signal_peptide"
-                      ],
+                      "displayId_asArray": ["signal_peptide"],
                       "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                       "__text": [
                         "\n            ",
@@ -1260,10 +992,7 @@
                       ]
                     }
                   ],
-                  "__text": [
-                    "\n          ",
-                    "\n        "
-                  ]
+                  "__text": ["\n          ", "\n        "]
                 },
                 "subComponent_asArray": [
                   {
@@ -1283,9 +1012,7 @@
                         }
                       ],
                       "displayId": "signal_peptide",
-                      "displayId_asArray": [
-                        "signal_peptide"
-                      ],
+                      "displayId_asArray": ["signal_peptide"],
                       "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                       "__text": [
                         "\n            ",
@@ -1309,9 +1036,7 @@
                           }
                         ],
                         "displayId": "signal_peptide",
-                        "displayId_asArray": [
-                          "signal_peptide"
-                        ],
+                        "displayId_asArray": ["signal_peptide"],
                         "_rdf:about": "http://j5.jbei.org/dc#43FB4AC0-217C-49D1-9E65-01F5332177F8",
                         "__text": [
                           "\n            ",
@@ -1320,10 +1045,7 @@
                         ]
                       }
                     ],
-                    "__text": [
-                      "\n          ",
-                      "\n        "
-                    ]
+                    "__text": ["\n          ", "\n        "]
                   }
                 ],
                 "_rdf:about": "http://j5.jbei.org/sa#7B75111D-08BC-4FB9-AA59-03EDFEFC314E",
@@ -1336,19 +1058,11 @@
                 ]
               }
             ],
-            "__text": [
-              "\n      ",
-              "\n    "
-            ]
+            "__text": ["\n      ", "\n    "]
           }
         ],
         "_rdf:about": "http://j5.jbei.org/dc#97A98D05-96EF-489F-B338-0B30B1AB59BC",
-        "__text": [
-          "\n    ",
-          "\n    ",
-          "\n    ",
-          "\n  "
-        ]
+        "__text": ["\n    ", "\n    ", "\n    ", "\n  "]
       }
     ],
     "_xmlns": "http://sbols.org/v1#",
@@ -1356,9 +1070,6 @@
     "_xmlns:rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "_xmlns:so": "http://purl.obolibrary.org/obo/",
     "__prefix": "rdf",
-    "__text": [
-      "\n  ",
-      "\n"
-    ]
+    "__text": ["\n  ", "\n"]
   }
-} 
+}

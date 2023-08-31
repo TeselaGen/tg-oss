@@ -42,14 +42,12 @@ const UploadCsvWizardDialog = compose(
       if (props.filesWIssues.length > 0) {
         const reduxFormEntitiesArray = [];
         const finishedFiles = props.filesWIssues.map((f, i) => {
-          const {
-            reduxFormEntities,
-            reduxFormCellValidation
-          } = formValueSelector(`editableCellTable-${i}`)(
-            state,
-            "reduxFormEntities",
-            "reduxFormCellValidation"
-          );
+          const { reduxFormEntities, reduxFormCellValidation } =
+            formValueSelector(`editableCellTable-${i}`)(
+              state,
+              "reduxFormEntities",
+              "reduxFormCellValidation"
+            );
           reduxFormEntitiesArray.push(reduxFormEntities);
           const { entsToUse, validationToUse } = removeCleanRows(
             reduxFormEntities,
@@ -445,7 +443,7 @@ const UploadCsvWizardDialogInner = compose(
               setSubmitted(false);
             })
         })}
-        onClick={handleSubmit(async function() {
+        onClick={handleSubmit(async function () {
           if (!hasSubmitted) {
             //step 1 submit
             setSteps(
@@ -488,7 +486,7 @@ const UploadCsvWizardDialogInner = compose(
 export default UploadCsvWizardDialog;
 
 const exampleData = { userData: times(5).map(() => ({ _isClean: true })) };
-export const PreviewCsvData = observer(function(props) {
+export const PreviewCsvData = observer(function (props) {
   const {
     matchedHeaders,
     isEditingExistingFile,

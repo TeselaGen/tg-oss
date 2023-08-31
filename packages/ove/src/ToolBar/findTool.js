@@ -1,2 +1,2 @@
-import inlineFindTool from './inlineFindTool'
-export default inlineFindTool
+import inlineFindTool from "./inlineFindTool";
+export default inlineFindTool;

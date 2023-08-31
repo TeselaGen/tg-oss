@@ -517,7 +517,7 @@ class ReflexContainer extends React.Component {
 
     const newFlex =
       currentFlex > 0
-        ? currentFlex * newSize / size
+        ? (currentFlex * newSize) / size
         : this.computePixelFlex() * newSize;
 
     // eslint-disable-next-line react/no-direct-mutation-state
@@ -717,8 +717,8 @@ class ReflexContainer extends React.Component {
   guid(format = "xxxx-xxxx") {
     let d = new Date().getTime();
 
-    return format.replace(/[xy]/g, function(c) {
-      const r = ((d + Math.random() * 16) % 16) | 0;
+    return format.replace(/[xy]/g, function (c) {
+      const r = (d + Math.random() * 16) % 16 | 0;
       d = Math.floor(d / 16);
       // eslint-disable-next-line eqeqeq
       return (c == "x" ? r : (r & 0x7) | 0x8).toString(16);

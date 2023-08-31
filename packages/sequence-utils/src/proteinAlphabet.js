@@ -210,7 +210,7 @@ const proteinAlphabet = {
     threeLettersName: "Gap",
     colorByFamily: "#FF0000",
     color: "hsl(0, 100%, 69%)",
-    mass: 0,
+    mass: 0
   },
   B: {
     value: "B",
@@ -220,7 +220,7 @@ const proteinAlphabet = {
     isAmbiguous: true,
     name: "B",
     aliases: "ND",
-    mass: 0,
+    mass: 0
   },
   J: {
     value: "J",
@@ -230,7 +230,7 @@ const proteinAlphabet = {
     isAmbiguous: true,
     name: "J",
     aliases: "IL",
-    mass: 0,
+    mass: 0
   },
   X: {
     value: "X",
@@ -240,7 +240,7 @@ const proteinAlphabet = {
     isAmbiguous: true,
     name: "X",
     aliases: "ACDEFGHIKLMNPQRSTVWY",
-    mass: 0,
+    mass: 0
   },
   Z: {
     value: "Z",
@@ -254,4 +254,4 @@ const proteinAlphabet = {
   }
 };
 
-export default proteinAlphabet
+export default proteinAlphabet;

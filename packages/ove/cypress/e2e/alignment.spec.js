@@ -79,18 +79,18 @@ describe("alignment", function () {
     cy.get(`[title="Selecting 10 bps from 101 to 110"]`);
     cy.get(`[title="Caret Between Bases 100 and 101"]`)
       .first()
-      .then((el) => {
+      .then(el => {
         cy.contains(`[data-alignment-track-index="1"] text`, 120)
           .first()
-          .then((el2) => {
+          .then(el2 => {
             cy.dragBetweenSimple(el, el2);
           });
       });
     cy.get(`[title="Selecting 11 bps from 111 to 121"]`);
-    cy.get(`[title="Caret Between Bases 121 and 122"]`).then((el) => {
+    cy.get(`[title="Caret Between Bases 121 and 122"]`).then(el => {
       cy.contains(`[data-alignment-track-index="1"] text`, 100)
         .first()
-        .then((el2) => {
+        .then(el2 => {
           cy.dragBetweenSimple(el, el2);
         });
     });
@@ -144,10 +144,10 @@ describe("alignment", function () {
     cy.get(`[title="Selecting 1001 bps from 997 to 1997"]`).should("not.exist");
     cy.tgToggle("isFullyZoomedOut");
 
-    cy.contains("text", "1000").then((el) => {
+    cy.contains("text", "1000").then(el => {
       cy.contains("text", "2000")
         .first()
-        .then((el2) => {
+        .then(el2 => {
           cy.dragBetweenSimple(el, el2);
         });
     });
@@ -165,10 +165,10 @@ describe("alignment", function () {
     //cy.get(".veAlignmentSelectionLayer").should("not.exist"); this class is used by other elemnents in the dom
     cy.get(".selectionLayerCaret").should("not.be.visible");
     cy.tgToggle("isFullyZoomedOut");
-    cy.contains("text", "1000").then((el) => {
+    cy.contains("text", "1000").then(el => {
       cy.contains("text", "2000")
         .first()
-        .then((el2) => {
+        .then(el2 => {
           cy.dragBetweenSimple(el, el2);
         });
     });

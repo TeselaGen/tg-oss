@@ -13,7 +13,7 @@ const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
     noTranslationData: true
   });
 
-  [oldData, newData].forEach((d) => {
+  [oldData, newData].forEach(d => {
     [
       "cutsites",
       "orfs",
@@ -23,7 +23,7 @@ const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
       "description",
       "materiallyAvailable",
       ...ignoreKeys
-    ].forEach((prop) => {
+    ].forEach(prop => {
       delete d[prop];
     });
     if (d.translations) {
@@ -43,7 +43,7 @@ const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
   return diff(oldData, newData);
 };
 const patchSeqWithDiff = (oldData, diff, { ignoreKeys = [] } = {}) => {
-  ignoreKeys.forEach((k) => {
+  ignoreKeys.forEach(k => {
     delete diff[k];
   });
   return patch(
@@ -51,7 +51,7 @@ const patchSeqWithDiff = (oldData, diff, { ignoreKeys = [] } = {}) => {
     diff
   );
 };
-const reverseSeqDiff = (diff) => {
+const reverseSeqDiff = diff => {
   return reverse(diff);
 };
 

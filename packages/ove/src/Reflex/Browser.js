@@ -20,7 +20,6 @@ class Browser {
     return Browser.isBrowser() && Browser.getUserAgent().match(/Opera Mini/i);
   }
 
-
   // Firefox 1.0+
   static isFirefox() {
     return Browser.isBrowser() && typeof InstallTrigger !== "undefined";
@@ -43,19 +42,20 @@ class Browser {
 
   // Edge 20+
   static isEdge() {
-    return Browser.isBrowser() && (!Browser.isIE() && !!window.StyleMedia);
+    return Browser.isBrowser() && !Browser.isIE() && !!window.StyleMedia;
   }
 
   // Chrome 1+
   static isChrome() {
-    return Browser.isBrowser() && (!!window.chrome && !!window.chrome.webstore);
+    return Browser.isBrowser() && !!window.chrome && !!window.chrome.webstore;
   }
 
   // Blink engine detection
   static isBlink() {
     return (
       Browser.isBrowser() &&
-      ((Browser.isChrome() || Browser.isOpera()) && !!window.CSS)
+      (Browser.isChrome() || Browser.isOpera()) &&
+      !!window.CSS
     );
   }
 
@@ -76,7 +76,6 @@ class Browser {
       Browser.isBrowser() && Browser.getUserAgent().match(/iPhone|iPad|iPod/i)
     );
   }
-
 
   static isWindows() {
     return (

@@ -25,8 +25,8 @@ describe("jbeiXmlToJson", function () {
         name: "1kb_5_prime_flank",
         start: 0,
         strand: 1,
-        type: "misc_feature",
-      },
+        type: "misc_feature"
+      }
     ]);
     result[0].parsedSequence.sequence.length.should.equal(1000);
   });

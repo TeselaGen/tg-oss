@@ -24,7 +24,7 @@ class CutsiteProperties extends React.Component {
     this.commands = commands(this);
   }
 
-  SubComponent = (row) => {
+  SubComponent = row => {
     return (
       <SingleEnzymeCutsiteInfo
         {...{
@@ -61,12 +61,12 @@ class CutsiteProperties extends React.Component {
     } = this.props;
 
     const { cutsitesByName, cutsitesById } = allCutsites;
-    const cutsitesToUse = map(cutsitesByName, (cutsiteGroup) => {
+    const cutsitesToUse = map(cutsitesByName, cutsiteGroup => {
       const name = cutsiteGroup[0].restrictionEnzyme.name;
       let groups = "";
       const exisitingEnzymeGroups = window.getExistingEnzymeGroups();
 
-      Object.keys(exisitingEnzymeGroups).forEach((key) => {
+      Object.keys(exisitingEnzymeGroups).forEach(key => {
         if (exisitingEnzymeGroups[key].includes(name)) groups += key;
         groups += " ";
       });

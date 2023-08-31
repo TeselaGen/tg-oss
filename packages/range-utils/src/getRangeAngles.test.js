@@ -9,24 +9,24 @@
 import getRangeAngles from "./getRangeAngles";
 
 import assert from "assert";
-describe("getRangeAngles", function() {
+describe("getRangeAngles", function () {
   //tnrtodo set this up
 
-  it("should return the correct angles for ranges that have joined locations", function() {
+  it("should return the correct angles for ranges that have joined locations", function () {
     const angles = getRangeAngles(
       {
         start: 1,
         end: 6,
         locations: [
           { start: 1, end: 2 },
-          { start: 3, end: 6 },
-        ],
+          { start: 3, end: 6 }
+        ]
       },
       10
     );
     // console.log('angles: ' + JSON.stringify(angles,null,4));
     const anglesInRadians = {};
-    Object.keys(angles).forEach(function(key) {
+    Object.keys(angles).forEach(function (key) {
       anglesInRadians[key] = (angles[key] * 360) / Math.PI / 2;
     });
 
@@ -37,7 +37,7 @@ describe("getRangeAngles", function() {
     angles.locationAngles &&
       angles.locationAngles.forEach((angles, i) => {
         const anglesInRadians = {};
-        Object.keys(angles).forEach(function(key) {
+        Object.keys(angles).forEach(function (key) {
           anglesInRadians[key] = (angles[key] * 360) / Math.PI / 2;
         });
         // console.log('anglesInRadians:',anglesInRadians)
@@ -47,13 +47,12 @@ describe("getRangeAngles", function() {
         assert((anglesInRadians.endAngle === i) === 0 ? 108 : 252);
         assert((anglesInRadians.totalAngle === i) === 0 ? 72 : 144);
       });
-
   });
-  it("should return the correct angles for ranges that cross the origin", function() {
+  it("should return the correct angles for ranges that cross the origin", function () {
     const angles = getRangeAngles({ start: 9, end: 0 }, 10);
     // console.log('angles: ' + JSON.stringify(angles,null,4));
     const anglesInRadians = {};
-    Object.keys(angles).forEach(function(key) {
+    Object.keys(angles).forEach(function (key) {
       anglesInRadians[key] = (angles[key] * 360) / Math.PI / 2;
     });
     assert(anglesInRadians.startAngle === 324);
@@ -61,11 +60,11 @@ describe("getRangeAngles", function() {
     assert(anglesInRadians.totalAngle === 72);
     // console.log('anglesInRadians: ' + JSON.stringify(anglesInRadians,null,4));
   });
-  it("should return the correct angles for ranges that do not cross the origin", function() {
+  it("should return the correct angles for ranges that do not cross the origin", function () {
     const angles = getRangeAngles({ start: 1, end: 2, overlapsSelf: true }, 10);
     // console.log('angles: ' + JSON.stringify(angles,null,4));
     const anglesInRadians = {};
-    Object.keys(angles).forEach(function(key) {
+    Object.keys(angles).forEach(function (key) {
       anglesInRadians[key] = (angles[key] * 360) / Math.PI / 2;
     });
     // console.log('anglesInRadians: ' + JSON.stringify(anglesInRadians,null,4));

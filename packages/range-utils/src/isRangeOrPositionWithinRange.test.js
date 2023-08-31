@@ -1,8 +1,8 @@
 import isRangeOrPositionWithinRange from "./isRangeOrPositionWithinRange";
-import {expect} from "chai";
+import { expect } from "chai";
 
-describe("isRangeOrPositionWithinRange", function() {
-  it("should correctly determine whether a position is within a range", function() {
+describe("isRangeOrPositionWithinRange", function () {
+  it("should correctly determine whether a position is within a range", function () {
     expect(isRangeOrPositionWithinRange(1, { start: 1, end: 1 })).to.equal(
       false
     );
@@ -38,7 +38,7 @@ describe("isRangeOrPositionWithinRange", function() {
     );
   });
 
-  it("should correctly determine whether a position is within a range when includeStartEdge/includeEndEdge is set to true", function() {
+  it("should correctly determine whether a position is within a range when includeStartEdge/includeEndEdge is set to true", function () {
     expect(
       isRangeOrPositionWithinRange(1, { start: 1, end: 1 }, 11, true, true)
     ).to.equal(true);
@@ -47,7 +47,7 @@ describe("isRangeOrPositionWithinRange", function() {
     ).to.equal(true);
   });
 
-  it("should work for angle values w/ long decimal places", function() {
+  it("should work for angle values w/ long decimal places", function () {
     expect(
       isRangeOrPositionWithinRange(
         { start: 5.669848916850995, end: 5.815135586893387 },
@@ -56,7 +56,7 @@ describe("isRangeOrPositionWithinRange", function() {
       )
     ).to.equal(true);
   });
-  it("should correctly determine whether a position is within a range", function() {
+  it("should correctly determine whether a position is within a range", function () {
     expect(
       isRangeOrPositionWithinRange(null, { start: 1, end: 10 }, 100)
     ).to.equal(false);

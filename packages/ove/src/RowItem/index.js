@@ -3,7 +3,15 @@ import {
   getSequenceWithinRange,
   getOverlapsOfPotentiallyCircularRanges
 } from "@teselagen/range-utils";
-import { map, camelCase, startCase, startsWith, flatMap, assign, noop } from "lodash";
+import {
+  map,
+  camelCase,
+  startCase,
+  startsWith,
+  flatMap,
+  assign,
+  noop
+} from "lodash";
 import { getComplementSequenceString } from "@teselagen/sequence-utils";
 import React, { useMemo } from "react";
 import pluralize from "pluralize";
@@ -24,15 +32,13 @@ import { filter } from "lodash";
 import { defaultCharWidth } from "../constants/rowviewContants";
 import { CutsiteSelectionLayers } from "./CutsiteSelectionLayers";
 
-
-
 function filterRanges(ranges, extraProps = {}) {
   if (!ranges) return ranges;
   if (extraProps.onlyForward) {
-    ranges = filter(ranges, (a) => a.annotation.forward);
+    ranges = filter(ranges, a => a.annotation.forward);
   }
   if (extraProps.onlyReverse) {
-    ranges = filter(ranges, (a) => !a.annotation.forward);
+    ranges = filter(ranges, a => !a.annotation.forward);
   }
   return ranges;
 }
@@ -149,7 +155,7 @@ export default function RowItem(props) {
     if (alignmentData) {
       const gapMap = getGapMap(alignmentData.sequence);
       //this function is used to calculate the number of spaces that come before or inside a range
-      return (rangeOrCaretPosition) => {
+      return rangeOrCaretPosition => {
         if (typeof rangeOrCaretPosition !== "object") {
           return {
             gapsBefore:
@@ -211,7 +217,7 @@ export default function RowItem(props) {
     const pluralType = pluralize(type);
     const ranges = filterRanges(
       annotationLabelVisibility[pluralType] && annotationVisibility[pluralType]
-        ? map(row[pluralType], (a) =>
+        ? map(row[pluralType], a =>
             assign(a, {
               onClick: props[type + "Clicked"],
               onRightClick: props[type + "RightClicked"],
@@ -629,7 +635,7 @@ export default function RowItem(props) {
 
 function getGapMap(sequence) {
   const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-  sequence.split("").forEach((char) => {
+  sequence.split("").forEach(char => {
     if (char === "-") {
       gapMap[Math.max(0, gapMap.length - 1)] =
         (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;

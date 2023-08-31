@@ -35,7 +35,7 @@ class OrfProperties extends React.Component {
   };
   render() {
     const { orfs, sequenceLength, annotationVisibility } = this.props;
-    const orfsToUse = map(orfs, (orf) => {
+    const orfsToUse = map(orfs, orf => {
       return {
         ...orf,
         color: getOrfColor(orf),
@@ -69,7 +69,7 @@ class OrfProperties extends React.Component {
               {
                 path: "color",
                 type: "string",
-                render: (color) => {
+                render: color => {
                   return (
                     <div style={{ height: 20, width: 20, background: color }} />
                   );
@@ -94,7 +94,7 @@ class OrfProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor((editorState) => {
+  connectToEditor(editorState => {
     const {
       readOnly,
       annotationVisibility = {},

@@ -3,7 +3,7 @@
 /* eslint-disable no-throw-literal */
 import { unparse } from "papaparse";
 import pluralize from "pluralize";
-import  { SubmissionError, reduxForm,  } from "redux-form";
+import { SubmissionError, reduxForm } from "redux-form";
 import shortid from "shortid";
 import CreateAnnotationsPage from "./CreateAnnotationsPage";
 import { formName } from "./constants";
@@ -11,7 +11,7 @@ import { AutoAnnotateBpMatchingDialog } from "./AutoAnnotateBpMatchingDialog";
 import {
   parseCsvFile,
   validateCSVRequiredHeaders,
-  validateCSVRow,
+  validateCSVRow
 } from "./fileUtils";
 import downloadjs from "downloadjs";
 import {
@@ -19,7 +19,7 @@ import {
   convertApELikeRegexToRegex,
   convertProteinSeqToDNAIupac,
   getFeatureToColorMap,
-  getFeatureTypes,
+  getFeatureTypes
 } from "@teselagen/sequence-utils";
 import { hideDialog, showDialog } from "./GlobalDialogUtils";
 import { compose } from "redux";
@@ -29,7 +29,7 @@ import {
   FileUploadField,
   InfoHelper,
   showConfirmationDialog,
-  wrapDialog,
+  wrapDialog
 } from "@teselagen/ui";
 import { startCase } from "lodash";
 import withEditorProps from "./withEditorProps";
@@ -41,41 +41,41 @@ export function autoAnnotateFeatures() {
   showDialog({
     ModalComponent: AutoAnnotateModal, //we want to use a ModalComponent here so our addon does not
     props: {
-      annotationType: "feature",
-    },
+      annotationType: "feature"
+    }
   });
 }
 export function autoAnnotateParts() {
   showDialog({
     ModalComponent: AutoAnnotateModal, //we want to use a ModalComponent here so our addon does not
     props: {
-      annotationType: "part",
-    },
+      annotationType: "part"
+    }
   });
 }
 export function autoAnnotatePrimers() {
   showDialog({
     ModalComponent: AutoAnnotateModal, //we want to use a ModalComponent here so our addon does not
     props: {
-      annotationType: "primer",
-    },
+      annotationType: "primer"
+    }
   });
 }
 
 export const AutoAnnotateModal = compose(
-  wrapDialog((p) => ({
+  wrapDialog(p => ({
     canEscapeKeyClose: false,
-    title: `Auto Annotate ${startCase(pluralize(p.annotationType))}`,
+    title: `Auto Annotate ${startCase(pluralize(p.annotationType))}`
   })),
   withEditorProps,
   reduxForm({ form: formName })
-)((props) => {
+)(props => {
   const {
     sequenceData,
     handleSubmit,
     annotationType = "feature",
     error,
-    getCustomAutoAnnotateList,
+    getCustomAutoAnnotateList
   } = props;
   const [fileType, setSelectedImportType] = useState("csvFile");
   const [newAnnotations, setNewAnns] = useState(false);
@@ -126,31 +126,31 @@ export const AutoAnnotateModal = compose(
                         description: "I'm a description",
                         sequence: `gatNNtacaggttt`,
                         ...(annotationType === "feature" && {
-                          type: `cds`,
+                          type: `cds`
                         }),
                         isRegex: false,
-                        matchType: "dna",
+                        matchType: "dna"
                       },
                       {
                         name: `Example Protein ${startCase(annotationType)}`,
                         description: "I'm a description",
                         sequence: `APGSGTGGGSGSAPG`,
                         ...(annotationType === "feature" && {
-                          type: `cds`,
+                          type: `cds`
                         }),
                         isRegex: false,
-                        matchType: "protein",
+                        matchType: "protein"
                       },
                       {
                         name: `Example ${startCase(annotationType)} 2`,
                         description: "I'm another description",
                         sequence: `gat.*tacccc.*aggttt`,
                         ...(annotationType === "feature" && {
-                          type: `cds`,
+                          type: `cds`
                         }),
                         isRegex: true,
-                        matchType: "dna",
-                      },
+                        matchType: "dna"
+                      }
                     ];
                     const csv = unparse(rows);
                     // const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
@@ -172,11 +172,11 @@ export const AutoAnnotateModal = compose(
                   <span style={{ display: "flex" }}>
                     isRegex &nbsp;
                     <InfoHelper
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         e.preventDefault();
                         showDialog({
-                          ModalComponent: AutoAnnotateBpMatchingDialog,
+                          ModalComponent: AutoAnnotateBpMatchingDialog
                         });
                       }}
                       content={
@@ -293,17 +293,17 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
 
               if (annotationType === "feature") {
                 const cleanedType = getFeatureTypes().find(
-                  (t) => t.toLowerCase() === type.toLowerCase()
+                  t => t.toLowerCase() === type.toLowerCase()
                 );
                 if (!cleanedType) {
                   if (!convertNonStandardTypes) {
                     convertNonStandardTypes = await showConfirmationDialog({
                       cancelButtonText: "Stop Auto-Annotate",
-                      text: `Detected that ${rowName} has a non-standard type of ${type}. We will assign it and all subsequent non-standard types to use the misc_feature type instead`,
+                      text: `Detected that ${rowName} has a non-standard type of ${type}. We will assign it and all subsequent non-standard types to use the misc_feature type instead`
                     });
                     if (!convertNonStandardTypes) {
                       throw {
-                        validationError: `${rowName} specifies the feature type ${type} which is not valid`,
+                        validationError: `${rowName} specifies the feature type ${type} which is not valid`
                       };
                     }
                   }
@@ -314,7 +314,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               }
               if (!sequence) {
                 throw {
-                  validationError: `${rowName} did not have a sequence`,
+                  validationError: `${rowName} did not have a sequence`
                 };
               }
               if (row.isRegex && row.isRegex.toUpperCase() === "TRUE") {
@@ -322,7 +322,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                   new RegExp(regexConvertedSeq); //just trying out whether the regexConvertedSeq will work as a valid regex
                 } catch (error) {
                   throw {
-                    validationError: `${rowName} has an invalid sequence/regex. Please fix it manually.`,
+                    validationError: `${rowName} has an invalid sequence/regex. Please fix it manually.`
                   };
                 }
                 row.isRegex = true;
@@ -336,7 +336,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                 // eslint-disable-next-line no-unused-vars
                 i,
                 // eslint-disable-next-line no-unused-vars
-                { name, sequence, matchType, type, isRegex },
+                { name, sequence, matchType, type, isRegex }
               ] of customAnnResponse.list.entries()) {
                 await validateRow(
                   {
@@ -344,7 +344,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                     sequence,
                     matchType,
                     type,
-                    isRegex: isRegex ? "TRUE" : "FALSE",
+                    isRegex: isRegex ? "TRUE" : "FALSE"
                   },
                   `Row ${i + 1} (${name})`
                 );
@@ -357,12 +357,12 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               csvHeaders.push("isRegex");
               const {
                 data,
-                meta: { fields },
+                meta: { fields }
               } = await parseCsvFile(csvFile[0]);
               const error = validateCSVRequiredHeaders(fields, csvHeaders);
               if (error) {
                 throw {
-                  validationError: error,
+                  validationError: error
                 };
               }
 
@@ -371,14 +371,14 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                 const error = validateCSVRow(row, csvHeaders, index);
                 if (error) {
                   throw {
-                    validationError: error,
+                    validationError: error
                   };
                 }
                 await validateRow(row, `Row ${index + 1} (${row.name})`);
               }
             } else if (fileType === "apeFile") {
               const { data } = await parseCsvFile(apeFile[0], {
-                header: false,
+                header: false
               });
               // eslint-disable-next-line no-unused-vars
               for (const [i, [name, sequence, type]] of data.entries()) {
@@ -398,7 +398,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               );
             }
             const annotationsToCheckById = {};
-            annsToCheck.forEach((ann) => {
+            annsToCheck.forEach(ann => {
               if (ann.matchType === "protein") {
                 ann.sequence = convertProteinSeqToDNAIupac(ann.sequence);
               }
@@ -408,26 +408,26 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                 sequence: ann.isRegex
                   ? ann.sequence
                   : convertApELikeRegexToRegex(ann.sequence),
-                id,
+                id
               };
             });
 
             const seqId = "placeholderId";
             const { [seqId]: newAnns } = autoAnnotate({
               seqsToAnnotateById: {
-                [seqId]: { ...sequenceData, id: seqId },
+                [seqId]: { ...sequenceData, id: seqId }
               },
-              annotationsToCheckById,
+              annotationsToCheckById
             });
 
             if (newAnns && newAnns.length) {
               setNewAnns(
-                newAnns.map((a) => {
+                newAnns.map(a => {
                   const toRet = {
                     ...annotationsToCheckById[a.id],
                     ...a,
                     forward: a.strand !== -1,
-                    id: shortid(),
+                    id: shortid()
                   };
                   toRet.color =
                     toRet.color || getFeatureToColorMap()[toRet.type];
@@ -469,32 +469,32 @@ const validateAgainstSchema = {
     {
       path: "name",
       type: "string",
-      isRequired: true,
+      isRequired: true
     },
     {
       path: "description",
-      type: "string",
+      type: "string"
     },
     {
       path: "sequence",
       type: "string",
-      isRequired: true,
+      isRequired: true
     },
     {
       path: "type",
       type: "dropdown",
       values: getFeatureTypes(),
-      defaultValue: "misc_feature",
+      defaultValue: "misc_feature"
     },
     {
       path: "isRegex",
-      type: "boolean",
+      type: "boolean"
     },
     {
       path: "matchType",
       type: "dropdown",
       defaultValue: "dna",
-      values: ["dna", "protein"],
-    },
-  ],
+      values: ["dna", "protein"]
+    }
+  ]
 };

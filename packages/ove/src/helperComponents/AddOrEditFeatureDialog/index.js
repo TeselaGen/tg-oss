@@ -13,7 +13,7 @@ const renderTypes = ({ readOnly }) => (
     tooltipError
     disabled={readOnly}
     defaultValue="misc_feature"
-    options={getFeatureTypes().map((type) => {
+    options={getFeatureTypes().map(type => {
       return {
         label: (
           <div
@@ -48,7 +48,7 @@ export default AddOrEditAnnotationDialog({
     // height: 500,
     width: 400
   },
-  getProps: (props) => ({
+  getProps: props => ({
     upsertAnnotation: props.upsertFeature,
     // renderLocations: true, //tnw enable this eventually for proteins
     renderLocations: !props.sequenceData.isProtein,

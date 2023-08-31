@@ -48,12 +48,12 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
 
     const stepSize = this.props.stepSize || (max - min) / 10;
     if (bindOutsideChangeHelper) {
-      bindOutsideChangeHelper.triggerChange = (fn) => {
+      bindOutsideChangeHelper.triggerChange = fn => {
         const valToPass =
           isNumber(value) && !isNaN(value) ? value : initialValue;
         return fn({
           value: valToPass,
-          changeValue: (newVal) => {
+          changeValue: newVal => {
             const newnew = clamp(newVal, min, max);
             this.setState({ value: newnew });
             this.props.onChange && this.props.onChange(newnew);
@@ -65,7 +65,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
     return (
       <div
         className={`${className} ${smallSlider ? "small-slider" : ""}`}
-        onClick={(e) => {
+        onClick={e => {
           onClick && onClick(e);
           preventDefaultStopPropagation(e);
         }}
@@ -100,10 +100,10 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
         />
         <Slider
           {...{ ...rest, value }}
-          onRelease={(newVal) =>
+          onRelease={newVal =>
             this.props.onRelease && this.props.onRelease(newVal)
           }
-          onChange={(value) => {
+          onChange={value => {
             this.setState({ value });
             this.props.onChange && this.props.onChange(value);
           }}

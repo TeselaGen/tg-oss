@@ -1,5 +1,5 @@
-import { Buffer } from 'buffer';
-import isBrowser from './isBrowser';
+import { Buffer } from "buffer";
+import isBrowser from "./isBrowser";
 
 export default function getArrayBufferFromFile(file) {
   if (!isBrowser) {
@@ -9,11 +9,11 @@ export default function getArrayBufferFromFile(file) {
 
   const reader = new window.FileReader();
   return new Promise((resolve, reject) => {
-    reader.onload = (e) => {
+    reader.onload = e => {
       resolve(e.target.result);
     };
-    reader.onerror = (err) => {
-      console.error('err:', err);
+    reader.onerror = err => {
+      console.error("err:", err);
       reject(err);
     };
     reader.readAsArrayBuffer(

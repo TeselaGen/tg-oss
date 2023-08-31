@@ -41,7 +41,7 @@ class TranslationProperties extends React.Component {
       selectedAnnotationId,
       annotationVisibility
     } = this.props;
-    const translationsToUse = map(translations, (translation) => {
+    const translationsToUse = map(translations, translation => {
       let aaString = "";
       for (let i = 0; i < translation.aminoAcids.length; i++) {
         aaString += translation.aminoAcids[i].aminoAcid.value;
@@ -134,7 +134,7 @@ class TranslationProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor((editorState) => {
+  connectToEditor(editorState => {
     const { readOnly, annotationVisibility = {}, sequenceData } = editorState;
     return {
       readOnly,

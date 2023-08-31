@@ -1,4 +1,7 @@
-import {normalizePositionByRangeLength, getRangeLength} from "@teselagen/range-utils";
+import {
+  normalizePositionByRangeLength,
+  getRangeLength
+} from "@teselagen/range-utils";
 
 export default function getDigestFragmentsForCutsites(
   sequenceLength,
@@ -102,4 +105,4 @@ export default function getDigestFragmentsForCutsites(
     return true;
   });
   return fragments;
-};
+}

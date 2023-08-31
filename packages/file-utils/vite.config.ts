@@ -1,6 +1,6 @@
-import viteConfig from '../../vite.config'
+import viteConfig from "../../vite.config";
 export default viteConfig({
-  name: 'file-utils',
+  name: "file-utils",
   dir: __dirname,
-  testEnvironment: 'jsdom',
-})
+  testEnvironment: "jsdom"
+});

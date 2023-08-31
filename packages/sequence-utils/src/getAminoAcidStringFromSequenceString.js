@@ -15,4 +15,4 @@ export default function getAminoAcidStringFromSequenceString(sequenceString) {
   });
   aaString = aaArray.join("");
   return aaString;
-};
+}

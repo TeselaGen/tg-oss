@@ -44,9 +44,9 @@ function getCenter(el) {
 Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   const getOrWrap = isString(dragSelector) ? cy.get : cy.wrap;
   cy.clock();
-  getOrWrap(dragSelector).then((el) => {
+  getOrWrap(dragSelector).then(el => {
     const dragSelectDomEl = el.get(0);
-    getOrWrap(dropSelector).then((el2) => {
+    getOrWrap(dropSelector).then(el2 => {
       const dropSelectDomEl = el2.get(0);
       const [x, y] = getCenter(dragSelectDomEl);
       const [xCenterDrop, yCenterDrop] = getCenter(dropSelectDomEl);
@@ -118,9 +118,9 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
 });
 
 Cypress.Commands.add("dragBetweenSimple", (dragSelector, dropSelector) => {
-  const getOrWrap = (selector) =>
+  const getOrWrap = selector =>
     isString(selector)
-      ? cy.get(selector).then((el) => {
+      ? cy.get(selector).then(el => {
           return el.first();
         })
       : cy.wrap(selector);
@@ -165,11 +165,11 @@ Cypress.Commands.add("triggerFileCmd", (text, { noEnter } = {}) => {
  */
 
 Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
-  return cy.fixture(fileUrl, "base64").then((input) => {
+  return cy.fixture(fileUrl, "base64").then(input => {
     const blob = Cypress.Blob.base64StringToBlob(input);
 
     const name = fileUrl.split("/").pop();
-    return cy.window().then((win) => {
+    return cy.window().then(win => {
       // this is using the File constructor from the application window
       const testFile = new win.File([blob], name, { type });
       const event = { dataTransfer: { files: [testFile], types: ["Files"] } };
@@ -222,7 +222,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add("selectRange", (start, end) => {
   cy.log(`selectRange ${start} - ${end}`);
-  cy.window().then((win) => {
+  cy.window().then(win => {
     win.ove_updateEditor({
       selectionLayer: {
         start: start - 1,
@@ -242,15 +242,15 @@ Cypress.Commands.add("selectRange", (start, end) => {
 //   cy.get(checkString)
 //   });
 
-Cypress.Commands.add("updateEditor", (props) => {
+Cypress.Commands.add("updateEditor", props => {
   cy.log(`updateEditor`);
-  cy.window().then((win) => {
+  cy.window().then(win => {
     win.ove_updateEditor(props);
   });
 });
 
 Cypress.Commands.add("deleteRange", (start, end) => {
-  cy.window().then((win) => {
+  cy.window().then(win => {
     const { sequenceData } = win.ove_getEditorState();
     const newSeqData = insertSequenceDataAtPositionOrRange({}, sequenceData, {
       start,
@@ -264,7 +264,7 @@ Cypress.Commands.add("deleteRange", (start, end) => {
 });
 
 Cypress.Commands.add("removeFeatures", () => {
-  cy.window().then((win) => {
+  cy.window().then(win => {
     win.ove_updateEditor({
       justPassingPartialSeqData: true,
       sequenceData: {
@@ -274,7 +274,7 @@ Cypress.Commands.add("removeFeatures", () => {
   });
 });
 Cypress.Commands.add("hideCutsites", () => {
-  cy.window().then((win) => {
+  cy.window().then(win => {
     win.ove_updateEditor({
       annotationVisibility: {
         cutsites: false
@@ -283,7 +283,7 @@ Cypress.Commands.add("hideCutsites", () => {
   });
 });
 Cypress.Commands.add("hideParts", () => {
-  cy.window().then((win) => {
+  cy.window().then(win => {
     win.ove_updateEditor({
       annotationVisibility: {
         parts: false
@@ -294,13 +294,13 @@ Cypress.Commands.add("hideParts", () => {
 Cypress.Commands.add("selectAlignmentRange", (start, end) => {
   window.Cypress.updateAlignmentSelection({ start: start - 1, end: end - 1 });
 });
-Cypress.Commands.add("scrollAlignmentToPercent", (percent) => {
+Cypress.Commands.add("scrollAlignmentToPercent", percent => {
   window.Cypress.scrollAlignmentToPercent(percent);
 });
 Cypress.Commands.add("closeDialog", () => {
   cy.get(`.bp3-dialog [aria-label="Close"]`).click();
 });
-Cypress.Commands.add("replaceSelection", (sequenceString) => {
+Cypress.Commands.add("replaceSelection", sequenceString => {
   cy.get(".veRowViewSelectionLayer")
     .first()
     .trigger("contextmenu", { force: true });
@@ -337,7 +337,7 @@ Cypress.Commands.add("hideMenu", () => {
 });
 
 Cypress.Commands.add("closeToasts", () => {
-  cy.window().then((win) => {
+  cy.window().then(win => {
     win.__tgClearAllToasts();
   });
 });

@@ -1,8 +1,8 @@
 import chai from "chai";
 import assert from "assert";
-import {map} from "lodash";
+import { map } from "lodash";
 import tidyUpSequenceData from "./tidyUpSequenceData";
-import {getDiffFromSeqs, patchSeqWithDiff, reverseSeqDiff} from "./diffUtils";
+import { getDiffFromSeqs, patchSeqWithDiff, reverseSeqDiff } from "./diffUtils";
 import chaiSubset from "chai-subset";
 
 chai.should();

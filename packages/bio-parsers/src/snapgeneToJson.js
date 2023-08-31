@@ -13,7 +13,7 @@ import { get } from "lodash";
 import { XMLParser } from "fast-xml-parser";
 import extractFileExtension from "./utils/extractFileExtension";
 
-const Buffer = buffer.Buffer
+const Buffer = buffer.Buffer;
 
 async function snapgeneToJson(fileObj, options = {}) {
   try {
@@ -59,7 +59,7 @@ async function snapgeneToJson(fileObj, options = {}) {
       isDNA: !!(await unpack(2, "H")) && !isProtein,
       exportVersion: await unpack(2, "H"),
       importVersion: await unpack(2, "H"),
-      features: [],
+      features: []
     };
     while (offset <= arrayBuffer.byteLength) {
       // # READ THE WHOLE FILE, BLOCK BY BLOCK, UNTIL THE END
@@ -109,24 +109,24 @@ async function snapgeneToJson(fileObj, options = {}) {
           0: [1, "NONE"], // non-directional feature (in that case, the attribute is generally absent altogether)
           1: [1, "TOP"], // forward strand
           2: [-1, "BOTTOM"], // reverse strand
-          3: [1, "BOTH"], // bi-directional feature
+          3: [1, "BOTH"] // bi-directional feature
         };
         const xml = await read(block_size, "utf8");
         const b = new XMLParser({
           ignoreAttributes: false,
           attributeNamePrefix: "",
-          isArray: (name) => name === "Feature" || name === "Segment",
+          isArray: name => name === "Feature" || name === "Segment"
         }).parse(xml);
         const { Features: { Feature = [] } = {} } = b;
         data.features = [];
-        Feature.forEach((feat) => {
+        Feature.forEach(feat => {
           const { directionality, Segment = [], name, type } = feat;
           // let color;
           let maxStart = 0;
           let maxEnd = 0;
           const locations =
             Segment &&
-            Segment.map((seg) => {
+            Segment.map(seg => {
               if (!seg) throw new Error("invalid feature definition");
               const { range } = seg;
               // color = seg.color;
@@ -137,7 +137,7 @@ async function snapgeneToJson(fileObj, options = {}) {
               maxEnd = Math.max(maxEnd, end);
               return {
                 start,
-                end,
+                end
               };
             });
 
@@ -146,9 +146,11 @@ async function snapgeneToJson(fileObj, options = {}) {
             type,
             ...(locations?.length > 1 && { locations }),
             strand: directionality ? strand_dict[directionality][0] : 1,
-            arrowheadType: directionality ? strand_dict[directionality][1] : "NONE",
+            arrowheadType: directionality
+              ? strand_dict[directionality][1]
+              : "NONE",
             start: maxStart,
-            end: maxEnd,
+            end: maxEnd
             // color,
           });
         });
@@ -183,8 +185,8 @@ async function snapgeneToJson(fileObj, options = {}) {
     return [
       {
         success: false,
-        messages: ["Import Error: Invalid File"],
-      },
+        messages: ["Import Error: Invalid File"]
+      }
     ];
   }
 }
@@ -193,7 +195,7 @@ function getStartAndEndFromRangeString(rangestring) {
   const [start, end] = rangestring.split("-");
   return {
     start: start - 1,
-    end: end - 1,
+    end: end - 1
   };
 }
 

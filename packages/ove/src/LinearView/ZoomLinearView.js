@@ -18,7 +18,7 @@ export function ZoomLinearView({
         onClick={() => {
           setTimeout(scrollToCaret, 0);
         }}
-        onChange={(zoomLvl) => {
+        onChange={zoomLvl => {
           //zoomLvl is in the range of 0 to 10
           const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
           const newCharWidth = minCharWidth * Math.pow(scaleFactor, zoomLvl);

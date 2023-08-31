@@ -24,7 +24,7 @@ class Clipboard extends React.Component {
     this.node.parentNode.removeEventListener("keyup", this.handleKeyUp, false);
   }
 
-  handleKeyDown = (e) => {
+  handleKeyDown = e => {
     if (
       document.activeElement &&
       ["input", "select", "textarea"].indexOf(
@@ -63,7 +63,7 @@ class Clipboard extends React.Component {
     };
     return (
       <input
-        ref={(c) => {
+        ref={c => {
           if (c) {
             this.node = c;
           }
@@ -83,4 +83,3 @@ class Clipboard extends React.Component {
 }
 
 export default Clipboard;
-

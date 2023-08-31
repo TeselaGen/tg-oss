@@ -1,4 +1,4 @@
-import {isObject} from "lodash";
+import { isObject } from "lodash";
 import isRangeWithinRange from "./isRangeWithinRange";
 import isPositionWithinRange from "./isPositionWithinRange";
 
@@ -9,21 +9,27 @@ export default function isRangeOrPositionWithinRange(
   includeStartEdge,
   includeEndEdge
 ) {
-
-  if (rangeOrPositionToCheck === undefined || rangeOrPositionToCheck === null || 
-    containingRange === undefined || containingRange === null ) {
-    return false
+  if (
+    rangeOrPositionToCheck === undefined ||
+    rangeOrPositionToCheck === null ||
+    containingRange === undefined ||
+    containingRange === null
+  ) {
+    return false;
   }
-  if (isObject(rangeOrPositionToCheck))    {
-    return isRangeWithinRange(rangeOrPositionToCheck,
+  if (isObject(rangeOrPositionToCheck)) {
+    return isRangeWithinRange(
+      rangeOrPositionToCheck,
       containingRange,
-      maxLength)
+      maxLength
+    );
   } else {
-    return isPositionWithinRange( rangeOrPositionToCheck,
+    return isPositionWithinRange(
+      rangeOrPositionToCheck,
       containingRange,
       maxLength,
       includeStartEdge,
-      includeEndEdge)
+      includeEndEdge
+    );
   }
-
-};
+}

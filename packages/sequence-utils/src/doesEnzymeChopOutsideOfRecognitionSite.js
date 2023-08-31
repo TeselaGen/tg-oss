@@ -7,4 +7,4 @@ export default function doesEnzymeChopOutsideOfRecognitionSite(enzyme) {
   } else {
     return false;
   }
-};
+}

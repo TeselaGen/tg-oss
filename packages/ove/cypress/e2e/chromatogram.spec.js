@@ -20,7 +20,7 @@ describe("chromatogram", function () {
     //basically make sure the chromatogram gets bigger as more bases are inserted
     cy.get(`[data-row-number="9"] .chromatogram-trace-initialized canvas`)
       .invoke("width")
-      .then((str) => {
+      .then(str => {
         const w1 = parseInt(str);
         cy.log(w1);
         cy.replaceSelection("aaaaaa");
@@ -29,7 +29,7 @@ describe("chromatogram", function () {
         cy.log(w1);
         cy.get(`[data-row-number="9"] .chromatogram-trace-initialized canvas`)
           .invoke("width")
-          .then((str) => {
+          .then(str => {
             const w2 = parseInt(str);
             cy.log(w2).then(() => {
               assert.deepEqual(w2 > w1, true);

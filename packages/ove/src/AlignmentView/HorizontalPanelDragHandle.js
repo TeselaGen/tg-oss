@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 export function HorizontalPanelDragHandle({ onDrag }) {
   const xStart = useRef(0);
 
-  const resize = useRef((e) => {
+  const resize = useRef(e => {
     const dx = xStart.current - e.clientX;
     onDrag({ dx });
     xStart.current = e.clientX;
@@ -14,7 +14,7 @@ export function HorizontalPanelDragHandle({ onDrag }) {
 
   return (
     <div
-      onMouseDown={(e) => {
+      onMouseDown={e => {
         xStart.current = e.clientX;
         document.addEventListener("mousemove", resize.current, false);
         document.addEventListener("mouseup", mouseup.current, false);

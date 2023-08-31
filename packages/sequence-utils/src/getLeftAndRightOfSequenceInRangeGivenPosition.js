@@ -2,7 +2,7 @@ import {
   isPositionWithinRange,
   getSequenceWithinRange,
   normalizePositionByRangeLength,
-  isPositionCloserToRangeStartThanRangeEnd,
+  isPositionCloserToRangeStartThanRangeEnd
 } from "@teselagen/range-utils";
 
 export default function getLeftAndRightOfSequenceInRangeGivenPosition(
@@ -36,4 +36,4 @@ export default function getLeftAndRightOfSequenceInRangeGivenPosition(
     }
   }
   return result;
-};
+}

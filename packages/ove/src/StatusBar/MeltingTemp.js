@@ -9,8 +9,8 @@ import useTmType from "../utils/useTmType";
 
 export default function MeltingTemp({
   sequence,
-  WrapperToUse = (p) => <div>{p.children}</div>,
-  InnerWrapper = (p) => (
+  WrapperToUse = p => <div>{p.children}</div>,
+  InnerWrapper = p => (
     <Button minimal small>
       {p.children}
     </Button>
@@ -46,7 +46,7 @@ export default function MeltingTemp({
                 { value: "default", label: "Default Tm" },
                 { value: "neb_tm", label: "NEB Tm" }
               ]}
-              onChange={(e) => setTmType(e.target.value)}
+              onChange={e => setTmType(e.target.value)}
               selectedValue={tmType}
             ></RadioGroup>
             {hasWarning && (

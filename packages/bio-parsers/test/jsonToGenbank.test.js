@@ -22,9 +22,9 @@ describe("genbank exporter/parser conversion", function () {
         {
           name: "testFeat",
           start: 3, //by default features are dna-indexed when in tgen json form
-          end: 29,
-        },
-      ],
+          end: 29
+        }
+      ]
     });
 
     assert(string.indexOf(proteinSequence) !== -1);
@@ -41,55 +41,55 @@ describe("genbank exporter/parser conversion", function () {
   });
 
   it(`should has ss-RNA/RNA/ss-DNA/DNA in the LOCUS line`, () => {
-    const dnaSequence = 'agctttgggttt';
-    const rnaSequence = 'agcuuuggguuu';
+    const dnaSequence = "agctttgggttt";
+    const rnaSequence = "agcuuuggguuu";
     const dsDNAString1 = jsonToGenbank({
       sequence: dnaSequence,
-      type: 'DNA'
+      type: "DNA"
     });
     const dsDNAString2 = jsonToGenbank({
       sequence: dnaSequence,
       doubleStranded: true,
-      type: 'DNA'
+      type: "DNA"
     });
     const ssDNAString = jsonToGenbank({
       sequence: dnaSequence,
-      sequenceTypeFromLocus: 'ss-DNA',
-      type: 'DNA'
+      sequenceTypeFromLocus: "ss-DNA",
+      type: "DNA"
     });
 
-    assert(dsDNAString1.indexOf('DNA') !== -1);
-    assert(dsDNAString1.indexOf('ss-DNA') === -1);
-    assert(dsDNAString2.indexOf('DNA') !== -1);
-    assert(dsDNAString2.indexOf('ss-DNA') === -1);
-    assert(ssDNAString.indexOf('ss-DNA') !== -1);
+    assert(dsDNAString1.indexOf("DNA") !== -1);
+    assert(dsDNAString1.indexOf("ss-DNA") === -1);
+    assert(dsDNAString2.indexOf("DNA") !== -1);
+    assert(dsDNAString2.indexOf("ss-DNA") === -1);
+    assert(ssDNAString.indexOf("ss-DNA") !== -1);
 
     const dsRNAString1 = jsonToGenbank({
       sequence: rnaSequence,
       doubleStranded: true,
-      type: 'RNA'
+      type: "RNA"
     });
     const dsRNAString2 = jsonToGenbank({
       sequence: rnaSequence,
-      sequenceTypeFromLocus: 'RNA',
-      type: 'RNA'
+      sequenceTypeFromLocus: "RNA",
+      type: "RNA"
     });
     const ssRNAString = jsonToGenbank({
       sequence: rnaSequence,
-      sequenceTypeFromLocus: 'ss-RNA',
-      type: 'RNA'
+      sequenceTypeFromLocus: "ss-RNA",
+      type: "RNA"
     });
 
-    assert(dsRNAString1.indexOf('RNA') !== -1);
-    assert(dsRNAString1.indexOf('ss-RNA') === -1);
-    assert(dsRNAString2.indexOf('RNA') !== -1);
-    assert(dsRNAString2.indexOf('ss-RNA') === -1);
-    assert(ssRNAString.indexOf('ss-RNA') !== -1);
+    assert(dsRNAString1.indexOf("RNA") !== -1);
+    assert(dsRNAString1.indexOf("ss-RNA") === -1);
+    assert(dsRNAString2.indexOf("RNA") !== -1);
+    assert(dsRNAString2.indexOf("ss-RNA") === -1);
+    assert(ssRNAString.indexOf("ss-RNA") !== -1);
   });
 
   it(`should have a space at the 68 position in the genbank locus `, () => {
     const string = jsonToGenbank({
-      sequence: "agagagagagag",
+      sequence: "agagagagagag"
     });
     assert(string.indexOf("SYN ") === 65);
   });
@@ -98,7 +98,7 @@ describe("genbank exporter/parser conversion", function () {
     const description = "Hey I am a test description";
     const string = jsonToGenbank({
       sequence: "agagagagagag",
-      description,
+      description
     });
     assert(string.indexOf("DEFINITION  " + description) !== -1);
     const result = parseGenbank(string);
@@ -115,9 +115,9 @@ describe("genbank exporter/parser conversion", function () {
           start: 2,
           end: 6,
           bases: "gTaaCCCC",
-          primerBindsOn: "3prime",
-        },
-      ],
+          primerBindsOn: "3prime"
+        }
+      ]
     });
     const result = parseGenbank(string);
     assert(string.includes(`sequence: gTaaCCCC`));
@@ -141,9 +141,9 @@ describe("genbank exporter/parser conversion", function () {
         {
           id: "id1",
           start: 2,
-          end: 6,
-        },
-      ],
+          end: 6
+        }
+      ]
     });
     const result = parseGenbank(string);
 
@@ -162,15 +162,15 @@ describe("genbank exporter/parser conversion", function () {
           id: "j5feat1",
           type: "j5_propagated_part",
           start: 2,
-          end: 6,
+          end: 6
         },
         {
           id: "j5id1",
           type: "j5_assembly_piece",
           start: 3,
-          end: 9,
-        },
-      ],
+          end: 9
+        }
+      ]
     });
     // tnr: the old string used to look like:
     //  j5_propagated_part2046..2063
@@ -197,8 +197,8 @@ describe("genbank exporter/parser conversion", function () {
           type: "CDS",
           overlapsSelf: true,
           start: 2,
-          end: 6,
-        },
+          end: 6
+        }
       ],
       parts: [
         {
@@ -206,9 +206,9 @@ describe("genbank exporter/parser conversion", function () {
           name: "overlapper",
           overlapsSelf: true,
           start: 2,
-          end: 6,
-        },
-      ],
+          end: 6
+        }
+      ]
     });
 
     const result = parseGenbank(string);
@@ -227,14 +227,14 @@ describe("genbank exporter/parser conversion", function () {
     const feat1 = {
       notes: {
         someNote: [
-          "I include a URL https://github.com/TeselaGen/microbyre-support/issues/70",
-        ],
+          "I include a URL https://github.com/TeselaGen/microbyre-support/issues/70"
+        ]
       },
       name: "araC",
       start: 6,
       end: 11,
       type: "CDS",
-      strand: -1,
+      strand: -1
     };
     const description =
       "I include multiple URLs https://github.com/TeselaGen/fake/url and anotha one https://github.com/TeselaGen/fake/url/the/2nd";
@@ -249,12 +249,12 @@ describe("genbank exporter/parser conversion", function () {
             name: "overlapper",
             overlapsSelf: true,
             start: 2,
-            end: 6,
-          },
-        ],
+            end: 6
+          }
+        ]
       },
       {
-        mangleUrls: true,
+        mangleUrls: true
       }
     );
 
@@ -273,34 +273,31 @@ describe("genbank exporter/parser conversion", function () {
     const feat1 = {
       notes: {
         someNote: [
-          "I include a URL https://github.com/TeselaGen/microbyre-support/issues/70",
-        ],
+          "I include a URL https://github.com/TeselaGen/microbyre-support/issues/70"
+        ]
       },
       name: "araC",
       start: 6,
       end: 11,
       type: "CDS",
-      strand: -1,
+      strand: -1
     };
     const description =
       "I include multiple URLs https://github.com/TeselaGen/fake/url and anotha one https://github.com/TeselaGen/fake/url/the/2nd";
-    const string = jsonToGenbank(
-      {
-        sequence: "agagagagagag",
-        features: [feat1],
-        description,
-        parts: [
-          {
-            id: "part1",
-            name: "overlapper",
-            overlapsSelf: true,
-            start: 2,
-            end: 6,
-          },
-        ],
-      },
-
-    );
+    const string = jsonToGenbank({
+      sequence: "agagagagagag",
+      features: [feat1],
+      description,
+      parts: [
+        {
+          id: "part1",
+          name: "overlapper",
+          overlapsSelf: true,
+          start: 2,
+          end: 6
+        }
+      ]
+    });
 
     string.should.not.include("https://github.com/TeselaGen/fake/url");
     string.should.not.include(
@@ -312,8 +309,8 @@ describe("genbank exporter/parser conversion", function () {
       {
         ...feat1,
         notes: {
-          someNote: ["I include a URL "],
-        },
+          someNote: ["I include a URL "]
+        }
       }
     );
     result[0].parsedSequence.description.should.include(
@@ -334,7 +331,7 @@ describe("genbank exporter/parser conversion", function () {
       start: 6,
       end: 882,
       type: "CDS",
-      strand: -1,
+      strand: -1
     };
     const feat2 = {
       notes: {},
@@ -342,7 +339,7 @@ describe("genbank exporter/parser conversion", function () {
       start: 4300,
       end: 4403,
       type: "terminator",
-      strand: 1,
+      strand: 1
     };
     result.should.be.an("array");
     result[0].success.should.be.true;
@@ -390,28 +387,28 @@ describe("genbank exporter/parser conversion", function () {
         locations: [
           {
             start: 100,
-            end: 200,
+            end: 200
           },
           {
             start: 300,
-            end: 400,
-          },
-        ],
-      },
+            end: 400
+          }
+        ]
+      }
     ]);
 
     result[0].parsedSequence.parts.should.containSubset([
       {
         notes: {
           preferred3PrimeOverhangs: [""],
-          preferred5PrimeOverhangs: [""],
+          preferred5PrimeOverhangs: [""]
         },
         name: "pS8c-gfpuv_sig_pep_vector_backbone",
         start: 1238,
         end: 1234,
         type: "part",
-        strand: 1,
-      },
+        strand: 1
+      }
     ]);
     result[0].parsedSequence.sequence.length.should.equal(5299);
     const exportedGenbankString = jsonToGenbank(result[0].parsedSequence);
@@ -426,14 +423,14 @@ describe("genbank exporter/parser conversion", function () {
       {
         notes: {
           preferred3PrimeOverhangs: [""],
-          preferred5PrimeOverhangs: [""],
+          preferred5PrimeOverhangs: [""]
         },
         name: "pS8c-gfpuv_sig_pep_vector_backbone",
         start: 1238,
         end: 1234,
         type: "part",
-        strand: 1,
-      },
+        strand: 1
+      }
     ]);
     res[0].parsedSequence.features.should.containSubset([
       {
@@ -443,14 +440,14 @@ describe("genbank exporter/parser conversion", function () {
         locations: [
           {
             start: 100,
-            end: 200,
+            end: 200
           },
           {
             start: 300,
-            end: 400,
-          },
-        ],
-      },
+            end: 400
+          }
+        ]
+      }
     ]);
     res[0].parsedSequence.sequence.length.should.equal(5299);
   });
@@ -468,13 +465,13 @@ describe("genbank exporter/parser conversion", function () {
       {
         name: "mutation",
         start: 264,
-        end: 264,
+        end: 264
       },
       {
         name: "TSS",
         start: 291,
-        end: 291,
-      },
+        end: 291
+      }
     ]);
     const exportedGenbankString = jsonToGenbank(result[0].parsedSequence);
     const res = parseGenbank(exportedGenbankString);
@@ -485,23 +482,23 @@ describe("genbank exporter/parser conversion", function () {
       {
         name: "mutation",
         start: 264,
-        end: 264,
+        end: 264
       },
       {
         name: "TSS",
         start: 291,
-        end: 291,
-      },
+        end: 291
+      }
     ]);
   });
   it("handles features in an array or a keyed object", function () {
     const exportedGenbankString = jsonToGenbank({
       sequence: "gagagagagga",
       features: {
-        feat1: { start: 2, end: 4 },
+        feat1: { start: 2, end: 4 }
       },
       accession: "some thing",
-      version: "v12312",
+      version: "v12312"
     });
     const result = parseGenbank(exportedGenbankString);
     result[0].parsedSequence.accession = "some thing";
@@ -509,8 +506,8 @@ describe("genbank exporter/parser conversion", function () {
     result[0].parsedSequence.features.should.containSubset([
       {
         start: 2,
-        end: 4,
-      },
+        end: 4
+      }
     ]);
   });
   it("should export warnings, assemblyPieces, and lineageAnnotations, as features with pragmas, preserving color and label color", function () {
@@ -525,8 +522,8 @@ describe("genbank exporter/parser conversion", function () {
           end: 23,
           color: "indigo",
           name: "j5_lineage_annotation_to_export",
-          strand: 1,
-        },
+          strand: 1
+        }
       },
       assemblyPieces: {
         6667: {
@@ -535,8 +532,8 @@ describe("genbank exporter/parser conversion", function () {
           end: 23,
           color: "#f0f0f0",
           name: "j5_assembly_piece_to_export",
-          strand: 1,
-        },
+          strand: 1
+        }
       },
       warnings: [
         {
@@ -547,17 +544,17 @@ describe("genbank exporter/parser conversion", function () {
 
           color: "red",
           labelColor: "red",
-          strand: 1,
+          strand: 1
         },
         {
           id: "warning2",
           start: 5,
           end: 23,
           name: "warning2",
-          strand: 1,
-        },
+          strand: 1
+        }
       ],
-      features: {},
+      features: {}
     });
     exportedGenbankString.should.include(`/pragma="j5_lineage_annotation"`);
     const result = parseGenbank(exportedGenbankString);
@@ -569,8 +566,8 @@ describe("genbank exporter/parser conversion", function () {
         notes: {},
         color: "indigo",
         name: "j5_lineage_annotation_to_export",
-        strand: 1,
-      },
+        strand: 1
+      }
     ]);
     result[0].parsedSequence.assemblyPieces.should.containSubset([
       {
@@ -579,8 +576,8 @@ describe("genbank exporter/parser conversion", function () {
         notes: {},
         color: "#f0f0f0",
         name: "j5_assembly_piece_to_export",
-        strand: 1,
-      },
+        strand: 1
+      }
     ]);
     result[0].parsedSequence.warnings.should.containSubset([
       {
@@ -589,14 +586,14 @@ describe("genbank exporter/parser conversion", function () {
         color: "red",
         labelColor: "red",
         name: "warning1",
-        strand: 1,
+        strand: 1
       },
       {
         start: 5,
         end: 23,
         name: "warning2",
-        strand: 1,
-      },
+        strand: 1
+      }
     ]);
   });
   it("should export primers as features with type set as primer", function () {
@@ -611,10 +608,10 @@ describe("genbank exporter/parser conversion", function () {
           end: 23,
           type: "primer",
           name: "primer_to_export",
-          strand: 1,
-        },
+          strand: 1
+        }
       },
-      features: {},
+      features: {}
     });
     exportedGenbankString.should.include("primer_bind");
     const result = parseGenbank(exportedGenbankString);
@@ -625,8 +622,8 @@ describe("genbank exporter/parser conversion", function () {
         strand: 1,
         name: "primer_to_export",
         start: 5,
-        end: 23,
-      },
+        end: 23
+      }
     ]);
   });
   it("handles inclusive1BasedStart and inclusive1BasedEnd options", function () {
@@ -634,12 +631,12 @@ describe("genbank exporter/parser conversion", function () {
       {
         sequence: "gagagagagga",
         features: {
-          feat1: { start: 2, end: 4 },
-        },
+          feat1: { start: 2, end: 4 }
+        }
       },
       {
         inclusive1BasedStart: true,
-        inclusive1BasedEnd: true,
+        inclusive1BasedEnd: true
       }
     );
     const result = parseGenbank(exportedGenbankString);
@@ -647,14 +644,14 @@ describe("genbank exporter/parser conversion", function () {
     result[0].parsedSequence.features.should.containSubset([
       {
         start: 1,
-        end: 3,
-      },
+        end: 3
+      }
     ]);
   });
   it("gives genbank that is linear when circular is falsy", function () {
     const exportedGenbankString = jsonToGenbank({
       sequence: "gagagagagga",
-      circular: false,
+      circular: false
     });
     const result = parseGenbank(exportedGenbankString);
 
@@ -663,7 +660,7 @@ describe("genbank exporter/parser conversion", function () {
   it('gives genbank that is linear when sequence.circular="0"', function () {
     const exportedGenbankString = jsonToGenbank({
       sequence: "gagagagagga",
-      circular: "0",
+      circular: "0"
     });
     const result = parseGenbank(exportedGenbankString);
 
@@ -674,14 +671,14 @@ describe("genbank exporter/parser conversion", function () {
     const exportedGenbankString = jsonToGenbank(
       {
         sequence: "gagagagagga",
-        name: name,
+        name: name
       },
       {
-        reformatSeqName: false,
+        reformatSeqName: false
       }
     );
     const result = parseGenbank(exportedGenbankString, {
-      reformatSeqName: false,
+      reformatSeqName: false
     });
     result[0].parsedSequence.name.should.equal(name);
   });
@@ -702,10 +699,10 @@ describe("genbank exporter/parser conversion", function () {
     const exportedGenbankString = jsonToGenbank(
       {
         sequence: "gagagagagga",
-        name: name,
+        name: name
       },
       {
-        reformatSeqName: true,
+        reformatSeqName: true
       }
     );
     const result = parseGenbank(
@@ -718,10 +715,10 @@ describe("genbank exporter/parser conversion", function () {
   it("provides a default name if none is provided", function () {
     const exportedGenbankString = jsonToGenbank(
       {
-        sequence: "gagagagagga",
+        sequence: "gagagagagga"
       },
       {
-        reformatSeqName: true,
+        reformatSeqName: true
       }
     );
     const result = parseGenbank(exportedGenbankString);
@@ -734,7 +731,7 @@ describe("genbank exporter/parser conversion", function () {
   it("adds a comment with the words teselagen_unique_id: XXXX if given a .teselagen_unique_id property", function () {
     const exportedGenbankString = jsonToGenbank({
       sequence: "gagagagagga",
-      teselagen_unique_id: "gaslgawlgiubawg;12312asdf",
+      teselagen_unique_id: "gaslgawlgiubawg;12312asdf"
     });
     const result = parseGenbank(exportedGenbankString);
 
@@ -745,7 +742,7 @@ describe("genbank exporter/parser conversion", function () {
   it("adds a comment for the library field if the sequence has one", function () {
     const exportedGenbankString = jsonToGenbank({
       sequence: "gagagagagga",
-      library: "libraryField",
+      library: "libraryField"
     });
     const result = parseGenbank(exportedGenbankString);
 
@@ -754,7 +751,7 @@ describe("genbank exporter/parser conversion", function () {
   it("adds a comment for the description if the sequence has one", function () {
     const exportedGenbankString = jsonToGenbank({
       sequence: "gagagagagga",
-      description: "my sequence description",
+      description: "my sequence description"
     });
     const result = parseGenbank(exportedGenbankString);
 
@@ -765,7 +762,7 @@ describe("genbank exporter/parser conversion", function () {
   it("handles comments parsing and formatting", function () {
     const exportedGenbankString = jsonToGenbank({
       sequence: "gagagagagga",
-      comments: ["gaslgawlgiubawg;12312asdf", "I am alive!"],
+      comments: ["gaslgawlgiubawg;12312asdf", "I am alive!"]
     });
     const result = parseGenbank(exportedGenbankString);
 

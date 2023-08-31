@@ -88,7 +88,7 @@ export class FindBar extends React.Component {
         options={opts}
         name="dnaOrAA"
         value={dnaOrAA}
-        onChange={(e) => {
+        onChange={e => {
           updateDnaOrAA(e.target.value);
         }}
       />,
@@ -100,7 +100,7 @@ export class FindBar extends React.Component {
             { label: "Ambiguous", value: "AMBIGUOUS" }
           ]}
           value={ambiguousOrLiteral}
-          onChange={(e) => {
+          onChange={e => {
             updateAmbiguousOrLiteral(e.target.value);
           }}
         />
@@ -268,10 +268,10 @@ export class FindBar extends React.Component {
                 ...(!isInline && { width: 350, minHeight: 70 })
               }}
               className="tg-find-tool-input"
-              inputRef={(n) => {
+              inputRef={n => {
                 if (n) this.inputEl = n;
               }}
-              onKeyDown={(e) => {
+              onKeyDown={e => {
                 e.persist();
                 if (e.metaKey && e.keyCode === 70) {
                   //cmd-f
@@ -291,7 +291,7 @@ export class FindBar extends React.Component {
                 }
               }}
               rightElement={rightEl}
-              onChange={(e) => {
+              onChange={e => {
                 return updateSearchText(e.target.value.replace(/\s/g, ""));
               }}
               value={searchText}
@@ -302,7 +302,7 @@ export class FindBar extends React.Component {
           minimal
           isOpen={
             annotationSearchMatches &&
-            annotationSearchMatches.filter((m) => m.length).length
+            annotationSearchMatches.filter(m => m.length).length
           }
           content={
             <AnnotationSearchMatchComp

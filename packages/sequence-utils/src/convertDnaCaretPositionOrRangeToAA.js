@@ -9,7 +9,7 @@ export default function convertDnaCaretPositionOrRangeToAA(rangeOrCaret) {
   } else {
     return convertDnaCaretPositionToAACaretPosition(rangeOrCaret);
   }
-};
+}
 
 function convertDnaCaretPositionToAACaretPosition(caret) {
   return Math.floor(caret / 3);

@@ -56,7 +56,7 @@ export class PairwiseAlignmentView extends React.Component {
             isFullyZoomedOut: true,
             noClickDragHandlers: true,
             linearViewOptions: getPairwiseOverviewLinearViewOptions,
-            handleSelectTrack: (trackIndex) => {
+            handleSelectTrack: trackIndex => {
               //set currentPairwiseAlignmentIndex
               this.setState({ currentPairwiseAlignmentIndex: trackIndex - 1 });
             }

@@ -278,7 +278,7 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
       <br></br>
       <FileUploadField
         label="CSV upload with wizard"
-        onFieldSubmit={function(fileList) {
+        onFieldSubmit={function (fileList) {
           console.info("do something with the finished file list:", fileList);
         }}
         isRequired
@@ -310,7 +310,7 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
       <Button
         intent="success"
         text="Finish Upload"
-        onClick={handleSubmit(async function(values) {
+        onClick={handleSubmit(async function (values) {
           window.parsedData = values.exampleFile[0].parsedData;
           window.exampleFile = values.exampleFile;
           window.toastr.success("Upload Successful");

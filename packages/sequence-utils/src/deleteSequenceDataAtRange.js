@@ -2,4 +2,4 @@ import insertSequenceDataAtPositionOrRange from "./insertSequenceDataAtPositionO
 
 export default function deleteSequenceDataAtRange(sequenceData, range) {
   return insertSequenceDataAtPositionOrRange({}, sequenceData, range);
-};
+}

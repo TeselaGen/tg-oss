@@ -3,7 +3,7 @@ describe("onSavePng", function () {
     cy.visit("");
   });
   it(`generate a png onSave if pngGenerate option is set to true`, () => {
-    cy.window().then((win) => {
+    cy.window().then(win => {
       cy.spy(win.console, "log");
     });
     cy.tgToggle("alwaysAllowSave");

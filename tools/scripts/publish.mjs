@@ -32,7 +32,7 @@ const r = readFileSync(`output.json`).toString();
 const simpleGraph = JSON.parse(r).graph;
 
 const deps = {};
-const getDeps = (name) => {
+const getDeps = name => {
   simpleGraph.dependencies[name].forEach(({ target }) => {
     const key = `@teselagen/${target}`;
     if (!deps[key]) {

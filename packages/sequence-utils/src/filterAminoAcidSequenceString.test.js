@@ -8,7 +8,9 @@ describe("filterAminoAcidSequenceString", () => {
     assert.equal(filteredString, "xtgalmfwkqespvicyhrnd");
   });
   it("should handle upper case letters", () => {
-    const filteredString = filterAminoAcidSequenceString("xtgalmfWKQEspvicyhrnd");
+    const filteredString = filterAminoAcidSequenceString(
+      "xtgalmfWKQEspvicyhrnd"
+    );
     assert.equal(filteredString, "xtgalmfWKQEspvicyhrnd");
   });
   it("should handle the option to includeStopCodon by allowing periods", () => {

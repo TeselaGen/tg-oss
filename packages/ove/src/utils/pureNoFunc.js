@@ -10,7 +10,7 @@ const isEq = (o1, o2) => {
   return isEq;
 };
 
-const pure = (BaseComponent) => {
+const pure = BaseComponent => {
   const hoc = shouldUpdate((props, nextProps) => !isEq(props, nextProps));
   return hoc(BaseComponent);
 };

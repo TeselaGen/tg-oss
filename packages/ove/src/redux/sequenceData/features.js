@@ -13,7 +13,7 @@ export const deleteFeature = createAction("DELETE_FEATURE");
 // ------------------------------------
 export default createReducer(
   {
-    ...upsertDeleteActionGenerator(upsertFeature, deleteFeature),
+    ...upsertDeleteActionGenerator(upsertFeature, deleteFeature)
   },
   {}
 );

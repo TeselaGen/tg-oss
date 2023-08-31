@@ -1,11 +1,11 @@
-//TNRTODO this needs to be fixed and implemented 
+//TNRTODO this needs to be fixed and implemented
 import React from "react";
 import print from "./veToolbarIcons/print.png";
 
 export default () => {
   return {
     Icon: <img src={print} alt="Print Vector" />,
-    onIconClick: function() {
+    onIconClick: function () {
       // var myPrintContent = document.getElementById('printdiv');
       // var myPrintWindow = window.open(windowUrl, windowName, 'left=300,top=100,width=400,height=400');
       // myPrintWindow.document.write(myPrintContent.innerHTML);

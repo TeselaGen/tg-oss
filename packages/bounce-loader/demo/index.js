@@ -1,5 +1,5 @@
-import { BounceLoader } from '../src';
-import renderDemo from '../../../helperUtils/renderDemo';
+import { BounceLoader } from "../src";
+import renderDemo from "../../../helperUtils/renderDemo";
 export default renderDemo(() => {
   return (
     <div>

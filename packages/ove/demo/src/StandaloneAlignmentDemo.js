@@ -65,7 +65,7 @@ export default class StandaloneAlignmentDemo extends React.Component {
           height: "100%",
           zIndex: 1050
         }}
-        ref={(node) => {
+        ref={node => {
           this.node = node;
         }}
       />

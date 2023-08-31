@@ -9,7 +9,7 @@ export default function PinchHelper({ children, onPinch }) {
   const target = React.useRef();
 
   usePinch(
-    (arg) => {
+    arg => {
       if (onPinch) onPinch(arg);
     },
     {

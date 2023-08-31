@@ -1,7 +1,7 @@
-import {map} from "lodash";
-import {adjustRangeToRotation} from "@teselagen/range-utils";
+import { map } from "lodash";
+import { adjustRangeToRotation } from "@teselagen/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
-import {modifiableTypes} from "./annotationTypes";
+import { modifiableTypes } from "./annotationTypes";
 import rotateBpsToPosition from "./rotateBpsToPosition";
 
 export default function rotateSequenceDataToPosition(
@@ -28,7 +28,7 @@ export default function rotateSequenceDataToPosition(
     );
   });
   return newSequenceData;
-};
+}
 
 function adjustAnnotationsToRotation(
   annotationsToBeAdjusted,

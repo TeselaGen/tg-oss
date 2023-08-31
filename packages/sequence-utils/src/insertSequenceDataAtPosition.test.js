@@ -1,6 +1,5 @@
 //tnr: half finished test.
 
-
 import chai from "chai";
 import chaiSubset from "chai-subset";
 
@@ -40,7 +39,10 @@ describe("insertSequenceData", () => {
         {
           start: 0,
           end: 9,
-          locations: [{ start: 0, end: 3 }, { start: 5, end: 9 }]
+          locations: [
+            { start: 0, end: 3 },
+            { start: 5, end: 9 }
+          ]
         }
       ]
     };

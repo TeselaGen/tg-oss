@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom'
+import ReactDOM from "react-dom";
 
 export function renderOnDoc(fn) {
   const elemDiv = document.createElement("div");
@@ -25,5 +25,5 @@ export function renderOnDocSimple(el) {
     });
   };
   ReactDOM.render(el, elemDiv);
-  return handleClose
+  return handleClose;
 }

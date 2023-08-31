@@ -47,42 +47,42 @@ class AddOrEditAnnotationDialog extends React.Component {
       (this.props.initialValues && this.props.initialValues.notes) || {};
     this.notes = store(
       flatMap(initialNotes, (noteValues, noteType) => {
-        return map(noteValues, (value) => ({
+        return map(noteValues, value => ({
           key: noteType,
           value: value
         }));
       })
     );
   }
-  formatStart = (val) => {
+  formatStart = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return (val + 2) / 3;
     }
     return val;
   };
-  formatEnd = (val) => {
+  formatEnd = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val / 3;
     }
     return val;
   };
-  parseStart = (val) => {
+  parseStart = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val * 3 - 2;
     }
     return val;
   };
-  parseEnd = (val) => {
+  parseEnd = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val * 3;
     }
     return val;
   };
-  renderLocations = (props) => {
+  renderLocations = props => {
     const { fields } = props;
     const { sequenceData = { sequence: "" }, start, end } = this.props;
     const sequenceLength = sequenceData.sequence.length;
@@ -228,7 +228,7 @@ class AddOrEditAnnotationDialog extends React.Component {
     );
     return (
       <form
-        onSubmit={handleSubmit(async (data) => {
+        onSubmit={handleSubmit(async data => {
           let updatedData;
           const forward =
             data.forward !== undefined
@@ -364,8 +364,8 @@ class AddOrEditAnnotationDialog extends React.Component {
                 { label: "Positive", value: "true" },
                 { label: "Negative", value: "false" }
               ]}
-              normalize={(value) => value === "true" || false}
-              format={(value) => (value ? "true" : "false")}
+              normalize={value => value === "true" || false}
+              format={value => (value ? "true" : "false")}
               name="forward"
               label="Strand"
             />
@@ -457,7 +457,7 @@ class AddOrEditAnnotationDialog extends React.Component {
         >
           <Button
             style={{ marginRight: 15 }}
-            onMouseDown={(e) => {
+            onMouseDown={e => {
               //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
               e.preventDefault();
               e.stopPropagation();
@@ -599,7 +599,7 @@ const Notes = view(({ readOnly, notes }) => {
             style={{ display: "flex", padding: "4px 2px" }}
           >
             <EditableText
-              onConfirm={(string) => {
+              onConfirm={string => {
                 if (string === "") {
                   if (!note.value) {
                     notes.splice(i, 1);
@@ -614,7 +614,7 @@ const Notes = view(({ readOnly, notes }) => {
               multiline
               className="addAnnNoteKey"
               // style={{marginRight: 20}}
-              onChange={(string) => {
+              onChange={string => {
                 note.key = string.replace(" ", "_").replace(/\n/g, "");
               }}
               value={key}
@@ -631,7 +631,7 @@ const Notes = view(({ readOnly, notes }) => {
               //   minWidth: 200,
               //   maxWidth: 200,
               // }}
-              onChange={(string) => {
+              onChange={string => {
                 note.value = string.replace(/\n/g, "");
               }}
               value={value}

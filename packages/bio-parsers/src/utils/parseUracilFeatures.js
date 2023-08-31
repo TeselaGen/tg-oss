@@ -5,9 +5,9 @@ export default function parseUracilFeatures(sequenceBps, featureList = []) {
       name: "tg_uracil",
       strand: 1,
       start: index,
-      end: index,
+      end: index
     });
     return u === "U" ? "T" : "t";
   });
-  return cleanedBps
+  return cleanedBps;
 }

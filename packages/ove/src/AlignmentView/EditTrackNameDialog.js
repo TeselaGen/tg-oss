@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  DialogFooter,
-  InputField,
-  wrapDialog
-} from "@teselagen/ui";
+import { DialogFooter, InputField, wrapDialog } from "@teselagen/ui";
 import { compose } from "recompose";
 import { reduxForm } from "redux-form";
 

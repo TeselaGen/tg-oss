@@ -1,16 +1,18 @@
 import { compose } from "redux";
 import pluralize from "pluralize";
 
-
-
 import { formName } from "./constants";
 import { typeField } from "./helperComponents/PropertiesDialog/typeField";
-import { DataTable, DialogFooter, withSelectTableRecords, withSelectedEntities } from "@teselagen/ui";
+import {
+  DataTable,
+  DialogFooter,
+  withSelectTableRecords,
+  withSelectedEntities
+} from "@teselagen/ui";
 import { useEffect } from "react";
 import { hideDialog } from "./GlobalDialogUtils";
 import { startCase } from "lodash";
 import { tidyUpAnnotation } from "@teselagen/sequence-utils";
-
 
 const schemaFeatures = ["name", typeField, "start", "end", "strand"];
 const schemaOther = ["name", "start", "end", "strand"];
@@ -39,7 +41,7 @@ export default compose(
         <DataTable
           isInfinite
           formName={formName}
-          entities={newAnnotations.map((e) => ({
+          entities={newAnnotations.map(e => ({
             ...e,
             start: e.start + 1,
             end: e.end + 1

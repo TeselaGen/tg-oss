@@ -1,7 +1,11 @@
 /* eslint-disable no-unused-expressions */
-import {autoAnnotate, convertApELikeRegexToRegex, convertProteinSeqToDNAIupac} from "./autoAnnotate";
+import {
+  autoAnnotate,
+  convertApELikeRegexToRegex,
+  convertProteinSeqToDNAIupac
+} from "./autoAnnotate";
 
-import {expect} from "chai";
+import { expect } from "chai";
 
 describe("convertApELikeRegexToRegex", () => {
   it(`converts as expected`, () => {
@@ -26,7 +30,6 @@ describe("convertApELikeRegexToRegex", () => {
     expect(convertApELikeRegexToRegex("CATTT<ATTT")).to.eq(
       "(CATTT|ATTT|TTT|TT|T)?ATTT"
     );
-
   });
 
   it(`errors as expected`, () => {
@@ -35,7 +38,6 @@ describe("convertApELikeRegexToRegex", () => {
     } catch (e) {
       expect(e).to.exist;
     }
-
   });
   it(`errors as expected`, () => {
     try {
@@ -43,7 +45,6 @@ describe("convertApELikeRegexToRegex", () => {
     } catch (e) {
       expect(e).to.exist;
     }
-
   });
   it(`errors as expected`, () => {
     try {
@@ -51,7 +52,6 @@ describe("convertApELikeRegexToRegex", () => {
     } catch (e) {
       expect(e).to.exist;
     }
-
   });
   it(`errors as expected`, () => {
     try {
@@ -59,7 +59,6 @@ describe("convertApELikeRegexToRegex", () => {
     } catch (e) {
       expect(e).to.exist;
     }
-
   });
 });
 describe("autoAnnotate", () => {
@@ -105,7 +104,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`IUPAC # works - T#C should capture part of AAAATTTTGGGGGCCCCCAAGT`, () => {
     const results = autoAnnotate({
@@ -146,7 +144,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`IUPAC # works - T#C<AAG should capture part of AAAATTTTGGGGGCCCCCAAGT`, () => {
     const results = autoAnnotate({
@@ -180,7 +177,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`IUPAC > works - CAA>ATT should capture all of CAAATT`, () => {
     const results = autoAnnotate({
@@ -214,7 +210,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`IUPAC > works - CAA>ATT should capture part of CAAATG`, () => {
     const results = autoAnnotate({
@@ -248,7 +243,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`complex IUPAC works - correctly auto annotates a single seq with a regex annotation`, () => {
     const results = autoAnnotate({
@@ -281,7 +275,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`another IUPAC works ccc<cTTT - correctly auto annotates a single seq with a regex annotation`, () => {
     const results = autoAnnotate({
@@ -315,7 +308,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`long iupac < works - correctly auto annotates a single seq with a regex annotation`, () => {
     const convertReg = convertApELikeRegexToRegex(
@@ -393,7 +385,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
 
   it(`correctly auto annotates a single dna seq with a single protein annotation`, () => {
@@ -440,7 +431,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`correctly auto annotates a single seq with a single annotation`, () => {
     const results = autoAnnotate({
@@ -501,7 +491,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`correctly auto annotates a single seq with a full spanning annotation`, () => {
     const results = autoAnnotate({
@@ -524,7 +513,6 @@ describe("autoAnnotate", () => {
     expect(results).to.deep.eq({
       21: [{ id: 31, strand: 1, start: 0, end: 6 }]
     });
-
   });
   it(`a "warning threshold" works as expected`, () => {
     const results = autoAnnotate({
@@ -594,7 +582,6 @@ describe("autoAnnotate", () => {
         21: ["31"]
       }
     });
-
   });
   it(`correctly does not auto annotate two seqs when an annotation spans them`, () => {
     const results = autoAnnotate({
@@ -620,7 +607,6 @@ describe("autoAnnotate", () => {
     });
     //this should return an object keyed by the sequence id with the list of annotations to create
     expect(results).to.deep.eq({});
-
   });
   it(`correctly auto annotates two seqs when an annotation spans the origin on the 2nd seq`, () => {
     const results = autoAnnotate({
@@ -656,7 +642,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`correctly auto annotates two seq when the casing on the annotation and seq is wonky`, () => {
     const results = autoAnnotate({
@@ -693,7 +678,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
 
   it(`correctly auto annotates a 1 bp seq`, () => {
@@ -725,7 +709,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`correctly does not auto annotate a 1 bp seq when a feature already spans that seq`, () => {
     const results = autoAnnotate({
@@ -748,7 +731,6 @@ describe("autoAnnotate", () => {
     });
     //this should return an object keyed by the sequence id with the list of annotations to create
     expect(results).to.deep.eq({});
-
   });
   it(`correctly auto annotates a 1 bp seq when compareName:true when a feature with a different name already spans that seq`, () => {
     const results = autoAnnotate({
@@ -781,7 +763,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`correctly does not auto annotate several seqs when annotations already span those seqs`, () => {
     const results = autoAnnotate({
@@ -819,7 +800,6 @@ describe("autoAnnotate", () => {
     });
     //this should return an object keyed by the sequence id with the list of annotations to create
     expect(results).to.deep.eq({});
-
   });
   it(`correctly auto annotates two seqs when a annotation spans the origin on the 2nd seq on the negative strand`, () => {
     const results = autoAnnotate({
@@ -859,7 +839,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`correctly auto annotates a seq when an annotation matches multiple times overlapping`, () => {
     const results = autoAnnotate({
@@ -894,7 +873,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`correctly auto annotates two seqs when an annotation matches multiple times overlapping on the 2nd seq`, () => {
     const results = autoAnnotate({
@@ -942,7 +920,6 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
   it(`correctly auto annotates multiple sequences and multiple annotations`, () => {
     const results = autoAnnotate({
@@ -1034,6 +1011,5 @@ describe("autoAnnotate", () => {
         }
       ]
     });
-
   });
 });

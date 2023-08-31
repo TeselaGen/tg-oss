@@ -1,8 +1,11 @@
-import {flatMap, extend, forEach, startCase} from "lodash";
-import {getRangeLength} from "@teselagen/range-utils";
+import { flatMap, extend, forEach, startCase } from "lodash";
+import { getRangeLength } from "@teselagen/range-utils";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import insertSequenceDataAtPosition from "./insertSequenceDataAtPosition";
-import {getSequenceWithinRange, getZeroedRangeOverlaps} from "@teselagen/range-utils";
+import {
+  getSequenceWithinRange,
+  getZeroedRangeOverlaps
+} from "@teselagen/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import { annotationTypes } from "./annotationTypes";
 
@@ -79,7 +82,7 @@ export default function getSequenceDataBetweenRange(
   }
 
   return tidyUpSequenceData(seqDataToReturn, options);
-};
+}
 
 function getAnnotationsBetweenRange(
   annotationsToBeAdjusted,

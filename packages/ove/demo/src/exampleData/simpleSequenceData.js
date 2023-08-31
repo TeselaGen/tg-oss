@@ -20,7 +20,7 @@ const exampleData = {
       strand: 1,
       notes: [],
       color: "blue"
-    },
-  ],
+    }
+  ]
 };
 export default exampleData;

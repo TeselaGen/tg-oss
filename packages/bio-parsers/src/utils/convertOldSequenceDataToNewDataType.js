@@ -1,4 +1,4 @@
-import { isRangeWithinRange } from '@teselagen/range-utils';
+import { isRangeWithinRange } from "@teselagen/range-utils";
 
 export default function convertOldSequenceDataToNewDataType(
   oldTeselagenJson,
@@ -7,7 +7,7 @@ export default function convertOldSequenceDataToNewDataType(
   if (opts && opts.splitLocations) {
     //after the file has been parsed, but before it's been saved, check for features with multiple locations and split them
     oldTeselagenJson &&
-      oldTeselagenJson.features.forEach(function(feature) {
+      oldTeselagenJson.features.forEach(function (feature) {
         if (feature.locations && feature.locations[0]) {
           if (feature.locations.length > 1) {
             for (let i = 1; i < feature.locations.length; i++) {
@@ -31,11 +31,10 @@ export default function convertOldSequenceDataToNewDataType(
         }
         delete feature.locations;
       });
-
   } else {
     //mange locations
     oldTeselagenJson &&
-      oldTeselagenJson.features.forEach(function(feature) {
+      oldTeselagenJson.features.forEach(function (feature) {
         if (feature.locations && feature.locations[0]) {
           //set the new starts and ends
           feature.start = feature.locations[0].start;
@@ -53,7 +52,7 @@ export default function convertOldSequenceDataToNewDataType(
               delete feature.locations;
             }
           } else {
-            delete feature.locations
+            delete feature.locations;
           }
         }
       });
@@ -61,4 +60,4 @@ export default function convertOldSequenceDataToNewDataType(
   if (Array.isArray(oldTeselagenJson.sequence)) {
     oldTeselagenJson.sequence = oldTeselagenJson.sequence.join("");
   }
-};
+}

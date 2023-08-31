@@ -64,7 +64,7 @@ export const featuresSubmenu = [
     shouldDismissPopover: false
   }
 ];
-export const partsSubmenu = (props) => {
+export const partsSubmenu = props => {
   return [
     {
       cmd: "toggleParts",

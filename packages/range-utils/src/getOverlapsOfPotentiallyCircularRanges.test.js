@@ -2,8 +2,8 @@ import getOverlapsOfPotentiallyCircularRanges from "./getOverlapsOfPotentiallyCi
 
 import assert from "assert";
 
-describe("getOverlapsOfPotentiallyCircularRanges", function() {
-  it("doesnt return an overlap for non overlapping ranges", function() {
+describe("getOverlapsOfPotentiallyCircularRanges", function () {
+  it("doesnt return an overlap for non overlapping ranges", function () {
     assert.deepEqual(
       getOverlapsOfPotentiallyCircularRanges(
         {
@@ -19,7 +19,7 @@ describe("getOverlapsOfPotentiallyCircularRanges", function() {
       []
     );
   });
-  it("does return overlaps for overlapping ranges", function() {
+  it("does return overlaps for overlapping ranges", function () {
     assert.deepEqual(
       getOverlapsOfPotentiallyCircularRanges(
         {

@@ -1,8 +1,11 @@
-import {modulateRangeBySequenceLength, flipContainedRange} from "@teselagen/range-utils";
-import {reduce, uniqBy} from "lodash";
+import {
+  modulateRangeBySequenceLength,
+  flipContainedRange
+} from "@teselagen/range-utils";
+import { reduce, uniqBy } from "lodash";
 import escapeStringRegexp from "escape-string-regexp";
 import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
-import {ambiguous_dna_values, extended_protein_values} from "./bioData";
+import { ambiguous_dna_values, extended_protein_values } from "./bioData";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 export default function findSequenceMatches(
@@ -34,15 +37,11 @@ export default function findSequenceMatches(
     matches = [...matches, ...flippedReverseMatches];
   }
   return matches;
-};
+}
 
 function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
-  const {
-    isCircular,
-    isAmbiguous,
-    isProteinSequence,
-    isProteinSearch
-  } = options;
+  const { isCircular, isAmbiguous, isProteinSequence, isProteinSearch } =
+    options;
   let searchStringToUse = escapeStringRegexp(searchString);
   if (isAmbiguous) {
     if (isProteinSearch || isProteinSequence) {

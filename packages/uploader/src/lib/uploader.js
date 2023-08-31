@@ -1,4 +1,4 @@
-import './uploader.css';
+import "./uploader.css";
 export function Uploader() {
   return (
     <div a="wee">

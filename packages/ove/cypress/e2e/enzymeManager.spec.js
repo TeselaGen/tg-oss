@@ -1,7 +1,7 @@
 describe("enzymeManager", () => {
   it(`enzymes not shown by default should show up when added to a group (and hiding an enzyme that is shown in a group should work)`, () => {
     cy.visit("");
-    cy.window().then((win) => {
+    cy.window().then(win => {
       win.localStorage.clear();
     });
     cy.triggerFileCmd("Manage Enzymes");
@@ -32,7 +32,7 @@ describe("enzymeManager", () => {
   });
   it(`should be able to add a new group and add enzymes to it`, () => {
     cy.visit("");
-    cy.window().then((win) => {
+    cy.window().then(win => {
       win.localStorage.clear();
     });
     cy.triggerFileCmd("Manage Enzymes");

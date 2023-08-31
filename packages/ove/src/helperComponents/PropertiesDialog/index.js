@@ -15,7 +15,7 @@ import "./style.css";
 import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
 import { pick } from "lodash";
 
-const PropertiesContainer = (Comp) => (props) => {
+const PropertiesContainer = Comp => props => {
   const { additionalFooterEls, additionalHeaderEls, ...rest } = props;
   return (
     <React.Fragment>
@@ -67,12 +67,12 @@ export class PropertiesDialog extends React.Component {
     let { tabId, selectedAnnotationId } = propertiesTool;
     if (
       propertiesList
-        .map((nameOrOverride) => nameOrOverride.name || nameOrOverride)
+        .map(nameOrOverride => nameOrOverride.name || nameOrOverride)
         .indexOf(tabId) === -1
     ) {
       tabId = propertiesList[0].name || propertiesList[0];
     }
-    const propertiesTabs = flatMap(propertiesList, (nameOrOverride) => {
+    const propertiesTabs = flatMap(propertiesList, nameOrOverride => {
       if (annotationsToSupport[nameOrOverride] === false) {
         return [];
       }

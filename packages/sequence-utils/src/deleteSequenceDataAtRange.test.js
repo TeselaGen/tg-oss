@@ -1,10 +1,9 @@
 //tnr: half finished test.
 
-
 import chai from "chai";
 
-import {getRangeLength} from "@teselagen/range-utils";
-import {cloneDeep} from "lodash";
+import { getRangeLength } from "@teselagen/range-utils";
+import { cloneDeep } from "lodash";
 import chaiSubset from "chai-subset";
 
 import deleteSequenceDataAtRange from "./deleteSequenceDataAtRange";
@@ -18,7 +17,10 @@ describe("deleteSequenceDataAtRange", () => {
       sequence: "atagatag"
     };
     const range = { start: 0, end: 7 };
-    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const postDeleteSeqData = deleteSequenceDataAtRange(
+      existingSequence,
+      range
+    );
     postDeleteSeqData.sequence.length.should.equal(
       existingSequence.sequence.length - getRangeLength(range)
     );
@@ -28,7 +30,10 @@ describe("deleteSequenceDataAtRange", () => {
       sequence: "atagatag"
     };
     const range = { start: 4, end: 3 };
-    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const postDeleteSeqData = deleteSequenceDataAtRange(
+      existingSequence,
+      range
+    );
     postDeleteSeqData.sequence.length.should.equal(
       existingSequence.sequence.length -
         getRangeLength(range, existingSequence.sequence.length)
@@ -39,7 +44,10 @@ describe("deleteSequenceDataAtRange", () => {
       sequence: "atagatag"
     };
     const range = { start: 3, end: 5 };
-    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const postDeleteSeqData = deleteSequenceDataAtRange(
+      existingSequence,
+      range
+    );
     postDeleteSeqData.sequence.length.should.equal(
       existingSequence.sequence.length - getRangeLength(range)
     );
@@ -48,7 +56,7 @@ describe("deleteSequenceDataAtRange", () => {
     const existingSequence = {
       sequence: "atagatag",
       features: {
-        "1": {
+        1: {
           start: 7,
           end: 7
         }
@@ -56,7 +64,10 @@ describe("deleteSequenceDataAtRange", () => {
     };
     const clonedExistingSeq = cloneDeep(existingSequence);
     const range = { start: 3, end: 5 };
-    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const postDeleteSeqData = deleteSequenceDataAtRange(
+      existingSequence,
+      range
+    );
     existingSequence.should.deep.equal(clonedExistingSeq);
     postDeleteSeqData.sequence.length.should.equal(
       existingSequence.sequence.length - getRangeLength(range)
@@ -78,7 +89,10 @@ describe("deleteSequenceDataAtRange", () => {
       ]
     };
     const range = { start: -1, end: -1 };
-    const postDeleteSeqData = deleteSequenceDataAtRange(existingSequence, range);
+    const postDeleteSeqData = deleteSequenceDataAtRange(
+      existingSequence,
+      range
+    );
     postDeleteSeqData.should.containSubset({
       sequence: "atgagagaga",
       features: [

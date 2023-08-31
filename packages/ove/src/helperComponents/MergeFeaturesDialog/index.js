@@ -38,7 +38,7 @@ class MergeFeaturesDialog extends React.Component {
     const feat2 = features[id2];
     const [id1default, id2default] = flatMap(
       selectedAnnotations.idStack,
-      (id) => {
+      id => {
         const ann = selectedAnnotations.idMap[id];
         if (ann.annotationTypePlural === "features") {
           return id;
@@ -115,7 +115,7 @@ class MergeFeaturesDialog extends React.Component {
               </div>
             </div>
           }
-          options={flatMap(features, (feat) => {
+          options={flatMap(features, feat => {
             if (feat.id === (feat2 && feat2.id)) return []; //filter out other feature as an option
             return {
               value: feat.id,
@@ -168,7 +168,7 @@ class MergeFeaturesDialog extends React.Component {
               </div>
             </div>
           }
-          options={flatMap(features, (feat) => {
+          options={flatMap(features, feat => {
             if (feat.id === (feat1 && feat1.id)) return []; //filter out other feature as an option
             return {
               value: feat.id,

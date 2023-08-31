@@ -1,4 +1,4 @@
-import {modulatePositionByRange} from "@teselagen/range-utils";
+import { modulatePositionByRange } from "@teselagen/range-utils";
 
 /**
  * This function gets the overlapping of one sequence to another based on sequence equality.
@@ -10,7 +10,7 @@ import {modulatePositionByRange} from "@teselagen/range-utils";
  */
 export default function getOverlapBetweenTwoSequences(
   sequenceToFind,
-  sequenceToSearchIn,
+  sequenceToSearchIn
 ) {
   sequenceToSearchIn = sequenceToSearchIn.toLowerCase();
   sequenceToFind = sequenceToFind.toLowerCase();
@@ -27,4 +27,4 @@ export default function getOverlapBetweenTwoSequences(
   } else {
     return null;
   }
-};
+}

@@ -1,7 +1,7 @@
-import getRangeLength from './getRangeLength';
+import getRangeLength from "./getRangeLength";
 
-export default function doesRangeSpanEntireSequence (range, sequenceLength) {
+export default function doesRangeSpanEntireSequence(range, sequenceLength) {
   if (getRangeLength(range) === sequenceLength) {
-  	return true
+    return true;
   }
-};
+}

@@ -66,7 +66,7 @@ export default ({ demos }) => {
         ></InputGroup>
         {Object.keys(demos)
           .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-          .map(function(name, index) {
+          .map(function (name, index) {
             if (search && !name.toLowerCase().includes(search.toLowerCase()))
               return null;
             const childLinks = demos[name].childLinks || {};

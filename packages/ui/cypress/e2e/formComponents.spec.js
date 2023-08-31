@@ -20,9 +20,7 @@ describe("formComponents", () => {
     cy.contains("Are you sure???");
   });
   it(`ReactSelectField works for single select`, () => {
-    cy.get(".tg-test-react-select-field .tg-select")
-      .click()
-      .as("inputWrapper");
+    cy.get(".tg-test-react-select-field .tg-select").click().as("inputWrapper");
     cy.contains(".tg-select-option", "Kyle Craft").click();
     cy.get("@inputWrapper").contains(`.bp3-tag`, "Kyle Craft");
     cy.contains("label", "disallowClear").click();
@@ -30,9 +28,7 @@ describe("formComponents", () => {
       "not.exist"
     );
     cy.contains("label", "disallowClear").click();
-    cy.get("@inputWrapper")
-      .find(".bp3-icon-cross")
-      .click();
+    cy.get("@inputWrapper").find(".bp3-icon-cross").click();
     cy.get("@inputWrapper")
       .contains(`.bp3-tag`, "Kyle Craft")
       .should("not.exist");
@@ -56,9 +52,7 @@ describe("formComponents", () => {
     // should stay open
     cy.get(".tg-select-option").should("exist");
     cy.get(".bp3-multi-select-popover").should("exist");
-    cy.get("@inputWrapper")
-      .find(".bp3-icon-caret-up")
-      .click();
+    cy.get("@inputWrapper").find(".bp3-icon-caret-up").click();
     cy.get(".tg-select-option").should("not.exist", { timeout: 10000 });
     cy.get(".bp3-multi-select-popover").should("not.exist");
     cy.get("@inputWrapper")
@@ -76,9 +70,7 @@ describe("formComponents", () => {
       .as("inputWrapper");
     cy.contains(".tg-select-option", "Kyle Craft").click();
     cy.get("@inputWrapper").contains(".bp3-tag", "Kyle Craft");
-    cy.get("@inputWrapper")
-      .find(".bp3-icon-cross")
-      .click();
+    cy.get("@inputWrapper").find(".bp3-icon-cross").click();
     cy.get("@inputWrapper")
       .contains(".bp3-tag", "Kyle Craft")
       .should("not.exist");
@@ -87,9 +79,7 @@ describe("formComponents", () => {
     cy.get(".tg-test-react-select-field-multi .tg-select input")
       .as("inputWrapper")
       .type("Kyle Craft{enter}");
-    cy.get("@inputWrapper")
-      .parent()
-      .contains(".bp3-tag", "Kyle Craft");
+    cy.get("@inputWrapper").parent().contains(".bp3-tag", "Kyle Craft");
     cy.get("@inputWrapper").type("{backspace}{backspace}");
     cy.get("@inputWrapper")
       .parent()
@@ -97,9 +87,7 @@ describe("formComponents", () => {
       .should("not.exist");
     cy.get(".bp3-multi-select-popover .tg-select-option").should("exist");
     cy.get("@inputWrapper").type("{enter}");
-    cy.get("@inputWrapper")
-      .parent()
-      .contains(".bp3-tag", "Rodrigo Pavez");
+    cy.get("@inputWrapper").parent().contains(".bp3-tag", "Rodrigo Pavez");
 
     // cy.get("@inputWrapper")
     //   .contains(".bp3-tag", "Kyle Craft")
@@ -109,12 +97,8 @@ describe("formComponents", () => {
     cy.get(".tg-test-react-select-field-multi .tg-select input")
       .as("inputWrapper")
       .type("{enter}{enter}");
-    cy.get("@inputWrapper")
-      .parent()
-      .contains(".bp3-tag", "Rodrigo Pavez");
-    cy.get("@inputWrapper")
-      .parent()
-      .contains(".bp3-tag", "Ximena Morales");
+    cy.get("@inputWrapper").parent().contains(".bp3-tag", "Rodrigo Pavez");
+    cy.get("@inputWrapper").parent().contains(".bp3-tag", "Ximena Morales");
     // cy.get("@inputWrapper").type("{backspace}{backspace}");
     // cy.get("@inputWrapper")
     //   .parent()

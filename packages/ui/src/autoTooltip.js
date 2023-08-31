@@ -2,9 +2,9 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
 let tippys = [];
-(function() {
+(function () {
   let lastMouseOverElement = null;
-  document.addEventListener("mouseover", function(event) {
+  document.addEventListener("mouseover", function (event) {
     const element = event.target;
 
     if (element instanceof Element && element !== lastMouseOverElement) {

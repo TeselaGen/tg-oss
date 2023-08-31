@@ -15,7 +15,7 @@ function jsonToBed(jsonSequence, options = {}) {
   let outString = "";
   outString += `track name="${sequenceNameToUse}" description="${name} Annotations" itemRgb="On"\n`;
 
-  features.forEach(function(feat) {
+  features.forEach(function (feat) {
     const { start, end, name, type, forward, strand } = feat;
     const label = name ? name : type;
     let orientation;
@@ -30,8 +30,9 @@ function jsonToBed(jsonSequence, options = {}) {
     const color = type === "CDS" ? "230,88,0" : "";
     // chromStart is 0-based, chromEnd of the BED file format is not included in the feature
     // when there is no thick part, thickStart and thickEnd are usually set to the chromStart position
-    outString += `${sequenceNameToUse}\t${start}\t${end +
-      1}\t${label}\t\t${orientation}\t\t\t${color}\n`;
+    outString += `${sequenceNameToUse}\t${start}\t${
+      end + 1
+    }\t${label}\t\t${orientation}\t\t\t${color}\n`;
   });
   return outString;
 }

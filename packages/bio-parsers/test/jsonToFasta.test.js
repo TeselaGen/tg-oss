@@ -2,14 +2,13 @@ import jsonToFasta from "../src/jsonToFasta";
 import chai from "chai";
 import fastaToJson from "../src/fastaToJson";
 
-
 chai.should();
-describe("fasta exporter/parser conversion", function() {
+describe("fasta exporter/parser conversion", function () {
   it(`should export a protein sequence by default if the sequence isProtein`, () => {
     const string = jsonToFasta({
       sequence: "augaugcayyunmngyunuuy",
       proteinSequence: "MMHLRLF",
-      isProtein: true,
+      isProtein: true
     });
     string.should.equal(`>Untitled Sequence||7|linear
 MMHLRLF`);
@@ -27,47 +26,58 @@ MMHLRLF`);
   //   result[0].parsedSequence.description.should.equal(description)
   // });
 
-  it("should handle the doNotMangleOrStripUrls option correctly", function() {
-    const description = "I include multiple URLs https://github.com/TeselaGen/fake/url and anotha one https://github.com/TeselaGen/fake/url/the/2nd"
-    const string = jsonToFasta({
-      sequence: "agagagagagag",
-      description,
-    }, {
-      doNotMangleOrStripUrls: true
-    });
-    string.should.include('https://github.com/TeselaGen/fake/url')
-    string.should.include('https://github.com/TeselaGen/fake/url/the/2nd')
+  it("should handle the doNotMangleOrStripUrls option correctly", function () {
+    const description =
+      "I include multiple URLs https://github.com/TeselaGen/fake/url and anotha one https://github.com/TeselaGen/fake/url/the/2nd";
+    const string = jsonToFasta(
+      {
+        sequence: "agagagagagag",
+        description
+      },
+      {
+        doNotMangleOrStripUrls: true
+      }
+    );
+    string.should.include("https://github.com/TeselaGen/fake/url");
+    string.should.include("https://github.com/TeselaGen/fake/url/the/2nd");
     const result = fastaToJson(string);
-    result[0].parsedSequence.description.should.include(description)
+    result[0].parsedSequence.description.should.include(description);
   });
-  it("should strip URLs by default correctly", function() {
-    const description = "I include multiple URLs https://github.com/TeselaGen/fake/url and anotha one https://github.com/TeselaGen/fake/url/the/2nd"
+  it("should strip URLs by default correctly", function () {
+    const description =
+      "I include multiple URLs https://github.com/TeselaGen/fake/url and anotha one https://github.com/TeselaGen/fake/url/the/2nd";
     const string = jsonToFasta({
       sequence: "agagagagagag",
-      description,
+      description
     });
-    string.should.not.include('https://github.com/TeselaGen/fake/url')
-    string.should.not.include('https://github.com/TeselaGen/fake/url/the/2nd')
+    string.should.not.include("https://github.com/TeselaGen/fake/url");
+    string.should.not.include("https://github.com/TeselaGen/fake/url/the/2nd");
     const result = fastaToJson(string);
-    result[0].parsedSequence.description.should.not.include(description)
-    result[0].parsedSequence.description.should.include(`I include multiple URLs`)
-    result[0].parsedSequence.description.should.include(`and anotha one`)
+    result[0].parsedSequence.description.should.not.include(description);
+    result[0].parsedSequence.description.should.include(
+      `I include multiple URLs`
+    );
+    result[0].parsedSequence.description.should.include(`and anotha one`);
   });
-  it("should mangle and unmangle URLs correctly", function() {
-    const description = "I include multiple URLs https://github.com/TeselaGen/fake/url and anotha one https://github.com/TeselaGen/fake/url/the/2nd"
-    const string = jsonToFasta({
-      sequence: "agagagagagag",
-      description,
-    }, {
-      mangleUrls: true
-    });
-    string.should.not.include('https://github.com/TeselaGen/fake/url')
-    string.should.not.include('https://github.com/TeselaGen/fake/url/the/2nd')
+  it("should mangle and unmangle URLs correctly", function () {
+    const description =
+      "I include multiple URLs https://github.com/TeselaGen/fake/url and anotha one https://github.com/TeselaGen/fake/url/the/2nd";
+    const string = jsonToFasta(
+      {
+        sequence: "agagagagagag",
+        description
+      },
+      {
+        mangleUrls: true
+      }
+    );
+    string.should.not.include("https://github.com/TeselaGen/fake/url");
+    string.should.not.include("https://github.com/TeselaGen/fake/url/the/2nd");
     const result = fastaToJson(string);
-    result[0].parsedSequence.description.should.include(description)
+    result[0].parsedSequence.description.should.include(description);
   });
 
-  it("should correctly make a fasta file", function() {
+  it("should correctly make a fasta file", function () {
     // const breakingJSON = require('./testData/json/breakingJSON_stringified')
     const breakingJSON = require("./testData/json/1.json");
     const string = jsonToFasta(breakingJSON);

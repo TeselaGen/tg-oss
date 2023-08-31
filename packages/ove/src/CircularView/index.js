@@ -279,7 +279,7 @@ export function CircularView(props) {
                   : Math.ceil(rangeToShowLength / 100) * 10,
               sequenceLength,
               isProtein
-            }).map((pos) => {
+            }).map(pos => {
               return {
                 name: "Tick Mark",
                 tickPosition: pos,
@@ -446,7 +446,7 @@ export function CircularView(props) {
   ];
   const paredDownMessages = [];
   const output = layersToDraw
-    .map((layer) => {
+    .map(layer => {
       const {
         layerName,
         maxToDisplay,
@@ -501,7 +501,7 @@ export function CircularView(props) {
             sequenceData["filtered" + nameUpper] ||
             sequenceData[layerName] ||
             [],
-          (range) => {
+          range => {
             const overlapOfRanges = getOverlapsOfPotentiallyCircularRanges(
               range,
               rangeToShow,
@@ -620,7 +620,7 @@ export function CircularView(props) {
           return null;
         }
       })
-      .filter((el) => {
+      .filter(el => {
         return !!el;
       });
   }
@@ -727,7 +727,7 @@ export function CircularView(props) {
       }}
       onWheel={
         withZoomCircularView && hasRotateableLength
-          ? (e) => {
+          ? e => {
               let delta = e.deltaY;
               if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
                 delta = e.deltaX;
@@ -805,10 +805,10 @@ export function CircularView(props) {
       <Draggable
         // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        onDrag={(event) => {
+        onDrag={event => {
           getNearestCursorPositionToMouseEvent(event, toPass, editorDragged);
         }}
-        onStart={(event) => {
+        onStart={event => {
           getNearestCursorPositionToMouseEvent(
             event,
             toPass,
@@ -822,7 +822,7 @@ export function CircularView(props) {
         >
           <svg
             key="circViewSvg"
-            onClick={(event) => {
+            onClick={event => {
               instantiated &&
                 getNearestCursorPositionToMouseEvent(
                   event,
@@ -830,7 +830,7 @@ export function CircularView(props) {
                   editorClicked
                 );
             }}
-            onContextMenu={(e) => {
+            onContextMenu={e => {
               getNearestCursorPositionToMouseEvent(
                 e,
                 toPass,

@@ -124,4 +124,4 @@ export default function calculateNebTm(
   } catch (err) {
     return `Error calculating Tm for sequence ${sequence}: ${err}`;
   }
-};
+}

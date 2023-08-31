@@ -2,13 +2,13 @@
 import shortid from "shortid";
 
 import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
-import {cloneDeep, flatMap} from "lodash";
+import { cloneDeep, flatMap } from "lodash";
 import { annotationTypes } from "./annotationTypes";
 import filterSequenceString from "./filterSequenceString";
 import tidyUpAnnotation from "./tidyUpAnnotation";
 import filterAminoAcidSequenceString from "./filterAminoAcidSequenceString";
 import getDegenerateDnaStringFromAaString from "./getDegenerateDnaStringFromAAString";
-import {getFeatureTypes} from "./featureTypesAndColors";
+import { getFeatureTypes } from "./featureTypesAndColors";
 
 export default function tidyUpSequenceData(pSeqData, options = {}) {
   const {
@@ -166,4 +166,4 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
     console.info("tidyUpSequenceData messages:", response.messages);
   }
   return seqData;
-};
+}

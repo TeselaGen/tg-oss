@@ -20,7 +20,7 @@ export function updateLabelsForInViewFeatures({
     .querySelector(rectElement)
     .getBoundingClientRect();
 
-  els.forEach((el) => {
+  els.forEach(el => {
     const elBounds = el.getBoundingClientRect();
     const isElIn = isElWithinAnotherEl(elBounds, boundingRect);
 

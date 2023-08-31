@@ -1,4 +1,4 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import getOverlapBetweenTwoSequences from "./getOverlapBetweenTwoSequences.js";
 describe("getOverlapBetweenTwoSequences", () => {
   it("should get the range overlap given a seq and a seq to search in", () => {

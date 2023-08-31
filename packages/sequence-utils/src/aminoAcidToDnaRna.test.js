@@ -1,4 +1,4 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import getDegenerateDnaStringFromAAString from "./getDegenerateDnaStringFromAAString";
 import getDegenerateRnaStringFromAAString from "./getDegenerateRnaStringFromAAString";
 

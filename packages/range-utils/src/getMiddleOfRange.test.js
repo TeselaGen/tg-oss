@@ -10,35 +10,31 @@
 import assert from "assert";
 
 import getMiddleOfRange from "./getMiddleOfRange";
-describe("getMiddleOfRange", function() {
-  it("should return the correct length for ranges that cross the origin", function() {
+describe("getMiddleOfRange", function () {
+  it("should return the correct length for ranges that cross the origin", function () {
     const midpoint = getMiddleOfRange({ start: 9, end: 0 }, 10);
-    console.log(`midpoint:`,midpoint)
+    console.log(`midpoint:`, midpoint);
     assert(midpoint === 0);
-
   });
-  it("should return the correct midpoint for ranges that do not cross the origin", function() {
+  it("should return the correct midpoint for ranges that do not cross the origin", function () {
     const midpoint = getMiddleOfRange({ start: 4, end: 6 }, 10);
-    console.log(`midpoint:`,midpoint)
+    console.log(`midpoint:`, midpoint);
     assert(midpoint === 5);
-
   });
-  it("should return the correct midpoint for ranges that overlapSelf", function() {
+  it("should return the correct midpoint for ranges that overlapSelf", function () {
     const midpoint = getMiddleOfRange(
       { start: 4, end: 9, overlapsSelf: true },
       10
     );
-    console.log(`midpoint:`,midpoint)
+    console.log(`midpoint:`, midpoint);
     assert(midpoint === 7);
-
   });
-  it("should return the correct midpoint for ranges that overlapSelf and origin", function() {
+  it("should return the correct midpoint for ranges that overlapSelf and origin", function () {
     const midpoint = getMiddleOfRange(
       { start: 9, end: 1, overlapsSelf: true },
       10
     );
-    console.log(`midpoint:`,midpoint)
+    console.log(`midpoint:`, midpoint);
     assert(midpoint === 0);
-
   });
 });

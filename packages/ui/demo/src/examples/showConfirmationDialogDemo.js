@@ -39,8 +39,7 @@ export default function Demo() {
                 fourthButtonIntent: "primary"
               }),
               noCancelButton: noCancel,
-              text:
-                "Are you sure you want to re-run this tool? Downstream tools with linked outputs will need to be re-run as well!",
+              text: "Are you sure you want to re-run this tool? Downstream tools with linked outputs will need to be re-run as well!",
               intent: Intent.DANGER, //applied to the right most confirm button
               confirmButtonText: "Yep!",
               cancelButtonText: "Nope", //pass null to make the cancel button disappear

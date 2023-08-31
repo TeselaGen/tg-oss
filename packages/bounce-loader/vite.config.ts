@@ -1,6 +1,6 @@
-import viteReactConfig from '../../vite.react.config'
+import viteReactConfig from "../../vite.react.config";
 
 export default viteReactConfig({
-  name: 'bounce-loader',
-  dir: __dirname,
-})
+  name: "bounce-loader",
+  dir: __dirname
+});

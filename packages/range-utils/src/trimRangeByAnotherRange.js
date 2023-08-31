@@ -1,7 +1,7 @@
 import getOverlapsOfPotentiallyCircularRanges from "./getOverlapsOfPotentiallyCircularRanges";
 import splitRangeIntoTwoPartsIfItIsCircular from "./splitRangeIntoTwoPartsIfItIsCircular";
 import trimNonCicularRangeByAnotherNonCircularRange from "./trimNonCicularRangeByAnotherNonCircularRange";
-import {extend} from "lodash";
+import { extend } from "lodash";
 
 /**
  * trims range, but does *not* adjust it
@@ -31,7 +31,7 @@ export default function trimRangeByAnotherRange(
     rangeToBeTrimmed.start,
     rangeToBeTrimmed.end,
     trimmingRange.start,
-    trimmingRange.end,
+    trimmingRange.end
   ]) {
     if (position < 0 || (!position && position !== 0)) {
       console.warn("invalid range input");
@@ -54,19 +54,20 @@ export default function trimRangeByAnotherRange(
     rangeToBeTrimmed,
     sequenceLength
   );
-  splitRangesToBeTrimmed.forEach(function(nonCircularRangeToBeTrimmed, index) {
-    overlaps.forEach(function(overlap) {
+  splitRangesToBeTrimmed.forEach(function (nonCircularRangeToBeTrimmed, index) {
+    overlaps.forEach(function (overlap) {
       if (nonCircularRangeToBeTrimmed) {
-        nonCircularRangeToBeTrimmed = trimNonCicularRangeByAnotherNonCircularRange(
-          nonCircularRangeToBeTrimmed,
-          overlap
-        );
+        nonCircularRangeToBeTrimmed =
+          trimNonCicularRangeByAnotherNonCircularRange(
+            nonCircularRangeToBeTrimmed,
+            overlap
+          );
       }
     });
     splitRangesToBeTrimmed[index] = nonCircularRangeToBeTrimmed;
   });
   //filter out any of the split ranges that have been fully deleted!
-  const outputSplitRanges = splitRangesToBeTrimmed.filter(function(
+  const outputSplitRanges = splitRangesToBeTrimmed.filter(function (
     trimmedRange
   ) {
     if (trimmedRange) {
@@ -84,19 +85,19 @@ export default function trimRangeByAnotherRange(
     if (outputSplitRanges[0].start < outputSplitRanges[1].start) {
       outputTrimmedRange = {
         start: outputSplitRanges[1].start,
-        end: outputSplitRanges[0].end,
+        end: outputSplitRanges[0].end
       };
     } else {
       outputTrimmedRange = {
         start: outputSplitRanges[0].start,
-        end: outputSplitRanges[1].end,
+        end: outputSplitRanges[1].end
       };
     }
   }
   if (outputTrimmedRange) {
     return extend({}, rangeToBeTrimmed, {
       start: outputTrimmedRange.start,
-      end: outputTrimmedRange.end,
+      end: outputTrimmedRange.end
     });
   }
-};
+}

@@ -4,8 +4,5 @@ export default function getComplementAminoAcidStringFromSequenceString(
   sequenceString
 ) {
   const aaString = getAminoAcidStringFromSequenceString(sequenceString, true);
-  return aaString
-    .split("")
-    .reverse()
-    .join("");
-};
+  return aaString.split("").reverse().join("");
+}

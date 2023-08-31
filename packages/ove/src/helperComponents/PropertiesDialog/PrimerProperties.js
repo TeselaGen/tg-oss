@@ -9,7 +9,7 @@ export default genericAnnotationProperties({
   visSubmenu: primersSubmenu,
   noType: true,
   withBases: true,
-  additionalFooterEls: (props) => {
+  additionalFooterEls: props => {
     return (
       <Button onClick={props.createNewPCR} intent="success">
         Simulate PCR

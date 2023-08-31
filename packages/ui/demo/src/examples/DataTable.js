@@ -39,9 +39,15 @@ const schema = {
         return <Checkbox />;
       }
     },
-    { path: "isShared", type: "boolean", displayName: <div>
-      <Icon icon="hand"></Icon> Is Shared?
-    </div> },
+    {
+      path: "isShared",
+      type: "boolean",
+      displayName: (
+        <div>
+          <Icon icon="hand"></Icon> Is Shared?
+        </div>
+      )
+    },
     {
       path: "name",
       type: "string",
@@ -357,9 +363,10 @@ class DataTableInstance extends React.Component {
 
   changeSelectedRecords(e) {
     const val = e.target.value;
-    const selectedIds = (val.indexOf(",") > -1
-      ? val.split(",").map(num => parseInt(num, 10))
-      : [parseInt(val, 10)]
+    const selectedIds = (
+      val.indexOf(",") > -1
+        ? val.split(",").map(num => parseInt(num, 10))
+        : [parseInt(val, 10)]
     ).filter(val => !isNaN(val));
     this.setState({
       selectedIds
@@ -635,7 +642,6 @@ class DataTableInstance extends React.Component {
             label: "Update Selection and Entities Multiple times",
             type: "updateSelectedAndChangeNumEnts",
             hook: () => {
-
               this.setState({
                 selectedIds: ["lala", "23r2", "asdf"],
                 isInfinite: true,
@@ -658,7 +664,7 @@ class DataTableInstance extends React.Component {
                     generateFakeRow({ id: "asdf" }),
                     generateFakeRow({ id: "2g2g" }),
                     generateFakeRow({ id: "ahha" }),
-                    generateFakeRow({ id: "zoioiooonk", name: "zoioiooonk" }),
+                    generateFakeRow({ id: "zoioiooonk", name: "zoioiooonk" })
                   ]
                 });
               }, 1000);
@@ -706,7 +712,7 @@ class DataTableInstance extends React.Component {
               entityCount={entities.length}
               onDoubleClick={
                 this.state.onDoubleClick
-                  ? function() {
+                  ? function () {
                       window.toastr.info("double clicked");
                     }
                   : undefined
@@ -730,18 +736,18 @@ class DataTableInstance extends React.Component {
               additionalFilters={additionalFilters}
               title={"Demo table"}
               contextMenu={
-                function(/*{ selectedRecords, history }*/) {
+                function (/*{ selectedRecords, history }*/) {
                   return [
                     <MenuItem
                       key="menuItem1"
-                      onClick={function() {
+                      onClick={function () {
                         console.info("I got clicked!");
                       }}
                       text={"Menu text here"}
                     />,
                     <MenuItem
                       key="menuItem2"
-                      onClick={function() {
+                      onClick={function () {
                         console.info("I also got clicked!");
                       }}
                       text={"Some more"}

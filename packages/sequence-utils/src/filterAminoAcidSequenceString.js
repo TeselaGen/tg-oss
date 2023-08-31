@@ -1,8 +1,5 @@
 //
-export default function filterAminoAcidSequenceString(
-  sequenceString,
-  options
-) {
+export default function filterAminoAcidSequenceString(sequenceString, options) {
   options = options || {};
   if (options.includeStopCodon) {
     //tnrtodo this maybe needs the stop codon char in it?
@@ -10,4 +7,4 @@ export default function filterAminoAcidSequenceString(
   }
   // ac.throw(ac.string, sequenceString);
   return sequenceString.replace(/[^xtgalmfwkqespvicyhrndu]/gi, "");
-};
+}

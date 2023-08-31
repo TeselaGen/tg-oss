@@ -48,7 +48,7 @@ function DialogFooter({
             onClick={
               secondaryAction ||
               hideModal ||
-              function() {
+              function () {
                 try {
                   r.current
                     .closest(".bp3-dialog")

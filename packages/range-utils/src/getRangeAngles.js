@@ -13,7 +13,7 @@ export default function getRangeAngles(range, rangeMax) {
     centerAngle: startAngle + totalAngle / 2,
     locationAngles:
       range.locations &&
-      range.locations.map((location) => {
+      range.locations.map(location => {
         return getRangeAngles(location, rangeMax);
       })
   };

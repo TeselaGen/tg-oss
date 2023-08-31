@@ -211,13 +211,13 @@ export function getStripedPattern({ color }) {
     </pattern>
   );
 }
-export const getEnzymeAliases = (enzyme) => {
+export const getEnzymeAliases = enzyme => {
   let lowerName = (enzyme.name && enzyme.name.toLowerCase()) || "";
   if (typeof enzyme === "string") {
     lowerName = enzyme.toLowerCase();
   }
   return filter(
     (aliasedEnzymesByName[lowerName] || {}).aliases,
-    (n) => n.toLowerCase() !== lowerName //filter out current enzyme
+    n => n.toLowerCase() !== lowerName //filter out current enzyme
   );
 };

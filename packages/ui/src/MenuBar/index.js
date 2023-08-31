@@ -1,5 +1,13 @@
 import React from "react";
-import { pickBy, isNumber, startsWith, flatMap, take, flatten, noop } from "lodash";
+import {
+  pickBy,
+  isNumber,
+  startsWith,
+  flatMap,
+  take,
+  flatten,
+  noop
+} from "lodash";
 import { Suggest } from "@blueprintjs/select";
 import "./style.css";
 import { Popover, Position, Menu, Button } from "@blueprintjs/core";
@@ -218,7 +226,7 @@ class MenuBar extends React.Component {
       <div className={"tg-menu-bar " + className} style={style}>
         <this.hotkeyEnabler></this.hotkeyEnabler>
         {menu.map((topLevelItem, i) => {
-          const dataKeys = pickBy(topLevelItem, function(value, key) {
+          const dataKeys = pickBy(topLevelItem, function (value, key) {
             return startsWith(key, "data-");
           });
 
@@ -300,7 +308,6 @@ class MenuBar extends React.Component {
     );
   }
 }
-
 
 const isDivider = item => item.divider !== undefined;
 

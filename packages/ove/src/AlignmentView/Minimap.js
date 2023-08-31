@@ -23,12 +23,12 @@ export default class Minimap extends React.Component {
         "scrollAlignmentView",
         "laneHeight",
         "laneSpacing"
-      ].some((key) => props[key] !== newProps[key])
+      ].some(key => props[key] !== newProps[key])
     )
       return true;
     return false;
   }
-  handleMinimapClick = (e) => {
+  handleMinimapClick = e => {
     if (
       this.isDragging ||
       (e.target && e.target.classList.contains("minimapCaret"))
@@ -77,11 +77,11 @@ export default class Minimap extends React.Component {
     );
     return Math.min(width, dimensions.width);
   };
-  getXPositionOfClickInMinimap = (e) => {
+  getXPositionOfClickInMinimap = e => {
     const leftStart = this.minimap.getBoundingClientRect().left;
     return Math.max(getClientX(e) - leftStart, 0);
   };
-  getYPositionOfClickInMinimap = (e) => {
+  getYPositionOfClickInMinimap = e => {
     const topStart = this.minimap.getBoundingClientRect().top;
     return Math.max(getClientY(e) + this.minimapTracks.scrollTop - topStart, 0);
   };
@@ -100,7 +100,7 @@ export default class Minimap extends React.Component {
         return;
       }
       const lanes = document.querySelectorAll(".minimapLane");
-      some(lanes, (lane) => {
+      some(lanes, lane => {
         const rect = lane.getBoundingClientRect();
         if (rect.top > clientY && rect.top - rect.height < clientY) {
           const laneI = toNumber(lane.getAttribute("data-lane-index"));
@@ -131,7 +131,7 @@ export default class Minimap extends React.Component {
    * Sets this.initialDragXOffsetFromCenter and Y for dragging
    * @param {*} e - event
    */
-  handleDragStart = (e) => {
+  handleDragStart = e => {
     const eventX = e.pageX;
     const handleEl = window.document.querySelector(".verticalScrollDisplay");
     if (!handleEl) return;
@@ -149,7 +149,7 @@ export default class Minimap extends React.Component {
    * Moves the highlighted region as we drag
    * @param {*} e - event
    */
-  handleDrag = (e) => {
+  handleDrag = e => {
     const {
       onMinimapScrollX,
       dimensions: { width = 200 }
@@ -178,7 +178,7 @@ export default class Minimap extends React.Component {
    * Renders a lane (one by one for each call)
    * @param {*} i - lane info
    */
-  renderItem = (i) => {
+  renderItem = i => {
     const {
       alignmentTracks = [],
       dimensions: { width = 200 },
@@ -193,7 +193,7 @@ export default class Minimap extends React.Component {
     } = alignmentTracks[i];
     const matchHighlightRanges = !trimmedRange
       ? _matchHighlightRanges
-      : flatMap(_matchHighlightRanges, (r) => {
+      : flatMap(_matchHighlightRanges, r => {
           const overlap = getOverlapOfNonCircularRanges(r, trimmedRange);
           if (!overlap) return [];
           return { ...r, ...overlap };
@@ -218,7 +218,7 @@ export default class Minimap extends React.Component {
     },${y} L${lastRange.xStart + lastRange.width},${y + height} L${
       firstRange.xStart
     },${y + height}`;
-    matchHighlightRanges.forEach((range) => {
+    matchHighlightRanges.forEach(range => {
       const { xStart, width } = getXStartAndWidthFromNonCircularRange(
         range,
         charWidth
@@ -271,7 +271,7 @@ export default class Minimap extends React.Component {
 
     return (
       <div
-        ref={(ref) => (this.minimap = ref)}
+        ref={ref => (this.minimap = ref)}
         className="alignmentMinimap"
         style={{
           position: "relative",
@@ -286,7 +286,7 @@ export default class Minimap extends React.Component {
       >
         {selectionLayerComp}
         <div
-          ref={(ref) => {
+          ref={ref => {
             if (ref) {
               this.minimapTracks = ref;
             }

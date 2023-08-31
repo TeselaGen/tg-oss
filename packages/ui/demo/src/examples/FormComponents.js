@@ -54,13 +54,11 @@ function FormComponentsDemo({ handleSubmit }) {
     type: "reactSelectFieldcreatable",
     label: "creatable"
   });
-  const [
-    reactSelectFielddisallowClear,
-    reactSelectFielddisallowClearComp
-  ] = useToggle({
-    type: "reactSelectFielddisallowClear",
-    label: "disallowClear"
-  });
+  const [reactSelectFielddisallowClear, reactSelectFielddisallowClearComp] =
+    useToggle({
+      type: "reactSelectFielddisallowClear",
+      label: "disallowClear"
+    });
   // const [disabled, disabledToggleComp] = useToggle({
   //   type: "disabled"
   // });
@@ -72,13 +70,13 @@ function FormComponentsDemo({ handleSubmit }) {
           Blueprint Redux Form Components
         </h3>
         <InputField
-            clickToEdit
-            name={"inputFieldWithClickToEdit"}
-            inlineLabel={inlineLabels}
-            onFieldSubmit={onFieldSubmit}
-            label="InputField with clickToEdit=true"
-            placeholder="Enter note..."
-          />
+          clickToEdit
+          name={"inputFieldWithClickToEdit"}
+          inlineLabel={inlineLabels}
+          onFieldSubmit={onFieldSubmit}
+          label="InputField with clickToEdit=true"
+          placeholder="Enter note..."
+        />
         <OptionsSection>
           {inlineLabelsComp}
           {reactSelectFieldcreatableComp}
@@ -101,8 +99,7 @@ function FormComponentsDemo({ handleSubmit }) {
             fileList={[
               {
                 uid: 1, //you must set a unique id for this to work properly
-                name:
-                  "yarn_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf.lock",
+                name: "yarn_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf.lock",
                 status: "error"
               }
             ]}
@@ -147,7 +144,7 @@ function FormComponentsDemo({ handleSubmit }) {
             ]}
             label="Upload component"
             tooltipInfo="hello hello I'm tooltipInfo"
-            onFieldSubmit={function(fileList) {
+            onFieldSubmit={function (fileList) {
               console.info(
                 "do something with the finished file list:",
                 fileList
@@ -160,7 +157,7 @@ function FormComponentsDemo({ handleSubmit }) {
           <h6>FileUploadField with file limit</h6>
           <FileUploadField
             label="File limit and type"
-            onFieldSubmit={function(fileList) {
+            onFieldSubmit={function (fileList) {
               console.info(
                 "do something with the finished file list:",
                 fileList
@@ -213,7 +210,7 @@ function FormComponentsDemo({ handleSubmit }) {
             className={"fileUploadZoink"}
             label="<FileUploadField/> Upload component 123"
             tooltipInfo="hello hello I'm tooltipInfo"
-            onFieldSubmit={function(fileList) {
+            onFieldSubmit={function (fileList) {
               console.info(
                 "do something with the finished file list:",
                 fileList
@@ -437,7 +434,7 @@ function FormComponentsDemo({ handleSubmit }) {
             label="TextareaField"
             placeholder="Enter notes..."
           />
-          
+
           <TextareaField
             clickToEdit
             name={"textAreaFieldWithClickToEdit"}
@@ -597,7 +594,7 @@ function FormComponentsDemo({ handleSubmit }) {
           <Button
             intent="success"
             text="Submit Form"
-            onClick={handleSubmit(function(formData) {
+            onClick={handleSubmit(function (formData) {
               console.info("submitted data:", formData);
             })}
           />

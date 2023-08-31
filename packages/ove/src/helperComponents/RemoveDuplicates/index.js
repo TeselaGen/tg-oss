@@ -73,7 +73,7 @@ class RemoveDuplicatesDialog extends React.Component {
     const annotations = sequenceData[type];
     const dups = [];
     const seqsHashByStartEndStrandName = {};
-    forEach(annotations, (a) => {
+    forEach(annotations, a => {
       const hash = `${ignoreStartAndEnd ? "" : a.start}&${
         ignoreStartAndEnd ? "" : a.end
       }&${ignoreStrand ? "" : a.strand}&${ignoreName ? "" : a.name}`;
@@ -88,7 +88,7 @@ class RemoveDuplicatesDialog extends React.Component {
   render() {
     const { duplicatesToRemoveSelectedEntities, hideModal, type } = this.props;
 
-    const selectedIds = this.state.dups.map((d) => d.id);
+    const selectedIds = this.state.dups.map(d => d.id);
     // const sequenceLength = sequenceData.sequence.length;
     // const isCirc = (this.state || {}).circular;
     return (
@@ -162,7 +162,7 @@ class RemoveDuplicatesDialog extends React.Component {
             intent="primary"
             onClick={() => {
               this.props[camelCase(`delete_${type}`).slice(0, -1)](
-                duplicatesToRemoveSelectedEntities.map((d) => d.id)
+                duplicatesToRemoveSelectedEntities.map(d => d.id)
               );
               window.toastr.success(
                 `Successfully Deleted ${

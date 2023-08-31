@@ -20,7 +20,7 @@ import {
   FormGroup,
   Button,
   TextArea,
-  Popover,
+  Popover
 } from "@blueprintjs/core";
 
 import { DateInput, DateRangeInput } from "@blueprintjs/datetime";
@@ -35,7 +35,7 @@ import AsyncValidateFieldSpinner from "../AsyncValidateFieldSpinner";
 import {
   AssignDefaultsModeContext,
   WorkflowDefaultParamsContext,
-  workflowDefaultParamsObj,
+  workflowDefaultParamsObj
 } from "../AssignDefaultsModeContext";
 import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
 import Uploader from "./Uploader";
@@ -46,7 +46,7 @@ export { fieldRequired };
 
 function getIntent({
   showErrorIfUntouched,
-  meta: { touched, error, warning },
+  meta: { touched, error, warning }
 }) {
   const hasError = (touched || showErrorIfUntouched) && error;
   const hasWarning = (touched || showErrorIfUntouched) && warning;
@@ -120,7 +120,7 @@ class AbstractInput extends React.Component {
     const {
       defaultValue,
       enableReinitialize,
-      input: { value },
+      input: { value }
     } = this.props;
     if (
       ((value !== false && !value) || enableReinitialize) &&
@@ -133,13 +133,13 @@ class AbstractInput extends React.Component {
   componentDidUpdate(oldProps) {
     const {
       defaultValue: oldDefaultValue,
-      defaultValCount: oldDefaultValCount,
+      defaultValCount: oldDefaultValCount
     } = oldProps;
     const {
       defaultValue,
       defaultValCount,
       enableReinitialize,
-      input: { value },
+      input: { value }
     } = this.props;
 
     if (
@@ -158,7 +158,7 @@ class AbstractInput extends React.Component {
       input: { name },
       meta: { dispatch, form },
       onDefaultValChanged,
-      onFieldSubmit,
+      onFieldSubmit
     } = this.props;
     dispatch(change(form, name, defaultValue));
     onDefaultValChanged &&
@@ -196,7 +196,7 @@ class AbstractInput extends React.Component {
       input,
       noFillField,
       isRequired,
-      isLoadingDefaultValue,
+      isLoadingDefaultValue
     } = this.props;
     const { touched, error, warning } = meta;
 
@@ -259,7 +259,7 @@ class AbstractInput extends React.Component {
         className={classNames(className, testClassName, {
           "tg-flex-form-content": leftEl || rightEl,
           "tg-tooltipError": tooltipError,
-          "tg-has-error": showError && error,
+          "tg-has-error": showError && error
         })}
         disabled={disabled}
         helperText={helperText}
@@ -277,7 +277,7 @@ class AbstractInput extends React.Component {
         labelInfo={labelInfo}
         style={{
           ...(noMarginBottom && { marginBottom: 0 }),
-          ...containerStyle,
+          ...containerStyle
         }}
       >
         {showGenerateDefaultDot && (
@@ -307,7 +307,7 @@ class AbstractInput extends React.Component {
   }
 }
 
-export const renderBlueprintDateInput = (props) => {
+export const renderBlueprintDateInput = props => {
   const { input, intent, onFieldSubmit, inputProps, ...rest } = props;
   return (
     <DateInput
@@ -325,7 +325,7 @@ export const renderBlueprintDateInput = (props) => {
   );
 };
 
-export const renderBlueprintDateRangeInput = (props) => {
+export const renderBlueprintDateRangeInput = props => {
   const { input, intent, onFieldSubmit, inputProps, ...rest } = props;
 
   return (
@@ -348,7 +348,7 @@ export const renderBlueprintDateRangeInput = (props) => {
   );
 };
 
-export const RenderBlueprintInput = (props) => {
+export const RenderBlueprintInput = props => {
   const {
     input,
     // meta = {},
@@ -391,7 +391,7 @@ export const RenderBlueprintInput = (props) => {
         {...(clickToEdit
           ? {
               disabled: rest.disabled,
-              onChange: (e) => {
+              onChange: e => {
                 setVal(e.target.value);
               },
               ...(value === null ? {} : { value }),
@@ -404,7 +404,7 @@ export const RenderBlueprintInput = (props) => {
                   stopEdit();
                 }
                 return true;
-              },
+              }
             }
           : {
               onKeyDown: function (...args) {
@@ -422,7 +422,7 @@ export const RenderBlueprintInput = (props) => {
                   { blur: true },
                   e
                 );
-              },
+              }
             })}
       />
     );
@@ -443,7 +443,7 @@ export const RenderBlueprintInput = (props) => {
                 onClick={() => {
                   input.onChange(value === null ? input.value : value);
                   onFieldSubmit(value === null ? input.value : value, {
-                    cmdEnter: true,
+                    cmdEnter: true
                   });
                   stopEdit();
                 }}
@@ -464,7 +464,7 @@ export const RenderBlueprintInput = (props) => {
   return inner;
 };
 
-export const renderBlueprintCheckbox = (props) => {
+export const renderBlueprintCheckbox = props => {
   const { input, label, tooltipInfo, beforeOnChange, onFieldSubmit, ...rest } =
     props;
   return (
@@ -476,7 +476,7 @@ export const renderBlueprintCheckbox = (props) => {
       onChange={getCheckboxOrSwitchOnChange({
         beforeOnChange,
         input,
-        onFieldSubmit,
+        onFieldSubmit
       })}
     />
   );
@@ -485,7 +485,7 @@ export const renderBlueprintCheckbox = (props) => {
 const getCheckboxOrSwitchOnChange = ({
   beforeOnChange,
   input,
-  onFieldSubmit,
+  onFieldSubmit
 }) =>
   async function (e, val) {
     const v = e.target ? e.target.checked : val;
@@ -498,7 +498,7 @@ const getCheckboxOrSwitchOnChange = ({
     onFieldSubmit(v);
   };
 
-export const renderBlueprintSwitch = (props) => {
+export const renderBlueprintSwitch = props => {
   const { input, label, tooltipInfo, onFieldSubmit, beforeOnChange, ...rest } =
     props;
 
@@ -511,13 +511,13 @@ export const renderBlueprintSwitch = (props) => {
       onChange={getCheckboxOrSwitchOnChange({
         beforeOnChange,
         input,
-        onFieldSubmit,
+        onFieldSubmit
       })}
     />
   );
 };
 
-export const renderFileUpload = (props) => {
+export const renderFileUpload = props => {
   const { input, onFieldSubmit, ...rest } = props;
   return (
     <Uploader
@@ -532,7 +532,7 @@ export const renderFileUpload = (props) => {
 export class renderBlueprintTextarea extends React.Component {
   state = {
     value: null,
-    isOpen: false,
+    isOpen: false
   };
   allowEdit = () => {
     this.setState({ isOpen: true });
@@ -541,7 +541,7 @@ export class renderBlueprintTextarea extends React.Component {
     this.setState({ isOpen: false });
     this.setState({ value: null });
   };
-  updateVal = (e) => {
+  updateVal = e => {
     this.setState({ value: e.target.value });
   };
   handleValSubmit = () => {
@@ -647,7 +647,7 @@ export class renderBlueprintTextarea extends React.Component {
 //   }
 // }
 
-export const renderBlueprintEditableText = (props) => {
+export const renderBlueprintEditableText = props => {
   const { input, onFieldSubmit, ...rest } = props;
   return (
     <EditableText
@@ -661,7 +661,7 @@ export const renderBlueprintEditableText = (props) => {
   );
 };
 
-export const renderReactSelect = (props) => {
+export const renderReactSelect = props => {
   // spreading input not working, grab the values needed instead
   const {
     async,
@@ -683,23 +683,23 @@ export const renderReactSelect = (props) => {
     if (value.userCreated) {
       valueToUse = {
         label: value.value,
-        value,
+        value
       };
     } else {
-      valueToUse = optsToUse.find((obj) => {
+      valueToUse = optsToUse.find(obj => {
         return isEqual(obj.value, value);
       });
     }
   } else if (Array.isArray(value)) {
-    valueToUse = value.map((val) => {
+    valueToUse = value.map(val => {
       if (val.userCreated) {
         return {
           label: val.value,
-          value: val,
+          value: val
         };
       }
       if (optsToUse) {
-        return optsToUse.find((obj) => {
+        return optsToUse.find(obj => {
           return isEqual(obj.value, val);
         });
       } else {
@@ -747,7 +747,7 @@ export const renderReactSelect = (props) => {
     onBlur() {
       const valToPass = Array.isArray(valueToUse)
         ? valueToUse
-            .filter((val) => !!val)
+            .filter(val => !!val)
             .map(function (val) {
               return val.value;
             })
@@ -758,16 +758,16 @@ export const renderReactSelect = (props) => {
       if (rest.submitOnBlur) {
         onFieldSubmit(valToPass);
       }
-    },
+    }
   };
   return <TgSelect {...propsToUse} />;
 };
 
-export const renderSuggest_old = (props) => {
+export const renderSuggest_old = props => {
   return renderReactSelect({ ...props, asSuggest: true });
 };
 
-export const renderSuggest = (props) => {
+export const renderSuggest = props => {
   const {
     async,
     input: { value, onChange },
@@ -791,7 +791,7 @@ export const renderSuggest = (props) => {
       if (rest.submitOnBlur) {
         onFieldSubmit(value);
       }
-    },
+    }
   };
   return <TgSuggest {...propsToUse}></TgSuggest>;
 };
@@ -800,7 +800,7 @@ export const BPSelect = ({ value, onChange, ...rest }) => {
   return renderSelect({ ...rest, input: { onChange, value } });
 };
 
-export const renderSelect = (props) => {
+export const renderSelect = props => {
   // spreading input not working, grab the values needed instead
   const {
     input: { value, onChange },
@@ -838,7 +838,7 @@ export const renderSelect = (props) => {
           try {
             const maybeNewValue = JSON.parse(e.target.value); //try to json parse the string coming in
             const hasMatchInOriginalOptions = options.find(
-              (opt) => opt === maybeNewValue || opt.value === maybeNewValue
+              opt => opt === maybeNewValue || opt.value === maybeNewValue
             );
             if (hasMatchInOriginalOptions || isPlainObject(maybeNewValue)) {
               val = maybeNewValue;
@@ -892,7 +892,7 @@ export const renderSelect = (props) => {
   );
 };
 
-export const renderBlueprintNumericInput = (props) => {
+export const renderBlueprintNumericInput = props => {
   const {
     input,
     hideValue,
@@ -963,7 +963,7 @@ export const renderBlueprintRadioGroup = ({
 };
 
 export class RenderReactColorPicker extends React.Component {
-  handleChange = (color) => {
+  handleChange = color => {
     const { input, onFieldSubmit } = this.props;
 
     input.onChange(color.hex);
@@ -994,7 +994,7 @@ export class RenderReactColorPicker extends React.Component {
             borderRadius: "1px",
             boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
             display: "inline-block",
-            cursor: "pointer",
+            cursor: "pointer"
           }}
         >
           <div
@@ -1003,7 +1003,7 @@ export class RenderReactColorPicker extends React.Component {
               width: "36px",
               height: "14px",
               borderRadius: "2px",
-              background: `${input.value}`,
+              background: `${input.value}`
             }}
           />
         </div>
@@ -1139,13 +1139,13 @@ export function generateField(component, opts) {
           onChange: rest.onChange || noop,
           onBlur: rest.onBlur || noop,
           value: rest.value,
-          name,
-        },
+          name
+        }
       }),
       component,
       ...(isRequired && { validate: fieldRequired }),
       isRequired,
-      ...rest,
+      ...rest
     };
 
     // if (asyncValidate) {
@@ -1162,7 +1162,7 @@ export function generateField(component, opts) {
 }
 
 export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
-  return (props) => {
+  return props => {
     const {
       massageDefaultIdValue,
       generateDefaultValue,
@@ -1192,7 +1192,7 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
       ...(caresAboutToolContext
         ? { ...workflowDefaultParamsObj, ...workflowParams }
         : {}),
-      ...(generateDefaultValue ? generateDefaultValue.customParams : {}),
+      ...(generateDefaultValue ? generateDefaultValue.customParams : {})
     };
 
     async function triggerGetDefault() {
@@ -1205,7 +1205,7 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
         const doParamsMatch = isEqual(
           Object.keys({
             ...(caresAboutToolContext ? workflowDefaultParamsObj : {}), //we don't want to compare these keys so we just spread them here
-            ...(generateDefaultValue.params || {}),
+            ...(generateDefaultValue.params || {})
           }).sort(),
           Object.keys(customParamsToUse).sort()
         );
@@ -1240,7 +1240,7 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
             );
         if (massageDefaultIdValue) {
           const massagedRes = await massageDefaultIdValue({
-            defaultValueById: defaultValue,
+            defaultValueById: defaultValue
           });
           if (massagedRes.defaultValue) {
             defaultValue = massagedRes.defaultValue;
@@ -1284,7 +1284,7 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
       disabled: props.disabled || allowUserOverride === false,
       readOnly: props.readOnly || isLoadingDefaultValue,
       intent: getIntent(props),
-      intentClass: getIntentClass(props),
+      intentClass: getIntentClass(props)
     };
 
     // don't show intent while async validating
@@ -1299,11 +1299,11 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
         ...props,
         generateDefaultValue: {
           ...props.generateDefaultValue,
-          customParams: customParamsToUse,
+          customParams: customParamsToUse
         },
         onFinish: () => {
           triggerGetDefault();
-        },
+        }
       });
 
     return (
@@ -1329,7 +1329,7 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
             >
               Assign Default
             </Button>
-          ),
+          )
         }}
       >
         <ComponentToWrap {...defaultProps} />
@@ -1344,18 +1344,18 @@ export const DateInputField = generateField(renderBlueprintDateInput);
 export const DateRangeInputField = generateField(renderBlueprintDateRangeInput);
 export const CheckboxField = generateField(renderBlueprintCheckbox, {
   noOuterLabel: true,
-  noFillField: true,
+  noFillField: true
 });
 export const SwitchField = generateField(renderBlueprintSwitch, {
   noOuterLabel: true,
-  noFillField: true,
+  noFillField: true
 });
 export const TextareaField = generateField(renderBlueprintTextarea);
 export const SuggestField = generateField(renderSuggest);
 export const EditableTextField = generateField(renderBlueprintEditableText);
 export const NumericInputField = generateField(renderBlueprintNumericInput);
 export const RadioGroupField = generateField(renderBlueprintRadioGroup, {
-  noFillField: true,
+  noFillField: true
 });
 export const ReactSelectField = generateField(renderReactSelect);
 export const SelectField = generateField(renderSelect);
@@ -1378,7 +1378,7 @@ function fakeWait() {
     ? window.Cypress.addFakeDefaultValueWait
     : 3000;
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => resolve(), fakeWaitNum);
   });
 }

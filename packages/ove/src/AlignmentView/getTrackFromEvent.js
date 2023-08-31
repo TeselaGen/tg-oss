@@ -5,7 +5,7 @@ export function getTrackFromEvent(event, allTracks) {
     ".alignmentViewTrackContainer"
   );
   let track;
-  trackContainers.forEach((t) => {
+  trackContainers.forEach(t => {
     const mouseX = getClientX(event) + document.body.scrollLeft;
     const mouseY = getClientY(event) + document.body.scrollTop;
     if (

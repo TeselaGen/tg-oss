@@ -23,7 +23,7 @@ function PCRTool(props) {
     primerClicked
   } = props;
   const origSeqLen = sequenceData.sequence.length;
-  forEach(sequenceData.primers, (p) => (p.originalId = p.id));
+  forEach(sequenceData.primers, p => (p.originalId = p.id));
   const fPrimer = sequenceData.primers[forwardPrimer];
   const rPrimer = sequenceData.primers[reversePrimer];
   let seqBetween;
@@ -77,7 +77,7 @@ function PCRTool(props) {
     });
     seqBetween.name = `PCR Product from ${sequenceData.name} `;
   }
-  const getPrimers = (opts) => {
+  const getPrimers = opts => {
     return flatMap(
       sequenceData.primers,
       ({ name, id, forward, start, end }) => {
@@ -139,23 +139,23 @@ function PCRTool(props) {
       <div style={{ fontWeight: "600", fontSize: 13 }}>Output Product:</div>
       {seqBetween ? (
         <SimpleCircularOrLinearView
-            noWarnings
-            withZoomLinearView
-            withZoomCircularView
-            withChoosePreviewType
-            withDownload
-            smallSlider
-            withCaretEnabled
-            width={width - 50}
-            height={Math.max(height - 250, 400)}
-            sequenceData={seqBetween}
-            primerClicked={(args) => {
-              primerClicked({
-                ...args,
-                annotation: sequenceData.primers[args.annotation.originalId]
-              });
-            }}
-          ></SimpleCircularOrLinearView>
+          noWarnings
+          withZoomLinearView
+          withZoomCircularView
+          withChoosePreviewType
+          withDownload
+          smallSlider
+          withCaretEnabled
+          width={width - 50}
+          height={Math.max(height - 250, 400)}
+          sequenceData={seqBetween}
+          primerClicked={args => {
+            primerClicked({
+              ...args,
+              annotation: sequenceData.primers[args.annotation.originalId]
+            });
+          }}
+        ></SimpleCircularOrLinearView>
       ) : (
         <div style={{ marginTop: 5, fontStyle: "italic", color: "grey" }}>
           Please choose a forward and reverse primer to see the resulting PCR

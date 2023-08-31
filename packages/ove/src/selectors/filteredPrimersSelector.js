@@ -10,7 +10,7 @@ function filteredPrimersSelector(
   primerIndividualToHide,
   lengthsToHide
 ) {
-  return omitBy(primers, (ann) => {
+  return omitBy(primers, ann => {
     const hideIndividually = primerIndividualToHide[ann.id];
     return (
       hideAnnByLengthFilter(lengthsToHide, ann, seqLen) || hideIndividually
@@ -21,7 +21,7 @@ function filteredPrimersSelector(
 export default createSelector(
   primersSelector,
   sequenceLengthSelector,
-  (state) => state.annotationVisibility.primerIndividualToHide,
-  (state) => state.primerLengthsToHide,
+  state => state.annotationVisibility.primerIndividualToHide,
+  state => state.primerLengthsToHide,
   filteredPrimersSelector
 );

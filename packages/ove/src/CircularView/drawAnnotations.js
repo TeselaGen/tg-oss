@@ -53,10 +53,10 @@ function drawAnnotations(props) {
   const labels = {};
 
   if (!Object.keys(annotations).length) return null;
-  sortBy(annotations, (a) => {
+  sortBy(annotations, a => {
     return -getRangeLength(a, sequenceLength);
   })
-    .map((annotation) => {
+    .map(annotation => {
       const { startAngle, endAngle, totalAngle, centerAngle, locationAngles } =
         getRangeAngles(
           positionBy ? positionBy(annotation) : annotation,
@@ -196,7 +196,7 @@ function drawAnnotations(props) {
           return ellipsizedName;
         }
         if (locationAngles) {
-          annotation.locationAngles = locationAngles.map((l) => {
+          annotation.locationAngles = locationAngles.map(l => {
             const en = getEllipsizedName(l.totalAngle);
             if (en?.length > (ellipsizedName?.length || 0)) {
               ellipsizedName = en;

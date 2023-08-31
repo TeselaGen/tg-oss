@@ -43,12 +43,12 @@ class Sequence extends React.Component {
     const rowSeqLen = sequence.length;
     let overlapToBold;
     let isDigestPart;
-    [hoveredAnnEasyStore.hoveredAnn].forEach((ann) => {
+    [hoveredAnnEasyStore.hoveredAnn].forEach(ann => {
       if (ann && !isReplacementLayer) {
         let start = ann.start;
         let end = ann.end - 1;
 
-        partOverhangs.forEach((h) => {
+        partOverhangs.forEach(h => {
           if (ann[h]) {
             isDigestPart = true;
             if (h.includes("Underhang") && isReverse) {
@@ -101,7 +101,7 @@ class Sequence extends React.Component {
         scrollData,
         width
       });
-      inner = times(numChunks, (i) => {
+      inner = times(numChunks, i => {
         const seqChunk = getChunk(sequence, chunkSize, i);
         const textLength = charWidth * seqChunk.length;
         const x = i * chunkWidth;
@@ -194,7 +194,7 @@ class ColoredSequence extends React.Component {
     const { props } = this;
     if (
       ["charWidth", "sequence", "height", "isReverse", "width"].some(
-        (key) => props[key] !== newProps[key]
+        key => props[key] !== newProps[key]
       )
     )
       return true;

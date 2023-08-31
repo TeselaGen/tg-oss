@@ -1,4 +1,4 @@
-import {flatMap} from "lodash";
+import { flatMap } from "lodash";
 import splitRangeIntoTwoPartsIfItIsCircular from "./splitRangeIntoTwoPartsIfItIsCircular";
 import getOverlapOfNonCircularRanges from "./getOverlapOfNonCircularRanges";
 
@@ -20,8 +20,8 @@ export default function getOverlapsOfPotentiallyCircularRanges(
 
   let overlaps = [];
 
-  normalizedRangeA.forEach(function(nonCircularRangeA, iA) {
-    normalizedRangeB.forEach(function(nonCircularRangeB, iB) {
+  normalizedRangeA.forEach(function (nonCircularRangeA, iA) {
+    normalizedRangeB.forEach(function (nonCircularRangeB, iB) {
       const overlap = getOverlapOfNonCircularRanges(
         nonCircularRangeA,
         nonCircularRangeB
@@ -51,4 +51,4 @@ export default function getOverlapsOfPotentiallyCircularRanges(
     overlaps.push(joinedOverlap);
   }
   return overlaps;
-};
+}

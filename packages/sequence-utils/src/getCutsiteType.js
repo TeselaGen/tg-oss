@@ -7,4 +7,4 @@ export default function getCutsiteType(restrictionEnzyme) {
   } else {
     return "3' overhang";
   }
-};
+}

@@ -7,4 +7,4 @@ export default function getMiddleOfRange(range, rangeMax) {
     range.start + Math.floor(len / 2),
     rangeMax
   );
-};
+}

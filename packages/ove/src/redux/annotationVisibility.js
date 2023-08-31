@@ -69,7 +69,7 @@ export const resetPartIndividualToHide = createAction(
 // ------------------------------------
 const annotationVisibility = createMergedDefaultStateReducer(
   {
-    [resetPartIndividualToHide]: (state) => {
+    [resetPartIndividualToHide]: state => {
       return {
         ...state,
         partIndividualToHide: {}
@@ -94,7 +94,7 @@ const annotationVisibility = createMergedDefaultStateReducer(
         }
       };
     },
-    [resetFeatureIndividualToHide]: (state) => {
+    [resetFeatureIndividualToHide]: state => {
       return {
         ...state,
         featureIndividualToHide: {}
@@ -119,7 +119,7 @@ const annotationVisibility = createMergedDefaultStateReducer(
         }
       };
     },
-    [resetPrimerIndividualToHide]: (state) => {
+    [resetPrimerIndividualToHide]: state => {
       return {
         ...state,
         primerIndividualToHide: {}
@@ -144,7 +144,7 @@ const annotationVisibility = createMergedDefaultStateReducer(
         }
       };
     },
-    [resetFeatureTypesToHide]: (state) => {
+    [resetFeatureTypesToHide]: state => {
       return {
         ...state,
         featureTypesToHide: {}

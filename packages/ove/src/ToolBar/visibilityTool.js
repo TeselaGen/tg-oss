@@ -27,7 +27,7 @@ export default connectToEditor(({ toolBar = {} }) => {
   );
 });
 
-const VisibilityOptions = withEditorProps(function(props) {
+const VisibilityOptions = withEditorProps(function (props) {
   return (
     <Menu>
       {createCommandMenu(viewSubmenu, getCommands({ props }), {

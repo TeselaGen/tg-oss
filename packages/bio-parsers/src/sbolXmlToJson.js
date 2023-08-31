@@ -2,7 +2,7 @@
 import validateSequenceArray from "./utils/validateSequenceArray";
 import searchWholeObjByName, {
   searchWholeObjByNameSimple,
-  searchWholeObjByNameSimpleArray,
+  searchWholeObjByNameSimpleArray
 } from "./utils/searchWholeObjByName";
 
 import { XMLParser } from "fast-xml-parser";
@@ -23,12 +23,12 @@ async function sbolXmlToJson(string, options) {
   let response = {
     parsedSequence: null,
     messages: [],
-    success: true,
+    success: true
   };
   try {
     const result = new XMLParser({
       isArray: () => true,
-      ignoreAttributes: false,
+      ignoreAttributes: false
     }).parse(string);
     const sbolJsonMatches = searchWholeObjByName("DnaComponent", result);
     if (sbolJsonMatches[0]) {
@@ -38,7 +38,7 @@ async function sbolXmlToJson(string, options) {
           response = {
             parsedSequence: null,
             messages: [],
-            success: true,
+            success: true
           };
           response.parsedSequence = parseSbolJson(
             sbolJsonMatches[0].value[i],
@@ -49,7 +49,7 @@ async function sbolXmlToJson(string, options) {
           console.error("error.stack: ", e.stack);
           resultArray.push({
             success: false,
-            messages: ["Error while parsing Sbol format"],
+            messages: ["Error while parsing Sbol format"]
           });
         }
         if (response.parsedSequence.features.length > 0) {
@@ -63,13 +63,13 @@ async function sbolXmlToJson(string, options) {
     } else {
       return onFileParsed({
         success: false,
-        messages: ["Error: XML is not valid Jbei or Sbol format"],
+        messages: ["Error: XML is not valid Jbei or Sbol format"]
       });
     }
   } catch (e) {
     return onFileParsed({
       success: false,
-      messages: ["Error parsing XML to JSON"],
+      messages: ["Error parsing XML to JSON"]
     });
   }
 }
@@ -124,11 +124,11 @@ function parseSbolJson(sbolJson, options) {
           end: parseInt(
             get(feature, "bioEnd[0]") - (options.inclusive1BasedEnd ? 0 : 1)
           ),
-          strand: get(feature, "strand[0]"), //+ or -
+          strand: get(feature, "strand[0]") //+ or -
           // notes: feature['seq:label'],
         };
       }
-    }),
+    })
   };
 }
 

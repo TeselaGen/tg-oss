@@ -11,7 +11,7 @@ export default function jsonToFasta(jsonSequence, options) {
     sequence,
     isProtein,
     proteinSize,
-    proteinSequence,
+    proteinSequence
   } = cleanedData;
 
   options = options || {};
@@ -25,7 +25,9 @@ export default function jsonToFasta(jsonSequence, options) {
   let fastaString = "";
   fastaString += `>${name || "Untitled Sequence"}|`;
   fastaString += "|" + sizeToUse;
-  fastaString += description ? "|" + mangleOrStripUrls(description, options) : "";
+  fastaString += description
+    ? "|" + mangleOrStripUrls(description, options)
+    : "";
   fastaString += "|" + (circular ? "circular" : "linear");
   fastaString += "\n";
   fastaString += (seqToUse.match(/.{1,80}/g) || []).join("\n");

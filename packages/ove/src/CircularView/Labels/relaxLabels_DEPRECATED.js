@@ -9,7 +9,7 @@ let alpha = 1.5; //the larger the alpha, the fewer loops through relax necessary
 let spacing = 12;
 let relaxCounter = 0;
 export default function relaxLabels(labelPoints) {
-  let mutableLabelPoints = labelPoints.map(function(point) {
+  let mutableLabelPoints = labelPoints.map(function (point) {
     return {
       ...point
     };
@@ -18,14 +18,14 @@ export default function relaxLabels(labelPoints) {
   function relax() {
     let again = false;
     relaxCounter++;
-    mutableLabelPoints.forEach(function(point1, index1) {
+    mutableLabelPoints.forEach(function (point1, index1) {
       // var xOverlaps = xRanges.search(point1.x, point1.x + point1.width)
       // var yOverlaps = yRanges.search(point1.y, point1.y + point1.height)
       // xOverlaps
       // xRanges.add(point1.x, point1.x + point1.width, undefined, point1)
       // yRanges.add(point1.y, point1.y + point1.height, undefined, point1)
 
-      mutableLabelPoints.forEach(function(point2, index2) {
+      mutableLabelPoints.forEach(function (point2, index2) {
         // a & b are the same element and don't collide.
         if (index1 === index2) return;
 
@@ -69,9 +69,9 @@ export default function relaxLabels(labelPoints) {
 
   //group colliding labels
   let stableLabels = [];
-  mutableLabelPoints.forEach(function(point1) {
+  mutableLabelPoints.forEach(function (point1) {
     let collision = false;
-    stableLabels.some(function(point2) {
+    stableLabels.some(function (point2) {
       // a & b are on opposite sides of the chart and
       // don't collide
       if ((point1.x > 0 && point2.x <= 0) || (point1.x < 0 && point2.x >= 0)) {

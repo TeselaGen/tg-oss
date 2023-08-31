@@ -153,8 +153,8 @@ describe("find tool", function () {
     cy.get(".tg-find-tool-input input").should("be.focused");
     cy.focused().type("gg").type(`{cmd}f`);
     cy.get(".tg-find-tool-input input").should("be.focused");
-    cy.get(`[data-tick-mark="10"]`).then((el) => {
-      cy.get(`[data-tick-mark="20"]`).then((el2) => {
+    cy.get(`[data-tick-mark="10"]`).then(el => {
+      cy.get(`[data-tick-mark="20"]`).then(el2 => {
         cy.dragBetweenSimple(el, el2);
       });
     });

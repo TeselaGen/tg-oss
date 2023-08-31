@@ -40,7 +40,7 @@ async function geneiousXmlToJson(string, options) {
         messages: ["Error: XML is not valid geneious format"]
       });
     }
-    forEach(geneiousJsonMatches, (geneiousJson) => {
+    forEach(geneiousJsonMatches, geneiousJson => {
       const response = {
         parsedSequence: null,
         messages: [],
@@ -58,10 +58,7 @@ async function geneiousXmlToJson(string, options) {
         });
       }
     });
-    const toRet = filter(
-      resultArray,
-      (r) => r?.parsedSequence?.sequence?.length
-    );
+    const toRet = filter(resultArray, r => r?.parsedSequence?.sequence?.length);
     if (toRet.length) return toRet;
     return onFileParsed(resultArray);
   } catch (e) {
@@ -105,7 +102,7 @@ function parseGeneiousJson(geneiousJson) {
           searchWholeObjByNameSimple("maximumIndex", lastInterval) - 1;
         let locations;
         if (intervals.length > 1) {
-          locations = intervals.map((i) => {
+          locations = intervals.map(i => {
             const start = searchWholeObjByNameSimple("minimumIndex", i) - 1;
             const end = searchWholeObjByNameSimple("maximumIndex", i) - 1;
             return {

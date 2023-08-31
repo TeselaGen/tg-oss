@@ -1,8 +1,11 @@
 //UNDER CONSTRUCTION
 
-import {get} from "lodash";
+import { get } from "lodash";
 
-import {normalizePositionByRangeLength, getRangeLength} from "@teselagen/range-utils";
+import {
+  normalizePositionByRangeLength,
+  getRangeLength
+} from "@teselagen/range-utils";
 
 export default function getVirtualDigest({
   cutsites,
@@ -99,7 +102,7 @@ export default function getVirtualDigest({
     fragments,
     overlappingEnzymes
   };
-};
+}
 
 function addSizeIdName(frag, sequenceLength) {
   const size = getRangeLength(

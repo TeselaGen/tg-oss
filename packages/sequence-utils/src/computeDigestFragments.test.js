@@ -1,4 +1,4 @@
-import {getDigestFragsForSeqAndEnzymes} from "./computeDigestFragments.js";
+import { getDigestFragsForSeqAndEnzymes } from "./computeDigestFragments.js";
 import aliasedEnzymesByName from "./aliasedEnzymesByName.js";
 
 describe("computeDigestFragments", () => {

@@ -15,14 +15,14 @@ export default function VersionSwitcher() {
             "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"
           )
         ).json();
-        const versionNode = res.tree.find((e) => {
+        const versionNode = res.tree.find(e => {
           return e.path.toLowerCase() === "version";
         });
 
         res = await (await window.fetch(versionNode.url)).json();
 
         //set the options
-        const options = res.tree.map((e) => {
+        const options = res.tree.map(e => {
           return { value: e.path, label: e.path };
         });
 

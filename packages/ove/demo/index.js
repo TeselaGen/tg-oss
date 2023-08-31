@@ -1,2 +1,1 @@
-export * from '../../ove/demo/src'
-
+export * from "../../ove/demo/src";

@@ -28,7 +28,7 @@ import classNames from "classnames";
 import { withEditorProps } from "../../../src";
 
 export class AddOrEditFeatureDialog extends React.Component {
-  renderLocations = (props) => {
+  renderLocations = props => {
     const { fields } = props;
     const { sequenceData = { sequence: "" }, start, end } = this.props;
     const sequenceLength = sequenceData.sequence.length;
@@ -154,8 +154,8 @@ export class AddOrEditFeatureDialog extends React.Component {
             { label: "Positive", value: "true" },
             { label: "Negative", value: "false" }
           ]}
-          normalize={(value) => value === "true" || false}
-          format={(value) => (value ? "true" : "false")}
+          normalize={value => value === "true" || false}
+          format={value => (value ? "true" : "false")}
           name="forward"
           label="Strand:"
           defaultValue={true}
@@ -164,7 +164,7 @@ export class AddOrEditFeatureDialog extends React.Component {
           inlineLabel
           tooltipError
           defaultValue="misc_feature"
-          options={getFeatureTypes().map((type) => {
+          options={getFeatureTypes().map(type => {
             return {
               label: (
                 <div
@@ -222,11 +222,11 @@ export class AddOrEditFeatureDialog extends React.Component {
           name="notes"
           label="Notes"
           noMarginBottom
-          format={(v) => {
+          format={v => {
             let toReturn = v;
             if (typeof v !== "string" && v) {
               toReturn = "";
-              Object.keys(v).forEach((key) => {
+              Object.keys(v).forEach(key => {
                 let stringVal;
                 try {
                   stringVal = JSON.stringify(v[key]);
@@ -246,7 +246,7 @@ export class AddOrEditFeatureDialog extends React.Component {
         >
           <Button
             style={{ marginRight: 15 }}
-            onMouseDown={(e) => {
+            onMouseDown={e => {
               //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
               e.preventDefault();
               e.stopPropagation();
@@ -256,7 +256,7 @@ export class AddOrEditFeatureDialog extends React.Component {
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit((data) => {
+            onClick={handleSubmit(data => {
               let updatedData;
               if (data.forward === true && data.strand !== 1) {
                 updatedData = { ...data, strand: 1 };

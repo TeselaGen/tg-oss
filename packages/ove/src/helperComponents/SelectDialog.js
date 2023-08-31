@@ -40,7 +40,7 @@ export default compose(
   class SelectDialog extends React.Component {
     updateTempHighlight =
       ({ isStart, isEnd } = {}) =>
-      (val) => {
+      val => {
         const { selectionLayerUpdate, from, to, invalid } = this.props;
         if (invalid) return;
         selectionLayerUpdate(
@@ -80,7 +80,7 @@ export default compose(
 
       return (
         <form
-          onSubmit={handleSubmit((data) => {
+          onSubmit={handleSubmit(data => {
             if (onSubmit) onSubmit(data);
             hideModal();
             tryToRefocusEditor();
@@ -143,7 +143,7 @@ export default compose(
   }
 );
 
-const normalizeToInt = (val) => {
+const normalizeToInt = val => {
   const int = Math.round(val);
   const normalizedVal = `${int >= 0 ? int : 1}`;
   return normalizedVal;

@@ -13,7 +13,7 @@ export default function FillWindowDemo() {
         console.info("size:", size);
         return (
           <div style={{ paddingTop: 90, paddingLeft: 90 }}>
-            window size: 
+            window size:
             <br />
             height: {size.height}
             <br />

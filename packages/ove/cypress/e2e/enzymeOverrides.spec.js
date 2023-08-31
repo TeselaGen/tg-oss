@@ -66,7 +66,7 @@ describe("enzyme overrides", () => {
   it(`should be able to make enzyme groups with additionalEnzymes`, () => {
     cy.visit("");
     cy.tgToggle("additionalEnzymes");
-    cy.window().then((win) => {
+    cy.window().then(win => {
       win.localStorage.clear();
     });
     cy.triggerFileCmd("Manage Enzymes");

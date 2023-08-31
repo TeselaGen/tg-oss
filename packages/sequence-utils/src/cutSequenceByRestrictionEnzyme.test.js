@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-expressions */
 
-
 import chai from "chai";
 import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme.js";
 import enzymeList from "./aliasedEnzymesByName";

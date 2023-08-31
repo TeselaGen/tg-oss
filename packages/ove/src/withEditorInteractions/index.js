@@ -79,7 +79,7 @@ function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
     constructor(props) {
       super(props);
-      annotationClickHandlers.forEach((handler) => {
+      annotationClickHandlers.forEach(handler => {
         this[handler] = (...args) => {
           const { clickOverrides = {} } = this.props;
           let preventDefault;
@@ -93,7 +93,7 @@ function VectorInteractionHOC(Component /* options */) {
         };
       });
 
-      this.ConnectedMenu = (p) => {
+      this.ConnectedMenu = p => {
         return <ConnectedMenu {...props} {...p} />;
       };
     }
@@ -110,7 +110,7 @@ function VectorInteractionHOC(Component /* options */) {
       // documentation: https://craig.is/killing/mice
       this.combokeys.bind(
         "-.*ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""),
-        (event) => {
+        event => {
           this.handleDnaInsert(event);
         }
       );
@@ -140,7 +140,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
 
       moveCaretBindings.forEach(({ keyCombo, type }) => {
-        this.combokeys.bind(keyCombo, (event) => {
+        this.combokeys.bind(keyCombo, event => {
           const shiftHeld = event.shiftKey;
           const bpsPerRow = getBpsPerRow(this.props);
           const {
@@ -177,7 +177,7 @@ function VectorInteractionHOC(Component /* options */) {
         });
       });
 
-      this.combokeys.bind(["backspace", "del"], (event) => {
+      this.combokeys.bind(["backspace", "del"], event => {
         // Handle shortcut
         this.handleDnaDelete(event);
       });
@@ -206,7 +206,7 @@ function VectorInteractionHOC(Component /* options */) {
       });
     };
 
-    handlePaste = (e) => {
+    handlePaste = e => {
       const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
@@ -253,7 +253,7 @@ function VectorInteractionHOC(Component /* options */) {
       e.preventDefault();
     };
 
-    handleCutOrCopy = (isCut) => (e) => {
+    handleCutOrCopy = isCut => e => {
       const {
         onCopy = noop,
         sequenceData,
@@ -351,7 +351,7 @@ function VectorInteractionHOC(Component /* options */) {
           selectionLayer,
           sequenceLength,
           caretPosition,
-          handleInsert: (seqDataToInsert) => {
+          handleInsert: seqDataToInsert => {
             insertAndSelectHelper({
               props: this.props,
               seqDataToInsert
@@ -421,7 +421,7 @@ function VectorInteractionHOC(Component /* options */) {
       }
     };
 
-    caretPositionUpdate = (position) => {
+    caretPositionUpdate = position => {
       const { caretPosition = -1 } = this.props;
       if (caretPosition === position) {
         return;
@@ -429,7 +429,7 @@ function VectorInteractionHOC(Component /* options */) {
       //we only call caretPositionUpdate if we're actually changing something
       this.props.caretPositionUpdate(position);
     };
-    selectionLayerUpdate = (newSelection) => {
+    selectionLayerUpdate = newSelection => {
       const { selectionLayer = { start: -1, end: -1 }, ignoreGapsOnHighlight } =
         this.props;
       if (!newSelection) return;
@@ -537,7 +537,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     // eslint-disable-next-line no-unused-vars
-    getCopyOptions = (annotation) => {
+    getCopyOptions = annotation => {
       const { sequenceData, readOnly, selectionLayer } = this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
@@ -590,7 +590,7 @@ function VectorInteractionHOC(Component /* options */) {
           this.openVeCopyAA && this.openVeCopyAA.destroy();
         },
         didMount: ({ className }) => {
-          this.openVeCopyAA = makeTextCopyable((selectedSeqData) => {
+          this.openVeCopyAA = makeTextCopyable(selectedSeqData => {
             const textToCopy = isProtein
               ? selectedSeqData.proteinSequence.toUpperCase()
               : getAminoAcidStringFromSequenceString(selectedSeqData.sequence);
@@ -620,7 +620,7 @@ function VectorInteractionHOC(Component /* options */) {
                 didMount: ({ className }) => {
                   // TODO: Maybe use a cut action instead
                   this.openVeCut = makeTextCopyable(
-                    (s) => ({
+                    s => ({
                       ...s,
                       textToCopy: isProtein ? s.proteinSequence : s.sequence
                     }),
@@ -645,7 +645,7 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopy2 = makeTextCopyable(
-                  (s) => ({ ...s, textToCopy: s.sequence }),
+                  s => ({ ...s, textToCopy: s.sequence }),
                   className
                 );
               }
@@ -688,24 +688,17 @@ function VectorInteractionHOC(Component /* options */) {
                 this.openVeCopyAAReverse && this.openVeCopyAAReverse.destroy();
               },
               didMount: ({ className }) => {
-                this.openVeCopyAAReverse = makeTextCopyable(
-                  (selectedSeqData) => {
-                    const revSeqData =
-                      getReverseComplementSequenceAndAnnotations(
-                        selectedSeqData
-                      );
-                    const textToCopy = isProtein
-                      ? revSeqData.proteinSequence.toUpperCase()
-                      : getAminoAcidStringFromSequenceString(
-                          revSeqData.sequence
-                        );
-                    return {
-                      ...revSeqData,
-                      textToCopy
-                    };
-                  },
-                  className
-                );
+                this.openVeCopyAAReverse = makeTextCopyable(selectedSeqData => {
+                  const revSeqData =
+                    getReverseComplementSequenceAndAnnotations(selectedSeqData);
+                  const textToCopy = isProtein
+                    ? revSeqData.proteinSequence.toUpperCase()
+                    : getAminoAcidStringFromSequenceString(revSeqData.sequence);
+                  return {
+                    ...revSeqData,
+                    textToCopy
+                  };
+                }, className);
               }
             },
             {
@@ -728,7 +721,7 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
 
-    getSelectionMenuOptions = (annotation) => {
+    getSelectionMenuOptions = annotation => {
       const items = [
         ...this.getCopyOptions(annotation),
         createNewAnnotationMenu,
@@ -756,7 +749,7 @@ function VectorInteractionHOC(Component /* options */) {
       return handler({ event, ...rest }, this.props);
     };
     enhanceRightClickAction = (action, key) => {
-      return (opts) => {
+      return opts => {
         const lastFocusedEl = document.activeElement;
         const { rightClickOverrides = {} } = this.props;
         const items = action(opts);
@@ -894,7 +887,7 @@ function VectorInteractionHOC(Component /* options */) {
         return [
           {
             text: "View Warning Details",
-            onClick: (event) => {
+            onClick: event => {
               this.warningDoubleClicked({
                 event,
                 annotation,
@@ -932,7 +925,7 @@ function VectorInteractionHOC(Component /* options */) {
                     onClick: async () => {
                       const { sequenceData, upsertPart } = this.props;
                       if (
-                        some(sequenceData.parts, (part) => {
+                        some(sequenceData.parts, part => {
                           if (
                             part.start === annotation.start &&
                             part.end === annotation.end
@@ -1127,7 +1120,7 @@ function VectorInteractionHOC(Component /* options */) {
             acc[handler] = this[handler];
             return acc;
           }, {}),
-          editorClicked: (p) => {
+          editorClicked: p => {
             editorClicked({
               ...p,
               updateSelectionOrCaret: this.updateSelectionOrCaret
@@ -1140,7 +1133,7 @@ function VectorInteractionHOC(Component /* options */) {
       return (
         <div
           tabIndex={0} //this helps with focusing using Keyboard's parentElement.focus()
-          ref={(c) => (this.node = c)}
+          ref={c => (this.node = c)}
           className="veVectorInteractionWrapper"
           style={{ position: "relative", ...vectorInteractionWrapperStyle }}
           onFocus={this.handleWrapperFocus}

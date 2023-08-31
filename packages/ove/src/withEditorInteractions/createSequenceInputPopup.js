@@ -35,7 +35,7 @@ class SequenceInputNoHotkeys extends React.Component {
       this.handleUnmountIfClickOustidePopup
     );
   }
-  handleUnmountIfClickOustidePopup = (e) => {
+  handleUnmountIfClickOustidePopup = e => {
     const n = findDOMNode(this);
     if (!n) return;
     const node = n.parentNode;
@@ -122,7 +122,7 @@ class SequenceInputNoHotkeys extends React.Component {
       <div className="sequenceInputBubble">
         <input
           autoCorrect="off"
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.keyCode === 27) {
               this.handleUnmount();
             }
@@ -135,9 +135,9 @@ class SequenceInputNoHotkeys extends React.Component {
           value={charsToInsert}
           autoFocus
           style={hasTempError ? { borderColor: "red" } : {}}
-          onChange={(e) => {
+          onChange={e => {
             let sanitizedVal = "";
-            e.target.value.split("").forEach((letter) => {
+            e.target.value.split("").forEach(letter => {
               const lowerLetter = letter.toLowerCase();
               if (replaceChars && replaceChars[lowerLetter]) {
                 const isUpper = lowerLetter !== letter;

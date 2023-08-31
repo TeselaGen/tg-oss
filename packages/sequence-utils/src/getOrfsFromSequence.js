@@ -1,7 +1,6 @@
 import shortid from "shortid";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
-
 /**
  * @private
  * Finds ORFs in a given DNA forward in a given frame.
@@ -121,4 +120,4 @@ export default function getOrfsFromSequence(options) {
     return false;
   });
   return nonDuplicatedOrfRanges;
-};
+}

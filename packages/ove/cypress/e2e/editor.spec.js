@@ -105,6 +105,15 @@ describe("editor", function () {
     cy.contains(".bp3-menu-item", "View Part Details").click();
     cy.contains(".bp3-dialog button", "Save").should("be.disabled");
   });
+  it(`you should not be able to edit bps when disableBpEditing=true`, () => {
+    cy.get(`asdfasdfasdfasdf`).click();
+    // cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`).should("not.exist");
+    // cy.get(`.ve-tool-container-editTool.disabled`).should("not.exist");
+    // cy.tgToggle("disableSetReadOnly");
+    // cy.get(`.ve-tool-container-editTool.disabled`);
+    // cy.get(`.bp3-button:contains(File)`).click();
+    // cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`);
+  });
   it(`you should not be able to change editability of a sequence when disableSetReadOnly=true`, () => {
     cy.get(`.bp3-button:contains(File)`).click();
     cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`).should("not.exist");
@@ -288,12 +297,12 @@ describe("editor", function () {
     cy.contains("Selecting 4 bps from 5295 to 1");
   });
   it(`should adjust font size of sequence name in circular view`, () => {
-    cy.contains(".veCircularViewTextWrapper", "pj5_00001").then((text) => {
+    cy.contains(".veCircularViewTextWrapper", "pj5_00001").then(text => {
       const fontSize = parseInt(text[0].style.getPropertyValue("font-size"));
       expect(fontSize).to.equal(14);
     });
     cy.tgToggle("nameFontSizeCircularView");
-    cy.contains(".veCircularViewTextWrapper", "pj5_00001").then((text) => {
+    cy.contains(".veCircularViewTextWrapper", "pj5_00001").then(text => {
       const fontSize = parseInt(text[0].style.getPropertyValue("font-size"));
       expect(fontSize).to.equal(10);
     });
@@ -323,7 +332,7 @@ describe("editor", function () {
     cy.get(".veLabelLine").should("have.css", "opacity", "0.9");
   });
   it(`should handle adjusting circular map label size.`, () => {
-    cy.get(".veCircularViewLabelText").then((labelText) => {
+    cy.get(".veCircularViewLabelText").then(labelText => {
       const fullFontSize = parseFloat(
         labelText[0].style.getPropertyValue("font-size").replace("px", "")
       );
@@ -333,7 +342,7 @@ describe("editor", function () {
         .contains("Circular Label Size")
         .click({ force: true });
       cy.get(".tg-menu-bar-popover").contains("50%").click({ force: true });
-      cy.get(".veCircularViewLabelText").then((fiftyPercentText) => {
+      cy.get(".veCircularViewLabelText").then(fiftyPercentText => {
         const halfFontSize = parseFloat(
           fiftyPercentText[0].style
             .getPropertyValue("font-size")
@@ -353,10 +362,10 @@ describe("editor", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.get(".veCircularViewLabelText")
       .contains("Example Primer 1")
-      .then((preLabelText1) => {
+      .then(preLabelText1 => {
         cy.get(".veCircularViewLabelText")
           .contains("araD")
-          .then((preLabelText2) => {
+          .then(preLabelText2 => {
             const preLabelTextDiff = Math.abs(
               parseFloat(preLabelText1[0].attributes.y.value) -
                 parseFloat(preLabelText2[0].attributes.y.value)
@@ -366,10 +375,10 @@ describe("editor", function () {
             });
             cy.get(".veCircularViewLabelText")
               .contains("Example Primer 1")
-              .then((postLabelText1) => {
+              .then(postLabelText1 => {
                 cy.get(".veCircularViewLabelText")
                   .contains("araD")
-                  .then((postLabelText2) => {
+                  .then(postLabelText2 => {
                     const postLabelTextDiff = Math.abs(
                       parseFloat(postLabelText1[0].attributes.y.value) -
                         parseFloat(postLabelText2[0].attributes.y.value)

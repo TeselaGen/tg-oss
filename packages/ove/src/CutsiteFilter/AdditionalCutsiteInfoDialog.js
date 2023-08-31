@@ -41,7 +41,7 @@ export const AdditionalCutsiteInfoDialog = compose(
   withRestrictionEnzymes,
   wrapDialog({
     isDraggable: true,
-    getDialogProps: (props) => {
+    getDialogProps: props => {
       if (isGroup(props)) {
         return {
           title: (
@@ -224,7 +224,7 @@ export const AdditionalCutsiteInfoDialog = compose(
 
     forEach(userEnzymeGroups, (nameArray, name) => {
       let isInGroup;
-      forEach(nameArray, (n) => {
+      forEach(nameArray, n => {
         if (n.toLowerCase() === enzymeName.toLowerCase()) {
           isInGroup = true;
         }
@@ -289,7 +289,7 @@ export const CompareEnzymeGroupsDialog = compose(
     ...props,
     cutsiteOrGroupKey: group2
   });
-  const byNameLower = (n) => n.name.toLowerCase();
+  const byNameLower = n => n.name.toLowerCase();
   const shared = intersectionBy(
     g1.allEnzymesInGroup,
     g2.allEnzymesInGroup,
@@ -380,19 +380,19 @@ const getGroupElAndCutsites = ({
 
   const enzymesThatDontCutInSeq = [];
   let enzymesThatCutInSeq = [];
-  forEach(filteredRestrictionEnzymes, (g) => {
+  forEach(filteredRestrictionEnzymes, g => {
     if (g.value === cutsiteOrGroupKey) {
       isGroupActive = true;
     }
   });
 
   if (cutsiteOrGroupKey === "type2s") {
-    const nameArray = flatMap(defaultEnzymesByName, (e) =>
+    const nameArray = flatMap(defaultEnzymesByName, e =>
       e.isType2S ? e.name : []
     );
     label = "Type IIS Enzymes";
 
-    sortBy(nameArray).forEach((name) => {
+    sortBy(nameArray).forEach(name => {
       const cutsites = allCutsites.cutsitesByName[name.toLowerCase()];
       if (!cutsites) {
         enzymesThatDontCutInSeq.push({ name, sites: [] });
@@ -405,7 +405,7 @@ const getGroupElAndCutsites = ({
     const nameArray = userEnzymeGroups[name];
     label = getUserGroupLabel({ name, nameArray });
 
-    sortBy(nameArray).forEach((name) => {
+    sortBy(nameArray).forEach(name => {
       const cutsites = allCutsites.cutsitesByName[name.toLowerCase()];
       if (!cutsites) {
         enzymesThatDontCutInSeq.push({ name, sites: [] });
@@ -418,11 +418,11 @@ const getGroupElAndCutsites = ({
     const specialCutsiteFilterOption =
       specialCutsiteFilterOptions[cutsiteOrGroupKey];
     label = specialCutsiteFilterOption.label;
-    enzymesThatCutInSeq = map(allCutsites.cutsitesByName, (cutsites) =>
+    enzymesThatCutInSeq = map(allCutsites.cutsitesByName, cutsites =>
       cutsites.length === specialCutsiteFilterOption.cutsThisManyTimes
         ? { name: cutsites[0].name, sites: cutsites }
         : null
-    ).filter((n) => n !== null);
+    ).filter(n => n !== null);
   }
   const title = (
     <div style={{ display: "flex" }}>
@@ -466,7 +466,7 @@ export const CutsiteTag = ({
   let numCuts = (cutsitesByName[name.toLowerCase()] || []).length;
 
   const aliases = getEnzymeAliases(name);
-  aliases.forEach((alias) => {
+  aliases.forEach(alias => {
     if (numCuts === 0) {
       numCuts = (cutsitesByName[alias.toLowerCase()] || []).length;
     }
@@ -552,7 +552,7 @@ export const addCutsiteGroupClickHandler = ({
     onClick={
       noClick
         ? undefined
-        : (e) => {
+        : e => {
             const isInMultiSelect = e.target.closest(
               ".bp3-multi-select-popover"
             );

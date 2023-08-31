@@ -15,7 +15,7 @@ import { lifecycle, mapProps } from "recompose";
 import { omit } from "lodash";
 import ReactMarkdown from "react-markdown";
 
-const omitProps = (keys) => mapProps((props) => omit(props, keys));
+const omitProps = keys => mapProps(props => omit(props, keys));
 const _Switch = omitProps(["didMount"])(Switch);
 const EnhancedSwitch = lifecycle({
   componentDidMount() {
@@ -90,7 +90,7 @@ export default function renderToggle({
             },
             value: (that.state || {})[type],
             disabled: disabled,
-            onChange: (newType) => {
+            onChange: newType => {
               hook && hook(newType.target.value);
               that.setState({
                 [type]: newType.target.value
@@ -220,7 +220,7 @@ export function useToggle({
   const comp = renderToggle({
     type,
     that: {
-      setState: (v) => {
+      setState: v => {
         setVal(v[type]);
       },
       [type]: val

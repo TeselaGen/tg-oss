@@ -1,4 +1,4 @@
-import {ambiguous_dna_letters} from "./bioData";
+import { ambiguous_dna_letters } from "./bioData";
 
 export default function guessIfSequenceIsDnaAndNotProtein(seq, options = {}) {
   const { threshold = 0.9, loose } = options;
@@ -30,4 +30,4 @@ export default function guessIfSequenceIsDnaAndNotProtein(seq, options = {}) {
     return true; //it is DNA
   }
   return false; //it is protein
-};
+}

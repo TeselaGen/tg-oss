@@ -1,6 +1,5 @@
 import DNAComplementMap from "./DNAComplementMap";
 
-
 // ac.throw([ac.string,ac.bool],arguments);
 export default function getReverseComplementSequenceString(sequence) {
   // ac.throw([ac.string],arguments);
@@ -14,4 +13,4 @@ export default function getReverseComplementSequenceString(sequence) {
     reverseComplementSequenceString += revChar;
   }
   return reverseComplementSequenceString;
-};
+}

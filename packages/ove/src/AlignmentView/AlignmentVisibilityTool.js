@@ -58,7 +58,7 @@ function VisibilityOptions({
         return (
           <MenuItem
             icon={visible ? "tick" : ""}
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
               if (annotationName === "axis") {
                 return alignmentAnnotationVisibilityToggle({

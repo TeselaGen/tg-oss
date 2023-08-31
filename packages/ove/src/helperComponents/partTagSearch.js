@@ -1,9 +1,6 @@
 import React from "react";
 import withEditorProps from "../withEditorProps";
-import {
-  TgSelect,
-  getKeyedTagsAndTagOptions
-} from "@teselagen/ui";
+import { TgSelect, getKeyedTagsAndTagOptions } from "@teselagen/ui";
 import { flatMap } from "lodash";
 import { uniqBy } from "lodash";
 
@@ -30,7 +27,7 @@ function PartToolDropdown({
 
   const tags = uniqBy(
     flatMap(sequenceData.parts, ({ tags }) => {
-      return flatMap(tags, (t) => {
+      return flatMap(tags, t => {
         const tag = keyedTags[t];
         if (!tag) return [];
         return tag;

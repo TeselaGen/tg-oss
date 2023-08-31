@@ -1,4 +1,4 @@
-import {get, keyBy, filter} from "lodash";
+import { get, keyBy, filter } from "lodash";
 
 const genbankFeatureTypes = [
   { name: "-10_signal", color: "#4ECDC4" },
@@ -137,7 +137,7 @@ const getFeatureTypes = ({ includeHidden } = {}) =>
     f => f.name
   );
 
-export {genbankFeatureTypes};
+export { genbankFeatureTypes };
 
 export function getGenbankFeatureToColorMap() {
   const toRet = {};
@@ -147,6 +147,6 @@ export function getGenbankFeatureToColorMap() {
   return toRet;
 }
 
-export {getFeatureToColorMap};
-export {getFeatureTypes};
-export {getMergedFeatureMap};
+export { getFeatureToColorMap };
+export { getFeatureTypes };
+export { getMergedFeatureMap };

@@ -48,7 +48,10 @@ function ShowInfo({ description, info, type }) {
           style={{ maxWidth: 600, overflow: "auto" }}
           className="bp3-dialog-body"
         >
-          <ReactMarkdown remarkPlugins={[remarkGfm]} children={description || info} />
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            children={description || info}
+          />
         </div>
       </Dialog>
 

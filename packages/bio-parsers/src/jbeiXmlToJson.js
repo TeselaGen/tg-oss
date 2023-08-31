@@ -25,14 +25,14 @@ async function jbeiXmlToJson(string, options) {
     if (!jbeiSeq) {
       return onFileParsed({
         success: false,
-        messages: ["Error: XML is not valid jbei format"],
+        messages: ["Error: XML is not valid jbei format"]
       });
     }
 
     const response = {
       parsedSequence: null,
       messages: [],
-      success: true,
+      success: true
     };
     try {
       response.parsedSequence = parseJbeiXml(jbeiSeq, options);
@@ -42,21 +42,18 @@ async function jbeiXmlToJson(string, options) {
       console.error("error.stack: ", e.stack);
       resultArray.push({
         success: false,
-        messages: ["Error while parsing JBEI format"],
+        messages: ["Error while parsing JBEI format"]
       });
     }
 
-    const toRet = filter(
-      resultArray,
-      (r) => r?.parsedSequence?.sequence?.length
-    );
+    const toRet = filter(resultArray, r => r?.parsedSequence?.sequence?.length);
     if (toRet.length) return toRet;
     return onFileParsed(resultArray);
   } catch (e) {
     console.error(`e:`, e);
     return onFileParsed({
       success: false,
-      messages: ["Error parsing jbei to JSON"],
+      messages: ["Error parsing jbei to JSON"]
     });
   }
 }
@@ -65,7 +62,7 @@ function parseJbeiXml(jbeiJson) {
     "seq:sequence": sequence,
     "seq:name": name,
     "seq:circular": circular,
-    "seq:features": { "seq:feature": features },
+    "seq:features": { "seq:feature": features }
   } = jbeiJson;
   return {
     sequence,
@@ -76,7 +73,7 @@ function parseJbeiXml(jbeiJson) {
         "seq:complement": complement,
         "seq:label": label,
         "seq:type": type,
-        "seq:location": jbeiLocations,
+        "seq:location": jbeiLocations
       }) => {
         let start, end;
         const locs = Array.isArray(jbeiLocations)
@@ -88,7 +85,7 @@ function parseJbeiXml(jbeiJson) {
             if (i === locs.length - 1) end = normEnd - 1;
             return {
               start: gbStart - 1,
-              end: normEnd - 1,
+              end: normEnd - 1
             };
           }
         );
@@ -99,10 +96,10 @@ function parseJbeiXml(jbeiJson) {
           locations: locations.length > 1 ? locations : undefined,
           name: label,
           type,
-          strand: complement ? -1 : 1,
+          strand: complement ? -1 : 1
         };
       }
-    ),
+    )
   };
 }
 

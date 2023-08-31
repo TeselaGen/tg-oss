@@ -12,7 +12,9 @@ export default function EllipsizedTextAutoTooltip() {
         <h5>Set a data-tip attribute:</h5>
 
         <code>{`<Button data-tip="I'm a tooltip">`}</code>
-        <Button data-tip="I'm a tooltip that is reaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaalllllllly long">Hover me!</Button>
+        <Button data-tip="I'm a tooltip that is reaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaalllllllly long">
+          Hover me!
+        </Button>
         <Tooltip content={"I'm a tooltip"}>
           <Button>Hover me!</Button>
         </Tooltip>

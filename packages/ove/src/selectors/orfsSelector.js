@@ -8,7 +8,7 @@ export default createSelector(
   sequenceSelector,
   circularSelector,
   minimumOrfSizeSelector,
-  (state) => state.useAdditionalOrfStartCodons,
+  state => state.useAdditionalOrfStartCodons,
   findOrfsInPlasmid
 );
 

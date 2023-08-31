@@ -61,7 +61,7 @@ export default function Chromatogram(props) {
       style={{
         position: "relative"
       }}
-      onContextMenu={(e) => {
+      onContextMenu={e => {
         showContextMenu([chromatogramMenu], undefined, e);
       }}
     >
@@ -70,7 +70,7 @@ export default function Chromatogram(props) {
         data-tip="Scale Chromatogram Up"
         className="scaleChromatogramButtonUp"
         icon="caret-up"
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
           setScalePct(scalePct + 0.01);
         }}
@@ -85,7 +85,7 @@ export default function Chromatogram(props) {
         data-tip="Scale Chromatogram Down"
         className="scaleChromatogramButtonDown"
         icon="caret-down"
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
           setScalePct(scalePct - 0.01);
         }}

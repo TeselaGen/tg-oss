@@ -6,12 +6,11 @@ export default function isRangeWithinRange(
   containingRange,
   maxLength
 ) {
-    
   const ranges = trimRangeByAnotherRange(
     rangeToCheck,
     containingRange,
     maxLength
   );
-  if (ranges === null) return false
+  if (ranges === null) return false;
   return !ranges;
-};
+}

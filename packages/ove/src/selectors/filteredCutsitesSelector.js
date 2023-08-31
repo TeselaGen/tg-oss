@@ -27,7 +27,7 @@ export default createSelector(
     let hasUserGroup;
     let groupCount = 0;
     //handle adding enzymes that are included in user created groups
-    filteredRestrictionEnzymes.forEach((e) => {
+    filteredRestrictionEnzymes.forEach(e => {
       if (e.value.includes("__userCreatedGroup")) {
         hasUserGroup = true;
         const existingGroups = {
@@ -36,7 +36,7 @@ export default createSelector(
         };
         const enzymes =
           existingGroups[e.value.replace("__userCreatedGroup", "")] || [];
-        const zs = flatMap(enzymes, (e) => (e ? { value: e } : []));
+        const zs = flatMap(enzymes, e => (e ? { value: e } : []));
         filteredEnzymes = filteredEnzymes.concat(zs);
         enzymesFromGroups = enzymesFromGroups.concat(zs);
         groupCount += 1;
@@ -94,21 +94,21 @@ export default createSelector(
 
     const enzymeCounts = {};
     cutSiteList.forEach(
-      (enzyme) =>
+      enzyme =>
         (enzymeCounts[enzyme] = enzymeCounts[enzyme]
           ? enzymeCounts[enzyme] + 1
           : 1)
     );
 
     const intersectionCutSites = [];
-    Object.keys(enzymeCounts).forEach((key) => {
+    Object.keys(enzymeCounts).forEach(key => {
       if (enzymeCounts[key] === groupCount) intersectionCutSites.push(key);
     });
 
     returnVal.cutsiteIntersectionCount = intersectionCutSites.length;
 
     const cutsbyname_AND = {};
-    intersectionCutSites.forEach((value) => {
+    intersectionCutSites.forEach(value => {
       cutsbyname_AND[value] = cutsitesByName[value];
     });
 
@@ -120,7 +120,7 @@ export default createSelector(
 
     returnVal.cutsitesArray = flatmap(
       returnVal.cutsitesByName,
-      (cutsitesByNameArray) => cutsitesByNameArray
+      cutsitesByNameArray => cutsitesByNameArray
     );
     returnVal.cutsitesById = returnVal.cutsitesArray.reduce(function (
       obj,

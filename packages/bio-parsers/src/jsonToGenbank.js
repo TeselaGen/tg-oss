@@ -49,7 +49,7 @@ const StringUtil = {
     let str = line;
     while (str.length < length) str = str + padString;
     return str;
-  },
+  }
 };
 
 const DIGEST_PART_EXPORT_FIELD_MAP = {
@@ -64,7 +64,7 @@ const DIGEST_PART_EXPORT_FIELD_MAP = {
   "re3Prime.recognitionRegex": "re3PrimePattern",
   re3PrimeOverhang: "re3PrimeOverhang",
   re3PrimeOverhangStrand: "re3PrimeOverhangStrand",
-  re3PrimeRecognitionTypeCode: "re3PrimeRecognitionTypeCode",
+  re3PrimeRecognitionTypeCode: "re3PrimeRecognitionTypeCode"
 };
 
 function cutUpArray(val, start, end) {
@@ -129,7 +129,7 @@ export default function (_serSeq, options) {
 
     serSeq.features = map(serSeq.features).concat(
       flatMap(pragmasAndTypes, ({ pragma, type }) => {
-        return flatMap(serSeq[type], (ann) => {
+        return flatMap(serSeq[type], ann => {
           if (!isObject(ann)) {
             return [];
           }
@@ -142,7 +142,7 @@ export default function (_serSeq, options) {
           ann.notes = pragma
             ? {
                 ...ann.notes,
-                pragma: [pragma],
+                pragma: [pragma]
               }
             : ann.notes;
           return ann;
@@ -164,7 +164,7 @@ export default function (_serSeq, options) {
       lines.push(
         featureToGenbankString(feat, {
           ...options,
-          featurePadLength: longestFeatureTypeLength + 1,
+          featurePadLength: longestFeatureTypeLength + 1
         })
       );
     });
@@ -205,17 +205,19 @@ function createGenbankLocus(serSeq, options) {
   if (serSeq.isProtein) {
     dnaType = "";
   } else if (serSeq.type === "RNA") {
-    dnaType = serSeq?.doubleStranded ? 'RNA' : serSeq?.sequenceTypeFromLocus ?? "ss-RNA";
+    dnaType = serSeq?.doubleStranded
+      ? "RNA"
+      : serSeq?.sequenceTypeFromLocus ?? "ss-RNA";
   } else {
-    dnaType = serSeq?.doubleStranded ? 'DNA' : serSeq?.sequenceTypeFromLocus ?? "DNA";
+    dnaType = serSeq?.doubleStranded
+      ? "DNA"
+      : serSeq?.sequenceTypeFromLocus ?? "DNA";
   }
   const date = getCurrentDateString();
 
   let line = StringUtil.rpad("LOCUS", " ", 12);
   let nameToUse = serSeq.name || "Untitled_Sequence";
-  nameToUse = options.reformatSeqName
-    ? reformatName(nameToUse)
-    : nameToUse;
+  nameToUse = options.reformatSeqName ? reformatName(nameToUse) : nameToUse;
   line += StringUtil.rpad(nameToUse, " ", 16);
   line += " "; // T.H line 2778 of GenbankFormat.as col 29 space
   line += StringUtil.lpad(String(serSeq.sequence.length), " ", 11);

@@ -52,7 +52,7 @@ export default function getAllInsertionsInSeqReads(seqReads) {
   }
   // sortedInsertions is an array of objects [{bpPos: bp pos of insertion, number: # of insertions}, {bpPos, number}, ...]
   return sortedInsertions;
-};
+}
 
 // function getAllInsertionsInSeqReads(seqReads) {
 //   let allInsertionBpPosInSeqReads = [];

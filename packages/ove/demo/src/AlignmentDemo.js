@@ -79,7 +79,7 @@ export default class AlignmentDemo extends React.Component {
               }}
             >
               <BPSelect
-                onChange={(val) => {
+                onChange={val => {
                   this.setState({ alignmentDataId: val });
                 }}
                 options={[
@@ -235,7 +235,7 @@ export default class AlignmentDemo extends React.Component {
                 ? 3
                 : undefined,
               handleAlignmentRename: this.state.handleAlignmentRename
-                ? (newName) => {
+                ? newName => {
                     window.toastr.success(
                       `handleAlignmentRename triggered with ${newName}`
                     );

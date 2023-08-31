@@ -118,7 +118,7 @@ function Cutsites(props) {
   const snips = [];
   const snipConnectors = [];
   Object.keys(annotationRanges)
-    .sort((a) =>
+    .sort(a =>
       annotationRanges[a].annotation.id === hoveredAnnotation ? 1 : -1
     )
     .forEach(function (key) {

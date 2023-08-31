@@ -30,9 +30,7 @@ describe("MenuBar", () => {
     cy.get(
       `.bp3-menu-item:contains(Melting Temp of Selection) .bp3-icon-small-tick`
     );
-    cy.focused()
-      .clear()
-      .type("component cmd example");
+    cy.focused().clear().type("component cmd example");
     cy.get(
       `.bp3-menu-item:contains(component cmd example):contains(File) .bp3-key-combo`
     );

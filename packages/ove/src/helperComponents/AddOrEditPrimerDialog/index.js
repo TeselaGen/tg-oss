@@ -38,13 +38,13 @@ const CustomContentEditable = generateField(function CustomContentEditable({
   const inputRef = useRef(null);
   const [caretPosition, setCaretPosition] = useState({ start: 0, end: 0 });
 
-  const emitChange = (e) => {
+  const emitChange = e => {
     const newVal = e.target.innerText;
     const savedCaretPosition = CaretPositioning.saveSelection(e.currentTarget);
     setCaretPosition(savedCaretPosition);
     const acceptedChars = getAcceptedChars(sequenceData);
     let newBases = "";
-    newVal.split("").forEach((letter) => {
+    newVal.split("").forEach(letter => {
       if (acceptedChars.includes(letter.toLowerCase())) {
         newBases += letter;
       }
@@ -137,7 +137,7 @@ const CustomContentEditable = generateField(function CustomContentEditable({
   );
 });
 
-const RenderBases = (props) => {
+const RenderBases = props => {
   const {
     sequenceData,
     readOnly,
@@ -312,14 +312,14 @@ const RenderBases = (props) => {
 
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditPrimerDialog",
-  getProps: (props) => ({
+  getProps: props => ({
     upsertAnnotation: props.upsertPrimer,
     annotationTypePlural: "primers",
     RenderBases
   })
 });
 
-const InnerWrapperMeltingTemp = (p) => (
+const InnerWrapperMeltingTemp = p => (
   <div
     className="bp3-text-muted bp3-text-small"
     style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}

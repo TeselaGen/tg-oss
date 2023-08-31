@@ -1,11 +1,11 @@
-import {assign} from "lodash";
+import { assign } from "lodash";
 import shortid from "shortid";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 import {
   getSequenceWithinRange,
   normalizePositionByRangeLength,
-  reversePositionInRange,
+  reversePositionInRange
 } from "@teselagen/range-utils";
 
 export default function cutSequenceByRestrictionEnzyme(
@@ -98,7 +98,7 @@ export default function cutSequenceByRestrictionEnzyme(
       forward: false
     });
   }
-};
+}
 
 function cutSequence(
   forwardRegExpPattern,

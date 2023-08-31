@@ -6,28 +6,33 @@ import wrapDialog from "../../../src/wrapDialog";
 import store from "../store";
 import { PromptUnsavedChanges } from "../../../src/PromptUnsavedChanges";
 
-
 function DialogWithPrompt() {
-    const [promptUnsavedChanges, setPromptUnsavedChanges] = useState(false);
+  const [promptUnsavedChanges, setPromptUnsavedChanges] = useState(false);
   return (
-    <div  className={classNames(Classes.DIALOG_BODY)}>
-        <PromptUnsavedChanges when={promptUnsavedChanges} />
-        <div>
-          Prompt Unsaved Changes: {promptUnsavedChanges ? "TRUE" : "FALSE"}
-        </div>
-        <br/>
-        <Button onClick={() => {setPromptUnsavedChanges(!promptUnsavedChanges)}} >
-            Alternate Prompt
-        </Button>
+    <div className={classNames(Classes.DIALOG_BODY)}>
+      <PromptUnsavedChanges when={promptUnsavedChanges} />
+      <div>
+        Prompt Unsaved Changes: {promptUnsavedChanges ? "TRUE" : "FALSE"}
+      </div>
+      <br />
+      <Button
+        onClick={() => {
+          setPromptUnsavedChanges(!promptUnsavedChanges);
+        }}
+      >
+        Alternate Prompt
+      </Button>
     </div>
   );
 }
 
-const MyDialog = wrapDialog({ title: "Prompt Unsaved Changes Demo" })(DialogWithPrompt);
+const MyDialog = wrapDialog({ title: "Prompt Unsaved Changes Demo" })(
+  DialogWithPrompt
+);
 
 export default function PromptUnsavedChangesDemo() {
   const [isOpen, setOpen] = useState(true);
-  
+
   return (
     <Provider store={store}>
       <div>

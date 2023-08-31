@@ -1,6 +1,9 @@
 import shortid from "shortid";
-import {flatMap, cloneDeep} from "lodash";
-import {normalizePositionByRangeLength, getRangeLength} from "@teselagen/range-utils";
+import { flatMap, cloneDeep } from "lodash";
+import {
+  normalizePositionByRangeLength,
+  getRangeLength
+} from "@teselagen/range-utils";
 import getCutsitesFromSequence from "./getCutsitesFromSequence";
 
 function computeDigestFragments({
@@ -175,5 +178,5 @@ function getDigestFragsForSeqAndEnzymes({
   });
 }
 
-export {computeDigestFragments};
-export {getDigestFragsForSeqAndEnzymes};
+export { computeDigestFragments };
+export { getDigestFragsForSeqAndEnzymes };

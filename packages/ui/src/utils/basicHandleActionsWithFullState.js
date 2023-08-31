@@ -3,12 +3,12 @@ export default function basicHandleActionsWithFullState(
   defaultState
 ) {
   return (state = defaultState, action, fullState) => {
-    const { type } = action
-    const handler = handlers[type]
+    const { type } = action;
+    const handler = handlers[type];
     if (handler) {
-      return handler(state, action, fullState)
+      return handler(state, action, fullState);
     } else {
-      return state
+      return state;
     }
-  }
+  };
 }

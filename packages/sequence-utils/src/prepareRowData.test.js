@@ -1,6 +1,4 @@
-
-
-import {expect} from "chai";
+import { expect } from "chai";
 
 import prepareRowData from "./prepareRowData";
 import output1 from "./prepareRowData_output1.json";

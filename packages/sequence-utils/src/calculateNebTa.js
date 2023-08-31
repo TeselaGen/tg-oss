@@ -31,4 +31,4 @@ export default function calculateNebTa(
   } catch (err) {
     return `Error calculating annealing temperature: ${err}`;
   }
-};
+}

@@ -1,5 +1,5 @@
 import getComplementSequenceString from "./getComplementSequenceString";
-import {normalizePositionByRangeLength} from "@teselagen/range-utils";
+import { normalizePositionByRangeLength } from "@teselagen/range-utils";
 import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme";
 
 export default function getPossiblePartsFromSequenceAndEnzyme(
@@ -67,7 +67,7 @@ export default function getPossiblePartsFromSequenceAndEnzyme(
     });
     return parts;
   }
-};
+}
 
 function getPartBetweenEnzymesWithInclusiveOverhangs(cut1, cut2, seqLen) {
   const firstCutOffset = getEnzymeRelativeOffset(cut1.restrictionEnzyme);

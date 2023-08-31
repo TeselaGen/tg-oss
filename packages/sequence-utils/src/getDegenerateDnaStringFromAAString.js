@@ -5,4 +5,4 @@ export default function getDegenerateDnaStringFromAAString(aaString) {
     .split("")
     .map(char => aminoAcidToDegenerateDnaMap[char.toLowerCase()] || "nnn")
     .join("");
-};
+}

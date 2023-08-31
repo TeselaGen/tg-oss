@@ -1,30 +1,29 @@
 import React from "react";
 import { Tooltip, Checkbox, Button, Switch } from "@blueprintjs/core";
 
-export const withCommand = mappings => WrappedComponent => ({
-  cmd,
-  cmdOptions = {},
-  ...props
-}) => {
-  const mappedProps = {};
-  Object.keys(mappings).forEach(k => {
-    mappedProps[k] =
-      mappings[k] === "execute"
-        ? event => cmd.execute({ event })
-        : typeof mappings[k] === "function"
-        ? mappings[k](cmd, props)
-        : cmd[mappings[k]];
-  });
+export const withCommand =
+  mappings =>
+  WrappedComponent =>
+  ({ cmd, cmdOptions = {}, ...props }) => {
+    const mappedProps = {};
+    Object.keys(mappings).forEach(k => {
+      mappedProps[k] =
+        mappings[k] === "execute"
+          ? event => cmd.execute({ event })
+          : typeof mappings[k] === "function"
+          ? mappings[k](cmd, props)
+          : cmd[mappings[k]];
+    });
 
-  let out = <WrappedComponent {...mappedProps} {...props} />;
-  const tooltip =
-    cmd.tooltip || (typeof cmd.isDisabled === "string" && cmd.isDisabled);
-  if (tooltip && !cmdOptions.ignoreTooltip) {
-    out = <Tooltip content={tooltip}>{out}</Tooltip>;
-  }
+    let out = <WrappedComponent {...mappedProps} {...props} />;
+    const tooltip =
+      cmd.tooltip || (typeof cmd.isDisabled === "string" && cmd.isDisabled);
+    if (tooltip && !cmdOptions.ignoreTooltip) {
+      out = <Tooltip content={tooltip}>{out}</Tooltip>;
+    }
 
-  return cmd.isHidden && !cmdOptions.ignoreHidden ? null : out;
-};
+    return cmd.isHidden && !cmdOptions.ignoreHidden ? null : out;
+  };
 
 export const CmdCheckbox = withCommand({
   onChange: "execute",

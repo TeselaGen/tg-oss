@@ -17,7 +17,7 @@ export const CutsiteSelectionLayers = connectToEditor(
   row
 }) {
   return Object.keys(cutsites)
-    .sort((a) => (cutsites[a].id === hoveredAnnotation ? 1 : -1))
+    .sort(a => (cutsites[a].id === hoveredAnnotation ? 1 : -1))
     .map(function (id, index) {
       const cutsite = cutsites[id];
       const isHovered = hoveredAnnotation === cutsite.id;

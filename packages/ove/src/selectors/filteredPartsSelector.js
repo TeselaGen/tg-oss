@@ -17,10 +17,10 @@ function filteredPartsSelector(
   if (tagsToBold) {
     const keyedTagsToBold = keyBy(tagsToBold, "value");
 
-    return map(parts || {}, (p) => {
+    return map(parts || {}, p => {
       if (p.tags) {
         if (
-          some(p.tags, (tagId) => {
+          some(p.tags, tagId => {
             return keyedTagsToBold[tagId];
           })
         ) {
@@ -38,7 +38,7 @@ function filteredPartsSelector(
   }
 
   const toRet = map(
-    omitBy(parts, (ann) => {
+    omitBy(parts, ann => {
       const hideIndividually = partIndividualToHide[ann.id];
       return (
         hideAnnByLengthFilter(lengthsToHide, ann, seqLen) || hideIndividually
@@ -50,8 +50,8 @@ function filteredPartsSelector(
 export default createSelector(
   partsSelector,
   sequenceLengthSelector,
-  (state) => state.annotationVisibility.partIndividualToHide,
+  state => state.annotationVisibility.partIndividualToHide,
   tagsToBoldSelector,
-  (state) => state.partLengthsToHide,
+  state => state.partLengthsToHide,
   filteredPartsSelector
 );

@@ -23,13 +23,15 @@ export function comboToLabel(def, useSymbols = true) {
 }
 
 // HOF to get hotkey combos by id
-export const hotkeysById = (hotkeys, mode = "raw") => id => {
-  const def = getHotkeyProps(hotkeys[id]);
-  return (
-    def &&
-    (mode === "raw" ? def.combo : comboToLabel(def.combo, mode === "symbols"))
-  );
-};
+export const hotkeysById =
+  (hotkeys, mode = "raw") =>
+  id => {
+    const def = getHotkeyProps(hotkeys[id]);
+    return (
+      def &&
+      (mode === "raw" ? def.combo : comboToLabel(def.combo, mode === "symbols"))
+    );
+  };
 
 // Translate shorthand array if needed
 export const getHotkeyProps = (def, id) => {
@@ -75,7 +77,7 @@ export const withHotkeys = (hotkeys, handlers) => {
           return {
             key: id,
             global: props.global !== false,
-            onKeyDown: function(e) {
+            onKeyDown: function (e) {
               return handlers[id](e);
             },
             ...props

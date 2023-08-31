@@ -1,4 +1,4 @@
-import {translateRange, getSequenceWithinRange} from "@teselagen/range-utils";
+import { translateRange, getSequenceWithinRange } from "@teselagen/range-utils";
 import revComp from "./getReverseComplementSequenceString";
 import getAA from "./getAminoAcidFromSequenceTriplet";
 
@@ -160,4 +160,4 @@ export default function getAminoAcidDataForEachBaseOfDna(
     throw new Error("something went wrong!");
   }
   return aminoAcidDataForEachBaseOfDNA;
-};
+}

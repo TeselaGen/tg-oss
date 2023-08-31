@@ -19,7 +19,7 @@ export default createMergedDefaultStateReducer(
     [updateFeatureLengthsToHide]: (state, payload) => {
       return { ...state, ...payload };
     },
-    [toggleFeatureLengthsToHide]: (state) => {
+    [toggleFeatureLengthsToHide]: state => {
       return { ...state, enabled: !state["enabled"] };
     }
   },

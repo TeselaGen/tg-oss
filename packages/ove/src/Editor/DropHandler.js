@@ -4,7 +4,7 @@ import classNames from "classnames";
 import "./DropHandler.css";
 
 export default class DropHandler extends React.Component {
-  handleDrop = (files) => {
+  handleDrop = files => {
     if (!files || !files.length) {
       return window.toastr.warning("Unrecognized File Type");
     }
@@ -15,7 +15,7 @@ export default class DropHandler extends React.Component {
     return (
       <Dropzone
         disabled={disabled}
-        onClick={(evt) => evt.preventDefault()}
+        onClick={evt => evt.preventDefault()}
         multiple={false}
         accept={[
           ".gb",

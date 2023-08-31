@@ -26,7 +26,6 @@ import {
 import { defaultMemoize } from "reselect";
 import { connect } from "react-redux";
 
-
 const rowJumpButtonStyle = {
   height: rowHeights.rowJumpButtons.height
 };
@@ -285,7 +284,7 @@ class _RowView extends React.Component {
 
   cache = {};
 
-  renderItem = (index) => {
+  renderItem = index => {
     // if (this.cache[index]) return this.cache[index];
     const {
       //currently found in props
@@ -319,7 +318,7 @@ class _RowView extends React.Component {
               icon="arrow-down"
               minimal
               data-test="jumpToEndButton"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 this.InfiniteScroller &&
                   this.InfiniteScroller.scrollTo(rowData.length);
@@ -338,7 +337,7 @@ class _RowView extends React.Component {
               icon="arrow-up"
               minimal
               data-test="jumpToStartButton"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 this.InfiniteScroller && this.InfiniteScroller.scrollTo(0);
               }}
@@ -362,7 +361,7 @@ class _RowView extends React.Component {
               truncateLabelsThatDoNotFit,
               rowBottomComp,
               scalePct: this.state?.scalePct,
-              setScalePct: (scalePct) => {
+              setScalePct: scalePct => {
                 this.setState({ scalePct });
               },
               isRowView: true,
@@ -389,11 +388,11 @@ class _RowView extends React.Component {
       return null;
     }
   };
-  onDrag = (event) => {
+  onDrag = event => {
     if (isMobile({ tablet: true })) {
       if (
         //only allow dragging on mobile if the user is grabbing the cursor
-        !some(draggableClassnames, (cn) => {
+        !some(draggableClassnames, cn => {
           if (event.target.classList.contains(cn)) {
             return true;
           }
@@ -407,7 +406,7 @@ class _RowView extends React.Component {
     const rowData = this.rowData;
     this.getNearestCursorPositionToMouseEvent(rowData, event, editorDragged);
   };
-  onStart = (event) => {
+  onStart = event => {
     this.dragging = true;
     const rowData = this.rowData;
     this.getNearestCursorPositionToMouseEvent(
@@ -422,16 +421,16 @@ class _RowView extends React.Component {
     editorDragStopped();
   };
 
-  getRef = (ref) => (this.node = ref);
+  getRef = ref => (this.node = ref);
 
-  onContextMenu = (event) => {
+  onContextMenu = event => {
     this.getNearestCursorPositionToMouseEvent(
       this.rowData,
       event,
       this.props.backgroundRightClicked
     );
   };
-  onClick = (event) => {
+  onClick = event => {
     this.getNearestCursorPositionToMouseEvent(
       this.rowData,
       event,
@@ -439,7 +438,7 @@ class _RowView extends React.Component {
     );
   };
 
-  getReactListRef = (c) => {
+  getReactListRef = c => {
     this.InfiniteScroller = c;
     !this.calledUpdateScrollOnce && this.updateScrollPosition({}, this.props); //trigger the scroll here as well because now we actually have the infinite scroller component accessible
   };

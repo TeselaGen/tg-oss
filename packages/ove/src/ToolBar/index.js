@@ -66,7 +66,7 @@ export function ToolBar(props) {
   };
 
   const toolListToUse = useMemo(() => {
-    return flatMap(toolList, (toolNameOrOverrides) => {
+    return flatMap(toolList, toolNameOrOverrides => {
       let toolName;
       let toolOverride;
       if (isString(toolNameOrOverrides)) {
@@ -196,7 +196,7 @@ export function ToolBar(props) {
     </div>
   );
 }
-const CloseFullscreenButton = (props) => {
+const CloseFullscreenButton = props => {
   return (
     <Tooltip content="Close Fullscreen Mode">
       <Button

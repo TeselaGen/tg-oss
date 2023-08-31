@@ -68,12 +68,8 @@ describe("EditableCellTable.spec", () => {
   it(`drag should be repeating down`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     const makeSureInitialRowsAreCorrect = () => {
-      cy.get(".rt-tr-group")
-        .eq(5)
-        .should("contain", "tom93");
-      cy.get(".rt-tr-group")
-        .eq(6)
-        .should("contain", "tom94");
+      cy.get(".rt-tr-group").eq(5).should("contain", "tom93");
+      cy.get(".rt-tr-group").eq(6).should("contain", "tom94");
     };
     makeSureInitialRowsAreCorrect();
     cy.get(`.rt-td:contains(tom93)`).click();
@@ -91,15 +87,9 @@ describe("EditableCellTable.spec", () => {
   it(`drag should be repeating up`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     const makeSureInitialRowsAreCorrect = () => {
-      cy.get(".rt-tr-group")
-        .eq(15)
-        .should("contain", "tom103");
-      cy.get(".rt-tr-group")
-        .eq(16)
-        .should("contain", "tom104");
-      cy.get(".rt-tr-group")
-        .eq(17)
-        .should("contain", "tom105");
+      cy.get(".rt-tr-group").eq(15).should("contain", "tom103");
+      cy.get(".rt-tr-group").eq(16).should("contain", "tom104");
+      cy.get(".rt-tr-group").eq(17).should("contain", "tom105");
     };
     cy.get(`.rt-td:contains(tom103)`).click();
     cy.get(`.rt-td:contains(tom104)`).modclick("{meta}");
@@ -129,9 +119,7 @@ describe("EditableCellTable.spec", () => {
   });
   it(`arrow keys should work together with shift and dragging should work`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
-    cy.get(`[data-test="tgCell_howMany"]`)
-      .eq(3)
-      .click({ force: true });
+    cy.get(`[data-test="tgCell_howMany"]`).eq(3).click({ force: true });
     cy.focused().type(`{leftArrow}`);
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_weather"]`
@@ -168,9 +156,7 @@ describe("EditableCellTable.spec", () => {
   });
   it(`arrow keys should work for simple cases`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
-    cy.get(`[data-test="tgCell_name"]`)
-      .eq(0)
-      .click({ force: true });
+    cy.get(`[data-test="tgCell_name"]`).eq(0).click({ force: true });
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]:contains(tom88)`
     );

@@ -1,5 +1,3 @@
-
-
 import chai from "chai";
 import doesEnzymeChopOutsideOfRecognitionSite from "./doesEnzymeChopOutsideOfRecognitionSite.js";
 import enzymeList from "./aliasedEnzymesByName";

@@ -37,7 +37,7 @@ export default function Ladder({
         >
           {l.label}{" "}
           <Button
-            onClick={async (e) => {
+            onClick={async e => {
               e.preventDefault();
               e.stopPropagation();
               const confirm = await showConfirmationDialog({
@@ -52,7 +52,7 @@ export default function Ladder({
               }
               setSelectedLadder(ladders[0].value);
               setLadders(
-                filter(additionalLadders, (lad) => lad.value !== l.value)
+                filter(additionalLadders, lad => lad.value !== l.value)
               );
             }}
             intent="danger"
@@ -67,7 +67,7 @@ export default function Ladder({
   const [highlightedFragment, setHighlightedFragment] = useState();
   const [selectedLadder, setSelectedLadder] = useState(ladders[0].value);
   let ladderInfo;
-  laddersToUse.forEach((ladder) => {
+  laddersToUse.forEach(ladder => {
     if (ladder.value === selectedLadder)
       ladderInfo = {
         ...ladder,
@@ -88,7 +88,7 @@ export default function Ladder({
         <TgSelect
           className="tg-ladder-selector"
           value={selectedLadder}
-          onChange={(val) => setSelectedLadder(val.value)}
+          onChange={val => setSelectedLadder(val.value)}
           options={laddersToUse}
         />
         <Button
@@ -127,8 +127,8 @@ export default function Ladder({
               try {
                 html2canvas(
                   document.querySelector(".ve-digest-container")
-                ).then((canvas) => {
-                  canvas.toBlob((blob) =>
+                ).then(canvas => {
+                  canvas.toBlob(blob =>
                     navigator.clipboard.write([
                       new window.ClipboardItem({ "image/png": blob })
                     ])
@@ -210,7 +210,7 @@ export default function Ladder({
               <Lane
                 key={index}
                 {...{
-                  onMouseOver: (fragment) => setHighlightedFragment(fragment),
+                  onMouseOver: fragment => setHighlightedFragment(fragment),
                   onMouseOut: () => setHighlightedFragment(undefined),
                   digestLaneRightClicked,
                   laneNumber: index + 1,
@@ -263,7 +263,7 @@ function Lane({
             onClick={() => {
               fragment.onFragmentSelect();
             }}
-            onContextMenu={(e) => {
+            onContextMenu={e => {
               fragment.onFragmentSelect();
               digestLaneRightClicked(e);
             }}

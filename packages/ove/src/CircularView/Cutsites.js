@@ -43,15 +43,15 @@ function Cutsites({
         color: annotation.restrictionEnzyme.color,
         className: " veCutsiteLabel",
         id: annotation.id,
-        onClick: (event) => {
+        onClick: event => {
           cutsiteClicked({ event, annotation });
           event.stopPropagation();
         },
-        onDoubleClick: (event) => {
+        onDoubleClick: event => {
           cutsiteDoubleClicked({ event, annotation });
           event.stopPropagation();
         },
-        onContextMenu: (event) => {
+        onContextMenu: event => {
           cutsiteRightClicked({ event, annotation });
           event.stopPropagation();
         }

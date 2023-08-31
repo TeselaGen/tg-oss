@@ -60,7 +60,7 @@ const genericAnnotationProperties = ({
                 <>
                   <Icon
                     data-tip="Hide/Show"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       const upperType = startCase(annotationType);
                       if (checked) {
@@ -109,7 +109,7 @@ const genericAnnotationProperties = ({
                   path: "color",
                   type: "string",
                   width: 50,
-                  render: (color) => {
+                  render: color => {
                     return (
                       <div
                         style={{ height: 20, width: 20, background: color }}
@@ -129,7 +129,7 @@ const genericAnnotationProperties = ({
                   type: "string",
                   getValueToFilterOn: (o, { keyedPartTags }) => {
                     const toRet = (o.tags || [])
-                      .map((tagId) => {
+                      .map(tagId => {
                         const tag = keyedPartTags[tagId];
                         if (!tag) return "";
                         return tag.label;
@@ -181,11 +181,11 @@ const genericAnnotationProperties = ({
         selectedAnnotationId
       } = this.props;
       const annotationPropertiesSelectedEntities =
-        _annotationPropertiesSelectedEntities.filter((a) => annotations[a.id]);
+        _annotationPropertiesSelectedEntities.filter(a => annotations[a.id]);
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
 
-      const annotationsToUse = map(annotations, (annotation) => {
+      const annotationsToUse = map(annotations, annotation => {
         return {
           ...annotation,
           ...(annotation.strand === undefined && {
@@ -197,107 +197,105 @@ const genericAnnotationProperties = ({
 
       return (
         <DataTable
-            topLeftItems={getVisFilter(
-              createCommandMenu(
-                isFunction(visSubmenu) ? visSubmenu(this.props) : visSubmenu,
-                this.commands,
-                {
-                  useTicks: true
-                }
-              )
-            )}
-            annotationPropertiesSelectedEntities={
-              annotationPropertiesSelectedEntities
-            }
-            leftOfSearchBarItems={
-              <>
-                {!readOnly && (
-                  <ButtonGroup style={{ marginTop: 3, marginRight: 4 }}>
-                    <Tooltip
-                      position="top"
-                      modifiers={popoverOverflowModifiers}
-                      content="New"
-                    >
-                      <AnchorButton
-                        disabled={!sequenceLength}
-                        icon="plus"
-                        className="tgNewAnnBtn"
-                        onClick={() => {
-                          showAddOrEditAnnotationDialog({
-                            type: annotationType,
-                            annotation: pick(
-                              selectionLayer,
-                              "start",
-                              "end",
-                              "forward"
-                            )
-                          });
-                        }}
-                      ></AnchorButton>
-                    </Tooltip>
-                    <Tooltip
-                      position="top"
-                      modifiers={popoverOverflowModifiers}
-                      content="Edit"
-                    >
-                      <AnchorButton
-                        onClick={() => {
-                          showAddOrEditAnnotationDialog({
-                            type: annotationType,
-                            annotation: annotationPropertiesSelectedEntities[0]
-                          });
-                        }}
-                        disabled={
-                          annotationPropertiesSelectedEntities.length !== 1
-                        }
-                        icon="edit"
-                      ></AnchorButton>
-                    </Tooltip>
+          topLeftItems={getVisFilter(
+            createCommandMenu(
+              isFunction(visSubmenu) ? visSubmenu(this.props) : visSubmenu,
+              this.commands,
+              {
+                useTicks: true
+              }
+            )
+          )}
+          annotationPropertiesSelectedEntities={
+            annotationPropertiesSelectedEntities
+          }
+          leftOfSearchBarItems={
+            <>
+              {!readOnly && (
+                <ButtonGroup style={{ marginTop: 3, marginRight: 4 }}>
+                  <Tooltip
+                    position="top"
+                    modifiers={popoverOverflowModifiers}
+                    content="New"
+                  >
+                    <AnchorButton
+                      disabled={!sequenceLength}
+                      icon="plus"
+                      className="tgNewAnnBtn"
+                      onClick={() => {
+                        showAddOrEditAnnotationDialog({
+                          type: annotationType,
+                          annotation: pick(
+                            selectionLayer,
+                            "start",
+                            "end",
+                            "forward"
+                          )
+                        });
+                      }}
+                    ></AnchorButton>
+                  </Tooltip>
+                  <Tooltip
+                    position="top"
+                    modifiers={popoverOverflowModifiers}
+                    content="Edit"
+                  >
+                    <AnchorButton
+                      onClick={() => {
+                        showAddOrEditAnnotationDialog({
+                          type: annotationType,
+                          annotation: annotationPropertiesSelectedEntities[0]
+                        });
+                      }}
+                      disabled={
+                        annotationPropertiesSelectedEntities.length !== 1
+                      }
+                      icon="edit"
+                    ></AnchorButton>
+                  </Tooltip>
 
-                    {["feature"].includes(annotationType) && (
-                      <CmdButton
-                        text=""
-                        icon="cog"
-                        data-tip="Configure Feature Types"
-                        cmd={this.commands.onConfigureFeatureTypesClick}
-                      />
-                    )}
-                    {["part", "primer", "feature"].includes(annotationType) && (
-                      <CmdButton
-                        text=""
-                        icon={removeDuplicatesIcon}
-                        data-tip="Remove Duplicates"
-                        cmd={
-                          this.commands[
-                            `showRemoveDuplicatesDialog${
-                              annotationTypeUpper + "s"
-                            }`
-                          ]
-                        }
-                      />
-                    )}
+                  {["feature"].includes(annotationType) && (
+                    <CmdButton
+                      text=""
+                      icon="cog"
+                      data-tip="Configure Feature Types"
+                      cmd={this.commands.onConfigureFeatureTypesClick}
+                    />
+                  )}
+                  {["part", "primer", "feature"].includes(annotationType) && (
+                    <CmdButton
+                      text=""
+                      icon={removeDuplicatesIcon}
+                      data-tip="Remove Duplicates"
+                      cmd={
+                        this.commands[
+                          `showRemoveDuplicatesDialog${
+                            annotationTypeUpper + "s"
+                          }`
+                        ]
+                      }
+                    />
+                  )}
 
-                    {additionalFooterEls && additionalFooterEls(this.props)}
-                    <Tooltip
-                      position="top"
-                      modifiers={popoverOverflowModifiers}
-                      content="Delete"
-                    >
-                      <AnchorButton
-                        onClick={() => {
-                          deleteAnnotation(
-                            annotationPropertiesSelectedEntities
-                          );
-                        }}
-                        className="tgDeleteAnnsBtn"
-                        intent="danger"
-                        disabled={!annotationPropertiesSelectedEntities.length}
-                        icon="trash"
-                      ></AnchorButton>
-                    </Tooltip>
-                  </ButtonGroup>
-                )}
-                {/* {createCommandMenu(
+                  {additionalFooterEls && additionalFooterEls(this.props)}
+                  <Tooltip
+                    position="top"
+                    modifiers={popoverOverflowModifiers}
+                    content="Delete"
+                  >
+                    <AnchorButton
+                      onClick={() => {
+                        deleteAnnotation(annotationPropertiesSelectedEntities);
+                      }}
+                      className="tgDeleteAnnsBtn"
+                      intent="danger"
+                      disabled={!annotationPropertiesSelectedEntities.length}
+                      icon="trash"
+                    ></AnchorButton>
+                  </Tooltip>
+                </ButtonGroup>
+              )}
+              {/* {createCommandMenu(
                   {
                     cmd: "featureFilterIndividualCmd",
                     // text: 'hahah',
@@ -308,43 +306,43 @@ const genericAnnotationProperties = ({
                     useTicks: true
                   }
                 )} */}
-                {/* <CmdCheckbox
+              {/* <CmdCheckbox
                   prefix="Show "
                   cmd={this.commands.featureFilterIndividualCmd}
                 /> */}
-              </>
-            }
-            onDoubleClick={(annotation) => {
-              showAddOrEditAnnotationDialog({
-                type: annotationType,
-                annotation
-              });
-            }}
-            withCheckboxes
-            showFeatureIndividual={this.props.showFeatureIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            hideFeatureIndividual={this.props.hideFeatureIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            showPartIndividual={this.props.showPartIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            hidePartIndividual={this.props.hidePartIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            showPrimerIndividual={this.props.showPrimerIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            hidePrimerIndividual={this.props.hidePrimerIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            featureLengthsToHide={this.props.featureLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            primerLengthsToHide={this.props.primerLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            partLengthsToHide={this.props.partLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            sequence={sequence} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            noPadding
-            noFullscreenButton
-            onRowSelect={this.onRowSelect}
-            selectedIds={selectedAnnotationId}
-            formName="annotationProperties"
-            noRouter
-            isProtein={isProtein}
-            keyedPartTags={getKeyedTagsAndTagOptions(allPartTags)}
-            compact
-            isInfinite
-            schema={this.schema}
-            entities={annotationsToUse}
-          />
+            </>
+          }
+          onDoubleClick={annotation => {
+            showAddOrEditAnnotationDialog({
+              type: annotationType,
+              annotation
+            });
+          }}
+          withCheckboxes
+          showFeatureIndividual={this.props.showFeatureIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          hideFeatureIndividual={this.props.hideFeatureIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          showPartIndividual={this.props.showPartIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          hidePartIndividual={this.props.hidePartIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          showPrimerIndividual={this.props.showPrimerIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          hidePrimerIndividual={this.props.hidePrimerIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          featureLengthsToHide={this.props.featureLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          primerLengthsToHide={this.props.primerLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          partLengthsToHide={this.props.partLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          sequence={sequence} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+          noPadding
+          noFullscreenButton
+          onRowSelect={this.onRowSelect}
+          selectedIds={selectedAnnotationId}
+          formName="annotationProperties"
+          noRouter
+          isProtein={isProtein}
+          keyedPartTags={getKeyedTagsAndTagOptions(allPartTags)}
+          compact
+          isInfinite
+          schema={this.schema}
+          entities={annotationsToUse}
+        />
       );
     }
   }

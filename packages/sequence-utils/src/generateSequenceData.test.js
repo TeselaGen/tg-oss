@@ -1,7 +1,7 @@
 import generateSequenceData from "./generateSequenceData";
 import chai from "chai";
 import chaiSubset from "chai-subset";
-import {map} from "lodash";
+import { map } from "lodash";
 
 chai.should();
 chai.use(chaiSubset);

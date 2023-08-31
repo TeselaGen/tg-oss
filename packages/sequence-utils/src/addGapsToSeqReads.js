@@ -1,6 +1,6 @@
 import insertGapsIntoRefSeq from "./insertGapsIntoRefSeq.js";
 
-import {cloneDeep} from "lodash";
+import { cloneDeep } from "lodash";
 
 // bam.seq: NTGTAAGTCGTGAAAAAANCNNNCATATTNCGGAGGTAAAAATGAAAA...
 // bam.pos: 43
@@ -414,4 +414,4 @@ export default function addGapsToSeqReads(refSeq, seqReads) {
   // seqReadsWithGaps is an array of objects containing the ref seq with gaps first and then all seq reads with gaps
   // e.g. [{ name: "ref seq", sequence: "GG---GA--GA-C--A---CC---"}, { name: "r1", sequence: "-----GATTGA-C-----------"}...]
   return seqReadsWithGaps;
-};
+}

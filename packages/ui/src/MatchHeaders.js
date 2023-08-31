@@ -22,7 +22,7 @@ export function MatchHeaders({
   datatableFormNames: _datatableFormNames,
   setFilesWIssues,
   filesWIssues,
-  fileIndex,
+  fileIndex
 }) {
   const datatableFormNames = _datatableFormNames || [datatableFormName];
   const flippedMatchedHeaders = {};
@@ -43,7 +43,7 @@ export function MatchHeaders({
           display: "flex",
           minHeight: 50,
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "space-between"
         }}
       >
         <td
@@ -51,7 +51,7 @@ export function MatchHeaders({
             width: 200,
             marginLeft: 20,
             display: "flex",
-            fontWeight: "bold",
+            fontWeight: "bold"
           }}
         >
           Accepted Headers
@@ -61,7 +61,7 @@ export function MatchHeaders({
             width: 200,
             marginLeft: 20,
             display: "flex",
-            fontWeight: "bold",
+            fontWeight: "bold"
           }}
         >
           Your Headers
@@ -69,7 +69,7 @@ export function MatchHeaders({
         <td
           style={{
             fontWeight: "bold",
-            marginLeft: 30,
+            marginLeft: 30
           }}
         >
           Data Preview
@@ -86,14 +86,14 @@ export function MatchHeaders({
           }
           return {
             value: pathInner,
-            label: pathInner,
+            label: pathInner
           };
         }).sort((a, b) => {
           const ra = searchResults[i].matches
-            .map((m) => m.item.path)
+            .map(m => m.item.path)
             .indexOf(a.value);
           const rb = searchResults[i].matches
-            .map((m) => m.item.path)
+            .map(m => m.item.path)
             .indexOf(b.value);
           if (!ra) return -1;
           if (!rb) return 1;
@@ -108,20 +108,20 @@ export function MatchHeaders({
                     display: "flex",
                     minHeight: 50,
                     alignItems: "center",
-                    justifyContent: "space-between",
+                    justifyContent: "space-between"
                   }}
                 >
                   <td
                     style={{
                       width: 200,
-                      display: "flex",
+                      display: "flex"
                     }}
                   >
                     <div
                       style={{
                         paddingTop: 2,
                         marginLeft: 15,
-                        fontSize: 15,
+                        fontSize: 15
                       }}
                     >
                       <span
@@ -139,17 +139,17 @@ export function MatchHeaders({
                       tooltipError
                       beforeOnChange={async () => {
                         const clearEntities = () => {
-                          datatableFormNames.forEach((name) => {
+                          datatableFormNames.forEach(name => {
                             changeForm(name, "reduxFormEntities", null);
                           });
                         };
-                        if (reduxFormEntitiesArray.some((r) => r?.isDirty)) {
+                        if (reduxFormEntitiesArray.some(r => r?.isDirty)) {
                           //when the column mapping changes, update the column in reduxFormEntities (if reduxFormEntities exists)
                           const doAction = await showConfirmationDialog({
                             text: "Are you sure you want to edit the columm mapping? This will clear any changes you've already made to the table data",
                             intent: Intent.DANGER,
                             confirmButtonText: "Yes",
-                            cancelButtonText: "No",
+                            cancelButtonText: "No"
                             // canEscapeKeyCancel: true //this is false by default
                           });
                           if (doAction) {
@@ -162,9 +162,9 @@ export function MatchHeaders({
                           return { stopEarly: false };
                         }
                       }}
-                      onChange={(val) => {
+                      onChange={val => {
                         setFilesWIssues(
-                          immer(filesWIssues, (files) => {
+                          immer(filesWIssues, files => {
                             files.forEach((f, i) => {
                               const isCurrentFile = fileIndex === i;
                               if (isCurrentFile || doAllFilesHaveSameHeaders) {
@@ -185,13 +185,13 @@ export function MatchHeaders({
                       marginTop: 10,
                       marginBottom: 10,
                       marginLeft: 20,
-                      fontSize: 10 /* color: Colors.RED1 */,
+                      fontSize: 10 /* color: Colors.RED1 */
                     }}
                   >
                     {userMatchedHeader &&
                       [
                         // { [userMatchedHeader]: "Preview:" },
-                        ...(userSchema.userData?.slice(0, 3) || []),
+                        ...(userSchema.userData?.slice(0, 3) || [])
                         // { [userMatchedHeader]: "..." }
                       ].map((row, i) => {
                         return (
@@ -200,7 +200,7 @@ export function MatchHeaders({
                               maxWidth: 70,
                               overflow: "hidden",
                               textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
+                              whiteSpace: "nowrap"
                             }}
                             key={i}
                           >

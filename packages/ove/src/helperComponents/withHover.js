@@ -15,7 +15,7 @@ export function withHoveredIdFromContext(Component) {
   return function HoveredIdComponent(props) {
     return (
       <HoveredIdContext.Consumer>
-        {(contexts) => <Component {...props} {...contexts} />}
+        {contexts => <Component {...props} {...contexts} />}
       </HoveredIdContext.Consumer>
     );
   };
@@ -65,7 +65,7 @@ export default compose(
     hoveredAnnotationActions)
   ),
   withHandlers({
-    onMouseOver: (props) => (e) => {
+    onMouseOver: props => e => {
       const { editorName, id, hoveredAnnotationUpdate } = props;
       const isIdHashmap = typeof id === "object";
       const idToPass = isIdHashmap ? Object.keys(id)[0] : id;
@@ -79,7 +79,7 @@ export default compose(
       hoveredAnnotationUpdate &&
         hoveredAnnotationUpdate(idToPass, { editorName });
     },
-    onMouseLeave: (props) => (e) => {
+    onMouseLeave: props => e => {
       hoveredAnnEasyStore.hoveredAnn = undefined;
       const { editorName, hoveredAnnotationClear } = props;
       e.stopPropagation();

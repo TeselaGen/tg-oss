@@ -89,7 +89,7 @@ export function getStructuredBases({
       r.allBasesWithMetaData.splice(
         index,
         0,
-        ...bases.split("").map((b) => ({ b, isMatch: false }))
+        ...bases.split("").map(b => ({ b, isMatch: false }))
       );
     });
 

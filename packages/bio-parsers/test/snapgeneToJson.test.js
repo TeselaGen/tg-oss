@@ -18,7 +18,7 @@ describe("snapgene file parser", function () {
     );
 
     const result = await snapgeneToJson(fileObj, {
-      fileName: "3DHZ_B.prot",
+      fileName: "3DHZ_B.prot"
     });
     result[0].parsedSequence.isProtein.should.equal(true);
     result[0].parsedSequence.features.should.containSubset([
@@ -27,14 +27,14 @@ describe("snapgene file parser", function () {
         type: "source",
         strand: 1,
         start: 0,
-        end: 986,
+        end: 986
       },
       {
         name: "helix 14",
         type: "SecStr",
         strand: 1,
         start: 12,
-        end: 35,
+        end: 35
       },
       {
         name: "dimer interface [polypeptide binding]",
@@ -42,49 +42,49 @@ describe("snapgene file parser", function () {
         locations: [
           {
             start: 54,
-            end: 56,
+            end: 56
           },
           {
             start: 87,
-            end: 89,
+            end: 89
           },
           {
             start: 108,
-            end: 110,
+            end: 110
           },
           {
             start: 303,
-            end: 308,
+            end: 308
           },
           {
             start: 315,
-            end: 317,
+            end: 317
           },
           {
             start: 324,
-            end: 329,
+            end: 329
           },
           {
             start: 336,
-            end: 338,
+            end: 338
           },
           {
             start: 345,
-            end: 347,
+            end: 347
           },
           {
             start: 393,
-            end: 398,
+            end: 398
           },
           {
             start: 405,
-            end: 407,
-          },
+            end: 407
+          }
         ],
         strand: 1,
         start: 54,
-        end: 407,
-      },
+        end: 407
+      }
     ]);
     result[0].parsedSequence.sequence.should.equal(
       `msneydeyianhtdpvkainwnvipdekdlevwdrltgnfwlpekipvsndiqswnkmtpqeqlatmrvftgltlldtiqgtvgaisllpdaetmheeavytniafmesvhaksysnifmtlastpqineafrwseenenlqrkakiimsyyngddplkkkvastllesflfysgfylpmylssrakltntadiirliirdesvhgyyigykyqqgvkklseaeqeeykaytfdlmydlyeneieytediyddlgwtedvkrflrynankalnnlgyeglfptdetkvspailsslspnadenhdffsgsgssyvigkaedttdddwdf`
@@ -97,7 +97,7 @@ describe("snapgene file parser", function () {
     );
 
     const result = await snapgeneToJson(fileObj, {
-      fileName: "ADH67109.prot",
+      fileName: "ADH67109.prot"
     });
     result[0].parsedSequence.isProtein.should.equal(true);
     result[0].parsedSequence.sequence.should.equal(
@@ -111,7 +111,7 @@ describe("snapgene file parser", function () {
     );
 
     const result = await snapgeneToJson(fileObj, {
-      fileName: "T7 promoter.dna",
+      fileName: "T7 promoter.dna"
     });
 
     result[0].parsedSequence.description.should.equal(
@@ -125,7 +125,7 @@ describe("snapgene file parser", function () {
     const results = await snapgeneToJson(
       { zoink: "berg" },
       {
-        fileName: "GFPuv_025_fwdfeature_linear.dna",
+        fileName: "GFPuv_025_fwdfeature_linear.dna"
       }
     );
     results[0].success.should.equal(false);
@@ -139,7 +139,7 @@ describe("snapgene file parser", function () {
       // path.join(__dirname, "./testData/dna/GFPuv_025_fwdfeature_linear.dna"),
     );
     const result = await snapgeneToJson(fileObj, {
-      fileName: "GFPuv_025_fwdfeature_linear.dna",
+      fileName: "GFPuv_025_fwdfeature_linear.dna"
     });
 
     result[0].parsedSequence.name.should.equal("GFPuv_025_fwdfeature_linear");
@@ -154,8 +154,8 @@ describe("snapgene file parser", function () {
         // we're returning 0-based
         start: 399,
         end: 499,
-        name: "fwdFeature",
-      },
+        name: "fwdFeature"
+      }
     ]);
   });
   it("circular dna w/feature on forward strand", async function () {
@@ -163,7 +163,7 @@ describe("snapgene file parser", function () {
       path.join(__dirname, "./testData/dna/GFPuv_025_fwdfeature_circular.dna")
     );
     const result = await snapgeneToJson(fileObj, {
-      fileName: "GFPuv_025_fwdfeature_circular.dna",
+      fileName: "GFPuv_025_fwdfeature_circular.dna"
     });
 
     result[0].parsedSequence.name.should.equal("GFPuv_025_fwdfeature_circular");
@@ -177,8 +177,8 @@ describe("snapgene file parser", function () {
       {
         start: 299,
         end: 399,
-        name: "fwdFeature",
-      },
+        name: "fwdFeature"
+      }
     ]);
   });
   it("linear dna w/feature on reverse strand", async function () {
@@ -186,7 +186,7 @@ describe("snapgene file parser", function () {
       path.join(__dirname, "./testData/dna/GFPuv_025_revfeature_linear.dna")
     );
     const result = await snapgeneToJson(fileObj, {
-      fileName: "GFPuv_025_revfeature_linear.dna",
+      fileName: "GFPuv_025_revfeature_linear.dna"
     });
 
     result[0].parsedSequence.name.should.equal("GFPuv_025_revfeature_linear");
@@ -201,8 +201,8 @@ describe("snapgene file parser", function () {
         // complement(600..700)
         start: 599,
         end: 699,
-        name: "revFeature",
-      },
+        name: "revFeature"
+      }
     ]);
   });
   it("circular dna w/feature on reverse strand", async function () {
@@ -210,7 +210,7 @@ describe("snapgene file parser", function () {
       path.join(__dirname, "./testData/dna/GFPuv_025_revfeature_circular.dna")
     );
     const result = await snapgeneToJson(fileObj, {
-      fileName: "GFPuv_025_revfeature_circular.dna",
+      fileName: "GFPuv_025_revfeature_circular.dna"
     });
 
     result[0].parsedSequence.name.should.equal("GFPuv_025_revfeature_circular");
@@ -227,16 +227,19 @@ describe("snapgene file parser", function () {
         end: 599,
         name: "revFeature",
         arrowheadType: "BOTTOM",
-        strand: -1,
-      },
+        strand: -1
+      }
     ]);
   });
   it("circular dna w/feature on both strands and ", async function () {
     const fileObj = fs.readFileSync(
-      path.join(__dirname, "./testData/dna/addgene-plasmid-50004-sequence-74675.dna")
+      path.join(
+        __dirname,
+        "./testData/dna/addgene-plasmid-50004-sequence-74675.dna"
+      )
     );
     const result = await snapgeneToJson(fileObj, {
-      fileName: "addgene-plasmid-50004-sequence-74675.dna",
+      fileName: "addgene-plasmid-50004-sequence-74675.dna"
     });
     result[0].parsedSequence.name.should.equal("pUC18");
     result[0].parsedSequence.circular.should.equal(true);
@@ -252,7 +255,7 @@ describe("snapgene file parser", function () {
         start: 2486,
         strand: -1,
         type: "promoter",
-        arrowheadType: "BOTTOM",
+        arrowheadType: "BOTTOM"
       },
       {
         end: 578,
@@ -260,7 +263,7 @@ describe("snapgene file parser", function () {
         start: 557,
         strand: 1,
         type: "protein_bind",
-        arrowheadType: "NONE",
+        arrowheadType: "NONE"
       },
       {
         end: 454,
@@ -268,8 +271,8 @@ describe("snapgene file parser", function () {
         start: 398,
         strand: 1,
         type: "misc_feature",
-        arrowheadType: "NONE",
-      },
+        arrowheadType: "NONE"
+      }
     ]);
   });
 });

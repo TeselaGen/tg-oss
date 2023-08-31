@@ -119,13 +119,13 @@ describe("dataTable.spec", () => {
       `[data-index="1"] .tg-react-table-checkbox-cell-container input`
     ).should("not.be.checked");
     cy.get(`.tg-react-table-checkbox-header-container input`).click({
-      force: true,
+      force: true
     });
     cy.get(
       `[data-index="1"] .tg-react-table-checkbox-cell-container input`
     ).should("be.checked");
     cy.get(`.tg-react-table-checkbox-header-container input`).click({
-      force: true,
+      force: true
     });
     cy.get(
       `[data-index="1"] .tg-react-table-checkbox-cell-container input`
@@ -144,13 +144,13 @@ describe("dataTable.spec", () => {
 
   it("Can drag columns to reorder", () => {
     cy.visit("#/DataTable%20-%20SimpleTable");
-    const checkIndices = (type) => {
+    const checkIndices = type => {
       cy.get(".rt-th:contains(Name)")
         .invoke("index")
-        .then((nameIndex) => {
+        .then(nameIndex => {
           cy.get(".rt-th:contains(Weather)")
             .invoke("index")
-            .then((weatherIndex) => {
+            .then(weatherIndex => {
               expect(nameIndex).to.be[type](weatherIndex);
             });
         });
@@ -169,7 +169,7 @@ describe("dataTable.spec", () => {
       "50"
     );
     //tnw: this isn't working with the switch to vite
-    cy.reload()
+    cy.reload();
 
     cy.get(".data-table-container .paging-page-size").should(
       "have.value",

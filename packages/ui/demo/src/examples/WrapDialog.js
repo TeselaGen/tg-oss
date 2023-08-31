@@ -13,7 +13,7 @@ function DialogInner(p) {
   const [val, setVal] = useState(false);
   const [is2ndDialogOpen, set2ndDialogOpen] = useState(false);
   const [isDatatablePresent, setDatatablePresent] = useState(false);
-  
+
   return (
     <form
       onSubmit={e => {
@@ -118,7 +118,7 @@ const MyDialog = wrapDialog({ title: "Dialog Demo" })(DialogInner);
 
 export default function WrapDialogDemo() {
   const [isOpen, setOpen] = useState(true);
-  
+
   return (
     <Provider store={store}>
       <div>

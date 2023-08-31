@@ -8,7 +8,7 @@ function annotationSearchSelector(isOpen, searchString, ...rest) {
   }
   return searchableTypes.map((type, i) => {
     const annotations = rest[i];
-    return filter(annotations, (ann) =>
+    return filter(annotations, ann =>
       ann.name
         .toLowerCase()
         .includes(searchString ? searchString.toLowerCase() : "")
@@ -17,8 +17,8 @@ function annotationSearchSelector(isOpen, searchString, ...rest) {
 }
 
 export default createSelector(
-  (state) => state.findTool && state.findTool.isOpen,
-  (state) => state.findTool && state.findTool.searchText,
-  ...searchableTypes.map((type) => (state) => state.sequenceData[type]),
+  state => state.findTool && state.findTool.isOpen,
+  state => state.findTool && state.findTool.searchText,
+  ...searchableTypes.map(type => state => state.sequenceData[type]),
   annotationSearchSelector
 );

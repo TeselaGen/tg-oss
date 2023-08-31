@@ -1,6 +1,6 @@
-import { KeyCombo } from '@blueprintjs/core';
-import React from 'react'
-import { hotkeysById, HotkeysDialog, withHotkeys } from '../../../src';
+import { KeyCombo } from "@blueprintjs/core";
+import React from "react";
+import { hotkeysById, HotkeysDialog, withHotkeys } from "../../../src";
 
 export default class HotkeysDialogDemo extends React.Component {
   constructor(props) {
@@ -14,24 +14,23 @@ export default class HotkeysDialogDemo extends React.Component {
     // See blueprintjs hotkeys documentation to learn about all props.
     const hotkeys1 = {
       // string shortcut syntax eq. to { combo: 'alt+shift+s' }
-      something: 'alt+shift+s',
+      something: "alt+shift+s",
 
       // array shortcut syntax, eq. to { combo: 'alt+shift+e', label: 'Some Other Thing' }
-      somethingElse: ['alt+shift+e', 'Some Other Thing'],
+      somethingElse: ["alt+shift+e", "Some Other Thing"],
 
       // array shortcut syntax, eq. to { combo: 'alt+shift+a', stopPropagation: true }
-      anotherOne: ['alt+shift+a', '', { stopPropagation: true }],
+      anotherOne: ["alt+shift+a", "", { stopPropagation: true }],
 
       // full object syntax
-      showHotkeys: { combo: 'mod+h', preventDefault: true },
+      showHotkeys: { combo: "mod+h", preventDefault: true }
     };
 
     const hotkeys2 = {
-      command1: 'shift+1',
-      command2: 'shift+2',
-      command3: 'shift+3',
+      command1: "shift+1",
+      command2: "shift+2",
+      command3: "shift+3"
     };
-
 
     // This can be (re)used for hotkey handling, top menu clicks, context menu
     // clicks, etc.
@@ -48,14 +47,14 @@ export default class HotkeysDialogDemo extends React.Component {
     // An existing component may be wrapped, or a new one created, as in this
     // case. If using non-global hotkeys, an existing component must be wrapped,
     // so it can get focus.
-    this.hotkeyEnabler = withHotkeys({ ...hotkeys1, ...hotkeys2}, handlers);
+    this.hotkeyEnabler = withHotkeys({ ...hotkeys1, ...hotkeys2 }, handlers);
 
     // HotkeysDialog
     // Sets will normally be different routes/modules/views of an app, but any
     // arbitrary separation criteria will work
     this.hotkeySets = {
-      'Some Section': hotkeys1,
-      'Another Section': hotkeys2
+      "Some Section": hotkeys1,
+      "Another Section": hotkeys2
     };
 
     this.state = {
@@ -63,7 +62,7 @@ export default class HotkeysDialogDemo extends React.Component {
     };
 
     // Safe way to retrieve hotkey combos (e.g. for display purposes)
-    this.dialogHotkeyCombo = hotkeysById(hotkeys1, 'raw')('showHotkeys');
+    this.dialogHotkeyCombo = hotkeysById(hotkeys1, "raw")("showHotkeys");
   }
 
   showDialog() {
@@ -77,16 +76,19 @@ export default class HotkeysDialogDemo extends React.Component {
   render() {
     return (
       <div>
-        <div style={{
-          // backgroundColor: '#f8f8f8',
-          height: '300px',
-          border: '1px solid #eee',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-          <h2 style={{ fontWeight: 300, textAlign: 'center' }}>
-            To view available hotkeys, press<br />
+        <div
+          style={{
+            // backgroundColor: '#f8f8f8',
+            height: "300px",
+            border: "1px solid #eee",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <h2 style={{ fontWeight: 300, textAlign: "center" }}>
+            To view available hotkeys, press
+            <br />
             <KeyCombo combo={this.dialogHotkeyCombo} />
           </h2>
         </div>
@@ -96,14 +98,9 @@ export default class HotkeysDialogDemo extends React.Component {
           isOpen={this.state.showDialog}
           onClose={this.hideDialog}
         />
-        <br/>
-        <p>
-
-
-        </p>
+        <br />
+        <p></p>
       </div>
     );
   }
 }
-
-

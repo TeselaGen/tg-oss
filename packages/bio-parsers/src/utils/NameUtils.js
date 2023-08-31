@@ -6,5 +6,5 @@
  * @returns {string} New name.
  */
 export const reformatName = function (pName) {
-  return pName.toString().replace(/ /g, '_');
+  return pName.toString().replace(/ /g, "_");
 };

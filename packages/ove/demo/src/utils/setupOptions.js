@@ -67,7 +67,7 @@ export function setParamsIfNecessary({ that, defaultState }) {
  */
 function difference(object, base) {
   function changes(object, base) {
-    return transform(object, function(result, value, key) {
+    return transform(object, function (result, value, key) {
       if (!isEqual(value, base[key])) {
         result[key] =
           isObject(value) && isObject(base[key])

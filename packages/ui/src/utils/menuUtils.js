@@ -11,9 +11,16 @@ import {
   Classes,
   Icon
 } from "@blueprintjs/core";
-import { startCase, omit, isNumber, flatMap, isArray, isString, noop } from "lodash";
+import {
+  startCase,
+  omit,
+  isNumber,
+  flatMap,
+  isArray,
+  isString,
+  noop
+} from "lodash";
 import fuzzysearch from "fuzzysearch";
-
 
 // https://github.com/palantir/blueprint/issues/2820
 function MenuItemLink({ text, onClick, icon, navTo }) {
@@ -35,17 +42,24 @@ function MenuItemLink({ text, onClick, icon, navTo }) {
 // `navTo` prop
 export const EnhancedMenuItem = compose(
   lifecycle({
-    componentDidMount: function() {
+    componentDidMount: function () {
       const { didMount = noop, className } = this.props;
       didMount({ className });
     },
-    componentWillUnmount: function() {
+    componentWillUnmount: function () {
       const { willUnmount = noop, className } = this.props;
       willUnmount({ className });
     }
   }),
   branch(({ navTo }) => navTo, withRouter)
-)(function({ navTo, context, staticContext, didMount, willUnmount, ...props }) {
+)(function ({
+  navTo,
+  context,
+  staticContext,
+  didMount,
+  willUnmount,
+  ...props
+}) {
   let MenuItemComp = MenuItem;
   if (navTo) {
     MenuItemComp = MenuItemLink;
@@ -85,75 +99,74 @@ export const tickMenuEnhancer = def => {
 
 // Derives various menu item props based on command objects matched via the `cmd`
 // prop. Derived props include `text`, `icon`, `hotkey`, `onClick` and `disabled`.
-export const commandMenuEnhancer = (commands, config = {}) => (
-  def,
-  context
-) => {
-  const cmdId = typeof def === "string" ? def : def.cmd;
-  let item = typeof def === "string" ? { cmd: def } : { ...def };
+export const commandMenuEnhancer =
+  (commands, config = {}) =>
+  (def, context) => {
+    const cmdId = typeof def === "string" ? def : def.cmd;
+    let item = typeof def === "string" ? { cmd: def } : { ...def };
 
-  const useTicks = fnu(item.useTicks, config.useTicks);
-  delete item.useTicks;
+    const useTicks = fnu(item.useTicks, config.useTicks);
+    delete item.useTicks;
 
-  if (cmdId && commands[cmdId] && def.divider === undefined) {
-    const command = commands[cmdId];
+    if (cmdId && commands[cmdId] && def.divider === undefined) {
+      const command = commands[cmdId];
 
-    const { isActive, isDisabled, isHidden } = command;
-    const toggles = isActive !== undefined;
+      const { isActive, isDisabled, isHidden } = command;
+      const toggles = isActive !== undefined;
 
-    item.hidden = fnu(item.hidden, isHidden);
-    item.disabled = fnu(item.disabled, isDisabled);
+      item.hidden = fnu(item.hidden, isHidden);
+      item.disabled = fnu(item.disabled, isDisabled);
 
-    item.key = item.key || cmdId;
-    item.submenu = item.submenu || command.submenu;
-    item.component = item.component || command.component;
+      item.key = item.key || cmdId;
+      item.submenu = item.submenu || command.submenu;
+      item.component = item.component || command.component;
 
-    if (toggles) {
-      if (useTicks) {
-        item.text = item.text || command.shortName || command.name;
-        item.checked = item.checked || isActive;
+      if (toggles) {
+        if (useTicks) {
+          item.text = item.text || command.shortName || command.name;
+          item.checked = item.checked || isActive;
+        } else {
+          item.text =
+            item.text ||
+            (isActive ? command.name : command.inactiveName || command.name);
+          item.icon =
+            item.icon ||
+            (isActive ? command.icon : command.inactiveIcon || command.icon);
+        }
       } else {
-        item.text =
-          item.text ||
-          (isActive ? command.name : command.inactiveName || command.name);
-        item.icon =
-          item.icon ||
-          (isActive ? command.icon : command.inactiveIcon || command.icon);
+        item.text = item.text || command.name;
+        item.icon = item.icon || command.icon;
       }
-    } else {
-      item.text = item.text || command.name;
-      item.icon = item.icon || command.icon;
+
+      item.hotkey = item.hotkey || command.hotkey;
+      if (!item.onClick) {
+        item.onClick = event =>
+          command.execute({
+            event,
+            context,
+            menuItem: item,
+            viaMenu: true
+          });
+      }
+    } else if (cmdId && !commands[cmdId]) {
+      item.text = item.text || startCase(cmdId);
+      item.disabled = true;
     }
 
-    item.hotkey = item.hotkey || command.hotkey;
-    if (!item.onClick) {
-      item.onClick = event =>
-        command.execute({
-          event,
-          context,
-          menuItem: item,
-          viaMenu: true
-        });
+    if (config.omitIcons) {
+      item.icon = undefined;
     }
-  } else if (cmdId && !commands[cmdId]) {
-    item.text = item.text || startCase(cmdId);
-    item.disabled = true;
-  }
 
-  if (config.omitIcons) {
-    item.icon = undefined;
-  }
+    if (config.forceIconAlignment !== false) {
+      item.icon = item.icon || "blank";
+    }
 
-  if (config.forceIconAlignment !== false) {
-    item.icon = item.icon || "blank";
-  }
+    if (useTicks) {
+      item = tickMenuEnhancer(item);
+    }
 
-  if (useTicks) {
-    item = tickMenuEnhancer(item);
-  }
-
-  return item;
-};
+    return item;
+  };
 
 const ident = x => x;
 

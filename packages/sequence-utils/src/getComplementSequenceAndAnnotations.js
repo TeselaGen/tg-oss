@@ -1,7 +1,6 @@
 import getComplementSequenceString from "./getComplementSequenceString";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 
-
 import getSequenceDataBetweenRange from "./getSequenceDataBetweenRange";
 
 // ac.throw([ac.string,ac.bool],arguments);
@@ -17,4 +16,4 @@ export default function getComplementSequenceAndAnnotations(
     sequence: getComplementSequenceString(seqObj.sequence, seqObj.isRna)
   });
   return tidyUpSequenceData(newSeqObj, options);
-};
+}

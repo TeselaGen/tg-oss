@@ -10,8 +10,10 @@ export default function filterSequenceString(
   if (sequenceString) {
     return sequenceString.replace(
       new RegExp(
-        `[^${charOverrides ||
-          `atgcyrswkmbvdhnu${additionalValidChars.split("").join("\\")}`}]`,
+        `[^${
+          charOverrides ||
+          `atgcyrswkmbvdhnu${additionalValidChars.split("").join("\\")}`
+        }]`,
         "gi"
       ),
       ""
@@ -19,4 +21,4 @@ export default function filterSequenceString(
   } else {
     return sequenceString;
   }
-};
+}

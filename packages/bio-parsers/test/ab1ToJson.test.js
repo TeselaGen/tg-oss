@@ -12,8 +12,8 @@ chai.use(require("chai-things"));
 
 chai.should();
 
-describe("ab1 parser", function() {
-  it("parse in an ab1 file without failing :)", async function() {
+describe("ab1 parser", function () {
+  it("parse in an ab1 file without failing :)", async function () {
     const fileObj = fs.readFileSync(
       path.join(__dirname, "./testData/ab1/example1.ab1")
     );

@@ -38,9 +38,9 @@ export default createReducer(
     }
   },
   {
-    "1": false,
-    "2": false,
-    "3": false,
+    1: false,
+    2: false,
+    3: false,
     "-1": false,
     "-2": false,
     "-3": false

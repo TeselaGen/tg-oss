@@ -46,7 +46,7 @@ export default function generateSequenceData({
       sequenceLength / 3
     )
   };
-};
+}
 
 // export default tidyUpSequenceData(exampleData)
 

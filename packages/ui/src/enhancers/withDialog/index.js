@@ -95,7 +95,7 @@ export default function withDialog(topLevelDialogProps) {
           <React.Fragment>
             {isOpen && (
               <DialogToUse
-                onClose={function() {
+                onClose={function () {
                   hideModal();
                   _onCloseHook && _onCloseHook();
                 }}
@@ -137,7 +137,7 @@ export default function withDialog(topLevelDialogProps) {
       return { ...topLevelDialogProps, tg_modalState };
     }),
     lifecycle({
-      componentWillMount: function() {
+      componentWillMount: function () {
         const { dispatch, dialogName } = this.props;
         const uniqueName = nanoid();
         const nameToUse = dialogName || uniqueName;
@@ -155,7 +155,7 @@ export default function withDialog(topLevelDialogProps) {
       }
     }),
     connect(
-      function({ tg_modalState }, { nameToUse, uniqueName }) {
+      function ({ tg_modalState }, { nameToUse, uniqueName }) {
         const dialogState = tg_modalState[nameToUse] || {};
         const { open, __registeredAs, ...rest } = dialogState;
         const newProps = {
@@ -170,11 +170,11 @@ export default function withDialog(topLevelDialogProps) {
         };
         return newProps;
       },
-      function(dispatch, { nameToUse, hideModal, showModal }) {
+      function (dispatch, { nameToUse, hideModal, showModal }) {
         return {
           showModal:
             showModal ||
-            function() {
+            function () {
               dispatch({
                 type: "TG_SHOW_MODAL",
                 name: nameToUse
@@ -182,7 +182,7 @@ export default function withDialog(topLevelDialogProps) {
             },
           hideModal:
             hideModal ||
-            function() {
+            function () {
               dispatch({
                 type: "TG_HIDE_MODAL",
                 name: nameToUse

@@ -101,9 +101,7 @@ class AlertWrapper extends Component {
                     ></Button>
                   )}
                 </React.Fragment>
-              ) : (
-                undefined
-              ),
+              ) : undefined,
             containerClassname: "bp3-alert-footer",
             backText: noCancelButton ? "" : cancelButtonText,
             text: confirmButtonText,

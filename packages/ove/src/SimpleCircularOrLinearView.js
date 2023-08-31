@@ -31,7 +31,7 @@ import {
 } from "./withEditorInteractions/clickAndDragUtils";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
-export default (props) => {
+export default props => {
   let {
     sequenceData: _sequenceData,
     annotationVisibility: _annotationVisibility = {},
@@ -281,13 +281,13 @@ export default (props) => {
   return inner({});
 };
 
-const DownloadBtn = withHandlers({ exportSequenceToFile })((props) => {
+const DownloadBtn = withHandlers({ exportSequenceToFile })(props => {
   return (
     <Tooltip content="Download">
       <Button
         className="veDownloadButton"
         style={{ marginRight: 10 }}
-        onClick={(event) =>
+        onClick={event =>
           showContextMenu(
             [
               "exportSequenceAsGenbank",
@@ -337,7 +337,7 @@ const VisibilityOptions = ({
     <Tooltip disabled={isPopoverOpen} content="Visibility Options">
       <Popover
         minimal
-        onInteraction={(isOpen) => {
+        onInteraction={isOpen => {
           setPopoverOpen(isOpen);
         }}
         isOpen={isPopoverOpen}
@@ -345,11 +345,11 @@ const VisibilityOptions = ({
           <Menu>
             {flatMap(
               ["features", "parts", "primers", "translations", "cutsites"],
-              (name) => {
+              name => {
                 if (!map(sequenceData[name]).length) return [];
                 return (
                   <MenuItem
-                    onClick={(e) => {
+                    onClick={e => {
                       setVisibilityOptions({
                         ...annotationVisibility,
                         [name]: !annotationVisibility[name]

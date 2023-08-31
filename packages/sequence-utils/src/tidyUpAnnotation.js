@@ -1,5 +1,5 @@
-import {cloneDeep, get, some} from "lodash";
-import {getFeatureToColorMap, getFeatureTypes} from "./featureTypesAndColors";
+import { cloneDeep, get, some } from "lodash";
+import { getFeatureToColorMap, getFeatureTypes } from "./featureTypesAndColors";
 import shortid from "shortid";
 
 export default function tidyUpAnnotation(
@@ -114,8 +114,9 @@ export default function tidyUpAnnotation(
       annotation.notes = JSON.parse(annotation.notes);
     } catch (error) {
       console.info(
-        `warning 33y00a0912 - couldn't parse notes for ${annotation.name ||
-          ""} ${annotation.notes}:`,
+        `warning 33y00a0912 - couldn't parse notes for ${
+          annotation.name || ""
+        } ${annotation.notes}:`,
         error
       );
     }
@@ -125,7 +126,7 @@ export default function tidyUpAnnotation(
     annotation.color = getFeatureToColorMap()[annotation.type];
   }
   return annotation;
-};
+}
 
 function coerceLocation({
   location,

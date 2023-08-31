@@ -1,8 +1,11 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-import {forEach, omitBy} from "lodash";
+import { forEach, omitBy } from "lodash";
 import { ambiguous_dna_values } from "./bioData";
 import aminoAcidToDegenerateDnaMap from "./aminoAcidToDegenerateDnaMap";
-import {normalizePositionByRangeLength, reversePositionInRange} from "@teselagen/range-utils";
+import {
+  normalizePositionByRangeLength,
+  reversePositionInRange
+} from "@teselagen/range-utils";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 //seqsToAnnotateById must not be length = 0

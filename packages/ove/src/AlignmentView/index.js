@@ -19,12 +19,7 @@ import {
   AnchorButton,
   EditableText
 } from "@blueprintjs/core";
-import {
-  InfoHelper,
-  Loading,
-  showContextMenu,
-  withStore
-} from "@teselagen/ui";
+import { InfoHelper, Loading, showContextMenu, withStore } from "@teselagen/ui";
 import { store } from "@risingstack/react-easy-state";
 import {
   throttle,
@@ -180,7 +175,7 @@ export class AlignmentView extends React.Component {
     this.onShortcutCopy &&
       document.removeEventListener("keydown", this.handleAlignmentCopy);
   }
-  handleAlignmentCopy = (event) => {
+  handleAlignmentCopy = event => {
     if (
       event.key === "c" &&
       !event.shiftKey &&
@@ -208,7 +203,7 @@ export class AlignmentView extends React.Component {
       ].selectionLayer || {};
     const { alignmentTracks } = this.props;
     const seqDataOfAllTracksToCopy = [];
-    alignmentTracks.forEach((track) => {
+    alignmentTracks.forEach(track => {
       const seqDataToCopy = getSequenceDataBetweenRange(
         track.alignmentData,
         selectionLayer
@@ -235,7 +230,7 @@ export class AlignmentView extends React.Component {
     verticalVisibleRange: { start: 0, end: 0 }
   });
 
-  getMinCharWidth = (noNameDiv) => {
+  getMinCharWidth = noNameDiv => {
     const toReturn = Math.min(
       Math.max(
         this.state.width - (noNameDiv ? 0 : this.state.nameDivWidth) - 5,
@@ -286,7 +281,7 @@ export class AlignmentView extends React.Component {
     }
   }
   componentDidMount() {
-    const updateAlignmentSelection = (newRangeOrCaret) => {
+    const updateAlignmentSelection = newRangeOrCaret => {
       this.updateSelectionOrCaret(false, newRangeOrCaret, {
         forceReduxUpdate: true
       });
@@ -338,7 +333,7 @@ export class AlignmentView extends React.Component {
     });
   };
 
-  caretPositionUpdate = (position) => {
+  caretPositionUpdate = position => {
     const { caretPosition = -1, alignmentId } = this.props;
     if (caretPosition === position) {
       return;
@@ -354,7 +349,7 @@ export class AlignmentView extends React.Component {
 
   debouncedAlignmentRunUpdate = debounce(this.props.alignmentRunUpdate, 1000);
 
-  forceReduxSelectionLayerUpdate = (newSelection) => {
+  forceReduxSelectionLayerUpdate = newSelection => {
     this.selectionLayerUpdate(newSelection, { forceReduxUpdate: true });
   };
 
@@ -486,7 +481,7 @@ export class AlignmentView extends React.Component {
     el.scrollIntoView({ inline: "center", block: "nearest" });
   };
 
-  scrollAlignmentToPercent = (scrollPercentage) => {
+  scrollAlignmentToPercent = scrollPercentage => {
     const scrollPercentageToUse = Math.min(Math.max(scrollPercentage, 0), 1);
     this.easyStore.percentScrolled = scrollPercentageToUse;
     this.alignmentHolder.scrollLeft =
@@ -499,7 +494,7 @@ export class AlignmentView extends React.Component {
           this.alignmentHolderTop.clientWidth);
     }
   };
-  scrollYToTrack = (trackIndex) => {
+  scrollYToTrack = trackIndex => {
     this.InfiniteScroller.scrollTo(trackIndex);
   };
 
@@ -524,7 +519,7 @@ export class AlignmentView extends React.Component {
   getMaxLinearViewWidth = () => {
     let maxWidth = 0;
     const charWidthInLinearView = this.getCharWidthInLinearView();
-    forEach(this.props.alignmentTracks, (t) => {
+    forEach(this.props.alignmentTracks, t => {
       const w = (t.alignmentData || t.sequenceData).sequence.length;
       if (w > maxWidth) maxWidth = w;
     });
@@ -699,8 +694,8 @@ export class AlignmentView extends React.Component {
       this.state[`tempTrimBefore${i}`] || trimmedRangesToDisplay[0],
       this.state[`tempTrimAfter${i}`] || trimmedRangesToDisplay[1]
     ]
-      .filter((i) => i)
-      .map((i) => ({
+      .filter(i => i)
+      .map(i => ({
         ...i,
         hideCarets: true,
         ignoreGaps: true,
@@ -978,7 +973,7 @@ export class AlignmentView extends React.Component {
     if (!minimapLaneEl) return;
     minimapLaneEl.classList.remove("lane-hovered");
   };
-  updateMinimapHighlightForMouseMove = (event) => {
+  updateMinimapHighlightForMouseMove = event => {
     this.latestMouseY = getClientY(event); //we use this variable later
     this.updateMinimapHighlight();
   };
@@ -988,7 +983,7 @@ export class AlignmentView extends React.Component {
     if (rowsLength <= 4) {
       return; // no need to include this functionality here
     }
-    some(rows, (rowDomNode) => {
+    some(rows, rowDomNode => {
       const boundingRowRect = rowDomNode.getBoundingClientRect();
       if (
         this.latestMouseY > boundingRowRect.top &&
@@ -1083,11 +1078,11 @@ export class AlignmentView extends React.Component {
                 overflowX: "auto",
                 width: this.state.width
               }}
-              ref={(ref) => {
+              ref={ref => {
                 this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] =
                   ref;
               }}
-              onContextMenu={(e) => {
+              onContextMenu={e => {
                 if (
                   !allowTrimming ||
                   isTargetWithinEl(e, ".alignmentTrackName")
@@ -1115,7 +1110,7 @@ export class AlignmentView extends React.Component {
                 onDrag={
                   noClickDragHandlers
                     ? noop
-                    : (event) => {
+                    : event => {
                         if (this.state.isTrackDragging) return;
                         this.getNearestCursorPositionToMouseEvent(
                           rowData,
@@ -1127,7 +1122,7 @@ export class AlignmentView extends React.Component {
                 onStart={
                   noClickDragHandlers
                     ? noop
-                    : (event) => {
+                    : event => {
                         if (isTargetWithinEl(event, ".alignmentTrackName")) {
                           return this.setState({ isTrackDragging: true });
                         }
@@ -1151,7 +1146,7 @@ export class AlignmentView extends React.Component {
                 }
               >
                 <div
-                  ref={(ref) => (this.veTracksAndAlignmentHolder = ref)}
+                  ref={ref => (this.veTracksAndAlignmentHolder = ref)}
                   className={classNames("veTracksAndAlignmentHolder", {
                     isTrackDragging: this.state.isTrackDragging
                   })}
@@ -1169,7 +1164,7 @@ export class AlignmentView extends React.Component {
                   onClick={
                     noClickDragHandlers
                       ? noop
-                      : (event) => {
+                      : event => {
                           if (this.state.isTrackDragging) return;
                           if (isTargetWithinEl(event, ".alignmentTrackName")) {
                             return;
@@ -1330,7 +1325,7 @@ export class AlignmentView extends React.Component {
                     this.renderItem(0, 0, isTemplate)
                   ) : (
                     <ReactList
-                      ref={(c) => {
+                      ref={c => {
                         this.InfiniteScroller = c;
                         const domNode = ReactDOM.findDOMNode(c);
                         if (domNode instanceof HTMLElement) {
@@ -1476,14 +1471,14 @@ export class AlignmentView extends React.Component {
                   <div style={{ display: "flex" }}>
                     <EditableText
                       disabled={!handleAlignmentRename}
-                      onChange={(v) => {
+                      onChange={v => {
                         this.setState({
                           alignmentName: v
                         });
                       }}
                       maxLength={399} //stop the name from being tooo long
                       value={this.state.alignmentName}
-                      onConfirm={async (v) => {
+                      onConfirm={async v => {
                         if (!v) {
                           this.setState({
                             alignmentName: this.props.alignmentName
@@ -1552,7 +1547,7 @@ export class AlignmentView extends React.Component {
                         setTimeout(this.scrollToCaret, 0);
                       }}
                       minCharWidth={this.getMinCharWidth()}
-                      onChange={async (zoomLvl) => {
+                      onChange={async zoomLvl => {
                         this.isZooming = true;
                         setTimeout(() => {
                           this.isZooming = false;
@@ -1924,7 +1919,7 @@ export default compose(
         "compactNames"
       ];
       const togglableAlignmentAnnotationSettings = {};
-      map(alignmentAnnotationsToToggle, (annotation) => {
+      map(alignmentAnnotationsToToggle, annotation => {
         if (annotation in alignmentAnnotationVisibility) {
           togglableAlignmentAnnotationSettings[annotation] =
             alignmentAnnotationVisibility[annotation];
@@ -1935,7 +1930,7 @@ export default compose(
       if (alignmentTracks) {
         let totalNumOfFeatures = 0;
         let totalNumOfParts = 0;
-        alignmentTracks.forEach((seq) => {
+        alignmentTracks.forEach(seq => {
           if (seq.sequenceData.features) {
             totalNumOfFeatures += seq.sequenceData.features.length;
           }
@@ -1948,10 +1943,10 @@ export default compose(
           parts: totalNumOfParts
         });
       } else if (pairwiseAlignments) {
-        pairwiseAlignments.forEach((pairwise) => {
+        pairwiseAlignments.forEach(pairwise => {
           let totalNumOfFeatures = 0;
           let totalNumOfParts = 0;
-          pairwise.forEach((seq) => {
+          pairwise.forEach(seq => {
             if (seq.sequenceData.features) {
               totalNumOfFeatures += seq.sequenceData.features.length;
             }
@@ -1988,7 +1983,7 @@ export default compose(
         alignmentVisibilityToolOptions: {
           alignmentAnnotationVisibility,
           alignmentAnnotationLabelVisibility,
-          alignmentAnnotationVisibilityToggle: (updates) => {
+          alignmentAnnotationVisibilityToggle: updates => {
             setTimeout(() => {
               updateLabelsForInViewFeatures({
                 rectElement: ".alignmentHolder"
@@ -2003,7 +1998,7 @@ export default compose(
               }
             });
           },
-          alignmentAnnotationLabelVisibilityToggle: (name) => {
+          alignmentAnnotationLabelVisibilityToggle: name => {
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationLabelVisibility: {
@@ -2037,7 +2032,7 @@ export default compose(
   ),
   branch(
     ({ pairwiseAlignments }) => pairwiseAlignments,
-    renderComponent((props) => {
+    renderComponent(props => {
       return <PairwiseAlignmentView {...props} />;
     })
   )
@@ -2048,7 +2043,7 @@ const PerformantCaret = view(({ easyStore, ...rest }) => {
 });
 
 function cleanTracks(alignmentTracks) {
-  return alignmentTracks.map((t) => {
+  return alignmentTracks.map(t => {
     return omit(t, [
       "matchHighlightRanges",
       "additionalSelectionLayers",

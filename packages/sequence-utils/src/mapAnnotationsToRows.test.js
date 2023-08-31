@@ -1,8 +1,6 @@
-
-
 import chai from "chai";
 
-import {expect} from "chai";
+import { expect } from "chai";
 import chaiSubset from "chai-subset";
 import mapAnnotationsToRows from "./mapAnnotationsToRows.js";
 chai.use(chaiSubset);

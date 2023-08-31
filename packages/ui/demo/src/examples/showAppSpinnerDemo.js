@@ -1,6 +1,6 @@
-import { Button } from '@blueprintjs/core';
-import React from 'react'
-import showAppSpinner from '../../../src/showAppSpinner';
+import { Button } from "@blueprintjs/core";
+import React from "react";
+import showAppSpinner from "../../../src/showAppSpinner";
 
 export default function Demo() {
   return (
@@ -9,7 +9,7 @@ export default function Demo() {
         onClick={async function handleClick() {
           const closeAppSpinner = showAppSpinner();
           setTimeout(() => {
-            closeAppSpinner()
+            closeAppSpinner();
           }, 2000);
         }}
         text="Show the app spinner"
@@ -17,5 +17,3 @@ export default function Demo() {
     </div>
   );
 }
-
-

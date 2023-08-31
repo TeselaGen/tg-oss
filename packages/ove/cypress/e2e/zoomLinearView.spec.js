@@ -57,7 +57,10 @@ describe("zoomLinearView.spec", function () {
     cy.get(".veZoomLinearSlider .bp3-icon-minus").click();
     cy.get(".veRowViewFeature:contains(dbl term):first").should("be.visible");
   });
-  it(`zoom level should be preserved even when the linear view is hidden and re-shown`, noop);
+  it(
+    `zoom level should be preserved even when the linear view is hidden and re-shown`,
+    noop
+  );
 });
 
 function pressZoom(times) {

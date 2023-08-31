@@ -56,6 +56,7 @@ const defaultState = {
   displayMenuBarAboveTools: true,
   withPreviewMode: false,
   disableSetReadOnly: false,
+  disableBpEditing: false,
   showReadOnly: true,
   showCircularity: true,
   showMoleculeType: true,
@@ -1758,6 +1759,11 @@ hide or show the menubar (false by default)
               })}
               {renderToggle({
                 that: this,
+                type: "disableBpEditing",
+                info: `pass disableBpEditing=true to the <Editor> to prevent users from editing just the bps of the sequence`
+              })}
+              {renderToggle({
+                that: this,
                 type: "onChangeEditLock",
                 info: `pass onChangeEditLock={(lock)=>{}} to the <Editor> to get a callback when the user changes the edit lock state`
               })}
@@ -2433,6 +2439,7 @@ clickOverrides: {
             })}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
+            disableBpEditing={this.state.disableBpEditing}
             withRotateCircularView={this.state.withRotateCircularView}
             withZoomCircularView={this.state.withZoomCircularView}
             showReadOnly={this.state.showReadOnly}

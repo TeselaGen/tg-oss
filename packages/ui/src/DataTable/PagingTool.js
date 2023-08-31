@@ -219,14 +219,16 @@ export default compose(
     };
   }),
   withHandlers({
-    onPageChange: ({ entities, keepSelectionOnPageChange, change }) => () => {
-      const record = get(entities, "[0]");
-      if (
-        !keepSelectionOnPageChange &&
-        (!record || !getIdOrCodeOrIndex(record))
-      ) {
-        change("reduxFormSelectedEntityIdMap", {});
+    onPageChange:
+      ({ entities, keepSelectionOnPageChange, change }) =>
+      () => {
+        const record = get(entities, "[0]");
+        if (
+          !keepSelectionOnPageChange &&
+          (!record || !getIdOrCodeOrIndex(record))
+        ) {
+          change("reduxFormSelectedEntityIdMap", {});
+        }
       }
-    }
   })
 )(PagingTool);

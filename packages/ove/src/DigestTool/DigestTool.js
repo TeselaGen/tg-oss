@@ -109,7 +109,7 @@ export class DigestTool extends React.Component {
         )}
         <Tabs
           selectedTabId={selectedTab}
-          onChange={(id) => {
+          onChange={id => {
             this.setState({ selectedTab: id });
           }}
         >
@@ -179,7 +179,7 @@ const schema = {
 
 export default compose(
   withEditorInteractions,
-  withProps((props) => {
+  withProps(props => {
     const {
       sequenceData,
       sequenceLength,
@@ -205,7 +205,7 @@ export default compose(
       computePartialDigestDisabled,
       computeDigestDisabled,
       lanes: [
-        fragments.map((f) => ({
+        fragments.map(f => ({
           ...f,
           onFragmentSelect: () => {
             selectionLayerUpdate({

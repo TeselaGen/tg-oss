@@ -16,9 +16,8 @@ export const toggleViewVersionHistory = createAction(
 // ------------------------------------
 export default createReducer(
   {
-
     [toggleViewVersionHistory]: state => {
-      return {viewVersionHistory: !state.viewVersionHistory};
+      return { viewVersionHistory: !state.viewVersionHistory };
     }
   },
   {

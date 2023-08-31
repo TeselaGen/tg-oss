@@ -18,7 +18,7 @@
 // }
 // );
 
-export default (store) => (next) => (action) => {
+export default store => next => action => {
   if (action.meta && action.meta.disregardUndo) {
     return next(action);
   }
@@ -75,7 +75,7 @@ export default (store) => (next) => (action) => {
     const OldVectorEditor = store.getState().VectorEditor;
     const result = next(action);
     const NewVectorEditor = store.getState().VectorEditor;
-    Object.keys(NewVectorEditor).forEach((editorName) => {
+    Object.keys(NewVectorEditor).forEach(editorName => {
       const newEditorState = NewVectorEditor[editorName];
       const oldEditorState = OldVectorEditor[editorName];
       if (

@@ -11,7 +11,7 @@ function filteredFeaturesSelector(
   featureTypesToHide,
   lengthsToHide
 ) {
-  return omitBy(features, (ann) => {
+  return omitBy(features, ann => {
     const hideIndividually = featureIndividualToHide[ann.id];
     const hideFeaturesByType = featureTypesToHide[ann.type];
     return (
@@ -25,8 +25,8 @@ function filteredFeaturesSelector(
 export default createSelector(
   featuresSelector,
   sequenceLengthSelector,
-  (state) => state.annotationVisibility.featureIndividualToHide,
-  (state) => state.annotationVisibility.featureTypesToHide,
-  (state) => state.featureLengthsToHide,
+  state => state.annotationVisibility.featureIndividualToHide,
+  state => state.annotationVisibility.featureTypesToHide,
+  state => state.featureLengthsToHide,
   filteredFeaturesSelector
 );

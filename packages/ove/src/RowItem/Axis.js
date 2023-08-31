@@ -32,7 +32,7 @@ const Axis = function (props) {
       range: row,
       sequenceLength,
       isProtein
-    }).map((tickMarkPosition) => {
+    }).map(tickMarkPosition => {
       const gaps = getGaps ? getGaps(tickMarkPosition).gapsBefore : 0;
       const xCenter =
         (tickMarkPosition - (isProtein ? 1 : 0) + gaps) * charWidth +

@@ -19,7 +19,7 @@ export default function getCutsiteLabelHeights({
   let maxAnnotationYOffset = 0;
   const rowCenter = rowLength / 2;
   const iTree = new IntervalTree(rowCenter);
-  forEach(annotationRanges, function(annotationRange) {
+  forEach(annotationRanges, function (annotationRange) {
     counter++;
     if (counter > 50) return;
     let annotation = annotationRange.annotation;

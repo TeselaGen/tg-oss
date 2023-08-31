@@ -163,14 +163,14 @@ export default compose(
       if (syncDisplayOptionsToDb) {
         //sync up to db
         let tableConfigurationId;
-        resetDefaultVisibility = function() {
+        resetDefaultVisibility = function () {
           tableConfigurationId = tableConfig.id;
 
           if (tableConfigurationId) {
             deleteTableConfiguration(tableConfigurationId);
           }
         };
-        updateColumnVisibility = function({ shouldShow, path }) {
+        updateColumnVisibility = function ({ shouldShow, path }) {
           if (tableConfigurationId) {
             const existingFieldOpt = fieldOptsByPath[path] || {};
             upsertFieldOption({
@@ -198,10 +198,10 @@ export default compose(
         };
 
         //sync display options with localstorage
-        resetDefaultVisibility = function() {
+        resetDefaultVisibility = function () {
           window.localStorage.removeItem(formName);
         };
-        updateColumnVisibility = function({ path, paths, shouldShow }) {
+        updateColumnVisibility = function ({ path, paths, shouldShow }) {
           const newFieldOpts = {
             ...fieldOptsByPath
           };
@@ -212,15 +212,15 @@ export default compose(
           tableConfig.fieldOptions = toArray(newFieldOpts);
           syncStorage();
         };
-        updateTableDisplayDensity = function(density) {
+        updateTableDisplayDensity = function (density) {
           tableConfig.density = density;
           syncStorage();
         };
-        persistPageSize = function(pageSize) {
+        persistPageSize = function (pageSize) {
           tableConfig.userSetPageSize = pageSize;
           syncStorage();
         };
-        moveColumnPersist = function({ oldIndex, newIndex }) {
+        moveColumnPersist = function ({ oldIndex, newIndex }) {
           // we might already have an array of the fields [path1, path2, ..etc]
           const columnOrderings =
             tableConfig.columnOrderings ||
@@ -233,7 +233,7 @@ export default compose(
           );
           syncStorage();
         };
-        resizePersist = function(newResized) {
+        resizePersist = function (newResized) {
           tableConfig.resized = newResized;
           syncStorage();
         };

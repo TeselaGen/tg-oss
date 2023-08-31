@@ -2,7 +2,7 @@ import { flatMap } from "lodash";
 import { normalizePositionByRangeLength } from "@teselagen/range-utils";
 
 export function addWrappedAddons(anns, seqLen) {
-  return flatMap(anns, (ann) => {
+  return flatMap(anns, ann => {
     if (ann.overlapsSelf) {
       return [
         ann,

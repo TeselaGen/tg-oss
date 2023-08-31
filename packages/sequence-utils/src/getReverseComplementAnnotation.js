@@ -20,4 +20,4 @@ export default function getReverseComplementAnnotation(
     forward: !annotation.forward,
     strand: annotation.strand === 1 ? -1 : 1
   });
-};
+}

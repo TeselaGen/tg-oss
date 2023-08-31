@@ -73,7 +73,7 @@ function Labels(props) {
     )
   );
 
-  filter(annotationRanges, (r) => {
+  filter(annotationRanges, r => {
     if (onlyShowLabelsThatDoNotFit) {
       //tnrtodo: more work needs to be done here to make this actually configurable
       //check if annotation name will fit
@@ -298,7 +298,7 @@ const DrawLabel = withHover(
 
           {!noLabelLine && (
             <div
-              ref={(n) => {
+              ref={n => {
                 if (n) this.n = n;
               }}
               className="veLabelLine"

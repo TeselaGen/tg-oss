@@ -24,7 +24,7 @@ import {
   defaultEnzymesByName
 } from "@teselagen/sequence-utils";
 
-const NoResults = withRestrictionEnzymes((props) => {
+const NoResults = withRestrictionEnzymes(props => {
   const {
     inputSequenceToTestAgainst,
     cutsitesByName,
@@ -167,11 +167,11 @@ export function CutsiteFilter(props) {
         {label}{" "}
         {canBeHidden && (
           <Icon
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
 
               filteredRestrictionEnzymesUpdate(
-                flatMap(filteredRestrictionEnzymes, (e) => {
+                flatMap(filteredRestrictionEnzymes, e => {
                   if (e.value === value) return [];
                   return e;
                 }).concat({
@@ -194,14 +194,14 @@ export function CutsiteFilter(props) {
       </div>
     );
   };
-  const filteredRestrictionEnzymesUpdate = (enzymes) => {
+  const filteredRestrictionEnzymesUpdate = enzymes => {
     _filteredRestrictionEnzymesUpdate(enzymes);
     if (sequenceData?.id) {
       try {
         window.localStorage.setItem(
           `tgInitialCutsiteFilter-${sequenceData.id}`,
           JSON.stringify(
-            enzymes.map((e) => omit(e, "canBeHidden", "nameArray", "label"))
+            enzymes.map(e => omit(e, "canBeHidden", "nameArray", "label"))
           )
         );
       } catch (err) {
@@ -213,7 +213,7 @@ export function CutsiteFilter(props) {
   const userEnzymeGroups =
     enzymeGroupsOverride || window.getExistingEnzymeGroups();
   const options = [
-    ...map(specialCutsiteFilterOptions, (opt) => opt),
+    ...map(specialCutsiteFilterOptions, opt => opt),
     ...map(userEnzymeGroups, (nameArray, name) => {
       return {
         label: getUserGroupLabel({ nameArray, name }),
@@ -236,9 +236,9 @@ export function CutsiteFilter(props) {
           value: key
         };
       })
-  ].map((n) => addClickableLabel(n, { closeDropDown }));
+  ].map(n => addClickableLabel(n, { closeDropDown }));
 
-  const value = filteredRestrictionEnzymes.map((filteredOpt) => {
+  const value = filteredRestrictionEnzymes.map(filteredOpt => {
     let toRet;
     if (filteredOpt.cutsThisManyTimes || filteredOpt.isSpecialGroup) {
       toRet = filteredOpt;
@@ -314,7 +314,7 @@ export function CutsiteFilter(props) {
                   minimal
                   interactive
                   style={{ display: "flex", marginTop: 5 }}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     isEnzymeFilterAndUpdate(!isEnzymeFilterAnd);
                   }}
@@ -359,7 +359,7 @@ export function CutsiteFilter(props) {
               }}
             ></NoResults>
           }
-          onInputChange={(queryTracker) => {
+          onInputChange={queryTracker => {
             setQueryTracker(queryTracker);
           }}
           placeholder="Filter cut sites..."
@@ -368,10 +368,10 @@ export function CutsiteFilter(props) {
           filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}
           optionRenderer={renderOptions}
           isSimpleSearch
-          onChange={(filteredRestrictionEnzymes) => {
+          onChange={filteredRestrictionEnzymes => {
             onChangeHook && onChangeHook(filteredRestrictionEnzymes);
             filteredRestrictionEnzymesUpdate(
-              map(filteredRestrictionEnzymes, (r) => {
+              map(filteredRestrictionEnzymes, r => {
                 return omit(r, ["label"]);
               })
             );

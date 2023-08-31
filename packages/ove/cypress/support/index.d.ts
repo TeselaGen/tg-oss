@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 
-
 interface waitForOptions {
   timeout?: number;
 }
@@ -45,7 +44,6 @@ declare namespace Cypress {
      * cy.closeDialog()
      */
     closeDialog(options: waitForOptions): void;
-
 
     /**
      * This command will close all open toastr messages by clicking each one's X
@@ -137,7 +135,6 @@ declare namespace Cypress {
      */
     selectAlignmentRange(start, end): void;
 
-
     /**
      * scrollAlignmentToPercent
      * selects a 1 based range of the alignment
@@ -146,8 +143,6 @@ declare namespace Cypress {
      * //user would see this as: "Selecting 11 bps from 10 to 20"
      */
     scrollAlignmentToPercent(percent): void;
-
-
 
     /**
      * tgToggle
@@ -158,7 +153,6 @@ declare namespace Cypress {
      *
      */
     tgToggle(toggleId: string, toggleOnOrOff: boolean): void;
-
 
     // /**
     //  * chainable waitForBackendCalls

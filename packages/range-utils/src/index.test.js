@@ -3,15 +3,11 @@ import fs from "fs";
 
 describe("index.js", () => {
   it(`should export all functions defined`, () => {
-    return new Promise((resolve) => {
-
+    return new Promise(resolve => {
       fs.readdir(__dirname, (err, files) => {
         let passes = true;
         files.forEach(file => {
-          if (
-            file.indexOf(".test.js") > -1 ||
-            file.indexOf("index.js") > -1
-          ) {
+          if (file.indexOf(".test.js") > -1 || file.indexOf("index.js") > -1) {
             return;
           }
           const funcOrObj = src[file.replace(".js", "")];
@@ -24,10 +20,12 @@ describe("index.js", () => {
           }
         });
         if (!passes) {
-          throw new Error("Please make sure to export (or ignore) each file! Update index.js to export the file");
+          throw new Error(
+            "Please make sure to export (or ignore) each file! Update index.js to export the file"
+          );
         }
         resolve();
       });
-    })
+    });
   });
 });

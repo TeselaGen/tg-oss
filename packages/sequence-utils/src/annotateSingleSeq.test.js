@@ -1,5 +1,5 @@
 import annotateSingleSeq from "./annotateSingleSeq";
-import {expect} from "chai";
+import { expect } from "chai";
 
 describe("annotateSingleSeq", () => {
   it(`regexes work - correctly annotates a single seq with a regex annotation`, () => {
@@ -20,7 +20,6 @@ describe("annotateSingleSeq", () => {
         }
       ]
     });
-
   });
   it(`correctly annotates a single seq with multiple matches`, () => {
     const results = annotateSingleSeq({
@@ -46,7 +45,6 @@ describe("annotateSingleSeq", () => {
         }
       ]
     });
-
   });
   it(`correctly finds no matches when there are none`, () => {
     const results = annotateSingleSeq({
@@ -59,6 +57,5 @@ describe("annotateSingleSeq", () => {
     expect(results).to.deep.eq({
       matches: []
     });
-
   });
 });

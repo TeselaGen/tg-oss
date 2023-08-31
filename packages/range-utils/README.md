@@ -15,21 +15,26 @@
 <!-- /TOC -->
 
 ## [CHANGELOG](Changelog.md)
+
 ## Installing
+
 ```
 npm install @teselagen/range-utils
 ```
+
 ## Usage
+
 ```
 import { getRangeLength } from '@teselagen/range-utils';
 ```
 
 ## About this Repo
-This is a collection of range utility functions.
 
+This is a collection of range utility functions.
 
 A range must be an object with a start and end property.
 Eg:
+
 ```
 const myRange = {
 	start: 10,
@@ -39,6 +44,7 @@ const myRange = {
 
 A "circular" range has a start > end.
 Eg:
+
 ```
 const myRange2 = {
 	start: 50,
@@ -53,15 +59,18 @@ rrrr
 start = 0,
 end = 3
 
-
 ## Editing This Repo:
-### All collaborators: 
-Edit/create a new file and update/add any relevant tests. 
-You can run `npm test` to make sure all tests pass. 
+
+### All collaborators:
+
+Edit/create a new file and update/add any relevant tests.
+You can run `npm test` to make sure all tests pass.
 Tests will automatically be run pre-commit.
 
-## Updating this repo: 
-### Teselagen collaborators: 
+## Updating this repo:
+
+### Teselagen collaborators:
+
 Commit and push all changes
 Sign into npm using the teselagen npm account (npm whoami)
 
@@ -70,7 +79,8 @@ npm version patch|minor|major
 npm publish
 ```
 
-### Outside collaborators: 
+### Outside collaborators:
+
 fork and pull request please :)
 
 This library was generated with [Nx](https://nx.dev).

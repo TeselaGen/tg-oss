@@ -24,15 +24,15 @@ describe("sbolXmlToJson", function () {
         notes: {
           about: [
             "public-registry.jbei.org/entry/sa#ae7eb7e3-be41-4a14-a50d-818de29f9378",
-            "http://purl.obolibrary.org/obo/SO_0000296",
-          ],
+            "http://purl.obolibrary.org/obo/SO_0000296"
+          ]
         },
         name: "colE1 origin",
         start: 1201,
         end: 1883,
         strand: 1,
-        type: "misc_feature",
-      },
+        type: "misc_feature"
+      }
     ]);
     result[0].parsedSequence.sequence.length.should.equal(2815);
   });

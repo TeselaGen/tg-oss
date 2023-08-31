@@ -1,4 +1,4 @@
-import {normalizePositionByRangeLength1Based} from "@teselagen/range-utils";
+import { normalizePositionByRangeLength1Based } from "@teselagen/range-utils";
 
 export default function getInsertBetweenVals(
   caretPosition,
@@ -25,4 +25,4 @@ export default function getInsertBetweenVals(
   } else {
     return [sequenceLength, 1];
   }
-};
+}

@@ -21,7 +21,7 @@ export default function insertGapsIntoRefSeq(refSeq, seqReads) {
   }
   // refSeqWithGaps is a string "GGGA--GA-C--ACC"
   return refSeqWithGaps.join("");
-};
+}
 
 // allInsertionsInSeqReads.forEach(insertion => {
 //       // adding gap at the bp pos of insertion

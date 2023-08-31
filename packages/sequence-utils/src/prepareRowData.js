@@ -1,4 +1,3 @@
-
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 import mapAnnotationsToRows from "./mapAnnotationsToRows";
 
@@ -38,4 +37,4 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     rows[rowNumber] = row;
   }
   return rows;
-};
+}

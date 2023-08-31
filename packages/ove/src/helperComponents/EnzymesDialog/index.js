@@ -3,11 +3,7 @@ import React from "react";
 
 // import { reduxForm, formValues } from "redux-form";
 
-import {
-  InfoHelper,
-  showConfirmationDialog,
-  wrapDialog
-} from "@teselagen/ui";
+import { InfoHelper, showConfirmationDialog, wrapDialog } from "@teselagen/ui";
 import { compose } from "redux";
 import {
   Classes,
@@ -35,7 +31,7 @@ import {
 import { store, view } from "@risingstack/react-easy-state";
 import { showDialog } from "../../GlobalDialogUtils";
 
-const upsertLocalEnzymeGroups = (newGroups) => {
+const upsertLocalEnzymeGroups = newGroups => {
   const existingGroups = window.getExistingEnzymeGroups();
   const toUpsert = omitBy(
     //delete any groups that have a value of null/undefined
@@ -43,7 +39,7 @@ const upsertLocalEnzymeGroups = (newGroups) => {
       ...existingGroups,
       ...newGroups
     },
-    (val) => {
+    val => {
       return !val;
     }
   );
@@ -53,7 +49,7 @@ const upsertLocalEnzymeGroups = (newGroups) => {
 
 window.createNewEnzymeGroup =
   window.createNewEnzymeGroup ||
-  ((newName) => {
+  (newName => {
     return upsertLocalEnzymeGroups({
       [newName]: []
     });
@@ -68,7 +64,7 @@ window.editEnzymeGroupName =
   });
 window.deleteEnzymeGroup =
   window.deleteEnzymeGroup ||
-  ((nameToDelete) => {
+  (nameToDelete => {
     return upsertLocalEnzymeGroups({
       [nameToDelete]: null
     });
@@ -138,7 +134,7 @@ class EnzymesDialog extends React.Component {
       .forEach(function (key) {
         const group = existingGroups[key];
         orderedExistingGroups[key] = group;
-        group.forEach((name) => {
+        group.forEach(name => {
           const lowerName = name.toLowerCase();
           groupedEnzymesNameMap[lowerName] =
             aliasedEnzymesByName[lowerName] || additionalEnzymes[lowerName];
@@ -156,14 +152,14 @@ class EnzymesDialog extends React.Component {
       "My Enzymes": {
         protected: true,
         name: "My Enzymes",
-        enzymes: map(myEnzymes).sort((e) => e.name)
+        enzymes: map(myEnzymes).sort(e => e.name)
       },
       Hidden: {
         protected: true,
         name: "Hidden",
         tooltipInfo:
           "These less common enzymes are hidden by default. Adding them to a custom group will make them show up in the cutsite filter dropdown.",
-        enzymes: map(hiddenEnzymes).sort((e) => e.name)
+        enzymes: map(hiddenEnzymes).sort(e => e.name)
       },
       ...reduce(
         orderedExistingGroups,
@@ -209,7 +205,7 @@ class EnzymesDialog extends React.Component {
       this.state;
     const selectedEnzymesKey = `selectedEnzymes_${selectedEnzymeGroup}`;
     const selectedEnzymesForGroup = this.state[selectedEnzymesKey] || {};
-    const selectedCount = countBy(selectedEnzymesForGroup, (e) => e).true || 0;
+    const selectedCount = countBy(selectedEnzymesForGroup, e => e).true || 0;
     const fullSelectedEnzGroup = this.enzymeGroups[selectedEnzymeGroup] || {};
 
     const enzymeList = flatMap(fullSelectedEnzGroup.enzymes, (enz, i) => {
@@ -458,7 +454,7 @@ class EnzymesDialog extends React.Component {
               <InputGroup
                 round
                 placeholder="Search by name or # of cuts"
-                onChange={(e) => {
+                onChange={e => {
                   this.setState({
                     searchInput: e.target.value
                   });
@@ -470,7 +466,7 @@ class EnzymesDialog extends React.Component {
                       icon="cross"
                       minimal
                       intent="danger"
-                      onClick={(e) => {
+                      onClick={e => {
                         this.setState({ searchInput: "" });
                         e.stopPropagation();
                       }}
@@ -531,7 +527,7 @@ class EnzymesDialog extends React.Component {
                             selectedCount,
                             selectedEnzymesForGroup,
                             enzymeGroups: this.enzymeGroups,
-                            setStateAbove: (val) => {
+                            setStateAbove: val => {
                               this.setState(val);
                             }
                           }}
@@ -563,8 +559,7 @@ class EnzymesDialog extends React.Component {
                         if (confirm) {
                           const enzymes = flatMap(
                             fullSelectedEnzGroup.enzymes,
-                            (e) =>
-                              selectedEnzymesForGroup[e.name] ? [] : e.name
+                            e => (selectedEnzymesForGroup[e.name] ? [] : e.name)
                           );
                           window.updateEnzymeGroup(
                             selectedEnzymeGroup,
@@ -777,7 +772,7 @@ export default compose(
 )(EnzymesDialog);
 
 function getEnzymesForNames(names, allEnzymesByName) {
-  return names.map((n) => {
+  return names.map(n => {
     return (n && allEnzymesByName[n.toLowerCase()]) || { name: "Not Found!" };
   });
 }
@@ -790,7 +785,7 @@ class MoveToInner extends React.Component {
       setStateAbove,
       enzymeGroups
     } = this.props;
-    const enzymeOpts = flatMap(enzymeGroups, (g) => {
+    const enzymeOpts = flatMap(enzymeGroups, g => {
       if (g.protected || g.name === selectedEnzymeGroup) return [];
       return {
         value: g.name
@@ -827,7 +822,7 @@ class MoveToInner extends React.Component {
             <h5>Copy {selectedCount} Enzyme(s) To:</h5>
 
             <HTMLSelect
-              onChange={(e) => {
+              onChange={e => {
                 setStateAbove({
                   enzymeGroupToMoveTo: e.target.value
                 });
@@ -841,7 +836,7 @@ class MoveToInner extends React.Component {
                 const enzymes = uniq([
                   ...map(
                     enzymeGroups[enzymeGroupToMoveTo].enzymes,
-                    (e) => e.name
+                    e => e.name
                   ),
                   ...flatMap(selectedEnzymesForGroup, (selected, name) =>
                     selected ? name : []

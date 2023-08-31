@@ -82,4 +82,4 @@ export default function condensePairwiseAlignmentDifferences(
     }
   }
   return overviewMinimapTrack.join("");
-};
+}

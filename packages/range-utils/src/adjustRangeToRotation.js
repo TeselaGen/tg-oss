@@ -1,7 +1,6 @@
+import { assign } from "lodash";
 
-import {assign} from "lodash";
-
-import {identity} from 'lodash';
+import { identity } from "lodash";
 
 export default function adjustRangeToRotation(
   rangeToBeAdjusted,
@@ -9,7 +8,7 @@ export default function adjustRangeToRotation(
   rangeLength
 ) {
   // ac.throw([ac.range, ac.posInt, ac.posInt], arguments);
-  const mod = rangeLength ? modulo : identity
+  const mod = rangeLength ? modulo : identity;
 
   const newRange = assign({}, rangeToBeAdjusted, {
     start: mod(rangeToBeAdjusted.start - (rotateTo || 0), rangeLength),
@@ -17,7 +16,7 @@ export default function adjustRangeToRotation(
   });
 
   return newRange;
-};
+}
 
 function modulo(n, m) {
   return ((n % m) + m) % m;

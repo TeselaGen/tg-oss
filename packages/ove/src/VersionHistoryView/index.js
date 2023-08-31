@@ -38,7 +38,7 @@ export class VersionHistoryView extends React.Component {
   //     ];
   //   }
   // };
-  updateSeqData = (sequenceData) => {
+  updateSeqData = sequenceData => {
     this.activeSeqData = sequenceData;
     this.props.vectorEditorInitialize(
       {
@@ -81,7 +81,7 @@ export class VersionHistoryView extends React.Component {
     this.setState({
       versionList: [
         currentVersion,
-        ...versionList.map((r) => {
+        ...versionList.map(r => {
           return { ...r, id: r.versionId };
         })
       ] //currentVersion should always come first

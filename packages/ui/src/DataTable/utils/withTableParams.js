@@ -197,28 +197,23 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
       return {};
     }
     const mergedOpts = getMergedOpts(topLevelOptions, ownProps);
-    const {
-      formName,
-      urlConnected,
-      history,
-      defaults,
-      onlyOneFilter
-    } = mergedOpts;
+    const { formName, urlConnected, history, defaults, onlyOneFilter } =
+      mergedOpts;
 
     function updateSearch(val) {
-      setTimeout(function() {
+      setTimeout(function () {
         dispatch(change(formName, "reduxFormSearchInput", val || ""));
       });
     }
 
     let setNewParams;
     if (urlConnected) {
-      setNewParams = function(newParams) {
+      setNewParams = function (newParams) {
         setCurrentParamsOnUrl(newParams, history.replace);
         dispatch(change(formName, "reduxFormQueryParams", newParams)); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
       };
     } else {
-      setNewParams = function(newParams) {
+      setNewParams = function (newParams) {
         dispatch(change(formName, "reduxFormQueryParams", newParams));
       };
     }
@@ -240,18 +235,14 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
     const { currentParams, formName } = stateProps;
     const boundDispatchProps = {};
     //bind currentParams to actions
-    Object.keys(dispatchProps.bindThese).forEach(function(key) {
+    Object.keys(dispatchProps.bindThese).forEach(function (key) {
       const action = dispatchProps.bindThese[key];
-      boundDispatchProps[key] = function(...args) {
+      boundDispatchProps[key] = function (...args) {
         action(...args, currentParams);
       };
     });
-    const {
-      variables,
-      selectedEntities,
-      mergedOpts,
-      ...restStateProps
-    } = stateProps;
+    const { variables, selectedEntities, mergedOpts, ...restStateProps } =
+      stateProps;
 
     const changeFormValue = (...args) =>
       dispatchProps.dispatch(change(formName, ...args));

@@ -2,7 +2,7 @@ describe("enzymeFilter.spec", () => {
   it(`we should be able to have individual cutsites filters be specific to individual sequences and set a global default filter`, () => {
     cy.visit("");
     cy.get(".ve-tool-container-cutsiteTool .veToolbarDropdown").click();
-    cy.window().then((win) => {
+    cy.window().then(win => {
       //should have no defaults set initially
 
       const thisSeqFilter = win.localStorage.getItem(
@@ -12,7 +12,7 @@ describe("enzymeFilter.spec", () => {
     });
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.contains(".tg-select-option", "AatII").click();
-    cy.window().then((win) => {
+    cy.window().then(win => {
       //upon change we should have just the local-to-this-seq filter set
       const thisSeqFilter = win.localStorage.getItem(
         "tgInitialCutsiteFilter-jdosjio81"

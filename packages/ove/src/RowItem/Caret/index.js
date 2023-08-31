@@ -31,7 +31,7 @@ function Caret(props) {
         onClick={onClick}
         onContextMenu={
           onRightClick
-            ? (e) => {
+            ? e => {
                 onRightClick(e);
               }
             : undefined

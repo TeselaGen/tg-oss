@@ -6,7 +6,7 @@ function gffToJson(string) {
   const results = [];
   const sequences = [];
   const features = {};
-  arrayOfThings.forEach((featureOrSeq) => {
+  arrayOfThings.forEach(featureOrSeq => {
     if (featureOrSeq.sequence) {
       sequences.push(featureOrSeq);
     } else {
@@ -19,11 +19,11 @@ function gffToJson(string) {
         start: feature.start,
         end: feature.end,
         strand: feature.strand === "+" ? 1 : -1,
-        type: feature.type,
+        type: feature.type
       });
     }
   });
-  sequences.forEach((sequence) => {
+  sequences.forEach(sequence => {
     const sequenceId = sequence.id;
     const result = {
       messages: [],
@@ -32,8 +32,8 @@ function gffToJson(string) {
         name: sequenceId,
         sequence: sequence.sequence,
         circular: false,
-        features: features[sequence.id],
-      },
+        features: features[sequence.id]
+      }
     };
     results.push(result);
   });

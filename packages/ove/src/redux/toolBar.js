@@ -10,16 +10,14 @@ export const openToolbarItemUpdate = createAction("openToolbarItemUpdate");
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    
     [openToolbarItemUpdate]: (state, payload) => {
       return {
         ...state,
         openItem: payload
       };
-    },
-   
+    }
   },
   {
-    openItem: "",
+    openItem: ""
   }
 );

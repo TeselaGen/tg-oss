@@ -1,7 +1,7 @@
 import trimRangeByAnotherRange from "./trimRangeByAnotherRange.js";
 import assert from "assert";
 
-describe("trimRangeByAnotherRange", function() {
+describe("trimRangeByAnotherRange", function () {
   it(`returns nothing if invalid inputs are sent in`, () => {
     assert.equal(
       null,
@@ -15,7 +15,7 @@ describe("trimRangeByAnotherRange", function() {
       )
     );
   });
-  it("trims non circular ranges that dont fully overlap", function() {
+  it("trims non circular ranges that dont fully overlap", function () {
     assert.deepEqual(
       trimRangeByAnotherRange(
         {
@@ -36,7 +36,7 @@ describe("trimRangeByAnotherRange", function() {
       }
     );
   });
-  it("it does not trim non circular ranges with overlap contained within it", function() {
+  it("it does not trim non circular ranges with overlap contained within it", function () {
     assert.deepEqual(
       trimRangeByAnotherRange(
         {
@@ -57,7 +57,7 @@ describe("trimRangeByAnotherRange", function() {
       }
     );
   });
-  it("trims non circular ranges that fully overlap", function() {
+  it("trims non circular ranges that fully overlap", function () {
     assert.deepEqual(
       trimRangeByAnotherRange(
         {
@@ -115,7 +115,7 @@ describe("trimRangeByAnotherRange", function() {
       undefined
     );
   });
-  it("does not trim non circular ranges that dont overlap", function() {
+  it("does not trim non circular ranges that dont overlap", function () {
     assert.deepEqual(
       trimRangeByAnotherRange(
         {
@@ -153,7 +153,7 @@ describe("trimRangeByAnotherRange", function() {
       }
     );
   });
-  it("does trim circular ranges that overlap", function() {
+  it("does trim circular ranges that overlap", function () {
     assert.deepEqual(
       trimRangeByAnotherRange(
         {

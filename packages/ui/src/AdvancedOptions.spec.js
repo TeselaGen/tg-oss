@@ -10,7 +10,9 @@ describe("AdvancedOptions", () => {
     expect(queryByText("Test Label")).toBeInTheDocument();
     expect(queryByText("Test Content")).not.toBeInTheDocument();
 
-    expect(container.querySelector(".bp3-icon-caret-right")).toBeInTheDocument();
+    expect(
+      container.querySelector(".bp3-icon-caret-right")
+    ).toBeInTheDocument();
   });
 
   test("toggles content when clicked", () => {

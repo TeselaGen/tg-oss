@@ -1,7 +1,6 @@
-import viteReactConfig from '../../vite.react.config'
+import viteReactConfig from "../../vite.react.config";
 
 export default viteReactConfig({
-  name: 'ove',
-  dir: __dirname,
-})
-
+  name: "ove",
+  dir: __dirname
+});

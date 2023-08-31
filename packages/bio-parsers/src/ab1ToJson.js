@@ -10,7 +10,7 @@ async function ab1ToJson(fileObj, options = {}) {
   returnVal.parsedSequence = {
     ...returnVal.parsedSequence,
     sequence: chromatogramData.baseCalls.join(""),
-    chromatogramData,
+    chromatogramData
   };
   return [returnVal];
 }
@@ -21,7 +21,6 @@ function abConverter(inputArrayBuffer) {
   const dirLocation = inputArrayBuffer.getInt32(26);
   const numElements = inputArrayBuffer.getInt32(18);
   const lastEntry = dirLocation + numElements * 28;
-
 
   this.getNumber = (inOffset, numEntries) => {
     const retArray = [];
@@ -49,8 +48,7 @@ function abConverter(inputArrayBuffer) {
     return retArray;
   };
 
-
-  this.getTagName = (inOffset) => {
+  this.getTagName = inOffset => {
     let name = "";
     for (let loopOffset = inOffset; loopOffset < inOffset + 4; loopOffset++) {
       name += String.fromCharCode(inputArrayBuffer.getInt8(loopOffset));
@@ -58,7 +56,7 @@ function abConverter(inputArrayBuffer) {
     return name;
   };
 
-  this.getDataTag = function(inTag) {
+  this.getDataTag = function (inTag) {
     let output;
     let curElem = dirLocation;
     do {
@@ -75,7 +73,7 @@ function abConverter(inputArrayBuffer) {
     return output;
   };
 
-  this.getTraceData = function() {
+  this.getTraceData = function () {
     const traceData = {};
     traceData.aTrace = this.getDataTag(tagDict.colorDataA);
     traceData.tTrace = this.getDataTag(tagDict.colorDataT);
@@ -84,10 +82,10 @@ function abConverter(inputArrayBuffer) {
     traceData.basePos = this.getDataTag(tagDict.peakLocations);
     traceData.baseCalls = this.getDataTag(tagDict.baseCalls2);
     traceData.qualNums = this.getDataTag(tagDict.qualNums);
-    if (traceData.qualNums ) { 
+    if (traceData.qualNums) {
       //tnr if we're only getting 1's and 0's as qualNums, that means that there weren't actual qual nums attached to the file
-      if (!traceData.qualNums.filter(q => (q!==1 && q!==0)).length)  {
-        delete traceData.qualNums
+      if (!traceData.qualNums.filter(q => q !== 1 && q !== 0).length) {
+        delete traceData.qualNums;
       }
     }
     return convertBasePosTraceToPerBpTrace(traceData);
@@ -116,11 +114,10 @@ const tagDict = {
   colorDataA: { tagName: "DATA", tagNum: 10, typeToReturn: "getShort" },
   colorDataT: { tagName: "DATA", tagNum: 11, typeToReturn: "getShort" },
   colorDataG: { tagName: "DATA", tagNum: 9, typeToReturn: "getShort" },
-  colorDataC: { tagName: "DATA", tagNum: 12, typeToReturn: "getShort" },
+  colorDataC: { tagName: "DATA", tagNum: 12, typeToReturn: "getShort" }
 };
 
-
-const correctionAmount = 3
+const correctionAmount = 3;
 // tnr: this function takes in chromData which has 4 traces and a basePos (which describes where in the trace the base call lands)
 // It "normalizes" that data into a baseTraces array so that each base has its own set of that data (having a per-base trace makes insertion/deletion/copy/paste actions all easier)
 function convertBasePosTraceToPerBpTrace(chromData) {
@@ -152,15 +149,15 @@ function convertBasePosTraceToPerBpTrace(chromData) {
       "gTrace",
       "cTrace"
       // eslint-disable-next-line no-loop-func
-    ].forEach((type) => {
+    ].forEach(type => {
       const traceForType = tracesForType[type];
       const traceData = chromData[type];
       for (let j = startPos; j < endPos + correctionAmount; j++) {
         traceForType.push(traceData[j] || 0);
       }
     });
-    if (i !== basePos.length-1) {
-      startPos = endPos+correctionAmount;
+    if (i !== basePos.length - 1) {
+      startPos = endPos + correctionAmount;
       nextBasePos = basePos[i + 2];
       setEndPos();
     }
@@ -172,6 +169,4 @@ function convertBasePosTraceToPerBpTrace(chromData) {
   };
 }
 
-export {
-  convertBasePosTraceToPerBpTrace
-}
+export { convertBasePosTraceToPerBpTrace };

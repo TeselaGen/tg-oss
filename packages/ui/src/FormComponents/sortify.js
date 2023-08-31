@@ -43,7 +43,7 @@ const sortKeys = o => {
     });
     // do the rearrangement
     return numeric
-      .sort(function(a, b) {
+      .sort(function (a, b) {
         return a - b;
       })
       .concat(nonNumeric.sort())

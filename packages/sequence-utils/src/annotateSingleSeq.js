@@ -1,4 +1,4 @@
-import {autoAnnotate} from "./autoAnnotate";
+import { autoAnnotate } from "./autoAnnotate";
 
 function annotateSingleSeq({ fullSeq, searchSeq }) {
   const fullSeqId = fullSeq.id || "fullSeqId";

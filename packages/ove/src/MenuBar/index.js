@@ -7,7 +7,7 @@ import menuDef from "./defaultConfig";
 import getCommands from "../commands";
 import { Icon, Spinner } from "@blueprintjs/core";
 
-const ident = (x) => x;
+const ident = x => x;
 
 class OveMenuBar extends React.Component {
   constructor(props) {

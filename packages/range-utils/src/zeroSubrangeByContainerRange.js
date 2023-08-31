@@ -1,6 +1,6 @@
 //
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-import trimRangeByAnotherRange from './trimRangeByAnotherRange';
+import trimRangeByAnotherRange from "./trimRangeByAnotherRange";
 
 /**
  * "zeroes" a subrange of a container range by
@@ -16,21 +16,31 @@ import trimRangeByAnotherRange from './trimRangeByAnotherRange';
  *                                     end:
  *                                     }
  */
-export default function zeroSubrangeByContainerRange(subRange, containerRange, sequenceLength) {
-    // ac.throw([ac.range, ac.range, ac.posInt], arguments);
-    //first check to make sure the container range fully contains the subRange
-    const trimmedSubRange = trimRangeByAnotherRange(subRange, containerRange, sequenceLength);
-    if (trimmedSubRange) {
-        throw new Error('subRange must be fully contained by containerRange! Otherwise this function does not make sense');
-    }
-    const newSubrange = {};
-    newSubrange.start = subRange.start - containerRange.start;
-    newSubrange.end = subRange.end - containerRange.start;
-    if (newSubrange.start < 0) {
-        newSubrange.start += sequenceLength;
-    }
-    if (newSubrange.end < 0) {
-        newSubrange.end += sequenceLength;
-    }
-    return newSubrange;
-};
+export default function zeroSubrangeByContainerRange(
+  subRange,
+  containerRange,
+  sequenceLength
+) {
+  // ac.throw([ac.range, ac.range, ac.posInt], arguments);
+  //first check to make sure the container range fully contains the subRange
+  const trimmedSubRange = trimRangeByAnotherRange(
+    subRange,
+    containerRange,
+    sequenceLength
+  );
+  if (trimmedSubRange) {
+    throw new Error(
+      "subRange must be fully contained by containerRange! Otherwise this function does not make sense"
+    );
+  }
+  const newSubrange = {};
+  newSubrange.start = subRange.start - containerRange.start;
+  newSubrange.end = subRange.end - containerRange.start;
+  if (newSubrange.start < 0) {
+    newSubrange.start += sequenceLength;
+  }
+  if (newSubrange.end < 0) {
+    newSubrange.end += sequenceLength;
+  }
+  return newSubrange;
+}

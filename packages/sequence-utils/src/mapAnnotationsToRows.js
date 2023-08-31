@@ -1,8 +1,8 @@
-import {each, forEach, startsWith, filter} from "lodash";
+import { each, forEach, startsWith, filter } from "lodash";
 
 import {
   getYOffsetForPotentiallyCircularRange,
-  splitRangeIntoTwoPartsIfItIsCircular,
+  splitRangeIntoTwoPartsIfItIsCircular
 } from "@teselagen/range-utils";
 
 export default function mapAnnotationsToRows(
@@ -72,7 +72,7 @@ export default function mapAnnotationsToRows(
     );
   });
   return annotationsToRowsMap;
-};
+}
 
 function mapAnnotationToRows({
   annotation,

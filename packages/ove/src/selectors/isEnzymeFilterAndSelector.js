@@ -1,1 +1,1 @@
-export default (state) => state.restrictionEnzymes.isEnzymeFilterAnd;
+export default state => state.restrictionEnzymes.isEnzymeFilterAnd;

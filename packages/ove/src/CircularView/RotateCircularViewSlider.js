@@ -44,7 +44,7 @@ export function RotateCircularViewSlider({
     >
       <UncontrolledSliderWithPlusMinusBtns
         bindOutsideChangeHelper={bindOutsideChangeHelper}
-        onChange={(_val) => {
+        onChange={_val => {
           const val = 360 - _val;
           const el = target.current
             .closest(`.veCircularView`)

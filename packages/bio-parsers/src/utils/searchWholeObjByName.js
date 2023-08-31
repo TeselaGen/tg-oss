@@ -16,7 +16,7 @@ class Match {
   logValue() {
     const val = this.value;
     // if value is an object then just toString it
-    const isPrimitive = (x) => Object(x) !== x;
+    const isPrimitive = x => Object(x) !== x;
     return isPrimitive(val) || Array.isArray(val) ? val : {}.toString.call(val);
   }
 
@@ -39,7 +39,7 @@ export default function searchWholeObjByName(what, where) {
 
   const matches = [];
   matches.log = function () {
-    this.forEach((m) => m.log());
+    this.forEach(m => m.log());
   };
 
   // a non-recursive solution to avoid call stack limits
@@ -77,7 +77,7 @@ export default function searchWholeObjByName(what, where) {
               path: `${path}.${prop}`,
               obj: where,
               prop,
-              type,
+              type
             });
             matches.push(match);
           }

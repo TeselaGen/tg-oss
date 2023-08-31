@@ -46,7 +46,7 @@ export default class ReflexElement extends React.Component {
 
     this.onResize = this.onResize.bind(this);
 
-    this.setStateThrottled = throttle((state) => {
+    this.setStateThrottled = throttle(state => {
       this.setState(state);
     }, this.props.renderOnResizeRate);
 
@@ -107,7 +107,7 @@ export default class ReflexElement extends React.Component {
   /////////////////////////////////////////////////////////
   renderChildren() {
     if (this.props.propagateDimensions) {
-      return React.Children.map(this.props.children, (child) => {
+      return React.Children.map(this.props.children, child => {
         const newProps = Object.assign({}, child.props, {
           dimensions: this.state.dimensions
         });

@@ -5,4 +5,4 @@ export default function getDegenerateRnaStringFromAAString(aaString) {
     .split("")
     .map(char => aminoAcidToDegenerateRnaMap[char.toLowerCase()] || "nnn")
     .join("");
-};
+}

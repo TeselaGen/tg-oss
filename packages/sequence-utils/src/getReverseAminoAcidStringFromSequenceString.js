@@ -17,4 +17,4 @@ export default function getReverseAminoAcidStringFromSequenceString(
   });
   aaString = aaArray.join("");
   return aaString;
-};
+}

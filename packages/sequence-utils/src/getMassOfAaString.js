@@ -21,4 +21,4 @@ export default function getMassOfAaString(
     sumMass /= 3;
   }
   return Math.round(sumMass * 10 ** numsAfterDecimal) / 10 ** numsAfterDecimal;
-};
+}

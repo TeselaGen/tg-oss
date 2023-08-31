@@ -24,9 +24,11 @@ ORIGIN
        61 ggtggcagtg gtagcgggag ctcgggtggc tcaggctctg ggg
 //`
         );
-        console.log('jsonOutput:', jsonOutput);
+        console.log("jsonOutput:", jsonOutput);
 
-        var genbankString = window.bioParsers.jsonToGenbank(jsonOutput[0].parsedSequence);
+        var genbankString = window.bioParsers.jsonToGenbank(
+          jsonOutput[0].parsedSequence
+        );
         console.log(genbankString);
       }
       main();

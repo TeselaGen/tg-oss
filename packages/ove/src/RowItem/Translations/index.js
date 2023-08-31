@@ -37,7 +37,7 @@ function Translations(props) {
       {...{
         ...props,
         annotationRanges: props.annotationRanges.filter(
-          (t) => !t.isJoinedLocation
+          t => !t.isJoinedLocation
         ),
         annotationHeight:
           props.annotationHeight +

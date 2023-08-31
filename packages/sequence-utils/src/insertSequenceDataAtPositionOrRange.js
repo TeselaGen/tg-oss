@@ -1,10 +1,10 @@
-import {getRangeLength} from "@teselagen/range-utils";
-import {map, cloneDeep} from "lodash";
+import { getRangeLength } from "@teselagen/range-utils";
+import { map, cloneDeep } from "lodash";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import rotateSequenceDataToPosition from "./rotateSequenceDataToPosition";
-import {adjustRangeToDeletionOfAnotherRange} from "@teselagen/range-utils";
+import { adjustRangeToDeletionOfAnotherRange } from "@teselagen/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
-import {modifiableTypes} from "./annotationTypes";
+import { modifiableTypes } from "./annotationTypes";
 import adjustBpsToReplaceOrInsert from "./adjustBpsToReplaceOrInsert";
 import adjustAnnotationsToInsert from "./adjustAnnotationsToInsert";
 
@@ -164,7 +164,7 @@ export default function insertSequenceDataAtPositionOrRange(
     );
   }
   return newSequenceData;
-};
+}
 
 function adjustAnnotationsToDelete(annotationsToBeAdjusted, range, maxLength) {
   return map(annotationsToBeAdjusted, annotation => {

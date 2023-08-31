@@ -32,9 +32,7 @@ export function PromptUnsavedChanges({
     return null;
   }
 
-  return (
-      <Prompt when={when} message={message} />
-  );
+  return <Prompt when={when} message={message} />;
 }
 
 export default PromptUnsavedChanges;

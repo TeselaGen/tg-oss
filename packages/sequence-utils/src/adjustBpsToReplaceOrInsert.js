@@ -3,7 +3,7 @@ import {
   getSequenceWithinRange,
   getRangeLength,
   invertRange,
-  isPositionWithinRange,
+  isPositionWithinRange
 } from "@teselagen/range-utils";
 
 import spliceString from "string-splice";
@@ -11,7 +11,7 @@ import spliceString from "string-splice";
 export default function adjustBpsToReplaceOrInsert(
   bpString,
   insertString = "",
-  caretPositionOrRange,
+  caretPositionOrRange
 ) {
   let stringToReturn = bpString;
 
@@ -47,4 +47,4 @@ export default function adjustBpsToReplaceOrInsert(
     );
   }
   return stringToReturn;
-};
+}

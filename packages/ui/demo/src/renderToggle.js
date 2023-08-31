@@ -1,4 +1,4 @@
-import React, {  useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Switch,
   Button,
@@ -12,7 +12,7 @@ import { omit } from "lodash";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import { doesSearchValMatchText,  getStringFromReactComponent } from "../../src";
+import { doesSearchValMatchText, getStringFromReactComponent } from "../../src";
 
 const omitProps = keys => mapProps(props => omit(props, keys));
 const _Switch = omitProps(["didMount"])(Switch);
@@ -177,7 +177,10 @@ function ShowInfo({ description, info, type }) {
           style={{ maxWidth: 600, overflow: "auto" }}
           className="bp3-dialog-body"
         >
-          <ReactMarkdown remarkPlugins={[remarkGfm]} children={description || info} />
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            children={description || info}
+          />
         </div>
       </Dialog>
 
@@ -197,4 +200,3 @@ function ShowInfo({ description, info, type }) {
     </React.Fragment>
   );
 }
-

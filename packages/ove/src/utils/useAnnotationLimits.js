@@ -20,7 +20,7 @@ export function LimitAnnotations({ type, ...rest }) {
   const [limits = {}, setLimits] = useAnnotationLimits();
   return (
     <MenuItem icon="blank" shouldDismissPopover={false} {...rest}>
-      {[50, 100, 200, 400].map((n) => (
+      {[50, 100, 200, 400].map(n => (
         <MenuItem
           shouldDismissPopover={false}
           icon={

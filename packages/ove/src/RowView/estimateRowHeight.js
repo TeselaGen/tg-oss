@@ -25,7 +25,7 @@ export const rowHeights = {
 
 rowHeights.primaryProteinSequence = rowHeights.translations;
 
-Object.keys(rowHeights).forEach((k) => {
+Object.keys(rowHeights).forEach(k => {
   rowHeights[k].type = k;
   rowHeights[k].marginTop = rowHeights[k].marginTop || 0;
   rowHeights[k].marginBottom = rowHeights[k].marginBottom || 0;
@@ -33,7 +33,7 @@ Object.keys(rowHeights).forEach((k) => {
     rowHeights[k].spaceBetweenAnnotations || 0;
 });
 const translations = {
-  getHeight: (props) => {
+  getHeight: props => {
     if (props.annotationVisibility.aminoAcidNumbers) {
       return [rowHeights.aminoAcidNumbers.type, rowHeights.translations.type];
     }
@@ -88,7 +88,7 @@ const annotationsToCompute = {
   }
 };
 
-export default (props) => {
+export default props => {
   let {
     index,
     cache,
@@ -133,7 +133,7 @@ export default (props) => {
         if (hasYOffset) {
           let maxYOffset = 0;
           annotations &&
-            annotations.forEach((a) => {
+            annotations.forEach(a => {
               if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
             });
           heightToAdd = maxYOffset * annotationHeight;
@@ -175,7 +175,7 @@ function getHeights(heightKey, props) {
 function getSummedHeights(heightKeys, props) {
   let height = 0;
   let marginHeight = 0;
-  (Array.isArray(heightKeys) ? heightKeys : [heightKeys]).forEach((k) => {
+  (Array.isArray(heightKeys) ? heightKeys : [heightKeys]).forEach(k => {
     const [h, m] = getHeights(k, props);
     height += h;
     marginHeight += m;

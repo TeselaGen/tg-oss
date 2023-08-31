@@ -1,9 +1,8 @@
 //tnr: half finished test.
 
-
 import chai from "chai";
 
-import {getRangeLength} from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 import assert from "assert";
 import chaiSubset from "chai-subset";
 
@@ -452,17 +451,7 @@ describe("insertSequenceData", () => {
     postInsertSeq.chromatogramData.baseCalls.length.should.equal(8);
     postInsertSeq.chromatogramData.baseTraces.length.should.equal(8);
     postInsertSeq.chromatogramData.baseTraces[4].aTrace.should.deep.equal([
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     ]);
   });
   it("properly inserts into chromatogramData, keeping the chromatogramData intact if the insert length is the same length as the selection range", () => {
@@ -538,10 +527,7 @@ describe("insertSequenceData", () => {
     ]);
     postInsertSeq.chromatogramData.baseTraces.length.should.equal(7);
     postInsertSeq.chromatogramData.baseTraces[4].aTrace.should.deep.equal([
-      0,
-      2,
-      6,
-      8
+      0, 2, 6, 8
     ]);
   });
 });

@@ -1,5 +1,6 @@
 export default [
-  { //primers don't need a pragma because they already have a feature type of primer_bind
+  {
+    //primers don't need a pragma because they already have a feature type of primer_bind
     type: "primers"
   },
   {
@@ -18,4 +19,4 @@ export default [
     pragma: "j5_lineage_annotation",
     type: "lineageAnnotations"
   }
-]
+];

@@ -69,7 +69,7 @@ function PointedAnnotation(props) {
   let partOverhangStart;
   let partOverhangEnd;
 
-  partOverhangs.forEach((h) => {
+  partOverhangs.forEach(h => {
     const overhangBps = props[h];
     if (overhangBps) {
       if (h.includes("fivePrime")) {
@@ -255,7 +255,7 @@ function PointedAnnotation(props) {
         (rangeType === (forward ? "start" : "end") ||
           rangeType === "beginningAndEnd") && (
           <Tooltip
-            onInteraction={(isOpen) => {
+            onInteraction={isOpen => {
               setOpen(isOpen);
             }}
             isOpen={isOpen}
@@ -277,7 +277,7 @@ function PointedAnnotation(props) {
         (rangeType === (forward ? "end" : "start") ||
           rangeType === "beginningAndEnd") && (
           <Tooltip
-            onInteraction={(isOpen) => {
+            onInteraction={isOpen => {
               setOpen2(isOpen);
             }}
             isOpen={isOpen2}

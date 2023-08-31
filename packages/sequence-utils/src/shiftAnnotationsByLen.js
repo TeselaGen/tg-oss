@@ -1,4 +1,4 @@
-import {modifiableTypes} from "./annotationTypes";
+import { modifiableTypes } from "./annotationTypes";
 import adjustAnnotationsToInsert from "./adjustAnnotationsToInsert";
 
 export default function shiftAnnotationsByLen({
@@ -14,4 +14,4 @@ export default function shiftAnnotationsByLen({
       insertLength
     );
   });
-};
+}

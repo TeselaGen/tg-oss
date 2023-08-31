@@ -20,6 +20,7 @@ export const userDefinedHandlersAndOpts = [
   "hideSingleImport",
   "beforeAnnotationCreate",
   "disableSetReadOnly",
+  "disableBpEditing",
   "showReadOnly",
   "showCircularity",
   "onHiddenEnzymeAdd",

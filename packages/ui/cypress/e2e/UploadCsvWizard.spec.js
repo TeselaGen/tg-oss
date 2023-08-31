@@ -23,7 +23,7 @@ describe("UploadCsvWizard.spec", () => {
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then((win) => {
+      cy.window().then(win => {
         expect(win.parsedData).to.deep.equal([
           {
             name: "a",
@@ -199,7 +199,7 @@ describe("UploadCsvWizard.spec", () => {
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then((win) => {
+      cy.window().then(win => {
         expect(win.parsedData).to.deep.equal([
           {
             name: "a",
@@ -381,7 +381,7 @@ josh,,g,false,dna,misc_feature
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then((win) => {
+      cy.window().then(win => {
         expect(win.parsedData).to.deep.equal([
           {
             ID: undefined,
@@ -412,10 +412,10 @@ josh,,g,false,dna,misc_feature
       `name,description,sequence,isRegex,matchType,type,ID\r\nabby,,g,false,dna,misc_feature,\r\njosh,,g,false,dna,misc_feature,`
     );
   });
-  it(`error if "id" passed as path in validateAgainstSchema`, (done) => {
+  it(`error if "id" passed as path in validateAgainstSchema`, done => {
     cy.visit("#/UploadCsvWizard");
 
-    cy.on("uncaught:exception", (err) => {
+    cy.on("uncaught:exception", err => {
       assert(
         err.message.includes(
           `Uploader was passed a validateAgainstSchema with a fields array that contains a field with a path of "id". This is not allowed.`
@@ -660,7 +660,7 @@ a,,desc,,false,dna,misc_feature
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then((win) => {
+      cy.window().then(win => {
         expect(win.exampleFile[0].parsedData).to.deep.equal([
           {
             name: "a",
@@ -1049,7 +1049,7 @@ thomas,,g,false,dna,misc_feature`,
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then((win) => {
+      cy.window().then(win => {
         expect(win.exampleFile[0].parsedData).to.deep.equal([
           {
             name: "Thomas",
@@ -1186,7 +1186,7 @@ thomas,,g,false,dna,misc_feature`,
     );
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
-      cy.window().then((win) => {
+      cy.window().then(win => {
         expect(win.parsedData).to.deep.equal([
           {
             name: "a",

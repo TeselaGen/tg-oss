@@ -42,7 +42,7 @@ class GenbankView extends React.Component {
             { label: "Fasta", value: "fasta" },
             { label: "Teselagen JSON", value: "teselagen" }
           ]}
-          onChange={(e) => {
+          onChange={e => {
             this.setState({ fileTypeToView: e.target.value });
           }}
         />

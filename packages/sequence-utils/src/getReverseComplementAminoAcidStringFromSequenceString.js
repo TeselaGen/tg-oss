@@ -1,7 +1,10 @@
+import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
+import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
-import getAminoAcidStringFromSequenceString from './getAminoAcidStringFromSequenceString';
-import getReverseComplementSequenceString from './getReverseComplementSequenceString';
-
-export default function getReverseComplementAminoAcidStringFromSequenceString(sequenceString) {
-  return getAminoAcidStringFromSequenceString(getReverseComplementSequenceString(sequenceString))
-};
+export default function getReverseComplementAminoAcidStringFromSequenceString(
+  sequenceString
+) {
+  return getAminoAcidStringFromSequenceString(
+    getReverseComplementSequenceString(sequenceString)
+  );
+}

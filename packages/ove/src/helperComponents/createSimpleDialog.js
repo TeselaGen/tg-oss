@@ -25,7 +25,7 @@ class SimpleGenericDialogForm extends React.Component {
     } = this.props;
     return (
       <form
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(data => {
           if (onSubmit) onSubmit(data);
           hideModal();
           tryToRefocusEditor();

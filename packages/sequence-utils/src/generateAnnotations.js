@@ -1,4 +1,4 @@
-import {generateRandomRange} from "@teselagen/range-utils";
+import { generateRandomRange } from "@teselagen/range-utils";
 import shortid from "shortid";
 
 function generateAnnotations(

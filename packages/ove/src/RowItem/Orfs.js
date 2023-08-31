@@ -7,7 +7,7 @@ function getExtraInnerCompProps(annotationRange, props) {
   const { annotation, start, end } = annotationRange;
   const { frame, internalStartCodonIndices = [] } = annotation;
   const normalizedInternalStartCodonIndices = internalStartCodonIndices
-    .filter(function(position) {
+    .filter(function (position) {
       if (
         position >= row.start &&
         position >= start &&
@@ -17,7 +17,7 @@ function getExtraInnerCompProps(annotationRange, props) {
         return true;
       } else return false;
     })
-    .map(function(position) {
+    .map(function (position) {
       return position - start;
     });
 

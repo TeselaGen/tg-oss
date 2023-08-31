@@ -2,7 +2,7 @@ import {
   getFeatureTypes,
   getFeatureToColorMap,
   getMergedFeatureMap,
-  getGenbankFeatureToColorMap,
+  getGenbankFeatureToColorMap
 } from "./featureTypesAndColors";
 
 describe("getFeatureToColorMap", () => {

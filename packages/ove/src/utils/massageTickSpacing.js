@@ -7,7 +7,7 @@ export function massageTickSpacing(spacing) {
   }
   some(
     [20, 50, 100, 500, 1000, 2000, 5000, 10000, 50000, 100000, 1000000],
-    (val) => {
+    val => {
       if (spacing < val) {
         toRet = val;
         return true;
