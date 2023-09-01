@@ -3,9 +3,7 @@ import { reduxForm, change, formValueSelector, destroy } from "redux-form";
 import { Callout, Icon, Intent, Tab, Tabs } from "@blueprintjs/core";
 import immer from "immer";
 import { observer } from "mobx-react";
-
 import "./UploadCsvWizard.css";
-
 import { forEach } from "lodash";
 import { compose } from "recompose";
 import SimpleStepViz from "./SimpleStepViz";
