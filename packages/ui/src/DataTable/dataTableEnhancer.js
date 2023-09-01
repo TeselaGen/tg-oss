@@ -15,6 +15,7 @@ import { viewColumn, openColumn } from "../DataTable/viewColumn";
 import pureNoFunc from "../utils/pureNoFunc";
 import tgFormValues from "../utils/tgFormValues";
 import getTableConfigFromStorage from "./utils/getTableConfigFromStorage";
+import { observer } from "mobx-react";
 
 export default compose(
   //connect to withTableParams here in the dataTable component so that, in the case that the table is not manually connected,
@@ -287,5 +288,6 @@ export default compose(
   //     "reduxFormExpandedEntityIdMap"
   //   ]
   // }),
-  branch(props => !props.alwaysRerender, pureNoFunc)
+  branch(props => !props.alwaysRerender, pureNoFunc),
+  observer
 );

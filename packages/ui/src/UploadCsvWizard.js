@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { reduxForm, change, formValueSelector, destroy } from "redux-form";
 import { Callout, Icon, Intent, Tab, Tabs } from "@blueprintjs/core";
 import immer from "immer";
@@ -498,6 +498,8 @@ export const PreviewCsvData = observer(function (props) {
     userSchema = exampleData,
     initialEntities
   } = props;
+  const rerenderKey = useRef(0);
+  rerenderKey.current = rerenderKey.current + 1;
   // const useExampleData = userSchema === exampleData;
   // const [loading, setLoading] = useState(true);
   // useEffect(() => {
@@ -577,7 +579,7 @@ export const PreviewCsvData = observer(function (props) {
       <DataTable
         maxWidth={800}
         maxHeight={500}
-        // val={val}
+        rerenderKey={rerenderKey.current} //pass this since to force rerenders since validateAgainstSchema changing doesn't always trigger a rerender
         destroyOnUnmount={false}
         doNotValidateUntouchedRows
         formName={datatableFormName || "editableCellTable"}
