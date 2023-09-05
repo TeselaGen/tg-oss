@@ -2280,10 +2280,6 @@ clickOverrides: {
                 window.toastr.success(
                   "beforeReadOnlyChange callback triggered"
                 );
-                console.log(
-                  `window.Cypress.noTimeoutBeforeReadOnlyChange:`,
-                  window.Cypress.noTimeoutBeforeReadOnlyChange
-                );
                 if (window.Cypress?.noTimeoutBeforeReadOnlyChange) {
                   return false;
                 }

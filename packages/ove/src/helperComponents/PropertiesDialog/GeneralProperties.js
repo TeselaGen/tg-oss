@@ -105,7 +105,6 @@ class GeneralProperties extends React.Component {
                 className={"veReadOnlySelect"}
                 disabled={!onSave || disableSetReadOnly}
                 onChange={val =>
-                  console.log(`val:`, val) ||
                   handleReadOnlyChange(val === "readOnly", this.props)
                 }
                 value={readOnly ? "readOnly" : "editable"}
