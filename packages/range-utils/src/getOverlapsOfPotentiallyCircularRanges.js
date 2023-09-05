@@ -20,8 +20,8 @@ export default function getOverlapsOfPotentiallyCircularRanges(
 
   let overlaps = [];
 
-  normalizedRangeA.forEach(function (nonCircularRangeA, iA) {
-    normalizedRangeB.forEach(function (nonCircularRangeB, iB) {
+  normalizedRangeA.forEach(function (nonCircularRangeA) {
+    normalizedRangeB.forEach(function (nonCircularRangeB) {
       const overlap = getOverlapOfNonCircularRanges(
         nonCircularRangeA,
         nonCircularRangeB
@@ -39,7 +39,7 @@ export default function getOverlapsOfPotentiallyCircularRanges(
   ) {
     //we have 2 circular ranges that will have gotten split on the origin, so we'll manually mend those pieces back together
     const joinedOverlap = {};
-    overlaps = flatMap(overlaps, (o, i) => {
+    overlaps = flatMap(overlaps, o => {
       if (o.start === 0) {
         joinedOverlap.end = o.end;
         return [];

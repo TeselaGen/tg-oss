@@ -24,6 +24,7 @@ export default function getYOffsetForPotentiallyCircularRange(
       rangesAlreadyAddedToYOffset.push(range);
       return true;
     }
+    return false;
   });
   if (!openYOffsetFound) {
     yOffset = YOffsetLevelsWithRanges.length;

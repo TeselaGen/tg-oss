@@ -200,7 +200,6 @@ function createGenbankLocus(serSeq, options) {
     serSeq.sequence = serSeq.sequence.symbols.split("");
   }
 
-  let tmp;
   let dnaType;
   if (serSeq.isProtein) {
     dnaType = "";
@@ -225,7 +224,7 @@ function createGenbankLocus(serSeq, options) {
   // if (strandType !== "") {
   // 	tmp =  strandType + "-";
   // } else {
-  tmp = "";
+  const tmp = "";
   // }
   line += StringUtil.lpad(tmp, " ", 3);
   line += StringUtil.rpad(dnaType, " ", 6);

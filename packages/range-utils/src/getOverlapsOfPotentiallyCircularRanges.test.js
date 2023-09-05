@@ -155,26 +155,6 @@ describe("getOverlapsOfPotentiallyCircularRanges", function () {
         }
       ]
     );
-    console.log(
-      `getOverlapsOfPotentiallyCircularRanges({
-            start: 5,
-            end: 3
-        }, {
-            start: 5,
-            end: 3
-        }, 10):`,
-      getOverlapsOfPotentiallyCircularRanges(
-        {
-          start: 5,
-          end: 3
-        },
-        {
-          start: 5,
-          end: 3
-        },
-        10
-      )
-    );
     assert.deepEqual(
       getOverlapsOfPotentiallyCircularRanges(
         {

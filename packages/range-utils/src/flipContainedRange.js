@@ -7,8 +7,7 @@ import getRangeLength from "./getRangeLength";
 export default function flipRelativeRange(
   innerRange,
   outerRange,
-  sequenceLength,
-  options
+  sequenceLength
 ) {
   const isFullyContained = isRangeWithinRange(
     innerRange,
@@ -23,12 +22,7 @@ export default function flipRelativeRange(
   }
 }
 
-function flipNonFullyContainedRange(
-  innerRange,
-  outerRange,
-  sequenceLength,
-  options
-) {
+function flipNonFullyContainedRange(innerRange, outerRange, sequenceLength) {
   const outerFullyContained = isRangeWithinRange(
     outerRange,
     innerRange,
@@ -76,9 +70,8 @@ function flipNonFullyContainedRange(
     );
     //take first overlap and determine which end of outer range it overlaps
     if (overlaps.length >= 1) {
-      let overlapExtendsForward;
       const firstOverlap = overlaps[0];
-      overlapExtendsForward = firstOverlap.start !== outerRange.start;
+      const overlapExtendsForward = firstOverlap.start !== outerRange.start;
       //flip using fully contained logic
       const flippedTruncatedInner = flipFullyContainedRange(
         firstOverlap,
@@ -104,12 +97,7 @@ function flipNonFullyContainedRange(
   return flippedInnerRange;
 }
 
-function flipFullyContainedRange(
-  innerRange,
-  outerRange,
-  sequenceLength,
-  options
-) {
+function flipFullyContainedRange(innerRange, outerRange, sequenceLength) {
   //translate both ranges by offset such that outer range start = 0
   const translateBy = -outerRange.start;
   const translatedOuterRange = translateRange(

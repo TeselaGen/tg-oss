@@ -21,6 +21,9 @@
       "inputs": ["production", "^production"]
     },
     "lint": {
+      "options": {
+        "maxWarnings": 0
+      },
       "inputs": [
         "default",
         "{workspaceRoot}/.eslintrc.json",

@@ -1,6 +1,5 @@
 import expandOrContractRangeByLength from "./expandOrContractRangeByLength";
 import chai from "chai";
-const expect = chai.expect;
 chai.should();
 
 describe("expandOrContractRangeByLength", function () {

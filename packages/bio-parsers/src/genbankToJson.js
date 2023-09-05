@@ -298,7 +298,6 @@ function genbankToJson(string, options = {}) {
 
   function parseLocus(line) {
     result = createInitialSequence(options);
-    let locusName;
     let circular;
 
     let gbDivision;
@@ -312,7 +311,7 @@ function genbankToJson(string, options = {}) {
       // TODO
       addMessage("Import Warning: Locus line contains no values: " + line);
     }
-    locusName = lineArr[1];
+    const locusName = lineArr[1];
 
     // Linear vs Circular?
     for (let i = 1; i < lineArr.length; i++) {
@@ -525,13 +524,13 @@ function genbankToJson(string, options = {}) {
   }
 
   function parseFeatureNote(line) {
-    let newLine, lineArr;
+    let newLine;
 
     // only trim file formatting spaces (i.e. the left ones)
     // spaces on the right are necessary (e.g. spacing between words, etc.)
     newLine = line.trimLeft();
     newLine = newLine.replace(/^\/|"$/g, "");
-    lineArr = newLine.split(/="|=/);
+    const lineArr = newLine.split(/="|=/);
 
     let val = lineArr.slice(1).join("=");
 
