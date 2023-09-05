@@ -902,7 +902,7 @@ export class Editor extends React.Component {
             contentLeft={this.props.contentLeft}
             editorName={editorName}
             withDigestTool
-            onChangeEditLock={this.props.onChangeEditLock}
+            beforeReadOnlyChange={this.props.beforeReadOnlyChange}
             {...ToolBarProps}
           />
 

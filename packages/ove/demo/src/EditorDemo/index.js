@@ -102,7 +102,7 @@ const defaultState = {
   withPartTags: true,
   onCopy: true,
   onPaste: true,
-  onChangeEditLock: false
+  beforeReadOnlyChange: false
 };
 
 export default class EditorDemo extends React.Component {
@@ -316,6 +316,7 @@ export default class EditorDemo extends React.Component {
         that: this,
         type: "onNew"
       }),
+
       renderToggle({
         that: this,
         type: "onImport"
@@ -1820,6 +1821,7 @@ hide or show the menubar (false by default)
                 type: "disableSetReadOnly",
                 info: `pass disableSetReadOnly=true to the <Editor> to not give users the option to change between read-only <--> editable mode, false by default`
               })}
+
               {renderToggle({
                 that: this,
                 type: "disableBpEditing",
@@ -1827,8 +1829,8 @@ hide or show the menubar (false by default)
               })}
               {renderToggle({
                 that: this,
-                type: "onChangeEditLock",
-                info: `pass onChangeEditLock={(lock)=>{}} to the <Editor> to get a callback when the user changes the edit lock state`
+                type: "beforeReadOnlyChange",
+                info: `pass beforeReadOnlyChange={(lock)=>{}} to the <Editor> to get a callback when the user changes the edit lock state, return false to prevent the change from happening`
               })}
               {renderToggle({
                 that: this,
@@ -2273,9 +2275,18 @@ clickOverrides: {
                 // return myPromiseBasedApiCall()
               }
             })}
-            {...(this.state.onChangeEditLock && {
-              onChangeEditLock: () => {
-                window.toastr.success("onChangeEditLock callback triggered");
+            {...(this.state.beforeReadOnlyChange && {
+              beforeReadOnlyChange: () => {
+                window.toastr.success(
+                  "beforeReadOnlyChange callback triggered"
+                );
+                console.log(
+                  `window.Cypress.noTimeoutBeforeReadOnlyChange:`,
+                  window.Cypress.noTimeoutBeforeReadOnlyChange
+                );
+                if (window.Cypress?.noTimeoutBeforeReadOnlyChange) {
+                  return false;
+                }
                 return new Promise(resolve => setTimeout(resolve, 1000));
               }
             })}

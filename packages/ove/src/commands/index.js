@@ -36,6 +36,7 @@ import {
   showDialog
 } from "../GlobalDialogUtils";
 import { partsSubmenu } from "../MenuBar/viewSubmenu";
+import { handleReadOnlyChange } from "../ToolBar/editTool";
 
 const isProtein = props => props.sequenceData && props.sequenceData.isProtein;
 const isOligo = props => props.sequenceData && props.sequenceData.isOligo;
@@ -139,7 +140,7 @@ const fileCommandDefs = {
     isDisabled: props => props.disableSetReadOnly || !props.onSave,
     isHidden: props => !props.toggleReadOnlyMode,
     isActive: props => props.readOnly,
-    handler: props => props.toggleReadOnlyMode()
+    handler: props => handleReadOnlyChange(!props.readOnly, props)
   },
 
   importSequence: {

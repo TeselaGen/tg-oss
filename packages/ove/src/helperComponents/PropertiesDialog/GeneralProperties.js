@@ -3,6 +3,7 @@ import { InputField, BPSelect, TextareaField } from "@teselagen/ui";
 import { reduxForm } from "redux-form";
 import withEditorProps from "../../withEditorProps";
 import { compose } from "recompose";
+import { handleReadOnlyChange } from "../../ToolBar/editTool";
 
 class GeneralProperties extends React.Component {
   updateSeqDesc = val => {
@@ -17,7 +18,6 @@ class GeneralProperties extends React.Component {
       disableSetReadOnly,
       updateAvailability,
       sequenceData,
-      updateReadOnlyMode,
       onSave,
       showAvailability,
       sequenceNameUpdate
@@ -102,10 +102,12 @@ class GeneralProperties extends React.Component {
             <div className="ve-column-right">
               {" "}
               <BPSelect
+                className={"veReadOnlySelect"}
                 disabled={!onSave || disableSetReadOnly}
-                onChange={val => {
-                  updateReadOnlyMode(val === "readOnly");
-                }}
+                onChange={val =>
+                  console.log(`val:`, val) ||
+                  handleReadOnlyChange(val === "readOnly", this.props)
+                }
                 value={readOnly ? "readOnly" : "editable"}
                 options={[
                   { label: "Read Only", value: "readOnly" },
