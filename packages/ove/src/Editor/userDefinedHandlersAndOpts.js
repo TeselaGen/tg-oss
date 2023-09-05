@@ -1,5 +1,5 @@
 export const userDefinedHandlersAndOpts = [
-  "onChangeEditLock",
+  "beforeReadOnlyChange",
   "defaultLinkedOligoMessage",
   "allowMultipleFeatureDirections",
   "getAdditionalEditAnnotationComps",

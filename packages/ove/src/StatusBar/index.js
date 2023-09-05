@@ -14,41 +14,35 @@ import { getSelectionMessage } from "../utils/editorUtils";
 import useMeltingTemp from "../utils/useMeltingTemp";
 import MeltingTemp from "./MeltingTemp";
 import { getSequenceWithinRange } from "@teselagen/range-utils";
+import { handleReadOnlyChange } from "../ToolBar/editTool";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
-}))(
-  ({
-    onSave,
-    readOnly,
-    showReadOnly,
-    disableSetReadOnly,
-    updateReadOnlyMode
-  }) => {
-    return showReadOnly ? (
-      <StatusBarItem dataTest="veStatusBar-readOnly">
-        {onSave ? (
-          <HTMLSelect
-            options={[
-              { label: "Read Only", value: "readOnly" },
-              { label: "Editable", value: "editable" }
-            ]}
-            disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
-            className={Classes.MINIMAL}
-            value={readOnly ? "readOnly" : "editable"}
-            onChange={({ target: { value } }) => {
-              updateReadOnlyMode(value === "readOnly");
-            }}
-          />
-        ) : readOnly ? (
-          "Read Only"
-        ) : (
-          "Editable"
-        )}
-      </StatusBarItem>
-    ) : null;
-  }
-);
+}))(props => {
+  const { onSave, readOnly, showReadOnly, disableSetReadOnly } = props;
+  return showReadOnly ? (
+    <StatusBarItem dataTest="veStatusBar-readOnly">
+      {onSave ? (
+        <HTMLSelect
+          options={[
+            { label: "Read Only", value: "readOnly" },
+            { label: "Editable", value: "editable" }
+          ]}
+          disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
+          className={Classes.MINIMAL}
+          value={readOnly ? "readOnly" : "editable"}
+          onChange={({ target: { value } }) =>
+            handleReadOnlyChange(value === "readOnly", props)
+          }
+        />
+      ) : readOnly ? (
+        "Read Only"
+      ) : (
+        "Editable"
+      )}
+    </StatusBarItem>
+  ) : null;
+});
 
 const ShowSelectionItem = compose(
   connectToEditor(
@@ -226,7 +220,8 @@ export function StatusBar({
   showGCContentByDefault,
   onSelectionOrCaretChanged,
   GCDecimalDigits = 1,
-  isProtein
+  isProtein,
+  beforeReadOnlyChange
 }) {
   return (
     <div className="veStatusBar">
@@ -234,6 +229,7 @@ export function StatusBar({
         <ShowTypeItem editorName={editorName}></ShowTypeItem>
       )}
       <EditReadOnlyItem
+        beforeReadOnlyChange={beforeReadOnlyChange}
         editorName={editorName}
         onSave={onSave}
         disableSetReadOnly={disableSetReadOnly}
