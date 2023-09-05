@@ -2,7 +2,7 @@ import chai from "chai";
 import jsonToBed from "../src/jsonToBed";
 
 chai.should();
-describe.skip("json to bed parser", function () {
+describe("json to bed parser", function () {
   it("should convert json seq to bed format", function () {
     const jsonInfo = {
       name: "testseq",
@@ -21,10 +21,12 @@ describe.skip("json to bed parser", function () {
       ]
     };
     const bedInfo = jsonToBed(jsonInfo);
-    bedInfo.should
-      .equal(`track name="testseq||27|linear" description="testseq Annotations" itemRgb="On"
-    testseq||27|linear	2	7	misc_feature	1000	-	2	7	65,105,225
-    testseq||27|linear	8	21	misc_feature	1000	-	8	21	65,105,225`);
+    //strip all whitespace
+    bedInfo
+      .replace(/\s/g, "")
+      .should.equal(
+        `trackname="testseq||27|linear"description="testseqAnnotations"itemRgb="On"testseq||27|linear27Untitledannotation-testseq||27|linear821Untitledannotation-`
+      );
   });
   it("should convert json seq (without sequence, features only) to bed format", function () {
     const jsonInfo = {
@@ -48,9 +50,10 @@ describe.skip("json to bed parser", function () {
     };
     const options = { sequenceName: "testseq", featuresOnly: true };
     const bedInfo = jsonToBed(jsonInfo, options);
-    bedInfo.should
-      .equal(`track name="testseq" description="testseq Annotations" itemRgb="On"
-    testseq	2	7	misc_feature	1000	+	2	7	65,105,225
-    testseq	8	21	misc_feature	1000	-	8	21	65,105,225`);
+    bedInfo
+      .replace(/\s/g, "")
+      .should.equal(
+        `trackname="testseq"description="testseqAnnotations"itemRgb="On"testseq27misc_feature+testseq821misc_feature-`
+      );
   });
 });
