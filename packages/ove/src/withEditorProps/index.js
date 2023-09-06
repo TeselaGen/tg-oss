@@ -571,6 +571,7 @@ function mapStateToProps(state, ownProps) {
   if (!editorState) {
     return editorReducer({}, {});
   }
+  const sequenceLength = s.sequenceLengthSelector(editorState);
 
   const { findTool, annotationsToSupport = {} } = editorState;
   const visibilities = getVisibilities(editorState);
@@ -582,7 +583,13 @@ function mapStateToProps(state, ownProps) {
   ].forEach(([n, type, annotationTypePlural]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
-      annotationToAdd = getAnnToAdd(vals, n, type, annotationTypePlural);
+      annotationToAdd = getAnnToAdd(
+        vals,
+        n,
+        type,
+        annotationTypePlural,
+        sequenceLength
+      );
     }
   });
 
@@ -613,7 +620,6 @@ function mapStateToProps(state, ownProps) {
     editorState,
     ownProps.additionalEnzymes
   );
-  const sequenceLength = s.sequenceLengthSelector(editorState);
 
   const { matchedSearchLayer, searchLayers, matchesTotal } =
     getSearchLayersAndMatch(editorState);
@@ -955,22 +961,28 @@ const getFindTool = createSelector(
   }
 );
 
-const getAnnToAdd = defaultMemoize((vals, n, type, annotationTypePlural) => {
-  const annToAdd = {
-    color: getFeatureToColorMap({ includeHidden: true })[
-      vals.type || "primer_bind"
-    ], //we won't have the correct color yet so we set it here
-    ...vals,
-    formName: n,
-    type,
-    annotationTypePlural,
-    name: vals.name || "Untitled"
-  };
-  if (!vals.useLinkedOligo) {
-    delete annToAdd.bases;
+const getAnnToAdd = defaultMemoize(
+  (vals, n, type, annotationTypePlural, sequenceLength) => {
+    const annToAdd = normalizeRange(
+      {
+        color: getFeatureToColorMap({ includeHidden: true })[
+          vals.type || "primer_bind"
+        ], //we won't have the correct color yet so we set it here
+        ...vals,
+        formName: n,
+        type,
+        annotationTypePlural,
+        name: vals.name || "Untitled"
+      },
+      sequenceLength
+    );
+
+    if (!vals.useLinkedOligo) {
+      delete annToAdd.bases;
+    }
+    return annToAdd;
   }
-  return annToAdd;
-});
+);
 const getSeqDataWithAnnToAdd = defaultMemoize(
   (seqData, ann, allowMultipleFeatureDirections) => {
     if (ann) {

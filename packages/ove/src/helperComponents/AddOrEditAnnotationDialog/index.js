@@ -39,7 +39,7 @@ import { store, view } from "@risingstack/react-easy-state";
 
 import withEditorProps from "../../withEditorProps";
 import { withProps } from "recompose";
-import { map, flatMap } from "lodash";
+import { map, flatMap, round } from "lodash";
 import "./style.css";
 
 class AddOrEditAnnotationDialog extends React.Component {
@@ -58,30 +58,30 @@ class AddOrEditAnnotationDialog extends React.Component {
   formatStart = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
-      return (val + 2) / 3;
+      return round((val + 2) / 3);
     }
-    return val;
+    return round(val);
   };
   formatEnd = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
-      return val / 3;
+      return round(val / 3);
     }
-    return val;
+    return round(val);
   };
   parseStart = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
-      return val * 3 - 2;
+      return round(val * 3 - 2);
     }
-    return val;
+    return round(val);
   };
   parseEnd = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
-      return val * 3;
+      return round(val * 3);
     }
-    return val;
+    return round(val);
   };
   renderLocations = props => {
     const { fields } = props;
