@@ -57,6 +57,7 @@
               "executor": "@nx/linter:eslint",
               "outputs": ["{options.outputFile}"],
               "options": {
+                "maxWarnings": 0,
                 "lintFilePatterns": ["packages/sequence-utils/**/*.js"]
               },
               "configurations": {}
@@ -86,6 +87,7 @@
               "executor": "@nx/linter:eslint",
               "outputs": ["{options.outputFile}"],
               "options": {
+                "maxWarnings": 0,
                 "lintFilePatterns": [
                   "packages/bounce-loader/**/*.{ts,tsx,js,jsx}"
                 ]
@@ -229,6 +231,7 @@
               "executor": "@nx/linter:eslint",
               "outputs": ["{options.outputFile}"],
               "options": {
+                "maxWarnings": 0,
                 "lintFilePatterns": ["packages/bio-parsers/**/*.js"]
               },
               "configurations": {}
@@ -295,6 +298,7 @@
               "executor": "@nx/linter:eslint",
               "outputs": ["{options.outputFile}"],
               "options": {
+                "maxWarnings": 0,
                 "lintFilePatterns": ["packages/range-utils/**/*.js"]
               },
               "configurations": {}
@@ -361,6 +365,7 @@
               "executor": "@nx/linter:eslint",
               "outputs": ["{options.outputFile}"],
               "options": {
+                "maxWarnings": 0,
                 "lintFilePatterns": ["packages/file-utils/**/*.js"]
               },
               "configurations": {}
@@ -390,6 +395,7 @@
               "executor": "@nx/linter:eslint",
               "outputs": ["{options.outputFile}"],
               "options": {
+                "maxWarnings": 0,
                 "lintFilePatterns": ["packages/uploader/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {}
@@ -428,6 +434,7 @@
               "executor": "@nx/linter:eslint",
               "outputs": ["{options.outputFile}"],
               "options": {
+                "maxWarnings": 0,
                 "lintFilePatterns": ["packages/ove/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {}
@@ -569,6 +576,7 @@
               "executor": "@nx/linter:eslint",
               "outputs": ["{options.outputFile}"],
               "options": {
+                "maxWarnings": 0,
                 "lintFilePatterns": ["packages/ui/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {}
@@ -615,7 +623,6 @@
               }
             },
             "pushToGhPages": {
-              "dependsOn": ["build:demo"],
               "command": "yarn gh-pages -a -d demo-dist",
               "executor": "nx:run-commands",
               "options": {
