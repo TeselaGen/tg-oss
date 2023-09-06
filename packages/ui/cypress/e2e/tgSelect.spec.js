@@ -22,6 +22,13 @@ describe("tgSelect", () => {
     cy.get(`.tg-select-option:eq(1):contains(some)`).should("exist");
     cy.get(`.tg-select-option:eq(2):contains(haeaya)`).should("exist");
   });
+  it("should order based on the starting position of the match within the words ", () => {
+    cy.get(".tg-select input").type("r");
+    cy.get(`.tg-select-option:first:contains(There)`);
+    cy.get(`.tg-select-option:eq(1):contains(neighbor)`).should("not.exist");
+    cy.get(`.tg-select-option:eq(1):contains(friend)`).should("exist");
+    cy.get(`.tg-select-option:eq(2):contains(neighbor)`).should("exist");
+  });
   it(`creatable won't allow for making duplicates`, () => {
     cy.tgToggle("creatable");
     cy.get(".tg-select input").type("tHEr");

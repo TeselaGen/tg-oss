@@ -458,8 +458,8 @@ function tagOptionRender(vals) {
 
 function getSort(text, queryString) {
   let ret;
-  if (text === queryString) ret = 0;
-  else if (text.includes(queryString)) ret = 0.9;
-  else ret = 1;
+  if (text === queryString) ret = -1;
+  else if (text.includes(queryString)) ret = text.indexOf(queryString);
+  else ret = text.length;
   return ret;
 }
