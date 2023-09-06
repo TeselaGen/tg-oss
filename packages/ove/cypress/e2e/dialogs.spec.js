@@ -82,7 +82,7 @@ describe("dialogs", function () {
     //change the start/end inputs to be making an origin spanning feature
     cy.get(".tg-test-name input").clear().type("Fake name");
     cy.get(".tg-test-start input").clear().type("400");
-    cy.get(".tg-test-end input").clear().type("200000");
+    cy.get(".tg-test-end input").clear().type("200000999999999", { delay: 20 });
 
     // verify that we can't make an out of range part
     cy.get(".tg-upsert-annotation").contains("Save").click();
