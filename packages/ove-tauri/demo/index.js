@@ -13,8 +13,8 @@ import { Button, Tooltip } from "@blueprintjs/core";
 import { open } from "@tauri-apps/api/dialog";
 import { WebviewWindow, appWindow } from "@tauri-apps/api/window";
 
-import { LogicalSize } from "@tauri-apps/api/window";
-await appWindow.setSize(new LogicalSize(1200, 1200));
+// import { LogicalSize } from "@tauri-apps/api/window";
+// await appWindow.setSize(new LogicalSize(1200, 1200));
 
 const editorName = appWindow.label;
 const Demo = () => {
@@ -55,8 +55,8 @@ const Demo = () => {
             selected = [selected];
             // user selected a single file
           }
-          selected.forEach(async f => {
-            console.log(`f:`, f);
+          selected.forEach(async () => {
+            // console.log(`f:`, f);
             // loading embedded asset:
             const webview = new WebviewWindow(shortid(), {
               url: "index.html"
@@ -66,14 +66,17 @@ const Demo = () => {
               // webview window successfully created
             });
             webview.once("tauri://error", function (e) {
+              console.error(`e:`, e);
               // an error happened creating the webview window
             });
 
             // emit an event to the backend
             await webview.emit("some event", "data");
             // listen to an event from the backend
-            const unlisten = await webview.listen("event name", e => {});
-            unlisten();
+            // const unlisten = await webview.listen("event name", e => {
+
+            // });
+            // unlisten();
           });
         }}
         onNew={async () => {
@@ -86,14 +89,15 @@ const Demo = () => {
             // webview window successfully created
           });
           webview.once("tauri://error", function (e) {
+            console.error(`e:`, e);
             // an error happened creating the webview window
           });
 
           // emit an event to the backend
           await webview.emit("some event", "data");
           // listen to an event from the backend
-          const unlisten = await webview.listen("event name", e => {});
-          unlisten();
+          // const unlisten = await webview.listen("event name", e => {});
+          // unlisten();
 
           // // Open a selection dialog for image files
           // const selected = await open({

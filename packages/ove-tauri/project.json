@@ -1,0 +1,22 @@
+{
+  "name": "ove-tauri",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/ove-tauri/",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/ove-tauri/demo/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "start": {
+      "command": "cd packages/ove-tauri; yarn tauri dev"
+    },
+    "build": {
+      "command": "cd packages/ove-tauri; yarn tauri build"
+    }
+  }
+}
