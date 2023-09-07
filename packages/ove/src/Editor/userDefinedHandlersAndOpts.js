@@ -34,6 +34,7 @@ export const userDefinedHandlersAndOpts = [
   "fullscreenMode",
   "maxAnnotationsToDisplay",
   "onNew",
+  "onOpen",
   "onImport",
   "onSave",
   "onSaveAs",

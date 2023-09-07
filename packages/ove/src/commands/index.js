@@ -71,6 +71,10 @@ const fileCommandDefs = {
     isHidden: props => !props.onNew,
     handler: (props, ...rest) => props.onNew(props, ...rest)
   },
+  openSequence: {
+    isHidden: props => !props.onOpen,
+    handler: (props, ...rest) => props.onOpen(props, ...rest)
+  },
 
   renameSequence: {
     isHidden: props => props.readOnly,

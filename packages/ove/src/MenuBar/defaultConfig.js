@@ -27,6 +27,7 @@ export default [
         cmd: "newSequence",
         "data-test": "newSequence"
       },
+      "openSequence",
       "renameSequence",
       "saveSequence",
       "saveSequenceAs",

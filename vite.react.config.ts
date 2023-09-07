@@ -35,7 +35,7 @@ const rollupPlugin = (matchers: RegExp[]) => ({
   }
 });
 
-export default ({ name }: { name: string; dir: string }) =>
+export default ({ name, ...rest }: { name: string; dir: string }) =>
   defineConfig(({ command, mode = "production" }) => {
     const isDemo = mode === "demo";
     const isUmd = mode === "umd";
@@ -192,6 +192,7 @@ export default ({ name }: { name: string; dir: string }) =>
         setupFiles: ["../../vitest.setup.ts"],
         environment: "jsdom",
         include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"]
-      }
+      },
+      ...rest
     };
   });
