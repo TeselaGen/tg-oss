@@ -136,7 +136,7 @@ export default ({ name }: { name: string; dir: string }) =>
                 // Could also be a dictionary or array of multiple entry points.
                 entry: "src/index.js",
                 name,
-                fileName: "index",
+                fileName: (format) => `index.${format}.js`,
                 formats: isUmd ? ["umd"] : ["es", "cjs"]
                 // Change this to the formats you want to support.
                 // Don't forgot to update your package.json as well.
