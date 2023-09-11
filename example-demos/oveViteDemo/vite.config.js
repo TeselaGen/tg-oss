@@ -17,6 +17,7 @@ export default {
     global: {}
   },
   test: {
-    environment: "jsdom"
+    environment: "jsdom",
+    globals: true
   }
 };
