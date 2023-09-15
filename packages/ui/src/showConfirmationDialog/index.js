@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Dialog, Intent } from "@blueprintjs/core";
+import { Button, Classes, Dialog, Intent } from "@blueprintjs/core";
 import { renderOnDoc } from "../utils/renderOnDoc";
 import DialogFooter from "../DialogFooter";
 
@@ -28,20 +28,26 @@ export default function showConfirmationDialog(opts) {
   });
 }
 
-class AlertWrapper extends Component {
+export class AlertWrapper extends Component {
   state = { isOpen: true };
   render() {
     const {
+      title,
       handleClose,
       text,
       resolve,
       noCancelButton,
       content,
       className,
+      thirdButtonNotMinimal,
+      thirdButtonClassName,
       thirdButtonText,
       thirdButtonIntent,
+      fourthButtonNotMinimal,
+      fourthButtonClassName,
       fourthButtonText,
       fourthButtonIntent,
+      handleSubmit,
       canEscapeKeyCancel,
       confirmButtonText = "OK",
       cancelButtonText = "Cancel",
@@ -55,19 +61,25 @@ class AlertWrapper extends Component {
     };
     return (
       <Dialog
-        className={`bp3-alert ${className || ""}`}
+        title={title}
+        className={(title ? "" : "bp3-alert") + ` ${className || ""}`}
         isOpen={this.state.isOpen}
         intent={intent}
         cancelButtonText={cancelButtonText}
         onCancel={cancelButtonText ? () => doClose(false) : undefined}
-        onConfirm={() => doClose(true)}
+        onConfirm={
+          handleSubmit ? handleSubmit(v => doClose(v)) : () => doClose(true)
+        }
         {...rest}
         {...(noCancelButton && {
           onCancel: undefined,
           cancelButtonText: undefined
         })}
       >
-        <div className="bp3-alert-contents" style={{ padding: 5 }}>
+        <div
+          className={title ? "bp3-dialog-body" : "bp3-alert-contents"}
+          style={{ padding: 5 }}
+        >
           {content}
           {text && <div style={{ marginBottom: 10 }}>{text}</div>}
         </div>
@@ -84,25 +96,45 @@ class AlertWrapper extends Component {
                 <React.Fragment>
                   {!!fourthButtonText && (
                     <Button
+                      className={
+                        (!fourthButtonNotMinimal ? Classes.MINIMAL : "") +
+                        " " +
+                        fourthButtonClassName
+                      }
                       intent={fourthButtonIntent}
                       text={fourthButtonText}
-                      onClick={() => {
-                        doClose("fourthButtonClicked");
-                      }}
+                      onClick={
+                        handleSubmit
+                          ? handleSubmit(v =>
+                              doClose({ ...v, fourthButtonClicked: true })
+                            )
+                          : () => doClose("fourthButtonClicked")
+                      }
                     ></Button>
                   )}
                   {!!thirdButtonText && (
                     <Button
+                      className={
+                        (!thirdButtonNotMinimal ? Classes.MINIMAL : "") +
+                        " " +
+                        thirdButtonClassName
+                      }
                       intent={thirdButtonIntent}
                       text={thirdButtonText}
-                      onClick={() => {
-                        doClose("thirdButtonClicked");
-                      }}
+                      onClick={
+                        handleSubmit
+                          ? handleSubmit(v =>
+                              doClose({ ...v, thirdButtonClicked: true })
+                            )
+                          : () => {
+                              doClose("thirdButtonClicked");
+                            }
+                      }
                     ></Button>
                   )}
                 </React.Fragment>
               ) : undefined,
-            containerClassname: "bp3-alert-footer",
+            containerClassname: title ? "" : "bp3-alert-footer",
             backText: noCancelButton ? "" : cancelButtonText,
             text: confirmButtonText,
             intent
