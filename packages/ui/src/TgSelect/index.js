@@ -76,7 +76,7 @@ class TgSelect extends React.Component {
       ) {
         const topLevelId = item.value.split(":")[0];
         valArray = valArray.filter(val => {
-          if (val.value && val.value.includes && val.value.includes(":")) {
+          if (val?.value && val.value.includes && val.value.includes(":")) {
             const valId = val.value.split(":")[0];
             if (valId === topLevelId) {
               return false;
@@ -187,7 +187,7 @@ class TgSelect extends React.Component {
   getTagProps = label => {
     const { multi, value = [], disabled: _disabled } = this.props;
     const val = Array.isArray(value) ? value : [value];
-    const matchingVal = val.find(op => op.label === label);
+    const matchingVal = val.find(op => op?.label === label);
     const disabled = _disabled || (matchingVal && matchingVal.disabled);
     const className = matchingVal && matchingVal.className;
 
