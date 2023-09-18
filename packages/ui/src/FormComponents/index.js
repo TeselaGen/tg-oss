@@ -692,7 +692,7 @@ export const renderReactSelect = props => {
     }
   } else if (Array.isArray(value)) {
     valueToUse = value.map(val => {
-      if (val.userCreated) {
+      if (val?.userCreated) {
         return {
           label: val.value,
           value: val
@@ -719,10 +719,10 @@ export const renderReactSelect = props => {
       let valToPass;
       if (Array.isArray(valOrVals)) {
         valToPass = valOrVals.map(function (val) {
-          if (val.userCreated) {
+          if (val?.userCreated) {
             return val;
           }
-          return val.value;
+          return val?.value;
         });
       } else if (valOrVals) {
         if (valOrVals.userCreated) {

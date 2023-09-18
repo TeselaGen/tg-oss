@@ -157,7 +157,7 @@ function coerceLocation({
         " and set to size: " +
         size
     ); //setting it to 0 internally, but users will see it as 1
-    location.start = size - (isProtein ? 3 : 1);
+    location.start = Math.max(0, size - (isProtein ? 3 : 1));
   }
   if (
     location.end < 0 ||
@@ -172,7 +172,7 @@ function coerceLocation({
         " and set to seq size: " +
         size
     ); //setting it to 0 internally, but users will see it as 1
-    location.end = size - 1;
+    location.end = Math.max(0, size - 1);
   }
   if (location.start > location.end && circular === false) {
     messages.push(
