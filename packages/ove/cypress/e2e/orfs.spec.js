@@ -41,6 +41,16 @@ describe("orfs", function () {
     ).should("exist");
   });
 
+  it("'Use GUG And CUG As Start Codons' should show for RNA sequence", function () {
+    cy.visit("");
+    cy.get(`[data-test="moleculeType"]`).select("RNA");
+    cy.contains(".tg-menu-bar button", "View").click();
+    cy.contains(".bp3-menu-item:contains(7)", "ORFs").click();
+    cy.get(
+      ".bp3-menu-item:contains(Use GUG And CUG As Start Codons) .bp3-icon-blank"
+    ).should("exist");
+  });
+
   it("ORFs should have Size AA equals (sequence size / 3 - 1)", function () {
     cy.visit("");
     cy.get(".veTabProperties").click();
