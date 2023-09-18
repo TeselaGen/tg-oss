@@ -213,7 +213,7 @@ const CloseFullscreenButton = props => {
   );
 };
 
-const defaultToolList = [
+export const defaultToolList = [
   "saveTool",
   "downloadTool",
   "importTool",

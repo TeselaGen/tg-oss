@@ -111,6 +111,7 @@
     "@vitejs/plugin-react": "^4.0.1",
     "@vitest/coverage-c8": "^0.32.2",
     "@vitest/ui": "^0.32.2",
+    "biomsa": "^0.2.4",
     "chai-dom": "^1.11.0",
     "chai-subset": "^1.6.0",
     "chai-things": "0.2.0",

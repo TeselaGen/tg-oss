@@ -111,7 +111,7 @@ class Sequence extends React.Component {
             key={i}
             {...{
               ...shared,
-              textLength: textLength - fudge - fudge2,
+              textLength: Math.max(0, textLength - fudge - fudge2),
               x: x + fudge / 2,
               lengthAdjust: "spacing"
             }}
@@ -126,7 +126,10 @@ class Sequence extends React.Component {
           {...{
             ...shared,
             x: 0 + fudge / 2,
-            textLength: (alignmentData ? seqReadWidth : width) - fudge - fudge2
+            textLength: Math.max(
+              0,
+              (alignmentData ? seqReadWidth : width) - fudge - fudge2
+            )
           }}
         >
           {getBoldRegion({ sequence, overlapToBold, rowStart, sequenceLength })}

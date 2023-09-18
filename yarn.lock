@@ -3624,6 +3624,11 @@ binary-extensions@^2.0.0:
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
+biomsa@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/biomsa/-/biomsa-0.2.4.tgz#dcf48772552de863d648ab70ce91de43e0ef3fd0"
+  integrity sha512-9glphzhKDe1LUOzawGnvJrsAIhVAgP9g0s8xIWt8arqGVTGxlLVauY9jYIlTk4Cyu91aDQADmjy1vSGtG3XR+g==
+
 bl@^4.0.3, bl@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/bl/-/bl-4.1.0.tgz"

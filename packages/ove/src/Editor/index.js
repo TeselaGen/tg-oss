@@ -732,7 +732,7 @@ export class Editor extends React.Component {
                                     style={{
                                       zIndex: 15002,
                                       position: "fixed",
-                                      top: 15,
+                                      top: 3,
                                       right: 25
                                     }}
                                   >

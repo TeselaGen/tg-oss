@@ -106,7 +106,10 @@ export function getBasesToShow({
             insertStart
           });
         }
-        const textLength = charWidth * i.bases.length - fudge - fudge2;
+        const textLength = Math.max(
+          0,
+          charWidth * i.bases.length - fudge - fudge2
+        );
         insertText.push(
           <text
             style={{ pointerEvents: "none" }}

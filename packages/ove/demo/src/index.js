@@ -4,7 +4,7 @@ import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import { Button, Drawer, Tooltip } from "@blueprintjs/core";
 
 import store from "./store";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import {
   CircularView,
@@ -336,4 +336,4 @@ const WrapSimpleDemo = ({ children }) => {
   return children;
 };
 
-render(<Demo />, document.querySelector("#demo"));
+createRoot(document.querySelector("#demo")).render(<Demo />);

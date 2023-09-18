@@ -170,8 +170,8 @@ export class AlignmentView extends React.Component {
       delete window.updateAlignmentSelection;
       delete window.Cypress.updateAlignmentSelection;
     }
-    const { removeAlignmentFromRedux, id } = this.props;
-    removeAlignmentFromRedux({ id });
+    // const { removeAlignmentFromRedux, id } = this.props;
+    // removeAlignmentFromRedux({ id });
     this.onShortcutCopy &&
       document.removeEventListener("keydown", this.handleAlignmentCopy);
   }
@@ -922,6 +922,7 @@ export class AlignmentView extends React.Component {
             vectorInteractionWrapperStyle: {
               overflowY: "hidden"
             },
+            withZoomLinearView: false,
             marginWidth: 0,
             linearViewCharWidth: charWidthInLinearView,
             ignoreGapsOnHighlight: true,
@@ -1888,6 +1889,7 @@ export default compose(
         scrollPercentageToJumpTo,
         pairwiseOverviewAlignmentTracks,
         loading,
+        name,
         alignmentAnnotationVisibility,
         alignmentAnnotationLabelVisibility,
         caretPosition = -1,
@@ -1967,6 +1969,7 @@ export default compose(
         unmappedSeqs,
         caretPosition,
         alignmentId,
+        ...(name && { alignmentName: name }),
         stateTrackingId,
         sequenceData: {
           //pass fake seq data in so editor interactions work
