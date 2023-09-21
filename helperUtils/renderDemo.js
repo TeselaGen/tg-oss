@@ -1,2 +1,3 @@
-import { render } from "react-dom";
-export default Demo => render(<Demo></Demo>, document.querySelector("#demo"));
+import { createRoot } from "react-dom/client";
+export default Demo =>
+  createRoot(document.querySelector("#demo")).render(<Demo />);

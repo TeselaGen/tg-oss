@@ -28,7 +28,7 @@ import showAppSpinnerDemo from "./examples/showAppSpinnerDemo";
 import EditableCellTable from "./examples/EditableCellTable";
 import "./style.css";
 import React from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { HashRouter as Router, Route, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -401,4 +401,4 @@ const Demo = () => {
   );
 };
 
-render(<Demo />, document.querySelector("#demo"));
+createRoot(document.querySelector("#demo")).render(<Demo />);
