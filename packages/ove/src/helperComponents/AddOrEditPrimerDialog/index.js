@@ -6,11 +6,13 @@ import {
   generateField,
   RadioGroupField
 } from "@teselagen/ui";
-import { getReverseComplementSequenceString } from "@teselagen/sequence-utils";
+import {
+  filterSequenceString,
+  getReverseComplementSequenceString
+} from "@teselagen/sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
 import { convertRangeTo0Based } from "@teselagen/range-utils";
-import { getAcceptedChars } from "../../utils/editorUtils";
 import classNames from "classnames";
 import "./style.css";
 import { getSequenceWithinRange } from "@teselagen/range-utils";
@@ -42,14 +44,9 @@ const CustomContentEditable = generateField(function CustomContentEditable({
     const newVal = e.target.innerText;
     const savedCaretPosition = CaretPositioning.saveSelection(e.currentTarget);
     setCaretPosition(savedCaretPosition);
-    const acceptedChars = getAcceptedChars(sequenceData);
-    let newBases = "";
-    newVal.split("").forEach(letter => {
-      if (acceptedChars.includes(letter.toLowerCase())) {
-        newBases += letter;
-      }
-    });
-    if (newVal.length !== newBases.length) {
+    const [newBases, warnings] = filterSequenceString(newVal, sequenceData);
+
+    if (warnings.length) {
       setTempError(true);
       setTimeout(() => {
         setTempError(false);

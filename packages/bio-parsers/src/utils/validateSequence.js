@@ -1,7 +1,6 @@
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 import { getFeatureTypes } from "@teselagen/sequence-utils";
 import {
-  filterAminoAcidSequenceString,
   filterSequenceString,
   guessIfSequenceIsDnaAndNotProtein
 } from "@teselagen/sequence-utils";
@@ -30,7 +29,8 @@ export default function validateSequence(sequence, options = {}) {
     inclusive1BasedEnd,
     additionalValidChars,
     allowOverflowAnnotations,
-    coerceFeatureTypes
+    coerceFeatureTypes,
+    includeStopCodon
   } = options;
   [
     "isDNA",
@@ -84,7 +84,7 @@ export default function validateSequence(sequence, options = {}) {
     response.messages.push("No sequence detected");
     sequence.sequence = "";
   }
-  let validChars;
+
   if (sequence.isProtein === undefined && guessIfProtein) {
     sequence.isProtein = !guessIfSequenceIsDnaAndNotProtein(
       sequence.sequence,
@@ -93,12 +93,14 @@ export default function validateSequence(sequence, options = {}) {
   }
   if (sequence.isProtein) {
     //tnr: add code to strip invalid protein data..
-    validChars = filterAminoAcidSequenceString(sequence.sequence);
+    const [validChars, warnings] = filterSequenceString(sequence.sequence, {
+      isProtein: true,
+      additionalValidChars,
+      includeStopCodon
+    });
     if (validChars !== sequence.sequence) {
       sequence.sequence = validChars;
-      response.messages.push(
-        "Import Error: Illegal character(s) detected and removed from amino acid sequence. Allowed characters are: xtgalmfwkqespvicyhrndu"
-      );
+      response.messages.push(...warnings);
     }
     sequence.type = "PROTEIN";
     sequence.isProtein = true;
@@ -126,12 +128,13 @@ export default function validateSequence(sequence, options = {}) {
       sequence.type = "DNA";
     }
 
-    validChars = filterSequenceString(sequence.sequence, additionalValidChars);
+    const [validChars, warnings] = filterSequenceString(sequence.sequence, {
+      additionalValidChars,
+      ...sequence
+    });
     if (validChars !== sequence.sequence) {
       sequence.sequence = validChars;
-      response.messages.push(
-        "Import Error: Illegal character(s) detected and removed from sequence. Allowed characters are: atgcyrswkmbvdhn"
-      );
+      response.messages.push(...warnings);
     }
   }
 

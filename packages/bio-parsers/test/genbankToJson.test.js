@@ -888,7 +888,7 @@ ORIGIN
     res.should.be.an("array");
     res[0].success.should.be.true;
     res[0].parsedSequence.features.length.should.equal(1);
-    expect(res[0].parsedSequence.sequence).toContain("t");
+    expect(res[0].parsedSequence.sequence).not.toContain("t");
     expect(res[0].parsedSequence.sequence).toContain("u");
   });
 

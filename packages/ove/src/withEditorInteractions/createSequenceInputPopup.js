@@ -6,7 +6,8 @@ import Popper from "popper.js";
 
 import {
   getInsertBetweenVals,
-  convertDnaCaretPositionOrRangeToAA
+  convertDnaCaretPositionOrRangeToAA,
+  filterSequenceString
 } from "@teselagen/sequence-utils";
 import React from "react";
 import { divideBy3 } from "../utils/proteinUtils";
@@ -77,9 +78,8 @@ class SequenceInputNoHotkeys extends React.Component {
       selectionLayer,
       sequenceLength,
       isProtein,
-      replaceChars,
       caretPosition,
-      acceptedChars,
+      sequenceData,
       maxInsertSize
     } = this.props;
     const { charsToInsert, hasTempError } = this.state;
@@ -136,19 +136,13 @@ class SequenceInputNoHotkeys extends React.Component {
           autoFocus
           style={hasTempError ? { borderColor: "red" } : {}}
           onChange={e => {
-            let sanitizedVal = "";
-            e.target.value.split("").forEach(letter => {
-              const lowerLetter = letter.toLowerCase();
-              if (replaceChars && replaceChars[lowerLetter]) {
-                const isUpper = lowerLetter !== letter;
-                sanitizedVal += isUpper
-                  ? replaceChars[lowerLetter].toUpperCase()
-                  : replaceChars[lowerLetter];
-              } else if (acceptedChars.includes(lowerLetter)) {
-                sanitizedVal += letter;
+            const [sanitizedVal, warnings] = filterSequenceString(
+              e.target.value,
+              {
+                ...sequenceData
               }
-            });
-            if (e.target.value.length !== sanitizedVal.length) {
+            );
+            if (warnings.length) {
               this.setState({
                 hasTempError: true
               });
@@ -165,7 +159,6 @@ class SequenceInputNoHotkeys extends React.Component {
               );
             }
             e.target.value = sanitizedVal;
-
             this.setState({ charsToInsert: sanitizedVal });
           }}
         />

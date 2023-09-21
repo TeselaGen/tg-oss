@@ -1,9 +1,9 @@
 //Adapted from biopython. Check the BIOPYTHON_LICENSE for licensing info
 
 export const protein_letters = "ACDEFGHIKLMNPQRSTVWY";
+export const protein_letters_withUandX = "ACDEFGHIKLMNPQRSTVWYUX";
 
 export const extended_protein_letters = "ACDEFGHIKLMNPQRSTVWYBXZJUO.*-";
-
 // #   B = "Asx";  aspartic acid or asparagine (D or N)
 // #   X = "Xxx";  unknown or 'other' amino acid
 // #   Z = "Glx";  glutamic acid or glutamine (E or Q)
