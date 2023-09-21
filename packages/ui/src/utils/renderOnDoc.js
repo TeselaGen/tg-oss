@@ -1,5 +1,4 @@
-import { unmountComponentAtNode } from "react-dom";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 
 export function renderOnDoc(fn) {
   const elemDiv = document.createElement("div");
@@ -8,11 +7,11 @@ export function renderOnDoc(fn) {
   document.body.appendChild(elemDiv);
   const handleClose = () => {
     setTimeout(() => {
-      unmountComponentAtNode(elemDiv);
+      ReactDOM.unmountComponentAtNode(elemDiv);
       document.body.removeChild(elemDiv);
     });
   };
-  return createRoot(elemDiv).render(fn(handleClose));
+  return ReactDOM.render(fn(handleClose), elemDiv);
 }
 export function renderOnDocSimple(el) {
   const elemDiv = document.createElement("div");
@@ -21,10 +20,10 @@ export function renderOnDocSimple(el) {
   document.body.appendChild(elemDiv);
   const handleClose = () => {
     setTimeout(() => {
-      unmountComponentAtNode(elemDiv);
+      ReactDOM.unmountComponentAtNode(elemDiv);
       document.body.removeChild(elemDiv);
     });
   };
-  createRoot(elemDiv).render(el);
+  ReactDOM.render(el, elemDiv);
   return handleClose;
 }

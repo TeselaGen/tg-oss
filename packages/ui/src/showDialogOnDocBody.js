@@ -1,4 +1,4 @@
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 import React from "react";
 // import withDialog from "./enhancers/withDialog";
 import { Dialog } from "@blueprintjs/core";
@@ -30,7 +30,8 @@ export default function showDialogOnDocBody(DialogComp, options = {}) {
   } else {
     DialogCompToUse = DialogComp;
   }
-  createRoot(dialogHolder).render(
-    <DialogCompToUse hideModal={onClose} onClose={onClose} {...options} />
+  ReactDOM.render(
+    <DialogCompToUse hideModal={onClose} onClose={onClose} {...options} />,
+    dialogHolder
   );
 }

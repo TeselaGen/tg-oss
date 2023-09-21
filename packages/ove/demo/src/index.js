@@ -138,7 +138,7 @@ const Demo = () => {
             </a>{" "}
             <div style={{ paddingTop: 3 }}>
               <iframe
-                src="https://ghbtns.com/github-btn.html?user=teselagen&repo=tg-oss&type=star&count=true"
+                src="https://ghbtns.com/github-btn.html?user=teselagen&repo=openvectoreditor&type=star&count=true"
                 frameBorder="0"
                 scrolling="0"
                 width="150"
