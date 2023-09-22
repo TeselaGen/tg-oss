@@ -1384,7 +1384,7 @@ class DataTable extends React.Component {
               onKeyDown: e => {
                 const isArrowKey =
                   (e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode === 9;
-                if (isArrowKey) {
+                if (isArrowKey && e.target?.tagName !== "INPUT") {
                   const { schema, entities } = computePresets(this.props);
                   const left = e.keyCode === 37;
                   const up = e.keyCode === 38;
