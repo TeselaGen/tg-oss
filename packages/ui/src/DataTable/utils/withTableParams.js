@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { change, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { isFunction } from "lodash";
+import { camelCase, isFunction, set } from "lodash";
 import { withRouter } from "react-router-dom";
 import { branch, compose } from "recompose";
 
@@ -69,7 +69,7 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
     } = mergedOpts;
 
     const schema = getSchema(mergedOpts);
-
+    const convertedSchema = convertSchema(schema);
     if (ownProps.isTableParamsConnected) {
       if (
         formName &&
@@ -96,6 +96,15 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
           "Please pass a unique 'formName' prop to the locally connected <DataTable/> component with schema: ",
           schema
         );
+      }
+      if (
+        mergedOpts.orderByFirstColumn &&
+        !mergedOpts.defaults?.order?.length
+      ) {
+        const r = [
+          camelCase(schema.fields[0].displayName || schema.fields[0].path)
+        ];
+        set(mergedOpts, "defaults.order", r);
       }
     } else {
       //in user instantiated withTableParams() call
@@ -163,7 +172,7 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
         entities: mergedOpts.entities, // for local table
         urlConnected,
         defaults: defaultsToUse,
-        schema: convertSchema(schema),
+        schema: convertedSchema,
         isInfinite: isInfinite || (isSimple && !withPaging),
         isLocalCall,
         additionalFilter: additionalFilterToUse,
