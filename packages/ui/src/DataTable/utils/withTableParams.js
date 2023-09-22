@@ -102,7 +102,10 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
         !mergedOpts.defaults?.order?.length
       ) {
         const r = [
-          camelCase(schema.fields[0].displayName || schema.fields[0].path)
+          camelCase(
+            convertedSchema.fields[0].displayName ||
+              convertedSchema.fields[0].path
+          )
         ];
         set(mergedOpts, "defaults.order", r);
       }
