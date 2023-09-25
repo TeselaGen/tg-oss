@@ -222,13 +222,11 @@ Cypress.Commands.add(
 
 Cypress.Commands.add("selectRange", (start, end) => {
   cy.log(`selectRange ${start} - ${end}`);
-  cy.window().then(win => {
-    win.ove_updateEditor({
-      selectionLayer: {
-        start: start - 1,
-        end: end - 1
-      }
-    });
+  cy.updateEditor({
+    selectionLayer: {
+      start: start - 1,
+      end: end - 1
+    }
   });
 });
 
@@ -245,7 +243,17 @@ Cypress.Commands.add("selectRange", (start, end) => {
 Cypress.Commands.add("updateEditor", props => {
   cy.log(`updateEditor`);
   cy.window().then(win => {
-    win.ove_updateEditor(props);
+    const finish = () => {
+      win.ove_updateEditor(props);
+    };
+    if (!win.ove_updateEditor) {
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(100).then(() => {
+        finish();
+      });
+    } else {
+      finish();
+    }
   });
 });
 
@@ -256,39 +264,32 @@ Cypress.Commands.add("deleteRange", (start, end) => {
       start,
       end
     });
-
-    win.ove_updateEditor({
+    cy.updateEditor({
       sequenceData: newSeqData
     });
   });
 });
 
 Cypress.Commands.add("removeFeatures", () => {
-  cy.window().then(win => {
-    win.ove_updateEditor({
-      justPassingPartialSeqData: true,
-      sequenceData: {
-        features: []
-      }
-    });
+  cy.updateEditor({
+    justPassingPartialSeqData: true,
+    sequenceData: {
+      features: []
+    }
   });
 });
 Cypress.Commands.add("hideCutsites", () => {
-  cy.window().then(win => {
-    win.ove_updateEditor({
-      annotationVisibility: {
-        cutsites: false
-      }
-    });
+  cy.updateEditor({
+    annotationVisibility: {
+      cutsites: false
+    }
   });
 });
 Cypress.Commands.add("hideParts", () => {
-  cy.window().then(win => {
-    win.ove_updateEditor({
-      annotationVisibility: {
-        parts: false
-      }
-    });
+  cy.updateEditor({
+    annotationVisibility: {
+      parts: false
+    }
   });
 });
 Cypress.Commands.add("selectAlignmentRange", (start, end) => {
