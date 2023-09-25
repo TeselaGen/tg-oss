@@ -125,8 +125,8 @@ function PointedAnnotation(props) {
         ${startLines}
         L ${width - pointiness / 2},0
         Q ${width + pointiness / 2},${height / 2} ${
-      width - pointiness / 2
-    },${height}
+          width - pointiness / 2
+        },${height}
         ${bottomLine}
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
@@ -136,8 +136,8 @@ function PointedAnnotation(props) {
         L ${width - pointiness / 2},0
 
         Q ${width + pointiness / 2},${height / 2} ${
-      width - pointiness / 2
-    },${height}
+          width - pointiness / 2
+        },${height}
 
         ${bottomLine}
         ${endLine}

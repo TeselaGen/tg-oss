@@ -61,8 +61,7 @@ export default compose(
         toReturn.hoveredId = hoveredId;
       }
       return toReturn;
-    },
-    hoveredAnnotationActions)
+    }, hoveredAnnotationActions)
   ),
   withHandlers({
     onMouseOver: props => e => {

@@ -118,12 +118,13 @@ export function pareDownAnnotations(annotations, max) {
     const sortedAnnotations = sortBy(annotations, function (annotation) {
       return -getRangeLength(annotation);
     });
-    annotationsToPass = sortedAnnotations
-      .slice(0, max)
-      .reduce(function (obj, item) {
-        obj[item.id] = item;
-        return obj;
-      }, {});
+    annotationsToPass = sortedAnnotations.slice(0, max).reduce(function (
+      obj,
+      item
+    ) {
+      obj[item.id] = item;
+      return obj;
+    }, {});
   }
   return [annotationsToPass, paredDown];
 }

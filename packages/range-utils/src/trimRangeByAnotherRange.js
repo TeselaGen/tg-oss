@@ -67,14 +67,14 @@ export default function trimRangeByAnotherRange(
     splitRangesToBeTrimmed[index] = nonCircularRangeToBeTrimmed;
   });
   //filter out any of the split ranges that have been fully deleted!
-  const outputSplitRanges = splitRangesToBeTrimmed.filter(function (
-    trimmedRange
-  ) {
-    if (trimmedRange) {
-      return true;
+  const outputSplitRanges = splitRangesToBeTrimmed.filter(
+    function (trimmedRange) {
+      if (trimmedRange) {
+        return true;
+      }
+      return false;
     }
-    return false;
-  });
+  );
 
   let outputTrimmedRange;
   if (outputSplitRanges.length < 0) {

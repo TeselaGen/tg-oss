@@ -18,8 +18,7 @@ export const userDefinedTypesMap = userDefinedTypes.reduce(function (
   // 	translations: 'translations',
   // 	primers: 'primers',
   // }
-},
-{});
+}, {});
 
 export const derivedDataTypes = ["cutsites", "orfs"];
 export const derivedDataTypesMap = derivedDataTypes.reduce(function (
@@ -28,8 +27,7 @@ export const derivedDataTypesMap = derivedDataTypes.reduce(function (
 ) {
   nextVal[key] = key;
   return nextVal;
-},
-{});
+}, {});
 export function getSingular(type) {
   return type.slice(0, -1);
 }
