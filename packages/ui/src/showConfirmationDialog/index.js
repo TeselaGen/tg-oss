@@ -89,7 +89,9 @@ export class AlertWrapper extends Component {
               cancelButtonText && !noCancelButton
                 ? () => doClose(false)
                 : undefined,
-            onClick: () => doClose(true),
+            onClick: handleSubmit
+              ? handleSubmit(v => doClose(v))
+              : () => doClose(true),
             noCancel: true,
             additionalButtons:
               thirdButtonText || fourthButtonText ? (
