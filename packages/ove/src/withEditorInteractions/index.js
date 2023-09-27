@@ -1030,7 +1030,7 @@ function VectorInteractionHOC(Component /* options */) {
       ({ event, annotation }) => {
         event.preventDefault();
         event.stopPropagation();
-        const { selectionLayerUpdate, annotationVisibilityToggle } = this.props;
+        const { annotationVisibilityToggle } = this.props;
         this.props.selectionLayerUpdate({
           isFromRowView: !!event?.target?.closest(".veRowView"),
           start: annotation.start,
@@ -1049,15 +1049,6 @@ function VectorInteractionHOC(Component /* options */) {
         }
         return [
           "deleteTranslation",
-          {
-            text: "Select Translation",
-            onClick: function () {
-              selectionLayerUpdate({
-                start: annotation.start,
-                end: annotation.end
-              });
-            }
-          },
           ...this.getSelectionMenuOptions(annotation),
           "viewTranslationProperties"
         ];

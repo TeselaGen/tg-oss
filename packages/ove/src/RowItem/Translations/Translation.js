@@ -131,7 +131,10 @@ class Translation extends React.Component {
               aminoAcidSliver.aminoAcidIndex + 1
             } -- Hydrophobicity: ${aminoAcid.hydrophobicity} -- Mass: ${
               aminoAcid.mass
-            }`}
+            }\n 
+Part of ${annotation.translationType} Translation from BPs ${
+              annotation.start + 1
+            } to ${annotation.end + 1} (${aminoAcids.length / 3} AAs)`}
             showAminoAcidNumbers={showAminoAcidNumbers}
             aminoAcidIndex={aminoAcidSliver.aminoAcidIndex}
             onDoubleClick={function (event) {
