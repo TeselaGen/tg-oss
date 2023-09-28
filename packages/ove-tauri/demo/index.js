@@ -144,7 +144,6 @@ const Demo = () => {
         showMenuBar
         editorName={editorName}
       ></Editor>
-      ;
     </Provider>
   );
 };
