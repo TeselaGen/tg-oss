@@ -93,7 +93,7 @@ export function getAcceptedChars({
     : isMixedRnaAndDna
     ? ambiguous_rna_letters.toLowerCase() + ambiguous_dna_letters.toLowerCase()
     : //just plain old dna
-      ambiguous_dna_letters.toLowerCase();
+      ambiguous_rna_letters.toLowerCase() + ambiguous_dna_letters.toLowerCase();
 }
 export function getReplaceChars({
   isOligo,
@@ -110,5 +110,5 @@ export function getReplaceChars({
     : isMixedRnaAndDna
     ? {}
     : //just plain old dna
-      { u: "t" };
+      {};
 }

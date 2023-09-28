@@ -12,13 +12,13 @@ describe("filterSequenceString", () => {
       "Invalid character(s) detected and removed: -, - "
     );
   });
-  it("should convert u's to t's from isDna (default isDna=true) seqs", () => {
+  it("should not convert u's to t's for isDna (default isDna=true) seqs", () => {
     const [str, warnings] = filterSequenceString("tatuuag--a", {});
-    expect(warnings[0]).toBe('Replaced "u" with "t" 2 times');
-    expect(warnings[1]).toBe(
+    // expect(warnings[0]).toBe('Replaced "u" with "t" 2 times');
+    expect(warnings[0]).toBe(
       "Invalid character(s) detected and removed: -, - "
     );
-    expect(str).toBe("tatttaga");
+    expect(str).toBe("tatuuaga");
   });
   it("should filter out unwanted chars", () => {
     const [str, warnings] = filterSequenceString("tatag--a");
