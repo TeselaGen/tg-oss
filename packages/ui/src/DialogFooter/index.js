@@ -13,6 +13,8 @@ function DialogFooter({
   style,
   onClick = noop,
   secondaryAction,
+  secondaryDisabled,
+  secondaryNotMinimal,
   intent = Intent.PRIMARY,
   secondaryIntent,
   backText = "Back",
@@ -43,7 +45,12 @@ function DialogFooter({
         {!noCancel && (
           <Button
             intent={secondaryIntent}
-            className={Classes.MINIMAL + " " + secondaryClassName}
+            disabled={secondaryDisabled}
+            className={
+              (!secondaryNotMinimal ? Classes.MINIMAL : "") +
+              " " +
+              secondaryClassName
+            }
             text={secondaryText}
             onClick={
               secondaryAction ||

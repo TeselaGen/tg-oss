@@ -934,7 +934,10 @@ const editCommandDefs = {
   useGtgAndCtgAsStartCodons: {
     isHidden: isProtein,
 
-    name: "Use GTG And CTG As Start Codons",
+    name: props =>
+      isRna(props)
+        ? "Use GUG And CUG As Start Codons"
+        : "Use GTG And CTG As Start Codons",
     isActive: props => props.useAdditionalOrfStartCodons,
     handler: props => props.useAdditionalOrfStartCodonsToggle()
   },

@@ -62,58 +62,56 @@ const ShowSelectionItem = compose(
     }
   ),
   withHandlers({ handleInverse })
-)(
-  ({
-    selectionLayer = { start: -1, end: -1 },
-    caretPosition = -1,
-    sequenceLength = 0,
-    isProtein,
-    sequenceData = { sequence: "" },
-    showGCContent,
-    GCDecimalDigits,
-    handleInverse
-  }) => {
-    const [showMeltingTemp] = useMeltingTemp();
+)(({
+  selectionLayer = { start: -1, end: -1 },
+  caretPosition = -1,
+  sequenceLength = 0,
+  isProtein,
+  sequenceData = { sequence: "" },
+  showGCContent,
+  GCDecimalDigits,
+  handleInverse
+}) => {
+  const [showMeltingTemp] = useMeltingTemp();
 
-    const sequence = getSequenceWithinRange(
-      selectionLayer,
-      sequenceData.sequence
-    );
+  const sequence = getSequenceWithinRange(
+    selectionLayer,
+    sequenceData.sequence
+  );
 
-    return (
-      <React.Fragment>
-        <StatusBarItem dataTest="veStatusBar-selection">
-          {getSelectionMessage({
-            caretPosition,
-            selectionLayer,
-            sequenceLength,
-            sequenceData,
-            showGCContent,
+  return (
+    <React.Fragment>
+      <StatusBarItem dataTest="veStatusBar-selection">
+        {getSelectionMessage({
+          caretPosition,
+          selectionLayer,
+          sequenceLength,
+          sequenceData,
+          showGCContent,
 
-            GCDecimalDigits,
-            isProtein
-          })}
+          GCDecimalDigits,
+          isProtein
+        })}
 
-          <Button
-            minimal
-            disabled={sequenceLength <= 0}
-            onClick={handleInverse}
-            style={{ marginLeft: 5, color: "#48AFF0" }}
-            small
-          >
-            Select Inverse
-          </Button>
-        </StatusBarItem>
-        {showMeltingTemp && (
-          <MeltingTemp
-            WrapperToUse={StatusBarItem}
-            sequence={sequence}
-          ></MeltingTemp>
-        )}
-      </React.Fragment>
-    );
-  }
-);
+        <Button
+          minimal
+          disabled={sequenceLength <= 0}
+          onClick={handleInverse}
+          style={{ marginLeft: 5, color: "#48AFF0" }}
+          small
+        >
+          Select Inverse
+        </Button>
+      </StatusBarItem>
+      {showMeltingTemp && (
+        <MeltingTemp
+          WrapperToUse={StatusBarItem}
+          sequence={sequence}
+        ></MeltingTemp>
+      )}
+    </React.Fragment>
+  );
+});
 
 const ShowLengthItem = connectToEditor(
   ({ sequenceData = { sequence: "" } }) => ({

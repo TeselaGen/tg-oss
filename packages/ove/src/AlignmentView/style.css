@@ -17,6 +17,7 @@
 
 .alignmentViewTrackContainer .veLinearView .veRowItemWrapper {
   display: block;
+  overflow-x: hidden;
 }
 
 .alignmentHolder::-webkit-scrollbar {
@@ -67,6 +68,9 @@
   top: 0;
 }
 
+.tg-reflex-element-inner .alignmentView {
+  height: unset !important;
+}
 .veTracksAndAlignmentHolder {
   position: relative;
   width: fit-content;

@@ -4,6 +4,7 @@ import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import { Button, Drawer, Tooltip } from "@blueprintjs/core";
 
 import store from "./store";
+// import { createRoot } from "react-dom/client";
 import { render } from "react-dom";
 
 import {
@@ -336,4 +337,5 @@ const WrapSimpleDemo = ({ children }) => {
   return children;
 };
 
+// createRoot(document.querySelector("#demo")).render(<Demo />);
 render(<Demo />, document.querySelector("#demo"));

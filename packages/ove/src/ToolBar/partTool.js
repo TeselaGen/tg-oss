@@ -15,33 +15,31 @@ export default connectToEditor(
       isOpen: toolBar.openItem === "partTool"
     };
   }
-)(
-  ({
-    allPartTags,
-    editTagsLink,
-    toolbarItemProps,
-    toggled,
-    annotationVisibilityToggle,
-    isOpen
-  }) => {
-    return (
-      <ToolbarItem
-        {...{
-          Icon: <Icon icon="doughnut-chart" />,
-          onIconClick: function () {
-            annotationVisibilityToggle("parts");
-          },
-          toggled,
-          editTagsLink,
-          allPartTags,
-          tooltip: "Show parts",
-          tooltipToggled: "Hide parts",
-          noDropdownIcon: !allPartTags,
-          Dropdown: PartTagSearch,
-          dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Part Options",
-          ...toolbarItemProps
-        }}
-      />
-    );
-  }
-);
+)(({
+  allPartTags,
+  editTagsLink,
+  toolbarItemProps,
+  toggled,
+  annotationVisibilityToggle,
+  isOpen
+}) => {
+  return (
+    <ToolbarItem
+      {...{
+        Icon: <Icon icon="doughnut-chart" />,
+        onIconClick: function () {
+          annotationVisibilityToggle("parts");
+        },
+        toggled,
+        editTagsLink,
+        allPartTags,
+        tooltip: "Show parts",
+        tooltipToggled: "Hide parts",
+        noDropdownIcon: !allPartTags,
+        Dropdown: PartTagSearch,
+        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Part Options",
+        ...toolbarItemProps
+      }}
+    />
+  );
+});

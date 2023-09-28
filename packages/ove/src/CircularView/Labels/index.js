@@ -234,8 +234,7 @@ const DrawLabelGroup = withHover(function ({
       return _textLength;
     }
     return currentLength;
-  },
-  0);
+  }, 0);
 
   const maxLabelWidth = maxLabelLength * fontWidth;
   const labelOnLeft = label.angle > Math.PI;

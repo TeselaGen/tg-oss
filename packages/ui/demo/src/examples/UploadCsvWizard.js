@@ -12,6 +12,7 @@ const simpleValidateAgainst = {
   fields: [{ path: "name" }, { path: "description" }, { path: "sequence" }]
 };
 const validateAgainstSchema = ({
+  getValuesForDropdownExample,
   asyncNameValidation,
   multipleExamples,
   requireExactlyOneOf,
@@ -171,7 +172,19 @@ const validateAgainstSchema = ({
           type: "dropdown",
           // isRequired: true,
           description: "Whether the sequence is a dna or protein sequence",
-          values: ["dna", "protein"],
+          ...(getValuesForDropdownExample
+            ? {
+                getValues: async () => {
+                  return await new Promise(resolve =>
+                    setTimeout(() => {
+                      resolve(["just RNA", "dna", "protein", "oligo", "other"]);
+                    }, 1000)
+                  );
+                }
+              }
+            : {
+                values: ["dna", "protein"]
+              }),
           example: multipleExamples ? ["dna", "protein"] : "dna"
         },
         {
@@ -257,6 +270,12 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
     type: "allowMultipleFiles",
     description: "If checked, will allow multiple files to be uploaded"
   });
+  const [getValuesForDropdownExample, getValuesForDropdownExampleComp] =
+    useToggle({
+      type: "getValuesForDropdownExample",
+      label: "use async getValues For Dropdown (WIP)"
+    });
+
   return (
     <DemoWrapper>
       <h6>Options</h6>
@@ -272,6 +291,7 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
       {idAsPathShouldErrorComp}
       {allowMultipleFilesComp}
       {multipleExamplesComp}
+      {getValuesForDropdownExampleComp}
       {/* {allowZipComp} */}
       <br></br>
       <br></br>
@@ -294,6 +314,7 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
                   requireAllOrNone,
                   allowExtendedProps,
                   requireAtLeastOneOf,
+                  getValuesForDropdownExample,
                   requireExactlyOneOf,
                   idAsPathShouldError,
                   asyncNameValidation,

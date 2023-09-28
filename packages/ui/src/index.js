@@ -53,6 +53,7 @@ export * from "./FormComponents";
 export * from "./useDialog";
 
 export * from "./toastr";
+export * from "./showConfirmationDialog";
 export * from "./utils/handlerHelpers";
 export * from "./customIcons";
 export { default as basicHandleActionsWithFullState } from "./utils/basicHandleActionsWithFullState";

@@ -71,7 +71,7 @@ function getFieldsMappedByCCDisplayName(schema) {
 }
 
 function orderEntitiesLocal(orderArray, entities, schema, ownProps) {
-  if (orderArray && orderArray.length) {
+  if (orderArray?.length) {
     const orderFuncs = [];
     const ascOrDescArray = [];
     orderArray.forEach(order => {

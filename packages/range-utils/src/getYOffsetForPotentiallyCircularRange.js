@@ -9,23 +9,25 @@ export default function getYOffsetForPotentiallyCircularRange(
   let yOffset = [];
   //YOffsetLevelsWithRanges is an array of arrays (array of yOffset levels holding arrays of range)
   //loop through y offset levels starting with the 0 level until an empty one is found and push the range into it. If none are found, add another level.
-  const openYOffsetFound = YOffsetLevelsWithRanges.some(function (
-    rangesAlreadyAddedToYOffset,
-    index
-  ) {
-    const rangeBlocked = rangesAlreadyAddedToYOffset.some(function (
-      comparisonRange
-    ) {
-      return checkIfPotentiallyCircularRangesOverlap(range, comparisonRange);
-    });
-    if (!rangeBlocked) {
-      yOffset = index;
-      if (assignYOffsetToRange) range.yOffset = index;
-      rangesAlreadyAddedToYOffset.push(range);
-      return true;
+  const openYOffsetFound = YOffsetLevelsWithRanges.some(
+    function (rangesAlreadyAddedToYOffset, index) {
+      const rangeBlocked = rangesAlreadyAddedToYOffset.some(
+        function (comparisonRange) {
+          return checkIfPotentiallyCircularRangesOverlap(
+            range,
+            comparisonRange
+          );
+        }
+      );
+      if (!rangeBlocked) {
+        yOffset = index;
+        if (assignYOffsetToRange) range.yOffset = index;
+        rangesAlreadyAddedToYOffset.push(range);
+        return true;
+      }
+      return false;
     }
-    return false;
-  });
+  );
   if (!openYOffsetFound) {
     yOffset = YOffsetLevelsWithRanges.length;
     if (assignYOffsetToRange) range.yOffset = YOffsetLevelsWithRanges.length;

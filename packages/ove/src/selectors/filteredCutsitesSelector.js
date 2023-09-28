@@ -130,8 +130,7 @@ export default createSelector(
         obj[item.id] = item;
       }
       return obj;
-    },
-    {});
+    }, {});
     return returnVal;
   }
 );

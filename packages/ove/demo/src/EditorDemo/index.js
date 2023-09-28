@@ -1,4 +1,4 @@
-import { Button, Icon, InputGroup } from "@blueprintjs/core";
+import { Button, Callout, Icon, InputGroup } from "@blueprintjs/core";
 import {
   generateSequenceData,
   tidyUpSequenceData
@@ -6,9 +6,11 @@ import {
 import React from "react";
 import { isRangeOrPositionWithinRange } from "@teselagen/range-utils";
 import isMobile from "is-mobile";
+import immer from "immer";
+import biomsa from "biomsa";
 
 import store from "./../store";
-import { updateEditor, actions } from "../../../src/";
+import { updateEditor, actions, addAlignment } from "../../../src/";
 
 import Editor from "../../../src/Editor";
 import renderToggle from "./../utils/renderToggle";
@@ -17,7 +19,7 @@ import exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
-import { showConfirmationDialog } from "@teselagen/ui";
+import { DialogFooter, showConfirmationDialog } from "@teselagen/ui";
 import {
   autoAnnotateFeatures,
   autoAnnotateParts,
@@ -28,6 +30,8 @@ import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
 import { convertBasePosTraceToPerBpTrace } from "@teselagen/bio-parsers";
+import { defaultToolList } from "../../../src/ToolBar";
+
 // import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
@@ -64,6 +68,7 @@ const defaultState = {
   GCDecimalDigits: 1,
   onlyShowLabelsThatDoNotFit: true,
   overrideToolbarOptions: false,
+  // simpleAlignmentDemo: false,
   menuOverrideExample: false,
   propertiesOverridesExample: false,
   overrideRightClickExample: false,
@@ -233,6 +238,23 @@ export default class EditorDemo extends React.Component {
         return menuDef;
       }
   };
+  // simpleAlignmentDemo = {
+  //   ToolBarProps: {
+  //     toolList: [
+  //       "undoTool",
+  //       "redoTool",
+  //       "cutsiteTool",
+  //       "featureTool",
+  //       "partTool",
+  //       "editTool",
+  //       "findTool",
+  //       {
+  //         name: "alignmentTool",
+  //         Dropdown: SimpleAlignDropdown
+  //       }
+  //     ]
+  //   }
+  // };
   toolbarOverridesExample = {
     ToolBarProps: {
       //name the tools you want to see in the toolbar in the order you want to see them
@@ -692,6 +714,23 @@ This option allows for labels that are too big to usually fit into an annotation
                 type: "smartCircViewLabelRender",
                 info: `Only take as much space as necessary when drawing circular view labels`
               })}
+              {/* {renderToggle({
+                that: this,
+                label: "Show a simple alignment tool in the toolbar",
+                type: "simpleAlignmentDemo",
+                info: `//This is an example of how to pass custom tool overrides:
+\`\`\`
+ToolBarProps: {
+  toolList: [
+    {
+      name: 'alignmentTool',
+      ...see code for more deets...
+    },
+
+  }
+\`\`\`
+                  `
+              })} */}
               {renderToggle({
                 that: this,
                 label: "Customize tool bar",
@@ -2016,6 +2055,15 @@ clickOverrides: {
           }
 
           <Editor
+            ToolBarProps={{
+              toolList: defaultToolList.map(t => {
+                if (t !== "alignmentTool") return t;
+                return {
+                  name: "alignmentTool",
+                  Dropdown: SimpleAlignDropdown
+                };
+              })
+            }}
             panelMap={{
               myCustomTab: MyCustomTab
             }}
@@ -2543,6 +2591,7 @@ clickOverrides: {
               this.propertiesOverridesExample)}
             {...(this.state.overrideToolbarOptions &&
               this.toolbarOverridesExample)}
+            // {...(this.state.simpleAlignmentDemo && this.simpleAlignmentDemo)}
             {...(this.state.menuOverrideExample && this.menuOverrideExample)}
             {...(this.state.extraAnnotationPropsExample &&
               this.extraAnnotationPropsExample)}
@@ -2578,3 +2627,96 @@ function SlowComp({ annotationTypePlural }) {
     );
   return <div>yarp</div>;
 }
+
+const SimpleAlignDropdown = ({ toggleDropdown }) => {
+  const [seq, setSeq] = useState(
+    exampleSequenceData.sequence.substring(0, 10) +
+      "GGGGCCCCCCCCCCCCGGGGGGGGGGGGCCCCCCCCCCCCGGGGGGGGGGGGCCCCCCCCCCCCGGGGGGGGGGGGCCCCCCCCCCCCGGGGGGGG" +
+      exampleSequenceData.sequence.substring(10, 400) +
+      "CGCGCGCC" +
+      exampleSequenceData.sequence.substring(400, 500) +
+      exampleSequenceData.sequence.substring(505, 510) +
+      exampleSequenceData.sequence.substring(580, 600) +
+      "GGGGCCCCCCCCCCCCGGGGGGGGGGGGCCCCCCCCCCCCGGGGGGGGGGGGCCCCCCCCCCCCGGGGGGGGGGGGCCCCCCCCCCCCGGGGGGGG" +
+      exampleSequenceData.sequence.substring(607)
+  );
+  return (
+    <div>
+      <Callout intent="primary">
+        This is just an example of a simple alignment tool hookup. It uses
+        https://github.com/ppillot/biomsalign for the aligning and probably
+        doesn't work super well. You'll want to implement your own React UI +
+        alignment server to replace this tool.
+      </Callout>
+      <br></br>
+      Align the following text to the current sequence:
+      <div>
+        <textarea
+          style={{ width: 300, height: 100 }}
+          value={seq}
+          onChange={e => setSeq(e.target.value)}
+        ></textarea>
+        <DialogFooter
+          noCancel
+          onClick={async () => {
+            toggleDropdown();
+            //add the alignment panel to the editor
+            updateEditor(store, "DemoEditor", {
+              panelsShown: immer(
+                store.getState().VectorEditor.DemoEditor.panelsShown,
+                panelsShown => {
+                  panelsShown[0].push({
+                    id: "simpleAlignment",
+                    type: "alignment",
+                    name: "My Alignment",
+                    active: true,
+                    isFullscreen: false,
+                    canClose: true
+                  });
+                }
+              )
+            });
+            //make a call to your backend here to get an actual alignment:
+            const [firstTrack, secondTrack] = await biomsa.align([
+              store.getState().VectorEditor.DemoEditor.sequenceData.sequence,
+              seq
+            ]);
+            //call the addAlignment to add the alignment to the editor
+            addAlignment(store, {
+              id: "simpleAlignment",
+              alignmentType: "Simple Sequence Alignment",
+              name: "My Alignment",
+              //set the visibilities of the annotations you'd like to see
+              alignmentAnnotationVisibility: {
+                features: true,
+                parts: true,
+                translations: true
+              },
+              //set the tracks you'd like to see
+              alignmentTracks: [
+                {
+                  //each track has a sequenceData and an alignmentData property (both are teselagen sequenceData objects)
+                  sequenceData:
+                    store.getState().VectorEditor.DemoEditor.sequenceData,
+                  alignmentData: {
+                    //the alignmentData just needs the sequence
+                    sequence: firstTrack
+                  }
+                },
+                //
+                {
+                  sequenceData: {
+                    sequence: seq
+                  },
+                  alignmentData: {
+                    sequence: secondTrack
+                  }
+                }
+              ]
+            });
+          }}
+        ></DialogFooter>
+      </div>
+    </div>
+  );
+};

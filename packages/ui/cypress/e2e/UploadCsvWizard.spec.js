@@ -1005,6 +1005,24 @@ thomas,,g,false,dna,misc_feature`,
     cy.focused().type("ba{enter}");
     cy.get(`.bp3-button:contains(Finalize Files):last`).click();
   });
+  it(`manual entry file name should be editable. The name should be able to be edited after`, () => {
+    cy.visit("#/UploadCsvWizard");
+    cy.tgToggle("allowMultipleFiles");
+    cy.contains("Build CSV File").click();
+    cy.get(`[data-test="tgCell_name"]:first`).click({ force: true });
+    cy.focused().paste(`Thomas	Wee	agagag	False	dna	misc_feature`);
+    cy.get(`[value="manual_data_entry"]`).clear().type("customFileName");
+    cy.contains(".bp3-button", "Add File").click();
+    cy.contains("customFileName.csv");
+    cy.get(
+      `.tg-upload-file-list-item:contains(customFileName.csv) .tg-upload-file-list-item-edit`
+    ).click();
+    cy.get(`[value="customFileName"]`).type("3");
+    cy.get(`.bp3-button:contains(Edit Data)`).click();
+    cy.contains(`File Updated`);
+    cy.contains("customFileName3.csv");
+  });
+
   it(`multiple manual entries should get unique names. They should be able to be edited after`, () => {
     cy.visit("#/UploadCsvWizard");
     cy.tgToggle("allowMultipleFiles");

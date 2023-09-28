@@ -85,7 +85,8 @@ if (!version || version === "undefined") {
   json = JSON.parse(readFileSync(`package.json`).toString());
   try {
     json.version = version;
-    json.type = "commonjs";
+    // json.type = "commonjs";
+    delete json.type;
     json.license = "MIT";
     json.dependencies = { ...deps, ...json.dependencies };
     writeFileSync(`package.json`, JSON.stringify(json, null, 2));
