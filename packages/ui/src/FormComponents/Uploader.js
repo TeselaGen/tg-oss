@@ -144,6 +144,7 @@ function UploaderInner({
   onFileClick, // called when a file link in the filelist is clicked
   dropzoneProps = {},
   overflowList,
+  autoUnzip,
   disabled,
   initializeForm,
   showFilesCount,
@@ -180,7 +181,7 @@ function UploaderInner({
     ? _accept
     : _accept.split(",").map(a => ({ type: a }));
   if (
-    validateAgainstSchemaStore.current &&
+    (validateAgainstSchema || autoUnzip) &&
     accept &&
     !accept.some(a => a.type === "zip")
   ) {
@@ -634,7 +635,7 @@ function UploaderInner({
               onDrop: async (_acceptedFiles, rejectedFiles) => {
                 let acceptedFiles = [];
                 for (const file of _acceptedFiles) {
-                  if (validateAgainstSchema && isZipFile(file)) {
+                  if ((validateAgainstSchema || autoUnzip) && isZipFile(file)) {
                     const files = await filterFilesInZip(
                       file,
                       simpleAccept
