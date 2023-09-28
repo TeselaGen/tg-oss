@@ -29,7 +29,8 @@
   display: inline-block;
   border-radius: 50%;
   padding: 5px;
-  background: linear-gradient(var(--bg), var(--bg)) content-box,
+  background:
+    linear-gradient(var(--bg), var(--bg)) content-box,
     linear-gradient(var(--v), #ccc 50%, transparent 0) 0 /
       min(100%, calc(50 - var(--p)) * 100%),
     linear-gradient(var(--v), transparent 50%, #4ac5ed 0) 0 /

@@ -5,16 +5,23 @@
         "name": "sequence-utils",
         "type": "lib",
         "data": {
-          "name": "sequence-utils",
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "root": "packages/sequence-utils",
           "sourceRoot": "packages/sequence-utils/src",
+          "name": "sequence-utils",
           "projectType": "library",
           "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
             "version": {
               "executor": "@jscutlery/semver:version",
               "options": {
                 "preset": "conventional"
-              }
+              },
+              "configurations": {}
             },
             "build": {
               "dependsOn": ["^build"],
@@ -28,12 +35,12 @@
               "configurations": {}
             },
             "publish": {
-              "command": "node tools/scripts/publish.mjs sequence-utils {args.ver} {args.tag}",
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs sequence-utils {args.ver} {args.tag}"
-              }
+              },
+              "configurations": {}
             },
             "test": {
               "inputs": [
@@ -41,12 +48,11 @@
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts",
+              "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
               },
-              "configurations": {},
-              "executor": "nx:run-commands"
+              "configurations": {}
             },
             "lint": {
               "inputs": [
@@ -63,8 +69,8 @@
               "configurations": {}
             }
           },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
-          "root": "packages/sequence-utils",
           "implicitDependencies": []
         }
       },
@@ -72,12 +78,17 @@
         "name": "bounce-loader",
         "type": "lib",
         "data": {
-          "name": "bounce-loader",
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "root": "packages/bounce-loader",
           "sourceRoot": "packages/bounce-loader/src",
+          "name": "bounce-loader",
           "projectType": "library",
-          "tags": [],
           "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
             "lint": {
               "inputs": [
                 "default",
@@ -111,43 +122,41 @@
               }
             },
             "start": {
-              "command": "cd packages/bounce-loader && yarn vite",
               "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/bounce-loader && yarn vite"
-              }
+              },
+              "configurations": {}
             },
             "launch-e2e": {
               "inputs": ["default", "^production"],
-              "command": "cd packages/bounce-loader && npx playwright test --ui",
+              "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/bounce-loader && npx playwright test --ui"
               },
-              "configurations": {},
-              "executor": "nx:run-commands"
+              "configurations": {}
             },
             "launch-e2e2": {
-              "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\"",
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
-              }
+              },
+              "configurations": {}
             },
             "e2e-playwright": {
               "inputs": ["default", "^production"],
-              "command": "cd packages/bounce-loader && npx playwright test",
+              "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/bounce-loader && npx playwright test"
               },
-              "configurations": {},
-              "executor": "nx:run-commands"
+              "configurations": {}
             },
             "e2e2": {
-              "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" ",
               "executor": "nx:run-commands",
               "options": {
                 "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
-              }
+              },
+              "configurations": {}
             },
             "test": {
               "inputs": [
@@ -155,90 +164,23 @@
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts",
+              "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
               },
-              "configurations": {},
-              "executor": "nx:run-commands"
+              "configurations": {}
             },
             "publish": {
-              "command": "node tools/scripts/publish.mjs bounce-loader {args.ver} {args.tag}",
               "dependsOn": ["e2e", "build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs bounce-loader {args.ver} {args.tag}"
-              }
+              },
+              "configurations": {}
             }
           },
-          "root": "packages/bounce-loader",
-          "implicitDependencies": []
-        }
-      },
-      "bio-parsers": {
-        "name": "bio-parsers",
-        "type": "lib",
-        "data": {
-          "name": "bio-parsers",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "sourceRoot": "packages/bio-parsers/src",
-          "projectType": "library",
-          "targets": {
-            "version": {
-              "executor": "@jscutlery/semver:version",
-              "options": {
-                "preset": "conventional"
-              }
-            },
-            "build": {
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "executor": "@nx/vite:build",
-              "outputs": ["{options.outputPath}"],
-              "options": {
-                "target": "es2015",
-                "outputPath": "dist/bio-parsers"
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "command": "node tools/scripts/publish.mjs bio-parsers {args.ver} {args.tag}",
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs bio-parsers {args.ver} {args.tag}"
-              }
-            },
-            "test": {
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
-              "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts",
-              "options": {
-                "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {},
-              "executor": "nx:run-commands"
-            },
-            "lint": {
-              "inputs": [
-                "default",
-                "{workspaceRoot}/.eslintrc.json",
-                "{workspaceRoot}/.eslintignore"
-              ],
-              "executor": "@nx/linter:eslint",
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": ["packages/bio-parsers/**/*.js"]
-              },
-              "configurations": {}
-            }
-          },
           "tags": [],
-          "root": "packages/bio-parsers",
           "implicitDependencies": []
         }
       },
@@ -246,16 +188,23 @@
         "name": "range-utils",
         "type": "lib",
         "data": {
-          "name": "range-utils",
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "root": "packages/range-utils",
           "sourceRoot": "packages/range-utils/src",
+          "name": "range-utils",
           "projectType": "library",
           "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
             "version": {
               "executor": "@jscutlery/semver:version",
               "options": {
                 "preset": "conventional"
-              }
+              },
+              "configurations": {}
             },
             "build": {
               "dependsOn": ["^build"],
@@ -269,12 +218,12 @@
               "configurations": {}
             },
             "publish": {
-              "command": "node tools/scripts/publish.mjs range-utils {args.ver} {args.tag}",
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs range-utils {args.ver} {args.tag}"
-              }
+              },
+              "configurations": {}
             },
             "test": {
               "inputs": [
@@ -282,12 +231,11 @@
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts",
+              "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts"
               },
-              "configurations": {},
-              "executor": "nx:run-commands"
+              "configurations": {}
             },
             "lint": {
               "inputs": [
@@ -304,8 +252,81 @@
               "configurations": {}
             }
           },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
-          "root": "packages/range-utils",
+          "implicitDependencies": []
+        }
+      },
+      "bio-parsers": {
+        "name": "bio-parsers",
+        "type": "lib",
+        "data": {
+          "root": "packages/bio-parsers",
+          "sourceRoot": "packages/bio-parsers/src",
+          "name": "bio-parsers",
+          "projectType": "library",
+          "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
+            "version": {
+              "executor": "@jscutlery/semver:version",
+              "options": {
+                "preset": "conventional"
+              },
+              "configurations": {}
+            },
+            "build": {
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "executor": "@nx/vite:build",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "target": "es2015",
+                "outputPath": "dist/bio-parsers"
+              },
+              "configurations": {}
+            },
+            "publish": {
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs bio-parsers {args.ver} {args.tag}"
+              },
+              "configurations": {}
+            },
+            "test": {
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
+              },
+              "configurations": {}
+            },
+            "lint": {
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore"
+              ],
+              "executor": "@nx/linter:eslint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": ["packages/bio-parsers/**/*.js"]
+              },
+              "configurations": {}
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -313,16 +334,23 @@
         "name": "file-utils",
         "type": "lib",
         "data": {
-          "name": "file-utils",
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "root": "packages/file-utils",
           "sourceRoot": "packages/file-utils/src",
+          "name": "file-utils",
           "projectType": "library",
           "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
             "version": {
               "executor": "@jscutlery/semver:version",
               "options": {
                 "preset": "conventional"
-              }
+              },
+              "configurations": {}
             },
             "build": {
               "dependsOn": ["^build"],
@@ -336,12 +364,12 @@
               "configurations": {}
             },
             "publish": {
-              "command": "node tools/scripts/publish.mjs file-utils {args.ver} {args.tag}",
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs file-utils {args.ver} {args.tag}"
-              }
+              },
+              "configurations": {}
             },
             "test": {
               "inputs": [
@@ -349,12 +377,11 @@
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "command": "cd packages/file-utils && yarn vitest run --changed --config vite.config.ts",
+              "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/file-utils && yarn vitest run --changed --config vite.config.ts"
               },
-              "configurations": {},
-              "executor": "nx:run-commands"
+              "configurations": {}
             },
             "lint": {
               "inputs": [
@@ -371,8 +398,8 @@
               "configurations": {}
             }
           },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
-          "root": "packages/file-utils",
           "implicitDependencies": []
         }
       },
@@ -380,12 +407,17 @@
         "name": "uploader",
         "type": "lib",
         "data": {
-          "name": "uploader",
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "root": "packages/uploader",
           "sourceRoot": "packages/uploader/src",
+          "name": "uploader",
           "projectType": "library",
-          "tags": [],
           "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
             "lint": {
               "inputs": [
                 "default",
@@ -411,7 +443,8 @@
               "configurations": {}
             }
           },
-          "root": "packages/uploader",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -419,12 +452,17 @@
         "name": "ove",
         "type": "lib",
         "data": {
-          "name": "ove",
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "root": "packages/ove",
           "sourceRoot": "packages/ove/src",
+          "name": "ove",
           "projectType": "library",
-          "tags": [],
           "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
             "lint": {
               "inputs": [
                 "default",
@@ -451,22 +489,21 @@
               }
             },
             "publish": {
-              "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
               "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}"
-              }
+              },
+              "configurations": {}
             },
             "build_umd": {
-              "command": "nx run ove:build --mode=umd",
               "executor": "nx:run-commands",
               "options": {
                 "command": "nx run ove:build --mode=umd"
-              }
+              },
+              "configurations": {}
             },
             "build_simple": {
-              "command": "cd packages/ove && vite build --mode={args.mode}",
               "configurations": {
                 "demo": {
                   "args": "--mode=demo"
@@ -503,11 +540,11 @@
               }
             },
             "pushToGhPages": {
-              "command": "yarn gh-pages -a -d demo-dist",
               "executor": "nx:run-commands",
               "options": {
                 "command": "yarn gh-pages -a -d demo-dist"
-              }
+              },
+              "configurations": {}
             },
             "launch-e2e": {
               "inputs": ["default", "^production"],
@@ -545,15 +582,15 @@
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts",
+              "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts"
               },
-              "configurations": {},
-              "executor": "nx:run-commands"
+              "configurations": {}
             }
           },
-          "root": "packages/ove",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -561,12 +598,17 @@
         "name": "ui",
         "type": "lib",
         "data": {
-          "name": "ui",
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "root": "packages/ui",
           "sourceRoot": "packages/ui/src",
+          "name": "ui",
           "projectType": "library",
-          "tags": [],
           "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
             "lint": {
               "inputs": [
                 "default",
@@ -582,15 +624,14 @@
               "configurations": {}
             },
             "publish": {
-              "command": "node tools/scripts/publish.mjs ui {args.ver} {args.tag}",
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs ui {args.ver} {args.tag}"
-              }
+              },
+              "configurations": {}
             },
             "build_simple": {
-              "command": "cd packages/ui && vite build --mode={args.mode}",
               "configurations": {
                 "demo": {
                   "args": "--mode=demo"
@@ -623,11 +664,11 @@
               }
             },
             "pushToGhPages": {
-              "command": "yarn gh-pages -a -d demo-dist",
               "executor": "nx:run-commands",
               "options": {
                 "command": "yarn gh-pages -a -d demo-dist"
-              }
+              },
+              "configurations": {}
             },
             "start": {
               "executor": "nx:run-commands",
@@ -676,15 +717,15 @@
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts",
+              "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts"
               },
-              "configurations": {},
-              "executor": "nx:run-commands"
+              "configurations": {}
             }
           },
-          "root": "packages/ui",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "tags": [],
           "implicitDependencies": []
         }
       }
@@ -698,6 +739,7 @@
         }
       ],
       "bounce-loader": [],
+      "range-utils": [],
       "bio-parsers": [
         {
           "source": "bio-parsers",
@@ -710,7 +752,6 @@
           "type": "static"
         }
       ],
-      "range-utils": [],
       "file-utils": [],
       "uploader": [],
       "ove": [

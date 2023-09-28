@@ -117,6 +117,14 @@ describe("EditableCellTable.spec", () => {
       `[data-tip="Must be a number"] [data-test="tgCell_howMany"]:first`
     ).should("not.exist");
   });
+  it(`arrow keys should not be activated when an input is actively being typed in`, () => {
+    cy.visit("#/DataTable%20-%20EditableCellTable");
+    cy.get(`[data-test="tgCell_howMany"]`).eq(3).dblclick({ force: true });
+    cy.focused().type(`444{leftArrow}`);
+    cy.get(
+      `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_weather"]`
+    ).should("not.exist");
+  });
   it(`arrow keys should work together with shift and dragging should work`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`[data-test="tgCell_howMany"]`).eq(3).click({ force: true });

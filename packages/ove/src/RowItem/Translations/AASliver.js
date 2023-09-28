@@ -42,20 +42,20 @@ function AASliver(props) {
                   Q 50 0 ${50 + roundedCorner * dirX1} ${roundedCorner * dirY1}
                   L ${60 - roundedCorner * dirX1}, ${50 - roundedCorner * dirY1}
                   Q 60 50 ${60 - roundedCorner * dirX1} ${
-        50 + roundedCorner * dirY1
-      }
+                    50 + roundedCorner * dirY1
+                  }
                   L ${50 + roundedCorner * dirX1}, ${
-        100 - roundedCorner * dirY1
-      }
+                    100 - roundedCorner * dirY1
+                  }
                   Q 50 100 ${50 - roundedCorner} 100
                   L ${roundedCorner / 3}, 100
                   Q 0 100 ${roundedCorner * dirX2} ${
-        100 - roundedCorner * dirY2
-      }
+                    100 - roundedCorner * dirY2
+                  }
                   L ${16 - roundedCorner * dirX2}, ${50 + roundedCorner * dirY2}
                   Q 16 50 ${16 - roundedCorner * dirX2} ${
-        50 - roundedCorner * dirY2
-      }
+                    50 - roundedCorner * dirY2
+                  }
                   L ${roundedCorner * dirX2}, ${roundedCorner * dirY2}
                   Q 0 0 ${roundedCorner / 3} 0
                   z`
@@ -66,20 +66,20 @@ function AASliver(props) {
                   Q 74 0 ${74 + roundedCorner * dirX1} ${roundedCorner * dirY1}
                   L ${84 - roundedCorner * dirX1}, ${50 - roundedCorner * dirY1}
                   Q 84 50 ${84 - roundedCorner * dirX1} ${
-        50 + roundedCorner * dirY1
-      }
+                    50 + roundedCorner * dirY1
+                  }
                   L ${74 + roundedCorner * dirX1}, ${
-        100 - roundedCorner * dirY1
-      }
+                    100 - roundedCorner * dirY1
+                  }
                   Q 74 100 ${74 - roundedCorner} 100
                   L ${24 + roundedCorner / 3}, 100
                   Q 24 100 ${24 + roundedCorner * dirX2} ${
-        100 - roundedCorner * dirY2
-      }
+                    100 - roundedCorner * dirY2
+                  }
                   L ${40 - roundedCorner * dirX2}, ${50 + roundedCorner * dirY2}
                   Q 40 50 ${40 - roundedCorner * dirX2}, ${
-        50 - roundedCorner * dirY2
-      }
+                    50 - roundedCorner * dirY2
+                  }
                   L ${24 + roundedCorner * dirX2}, ${roundedCorner * dirY2}
                   Q 24 0 ${24 + roundedCorner / 3} 0
                   z`
@@ -88,20 +88,20 @@ function AASliver(props) {
                   Q 74 0 ${74 + roundedCorner * dirX1} ${roundedCorner * dirY1}
                   L ${84 - roundedCorner * dirX1}, ${50 - roundedCorner * dirY1}
                   Q 84 50 ${84 - roundedCorner * dirX1} ${
-        50 + roundedCorner * dirY1
-      }
+                    50 + roundedCorner * dirY1
+                  }
                   L ${74 + roundedCorner * dirX1}, ${
-        100 - roundedCorner * dirY1
-      }
+                    100 - roundedCorner * dirY1
+                  }
                   Q 74 100 ${74 - roundedCorner / 3} 100
                   L ${roundedCorner / 3}, 100
                   Q 0 100 ${roundedCorner * dirX2} ${
-        100 - roundedCorner * dirY2
-      }
+                    100 - roundedCorner * dirY2
+                  }
                   L ${16 - roundedCorner * dirX2}, ${50 + roundedCorner * dirY2}
                   Q 16 50 ${16 - roundedCorner * dirX2}, ${
-        50 - roundedCorner * dirY2
-      }
+                    50 - roundedCorner * dirY2
+                  }
                   L ${roundedCorner * dirX2}, ${roundedCorner * dirY2}
                   Q 0 0 ${roundedCorner / 3} 0
                   z`;

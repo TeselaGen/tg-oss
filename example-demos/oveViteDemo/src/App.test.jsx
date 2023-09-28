@@ -8,7 +8,7 @@ test("renders circular map", () => {
   const { getByText } = render(
     <Provider store={store}>
       <App />
-    </Provider>,
+    </Provider>
   );
   const linkElement = getByText(/circular map/i);
   expect(linkElement).toBeDefined();

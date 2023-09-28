@@ -25,6 +25,7 @@ export default async function tryToMatchSchemas({
   incomingData,
   validateAgainstSchema
 }) {
+  await resolveValidateAgainstSchema(validateAgainstSchema);
   const userSchema = getSchema(incomingData);
 
   const { searchResults, csvValidationIssue } = await matchSchemas({
@@ -219,3 +220,15 @@ export const addSpecialPropToAsyncErrs = res => {
   });
   return res;
 };
+
+async function resolveValidateAgainstSchema() {
+  //tnw: wip!
+  // mapSeries(validateAgainstSchema.fields, async f => {
+  //   if (f.type === "dropdown") {
+  //     console.log(`type:`, f.type)
+  //     if (f.getValues) {
+  //       f.values = await f.getValues(props);
+  //     }
+  //   }
+  // })
+}

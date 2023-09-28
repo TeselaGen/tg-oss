@@ -96,17 +96,22 @@ export default function SimpleTable(p) {
   const [withCheckboxes, withCheckboxesComp] = useToggle({
     type: "withCheckboxes"
   });
+  const [orderByFirstColumn, orderByFirstColumnComp] = useToggle({
+    type: "orderByFirstColumn"
+  });
   return (
     <div>
       <OptionsSection>
         {isEntityDisabledComp}
         {withCheckboxesComp}
+        {orderByFirstColumnComp}
       </OptionsSection>
       <DemoWrapper>
         <DataTable
           formName="simpleTable"
           isSimple
           withCheckboxes={withCheckboxes}
+          orderByFirstColumn={orderByFirstColumn}
           entities={entities}
           schema={schema}
           isEntityDisabled={

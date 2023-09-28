@@ -228,7 +228,7 @@ function UploaderInner({
           }
           handleManuallyEnterData = async e => {
             e.stopPropagation();
-            const { newEntities } = await showSimpleInsertDataDialog(
+            const { newEntities, fileName } = await showSimpleInsertDataDialog(
               "onSimpleInsertDialogFinish",
               {
                 validateAgainstSchema
@@ -239,10 +239,7 @@ function UploaderInner({
             } else {
               //check existing files to make sure the new file name gets incremented if necessary
               // fileList
-              const newFileName = getNewName(
-                fileListToUse,
-                `manual_data_entry.csv`
-              );
+              const newFileName = getNewName(fileListToUse, fileName);
               const { newFile, cleanedEntities } = getNewCsvFile(
                 newEntities,
                 newFileName
@@ -948,32 +945,33 @@ function UploaderInner({
                       )}
                       {innerText ||
                         (minimal ? "Upload" : "Click or drag to upload")}
+                      {validateAgainstSchema && (
+                        <div
+                          style={{
+                            textAlign: "center",
+                            // fontSize: 18,
+                            marginTop: 7,
+                            marginBottom: 5
+                          }}
+                          onClick={handleManuallyEnterData}
+                          className="link-button"
+                        >
+                          ...or {manualEnterMessage}
+                          {/* <div
+                            style={{
+                              fontSize: 11,
+                              color: Colors.GRAY3,
+                              fontStyle: "italic"
+                            }}
+                          >
+                            {manualEnterSubMessage}
+                          </div> */}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-                {validateAgainstSchema && (
-                  <div
-                    style={{
-                      textAlign: "center",
-                      fontSize: 18,
-                      marginTop: 7,
-                      marginBottom: 5
-                    }}
-                    onClick={handleManuallyEnterData}
-                    className="link-button"
-                  >
-                    {manualEnterMessage}
-                    <div
-                      style={{
-                        fontSize: 11,
-                        color: Colors.GRAY3,
-                        fontStyle: "italic"
-                      }}
-                    >
-                      {manualEnterSubMessage}
-                    </div>
-                  </div>
-                )}
+
                 {showFilesCount ? (
                   <div className="tg-upload-file-list-counter">
                     Files: {fileList ? fileList.length : 0}
@@ -1057,12 +1055,15 @@ function UploaderInner({
                                 validateAgainstSchema
                               });
 
-                              const { newEntities } =
+                              const { newEntities, fileName } =
                                 await showSimpleInsertDataDialog(
                                   "onSimpleInsertDialogFinish",
                                   {
                                     dialogProps: {
                                       title: "Edit Data"
+                                    },
+                                    initialValues: {
+                                      fileName: removeExt(file.name)
                                     },
                                     validateAgainstSchema,
                                     isEditingExistingFile: true,
@@ -1076,14 +1077,16 @@ function UploaderInner({
                                 return;
                               } else {
                                 const { newFile, cleanedEntities } =
-                                  getNewCsvFile(newEntities, file.name);
-                                // file.parsedData = newEntities;
-                                Object.assign(file, {
+                                  getNewCsvFile(newEntities, fileName);
+                                const zoink = Object.assign({}, file, {
                                   ...newFile,
                                   originFileObj: newFile,
                                   originalFileObj: newFile,
                                   parsedData: cleanedEntities
                                 });
+                                zoink.name = newFile.name;
+                                fileList = [...fileList];
+                                fileList[index] = zoink;
                                 handleSecondHalfOfUpload({
                                   acceptedFiles: fileList,
                                   cleanedFileList: fileList

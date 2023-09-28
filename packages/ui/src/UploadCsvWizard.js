@@ -21,6 +21,7 @@ import { MatchHeaders } from "./MatchHeaders";
 import { isEmpty } from "lodash";
 import { addSpecialPropToAsyncErrs } from "./FormComponents/tryToMatchSchemas";
 import { cloneDeep } from "lodash";
+import { InputField } from "./FormComponents";
 
 const getInitialSteps = csvValidationIssue => [
   { text: "Review Headers", active: csvValidationIssue },
@@ -594,7 +595,7 @@ export const PreviewCsvData = observer(function (props) {
 export const SimpleInsertDataDialog = compose(
   wrapDialog({
     canEscapeKeyClose: false,
-    title: "Insert Data",
+    title: "Build CSV File",
     style: { width: "fit-content" }
   }),
   reduxForm({ form: "SimpleInsertDataDialog" }),
@@ -628,6 +629,16 @@ export const SimpleInsertDataDialog = compose(
   return (
     <>
       <div className="bp3-dialog-body">
+        <InputField
+          isRequired
+          rightElement={
+            <div style={{ paddingTop: 6, paddingRight: 5 }}>.csv</div>
+          }
+          inlineLabel
+          label="File Name:"
+          defaultValue={"manual_data_entry"}
+          name="fileName"
+        ></InputField>
         <PreviewCsvData
           {...{
             matchedHeaders,
@@ -644,7 +655,7 @@ export const SimpleInsertDataDialog = compose(
       </div>
       <DialogFooter
         submitting={submitting}
-        onClick={handleSubmit(async () => {
+        onClick={handleSubmit(async ({ fileName }) => {
           if (some(validationToUse, e => e)) return;
           //do async validation here if needed
           if (
@@ -657,6 +668,7 @@ export const SimpleInsertDataDialog = compose(
           )
             return;
           onSimpleInsertDialogFinish({
+            fileName: fileName + ".csv",
             newEntities: maybeStripIdFromEntities(
               entsToUse,
               validateAgainstSchema
