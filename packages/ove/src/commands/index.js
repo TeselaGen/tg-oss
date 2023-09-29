@@ -59,7 +59,7 @@ const getNewTranslationHandler = isReverse => ({
   isHidden: props =>
     isProtein(props) ||
     !props.annotationsToSupport ||
-    // props.readOnly ||
+    props.readOnly ||
     !props.annotationsToSupport.translations,
   isDisabled: props =>
     /* (props.readOnly && readOnlyDisabledTooltip) ||  */ props.sequenceLength ===
