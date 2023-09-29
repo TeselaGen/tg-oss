@@ -663,9 +663,7 @@ function UploaderInner({
                 }
                 if (!acceptedFiles.length) return;
                 setLoading(true);
-                if (fileLimit) {
-                  acceptedFiles = acceptedFiles.slice(0, fileLimit);
-                }
+                acceptedFiles = trimFiles(acceptedFiles, fileLimit);
 
                 acceptedFiles.forEach(file => {
                   file.preview = URL.createObjectURL(file);
@@ -899,11 +897,10 @@ function UploaderInner({
                       `It looks like there wasn't any data in your file. Please add some data and try again`
                     );
                 }
-                const cleanedFileList = [...toKeep, ...fileListToUse].slice(
-                  0,
-                  fileLimit ? fileLimit : undefined
+                const cleanedFileList = trimFiles(
+                  [...toKeep, ...fileListToUse],
+                  fileLimit
                 );
-
                 handleSecondHalfOfUpload({ acceptedFiles, cleanedFileList });
               }
             }}
@@ -1203,3 +1200,18 @@ function stripId(ents = []) {
 
 const manualEnterMessage = "Build CSV File";
 const manualEnterSubMessage = "Paste or type data to build a CSV file";
+
+function trimFiles(incomingFiles, fileLimit) {
+  if (fileLimit) {
+    if (fileLimit && incomingFiles.length > fileLimit) {
+      window.toastr &&
+        window.toastr.warning(
+          `Detected additional files in your upload that we are ignoring. You can only upload ${fileLimit} file${
+            fileLimit > 1 ? "s" : ""
+          } at a time.`
+        );
+    }
+    return incomingFiles.slice(0, fileLimit);
+  }
+  return incomingFiles;
+}

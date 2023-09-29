@@ -2,6 +2,7 @@ describe("upload", () => {
   it(`Uploader component should be able to upload (the file list won't get updated because there is no state backing that, redux or otherwise)`, () => {
     cy.visit("#/Uploader");
     cy.tgToggle(`accept`);
+    cy.tgToggle(`autoUnzip`);
     cy.get(`a:contains(.ab1)`).click();
     cy.get(`.bp3-menu-item:contains(Download File 1)`);
     cy.get(`.tgFileTypeDescriptor:contains(.zip)`);
@@ -58,7 +59,7 @@ describe("upload", () => {
       true
     );
 
-    cy.contains("type must be .zip, .json");
+    cy.contains("type must be .json");
     cy.uploadBlobFiles(
       ".fileUploadLimitAndType.tg-dropzone",
       [

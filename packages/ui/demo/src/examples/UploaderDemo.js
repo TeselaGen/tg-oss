@@ -12,6 +12,9 @@ export default function UploaderDemo() {
     type: "accept",
     label: "Toggle Advance Accept"
   });
+  const [autoUnzip, autoUnzipToggleComp] = useToggle({
+    type: "autoUnzip"
+  });
   // const [advancedAccept, advancedAcceptToggleComp] = useToggle({
   //   type: "accept",
   //   label: "Toggle Advance Accept"
@@ -21,9 +24,11 @@ export default function UploaderDemo() {
       <OptionsSection>
         {disabledToggleComp}
         {advancedAcceptToggleComp}
+        {autoUnzipToggleComp}
       </OptionsSection>
       <DemoWrapper>
         <Uploader
+          autoUnzip={autoUnzip}
           accept={
             advancedAccept
               ? [
@@ -103,8 +108,10 @@ export default function UploaderDemo() {
                 ]
               : ["gb", "gp"]
           }
-          onChange={() => {
-            window.toastr.success("File uploaded!");
+          onChange={f => {
+            if (f.length > 0) {
+              window.toastr.success("File uploaded!");
+            }
           }}
           disabled={disabled}
         />
