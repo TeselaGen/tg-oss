@@ -1382,13 +1382,24 @@ class DataTable extends React.Component {
             {...(isCellEditable && {
               tabIndex: -1,
               onKeyDown: e => {
-                const isArrowKey =
-                  (e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode === 9;
-                if (isArrowKey && e.target?.tagName !== "INPUT") {
+                // const isArrowKey =
+                //   (e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode === 9;
+                // if (isArrowKey && e.target?.tagName !== "INPUT") {
+                const isTabKey = e.keyCode === 9;
+                // const isEnter = e.keyCode === 13;
+                // console.log(`onKeydown datatable inner`);
+                // console.log(`isEnter:`, isEnter)
+                const isArrowKey = e.keyCode >= 37 && e.keyCode <= 40;
+                // console.log(`e.target?.tagName:`,e.target?.tagName)
+                if (
+                  (isArrowKey && e.target?.tagName !== "INPUT") ||
+                  isTabKey
+                  // || (isEnter && e.target?.tagName === "INPUT")
+                ) {
                   const { schema, entities } = computePresets(this.props);
                   const left = e.keyCode === 37;
                   const up = e.keyCode === 38;
-                  const down = e.keyCode === 40;
+                  const down = e.keyCode === 40 || e.keyCode === 13;
                   let cellIdToUse = this.getPrimarySelectedCellId();
                   const pathToIndex = getFieldPathToIndex(schema);
                   const entityMap = getEntityIdToEntity(entities);

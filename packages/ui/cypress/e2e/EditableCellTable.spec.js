@@ -24,14 +24,14 @@ describe("EditableCellTable.spec", () => {
       `[data-tip="Must include the letter 'a'"] [data-test="tgCell_name"]:first`
     ).should("contain", "tom88"); //should lowercase "Tom88"
     cy.get(`[data-test="tgCell_name"]:first`).click();
-    cy.get(".cellDragHandle").should("exist");
+    cy.get(".cellDragHandle");
     cy.get(`[data-test="tgCell_name"]:first`).dblclick();
     cy.get(".cellDragHandle").should("not.exist");
     cy.focused().type("_zonk{enter}");
     cy.get(
       `[data-tip="Must include the letter 'a'"] [data-test="tgCell_name"]:first`
     ).should("contain", "tom88_zonk");
-    cy.get(".cellDragHandle").should("exist");
+    cy.get(".cellDragHandle");
   });
   it(`typing a letter should start edit`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
@@ -120,11 +120,43 @@ describe("EditableCellTable.spec", () => {
   it(`arrow keys should not be activated when an input is actively being typed in`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`[data-test="tgCell_howMany"]`).eq(3).dblclick({ force: true });
+    cy.get(
+      `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_howMany"]`
+    );
     cy.focused().type(`444{leftArrow}`);
+    cy.get(
+      `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_howMany"]`
+    );
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_weather"]`
     ).should("not.exist");
   });
+  it(`tab key should be activated when an input is actively being typed in`, () => {
+    cy.visit("#/DataTable%20-%20EditableCellTable");
+    cy.get(
+      `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
+    ).should("not.exist");
+    cy.get(`[data-test="tgCell_name"]`).eq(3).click({ force: true });
+    cy.get(`.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`);
+    cy.get(`[data-test="tgCell_name"]`).eq(3).dblclick({ force: true });
+    cy.focused().type(`haha`).typeTab();
+    cy.get(
+      `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
+    ).should("not.exist");
+  });
+  // it.only(`enter key should be activated when an input is actively being typed in and move the user to the next cell below`, () => {
+  //   cy.visit("#/DataTable%20-%20EditableCellTable");
+  //   cy.get(
+  //     `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
+  //   ).should("not.exist");
+  //   cy.get(`[data-test="tgCell_name"]`).eq(3).click({ force: true });
+  //   cy.get(`.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`);
+  //   cy.focused().type(`{enter}`)
+  //   cy.focused().type(`haha{enter}`)
+  //   cy.get(
+  //     `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
+  //   ).should("not.exist");
+  // });
   it(`arrow keys should work together with shift and dragging should work`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`[data-test="tgCell_howMany"]`).eq(3).click({ force: true });
@@ -232,7 +264,7 @@ describe("EditableCellTable.spec", () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`[data-index="59"]`).should("not.exist");
     cy.contains(`Add 10 Rows`).click();
-    cy.get(`[data-index="59"]`).should("exist");
+    cy.get(`[data-index="59"]`);
     //the last error should now be in the type column
     cy.get(`.rt-td.hasCellError:last [data-test="tgCell_tags"]`).should(
       "exist"
@@ -251,7 +283,7 @@ describe("EditableCellTable.spec", () => {
     cy.get(`.rt-td:contains(tom88)`).click();
     cy.get(`[data-index="6"]`).click({ shiftKey: true });
     cy.get(`[data-index="6"]`).rightclick();
-    cy.get(`[data-index="43"]`).should("exist");
+    cy.get(`[data-index="43"]`);
     cy.contains("Remove Rows").click();
     cy.get(`[data-index="43"]`).should("not.exist"); //6 rows should be deleted!
     cy.get(`.rt-td:contains(tom88)`).should("not.exist");
@@ -265,9 +297,8 @@ laura stevens	new	HOT	6	Yes
 lucas jensen	old	rainy	4	false
 todd ross	old	snowy	4	no`);
     cy.get(`[data-test="tgCell_isProtein"]:last[data-copy-text="False"]`);
-    cy.get(`[data-test="tgCell_weather"]:last`)
-      .closest(`.hasCellError`)
-      .should("exist");
-    cy.get(`[data-index="52"]`).should("exist");
+    cy.get(`[data-test="tgCell_weather"]:last`).closest(`.hasCellError`);
+
+    cy.get(`[data-index="52"]`);
   });
 });
