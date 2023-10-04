@@ -4,6 +4,7 @@ import withHover from "../../helperComponents/withHover";
 import "./style.css";
 import React from "react";
 import { cloneDeep, clamp, noop } from "lodash";
+import { avoidOverlapWith } from "../drawAnnotations";
 
 const fontWidthToFontSize = 1.75;
 
@@ -262,7 +263,7 @@ const DrawLabelGroup = withHover(function ({
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
 
   let content;
-  const labelClass = ` veLabelText veCircularViewLabelText clickable ${label.color} `;
+  const labelClass = ` veLabelText veLabel veCircularViewLabelText clickable ${label.color} `;
 
   if ((multipleLabels || groupLabelXStart !== undefined) && hovered) {
     //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
@@ -310,7 +311,7 @@ const DrawLabelGroup = withHover(function ({
       line,
 
       <PutMyParentOnTop editorName={editorName} key="gGroup">
-        <g className={className + " topLevelLabelGroup"}>
+        <g className={className + " veLabel topLevelLabelGroup"}>
           <rect
             onMouseOver={cancelFn}
             // zIndex={10}
@@ -355,9 +356,11 @@ const DrawLabelGroup = withHover(function ({
   } else {
     //DRAW A SINGLE LABEL
     content = [
-      <title key="labeltitle">{label.title || label.text}</title>,
+      // <title key="labeltitle">{label.title || label.text}</title>,
       <text
         key="text"
+        data-title={label.title || label.text}
+        {...avoidOverlapWith}
         x={labelXStart}
         textLength={getTextLength(text) * fontWidth}
         lengthAdjust="spacing"
@@ -444,6 +447,8 @@ const DrawGroupInnerLabel = withHover(
   ({ className, labelXStart, label, fontWidth, onMouseOver, index, dy }) => {
     return (
       <tspan
+        data-title={label.title}
+        {...avoidOverlapWith}
         x={labelXStart}
         textLength={getTextLength(label.text) * fontWidth}
         lengthAdjust="spacing"
@@ -461,7 +466,7 @@ const DrawGroupInnerLabel = withHover(
         {...{ onMouseOver }}
         className={className}
       >
-        <title>{label.title}</title>
+        {/* <title>{label.title}</title> */}
         {label.text}
       </tspan>
     );

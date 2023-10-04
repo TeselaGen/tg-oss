@@ -32,6 +32,37 @@ export default function EllipsizedTextAutoTooltip() {
             isOpen={isOpen}
           ></MyDialog>
         )}
+
+        <code>{`<Button data-title="I'm a tooltip that works like a title">`}</code>
+        <Button data-title="I'm a tooltip that works like a title">
+          Hover me!
+        </Button>
+        <code>{`<Button data-title="I'm a tooltip that works like a title" data-avoid=".avoidMe">`}</code>
+        <Button
+          data-title="I'm a tooltip that works like a title"
+          data-avoid=".avoidMe"
+        >
+          Hover me!
+        </Button>
+        <div
+          style={{
+            height: 100,
+            width: 100,
+            backgroundColor: "red"
+          }}
+          className="avoidMe"
+        >
+          avoid me
+        </div>
+        <Button
+          data-title={`I'm a tooltip that works like a title
+          
+          zonk
+          `}
+          data-avoid=".avoidMe"
+        >
+          Hover me!
+        </Button>
       </DemoWrapper>
       <br></br>
       <DemoWrapper>
@@ -72,6 +103,32 @@ textOverflow: "ellipsis"`}
           lalasdlfasdflkajsdflI'm some long ellipsized text
           lalasdlfasdflkajsdflI'm some long ellipsized text lalasdlfasdflkajsdfl
         </div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
       </DemoWrapper>
     </div>
   );
