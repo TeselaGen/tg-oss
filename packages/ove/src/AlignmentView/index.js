@@ -737,7 +737,7 @@ export class AlignmentView extends React.Component {
             scrollbarWidth: "none",
             whiteSpace: "nowrap"
           }}
-          title={name}
+          data-title={name}
           key={i}
         >
           <div
@@ -1514,7 +1514,7 @@ export class AlignmentView extends React.Component {
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap"
                       }}
-                      title={
+                      data-title={
                         this.props.alignmentType || "Unknown Alignment Type"
                       }
                     >

@@ -64,20 +64,44 @@ export default compose(
     }, hoveredAnnotationActions)
   ),
   withHandlers({
-    onMouseOver: props => e => {
-      const { editorName, id, hoveredAnnotationUpdate } = props;
-      const isIdHashmap = typeof id === "object";
-      const idToPass = isIdHashmap ? Object.keys(id)[0] : id;
-      const annot = props?.annotation || props?.label?.annotation;
-      if (modifiableTypes.includes(annot?.annotationTypePlural)) {
-        hoveredAnnEasyStore.hoveredAnn = annot;
-      }
-      //because the calling onHover can slow things down, we disable it if dragging or scrolling
-      if (window.__veDragging || window.__veScrolling) return;
-      e.stopPropagation(); //this is important otherwise hovering labels inside circular view label groups won't work
-      hoveredAnnotationUpdate &&
-        hoveredAnnotationUpdate(idToPass, { editorName });
-    },
+    onMouseOver: props =>
+      function (e) {
+        // loop through the target element and the parents and see if any of them have the hoverHelper class
+        // if they do, then we don't want to trigger the hover event
+        // if they don't, then we do want to trigger the hover event
+        // we should stop the loop if the target element is implementing this onMouseOver event
+        // e.stopPropagation(); //this is important otherwise hovering labels inside circular view label groups won't work
+        const target = e.target;
+        let alreadyHandled = false;
+        let currentElement = target;
+        while (currentElement) {
+          if (currentElement === e.currentTarget) {
+            break;
+          }
+          // console.log(`currentElement:`, currentElement)
+
+          if (currentElement.classList.contains("hoverHelper")) {
+            alreadyHandled = true;
+            break;
+          }
+          currentElement = currentElement.parentElement;
+        }
+        if (alreadyHandled) return;
+
+        // const alreadyHandled = e.target.classList.contains("hoverHelper");
+        const { editorName, id, hoveredAnnotationUpdate } = props;
+        const isIdHashmap = typeof id === "object";
+        const idToPass = isIdHashmap ? Object.keys(id)[0] : id;
+        const annot = props?.annotation || props?.label?.annotation;
+        if (modifiableTypes.includes(annot?.annotationTypePlural)) {
+          hoveredAnnEasyStore.hoveredAnn = annot;
+        }
+        //because the calling onHover can slow things down, we disable it if dragging or scrolling
+        if (window.__veDragging || window.__veScrolling) return;
+
+        hoveredAnnotationUpdate &&
+          hoveredAnnotationUpdate(idToPass, { editorName });
+      },
     onMouseLeave: props => e => {
       hoveredAnnEasyStore.hoveredAnn = undefined;
       const { editorName, hoveredAnnotationClear } = props;

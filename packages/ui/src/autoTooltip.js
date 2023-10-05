@@ -1,7 +1,9 @@
-import tippy from "tippy.js";
+import tippy, { followCursor } from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
 let tippys = [];
+let recentlyHidden = false;
+let clearMe;
 (function () {
   let lastMouseOverElement = null;
   document.addEventListener("mouseover", function (event) {
@@ -24,23 +26,94 @@ let tippys = [];
         });
       }
       let innerRun = false;
-      const inner = (content, el) => {
+      const inner = (
+        content,
+        el,
+        { dataTitle, dataAvoid, dataAvoidBackup }
+      ) => {
         innerRun = true;
         document.querySelectorAll(`.${id}`).forEach(elem => {
           elem.classList.remove(id);
         });
 
         el.classList.add(id);
-
         const inst = tippy(`.${id}`, {
+          plugins: [followCursor],
           content,
-          delay: [0, 0],
-          allowHTML: true
+          delay:
+            dataTitle && !recentlyHidden
+              ? [1300, 1300]
+              : dataTitle
+              ? [150, 150]
+              : [0, 0],
+          allowHTML: true,
+          ...(dataTitle && {
+            followCursor: dataTitle ? "initial" : false
+          }),
+          onHidden() {
+            recentlyHidden = true;
+            clearMe && clearTimeout(clearMe);
+            clearMe = setTimeout(() => {
+              if (tippys.length === 0) recentlyHidden = false;
+            }, 700);
+          },
+          ...(dataAvoid && {
+            popperOptions: {
+              modifiers: [
+                {
+                  name: "myModifier",
+                  enabled: true,
+                  phase: "beforeWrite",
+                  requires: ["computeStyles"],
+                  requiresIfExists: ["offset"],
+                  fn({ state }) {
+                    // console.log(`state:`, state);
+                    // state.styles.popper.bottom = 20 + "px";
+                    const customBoundary =
+                      document.querySelector(dataAvoid) ||
+                      document.querySelector(dataAvoidBackup);
+
+                    if (!customBoundary) return;
+                    const a = customBoundary.getBoundingClientRect();
+                    // console.log(
+                    //   `state.rects.reference.y:`,
+                    //   state.rects.reference.y
+                    // );
+                    // console.log(`a.top:`, a.top);
+
+                    if (a.top < state.rects.reference.y) {
+                      const b = Math.abs(
+                        Math.abs(a.top - state.rects.reference.y) - 10
+                      );
+                      state.styles.popper.bottom = b + "px";
+                    }
+
+                    // const overflow = detectOverflow(state, {
+                    //   boundary: customBoundary,
+                    //   altBoundary: true
+                    // });
+                    // console.log(`overflow:`, overflow);
+                    // if (overflow.bottom > 0) {
+                    //   const a = Math.abs(overflow.bottom);
+                    //   state.styles.popper.bottom = a + "px";
+                    // }
+                  }
+                }
+              ]
+            }
+          })
         });
+
+        if (dataTitle) {
+          inst[0]?.popper?.classList.add("isDataTitle");
+        }
         clearOldTippys(...inst);
-        inst.forEach(i => {
-          i.show();
-        });
+
+        if (!dataTitle) {
+          inst.forEach(i => {
+            i.show();
+          });
+        }
 
         tippys = [...tippys, ...inst];
         if (content === el.getAttribute("title")) {
@@ -57,14 +130,22 @@ let tippys = [];
         const style = window.getComputedStyle(el);
         const whiteSpace = style.getPropertyValue("white-space");
         const textOverflow = style.getPropertyValue("text-overflow");
-        dataTip = el.getAttribute("data-tip");
+        const dataTitle = el.getAttribute("data-title");
+        const dataAvoid = el.getAttribute("data-avoid");
+        const dataAvoidBackup = el.getAttribute("data-avoid-backup");
+        dataTip = el.getAttribute("data-tip") || dataTitle;
         const isEllipsized =
           whiteSpace === "nowrap" && textOverflow === "ellipsis";
 
+        const opts = {
+          dataTitle,
+          dataAvoid,
+          dataAvoidBackup
+        };
         if (dataTip) {
           if (dataTipStop) break;
 
-          inner(dataTip, el);
+          inner(dataTip, el, opts);
           break;
         } else if (
           isEllipsized &&
@@ -73,7 +154,7 @@ let tippys = [];
           el.textContent &&
           el.textContent?.trim?.().length !== 0
         ) {
-          inner(el.textContent, el);
+          inner(el.textContent, el, opts);
           break;
         } else if (isEllipsized && el.offsetWidth >= el.scrollWidth) {
           // break; //tnr: i don't think we need this..

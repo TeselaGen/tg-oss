@@ -360,7 +360,6 @@ function DrawAnnotationInner({
     onMouseLeave,
     onMouseOver
   };
-  const title = <title>{titleText}</title>;
   function getInner(
     {
       startAngle,
@@ -381,17 +380,15 @@ function DrawAnnotationInner({
     return (
       <g
         transform={transform}
+        data-title={noTitle ? null : titleText}
+        {...avoidOverlapWith}
         key={
           isNotLocation
             ? "notLocation"
             : "location--" + annotation.id + "--" + i
         }
-        // {...(ellipsizedName && ellipsizedName !== name
-        //   ? { "data-tip": name }
-        //   : {})}
         {...sharedProps}
       >
-        {noTitle ? null : title}
         <Annotation
           {...(passAnnotation && { annotation })}
           annotationType={annotationType}
@@ -431,3 +428,8 @@ function DrawAnnotationInner({
 }
 
 const DrawAnnotation = withHover(DrawAnnotationInner);
+
+export const avoidOverlapWith = {
+  "data-avoid": ".topLevelLabelGroup",
+  "data-avoid-backup": ".veLabel.veAnnotationHovered"
+};

@@ -28,6 +28,7 @@ describe("find tool", function () {
   });
   it(`when there is only 2 search results but the search is palindromic, typing enter in the find tool should jump you back to the search layer`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.hideCutsites();
     cy.focused().type("gacgtc", { delay: 1 }); //this should cause 1 region to be selected
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
     cy.contains("dbl term").click({ force: true });

@@ -157,6 +157,18 @@ code {
   display: none;
 }
 
+.isDataTitle .tippy-arrow {
+  opacity: 0 !important;
+}
+.isDataTitle .tippy-box {
+  background-color: #4f4a50f4 !important;
+  border-radius: 0 !important;
+  color: #f3f3f3 !important;
+  font-size: 11px !important;
+  white-space: pre-wrap;
+  padding: 0px 0px !important;
+}
+
 [data-tippy-root] {
   z-index: 100000 !important;
 }
