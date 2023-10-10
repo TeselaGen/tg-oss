@@ -8,6 +8,42 @@ import splitStringIntoLines from "./utils/splitStringIntoLines.js";
 
 import createInitialSequence from "./utils/createInitialSequence";
 
+function getCurrentFeature() {
+  return result.parsedSequence.features[
+    result.parsedSequence.features.length - 1
+  ];
+}
+
+export function parseFeatureLocation(locStr, options) {
+  locStr = locStr.trim();
+  const locArr = [];
+  locStr.replace(/(\d+)/g, function (string, match) {
+    locArr.push(match);
+  });
+  for (let i = 0; i < locArr.length; i += 2) {
+    const start = parseInt(locArr[i], 10) - (inclusive1BasedStart ? 0 : 1);
+    let end = parseInt(locArr[i + 1], 10) - (inclusive1BasedEnd ? 0 : 1);
+    if (isNaN(end)) {
+      //if no end is supplied, assume that the end should be set to whatever the start is
+      //this makes a feature location passed as:
+      //147
+      //function like:
+      //147..147
+      end = start;
+    }
+    const location = {
+      start: start,
+      end: end
+    };
+    const feat = getCurrentFeature();
+    feat.locations.push(
+      options.isProtein
+        ? convertAACaretPositionOrRangeToDna(location)
+        : location
+    );
+  }
+}
+
 function genbankToJson(string, options = {}) {
   const {
     inclusive1BasedStart,
@@ -267,12 +303,6 @@ function genbankToJson(string, options = {}) {
     resultsArray.push(result || { success: false });
   }
 
-  function getCurrentFeature() {
-    return result.parsedSequence.features[
-      result.parsedSequence.features.length - 1
-    ];
-  }
-
   function addMessage(msg) {
     if (result.messages.indexOf(msg === -1)) {
       return result.messages.push(msg);
@@ -491,36 +521,6 @@ function genbankToJson(string, options = {}) {
       qual = true;
     }
     return qual;
-  }
-
-  function parseFeatureLocation(locStr, options) {
-    locStr = locStr.trim();
-    const locArr = [];
-    locStr.replace(/(\d+)/g, function (string, match) {
-      locArr.push(match);
-    });
-    for (let i = 0; i < locArr.length; i += 2) {
-      const start = parseInt(locArr[i], 10) - (inclusive1BasedStart ? 0 : 1);
-      let end = parseInt(locArr[i + 1], 10) - (inclusive1BasedEnd ? 0 : 1);
-      if (isNaN(end)) {
-        //if no end is supplied, assume that the end should be set to whatever the start is
-        //this makes a feature location passed as:
-        //147
-        //function like:
-        //147..147
-        end = start;
-      }
-      const location = {
-        start: start,
-        end: end
-      };
-      const feat = getCurrentFeature();
-      feat.locations.push(
-        options.isProtein
-          ? convertAACaretPositionOrRangeToDna(location)
-          : location
-      );
-    }
   }
 
   function parseFeatureNote(line) {
