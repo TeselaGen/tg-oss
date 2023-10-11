@@ -66,18 +66,20 @@ function genbankToJson(string, options = {}) {
       const isKey = isKeyword(line);
 
       //only set a new LINETYPE in the case that we've encountered a key that warrants it.
-      if (key === "LOCUS") {
-        LINETYPE = key;
-      } else if (key === "REFERENCE") {
-        LINETYPE = key;
-      } else if (key === "FEATURES") {
-        LINETYPE = key;
-      } else if (key === "ORIGIN") {
-        LINETYPE = key;
-      } else if (key === "//") {
-        LINETYPE = key;
-      } else if (isKey === true) {
-        LINETYPE = key;
+      if (!isKeyRunon) {
+        if (key === "LOCUS") {
+          LINETYPE = key;
+        } else if (key === "REFERENCE") {
+          LINETYPE = key;
+        } else if (key === "FEATURES") {
+          LINETYPE = key;
+        } else if (key === "ORIGIN") {
+          LINETYPE = key;
+        } else if (key === "//") {
+          LINETYPE = key;
+        } else if (isKey === true) {
+          LINETYPE = key;
+        }
       }
 
       // IGNORE LINES: DO NOT EVEN PROCESS
