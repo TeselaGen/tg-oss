@@ -1009,6 +1009,20 @@ ORIGIN
     expect(result[0].parsedSequence.features[2].notes.note[0]).toBe(456);
     expect(result[0].parsedSequence.features[3].notes.note[0]).toBe(123);
   });
+
+  it("genbank parses should parse comments correctly ", () => {
+    const string = fs.readFileSync(
+      path.join(
+        __dirname,
+        "./testData/genbank/genebank_embeded_in_comments.gb"
+      ),
+      "utf8"
+    );
+    const result = genbankToJson(string);
+    expect(result[0].success).toBe(true);
+
+    expect(result[0].parsedSequence.size).toBe(6758);
+  });
 });
 
 // const string = fs.readFileSync(path.join(__dirname, '../../../..', './testData/genbank (JBEI Private)/46.gb'), "utf8");
