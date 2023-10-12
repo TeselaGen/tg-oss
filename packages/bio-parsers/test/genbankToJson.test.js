@@ -1020,7 +1020,6 @@ ORIGIN
     );
     const result = genbankToJson(string);
     expect(result[0].success).toBe(true);
-    console.log(result[0].parsedSequence.comments[1700]);
 
     expect(result[0].parsedSequence.size).toBe(6758);
   });
