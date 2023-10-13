@@ -42,7 +42,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.2.2
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: ./demo/dist # The folder the action should deploy.
+          folder: ./demo-dist/ove # The folder the action should deploy.
           target-folder: ove/
           # clean: true # Automatically remove deleted files from the deploy branch
           # clean-exclude: version
