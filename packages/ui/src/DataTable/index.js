@@ -25,7 +25,8 @@ import {
   get,
   padStart,
   omitBy,
-  times
+  times,
+  some
 } from "lodash";
 import joinUrl from "url-join";
 
@@ -1909,7 +1910,9 @@ class DataTable extends React.Component {
       isEntityDisabled,
       entity
     });
-    const _isClean = entity._isClean && doNotValidateUntouchedRows;
+
+    const _isClean =
+      (entity._isClean && doNotValidateUntouchedRows) || isEntityClean(entity);
 
     const err = !_isClean && reduxFormCellValidation[cellId];
     let selectedTopBorder,
@@ -3545,4 +3548,17 @@ function getNumberStrAtEnd(str) {
 
 function stripNumberAtEnd(str) {
   return str.replace(getNumberStrAtEnd(str), "");
+}
+
+export function isEntityClean(e) {
+  let isClean = true;
+  some(e, (val, key) => {
+    if (key === "id") return;
+    if (key === "_isClean") return;
+    if (val) {
+      isClean = false;
+      return true;
+    }
+  });
+  return isClean;
 }

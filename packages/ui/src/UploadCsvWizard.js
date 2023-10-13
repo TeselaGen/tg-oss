@@ -12,7 +12,7 @@ import { tgFormValueSelector } from "./utils/tgFormValues";
 import { some } from "lodash";
 import { times } from "lodash";
 import DialogFooter from "./DialogFooter";
-import DataTable from "./DataTable";
+import DataTable, { isEntityClean } from "./DataTable";
 import wrapDialog from "./wrapDialog";
 import { omit } from "lodash";
 import { connect } from "react-redux";
@@ -703,7 +703,7 @@ async function asyncValidateHelper(
 function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
   const toFilterOut = {};
   const entsToUse = (reduxFormEntities || []).filter(e => {
-    if (!e._isClean) return true;
+    if (!(e._isClean || isEntityClean(e))) return true;
     else {
       toFilterOut[getIdOrCodeOrIndex(e)] = true;
       return false;
