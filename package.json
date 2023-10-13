@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "license": "MIT",
   "scripts": {
+    "postinstall": "patch-package",
     "prepare": "husky install",
     "e2e": "nx affected --base=master --head=HEAD -t e2e"
   },
@@ -139,6 +140,7 @@
     "million": "^2.6.0",
     "nx": "16.9.0",
     "nx-cloud": "16.4.0",
+    "patch-package": "^8.0.0",
     "prettier": "^3.0.3",
     "string-splice": "^1.3.0",
     "string_decoder": "^1.3.0",
