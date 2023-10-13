@@ -25,7 +25,7 @@ jobs:
       - uses: bahmutov/npm-install@v1
         if: steps.check.outputs.changed == 'true'
         with:
-          install-command: yarn --ignore-optional
+          install-command: yarn
 
       - run: yarn nx run ove:build --configuration=demo
         if: steps.check.outputs.changed == 'true'
