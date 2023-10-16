@@ -24,7 +24,8 @@ import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
 import EditorDemo from "./EditorDemo";
 import "./style.css";
-import VersionSwitcher from "./VersionSwitcher";
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { VersionSwitcher } from "@teselagen/shared-demo";
 
 const Demo = () => {
   const [isDarkMode, setDarkMode] = useState(
@@ -130,7 +131,7 @@ const Demo = () => {
               minimal
               icon="menu"
             ></Button>
-            <VersionSwitcher></VersionSwitcher>
+            <VersionSwitcher packageName="ove" />
             <a
               href="https://github.com/TeselaGen/ove-electron#installation-instructions"
               style={{ marginTop: 5, marginLeft: 10 }}

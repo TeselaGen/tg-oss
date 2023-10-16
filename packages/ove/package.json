@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.3.39",
+  "version": "0.3.40",
   "main": "./src/index.js",
   "exports": {
     ".": {

@@ -1,19 +1,26 @@
 import { HTMLSelect } from "@blueprintjs/core";
-import React, { useEffect, useState } from "react";
-import pjson from "../../package.json";
+import React, { useEffect, useRef, useState } from "react";
 
-export default function VersionSwitcher() {
+export default function VersionSwitcher({ packageName = "ove" }) {
   const [options, setOptions] = useState([]);
-
+  const pjson = useRef({});
   //runs on component load
   useEffect(() => {
     (async function fetchData() {
+      pjson.current = await import(`../../${packageName}/package.json`);
+
       try {
+        if (window.Cypress) return;
         let res = await (
           await window.fetch(
-            "https://api.github.com/repos/teselagen/teselagen-react-components/git/trees/gh-pages"
+            "https://api.github.com/repos/teselagen/tg-oss/git/trees/gh-pages"
           )
         ).json();
+        const packageNode = res.tree.find(e => {
+          return e.path.toLowerCase() === packageName;
+        });
+        res = await (await window.fetch(packageNode.url)).json();
+
         const versionNode = res.tree.find(e => {
           return e.path.toLowerCase() === "version";
         });
@@ -45,22 +52,30 @@ export default function VersionSwitcher() {
     })();
   }, []);
 
-  const inner = options.length ? (
-    <div style={{ color: "#f5f8fa" }}>
-      <div style={{ height: "100%", display: "inline-block" }}>Version:</div>{" "}
+  return options.length ? (
+    <div>
+      <div style={{ height: "100%", marginTop: 5, display: "inline-block" }}>
+        Version:
+      </div>{" "}
       <HTMLSelect
         minimal
-        style={{ color: "#f5f8fa" }}
         onChange={function onChange(e) {
-          window.location.href = `https://teselagen.github.io/tg-oss/ui/version/${e.currentTarget.value}`;
+          window.location.href = `https://teselagen.github.io/tg-oss/${packageName}/version/${e.currentTarget.value}/#/Editor`;
         }}
         value={pjson.version}
         options={options}
       ></HTMLSelect>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ marginLeft: 10 }}
+        href="https://github.com/TeselaGen/tg-oss/blob/master/CHANGELOG.md"
+      >
+        Changelog
+      </a>
     </div>
   ) : (
     //fallback to just showing the version
-    <div style={{}}>Version: {pjson.version}</div>
+    <div style={{ marginTop: 5 }}>Version: {pjson.version}</div>
   );
-  return <div>{inner}</div>;
 }
