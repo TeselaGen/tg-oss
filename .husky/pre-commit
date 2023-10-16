@@ -5,3 +5,4 @@ yarn lint-staged --relative
 
 yarn nx affected --target=test --base=master --head=HEAD
 
+yarn auto-changelog -p && git add CHANGELOG.md

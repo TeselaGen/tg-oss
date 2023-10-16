@@ -53,10 +53,18 @@ export default function VersionSwitcher({ packageName = "ove" }) {
   }, []);
 
   return options.length ? (
-    <div>
-      <div style={{ height: "100%", marginTop: 5, display: "inline-block" }}>
-        Version:
-      </div>{" "}
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ paddingTop: 3 }}>
+        <iframe
+          src="https://ghbtns.com/github-btn.html?user=teselagen&repo=tg-oss&type=star&count=true"
+          frameBorder="0"
+          scrolling="0"
+          width="150"
+          height="20"
+          title="GitHub"
+        ></iframe>
+      </div>
+      <div>Version:</div>{" "}
       <HTMLSelect
         minimal
         onChange={function onChange(e) {
