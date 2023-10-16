@@ -8,6 +8,7 @@ import { hoveredAnnEasyStore } from "../helperComponents/withHover";
 import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
 import { partOverhangs } from "./partOverhangs";
 import { isPositionWithinRange } from "@teselagen/range-utils";
+import { isSafari } from "@teselagen/ui";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
@@ -89,6 +90,7 @@ class Sequence extends React.Component {
 
     let inner;
     const shared = {
+      ...(isSafari ? { letterSpacing: "3px" } : {}),
       y: height - height / 4,
       className:
         "ve-monospace-font " + (isReverse ? " ve-sequence-reverse" : "")

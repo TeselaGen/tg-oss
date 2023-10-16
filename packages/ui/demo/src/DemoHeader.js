@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Icon, Tooltip, Button, Classes } from "@blueprintjs/core";
 import classNames from "classnames";
 import "./style.css";
-import VersionSwitcher from "./VersionSwitcher";
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { VersionSwitcher } from "@teselagen/shared-demo";
 
 class DemoHeader extends Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class DemoHeader extends Component {
           alignItems: "center"
         }}
       >
-        <VersionSwitcher />
+        <VersionSwitcher packageName="ui" />
 
         <a
           style={{ fontSize: 16, color: "white" }}

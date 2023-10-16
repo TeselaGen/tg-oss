@@ -1,10 +1,9 @@
 .veCircularViewMiddleOfVectorText {
-  position: absolute;
-  top: 50%;
-  /* position the top  edge of the element at the middle of the parent */
-  left: 49.5%;
-  /* position the left edge of the element at the middle of the parent */
-  transform: translate(-50%, -50%);
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   z-index: 10;
   text-align: center;
   /* This is a shorthand of

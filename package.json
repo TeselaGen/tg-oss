@@ -3,8 +3,9 @@
   "version": "0.2.0",
   "license": "MIT",
   "scripts": {
+    "postinstall": "patch-package",
     "prepare": "husky install",
-    "e2e": "nx affected -t e2e"
+    "e2e": "nx affected --base=master --head=HEAD -t e2e"
   },
   "private": true,
   "dependencies": {
@@ -111,6 +112,7 @@
     "@vitejs/plugin-react": "^4.1.0",
     "@vitest/coverage-c8": "^0.32.2",
     "@vitest/ui": "^0.32.2",
+    "auto-changelog": "^2.4.0",
     "biomsa": "^0.2.4",
     "chai-dom": "^1.11.0",
     "chai-subset": "^1.6.0",
@@ -139,6 +141,7 @@
     "million": "^2.6.0",
     "nx": "16.9.0",
     "nx-cloud": "16.4.0",
+    "patch-package": "^8.0.0",
     "prettier": "^3.0.3",
     "string-splice": "^1.3.0",
     "string_decoder": "^1.3.0",

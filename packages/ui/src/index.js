@@ -63,6 +63,7 @@ export { default as pureNoFunc } from "./utils/pureNoFunc";
 export * from "./utils/tagUtils";
 export * from "./utils/hotkeyUtils";
 export * from "./utils/menuUtils";
+export * from "./utils/browserUtils";
 export * from "./utils/commandUtils";
 export * from "./utils/commandControls";
 

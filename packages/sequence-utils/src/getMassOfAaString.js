@@ -20,5 +20,8 @@ export default function getMassOfAaString(
   if (divideByThree) {
     sumMass /= 3;
   }
+  if (aaString.length > 0) {
+    sumMass = sumMass + 18.0153;
+  }
   return Math.round(sumMass * 10 ** numsAfterDecimal) / 10 ** numsAfterDecimal;
 }
