@@ -12,9 +12,14 @@ export default function VersionSwitcher() {
         if (window.Cypress) return;
         let res = await (
           await window.fetch(
-            "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"
+            "https://api.github.com/repos/teselagen/tg-oss/git/trees/gh-pages"
           )
         ).json();
+        const oveNode = res.tree.find(e => {
+          return e.path.toLowerCase() === "ove";
+        });
+        res = await (await window.fetch(oveNode.url)).json();
+
         const versionNode = res.tree.find(e => {
           return e.path.toLowerCase() === "version";
         });
