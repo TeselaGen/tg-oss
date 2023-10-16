@@ -94,7 +94,7 @@ export default function validateSequence(sequence, options = {}) {
   if (sequence.isProtein) {
     //tnr: add code to strip invalid protein data..
     const [validChars, warnings] = filterSequenceString(sequence.sequence, {
-      ...sequence,
+      name: sequence.name,
       isProtein: true,
       additionalValidChars,
       includeStopCodon

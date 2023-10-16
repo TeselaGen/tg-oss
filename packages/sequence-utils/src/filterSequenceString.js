@@ -9,6 +9,7 @@ export default function filterSequenceString(
   {
     additionalValidChars = "",
     isOligo,
+    name,
     isProtein,
     isRna,
     isMixedRnaAndDna,
@@ -61,7 +62,9 @@ export default function filterSequenceString(
   });
   if (sequenceString.length !== sanitizedVal.length) {
     warnings.push(
-      `Invalid character(s) detected and removed: ${invalidChars
+      `${
+        name ? `Sequence ${name}: ` : ""
+      }Invalid character(s) detected and removed: ${invalidChars
         .slice(0, 100)
         .join(", ")} `
     );

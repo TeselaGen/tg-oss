@@ -139,7 +139,8 @@ class SequenceInputNoHotkeys extends React.Component {
             const [sanitizedVal, warnings] = filterSequenceString(
               e.target.value,
               {
-                ...sequenceData
+                ...sequenceData,
+                name: undefined
               }
             );
             if (warnings.length) {
