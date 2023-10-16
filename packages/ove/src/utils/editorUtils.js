@@ -4,7 +4,6 @@ import { divideBy3 } from "./proteinUtils";
 import {
   getInsertBetweenVals,
   calculatePercentGC,
-  bioData,
   aliasedEnzymesByName
 } from "@teselagen/sequence-utils";
 import { get, sortBy } from "lodash";
@@ -172,24 +171,6 @@ export function getSelFromWrappedAddon(selectionLayer, sequenceLength) {
   return selToUse;
 }
 
-export function getAcceptedChars({
-  isOligo,
-  isProtein,
-  isRna,
-  isMixedRnaAndDna
-} = {}) {
-  return isProtein
-    ? bioData.extended_protein_letters.toLowerCase()
-    : isOligo
-    ? bioData.ambiguous_rna_letters.toLowerCase() + "t"
-    : isRna
-    ? bioData.ambiguous_rna_letters.toLowerCase()
-    : isMixedRnaAndDna
-    ? bioData.ambiguous_rna_letters.toLowerCase() +
-      bioData.ambiguous_dna_letters.toLowerCase()
-    : //just plain old dna
-      bioData.ambiguous_dna_letters.toLowerCase();
-}
 export function getStripedPattern({ color }) {
   return (
     <pattern

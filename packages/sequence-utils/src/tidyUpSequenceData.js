@@ -6,7 +6,6 @@ import { cloneDeep, flatMap } from "lodash";
 import { annotationTypes } from "./annotationTypes";
 import filterSequenceString from "./filterSequenceString";
 import tidyUpAnnotation from "./tidyUpAnnotation";
-import filterAminoAcidSequenceString from "./filterAminoAcidSequenceString";
 import getDegenerateDnaStringFromAaString from "./getDegenerateDnaStringFromAAString";
 import { getFeatureTypes } from "./featureTypesAndColors";
 
@@ -17,11 +16,10 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
     removeUnwantedChars,
     additionalValidChars,
     noTranslationData,
-    charOverrides,
     doNotProvideIdsForAnnotations,
-    proteinFilterOptions,
     noCdsTranslations,
-    convertAnnotationsFromAAIndices
+    convertAnnotationsFromAAIndices,
+    topLevelSeqData
   } = options;
   let seqData = cloneDeep(pSeqData); //sequence is usually immutable, so we clone it and return it
   const response = {
@@ -56,18 +54,17 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
   }
   if (removeUnwantedChars) {
     if (seqData.isProtein) {
-      seqData.proteinSequence = filterAminoAcidSequenceString(
-        seqData.proteinSequence,
-        { includeStopCodon: true, ...proteinFilterOptions }
-      );
+      const [newSeq] = filterSequenceString(seqData.proteinSequence, {
+        includeStopCodon: true,
+        ...(topLevelSeqData || seqData)
+      });
+      seqData.proteinSequence = newSeq;
     } else {
-      seqData.sequence = filterSequenceString(
-        seqData.sequence,
-        `${additionalValidChars || ""}${
-          seqData.isRna || seqData.isMixedRnaAndDna ? "u" : "" //if it is rna or mixed, allow u's
-        }`,
-        charOverrides
-      );
+      const [newSeq] = filterSequenceString(seqData.sequence, {
+        additionalValidChars,
+        ...(topLevelSeqData || seqData)
+      });
+      seqData.sequence = newSeq;
     }
   }
   if (seqData.isProtein) {

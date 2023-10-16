@@ -50,7 +50,7 @@ export default function VersionSwitcher({ packageName = "ove" }) {
         console.error(`e:`, e);
       }
     })();
-  }, []);
+  }, ["packageName"]);
 
   return options.length ? (
     <div style={{ display: "flex", alignItems: "center" }}>
