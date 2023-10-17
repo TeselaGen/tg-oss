@@ -40,7 +40,7 @@ The config files for each package should extend the root config files.
 We use NX to run tasks (https://nx.dev) and cache the task results.
 NX allows us to only lint/build/test the packages that have changed since the last commit and caches the results of the tasks for efficient reruns.
 
-## Getting Started
+## Getting Started (CONTRIBUTING)
 
 Install Deps
 
