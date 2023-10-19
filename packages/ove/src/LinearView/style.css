@@ -1,6 +1,8 @@
 .veLinearView .veRowItemWrapper {
   display: flex;
   justify-content: center;
+}
+.veLinearView.isLinViewZoomed .veRowItemWrapper {
   overflow: auto;
 }
 
