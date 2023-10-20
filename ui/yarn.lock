@@ -110,10 +110,10 @@
   dependencies:
     prop-types "15"
 
-"@teselagen/react-table@^6.10.11":
-  version "6.10.11"
-  resolved "https://registry.npmjs.org/@teselagen/react-table/-/react-table-6.10.11.tgz"
-  integrity sha512-gQ7BMLQhhC+N6rLkL4VPnXgAhGgcHtMTrIE+n6DJ1OXkoWmM3Z05mbF7TiQGFNi30Al0sCxcl+rQE/haL0nxVg==
+"@teselagen/react-table@6.10.13":
+  version "6.10.13"
+  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.13.tgz#a93c73f78d4b36502679032456a1a3bef3c769b9"
+  integrity sha512-xPJ2w2igonhvlFWuuEXzY3HZ5tP4kcK9FFkHyOCl2WSwneUprUWujtxUW4kMxq/lBBiSWlNIM0cosQq1/q5Xiw==
   dependencies:
     "@teselagen/react-list" "0.8.18"
     classnames "^2.2.5"
