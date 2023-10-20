@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.3.46",
+  "version": "0.3.47",
   "main": "./src/index.js",
   "exports": {
     ".": {
@@ -21,7 +21,7 @@
     "@hello-pangea/dnd": "16.2.0",
     "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/react-list": "0.8.18",
-    "@teselagen/react-table": "^6.10.11",
+    "@teselagen/react-table": "6.10.13",
     "@use-gesture/react": "^10.2.23",
     "axios": "^0.21.1",
     "bluebird": "3.7.2",
