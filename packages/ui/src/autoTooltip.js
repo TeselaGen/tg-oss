@@ -142,7 +142,7 @@ let clearMe;
           dataAvoid,
           dataAvoidBackup
         };
-        if (dataTip) {
+        if (dataTip && !document.body.classList.contains("drag-active")) {
           if (dataTipStop) break;
 
           inner(dataTip, el, opts);
@@ -151,6 +151,7 @@ let clearMe;
           isEllipsized &&
           el.offsetWidth < el.scrollWidth - 4 && //the -4 is adding a teeny bit of tolerance to fix issues with the column headers getting tooltips even when fully visible
           !el.classList.contains("no-data-tip") &&
+          !document.body.classList.contains("drag-active") &&
           el.textContent &&
           el.textContent?.trim?.().length !== 0
         ) {

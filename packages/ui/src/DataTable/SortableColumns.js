@@ -28,11 +28,17 @@ class SortableColumns extends Component {
     );
   };
 
-  onSortEnd = ({ oldIndex, newIndex }) => {
+  onSortEnd = (...args) => {
+    const { oldIndex, newIndex } = args[0];
+    document.body.classList.remove("drag-active");
     this.props.moveColumn({
       oldIndex,
       newIndex
     });
+  };
+
+  onSortStart = () => {
+    document.body.classList.add("drag-active");
   };
 
   render() {
@@ -40,6 +46,7 @@ class SortableColumns extends Component {
       <SortableCustomTheadComponent
         {...this.props}
         lockAxis="x"
+        onSortStart={this.onSortStart}
         axis="x"
         distance={10}
         helperClass="above-dialog"

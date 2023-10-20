@@ -229,8 +229,13 @@
 
 .tg-filter-menu-button.tg-active-filter,
 .tg-sort-arrow-container .bp3-icon.active,
-.tg-react-table-column-header:hover .tg-sort-arrow-container .bp3-icon,
-.tg-react-table-column-header:hover .tg-filter-menu-button,
+body:not(.drag-active)
+  .tg-react-table-column-header:hover
+  .tg-sort-arrow-container
+  .bp3-icon,
+body:not(.drag-active)
+  .tg-react-table-column-header:hover
+  .tg-filter-menu-button,
 .tg-filter-menu-button.tg-active-filter,
 .tg-react-table-column-header .bp3-popover-open .tg-filter-menu-button {
   display: block !important;
