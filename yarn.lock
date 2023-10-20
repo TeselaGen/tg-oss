@@ -3128,10 +3128,10 @@
   dependencies:
     prop-types "15"
 
-"@teselagen/react-table@^6.10.11":
-  version "6.10.11"
-  resolved "https://registry.npmjs.org/@teselagen/react-table/-/react-table-6.10.11.tgz"
-  integrity sha512-gQ7BMLQhhC+N6rLkL4VPnXgAhGgcHtMTrIE+n6DJ1OXkoWmM3Z05mbF7TiQGFNi30Al0sCxcl+rQE/haL0nxVg==
+"@teselagen/react-table@6.10.12":
+  version "6.10.12"
+  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.12.tgz#28eefdf24ca61ccb1a1068c97a4a51f0b4d9b69a"
+  integrity sha512-ZCiRwhJ/JDLGWP2hBE7cqe+lZLfF885DCZ2qmwpIWiDO+fssm/D3OGNg6cbwNG8HN/9bUUiTE4aKl1equneA/A==
   dependencies:
     "@teselagen/react-list" "0.8.18"
     classnames "^2.2.5"

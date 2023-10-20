@@ -3228,6 +3228,7 @@ class DataTable extends React.Component {
             ${description} ${isUnique ? "<br>Must be unique" : ""}</div>`
         })}
         data-test={columnTitleTextified}
+        data-path={path}
         data-copy-text={columnTitleTextified}
         className={classNames("tg-react-table-column-header", {
           "sort-active": sortUp || sortDown

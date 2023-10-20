@@ -472,6 +472,7 @@
 }
 
 .ReactTable .rt-thead .rt-th {
+  transition-property: unset;
   padding: 0;
 }
 
