@@ -381,6 +381,7 @@ function DrawAnnotationInner({
       <g
         transform={transform}
         data-title={noTitle ? null : titleText}
+        title={noTitle ? null : titleText}
         {...avoidOverlapWith}
         key={
           isNotLocation

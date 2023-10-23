@@ -360,6 +360,7 @@ const DrawLabelGroup = withHover(function ({
       <text
         key="text"
         data-title={label.title || label.text}
+        title={label.title || label.text}
         {...avoidOverlapWith}
         x={labelXStart}
         textLength={getTextLength(text) * fontWidth}
@@ -448,6 +449,7 @@ const DrawGroupInnerLabel = withHover(
     return (
       <tspan
         data-title={label.title}
+        title={label.title}
         {...avoidOverlapWith}
         x={labelXStart}
         textLength={getTextLength(label.text) * fontWidth}
