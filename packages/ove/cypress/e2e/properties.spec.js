@@ -58,6 +58,8 @@ describe("properties", function () {
   // and have that visible within the genbank view as well`, () => {
     cy.get(".veTabProperties").click();
     cy.get(`.tg-test-description`).contains("Edit").click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(`.tg-test-description textarea`).type(
       "Test description{cmd}{enter}"
     );

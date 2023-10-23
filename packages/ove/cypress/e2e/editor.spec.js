@@ -75,6 +75,8 @@ describe("editor", function () {
 
   it("should fire the rename handler", function () {
     cy.get("body").type("{meta}/");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("rename{enter}");
     cy.focused().type("renamed seq");
     cy.contains(".bp3-dialog button", "OK").click();
@@ -89,6 +91,8 @@ describe("editor", function () {
       "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30"
     );
     cy.get(".bp3-toast .bp3-icon-cross").click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get("body").type("{meta}/").focused().type("select inverse{enter}");
     cy.contains(
       "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 31 end: 9"
@@ -110,6 +114,8 @@ describe("editor", function () {
     cy.contains(".veCircularView text", "pj5_00001")
       .closest(".veVectorInteractionWrapper")
       .type("t", { passThru: true });
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("ttaaa{enter}");
     cy.contains("Sorry the underlying sequence is locked");
   });
@@ -275,7 +281,8 @@ describe("editor", function () {
     cy.tgToggle("beforeSequenceInsertOrDelete");
     cy.contains(".veLabelText", "T0").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
-
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(".sequenceInputBubble input").type("tta{enter}");
     cy.contains(".veLabelText", "CHANGED_SEQ");
   });
@@ -283,7 +290,8 @@ describe("editor", function () {
     cy.tgToggle("beforeSequenceInsertOrDelete");
     cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
-
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(".sequenceInputBubble input").type("tta{enter}");
     cy.contains(".veLabelText", "CHANGED_SEQ");
     cy.contains("Selecting 3 bps from 1 to 3");
@@ -294,7 +302,8 @@ describe("editor", function () {
     cy.tgToggle("maintainOriginSplit");
     cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
-
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(".sequenceInputBubble input").type("tta{enter}");
     cy.contains(".veLabelText", "CHANGED_SEQ");
     cy.contains("Selecting 3 bps from 778 to 780");

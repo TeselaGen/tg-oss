@@ -102,8 +102,12 @@ describe("menuBar", function () {
       .find("svg")
       .should("have.length", 1);
     cy.get("body").type("{meta}/");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("selec all{enter}");
     cy.get("body").type("{meta}/");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("new translation{enter}");
     cy.get(".veRowViewTranslationsContainer")
       .first()
@@ -174,6 +178,8 @@ describe("menuBar", function () {
   });
   it(`should be able to open the hotkeys dialog`, () => {
     cy.get("body").type("{meta}/");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("hotkeys{enter}");
     cy.contains(".bp3-dialog", "Editor Hotkeys");
     cy.focused().type("{esc}", { force: true });
@@ -183,6 +189,8 @@ describe("menuBar", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veLabelText", "araD").should("exist");
     cy.get("body").type("{meta}/");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("remove duplicate feature{enter}", { delay: 1 });
     cy.contains(".rt-td", "dbl term").should("exist");
     cy.contains(".bp3-dialog button", "Remove 2 Duplicates");

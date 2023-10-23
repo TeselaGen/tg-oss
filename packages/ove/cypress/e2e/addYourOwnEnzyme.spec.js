@@ -14,6 +14,8 @@ describe("addAdditionalEnzymes", function () {
     cy.get(".veSelectionLayer").first().rightclick({ force: true });
     // cy.contains(".veLabelText", "araD").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("gacgtc{enter}");
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
 

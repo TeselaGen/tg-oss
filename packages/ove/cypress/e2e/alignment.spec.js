@@ -39,6 +39,8 @@ describe("alignment", function () {
     cy.tgToggle("shouldAutosave");
     cy.tgToggle("allowTrackNameEdit");
     cy.get(".edit-track-name-btn:first").click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("{selectall}asdfasdf{enter}");
     cy.contains("F05206 lallasdfasldfalsdflasdf").should("not.exist");
     cy.contains(".alignmentTrackNameDiv", "asdfasdf");

@@ -24,6 +24,8 @@ describe("label tests", () => {
     cy.contains(".bp3-menu-item", "Feature")
       .find(".bp3-icon-small-tick")
       .should("exist");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type(`{enter}`);
     cy.contains(".bp3-menu-item", "Feature")
       .find(".bp3-icon-small-tick")
@@ -46,6 +48,8 @@ describe("label tests", () => {
     cy.contains(".bp3-menu-item", "Assembly Pieces")
       .find(".bp3-icon-small-tick")
       .should("exist");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type(`{enter}`);
     cy.contains(".bp3-menu-item", "Assembly Pieces")
       .find(".bp3-icon-small-tick")
