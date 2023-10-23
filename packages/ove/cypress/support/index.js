@@ -152,7 +152,7 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
 Cypress.Commands.add("triggerFileCmd", (text, { noEnter } = {}) => {
   cy.get("body").type("{meta}/");
   // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(0);
+  cy.wait(200);
   cy.focused().type(`${text}${noEnter ? "" : "{enter}"}`, { delay: 1 });
 });
 

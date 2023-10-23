@@ -2461,11 +2461,15 @@ class DataTable extends React.Component {
         const oldVal = val;
         const text = this.getCopyTextForCell(val, row, column);
         const isBool = column.type === "boolean";
+        const dataTest = {
+          "data-test": "tgCell_" + column.path
+        };
         if (isCellEditable && isBool) {
           val = (
             <Checkbox
               disabled={isEntityDisabled(row.original)}
               className="tg-cell-edit-boolean-checkbox"
+              {...dataTest}
               checked={oldVal === "True"}
               onChange={e => {
                 const checked = e.target.checked;
@@ -2481,10 +2485,12 @@ class DataTable extends React.Component {
                 <DropdownCell
                   isMulti={column.type === "dropdownMulti"}
                   initialValue={text}
+                  {...dataTest}
                   options={getVals(column.values)}
                   finishEdit={(newVal, doNotStopEditing) => {
                     this.finishCellEdit(cellId, newVal, doNotStopEditing);
                   }}
+                  dataTest={dataTest}
                   cancelEdit={this.cancelCellEdit}
                 ></DropdownCell>
               );
@@ -2494,6 +2500,7 @@ class DataTable extends React.Component {
                   stopSelectAll={() =>
                     change("reduxFormEditingCellSelectAll", false)
                   }
+                  dataTest={dataTest}
                   shouldSelectAll={reduxFormEditingCellSelectAll}
                   cancelEdit={this.cancelCellEdit}
                   isNumeric={column.type === "number"}
@@ -2536,7 +2543,7 @@ class DataTable extends React.Component {
                   overflow: "hidden"
                 })
               }}
-              data-test={"tgCell_" + column.path}
+              {...dataTest}
               className="tg-cell-wrapper"
               data-copy-text={text}
               title={title || undefined}
@@ -3412,7 +3419,8 @@ function EditableCell({
   initialValue,
   finishEdit,
   cancelEdit,
-  isNumeric
+  isNumeric,
+  dataTest
 }) {
   const [v, setV] = useState(initialValue);
   return (
@@ -3429,6 +3437,7 @@ function EditableCell({
           stopSelectAll();
         }
       }}
+      {...dataTest}
       type={isNumeric ? "number" : undefined}
       value={v}
       autoFocus
@@ -3456,7 +3465,8 @@ function DropdownCell({
   isMulti,
   initialValue,
   finishEdit,
-  cancelEdit
+  cancelEdit,
+  dataTest
 }) {
   const [v, setV] = useState(
     isMulti
@@ -3481,6 +3491,7 @@ function DropdownCell({
           }
           finishEdit(val ? val.value : null);
         }}
+        {...dataTest}
         popoverProps={{
           onClose: e => {
             if (isMulti) {

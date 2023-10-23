@@ -10,7 +10,7 @@ describe("rna editing in OVE", function () {
     cy.get(".veSelectionLayer").first().rightclick({ force: true });
     cy.contains(".bp3-menu-item", "Replace").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
+    cy.wait(200);
     cy.focused().type("tguugttuuuuuuuuuuuuuuuaa{enter}");
     cy.contains("Selecting 24 bps from 10 to 33"); //the t's should be converted to u's
     cy.contains("uguuguuuuuuuuuuuuuuuuuaa");
@@ -23,7 +23,7 @@ describe("rna editing in OVE", function () {
     cy.get(".veRowViewSelectionLayer.notCaret").first().rightclick();
     cy.contains(".bp3-menu-item", "Replace").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
+    cy.wait(200);
     cy.focused().type("tguugttuuuuuuuuuuuuuuuaa{enter}");
     cy.contains("Selecting 24 bps from 10 to 33"); //the t's should not be filtered out and neither should the u's
     cy.contains("tguugttuuuuuuuuuuuuuuuaa");
