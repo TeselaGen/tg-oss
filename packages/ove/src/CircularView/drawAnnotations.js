@@ -380,7 +380,7 @@ function DrawAnnotationInner({
     return (
       <g
         transform={transform}
-        data-title={noTitle ? null : titleText}
+        // data-title={noTitle ? null : titleText}
         title={noTitle ? null : titleText}
         {...avoidOverlapWith}
         key={
@@ -390,6 +390,11 @@ function DrawAnnotationInner({
         }
         {...sharedProps}
       >
+        {noTitle ? null : (
+          <g hidden style={{ display: "none" }}>
+            {titleText}
+          </g>
+        )}
         <Annotation
           {...(passAnnotation && { annotation })}
           annotationType={annotationType}

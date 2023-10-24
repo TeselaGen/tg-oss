@@ -2,7 +2,6 @@
 
 export const protein_letters = "ACDEFGHIKLMNPQRSTVWY";
 export const protein_letters_withUandX = "ACDEFGHIKLMNPQRSTVWYUX";
-
 export const extended_protein_letters = "ACDEFGHIKLMNPQRSTVWYBXZJUO.*-";
 export const ambiguous_dna_letters = "GATCRYWSMKHBVDN";
 export const unambiguous_dna_letters = "GATC";

@@ -356,11 +356,12 @@ const DrawLabelGroup = withHover(function ({
   } else {
     //DRAW A SINGLE LABEL
     content = [
-      // <title key="labeltitle">{label.title || label.text}</title>,
+      <g hidden style={{ display: "none" }} key="labeltitle">
+        {label.title || label.text}
+      </g>,
       <text
         key="text"
         data-title={label.title || label.text}
-        title={label.title || label.text}
         {...avoidOverlapWith}
         x={labelXStart}
         textLength={getTextLength(text) * fontWidth}
@@ -449,7 +450,6 @@ const DrawGroupInnerLabel = withHover(
     return (
       <tspan
         data-title={label.title}
-        title={label.title}
         {...avoidOverlapWith}
         x={labelXStart}
         textLength={getTextLength(label.text) * fontWidth}
@@ -468,7 +468,9 @@ const DrawGroupInnerLabel = withHover(
         {...{ onMouseOver }}
         className={className}
       >
-        {/* <title>{label.title}</title> */}
+        <g hidden style={{ display: "none" }}>
+          {label.title}
+        </g>
         {label.text}
       </tspan>
     );
