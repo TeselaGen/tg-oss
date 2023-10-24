@@ -313,13 +313,9 @@ Cypress.Commands.add("replaceSelection", sequenceString => {
     .first()
     .trigger("contextmenu", { force: true });
   cy.contains(".bp3-menu-item", "Replace").click();
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(0);
-  cy.get(".sequenceInputBubble input").type(sequenceString.slice(0, 1));
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(0);
   cy.get(".sequenceInputBubble input").type(
-    `${sequenceString.slice(1)}{enter}`
+    (Cypress.config("isInteractive") ? "" : "            ") +
+      `${sequenceString}{enter}`
   );
 });
 Cypress.Commands.add("deleteSelection", () => {

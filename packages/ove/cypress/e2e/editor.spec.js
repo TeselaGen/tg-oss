@@ -279,20 +279,14 @@ describe("editor", function () {
   });
   it(`should handle beforeSequenceInsertOrDelete hook correctly`, () => {
     cy.tgToggle("beforeSequenceInsertOrDelete");
-    cy.contains(".veLabelText", "T0").trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Replace").click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
-    cy.get(".sequenceInputBubble input").type("tta{enter}");
+    cy.selectRange(10, 20);
+    cy.replaceSelection("ttaa");
     cy.contains(".veLabelText", "CHANGED_SEQ");
   });
   it(`should handle beforeSequenceInsertOrDelete hook correctly while crossing the origin`, () => {
     cy.tgToggle("beforeSequenceInsertOrDelete");
-    cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Replace").click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
-    cy.get(".sequenceInputBubble input").type("tta{enter}");
+    cy.selectRange(778, 3);
+    cy.replaceSelection("taa");
     cy.contains(".veLabelText", "CHANGED_SEQ");
     cy.contains("Selecting 3 bps from 1 to 3");
   });
