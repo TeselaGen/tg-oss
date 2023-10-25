@@ -101,14 +101,8 @@ describe("menuBar", function () {
       .first()
       .find("svg")
       .should("have.length", 1);
-    cy.get("body").type("{meta}/");
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
-    cy.focused().type("selec all{enter}");
-    cy.get("body").type("{meta}/");
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
-    cy.focused().type("new translation{enter}");
+    cy.triggerFileCmd("selec all");
+    cy.triggerFileCmd("new translation");
     cy.get(".veRowViewTranslationsContainer")
       .first()
       .find("svg")

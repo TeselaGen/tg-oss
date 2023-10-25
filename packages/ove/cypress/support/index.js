@@ -152,12 +152,11 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
 Cypress.Commands.add("triggerFileCmd", (text, { noEnter } = {}) => {
   cy.get("body").type("{meta}/");
   // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(0);
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(400);
   cy.focused().type(
     (Cypress.config("isInteractive") ? "" : "            ") +
       `${text}${noEnter ? "" : "{enter}"}`,
-    { delay: 10 }
+    { delay: 40 }
   );
 });
 
@@ -313,6 +312,8 @@ Cypress.Commands.add("replaceSelection", sequenceString => {
     .first()
     .trigger("contextmenu", { force: true });
   cy.contains(".bp3-menu-item", "Replace").click();
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(200);
   cy.get(".sequenceInputBubble input").type(
     (Cypress.config("isInteractive") ? "" : "            ") +
       `${sequenceString}{enter}`
