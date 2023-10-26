@@ -49,10 +49,11 @@ describe("filterSequenceString", () => {
         isProtein: true
       }
     );
+    // expect(warnings[0]).toBe(`Replaced "." with "*" 2 times`);
     expect(warnings[0]).toBe(
-      'Invalid character(s) detected and removed: b, b, b, 3, 4, 2, ", ", ", ,, ,, ., ., / '
+      'Invalid character(s) detected and removed: 3, 4, 2, ", ", ", ,, ,, ., ., / '
     );
-    expect(str).toBe("xtgalmfwkqespvicyhrnd");
+    expect(str).toBe("bbbxtgalmfwkqespvicyhrnd");
   });
   it("when isProtein: true, should handle upper case letters", () => {
     const [str, warnings] = filterSequenceString("xtgalmfWKQEspvicyhrnd", {
@@ -61,12 +62,14 @@ describe("filterSequenceString", () => {
     expect(warnings.length).toBe(0);
     expect(str).toBe("xtgalmfWKQEspvicyhrnd");
   });
-  it("when isProtein: true, should handle the option to includeStopCodon by allowing periods", () => {
-    const [str] = filterSequenceString('bbb342"""xtgalmfwkqespvicyhrnd,,../', {
-      isProtein: true,
-      includeStopCodon: true
-    });
+  it("when isProtein: true, it should convert . to *", () => {
+    const [str] = filterSequenceString(
+      'BXZJUO*bbb342"""xtgalbmfwkqespvicyhrnd,,../',
+      {
+        isProtein: true
+      }
+    );
 
-    expect(str).toBe("xtgalmfwkqespvicyhrnd..");
+    expect(str).toBe("BXZJUO*bbbxtgalbmfwkqespvicyhrnd");
   });
 });

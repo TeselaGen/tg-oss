@@ -1,7 +1,7 @@
 import {
   ambiguous_dna_letters,
   ambiguous_rna_letters,
-  protein_letters_withUandX
+  extended_protein_letters
 } from "./bioData";
 
 export default function filterSequenceString(
@@ -12,16 +12,14 @@ export default function filterSequenceString(
     name,
     isProtein,
     isRna,
-    isMixedRnaAndDna,
-    includeStopCodon
+    isMixedRnaAndDna
   } = {}
 ) {
   const acceptedChars = getAcceptedChars({
     isOligo,
     isProtein,
     isRna,
-    isMixedRnaAndDna,
-    includeStopCodon
+    isMixedRnaAndDna
   });
   const replaceChars = getReplaceChars({
     isOligo,
@@ -82,13 +80,10 @@ export function getAcceptedChars({
   isOligo,
   isProtein,
   isRna,
-  isMixedRnaAndDna,
-  includeStopCodon
+  isMixedRnaAndDna
 } = {}) {
   return isProtein
-    ? `${protein_letters_withUandX.toLowerCase()}${
-        includeStopCodon ? "*." : ""
-      }}`
+    ? `${extended_protein_letters.toLowerCase()}}`
     : isOligo
     ? ambiguous_rna_letters.toLowerCase() + "t"
     : isRna
@@ -106,7 +101,8 @@ export function getReplaceChars({
 } = {}) {
   return isProtein
     ? {}
-    : isOligo
+    : // {".": "*"}
+    isOligo
     ? {}
     : isRna
     ? { t: "u" }

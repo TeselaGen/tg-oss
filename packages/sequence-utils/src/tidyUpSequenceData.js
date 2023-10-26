@@ -13,7 +13,7 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
   const {
     annotationsAsObjects,
     logMessages,
-    removeUnwantedChars,
+    doNotRemoveInvalidChars,
     additionalValidChars,
     noTranslationData,
     doNotProvideIdsForAnnotations,
@@ -52,10 +52,9 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
     //flip all t's to u's
     seqData.sequence = seqData.sequence.replace(/t/gi, "u");
   }
-  if (removeUnwantedChars) {
+  if (!doNotRemoveInvalidChars) {
     if (seqData.isProtein) {
       const [newSeq] = filterSequenceString(seqData.proteinSequence, {
-        includeStopCodon: true,
         ...(topLevelSeqData || seqData)
       });
       seqData.proteinSequence = newSeq;

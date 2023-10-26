@@ -29,8 +29,7 @@ export default function validateSequence(sequence, options = {}) {
     inclusive1BasedEnd,
     additionalValidChars,
     allowOverflowAnnotations,
-    coerceFeatureTypes,
-    includeStopCodon
+    coerceFeatureTypes
   } = options;
   [
     "isDNA",
@@ -96,8 +95,7 @@ export default function validateSequence(sequence, options = {}) {
     const [validChars, warnings] = filterSequenceString(sequence.sequence, {
       name: sequence.name,
       isProtein: true,
-      additionalValidChars,
-      includeStopCodon
+      additionalValidChars
     });
     if (validChars !== sequence.sequence) {
       sequence.sequence = validChars;
