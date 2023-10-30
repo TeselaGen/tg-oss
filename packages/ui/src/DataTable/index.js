@@ -2479,6 +2479,21 @@ class DataTable extends React.Component {
           );
           noEllipsis = true;
         } else {
+          if (column.type === "genericSelect") {
+            const GenericSelectComp = column.GenericSelectComp;
+            return (
+              <GenericSelectComp
+                rowId={rowId}
+                initialValue={text}
+                {...dataTest}
+                finishEdit={(newVal, doNotStopEditing) => {
+                  this.finishCellEdit(cellId, newVal, doNotStopEditing);
+                }}
+                dataTest={dataTest}
+                cancelEdit={this.cancelCellEdit}
+              />
+            );
+          }
           if (reduxFormEditingCell === cellId) {
             if (column.type === "dropdown" || column.type === "dropdownMulti") {
               return (
@@ -2552,7 +2567,8 @@ class DataTable extends React.Component {
             </div>
             {isCellEditable &&
               (column.type === "dropdown" ||
-                column.type === "dropdownMulti") && (
+                column.type === "dropdownMulti" ||
+                column.type === "genericSelect") && (
                 <Icon
                   icon="caret-down"
                   style={{
