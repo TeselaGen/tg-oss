@@ -859,6 +859,8 @@ class DataTable extends React.Component {
   handleCopyHelper = (stringToCopy, message) => {
     const copyHandler = e => {
       e.preventDefault();
+
+      // e.clipboardData.setData("application/json", JSON.stringify(seqData));
       e.clipboardData.setData("text/plain", stringToCopy);
     };
     document.addEventListener("copy", copyHandler);
@@ -2479,22 +2481,25 @@ class DataTable extends React.Component {
           );
           noEllipsis = true;
         } else {
-          if (column.type === "genericSelect") {
-            const GenericSelectComp = column.GenericSelectComp;
-            return (
-              <GenericSelectComp
-                rowId={rowId}
-                initialValue={text}
-                {...dataTest}
-                finishEdit={(newVal, doNotStopEditing) => {
-                  this.finishCellEdit(cellId, newVal, doNotStopEditing);
-                }}
-                dataTest={dataTest}
-                cancelEdit={this.cancelCellEdit}
-              />
-            );
-          }
+          // if (column.type === "genericSelect") {
+          //   val =
+          // }
           if (reduxFormEditingCell === cellId) {
+            if (column.type === "genericSelect") {
+              const GenericSelectComp = column.GenericSelectComp;
+              return (
+                <GenericSelectComp
+                  rowId={rowId}
+                  initialValue={text}
+                  {...dataTest}
+                  finishEdit={(newVal, doNotStopEditing) => {
+                    this.finishCellEdit(cellId, newVal, doNotStopEditing);
+                  }}
+                  dataTest={dataTest}
+                  cancelEdit={this.cancelCellEdit}
+                />
+              );
+            }
             if (column.type === "dropdown" || column.type === "dropdownMulti") {
               return (
                 <DropdownCell

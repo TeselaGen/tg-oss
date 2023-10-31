@@ -451,7 +451,7 @@ body:not(.drag-active)
 }
 .rt-td.isEditingCell.isDropdownCell {
   padding: 0;
-  max-height: 24px;
+  /* max-height: 24px; */
 }
 
 .tg-dropdown-cell-edit-container .bp3-tag-input .bp3-button {
