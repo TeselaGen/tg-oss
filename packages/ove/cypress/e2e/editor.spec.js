@@ -74,11 +74,8 @@ describe("editor", function () {
   });
 
   it("should fire the rename handler", function () {
-    cy.get("body").type("{meta}/");
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
-    cy.focused().type("rename{enter}");
-    cy.focused().type("renamed seq");
+    cy.triggerFileCmd("Rename");
+    cy.focused().type("renamed seq", { delay: 40 });
     cy.contains(".bp3-dialog button", "OK").click();
     cy.contains("onRename callback triggered: pj5_00001renamed seq");
   });

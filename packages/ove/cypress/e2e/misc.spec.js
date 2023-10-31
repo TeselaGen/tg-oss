@@ -5,7 +5,7 @@ describe("miscellaneous tests that do not fit other categories", () => {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(100);
     cy.focused()
-      .type("yyyyy{leftarrow}{leftarrow}{leftarrow}xxxx")
+      .type("yyyyy{leftarrow}{leftarrow}{leftarrow}xxxx", { delay: 40 })
       .should("have.value", "yyxxxxyyy");
   });
 });

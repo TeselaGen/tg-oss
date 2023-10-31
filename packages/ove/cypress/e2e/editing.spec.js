@@ -14,9 +14,7 @@ describe("editing", function () {
     cy.contains(".bp3-dialog button", "Save").click();
 
     cy.contains(`button`, "Help").click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
-    cy.focused().type("New Part{enter}");
+    cy.triggerFileCmd("New Part");
     cy.contains(`.bp3-dialog`, "New Part");
     cy.get(`[placeholder="Untitled Annotation"]`);
   });

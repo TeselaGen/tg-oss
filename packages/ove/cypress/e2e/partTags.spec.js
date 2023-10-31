@@ -59,7 +59,7 @@ describe("partTags", function () {
     cy.contains(".bp3-tag-input-values", "status: ready").should("not.exist");
     cy.contains(".bp3-menu-item", "tag2").click();
     cy.contains(".bp3-dialog button", "Save").click();
-    cy.selectRange(20, 21);
+    cy.contains("Part 0").click({ force: true });
     cy.contains(".veRowViewPart", "np").rightclick();
     cy.contains(".bp3-menu-item", "Edit Part").click();
     cy.contains(".bp3-tag-input-values", "status: broken").should("exist");

@@ -10,7 +10,7 @@ describe("rowView", function () {
     cy.contains(".bp3-menu-item", "Replace").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
-    cy.focused().type("agagagagag{enter}");
+    cy.focused().type("agagagagag{enter}", { delay: 40 });
     cy.contains("Selecting 10 bps from 5299 to 5308").should("exist");
   });
   it("right clicking the selection caret in the row view shouldn't lose selection ", function () {
