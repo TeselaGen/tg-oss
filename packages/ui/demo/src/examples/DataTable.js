@@ -269,7 +269,9 @@ withQuery(
 }
 
 const generateFakeRows = num => {
-  return times(num).map((a, index) => generateFakeRow({ id: index }));
+  return times(num).map((a, index) =>
+    generateFakeRow({ id: index.toString() })
+  );
 };
 function generateFakeRow({ id, name }) {
   return {

@@ -807,11 +807,19 @@ class DataTable extends React.Component {
     if (!text) return window.toastr.warning("No text to copy");
     this.handleCopyHelper(text, "Row Copied");
   };
-  handleCopyColumn = (e, cellWrapper) => {
+  handleCopyColumn = (e, cellWrapper, selectedRecords) => {
     const cellType = cellWrapper.getAttribute("data-test");
-    const allRowEls = getAllRows(e);
-    if (!allRowEls) return;
-    const textToCopy = map(allRowEls, rowEl =>
+    let rowElsToCopy = getAllRows(e);
+    if (!rowElsToCopy) return;
+    if (selectedRecords) {
+      const ids = selectedRecords.map(e => getIdOrCodeOrIndex(e)?.toString());
+      rowElsToCopy = Array.from(rowElsToCopy).filter(rowEl => {
+        const id = rowEl.closest(".rt-tr-group")?.getAttribute("data-test-id");
+        return id !== undefined && ids.includes(id);
+      });
+    }
+    if (!rowElsToCopy) return;
+    const textToCopy = map(rowElsToCopy, rowEl =>
       this.getRowCopyText(rowEl, { cellType })
     )
       .filter(text => text)
@@ -2967,6 +2975,7 @@ class DataTable extends React.Component {
             text="Cell"
           />
         );
+
         copyMenuItems.push(
           <MenuItem
             key="copyColumn"
@@ -2976,6 +2985,17 @@ class DataTable extends React.Component {
             text="Column"
           />
         );
+        if (selectedRecords.length > 1) {
+          copyMenuItems.push(
+            <MenuItem
+              key="copyColumnSelected"
+              onClick={() => {
+                this.handleCopyColumn(e, cellWrapper, selectedRecords);
+              }}
+              text="Column (Selected)"
+            />
+          );
+        }
       }
       if (selectedRecords.length === 0 || selectedRecords.length === 1) {
         //compute the row here so we don't lose access to it
