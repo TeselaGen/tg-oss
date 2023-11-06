@@ -79,7 +79,9 @@ function addHighlightedDifferences(alignmentTracks) {
     if (track.isUnmapped) {
       return track;
     }
-    const sequenceData = tidyUpSequenceData(track.sequenceData);
+    const sequenceData = tidyUpSequenceData(track.sequenceData, {
+      doNotRemoveInvalidChars: true
+    });
     const matchHighlightRanges = getRangeMatchesBetweenTemplateAndNonTemplate(
       alignmentTracks[0].alignmentData.sequence,
       track.alignmentData.sequence
@@ -179,7 +181,9 @@ export default (state = {}, { payload = {}, type }) => {
         {
           //add the template seq as the first track in the Pairwise Alignment Overview
           ...templateSeq,
-          sequenceData: tidyUpSequenceData(templateSeq.sequenceData),
+          sequenceData: tidyUpSequenceData(templateSeq.sequenceData, {
+            doNotRemoveInvalidChars: true
+          }),
           alignmentData: { sequence: templateSeq.sequenceData.sequence } //remove the gaps from the template sequence
         }
       ]; // start with just the template seq in there!
@@ -213,7 +217,9 @@ export default (state = {}, { payload = {}, type }) => {
         const alignedSeqMinusInserts = {
           ...alignedSeq,
           sequenceData: {
-            ...tidyUpSequenceData(alignedSeq.sequenceData),
+            ...tidyUpSequenceData(alignedSeq.sequenceData, {
+              doNotRemoveInvalidChars: true
+            }),
             sequence: template.sequenceData.sequence
           },
           additionalSelectionLayers,

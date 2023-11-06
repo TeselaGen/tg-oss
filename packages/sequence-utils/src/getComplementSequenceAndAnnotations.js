@@ -15,5 +15,8 @@ export default function getComplementSequenceAndAnnotations(
   const newSeqObj = Object.assign({}, seqObj, {
     sequence: getComplementSequenceString(seqObj.sequence, seqObj.isRna)
   });
-  return tidyUpSequenceData(newSeqObj, options);
+  return tidyUpSequenceData(newSeqObj, {
+    doNotRemoveInvalidChars: true,
+    ...options
+  });
 }

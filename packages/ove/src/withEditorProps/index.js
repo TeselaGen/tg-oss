@@ -160,7 +160,10 @@ export const handleSave =
       saveHandler &&
       saveHandler(
         opts,
-        tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
+        tidyUpSequenceData(sequenceData, {
+          doNotRemoveInvalidChars: true,
+          annotationsAsObjects: true
+        }),
         props,
         updateLastSavedIdToCurrent
       );
@@ -869,7 +872,10 @@ function jsonToJson(incomingJson) {
   return JSON.stringify(
     omit(
       cleanUpTeselagenJsonForExport(
-        tidyUpSequenceData(incomingJson, { annotationsAsObjects: false })
+        tidyUpSequenceData(incomingJson, {
+          doNotRemoveInvalidChars: true,
+          annotationsAsObjects: false
+        })
       ),
       [
         "sequenceFragments",

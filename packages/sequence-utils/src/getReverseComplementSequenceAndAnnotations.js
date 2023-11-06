@@ -13,7 +13,7 @@ export default function getReverseComplementSequenceAndAnnoations(
 ) {
   const seqObj = tidyUpSequenceData(
     getSequenceDataBetweenRange(pSeqObj, options.range),
-    options
+    { doNotRemoveInvalidChars: true, ...options }
   );
   const newSeqObj = Object.assign(
     {},
@@ -33,5 +33,8 @@ export default function getReverseComplementSequenceAndAnnoations(
       return acc;
     }, {})
   );
-  return tidyUpSequenceData(newSeqObj, options);
+  return tidyUpSequenceData(newSeqObj, {
+    doNotRemoveInvalidChars: true,
+    ...options
+  });
 }

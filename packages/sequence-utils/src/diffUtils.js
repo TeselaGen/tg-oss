@@ -6,11 +6,13 @@ import tidyUpSequenceData from "./tidyUpSequenceData";
 const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
   oldData = tidyUpSequenceData(oldData, {
     annotationsAsObjects: true,
-    noTranslationData: true
+    noTranslationData: true,
+    doNotRemoveInvalidChars: true
   });
   newData = tidyUpSequenceData(newData, {
     annotationsAsObjects: true,
-    noTranslationData: true
+    noTranslationData: true,
+    doNotRemoveInvalidChars: true
   });
 
   [oldData, newData].forEach(d => {
@@ -47,7 +49,10 @@ const patchSeqWithDiff = (oldData, diff, { ignoreKeys = [] } = {}) => {
     delete diff[k];
   });
   return patch(
-    tidyUpSequenceData(cloneDeep(oldData), { annotationsAsObjects: true }),
+    tidyUpSequenceData(cloneDeep(oldData), {
+      annotationsAsObjects: true,
+      doNotRemoveInvalidChars: true
+    }),
     diff
   );
 };

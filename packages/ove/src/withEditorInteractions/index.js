@@ -283,7 +283,7 @@ function VectorInteractionHOC(Component /* options */) {
               }
             }
           ),
-        { annotationsAsObjects: true }
+        { doNotRemoveInvalidChars: true, annotationsAsObjects: true }
       );
 
       if (
@@ -314,7 +314,10 @@ function VectorInteractionHOC(Component /* options */) {
         this.handleDnaDelete(false);
         onCut(
           e,
-          tidyUpSequenceData(seqData, { annotationsAsObjects: true }),
+          tidyUpSequenceData(seqData, {
+            doNotRemoveInvalidChars: true,
+            annotationsAsObjects: true
+          }),
           this.props
         );
         document.body.removeEventListener("cut", this.handleCut);

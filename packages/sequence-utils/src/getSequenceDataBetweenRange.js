@@ -16,7 +16,10 @@ export default function getSequenceDataBetweenRange(
 ) {
   if (!range) return seqData;
   const { exclude = {}, excludePartial = {} } = options;
-  const seqDataToUse = tidyUpSequenceData(seqData, options);
+  const seqDataToUse = tidyUpSequenceData(seqData, {
+    doNotRemoveInvalidChars: true,
+    ...options
+  });
   annotationTypes.forEach(type => {
     delete seqDataToUse[`filtered${startCase(type)}`];
   });
@@ -78,10 +81,16 @@ export default function getSequenceDataBetweenRange(
         }
       });
     });
-    return tidyUpSequenceData(toRet, options);
+    return tidyUpSequenceData(toRet, {
+      doNotRemoveInvalidChars: true,
+      ...options
+    });
   }
 
-  return tidyUpSequenceData(seqDataToReturn, options);
+  return tidyUpSequenceData(seqDataToReturn, {
+    doNotRemoveInvalidChars: true,
+    ...options
+  });
 }
 
 function getAnnotationsBetweenRange(

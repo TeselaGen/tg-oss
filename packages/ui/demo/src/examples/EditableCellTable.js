@@ -1,66 +1,13 @@
 import { Chance } from "chance";
 import { times } from "lodash";
 import { nanoid } from "nanoid";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import DataTable from "../../../src/DataTable";
 import DemoWrapper from "../DemoWrapper";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
 import { toNumber } from "lodash";
 
-const schema = {
-  fields: [
-    {
-      path: "name",
-      validate: newVal => {
-        if (!newVal || !newVal.includes("a"))
-          return "Must include the letter 'a'";
-      },
-      format: newVal => {
-        return newVal?.toLowerCase();
-      }
-    },
-    {
-      path: "type",
-      type: "dropdown",
-      isRequired: true,
-      values: ["old", "new"]
-    },
-    {
-      path: "tags",
-      type: "dropdownMulti",
-      isRequired: true,
-      values: ["tag1", "tag2", "color:blue", "color:red", "color:green"]
-    },
-    {
-      path: "weather",
-      //should auto validate against list of accepted values, should auto format to try to coerce input values into accepted
-      type: "dropdown",
-      description: "What it's like outside",
-      // defaultValue: "sunny",
-      values: ["cloudy", "rainy", "sunny", "overcast"]
-    },
-    {
-      path: "howMany",
-      //should auto validate to make sure the type is number, should auto format (I think this already works..) to try to coerce input values into accepted
-      type: "number",
-      defaultValue: i => i,
-      //should be able to pass additional validation/formatting
-      validate: newVal => {
-        if (newVal > 20) return "This val is toooo high";
-      },
-      format: newVal => {
-        return toNumber(newVal) + 1;
-      }
-    },
-    {
-      path: "isProtein",
-      //should auto validate to coerce Yes -> true "true"->true, should auto format to try to coerce input values into accepted
-      type: "boolean",
-      defaultValue: true
-    }
-  ]
-};
 const chance = new Chance();
 function getEnts(num) {
   return times(num).map(i => {
@@ -100,10 +47,76 @@ export default function SimpleTable(p) {
     },
     options: [20, 50, 100]
   });
+  const [defaultValAsFunc, defaultValAsFuncComp] = useToggle({
+    type: "defaultValAsFunc"
+  });
+  // const [tagValuesAsObjects, tagValuesAsObjectsComp] = useToggle({
+  //   type: "tagValuesAsObjects"
+  // });
   const [entities, setEnts] = useState([]);
+
+  const schema = useMemo(() => {
+    return {
+      fields: [
+        {
+          path: "name",
+          validate: newVal => {
+            if (!newVal || !newVal.includes("a"))
+              return "Must include the letter 'a'";
+          },
+          format: newVal => {
+            return newVal?.toLowerCase();
+          }
+        },
+        {
+          path: "type",
+          type: "dropdown",
+          isRequired: true,
+          values: ["old", "new"]
+        },
+        {
+          path: "tags",
+          type: "dropdownMulti",
+          isRequired: true,
+          values: ["tag1", "tag2", "color:blue", "color:red", "color:green"]
+        },
+        {
+          path: "weather",
+          //should auto validate against list of accepted values, should auto format to try to coerce input values into accepted
+          type: "dropdown",
+          description: "What it's like outside",
+          defaultValue: "sunny",
+          values: ["cloudy", "rainy", "sunny", "overcast"]
+        },
+        {
+          path: "howMany",
+          //should auto validate to make sure the type is number, should auto format (I think this already works..) to try to coerce input values into accepted
+          type: "number",
+          defaultValue: defaultValAsFunc ? i => i : 1,
+          //should be able to pass additional validation/formatting
+          validate: newVal => {
+            if (newVal > 20) return "This val is toooo high";
+          },
+          format: newVal => {
+            return toNumber(newVal) + 1;
+          }
+        },
+        {
+          path: "isProtein",
+          //should auto validate to coerce Yes -> true "true"->true, should auto format to try to coerce input values into accepted
+          type: "boolean",
+          defaultValue: true
+        }
+      ]
+    };
+  }, [defaultValAsFunc]);
   return (
     <div>
-      <OptionsSection>{numComp}</OptionsSection>
+      <OptionsSection>
+        {numComp}
+        {defaultValAsFuncComp}
+        {/* {tagValuesAsObjectsComp} */}
+      </OptionsSection>
       <DemoWrapper>
         <DataTable
           key={key.current}

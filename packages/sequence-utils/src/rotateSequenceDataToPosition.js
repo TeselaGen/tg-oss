@@ -9,7 +9,10 @@ export default function rotateSequenceDataToPosition(
   caretPosition,
   options
 ) {
-  const newSequenceData = tidyUpSequenceData(sequenceData, options);
+  const newSequenceData = tidyUpSequenceData(sequenceData, {
+    doNotRemoveInvalidChars: true,
+    ...options
+  });
 
   //update the sequence
   newSequenceData.sequence = rotateBpsToPosition(
