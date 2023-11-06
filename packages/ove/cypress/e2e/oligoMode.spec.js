@@ -12,6 +12,8 @@ describe("oligo mode editing in OVE", function () {
     cy.selectRange(10, 11);
     cy.get(".veSelectionLayer").first().rightclick({ force: true });
     cy.contains(".bp3-menu-item", "Replace").click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("gatccaauu{enter}");
     cy.contains("Selecting 9 bps from 10 to 18"); //the t's should be filtered out
     cy.contains("gatccaauu");

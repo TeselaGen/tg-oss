@@ -146,6 +146,7 @@ function UploaderInner({
   overflowList,
   autoUnzip,
   disabled,
+  noBuildCsvOption,
   initializeForm,
   showFilesCount,
   threeDotMenuItems,
@@ -356,12 +357,16 @@ function UploaderInner({
               subtext: "Includes Upload Instructions and Column Info",
               exampleFile: handleDownloadXlsxFile
             },
-            {
-              description: manualEnterMessage,
-              subtext: manualEnterSubMessage,
-              icon: "manually-entered-data",
-              exampleFile: handleManuallyEnterData
-            }
+            ...(noBuildCsvOption
+              ? []
+              : [
+                  {
+                    description: manualEnterMessage,
+                    subtext: manualEnterSubMessage,
+                    icon: "manually-entered-data",
+                    exampleFile: handleManuallyEnterData
+                  }
+                ])
           ];
           delete a.exampleFile;
         }
@@ -943,7 +948,7 @@ function UploaderInner({
                       )}
                       {innerText ||
                         (minimal ? "Upload" : "Click or drag to upload")}
-                      {validateAgainstSchema && (
+                      {validateAgainstSchema && !noBuildCsvOption && (
                         <div
                           style={{
                             textAlign: "center",

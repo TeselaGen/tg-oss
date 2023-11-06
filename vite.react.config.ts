@@ -94,7 +94,6 @@ export default ({ name }: { name: string; dir: string }) =>
                     entry: "./demo/index.js", // MUST
                     title: `${name} demo`, // optional, default: ''
                     body: `
-            <link rel="stylesheet" href="/style.css">
             <div id="app"><div id="demo"></div></div>
             ` // optional, default: '<div id="app"></div>'
                   }
@@ -179,6 +178,7 @@ export default ({ name }: { name: string; dir: string }) =>
             __dirname,
             "node_modules/@blueprintjs/datetime"
           ),
+          // "@teselagen/react-table": `/Users/tnrich/Sites/react-table`,
           "react-dom": path.join(__dirname, "node_modules/react-dom"),
           "react-redux": path.join(__dirname, "node_modules/react-redux"),
           "redux-form": path.join(__dirname, "node_modules/redux-form"),

@@ -15,7 +15,7 @@ export default ({ name }: { name: string }) => {
   // const port = 4200
   const port = getPort(name);
   return defineConfig({
-    testDir: "./e2e",
+    testDir: "./e2e-playwright",
     /* Run tests in files in parallel */
     fullyParallel: true,
     retries: 0,

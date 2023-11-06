@@ -184,79 +184,6 @@
           "implicitDependencies": []
         }
       },
-      "bio-parsers": {
-        "name": "bio-parsers",
-        "type": "lib",
-        "data": {
-          "root": "packages/bio-parsers",
-          "sourceRoot": "packages/bio-parsers/src",
-          "name": "bio-parsers",
-          "projectType": "library",
-          "targets": {
-            "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
-              "executor": "@nx/js:release-publish",
-              "options": {},
-              "configurations": {}
-            },
-            "version": {
-              "executor": "@jscutlery/semver:version",
-              "options": {
-                "preset": "conventional"
-              },
-              "configurations": {}
-            },
-            "build": {
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "executor": "@nx/vite:build",
-              "outputs": ["{options.outputPath}"],
-              "options": {
-                "target": "es2015",
-                "outputPath": "dist/bio-parsers"
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs bio-parsers {args.ver} {args.tag}"
-              },
-              "configurations": {}
-            },
-            "test": {
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {}
-            },
-            "lint": {
-              "inputs": [
-                "default",
-                "{workspaceRoot}/.eslintrc.json",
-                "{workspaceRoot}/.eslintignore"
-              ],
-              "executor": "@nx/linter:eslint",
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": ["packages/bio-parsers/**/*.js"]
-              },
-              "configurations": {}
-            }
-          },
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
-          "implicitDependencies": []
-        }
-      },
       "range-utils": {
         "name": "range-utils",
         "type": "lib",
@@ -321,6 +248,79 @@
               "options": {
                 "maxWarnings": 0,
                 "lintFilePatterns": ["packages/range-utils/**/*.js"]
+              },
+              "configurations": {}
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      },
+      "bio-parsers": {
+        "name": "bio-parsers",
+        "type": "lib",
+        "data": {
+          "root": "packages/bio-parsers",
+          "sourceRoot": "packages/bio-parsers/src",
+          "name": "bio-parsers",
+          "projectType": "library",
+          "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
+            "version": {
+              "executor": "@jscutlery/semver:version",
+              "options": {
+                "preset": "conventional"
+              },
+              "configurations": {}
+            },
+            "build": {
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "executor": "@nx/vite:build",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "target": "es2015",
+                "outputPath": "dist/bio-parsers"
+              },
+              "configurations": {}
+            },
+            "publish": {
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs bio-parsers {args.ver} {args.tag}"
+              },
+              "configurations": {}
+            },
+            "test": {
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
+              },
+              "configurations": {}
+            },
+            "lint": {
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore"
+              ],
+              "executor": "@nx/linter:eslint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": ["packages/bio-parsers/**/*.js"]
               },
               "configurations": {}
             }
@@ -579,6 +579,13 @@
               },
               "configurations": {}
             },
+            "launch-e2e-playwright": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/ove && npx playwright test --ui"
+              },
+              "configurations": {}
+            },
             "e2e": {
               "inputs": ["default", "^production"],
               "executor": "@nx/cypress:cypress",
@@ -759,6 +766,7 @@
         }
       ],
       "bounce-loader": [],
+      "range-utils": [],
       "bio-parsers": [
         {
           "source": "bio-parsers",
@@ -771,7 +779,6 @@
           "type": "static"
         }
       ],
-      "range-utils": [],
       "shared-demo": [],
       "file-utils": [],
       "uploader": [],

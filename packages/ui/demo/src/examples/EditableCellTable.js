@@ -37,14 +37,14 @@ const schema = {
       //should auto validate against list of accepted values, should auto format to try to coerce input values into accepted
       type: "dropdown",
       description: "What it's like outside",
-      defaultValue: "sunny",
+      // defaultValue: "sunny",
       values: ["cloudy", "rainy", "sunny", "overcast"]
     },
     {
       path: "howMany",
       //should auto validate to make sure the type is number, should auto format (I think this already works..) to try to coerce input values into accepted
       type: "number",
-      defaultValue: 1,
+      defaultValue: i => i,
       //should be able to pass additional validation/formatting
       validate: newVal => {
         if (newVal > 20) return "This val is toooo high";
@@ -80,9 +80,9 @@ function getEnts(num) {
           : chance.pickone(["new", "old"]),
       howMany:
         i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
-      isProtein: true,
-      weather:
-        i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
+      isProtein: true
+      // weather:
+      //   i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
     };
   });
 }

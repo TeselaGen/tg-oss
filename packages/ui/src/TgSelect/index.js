@@ -22,6 +22,13 @@ class TgSelect extends React.Component {
       query: ""
     };
   }
+  setOpenState = isOpen => {
+    const { handleOpenChange } = this.props;
+    if (handleOpenChange) {
+      handleOpenChange(isOpen);
+    }
+    this.setState({ isOpen });
+  };
 
   static defaultProps = {
     onChange: () => {},
@@ -65,7 +72,7 @@ class TgSelect extends React.Component {
       let valArray = getValueArray(value);
 
       if (closeOnSelect || item.closeOnSelect) {
-        this.setState({ isOpen: false });
+        this.setOpenState(false);
         this.input && this.input.blur();
       }
       if (
@@ -87,7 +94,7 @@ class TgSelect extends React.Component {
       }
       return onChange([...valArray, item]);
     } else {
-      this.setState({ isOpen: false });
+      this.setOpenState(false);
       this.input && this.input.blur();
       return onChange(item);
     }
@@ -101,7 +108,7 @@ class TgSelect extends React.Component {
     );
     e.stopPropagation();
     onChange(filteredVals);
-    this.setState({ isOpen: false });
+    this.setOpenState(false);
     this.input.focus();
   };
   handleTagInputRemove = (val, index) => {
@@ -125,7 +132,7 @@ class TgSelect extends React.Component {
     const { onChange } = this.props;
     this.setState({ query: "" });
     onChange(newValue);
-    this.setState({ isOpen: false });
+    this.setOpenState(false);
     this.input.focus();
   };
 
@@ -155,10 +162,13 @@ class TgSelect extends React.Component {
   onInteraction = () => {
     if (this.input != null && this.input !== document.activeElement) {
       // the input is no longer focused so we can close the popover
-      this.setState({ isOpen: false, query: "" });
+      this.setOpenState(false);
+      this.setState({
+        query: ""
+      });
     } else if (!this.props.openOnKeyDown) {
       // open the popover when focusing the tag input
-      this.setState({ isOpen: true });
+      this.setOpenState(true);
     }
   };
 
@@ -263,7 +273,7 @@ class TgSelect extends React.Component {
               if (this.state.isOpen) {
                 e.stopPropagation();
 
-                this.setState({ isOpen: false });
+                this.setOpenState(false);
               }
             }}
             disabled={disabled}
@@ -349,7 +359,7 @@ class TgSelect extends React.Component {
                 if (this.input != null) {
                   this.input.blur();
                 }
-                this.setState({ isOpen: false });
+                this.setOpenState(false);
                 e.preventDefault();
                 e.stopPropagation(); //this prevents dialog's it is in from closing
               } else if (
@@ -359,7 +369,7 @@ class TgSelect extends React.Component {
                   which === Keys.ARROW_RIGHT
                 )
               ) {
-                this.setState({ isOpen: true });
+                this.setOpenState(true);
               }
             },
             inputProps: {

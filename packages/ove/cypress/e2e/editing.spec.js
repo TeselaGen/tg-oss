@@ -14,7 +14,7 @@ describe("editing", function () {
     cy.contains(".bp3-dialog button", "Save").click();
 
     cy.contains(`button`, "Help").click();
-    cy.focused().type("New Part{enter}");
+    cy.triggerFileCmd("New Part");
     cy.contains(`.bp3-dialog`, "New Part");
     cy.get(`[placeholder="Untitled Annotation"]`);
   });
@@ -25,9 +25,13 @@ describe("editing", function () {
     cy.contains(".veCircularView text", "Part 0")
       .closest(".veVectorInteractionWrapper")
       .type("t", { passThru: true });
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("ttaaa{enter}");
     cy.contains("Selecting 5 bps from 11 to 15");
     cy.focused().type("t", { passThru: true });
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("ccccttaaa{enter}");
     cy.contains("Selecting 9 bps from 11 to 19");
     cy.focused().find(".veCircularView"); //the circular view should still be focused
@@ -37,9 +41,13 @@ describe("editing", function () {
       .click()
       .closest(".veVectorInteractionWrapper")
       .type("t", { passThru: true });
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("ttaaa{enter}");
     cy.contains("Selecting 5 bps from 11 to 15");
     cy.focused().type("t", { passThru: true });
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("ccccttaaa{enter}");
     cy.contains("Selecting 9 bps from 11 to 19");
     cy.focused().find(".veRowView"); //the row view should still be focused

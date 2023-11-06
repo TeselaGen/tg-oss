@@ -58,6 +58,8 @@ describe("properties", function () {
   // and have that visible within the genbank view as well`, () => {
     cy.get(".veTabProperties").click();
     cy.get(`.tg-test-description`).contains("Edit").click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(`.tg-test-description textarea`).type(
       "Test description{cmd}{enter}"
     );
@@ -138,10 +140,10 @@ describe("properties", function () {
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.contains(".tg-select-option", "Van").click();
     cy.get(".veLabelText:contains(Van):first").rightclick();
-    cy.contains(".bp3-menu-item", "View Cut Site Properties").click();
+    cy.get(".bp3-menu-item:contains(View Cut Site Properties)").click();
     cy.contains(".rt-tr-group.selected", "831");
     cy.get(".veLabelText:contains(Van):last").rightclick();
-    cy.contains(".bp3-menu-item", "View Cut Site Properties").click();
+    cy.get(".bp3-menu-item:contains(View Cut Site Properties)").click();
     cy.contains(".rt-tr-group.selected", "4730");
   });
 });

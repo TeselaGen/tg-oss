@@ -23,6 +23,8 @@ describe("find tool", function () {
     cy.selectRange(400, 450);
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("not.exist");
     //hitting enter again should jump us back to our original search layer!
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("{enter}");
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
   });
@@ -34,6 +36,8 @@ describe("find tool", function () {
     cy.contains("dbl term").click({ force: true });
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("not.exist");
     //hitting enter again should jump us back to our original search layer!
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(`input[value="gacgtc"]`).type("{enter}");
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
   });
@@ -43,6 +47,8 @@ describe("find tool", function () {
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
     cy.contains(".ve-find-options-popover .bp3-switch", "Expanded").click();
     cy.get(".veFindBar textarea").should("have.value", "gataca");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("{enter}"); //this should cause the next region to be selected
     cy.contains("2/2");
   });

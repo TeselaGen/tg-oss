@@ -34,12 +34,16 @@ export default function EllipsizedTextAutoTooltip() {
         )}
 
         <code>{`<Button data-title="I'm a tooltip that works like a title">`}</code>
-        <Button data-title="I'm a tooltip that works like a title">
+        <Button
+          data-title="I'm a tooltip that works like a title"
+          title="I'm a tooltip that works like a title"
+        >
           Hover me!
         </Button>
         <code>{`<Button data-title="I'm a tooltip that works like a title" data-avoid=".avoidMe">`}</code>
         <Button
           data-title="I'm a tooltip that works like a title"
+          title="I'm a tooltip that works like a title"
           data-avoid=".avoidMe"
         >
           Hover me!
@@ -56,6 +60,10 @@ export default function EllipsizedTextAutoTooltip() {
         </div>
         <Button
           data-title={`I'm a tooltip that works like a title
+          
+          zonk
+          `}
+          title={`I'm a tooltip that works like a title
           
           zonk
           `}

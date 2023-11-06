@@ -240,7 +240,6 @@ function VectorInteractionHOC(Component /* options */) {
         topLevelSeqData: sequenceData,
         provideNewIdsForAnnotations: true,
         annotationsAsObjects: true,
-        removeUnwantedChars: true,
         noCdsTranslations: true
       });
       if (!seqDataToInsert.sequence.length)

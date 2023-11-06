@@ -11,6 +11,8 @@ describe("proteinEditor", function () {
   });
   it(`should have non protein actions hidden from the menu search`, () => {
     cy.get("body").type("{meta}/");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("translation{enter}");
     cy.contains(".bp3-menu-item", "Translations").should("not.exist");
   });
@@ -65,6 +67,8 @@ describe("proteinEditor", function () {
     cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Insert").click();
     cy.contains("Press ENTER to insert 0 AAs after AA 2");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(".sequenceInputBubble input").type("gg{enter}");
     //we don't want to see the insert successful message because no bps were entered
     cy.contains("Sequence Inserted Successfully");
@@ -83,6 +87,8 @@ describe("proteinEditor", function () {
       assertVal: ".*-masdzz"
     });
     cy.contains("Press ENTER to replace 1 AAs between 1386 and 2");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(".sequenceInputBubble input").type("{enter}");
     cy.contains("Selecting 9 AAs from 1 to 9");
     cy.contains("Length: 1394 AAs");

@@ -52,6 +52,26 @@ Install vscode extension for nx
 
 Run commands (build/start/test/lint etc..) from the nx extension in vscode or from the command line
 
+Or run them manually from the command line
+
+```bash
+nx run <package-name>:<command>
+
+eg
+nx run ui:start
+nx run ove:start
+nx run ove:launch-e2e
+nx run ove:build
+```
+
+```bash
+nx run --target:<command>
+
+eg
+nx run-many --target:build
+nx run-many --target:build
+```
+
 Profit!
 
 ## How to Publish

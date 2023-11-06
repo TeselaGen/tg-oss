@@ -4,7 +4,7 @@ import { Callout, Icon, Intent, Tab, Tabs } from "@blueprintjs/core";
 import immer from "immer";
 import { observer } from "mobx-react";
 import "./UploadCsvWizard.css";
-import { forEach } from "lodash";
+import { forEach, isFunction } from "lodash";
 import { compose } from "recompose";
 import SimpleStepViz from "./SimpleStepViz";
 import { nanoid } from "nanoid";
@@ -513,7 +513,7 @@ export const PreviewCsvData = observer(function (props) {
   const data =
     userSchema.userData &&
     userSchema.userData.length &&
-    userSchema.userData.map(row => {
+    userSchema.userData.map((row, i) => {
       const toRet = {
         _isClean: row._isClean
       };
@@ -526,7 +526,9 @@ export const PreviewCsvData = observer(function (props) {
         }
         if (toRet[path] === undefined || toRet[path] === "") {
           if (defaultValue) {
-            toRet[path] = defaultValue;
+            if (isFunction(defaultValue)) {
+              toRet[path] = defaultValue(i, row);
+            } else toRet[path] = defaultValue;
           } else {
             // const exampleToUse = isArray(example) //this means that the row was not added by a user
             //   ? example[i1]
@@ -700,7 +702,7 @@ async function asyncValidateHelper(
   }
 }
 
-function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
+export function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
   const toFilterOut = {};
   const entsToUse = (reduxFormEntities || []).filter(e => {
     if (!(e._isClean || isEntityClean(e))) return true;

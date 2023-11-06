@@ -3128,10 +3128,10 @@
   dependencies:
     prop-types "15"
 
-"@teselagen/react-table@^6.10.11":
-  version "6.10.11"
-  resolved "https://registry.npmjs.org/@teselagen/react-table/-/react-table-6.10.11.tgz"
-  integrity sha512-gQ7BMLQhhC+N6rLkL4VPnXgAhGgcHtMTrIE+n6DJ1OXkoWmM3Z05mbF7TiQGFNi30Al0sCxcl+rQE/haL0nxVg==
+"@teselagen/react-table@6.10.13":
+  version "6.10.13"
+  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.13.tgz#a93c73f78d4b36502679032456a1a3bef3c769b9"
+  integrity sha512-xPJ2w2igonhvlFWuuEXzY3HZ5tP4kcK9FFkHyOCl2WSwneUprUWujtxUW4kMxq/lBBiSWlNIM0cosQq1/q5Xiw==
   dependencies:
     "@teselagen/react-list" "0.8.18"
     classnames "^2.2.5"
@@ -5439,10 +5439,10 @@ cypress-vite@^1.4.0:
     chokidar "^3.5.3"
     debug "^4.3.4"
 
-cypress@^13.2.0:
-  version "13.2.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-13.2.0.tgz#10f73d06a0764764ffbb903a31e96e2118dcfc1d"
-  integrity sha512-AvDQxBydE771GTq0TR4ZUBvv9m9ffXuB/ueEtpDF/6gOcvFR96amgwSJP16Yhqw6VhmwqspT5nAGzoxxB+D89g==
+cypress@13.3.2:
+  version "13.3.2"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-13.3.2.tgz#b4baa64ce37d7874f6bdd8efbc28a9c722c0686f"
+  integrity sha512-ArLmZObcLC+xxCp7zJZZbhby9FUf5CueLej9dUM4+5j37FTS4iMSgHxQLDu01PydFUvDXcNoIVRCYrHHxD7Ybg==
   dependencies:
     "@cypress/request" "^3.0.0"
     "@cypress/xvfb" "^1.2.4"

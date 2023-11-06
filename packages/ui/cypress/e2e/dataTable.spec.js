@@ -137,6 +137,8 @@ describe("dataTable.spec", () => {
     cy.contains(".rt-td", "row 4");
     cy.contains(".rt-td", "row 17").should("not.exist");
     cy.get(".paging-toolbar-container input").last().clear();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("4{enter}");
     cy.contains(".rt-td", "row 4").should("not.exist");
     cy.contains(".rt-td", "row 17");

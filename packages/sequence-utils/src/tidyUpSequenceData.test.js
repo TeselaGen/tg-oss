@@ -5,29 +5,26 @@ import chaiSubset from "chai-subset";
 chai.use(chaiSubset);
 chai.should();
 describe("tidyUpSequenceData", () => {
-  it("should remove unwanted chars if passed that option, while handling annotation start,end (and location start,end) truncation correctly", () => {
-    const res = tidyUpSequenceData(
-      {
-        sequence: "http://localhost:3344/Standalone",
-        features: [
-          {
-            start: 3,
-            end: 20,
-            locations: [
-              {
-                start: "3", //this should be converted to an int :)
-                end: 5
-              },
-              {
-                start: 10,
-                end: 20
-              }
-            ]
-          }
-        ]
-      },
-      { removeUnwantedChars: true }
-    );
+  it("should remove invalid chars by default, while handling annotation start,end (and location start,end) truncation correctly", () => {
+    const res = tidyUpSequenceData({
+      sequence: "http://localhost:3344/Standalone",
+      features: [
+        {
+          start: 3,
+          end: 20,
+          locations: [
+            {
+              start: "3", //this should be converted to an int :)
+              end: 5
+            },
+            {
+              start: 10,
+              end: 20
+            }
+          ]
+        }
+      ]
+    });
     res.should.containSubset({
       sequence: "httcahstStandan",
       circular: false,
@@ -49,15 +46,6 @@ describe("tidyUpSequenceData", () => {
       ]
     });
   });
-  // const res = tidyUpSequenceData(
-  //   {
-  //     isProtein: true,
-  //     circular: true,
-  //     proteinSequence: "gagiuhwgagalasjglj*.",
-  //     features: [{ start: 3, end: 10 }, { start: 10, end: 20 }]
-  //   },
-  //   { convertAnnotationsFromAAIndices: true, removeUnwantedChars: true }
-  // );
 
   it("should handle a protein sequence being passed in with isProtein set to true", () => {
     const res = tidyUpSequenceData(
@@ -71,61 +59,16 @@ describe("tidyUpSequenceData", () => {
           { name: "iDon'tFit", start: 25, end: 35 }
         ]
       },
-      { convertAnnotationsFromAAIndices: true, removeUnwantedChars: true }
+      { convertAnnotationsFromAAIndices: true }
     );
+
     res.should.containSubset({
-      aminoAcidDataForEachBaseOfDNA: [
-        {
-          aminoAcid: {
-            value: ".",
-            name: "Gap",
-            threeLettersName: "Gap"
-          },
-          positionInCodon: 0,
-          aminoAcidIndex: 17,
-          sequenceIndex: 51,
-          codonRange: {
-            start: 51,
-            end: 53
-          },
-          fullCodon: true
-        },
-        {
-          aminoAcid: {
-            value: ".",
-            name: "Gap",
-            threeLettersName: "Gap"
-          },
-          positionInCodon: 1,
-          aminoAcidIndex: 17,
-          sequenceIndex: 52,
-          codonRange: {
-            start: 51,
-            end: 53
-          },
-          fullCodon: true
-        },
-        {
-          aminoAcid: {
-            value: ".",
-            name: "Gap",
-            threeLettersName: "Gap"
-          },
-          positionInCodon: 2,
-          aminoAcidIndex: 17,
-          sequenceIndex: 53,
-          codonRange: {
-            start: 51,
-            end: 53
-          },
-          fullCodon: true
-        }
-      ],
+      aminoAcidDataForEachBaseOfDNA: [],
       isProtein: true,
       size: 54, //size should refer to the DNA length
       proteinSize: 18, //proteinSize should refer to the amino acid length
-      sequence: "ggngcnggnathtgacaytggggngcnggngcnytngcnwsnggnytntrr...", //degenerate sequence
-      proteinSequence: "gagiuhwgagalasgl*.",
+      sequence: "ggngcnggnathtgacaytggggngcnggngcnytngcnwsnhtnggnytnhtn", //degenerate sequence
+      proteinSequence: "gagiuhwgagalasjglj",
       circular: false,
       features: [
         { start: 9, end: 32, forward: true },

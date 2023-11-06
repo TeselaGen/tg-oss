@@ -135,7 +135,7 @@ describe("insertSequenceData", () => {
   });
   it("inserts characters at correct origin spanning range with {maintainOriginSplit: true} option", () => {
     const sequenceToInsert = {
-      sequence: "xrrrrry",
+      sequence: "crrrrry",
       //         fffffff
       features: [{ name: "feat1", start: 0, end: 6 }]
     };
@@ -154,7 +154,7 @@ describe("insertSequenceData", () => {
         maintainOriginSplit: true
       }
     );
-    postInsertSeq.sequence.should.equal("rrrryagagaxr");
+    postInsertSeq.sequence.should.equal("rrrryagagacr");
     //                                   fffff fff ff
     postInsertSeq.features.should.containSubset([
       { name: "feat1", start: 10, end: 4 },

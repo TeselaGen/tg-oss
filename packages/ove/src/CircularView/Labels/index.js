@@ -356,7 +356,9 @@ const DrawLabelGroup = withHover(function ({
   } else {
     //DRAW A SINGLE LABEL
     content = [
-      // <title key="labeltitle">{label.title || label.text}</title>,
+      <g hidden style={{ display: "none" }} key="labeltitle">
+        {label.title || label.text}
+      </g>,
       <text
         key="text"
         data-title={label.title || label.text}
@@ -466,7 +468,9 @@ const DrawGroupInnerLabel = withHover(
         {...{ onMouseOver }}
         className={className}
       >
-        {/* <title>{label.title}</title> */}
+        <g hidden style={{ display: "none" }}>
+          {label.title}
+        </g>
         {label.text}
       </tspan>
     );

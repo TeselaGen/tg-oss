@@ -26,7 +26,8 @@ import {
   padStart,
   omitBy,
   times,
-  some
+  some,
+  isFunction
 } from "lodash";
 import joinUrl from "url-join";
 
@@ -385,7 +386,10 @@ class DataTable extends React.Component {
       }, 0);
     }
   };
-  formatAndValidateEntities = entities => {
+  formatAndValidateEntities = (
+    entities,
+    { useDefaultValues, indexToStartAt } = {}
+  ) => {
     const { schema } = this.props;
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
     const validationErrors = {};
@@ -393,6 +397,16 @@ class DataTable extends React.Component {
     const newEnts = immer(entities, entities => {
       entities.forEach((e, index) => {
         editableFields.forEach(columnSchema => {
+          if (useDefaultValues) {
+            if (e[columnSchema.path] === undefined) {
+              if (isFunction(columnSchema.defaultValue)) {
+                e[columnSchema.path] = columnSchema.defaultValue(
+                  index + indexToStartAt,
+                  e
+                );
+              } else e[columnSchema.path] = columnSchema.defaultValue;
+            }
+          }
           //mutative
           const { error } = editCellHelper({
             entity: e,
@@ -796,9 +810,10 @@ class DataTable extends React.Component {
 
   getCellCopyText = cellWrapper => {
     const text = cellWrapper && cellWrapper.getAttribute("data-copy-text");
+    const jsonText = cellWrapper && cellWrapper.getAttribute("data-copy-json");
 
     const toRet = text || cellWrapper.textContent || "";
-    return toRet;
+    return [toRet, jsonText];
   };
 
   handleCopyRow = rowEl => {
@@ -807,11 +822,19 @@ class DataTable extends React.Component {
     if (!text) return window.toastr.warning("No text to copy");
     this.handleCopyHelper(text, "Row Copied");
   };
-  handleCopyColumn = (e, cellWrapper) => {
+  handleCopyColumn = (e, cellWrapper, selectedRecords) => {
     const cellType = cellWrapper.getAttribute("data-test");
-    const allRowEls = getAllRows(e);
-    if (!allRowEls) return;
-    const textToCopy = map(allRowEls, rowEl =>
+    let rowElsToCopy = getAllRows(e);
+    if (!rowElsToCopy) return;
+    if (selectedRecords) {
+      const ids = selectedRecords.map(e => getIdOrCodeOrIndex(e)?.toString());
+      rowElsToCopy = Array.from(rowElsToCopy).filter(rowEl => {
+        const id = rowEl.closest(".rt-tr-group")?.getAttribute("data-test-id");
+        return id !== undefined && ids.includes(id);
+      });
+    }
+    if (!rowElsToCopy) return;
+    const textToCopy = map(rowElsToCopy, rowEl =>
       this.getRowCopyText(rowEl, { cellType })
     )
       .filter(text => text)
@@ -856,9 +879,11 @@ class DataTable extends React.Component {
     }).join("\t");
   };
 
-  handleCopyHelper = (stringToCopy, message) => {
+  handleCopyHelper = (stringToCopy, objToCopy, message) => {
     const copyHandler = e => {
       e.preventDefault();
+
+      e.clipboardData.setData("application/json", JSON.stringify(objToCopy));
       e.clipboardData.setData("text/plain", stringToCopy);
     };
     document.addEventListener("copy", copyHandler);
@@ -2461,11 +2486,15 @@ class DataTable extends React.Component {
         const oldVal = val;
         const text = this.getCopyTextForCell(val, row, column);
         const isBool = column.type === "boolean";
+        const dataTest = {
+          "data-test": "tgCell_" + column.path
+        };
         if (isCellEditable && isBool) {
           val = (
             <Checkbox
               disabled={isEntityDisabled(row.original)}
               className="tg-cell-edit-boolean-checkbox"
+              {...dataTest}
               checked={oldVal === "True"}
               onChange={e => {
                 const checked = e.target.checked;
@@ -2475,16 +2504,36 @@ class DataTable extends React.Component {
           );
           noEllipsis = true;
         } else {
+          // if (column.type === "genericSelect") {
+          //   val =
+          // }
           if (reduxFormEditingCell === cellId) {
+            if (column.type === "genericSelect") {
+              const GenericSelectComp = column.GenericSelectComp;
+              return (
+                <GenericSelectComp
+                  rowId={rowId}
+                  initialValue={text}
+                  {...dataTest}
+                  finishEdit={(newVal, doNotStopEditing) => {
+                    this.finishCellEdit(cellId, newVal, doNotStopEditing);
+                  }}
+                  dataTest={dataTest}
+                  cancelEdit={this.cancelCellEdit}
+                />
+              );
+            }
             if (column.type === "dropdown" || column.type === "dropdownMulti") {
               return (
                 <DropdownCell
                   isMulti={column.type === "dropdownMulti"}
                   initialValue={text}
+                  {...dataTest}
                   options={getVals(column.values)}
                   finishEdit={(newVal, doNotStopEditing) => {
                     this.finishCellEdit(cellId, newVal, doNotStopEditing);
                   }}
+                  dataTest={dataTest}
                   cancelEdit={this.cancelCellEdit}
                 ></DropdownCell>
               );
@@ -2494,6 +2543,7 @@ class DataTable extends React.Component {
                   stopSelectAll={() =>
                     change("reduxFormEditingCellSelectAll", false)
                   }
+                  dataTest={dataTest}
                   shouldSelectAll={reduxFormEditingCellSelectAll}
                   cancelEdit={this.cancelCellEdit}
                   isNumeric={column.type === "number"}
@@ -2536,7 +2586,7 @@ class DataTable extends React.Component {
                   overflow: "hidden"
                 })
               }}
-              data-test={"tgCell_" + column.path}
+              {...dataTest}
               className="tg-cell-wrapper"
               data-copy-text={text}
               title={title || undefined}
@@ -2545,7 +2595,8 @@ class DataTable extends React.Component {
             </div>
             {isCellEditable &&
               (column.type === "dropdown" ||
-                column.type === "dropdownMulti") && (
+                column.type === "dropdownMulti" ||
+                column.type === "genericSelect") && (
                 <Icon
                   icon="caret-down"
                   style={{
@@ -2709,7 +2760,7 @@ class DataTable extends React.Component {
                   const cellNumStr = getNumberStrAtEnd(cellVal);
                   const cellNum = Number(cellNumStr);
                   const cellTextNoNum = stripNumberAtEnd(cellVal);
-                  if (cellNumStr.startsWith("0")) {
+                  if (cellNumStr?.startsWith("0")) {
                     maybePad = cellNumStr.length;
                   }
                   if (cellTextNoNum && !prefix) {
@@ -2877,8 +2928,15 @@ class DataTable extends React.Component {
         return getIdOrCodeOrIndex(e, i) === rowId;
       });
       const insertIndex = above ? indexToInsert : indexToInsert + 1;
-      let { newEnts, validationErrors } =
-        this.formatAndValidateEntities(newEntities);
+      const insertIndexToUse = appendToBottom ? entities.length : insertIndex;
+      let { newEnts, validationErrors } = this.formatAndValidateEntities(
+        newEntities,
+        {
+          useDefaultValues: true,
+          indexToStartAt: insertIndexToUse
+        }
+      );
+
       newEnts = newEnts.map(e => ({
         ...e,
         _isClean: true
@@ -2888,11 +2946,7 @@ class DataTable extends React.Component {
         ...validationErrors
       });
 
-      entities.splice(
-        appendToBottom ? entities.length : insertIndex,
-        0,
-        ...newEnts
-      );
+      entities.splice(insertIndexToUse, 0, ...newEnts);
     });
     this.refocusTable();
   };
@@ -2938,12 +2992,13 @@ class DataTable extends React.Component {
             onClick={() => {
               //TODOCOPY: we need to make sure that the cell copy is being used by the row copy.. right now we have 2 different things going on
               //do we need to be able to copy hidden cells? It seems like it should just copy what's on the page..?
-              const text = this.getCellCopyText(cellWrapper);
-              this.handleCopyHelper(text, "Cell copied");
+              const [text, jsonText] = this.getCellCopyText(cellWrapper);
+              this.handleCopyHelper(text, jsonText, "Cell copied");
             }}
             text="Cell"
           />
         );
+
         copyMenuItems.push(
           <MenuItem
             key="copyColumn"
@@ -2953,6 +3008,17 @@ class DataTable extends React.Component {
             text="Column"
           />
         );
+        if (selectedRecords.length > 1) {
+          copyMenuItems.push(
+            <MenuItem
+              key="copyColumnSelected"
+              onClick={() => {
+                this.handleCopyColumn(e, cellWrapper, selectedRecords);
+              }}
+              text="Column (Selected)"
+            />
+          );
+        }
       }
       if (selectedRecords.length === 0 || selectedRecords.length === 1) {
         //compute the row here so we don't lose access to it
@@ -3228,6 +3294,7 @@ class DataTable extends React.Component {
             ${description} ${isUnique ? "<br>Must be unique" : ""}</div>`
         })}
         data-test={columnTitleTextified}
+        data-path={path}
         data-copy-text={columnTitleTextified}
         className={classNames("tg-react-table-column-header", {
           "sort-active": sortUp || sortDown
@@ -3411,7 +3478,8 @@ function EditableCell({
   initialValue,
   finishEdit,
   cancelEdit,
-  isNumeric
+  isNumeric,
+  dataTest
 }) {
   const [v, setV] = useState(initialValue);
   return (
@@ -3428,6 +3496,7 @@ function EditableCell({
           stopSelectAll();
         }
       }}
+      {...dataTest}
       type={isNumeric ? "number" : undefined}
       value={v}
       autoFocus
@@ -3455,7 +3524,8 @@ function DropdownCell({
   isMulti,
   initialValue,
   finishEdit,
-  cancelEdit
+  cancelEdit,
+  dataTest
 }) {
   const [v, setV] = useState(
     isMulti
@@ -3480,6 +3550,7 @@ function DropdownCell({
           }
           finishEdit(val ? val.value : null);
         }}
+        {...dataTest}
         popoverProps={{
           onClose: e => {
             if (isMulti) {
@@ -3547,7 +3618,7 @@ function getNumberStrAtEnd(str) {
 }
 
 function stripNumberAtEnd(str) {
-  return str.replace(getNumberStrAtEnd(str), "");
+  return str?.replace?.(getNumberStrAtEnd(str), "");
 }
 
 export function isEntityClean(e) {

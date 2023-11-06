@@ -151,7 +151,13 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
 
 Cypress.Commands.add("triggerFileCmd", (text, { noEnter } = {}) => {
   cy.get("body").type("{meta}/");
-  cy.focused().type(`${text}${noEnter ? "" : "{enter}"}`, { delay: 1 });
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(400);
+  cy.focused().type(
+    (Cypress.config("isInteractive") ? "" : "            ") +
+      `${text}${noEnter ? "" : "{enter}"}`,
+    { delay: 40 }
+  );
 });
 
 /**
@@ -306,7 +312,12 @@ Cypress.Commands.add("replaceSelection", sequenceString => {
     .first()
     .trigger("contextmenu", { force: true });
   cy.contains(".bp3-menu-item", "Replace").click();
-  cy.get(".sequenceInputBubble input").type(`${sequenceString}{enter}`);
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(200);
+  cy.get(".sequenceInputBubble input").type(
+    (Cypress.config("isInteractive") ? "" : "            ") +
+      `${sequenceString}{enter}`
+  );
 });
 Cypress.Commands.add("deleteSelection", () => {
   cy.get(
@@ -342,6 +353,16 @@ Cypress.Commands.add("closeToasts", () => {
     win.__tgClearAllToasts();
   });
 });
+
+// Cypress.Commands.overwrite(
+//   "type",
+//   (originalFn, subject, text, options = {}) => {
+//     return originalFn(subject, text, options);
+//     // cy.wait(0).then({ timeout: options.timeout || 40000 }, () => {
+//     //   return originalFn(subject, text, options);
+//     // });
+//   }
+// );
 
 // Cypress.Commands.overwrite(
 //   "type",

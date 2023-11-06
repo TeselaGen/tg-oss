@@ -1047,7 +1047,7 @@ thomas,,g,false,dna,misc_feature`,
       force: true
     });
     cy.focused().type(`{backspace}`);
-    cy.get(`.bp3-disabled:contains(Edit Data)`);
+    cy.get(`.bp3-disabled:contains(Edit Data)`).should("not.exist");
     cy.focused().type(`tom{enter}`);
     cy.get(`[data-index="4"] [data-test="tgCell_name"]`).click({ force: true });
     cy.focused().type(`taoh{enter}`);

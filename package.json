@@ -5,7 +5,8 @@
   "scripts": {
     "postinstall": "patch-package",
     "prepare": "husky install",
-    "e2e": "nx affected --base=master --head=HEAD -t e2e"
+    "e2e": "nx affected --base=master --head=HEAD -t e2e",
+    "test": "nx affected -t test"
   },
   "private": true,
   "dependencies": {
@@ -15,7 +16,7 @@
     "@fontsource/ubuntu-mono": "^4.5.11",
     "@hello-pangea/dnd": "16.2.0",
     "@risingstack/react-easy-state": "^6.3.0",
-    "@teselagen/react-table": "^6.10.11",
+    "@teselagen/react-table": "6.10.13",
     "@use-gesture/react": "^10.2.23",
     "axios": "^0.21.1",
     "browser-or-node": "^2.0.0",
@@ -120,7 +121,7 @@
     "chance": "^1.1.11",
     "classnames": "^2.3.2",
     "concurrently": "^8.2.1",
-    "cypress": "^13.2.0",
+    "cypress": "13.3.2",
     "cypress-vite": "^1.4.0",
     "esbuild": "^0.19.3",
     "eslint": "~8.50.0",

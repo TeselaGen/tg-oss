@@ -4,6 +4,8 @@ describe("partTags", function () {
     cy.get(`[data-test="partToolDropdown"]`).click();
     cy.contains("Search Parts By Tag:");
     cy.get(".example-editTagsLink").should("exist");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("status: ready{enter}");
     cy.contains(".veCircularView .veLabelText", "pj5_00001").should(
       "have.class",
@@ -37,6 +39,8 @@ describe("partTags", function () {
     cy.get(".veTabProperties").click();
     cy.get(`[data-tab-id="parts"]`).click();
     cy.contains(".rt-tr .bp3-tag", "status: ready").should("exist");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.get(".datatable-search-input").type("zoink{enter}");
     cy.contains(".rt-tr .bp3-tag", "status: ready").should("not.exist");
     cy.contains(".rt-tr .bp3-tag", "zoink").should("exist");
@@ -55,6 +59,7 @@ describe("partTags", function () {
     cy.contains(".bp3-tag-input-values", "status: ready").should("not.exist");
     cy.contains(".bp3-menu-item", "tag2").click();
     cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains("Part 0").click({ force: true });
     cy.contains(".veRowViewPart", "np").rightclick();
     cy.contains(".bp3-menu-item", "Edit Part").click();
     cy.contains(".bp3-tag-input-values", "status: broken").should("exist");

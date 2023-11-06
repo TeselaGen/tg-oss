@@ -13,8 +13,7 @@ describe("addAdditionalEnzymes", function () {
     cy.selectRange(10, 20);
     cy.get(".veSelectionLayer").first().rightclick({ force: true });
     // cy.contains(".veLabelText", "araD").trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Replace").click();
-    cy.focused().type("gacgtc{enter}");
+    cy.replaceSelection("gacgtc");
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
 
     cy.contains("(2 cuts)");
