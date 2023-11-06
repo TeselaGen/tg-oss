@@ -180,7 +180,7 @@ describe("dataTable.spec", () => {
   });
 
   it("can use the keyboard to move up/down and select rows", () => {
-    cy.visit("#/DataTable");
+    cy.visit("#/DataTable?pageSize=10");
     cy.contains("label", "withCheckboxes").click();
     cy.contains(".rt-td", "row 3").click();
     cy.get(".rt-tr-group.selected").should("have.length", 1);

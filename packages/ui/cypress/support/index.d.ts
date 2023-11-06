@@ -20,6 +20,19 @@ declare namespace Cypress {
     ): void;
 
     /**
+     * triggerFileCmd
+     * Triggers a cmd using the Help menu search
+     * @example
+     * cy.triggerFileCmd("Select All")
+     * cy.triggerFileCmd("Digest")
+     * cy.triggerFileCmd("Digest", {noEnter: true})
+     */
+    triggerFileCmd(
+      text: string,
+      options: { noEnter: boolean; noOpen: boolean }
+    ): void;
+
+    /**
      * uploadBlobFile
      * uploads a string to a dropzone uploader by converting it to a browser file
      * @param selector - cypress selector class for drop element

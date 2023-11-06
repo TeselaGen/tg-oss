@@ -150,7 +150,7 @@ describe("EditableCellTable.spec", () => {
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
     ).should("not.exist");
   });
-  // it.only(`enter key should be activated when an input is actively being typed in and move the user to the next cell below`, () => {
+  // it(`enter key should be activated when an input is actively being typed in and move the user to the next cell below`, () => {
   //   cy.visit("#/DataTable%20-%20EditableCellTable");
   //   cy.get(
   //     `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`

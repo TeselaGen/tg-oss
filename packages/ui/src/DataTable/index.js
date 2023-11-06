@@ -820,7 +820,7 @@ class DataTable extends React.Component {
     //takes in a row element
     const text = this.getRowCopyText(rowEl);
     if (!text) return window.toastr.warning("No text to copy");
-    this.handleCopyHelper(text, "Row Copied");
+    this.handleCopyHelper(text, undefined, "Row Copied");
   };
   handleCopyColumn = (e, cellWrapper, selectedRecords) => {
     const cellType = cellWrapper.getAttribute("data-test");
@@ -841,7 +841,7 @@ class DataTable extends React.Component {
       .join("\n");
     if (!textToCopy) return window.toastr.warning("No text to copy");
 
-    this.handleCopyHelper(textToCopy, "Column copied");
+    this.handleCopyHelper(textToCopy, undefined, "Column copied");
   };
   updateEntitiesHelper = (ents, fn) => {
     const { change, reduxFormEntitiesUndoRedoStack = { currentVersion: 0 } } =
@@ -906,7 +906,7 @@ class DataTable extends React.Component {
         .join("\n");
       if (!textToCopy) return window.toastr.warning("No text to copy");
 
-      this.handleCopyHelper(textToCopy, "Table copied");
+      this.handleCopyHelper(textToCopy, undefined, "Table copied");
     } catch (error) {
       console.error(`error:`, error);
       window.toastr.error("Error copying rows.");
@@ -967,7 +967,7 @@ class DataTable extends React.Component {
     });
     if (!fullCellText) return window.toastr.warning("No text to copy");
 
-    this.handleCopyHelper(fullCellText, "Selected cells copied");
+    this.handleCopyHelper(fullCellText, undefined, "Selected cells copied");
   };
 
   handleCopySelectedRows = (selectedRecords, e) => {
@@ -996,7 +996,7 @@ class DataTable extends React.Component {
         .join("\n");
       if (!textToCopy) return window.toastr.warning("No text to copy");
 
-      this.handleCopyHelper(textToCopy, "Selected rows copied");
+      this.handleCopyHelper(textToCopy, undefined, "Selected rows copied");
     } catch (error) {
       console.error(`error:`, error);
       window.toastr.error("Error copying rows.");
@@ -2494,7 +2494,7 @@ class DataTable extends React.Component {
             <Checkbox
               disabled={isEntityDisabled(row.original)}
               className="tg-cell-edit-boolean-checkbox"
-              {...dataTest}
+              // {...dataTest}
               checked={oldVal === "True"}
               onChange={e => {
                 const checked = e.target.checked;

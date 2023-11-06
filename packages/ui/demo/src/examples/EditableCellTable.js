@@ -27,9 +27,9 @@ function getEnts(num) {
           : chance.pickone(["new", "old"]),
       howMany:
         i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
-      isProtein: true
-      // weather:
-      //   i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
+      isProtein: true,
+      weather:
+        i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
     };
   });
 }
@@ -92,7 +92,7 @@ export default function SimpleTable(p) {
           path: "howMany",
           //should auto validate to make sure the type is number, should auto format (I think this already works..) to try to coerce input values into accepted
           type: "number",
-          defaultValue: defaultValAsFunc ? i => i : 1,
+          defaultValue: defaultValAsFunc ? () => 4 : 1,
           //should be able to pass additional validation/formatting
           validate: newVal => {
             if (newVal > 20) return "This val is toooo high";

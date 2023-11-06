@@ -232,3 +232,24 @@ Cypress.Commands.add("typeTab", (shiftKey, ctrlKey) => {
     });
   });
 });
+
+/**
+ * Triggers a cmd using the Help menu search
+ * @memberOf Cypress.Chainable#
+ * @name triggerFileCmd
+ * @function
+ * @param {String} text - the file cmd to trigger
+ */
+
+Cypress.Commands.add("triggerFileCmd", (text, { noEnter, noOpen } = {}) => {
+  if (!noOpen) {
+    cy.get("body").type("{meta}/");
+  }
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(400);
+  cy.focused().type(
+    (Cypress.config("isInteractive") ? "" : "            ") +
+      `${text}${noEnter ? "" : "{enter}"}`,
+    { delay: 40 }
+  );
+});
