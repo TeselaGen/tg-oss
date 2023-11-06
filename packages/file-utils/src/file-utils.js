@@ -288,6 +288,7 @@ export const cleanCsvExport = rows => {
 };
 
 export const filterFilesInZip = async (file, accepted) => {
+  if (!file || (Array.isArray(file) && !file.length)) return [];
   const zipExtracted = await extractZipFiles(file);
   const acceptedFiles = [];
   for (const extFile of zipExtracted) {
