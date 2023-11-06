@@ -94,7 +94,6 @@ export default ({ name }: { name: string; dir: string }) =>
                     entry: "./demo/index.js", // MUST
                     title: `${name} demo`, // optional, default: ''
                     body: `
-            <link rel="stylesheet" href="/style.css">
             <div id="app"><div id="demo"></div></div>
             ` // optional, default: '<div id="app"></div>'
                   }

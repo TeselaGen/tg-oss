@@ -44,7 +44,7 @@ const schema = {
       path: "howMany",
       //should auto validate to make sure the type is number, should auto format (I think this already works..) to try to coerce input values into accepted
       type: "number",
-      defaultValue: 1,
+      defaultValue: i => i,
       //should be able to pass additional validation/formatting
       validate: newVal => {
         if (newVal > 20) return "This val is toooo high";

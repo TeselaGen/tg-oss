@@ -79,6 +79,9 @@
         "testingType": "e2e"
       }
     },
+    "launch-e2e-playwright": {
+      "command": "cd packages/ove && npx playwright test --ui"
+    },
     "e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {

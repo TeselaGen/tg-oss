@@ -26,7 +26,8 @@ import {
   padStart,
   omitBy,
   times,
-  some
+  some,
+  isFunction
 } from "lodash";
 import joinUrl from "url-join";
 
@@ -385,7 +386,10 @@ class DataTable extends React.Component {
       }, 0);
     }
   };
-  formatAndValidateEntities = entities => {
+  formatAndValidateEntities = (
+    entities,
+    { useDefaultValues, indexToStartAt } = {}
+  ) => {
     const { schema } = this.props;
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
     const validationErrors = {};
@@ -393,6 +397,16 @@ class DataTable extends React.Component {
     const newEnts = immer(entities, entities => {
       entities.forEach((e, index) => {
         editableFields.forEach(columnSchema => {
+          if (useDefaultValues) {
+            if (e[columnSchema.path] === undefined) {
+              if (isFunction(columnSchema.defaultValue)) {
+                e[columnSchema.path] = columnSchema.defaultValue(
+                  index + indexToStartAt,
+                  e
+                );
+              } else e[columnSchema.path] = columnSchema.defaultValue;
+            }
+          }
           //mutative
           const { error } = editCellHelper({
             entity: e,
@@ -796,9 +810,10 @@ class DataTable extends React.Component {
 
   getCellCopyText = cellWrapper => {
     const text = cellWrapper && cellWrapper.getAttribute("data-copy-text");
+    const jsonText = cellWrapper && cellWrapper.getAttribute("data-copy-json");
 
     const toRet = text || cellWrapper.textContent || "";
-    return toRet;
+    return [toRet, jsonText];
   };
 
   handleCopyRow = rowEl => {
@@ -864,11 +879,11 @@ class DataTable extends React.Component {
     }).join("\t");
   };
 
-  handleCopyHelper = (stringToCopy, message) => {
+  handleCopyHelper = (stringToCopy, objToCopy, message) => {
     const copyHandler = e => {
       e.preventDefault();
 
-      // e.clipboardData.setData("application/json", JSON.stringify(seqData));
+      e.clipboardData.setData("application/json", JSON.stringify(objToCopy));
       e.clipboardData.setData("text/plain", stringToCopy);
     };
     document.addEventListener("copy", copyHandler);
@@ -2745,7 +2760,7 @@ class DataTable extends React.Component {
                   const cellNumStr = getNumberStrAtEnd(cellVal);
                   const cellNum = Number(cellNumStr);
                   const cellTextNoNum = stripNumberAtEnd(cellVal);
-                  if (cellNumStr.startsWith("0")) {
+                  if (cellNumStr?.startsWith("0")) {
                     maybePad = cellNumStr.length;
                   }
                   if (cellTextNoNum && !prefix) {
@@ -2913,8 +2928,15 @@ class DataTable extends React.Component {
         return getIdOrCodeOrIndex(e, i) === rowId;
       });
       const insertIndex = above ? indexToInsert : indexToInsert + 1;
-      let { newEnts, validationErrors } =
-        this.formatAndValidateEntities(newEntities);
+      const insertIndexToUse = appendToBottom ? entities.length : insertIndex;
+      let { newEnts, validationErrors } = this.formatAndValidateEntities(
+        newEntities,
+        {
+          useDefaultValues: true,
+          indexToStartAt: insertIndexToUse
+        }
+      );
+
       newEnts = newEnts.map(e => ({
         ...e,
         _isClean: true
@@ -2924,11 +2946,7 @@ class DataTable extends React.Component {
         ...validationErrors
       });
 
-      entities.splice(
-        appendToBottom ? entities.length : insertIndex,
-        0,
-        ...newEnts
-      );
+      entities.splice(insertIndexToUse, 0, ...newEnts);
     });
     this.refocusTable();
   };
@@ -2974,8 +2992,8 @@ class DataTable extends React.Component {
             onClick={() => {
               //TODOCOPY: we need to make sure that the cell copy is being used by the row copy.. right now we have 2 different things going on
               //do we need to be able to copy hidden cells? It seems like it should just copy what's on the page..?
-              const text = this.getCellCopyText(cellWrapper);
-              this.handleCopyHelper(text, "Cell copied");
+              const [text, jsonText] = this.getCellCopyText(cellWrapper);
+              this.handleCopyHelper(text, jsonText, "Cell copied");
             }}
             text="Cell"
           />
@@ -3600,7 +3618,7 @@ function getNumberStrAtEnd(str) {
 }
 
 function stripNumberAtEnd(str) {
-  return str.replace(getNumberStrAtEnd(str), "");
+  return str?.replace?.(getNumberStrAtEnd(str), "");
 }
 
 export function isEntityClean(e) {

@@ -65,18 +65,18 @@ describe("tidyUpSequenceData", () => {
     res.should.containSubset({
       aminoAcidDataForEachBaseOfDNA: [],
       isProtein: true,
-      size: 57, //size should refer to the DNA length
-      proteinSize: 19, //proteinSize should refer to the amino acid length
-      sequence: "ggngcnggnathtgacaytggggngcnggngcnytngcnwsnhtnggnytnhtntrr", //degenerate sequence
-      proteinSequence: "gagiuhwgagalasjglj*",
+      size: 54, //size should refer to the DNA length
+      proteinSize: 18, //proteinSize should refer to the amino acid length
+      sequence: "ggngcnggnathtgacaytggggngcnggngcnytngcnwsnhtnggnytnhtn", //degenerate sequence
+      proteinSequence: "gagiuhwgagalasjglj",
       circular: false,
       features: [
         { start: 9, end: 32, forward: true },
-        { start: 30, end: 56, forward: true },
+        { start: 30, end: 53, forward: true },
         {
           name: "iDon'tFit",
-          start: 54,
-          end: 56,
+          start: 51,
+          end: 53,
           forward: true
         }
       ]

@@ -5,7 +5,8 @@
   "scripts": {
     "postinstall": "patch-package",
     "prepare": "husky install",
-    "e2e": "nx affected --base=master --head=HEAD -t e2e"
+    "e2e": "nx affected --base=master --head=HEAD -t e2e",
+    "test": "nx affected -t test"
   },
   "private": true,
   "dependencies": {

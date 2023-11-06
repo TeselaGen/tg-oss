@@ -62,6 +62,19 @@ describe("filterSequenceString", () => {
     expect(warnings.length).toBe(0);
     expect(str).toBe("xtgalmfWKQEspvicyhrnd");
   });
+
+  it("when isProtein: true it should not filter this aa seq", () => {
+    const [str] = filterSequenceString(
+      "mhhhhhhgsgsmledlkrqvleanlalpkhnlasgssghvsavdrergvfviapsgvdfrimtaddmvvvsietgevvegekppaedtpthrllyqafpsiggivhthsrhatiwaqagqsipatgtthadhfygtipctrkmtdaeingeyewetgnvivetfekqgidaaqmpgvlvhshgpfawgknaedavhnaivleevaymgifcrqlapqlpdmqqtllnkhylrkhgakayygq",
+      {
+        isProtein: true
+      }
+    );
+
+    expect(str).toBe(
+      `mhhhhhhgsgsmledlkrqvleanlalpkhnlasgssghvsavdrergvfviapsgvdfrimtaddmvvvsietgevvegekppaedtpthrllyqafpsiggivhthsrhatiwaqagqsipatgtthadhfygtipctrkmtdaeingeyewetgnvivetfekqgidaaqmpgvlvhshgpfawgknaedavhnaivleevaymgifcrqlapqlpdmqqtllnkhylrkhgakayygq`
+    );
+  });
   it("when isProtein: true, it should convert . to *", () => {
     const [str] = filterSequenceString(
       'BXZJUO*bbb342"""xtgalbmfwkqespvicyhrnd,,../',
@@ -70,6 +83,6 @@ describe("filterSequenceString", () => {
       }
     );
 
-    expect(str).toBe("BXZJUO*bbbxtgalbmfwkqespvicyhrnd");
+    expect(str).toBe("BXZJUObbbxtgalbmfwkqespvicyhrnd");
   });
 });
