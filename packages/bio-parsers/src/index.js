@@ -1,6 +1,6 @@
 export { default as anyToJson } from "./anyToJson";
 export { default as fastaToJson } from "./fastaToJson";
-export { default as genbankToJson } from "./genbankToJson";
+export { default as genbankToJson, parseFeatureLocation } from "./genbankToJson";
 export { default as sbolXmlToJson } from "./sbolXmlToJson";
 export { default as geneiousXmlToJson } from "./geneiousXmlToJson";
 export { default as jbeiXmlToJson } from "./jbeiXmlToJson";
