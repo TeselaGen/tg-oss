@@ -330,6 +330,26 @@
           "implicitDependencies": []
         }
       },
+      "shared-demo": {
+        "name": "shared-demo",
+        "type": "lib",
+        "data": {
+          "root": "packages/shared-demo",
+          "sourceRoot": "packages/shared-demo",
+          "name": "shared-demo",
+          "projectType": "library",
+          "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            }
+          },
+          "implicitDependencies": [],
+          "tags": []
+        }
+      },
       "file-utils": {
         "name": "file-utils",
         "type": "lib",
@@ -752,6 +772,7 @@
         }
       ],
       "range-utils": [],
+      "shared-demo": [],
       "file-utils": [],
       "uploader": [],
       "ove": [
@@ -774,9 +795,19 @@
           "source": "ove",
           "target": "bio-parsers",
           "type": "static"
+        },
+        {
+          "source": "ove",
+          "target": "shared-demo",
+          "type": "static"
         }
       ],
       "ui": [
+        {
+          "source": "ui",
+          "target": "shared-demo",
+          "type": "static"
+        },
         {
           "source": "ui",
           "target": "file-utils",

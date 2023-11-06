@@ -1,0 +1,15 @@
+diff --git a/node_modules/nx/src/command-line/format/format.js b/node_modules/nx/src/command-line/format/format.js
+index 4691116..8f94d10 100644
+--- a/node_modules/nx/src/command-line/format/format.js
++++ b/node_modules/nx/src/command-line/format/format.js
+@@ -51,8 +51,8 @@ async function getPatterns(args) {
+             return getPatternsFromProjects(args.projects, graph);
+         }
+         const p = (0, command_line_utils_1.parseFiles)(args);
+-        const supportedExtensions = prettier
+-            .getSupportInfo()
++        const supportedExtensions = (await prettier
++            .getSupportInfo())
+             .languages.flatMap((language) => language.extensions)
+             .filter((extension) => !!extension)
+             // Prettier supports ".swcrc" as a file instead of an extension

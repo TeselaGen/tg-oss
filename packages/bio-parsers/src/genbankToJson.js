@@ -8,18 +8,18 @@ import splitStringIntoLines from "./utils/splitStringIntoLines.js";
 
 import createInitialSequence from "./utils/createInitialSequence";
 
-function getCurrentFeature() {
-  return result.parsedSequence.features[
-    result.parsedSequence.features.length - 1
-  ];
-}
-
-export function parseFeatureLocation(locStr, options) {
+export function parseFeatureLocation(
+  locStr,
+  isProtein,
+  inclusive1BasedStart,
+  inclusive1BasedEnd
+) {
   locStr = locStr.trim();
   const locArr = [];
   locStr.replace(/(\d+)/g, function (string, match) {
     locArr.push(match);
   });
+  const locArray = [];
   for (let i = 0; i < locArr.length; i += 2) {
     const start = parseInt(locArr[i], 10) - (inclusive1BasedStart ? 0 : 1);
     let end = parseInt(locArr[i + 1], 10) - (inclusive1BasedEnd ? 0 : 1);
@@ -35,13 +35,11 @@ export function parseFeatureLocation(locStr, options) {
       start: start,
       end: end
     };
-    const feat = getCurrentFeature();
-    feat.locations.push(
-      options.isProtein
-        ? convertAACaretPositionOrRangeToDna(location)
-        : location
+    locArray.push(
+      isProtein ? convertAACaretPositionOrRangeToDna(location) : location
     );
   }
+  return locArray;
 }
 
 function genbankToJson(string, options = {}) {
@@ -102,18 +100,20 @@ function genbankToJson(string, options = {}) {
       const isKey = isKeyword(line);
 
       //only set a new LINETYPE in the case that we've encountered a key that warrants it.
-      if (key === "LOCUS") {
-        LINETYPE = key;
-      } else if (key === "REFERENCE") {
-        LINETYPE = key;
-      } else if (key === "FEATURES") {
-        LINETYPE = key;
-      } else if (key === "ORIGIN") {
-        LINETYPE = key;
-      } else if (key === "//") {
-        LINETYPE = key;
-      } else if (isKey === true) {
-        LINETYPE = key;
+      if (!isKeyRunon) {
+        if (key === "LOCUS") {
+          LINETYPE = key;
+        } else if (key === "REFERENCE") {
+          LINETYPE = key;
+        } else if (key === "FEATURES") {
+          LINETYPE = key;
+        } else if (key === "ORIGIN") {
+          LINETYPE = key;
+        } else if (key === "//") {
+          LINETYPE = key;
+        } else if (isKey === true) {
+          LINETYPE = key;
+        }
       }
 
       // IGNORE LINES: DO NOT EVEN PROCESS
@@ -303,6 +303,12 @@ function genbankToJson(string, options = {}) {
     resultsArray.push(result || { success: false });
   }
 
+  function getCurrentFeature() {
+    return result.parsedSequence.features[
+      result.parsedSequence.features.length - 1
+    ];
+  }
+
   function addMessage(msg) {
     if (result.messages.indexOf(msg === -1)) {
       return result.messages.push(msg);
@@ -456,7 +462,15 @@ function genbankToJson(string, options = {}) {
       //the line is a continuation of the above line
       if (lastLineWasLocation) {
         //the last line was a location, so the run-on line is expected to be a feature location as well
-        parseFeatureLocation(line.trim(), options);
+        const feat = getCurrentFeature();
+        feat.locations = feat.locations.concat(
+          parseFeatureLocation(
+            line.trim(),
+            options.isProtein,
+            inclusive1BasedStart,
+            inclusive1BasedEnd
+          )
+        );
         lastLineWasLocation = true;
       } else {
         //the last line was a note
@@ -494,8 +508,14 @@ function genbankToJson(string, options = {}) {
         const feat = getCurrentFeature();
         feat.type = key;
         feat.strand = strand;
-
-        parseFeatureLocation(val, options);
+        feat.locations = feat.locations.concat(
+          parseFeatureLocation(
+            val,
+            options.isProtein,
+            inclusive1BasedStart,
+            inclusive1BasedEnd
+          )
+        );
         lastLineWasLocation = true;
       }
     }

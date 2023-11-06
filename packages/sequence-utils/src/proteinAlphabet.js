@@ -6,7 +6,7 @@ const proteinAlphabet = {
     hydrophobicity: 1.8,
     colorByFamily: "#00FFFF",
     color: "hsl(327.3, 100%, 69%)",
-    mass: 89.1
+    mass: 71.0779
   },
   R: {
     value: "R",
@@ -15,8 +15,9 @@ const proteinAlphabet = {
     hydrophobicity: -4.5,
     colorByFamily: "#FFC0CB",
     color: "hsl(258.1, 100%, 69%)",
-    mass: 174.2
+    mass: 156.18568
   },
+
   N: {
     value: "N",
     name: "Asparagine",
@@ -24,7 +25,7 @@ const proteinAlphabet = {
     hydrophobicity: -3.5,
     colorByFamily: "#D3D3D3",
     color: "hsl(268.9, 100%, 69%)",
-    mass: 132.1
+    mass: 114.10264
   },
   D: {
     value: "D",
@@ -33,7 +34,7 @@ const proteinAlphabet = {
     hydrophobicity: -3.5,
     colorByFamily: "#EE82EE",
     color: "hsl(268.9, 100%, 69%)",
-    mass: 133.1
+    mass: 115.0874
   },
   C: {
     value: "C",
@@ -42,8 +43,9 @@ const proteinAlphabet = {
     hydrophobicity: 2.5,
     colorByFamily: "#FFFF00",
     color: "hsl(335.1, 100%, 69%)",
-    mass: 121.2
+    mass: 103.1429
   },
+
   E: {
     value: "E",
     name: "Glutamic acid",
@@ -51,7 +53,7 @@ const proteinAlphabet = {
     hydrophobicity: -3.5,
     colorByFamily: "#EE82EE",
     color: "hsl(268.9, 100%, 69%)",
-    mass: 147.1
+    mass: 129.11398
   },
   Q: {
     value: "Q",
@@ -60,7 +62,7 @@ const proteinAlphabet = {
     hydrophobicity: -3.5,
     colorByFamily: "#D3D3D3",
     color: "hsl(268.9, 100%, 69%)",
-    mass: 146.2
+    mass: 128.12922
   },
   G: {
     value: "G",
@@ -69,8 +71,9 @@ const proteinAlphabet = {
     hydrophobicity: -0.4,
     colorByFamily: "#00FFFF",
     color: "hsl(303.1, 100%, 69%)",
-    mass: 75.1
+    mass: 57.05132
   },
+
   H: {
     value: "H",
     name: "Histidine",
@@ -78,8 +81,9 @@ const proteinAlphabet = {
     hydrophobicity: -3.2,
     colorByFamily: "#FFC0CB",
     color: "hsl(272.2, 100%, 69%)",
-    mass: 155.2
+    mass: 137.13928
   },
+
   I: {
     value: "I",
     name: "Isoleucine ",
@@ -87,7 +91,7 @@ const proteinAlphabet = {
     hydrophobicity: 4.5,
     colorByFamily: "#00FFFF",
     color: "hsl(356.9, 100%, 69%)",
-    mass: 131.2
+    mass: 113.15764
   },
   L: {
     value: "L",
@@ -96,7 +100,7 @@ const proteinAlphabet = {
     hydrophobicity: 3.8,
     colorByFamily: "#00FFFF",
     color: "hsl(349.4, 100%, 69%)",
-    mass: 131.2
+    mass: 113.15764
   },
   K: {
     value: "K",
@@ -105,8 +109,9 @@ const proteinAlphabet = {
     hydrophobicity: -3.9,
     colorByFamily: "#FFC0CB",
     color: "hsl(264.7, 100%, 69%)",
-    mass: 146.2
+    mass: 128.17228
   },
+
   M: {
     value: "M",
     name: "Methionine",
@@ -114,7 +119,7 @@ const proteinAlphabet = {
     hydrophobicity: 1.9,
     colorByFamily: "#FFFF00",
     color: "hsl(328.5, 100%, 69%)",
-    mass: 149.2
+    mass: 131.19606
   },
   F: {
     value: "F",
@@ -123,7 +128,7 @@ const proteinAlphabet = {
     hydrophobicity: 2.8,
     colorByFamily: "#FFA500",
     color: "hsl(338.4, 100%, 69%)",
-    mass: 165.2
+    mass: 147.17386
   },
   P: {
     value: "P",
@@ -132,7 +137,7 @@ const proteinAlphabet = {
     hydrophobicity: -1.6,
     colorByFamily: "#00FFFF",
     color: "hsl(289.9, 100%, 69%)",
-    mass: 115.1
+    mass: 97.11518
   },
   S: {
     value: "S",
@@ -141,7 +146,7 @@ const proteinAlphabet = {
     hydrophobicity: -0.8,
     colorByFamily: "#90EE90",
     color: "hsl(298.6, 100%, 69%)",
-    mass: 105.1
+    mass: 87.0773
   },
   T: {
     value: "T",
@@ -150,7 +155,7 @@ const proteinAlphabet = {
     hydrophobicity: -0.7,
     colorByFamily: "#90EE90",
     color: "hsl(299.8, 100%, 69%)",
-    mass: 119.1
+    mass: 101.10388
   },
   U: {
     value: "U",
@@ -158,7 +163,7 @@ const proteinAlphabet = {
     threeLettersName: "Sec",
     colorByFamily: "#FF0000",
     color: "hsl(0, 100%, 69%)",
-    mass: 168.1
+    mass: 150.3079
   },
   W: {
     value: "W",
@@ -167,7 +172,7 @@ const proteinAlphabet = {
     hydrophobicity: -0.9,
     colorByFamily: "#FFA500",
     color: "hsl(297.6, 100%, 69%)",
-    mass: 204.2
+    mass: 186.2099
   },
   Y: {
     value: "Y",
@@ -176,7 +181,7 @@ const proteinAlphabet = {
     hydrophobicity: -1.3,
     colorByFamily: "#FFA500",
     color: "hsl(293.2, 100%, 69%)",
-    mass: 181.2
+    mass: 163.17326
   },
   V: {
     value: "V",
@@ -185,7 +190,7 @@ const proteinAlphabet = {
     hydrophobicity: 4.2,
     colorByFamily: "#00FFFF",
     color: "hsl(353.6, 100%, 69%)",
-    mass: 117.1
+    mass: 99.13106
   },
   "*": {
     value: "*",

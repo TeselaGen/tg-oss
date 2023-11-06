@@ -51,7 +51,6 @@ export { default as aliasedEnzymesByName } from "./aliasedEnzymesByName";
 export { default as defaultEnzymesByName } from "./defaultEnzymesByName";
 export { default as generateSequenceData } from "./generateSequenceData";
 export { default as generateAnnotations } from "./generateAnnotations";
-export { default as filterAminoAcidSequenceString } from "./filterAminoAcidSequenceString";
 export { default as filterSequenceString } from "./filterSequenceString";
 export { default as findNearestRangeOfSequenceOverlapToPosition } from "./findNearestRangeOfSequenceOverlapToPosition";
 export { default as findOrfsInPlasmid } from "./findOrfsInPlasmid";

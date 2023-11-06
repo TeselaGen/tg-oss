@@ -41,11 +41,7 @@ import {
   createNewAnnotationMenu
 } from "../MenuBar/defaultConfig";
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
-import {
-  getAcceptedChars,
-  getNodeToRefocus,
-  getSelFromWrappedAddon
-} from "../utils/editorUtils";
+import { getNodeToRefocus, getSelFromWrappedAddon } from "../utils/editorUtils";
 
 import {
   showAddOrEditAnnotationDialog,
@@ -212,7 +208,8 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer = { start: -1, end: -1 },
         readOnly,
         onPaste,
-        disableBpEditing
+        disableBpEditing,
+        sequenceData
       } = this.props;
 
       if (disableBpEditing) {
@@ -240,6 +237,7 @@ function VectorInteractionHOC(Component /* options */) {
       }
 
       seqDataToInsert = tidyUpSequenceData(seqDataToInsert, {
+        topLevelSeqData: sequenceData,
         provideNewIdsForAnnotations: true,
         annotationsAsObjects: true,
         removeUnwantedChars: true,
@@ -360,8 +358,7 @@ function VectorInteractionHOC(Component /* options */) {
         createSequenceInputPopup({
           useEventPositioning,
           isReplace,
-          replaceChars: sequenceData.isRna ? { t: "u" } : undefined,
-          acceptedChars: getAcceptedChars(sequenceData),
+          sequenceData,
           isProtein: sequenceData.isProtein,
           selectionLayer,
           sequenceLength,

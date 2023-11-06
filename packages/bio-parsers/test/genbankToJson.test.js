@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions*/
 import assert from "assert";
-import genbankToJson from "../src/genbankToJson";
+import genbankToJson, { parseFeatureLocation } from "../src/genbankToJson";
 
 import path from "path";
 import fs from "fs";
@@ -888,7 +888,7 @@ ORIGIN
     res.should.be.an("array");
     res[0].success.should.be.true;
     res[0].parsedSequence.features.length.should.equal(1);
-    expect(res[0].parsedSequence.sequence).toContain("t");
+    expect(res[0].parsedSequence.sequence).not.toContain("t");
     expect(res[0].parsedSequence.sequence).toContain("u");
   });
 
@@ -1008,6 +1008,45 @@ ORIGIN
     expect(result[0].success).toBe(true);
     expect(result[0].parsedSequence.features[2].notes.note[0]).toBe(456);
     expect(result[0].parsedSequence.features[3].notes.note[0]).toBe(123);
+  });
+
+  it("genbank parses should parse comments correctly ", () => {
+    const string = fs.readFileSync(
+      path.join(
+        __dirname,
+        "./testData/genbank/genebank_embeded_in_comments.gb"
+      ),
+      "utf8"
+    );
+    const result = genbankToJson(string);
+    expect(result[0].success).toBe(true);
+
+    expect(result[0].parsedSequence.size).toBe(6758);
+  });
+
+  it("parseFeatureLocation returns expected outputs", () => {
+    const testCases = [
+      { input: "1..2", output: [{ start: 0, end: 1 }] },
+      { input: "complement(1..2)", output: [{ start: 0, end: 1 }] },
+      {
+        input: "join(1..2,3..4)",
+        output: [
+          { start: 0, end: 1 },
+          { start: 2, end: 3 }
+        ]
+      },
+      {
+        input: "complement(join(1..2,3..4))",
+        output: [
+          { start: 0, end: 1 },
+          { start: 2, end: 3 }
+        ]
+      }
+    ];
+    testCases.forEach(({ input, output }) => {
+      const result = parseFeatureLocation(input);
+      expect(result).toEqual(output);
+    });
   });
 });
 
