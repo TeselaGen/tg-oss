@@ -184,13 +184,13 @@
           "implicitDependencies": []
         }
       },
-      "shared-demo": {
-        "name": "shared-demo",
+      "range-utils": {
+        "name": "range-utils",
         "type": "lib",
         "data": {
-          "root": "packages/shared-demo",
-          "sourceRoot": "packages/shared-demo",
-          "name": "shared-demo",
+          "root": "packages/range-utils",
+          "sourceRoot": "packages/range-utils/src",
+          "name": "range-utils",
           "projectType": "library",
           "targets": {
             "nx-release-publish": {
@@ -198,10 +198,63 @@
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
+            },
+            "version": {
+              "executor": "@jscutlery/semver:version",
+              "options": {
+                "preset": "conventional"
+              },
+              "configurations": {}
+            },
+            "build": {
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "executor": "@nx/vite:build",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "target": "es2015",
+                "outputPath": "dist/range-utils"
+              },
+              "configurations": {}
+            },
+            "publish": {
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs range-utils {args.ver} {args.tag}"
+              },
+              "configurations": {}
+            },
+            "test": {
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts"
+              },
+              "configurations": {}
+            },
+            "lint": {
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore"
+              ],
+              "executor": "@nx/linter:eslint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": ["packages/range-utils/**/*.js"]
+              },
+              "configurations": {}
             }
           },
-          "implicitDependencies": [],
-          "tags": []
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "tags": [],
+          "implicitDependencies": []
         }
       },
       "bio-parsers": {
@@ -277,13 +330,13 @@
           "implicitDependencies": []
         }
       },
-      "range-utils": {
-        "name": "range-utils",
+      "shared-demo": {
+        "name": "shared-demo",
         "type": "lib",
         "data": {
-          "root": "packages/range-utils",
-          "sourceRoot": "packages/range-utils/src",
-          "name": "range-utils",
+          "root": "packages/shared-demo",
+          "sourceRoot": "packages/shared-demo",
+          "name": "shared-demo",
           "projectType": "library",
           "targets": {
             "nx-release-publish": {
@@ -291,63 +344,10 @@
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
-            },
-            "version": {
-              "executor": "@jscutlery/semver:version",
-              "options": {
-                "preset": "conventional"
-              },
-              "configurations": {}
-            },
-            "build": {
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "executor": "@nx/vite:build",
-              "outputs": ["{options.outputPath}"],
-              "options": {
-                "target": "es2015",
-                "outputPath": "dist/range-utils"
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs range-utils {args.ver} {args.tag}"
-              },
-              "configurations": {}
-            },
-            "test": {
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {}
-            },
-            "lint": {
-              "inputs": [
-                "default",
-                "{workspaceRoot}/.eslintrc.json",
-                "{workspaceRoot}/.eslintignore"
-              ],
-              "executor": "@nx/linter:eslint",
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": ["packages/range-utils/**/*.js"]
-              },
-              "configurations": {}
             }
           },
-          "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
-          "implicitDependencies": []
+          "implicitDependencies": [],
+          "tags": []
         }
       },
       "file-utils": {
@@ -579,6 +579,13 @@
               },
               "configurations": {}
             },
+            "launch-e2e-playwright": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/ove && npx playwright test --ui"
+              },
+              "configurations": {}
+            },
             "e2e": {
               "inputs": ["default", "^production"],
               "executor": "@nx/cypress:cypress",
@@ -759,7 +766,7 @@
         }
       ],
       "bounce-loader": [],
-      "shared-demo": [],
+      "range-utils": [],
       "bio-parsers": [
         {
           "source": "bio-parsers",
@@ -772,7 +779,7 @@
           "type": "static"
         }
       ],
-      "range-utils": [],
+      "shared-demo": [],
       "file-utils": [],
       "uploader": [],
       "ove": [
