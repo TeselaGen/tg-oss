@@ -1,5 +1,5 @@
 import gff from "@gmod/gff";
-import _ from "lodash";
+import { get } from "lodash";
 
 function gffToJson(string) {
   const arrayOfThings = gff.parseStringSync(string);
@@ -13,7 +13,7 @@ function gffToJson(string) {
       const feature = featureOrSeq[0];
       if (!features[feature.seq_id]) features[feature.seq_id] = [];
       const attributes = feature.attributes || {};
-      const name = _.get(attributes, "ID[0]");
+      const name = get(attributes, "ID[0]");
       features[feature.seq_id].push({
         name,
         start: feature.start,

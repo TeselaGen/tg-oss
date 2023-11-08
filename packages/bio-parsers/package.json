@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/bio-parsers",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "type": "commonjs",
   "dependencies": {
     "@gmod/gff": "^1.2.1",
