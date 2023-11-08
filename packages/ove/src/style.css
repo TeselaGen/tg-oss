@@ -1,6 +1,6 @@
 .ve-monospace-font {
-  font-family: "Ubuntu Mono", "Lucida Console", Monaco, monospace;
-  font-size: 12px;
+  font-family: Monaco, monospace;
+  font-size: 11px;
 }
 .rowViewTextContainer text {
   user-select: none;

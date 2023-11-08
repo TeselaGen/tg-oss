@@ -654,7 +654,9 @@ a,,desc,,false,dna,misc_feature
     cy.get(`[data-index="0"] [data-test="tgCell_sequence"]`).click({
       force: true
     });
-    cy.focused().type(`robbin{enter}`);
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(200);
+    cy.focused().type(`robbin{enter}`, { delay: 100 });
     cy.get(`.bp3-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
 

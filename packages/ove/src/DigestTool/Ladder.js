@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from "react";
 import { showConfirmationDialog, TgSelect } from "@teselagen/ui";
-import html2canvas from "html2canvas";
 
 import "./Ladder.css";
 import { Button, Tooltip } from "@blueprintjs/core";
@@ -123,18 +122,19 @@ export default function Ladder({
             icon="duplicate"
             minimal
             style={{ position: "absolute", top: 5, right: 5, color: "white" }}
-            onClick={() => {
+            onClick={async () => {
               try {
-                html2canvas(
-                  document.querySelector(".ve-digest-container")
-                ).then(canvas => {
-                  canvas.toBlob(blob =>
-                    navigator.clipboard.write([
-                      new window.ClipboardItem({ "image/png": blob })
-                    ])
-                  );
-                  window.toastr.success("Image copied to clipboard!");
-                });
+                const canvas = await import("html2canvas");
+                canvas
+                  .default(document.querySelector(".ve-digest-container"))
+                  .then(canvas => {
+                    canvas.toBlob(blob =>
+                      navigator.clipboard.write([
+                        new window.ClipboardItem({ "image/png": blob })
+                      ])
+                    );
+                    window.toastr.success("Image copied to clipboard!");
+                  });
               } catch (e) {
                 window.toastr.error(
                   "Error copying the image, try just taking a screenshot instead ;)"

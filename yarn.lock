@@ -1995,11 +1995,6 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.50.0.tgz#9e93b850f0f3fa35f5fa59adfd03adae8488e484"
   integrity sha512-NCC3zz2+nvYd+Ckfh87rA47zfu2QsQpvc6k1yzTk+b9KzRj0wkGa8LSoGOXN6Zv4lRf/EIoZ80biDh9HOI+RNQ==
 
-"@fontsource/ubuntu-mono@^4.5.11":
-  version "4.5.11"
-  resolved "https://registry.npmjs.org/@fontsource/ubuntu-mono/-/ubuntu-mono-4.5.11.tgz"
-  integrity sha512-IqqJKgp9Xc8tFeCIHPQuFbiKZC8tBU2hdIllwX2pryYfkl8/w4DuScFq9fPMfy1Mp4raFVcJALvOMOfRXkLp/w==
-
 "@gmod/gff@^1.2.1":
   version "1.3.0"
   resolved "https://registry.npmjs.org/@gmod/gff/-/gff-1.3.0.tgz"
@@ -3128,10 +3123,10 @@
   dependencies:
     prop-types "15"
 
-"@teselagen/react-table@6.10.13":
-  version "6.10.13"
-  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.13.tgz#a93c73f78d4b36502679032456a1a3bef3c769b9"
-  integrity sha512-xPJ2w2igonhvlFWuuEXzY3HZ5tP4kcK9FFkHyOCl2WSwneUprUWujtxUW4kMxq/lBBiSWlNIM0cosQq1/q5Xiw==
+"@teselagen/react-table@6.10.16":
+  version "6.10.16"
+  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.16.tgz#fbc4ba79d4964368ec07e911c1e5fe171c9b0758"
+  integrity sha512-oyS/F/rDtE9dgXvfuoMHh7ag/ZksxkexmnUTYrm6tthXRU/wVn6S6MrfSztjiYB0TaGi9aFCZB4f/onNTaRVcQ==
   dependencies:
     "@teselagen/react-list" "0.8.18"
     classnames "^2.2.5"

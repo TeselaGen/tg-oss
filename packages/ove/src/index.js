@@ -1,4 +1,3 @@
-import "@fontsource/ubuntu-mono";
 import { FocusStyleManager } from "@blueprintjs/core";
 import { showContextMenu } from "@teselagen/ui";
 import "./createVectorEditor";
