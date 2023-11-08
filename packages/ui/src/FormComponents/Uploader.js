@@ -13,17 +13,12 @@ import {
   Tooltip
 } from "@blueprintjs/core";
 import Dropzone from "react-dropzone";
-// import { first } from "lodash";
 import classnames from "classnames";
 import { nanoid } from "nanoid";
-
 import papaparse, { unparse } from "papaparse";
-
 import downloadjs from "downloadjs";
-
 import { configure, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-
 import UploadCsvWizardDialog, {
   SimpleInsertDataDialog
 } from "../UploadCsvWizard";
