@@ -90,11 +90,11 @@ describe("proteinEditor", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.get(".sequenceInputBubble input").type("{enter}");
-    cy.contains("Selecting 9 AAs from 1 to 9");
-    cy.contains("Length: 1394 AAs");
-    cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type(".*-ma");
+    cy.contains("Selecting 6 AAs from 1 to 6");
+    cy.contains("Length: 1391 AAs");
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type("ma");
 
-    cy.get(`[title="Selecting 5 AAs from 1 to 5"]`).should("exist");
+    cy.get(`[title="Selecting 2 AAs from 1 to 2"]`).should("exist");
   });
   it(`should be able to delete correctly when backspace/del pressed`, () => {
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({

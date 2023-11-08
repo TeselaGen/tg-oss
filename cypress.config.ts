@@ -14,6 +14,10 @@ export default ({
     video: false,
     pageLoadTimeout: 40000,
     e2e: {
+      retries: {
+        runMode: 3,
+        openMode: 0
+      },
       // setupNodeEvents(on, config) {
       //   on(
       //     "file:preprocessor",

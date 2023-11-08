@@ -96,6 +96,10 @@ const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
+    if (this.props.helperProp) {
+      this.props.helperProp.addEditableTableEntities =
+        this.addEditableTableEntities;
+    }
     this.hotkeyEnabler = withHotkeys({
       moveUpARow: {
         global: false,
@@ -1704,16 +1708,23 @@ class DataTable extends React.Component {
               additionalBodyEl={
                 isCellEditable &&
                 !onlyShowRowsWErrors && (
-                  <Button
-                    icon="add"
-                    style={{ marginTop: "auto" }}
-                    onClick={() => {
-                      this.insertRows({ numRows: 10, appendToBottom: true });
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center"
                     }}
-                    minimal
                   >
-                    Add 10 Rows
-                  </Button>
+                    <Button
+                      icon="add"
+                      onClick={() => {
+                        this.insertRows({ numRows: 10, appendToBottom: true });
+                      }}
+                      minimal
+                    >
+                      Add 10 Rows
+                    </Button>
+                  </div>
                 )
               }
               className={classNames({
@@ -2959,6 +2970,35 @@ class DataTable extends React.Component {
     const stringText = toString(text);
     if (stringText === "[object Object]") return "";
     return stringText;
+  };
+
+  addEditableTableEntities = incomingEnts => {
+    const { entities = [], reduxFormCellValidation } = computePresets(
+      this.props
+    );
+
+    this.updateEntitiesHelper(entities, entities => {
+      const newEntities = incomingEnts.map(e => ({
+        ...e,
+        id: e.id || nanoid(),
+        _isClean: false
+      }));
+
+      const { newEnts, validationErrors } = this.formatAndValidateEntities(
+        newEntities,
+        {
+          useDefaultValues: true,
+          indexToStartAt: entities.length
+        }
+      );
+
+      entities.splice(entities.length, 0, ...newEnts);
+
+      this.updateValidation(entities, {
+        ...reduxFormCellValidation,
+        ...validationErrors
+      });
+    });
   };
 
   insertRows = ({ above, numRows = 1, appendToBottom } = {}) => {

@@ -13,7 +13,6 @@ describe("editing", function () {
     cy.contains(`.bp3-menu-item`, "Edit Part").click();
     cy.contains(".bp3-dialog button", "Save").click();
 
-    cy.contains(`button`, "Help").click();
     cy.triggerFileCmd("New Part");
     cy.contains(`.bp3-dialog`, "New Part");
     cy.get(`[placeholder="Untitled Annotation"]`);

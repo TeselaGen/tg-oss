@@ -23,6 +23,7 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+// cypress/support/index.js
 const { isString } = require("lodash");
 
 Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
