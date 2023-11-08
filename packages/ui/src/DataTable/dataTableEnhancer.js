@@ -17,6 +17,15 @@ import tgFormValues from "../utils/tgFormValues";
 import getTableConfigFromStorage from "./utils/getTableConfigFromStorage";
 
 export default compose(
+  // maybe we need this in some cases?
+  // tgFormValues("reduxFormEntities"),
+  // withProps(props => {
+  //   const entities = props.reduxFormEntities || props.entities;
+  //   return {
+  //     _origEntities: props.entities,
+  //     entities
+  //   };
+  // }),
   //connect to withTableParams here in the dataTable component so that, in the case that the table is not manually connected,
   withTableParams({
     isLocalCall: true

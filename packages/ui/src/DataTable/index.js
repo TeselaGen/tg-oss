@@ -427,13 +427,14 @@ class DataTable extends React.Component {
   };
   formatAndValidateTableInitial = () => {
     const {
-      _origEntities: entities,
+      _origEntities,
+      entities,
       initialEntities,
       change,
       reduxFormCellValidation
     } = this.props;
     const { newEnts, validationErrors } = this.formatAndValidateEntities(
-      initialEntities || entities
+      initialEntities || entities || _origEntities
     );
     change("reduxFormEntities", newEnts);
     const toKeep = {};
@@ -2510,9 +2511,11 @@ class DataTable extends React.Component {
           if (reduxFormEditingCell === cellId) {
             if (column.type === "genericSelect") {
               const GenericSelectComp = column.GenericSelectComp;
+              const fullValue = row.original?.[row.column.path];
               return (
                 <GenericSelectComp
                   rowId={rowId}
+                  fullValue={fullValue}
                   initialValue={text}
                   {...dataTest}
                   finishEdit={(newVal, doNotStopEditing) => {
