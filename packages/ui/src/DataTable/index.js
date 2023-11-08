@@ -897,7 +897,7 @@ class DataTable extends React.Component {
 
   getRowCopyText = (rowEl, { specificColumn } = {}) => {
     //takes in a row element
-    if (!rowEl) return;
+    if (!rowEl) return [];
     const textContent = [];
     const jsonText = [];
 

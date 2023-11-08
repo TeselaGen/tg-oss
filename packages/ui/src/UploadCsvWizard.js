@@ -587,6 +587,7 @@ export const PreviewCsvData = observer(function (props) {
         isSimple
         keepDirtyOnReinitialize
         isCellEditable
+        initialEntities={(initialEntities ? initialEntities : data) || []}
         entities={(initialEntities ? initialEntities : data) || []}
         schema={validateAgainstSchema}
       ></DataTable>
