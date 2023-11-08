@@ -235,6 +235,9 @@ function VectorInteractionHOC(Component /* options */) {
           sequence: clipboardData.getData("text/plain") || e.target.value
         };
       }
+      if (sequenceData.isProtein && !seqDataToInsert.proteinSequence) {
+        seqDataToInsert.proteinSequence = seqDataToInsert.sequence;
+      }
 
       seqDataToInsert = tidyUpSequenceData(seqDataToInsert, {
         topLevelSeqData: sequenceData,

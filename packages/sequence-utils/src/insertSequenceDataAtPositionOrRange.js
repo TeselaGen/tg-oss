@@ -22,10 +22,10 @@ export default function insertSequenceDataAtPositionOrRange(
     doNotRemoveInvalidChars: true,
     ...options
   });
-  const sequenceDataToInsert = tidyUpSequenceData(
-    _sequenceDataToInsert,
-    options
-  );
+  const sequenceDataToInsert = tidyUpSequenceData(_sequenceDataToInsert, {
+    topLevelSeqData: existingSequenceData,
+    ...options
+  });
   const newSequenceData = cloneDeep(existingSequenceData);
   const insertLength = sequenceDataToInsert.proteinSequence
     ? sequenceDataToInsert.proteinSequence.length * 3

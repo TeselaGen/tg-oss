@@ -434,7 +434,8 @@ class DataTable extends React.Component {
       reduxFormCellValidation
     } = this.props;
     const { newEnts, validationErrors } = this.formatAndValidateEntities(
-      initialEntities || entities || _origEntities
+      initialEntities ||
+        (entities && entities.length ? entities : _origEntities)
     );
     change("reduxFormEntities", newEnts);
     const toKeep = {};
