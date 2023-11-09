@@ -457,9 +457,9 @@ body:not(.drag-active)
 .tg-dropdown-cell-edit-container .bp3-tag-input .bp3-button {
   margin: 0;
 }
-.tg-dropdown-cell-edit-container .bp3-tag-input .bp3-tag-input-values > * {
+/* .tg-dropdown-cell-edit-container .bp3-tag-input .bp3-tag-input-values > * {
   margin-bottom: 0;
-}
+} */
 .tg-dropdown-cell-edit-container:not(.tg-dropdown-cell-edit-container-multi)
   .bp3-tag-input {
   min-height: 0;

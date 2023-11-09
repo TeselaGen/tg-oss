@@ -257,26 +257,6 @@
           "implicitDependencies": []
         }
       },
-      "shared-demo": {
-        "name": "shared-demo",
-        "type": "lib",
-        "data": {
-          "root": "packages/shared-demo",
-          "sourceRoot": "packages/shared-demo",
-          "name": "shared-demo",
-          "projectType": "library",
-          "targets": {
-            "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
-              "executor": "@nx/js:release-publish",
-              "options": {},
-              "configurations": {}
-            }
-          },
-          "implicitDependencies": [],
-          "tags": []
-        }
-      },
       "range-utils": {
         "name": "range-utils",
         "type": "lib",
@@ -348,6 +328,26 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
+        }
+      },
+      "shared-demo": {
+        "name": "shared-demo",
+        "type": "lib",
+        "data": {
+          "root": "packages/shared-demo",
+          "sourceRoot": "packages/shared-demo",
+          "name": "shared-demo",
+          "projectType": "library",
+          "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            }
+          },
+          "implicitDependencies": [],
+          "tags": []
         }
       },
       "file-utils": {
@@ -778,8 +778,8 @@
           "type": "static"
         }
       ],
-      "shared-demo": [],
       "range-utils": [],
+      "shared-demo": [],
       "file-utils": [],
       "uploader": [],
       "ove": [

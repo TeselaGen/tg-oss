@@ -1,6 +1,22 @@
 import tippy, { followCursor } from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
+let isDragging = false;
+let canSetDragging = false;
+document.addEventListener("mousedown", () => {
+  canSetDragging = true;
+  isDragging = false;
+});
+document.addEventListener("mousemove", () => {
+  if (canSetDragging) {
+    isDragging = true;
+  }
+});
+document.addEventListener("mouseup", () => {
+  canSetDragging = false;
+  isDragging = false;
+});
+
 let tippys = [];
 let recentlyHidden = false;
 let clearMe;
@@ -142,7 +158,11 @@ let clearMe;
           dataAvoid,
           dataAvoidBackup
         };
-        if (dataTip && !document.body.classList.contains("drag-active")) {
+        if (
+          dataTip &&
+          !document.body.classList.contains("drag-active") &&
+          !isDragging
+        ) {
           if (dataTipStop) break;
 
           inner(dataTip, el, opts);
