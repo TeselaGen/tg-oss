@@ -60,7 +60,7 @@ describe("partTags", function () {
     cy.contains(".bp3-menu-item", "tag2").click();
     cy.contains(".bp3-dialog button", "Save").click();
     cy.contains("Part 0").click({ force: true });
-    cy.contains(".veRowViewPart", "np").rightclick();
+    cy.contains(".veRowViewPart", "np").rightclick({ force: true });
     cy.contains(".bp3-menu-item", "Edit Part").click();
     cy.contains(".bp3-tag-input-values", "status: broken").should("exist");
     cy.get(".example-editTagsLink").click();
