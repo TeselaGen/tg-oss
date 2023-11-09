@@ -201,7 +201,7 @@ describe("editor", function () {
     cy.contains(".veLabelText", "Part 0").rightclick();
     cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
     cy.contains(".bp3-menu-item", "New Primer").click();
-    cy.focused().type("new primer");
+    cy.focused().type("new primer", { force: true });
     cy.contains(".bp3-dialog button", "Save").click();
     cy.contains("beforeAnnotationCreate callback triggered for primers");
   });

@@ -5,7 +5,7 @@ import {
 } from "./bioData";
 
 export default function filterSequenceString(
-  sequenceString,
+  sequenceString = "",
   {
     additionalValidChars = "",
     isOligo,
@@ -111,3 +111,6 @@ export function getReplaceChars({
     : //just plain old dna
       {};
 }
+
+export const filterRnaString = (s, o) =>
+  filterSequenceString(s, { ...o, isRna: true })[0];

@@ -110,11 +110,6 @@ export default function validateSequence(sequence, options = {}) {
   } else {
     //todo: this logic won't catch every case of RNA, so we should probably handle RNA conversion at another level..
     const temp = sequence.sequence;
-    if (!sequence.isOligo) {
-      sequence.sequence = sequence.sequence.replace(/u/gi, u =>
-        u === "U" ? "T" : "t"
-      );
-    }
     if (
       temp !== sequence.sequence &&
       !sequence.isDNA &&
