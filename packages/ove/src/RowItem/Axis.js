@@ -88,6 +88,7 @@ const Axis = function (props) {
     tickMarkSVG.push(
       <rect
         className="veAxisTick"
+        data-test={tickMarkPosition + 1}
         key={"axisTickMarkPath " + i + " " + tickMarkPosition}
         x={xCenter}
         width={1}
