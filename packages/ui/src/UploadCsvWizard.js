@@ -4,7 +4,7 @@ import { Callout, Icon, Intent, Tab, Tabs } from "@blueprintjs/core";
 import immer from "immer";
 import { observer } from "mobx-react";
 import "./UploadCsvWizard.css";
-import { forEach, isFunction } from "lodash";
+import { isFunction } from "lodash";
 import { compose } from "recompose";
 import SimpleStepViz from "./SimpleStepViz";
 import { nanoid } from "nanoid";
@@ -12,11 +12,10 @@ import { tgFormValueSelector } from "./utils/tgFormValues";
 import { some } from "lodash";
 import { times } from "lodash";
 import DialogFooter from "./DialogFooter";
-import DataTable, { isEntityClean } from "./DataTable";
+import DataTable, { removeCleanRows } from "./DataTable";
 import wrapDialog from "./wrapDialog";
 import { omit } from "lodash";
 import { connect } from "react-redux";
-import getIdOrCodeOrIndex from "./DataTable/utils/getIdOrCodeOrIndex";
 import { MatchHeaders } from "./MatchHeaders";
 import { isEmpty } from "lodash";
 import { addSpecialPropToAsyncErrs } from "./FormComponents/tryToMatchSchemas";
@@ -701,26 +700,6 @@ async function asyncValidateHelper(
     });
     return true;
   }
-}
-
-export function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
-  const toFilterOut = {};
-  const entsToUse = (reduxFormEntities || []).filter(e => {
-    if (!(e._isClean || isEntityClean(e))) return true;
-    else {
-      toFilterOut[getIdOrCodeOrIndex(e)] = true;
-      return false;
-    }
-  });
-
-  const validationToUse = {};
-  forEach(reduxFormCellValidation, (v, k) => {
-    const [rowId] = k.split(":");
-    if (!toFilterOut[rowId]) {
-      validationToUse[k] = v;
-    }
-  });
-  return { entsToUse, validationToUse };
 }
 
 function maybeStripIdFromEntities(ents, validateAgainstSchema) {

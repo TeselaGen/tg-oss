@@ -17,19 +17,20 @@ export {
 } from "./DataTable/utils/withSelectedEntities";
 export {
   default as DataTable,
-  ConnectedPagingTool as PagingTool
+  ConnectedPagingTool as PagingTool,
+  removeCleanRows
 } from "./DataTable";
 
 export { default as getIdOrCodeOrIndex } from "./DataTable/utils/getIdOrCodeOrIndex";
 export { default as convertSchema } from "./DataTable/utils/convertSchema";
 export { default as Loading } from "./Loading";
+export { throwFormError } from "./throwFormError";
 export { default as AdvancedOptions } from "./AdvancedOptions";
 export { default as TgSelect } from "./TgSelect";
 export { default as wrapDialog } from "./wrapDialog";
 export { default as PromptUnsavedChanges } from "./PromptUnsavedChanges";
 export { default as BlueprintError } from "./BlueprintError";
 export { default as DropdownButton } from "./DropdownButton";
-export { removeCleanRows } from "./UploadCsvWizard";
 export { default as DialogFooter } from "./DialogFooter";
 export { default as adHoc } from "./utils/adHoc";
 export { default as IntentText } from "./IntentText";

@@ -27,7 +27,8 @@ import {
   omitBy,
   times,
   some,
-  isFunction
+  isFunction,
+  every
 } from "lodash";
 import joinUrl from "url-join";
 
@@ -87,6 +88,7 @@ import { validateTableWideErrors } from "./validateTableWideErrors";
 import { editCellHelper } from "./editCellHelper";
 import { getCellVal } from "./getCellVal";
 import { getVals } from "./getVals";
+import { throwFormError } from "../throwFormError";
 enablePatches();
 
 const PRIMARY_SELECTED_VAL = "main_cell";
@@ -99,6 +101,8 @@ class DataTable extends React.Component {
     if (this.props.helperProp) {
       this.props.helperProp.addEditableTableEntities =
         this.addEditableTableEntities;
+      this.props.helperProp.getEditableTableInfoAndThrowFormError =
+        this.getEditableTableInfoAndThrowFormError;
     }
     this.hotkeyEnabler = withHotkeys({
       moveUpARow: {
@@ -798,7 +802,12 @@ class DataTable extends React.Component {
     const { change, schema } = computePresets(this.props);
     change(
       "reduxFormCellValidation",
-      validateTableWideErrors({ entities, schema, newCellValidate })
+      validateTableWideErrors({
+        entities,
+        schema,
+        newCellValidate,
+        props: this.props
+      })
     );
   };
   handleDeleteCell = () => {
@@ -2991,14 +3000,48 @@ class DataTable extends React.Component {
           indexToStartAt: entities.length
         }
       );
-
-      entities.splice(entities.length, 0, ...newEnts);
+      if (every(entities, "_isClean")) {
+        forEach(newEnts, (e, i) => {
+          entities[i] = e;
+        });
+      } else {
+        entities.splice(entities.length, 0, ...newEnts);
+      }
 
       this.updateValidation(entities, {
         ...reduxFormCellValidation,
         ...validationErrors
       });
     });
+  };
+  getEditableTableInfoAndThrowFormError = () => {
+    const { schema, reduxFormEntities, reduxFormCellValidation } =
+      computePresets(this.props);
+    const { entsToUse, validationToUse } = removeCleanRows(
+      reduxFormEntities,
+      reduxFormCellValidation
+    );
+    const validationWTableErrs = validateTableWideErrors({
+      entities: entsToUse,
+      schema,
+      newCellValidate: validationToUse
+    });
+
+    if (!entsToUse?.length) {
+      throwFormError(
+        "Please add at least one row to the table before submitting."
+      );
+    }
+    const invalid =
+      isEmpty(validationWTableErrs) || !some(validationWTableErrs, v => v)
+        ? undefined
+        : validationWTableErrs;
+
+    if (invalid) {
+      throwFormError("Please fix the errors in the table before submitting.");
+    }
+
+    return entsToUse;
   };
 
   insertRows = ({ above, numRows = 1, appendToBottom } = {}) => {
@@ -3744,3 +3787,23 @@ const formatPasteData = ({ schema, newVal, path }) => {
   }
   return newVal;
 };
+
+export function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
+  const toFilterOut = {};
+  const entsToUse = (reduxFormEntities || []).filter(e => {
+    if (!(e._isClean || isEntityClean(e))) return true;
+    else {
+      toFilterOut[getIdOrCodeOrIndex(e)] = true;
+      return false;
+    }
+  });
+
+  const validationToUse = {};
+  forEach(reduxFormCellValidation, (v, k) => {
+    const [rowId] = k.split(":");
+    if (!toFilterOut[rowId]) {
+      validationToUse[k] = v;
+    }
+  });
+  return { entsToUse, validationToUse };
+}

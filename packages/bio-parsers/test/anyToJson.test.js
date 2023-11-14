@@ -28,6 +28,24 @@ describe("anyToJsonPromise", function () {
   });
 });
 describe("anyToJson", function () {
+  // @XingGao-PKI - I think the following genbank should still be able to be parsed correctly
+  // it("should handle this gbs with lots of start spacing correctly", async function () {
+  //   const results = await anyToJson(
+  //     `LOCUS       zoink                        20 bp    DNA     linear  15-NOV-2019
+  //         ORIGIN
+  //                 1 acccuuuuaacccggggcccuuuu
+  //         //
+  //         `,
+  //     {
+  //       acceptParts: true,
+  //       isRNA: false,
+  //       isOligo: false,
+  //       primersAsFeatures: true,
+  //       fileName: "sequence1.gb"
+  //     }
+  //   );
+  //   console.log(`results:`, results)
+  // });
   it("should not break on LQNKMVSDKGRAHKPAWYMGMVNNAYNLSIISTMIL parsed with isProtein=true", async function () {
     const results = await anyToJson("LQNKMVSDKGRAHKPAWYMGMVNNAYNLSIISTMIL", {
       fileName: "randomString.txt",
