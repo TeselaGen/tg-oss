@@ -104,7 +104,7 @@ export const collapseSplitScreen = (activePanelId, meta) => {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export default createReducer(
+const reducer = createReducer(
   {
     [addPanelIfItDoesntAlreadyExist]: (state, panelToAdd) => {
       if (
@@ -140,8 +140,16 @@ export default createReducer(
           if (id === idToClose) indexToClose = i;
         });
         if (indexToClose > -1) {
-          return removeItem(group, indexToClose).map((tab, i) => {
-            if (i === 0) return { ...tab, active: true };
+          const newPanels = removeItem(group, indexToClose);
+          let mostRecentIndex = 0;
+          newPanels.forEach(p => {
+            if (p.lastActive > newPanels[mostRecentIndex].lastActive) {
+              mostRecentIndex = newPanels.indexOf(p);
+            }
+          });
+
+          return newPanels.map((tab, i) => {
+            if (i === mostRecentIndex) return { ...tab, active: true };
             else {
               return tab;
             }
@@ -258,6 +266,17 @@ export default createReducer(
   ]
 );
 
+export default (state, action) => {
+  const nextState = reducer(state, action);
+  nextState.forEach(pg => {
+    pg.forEach(p => {
+      if (p.active) {
+        p.lastActive = Date.now().toString();
+      }
+    });
+  });
+  return nextState;
+};
 function flipActiveForGroup(group, setCircActive) {
   const activeTab = group.find(({ active }) => active);
   if (activeTab?.id === (setCircActive ? "rail" : "circular")) {
