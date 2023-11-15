@@ -5,7 +5,10 @@
 .veLinearView.isLinViewZoomed .veRowItemWrapper {
   overflow: auto;
 }
-
+.sequenceNameText {
+  text-align: center;
+  padding-top: 20px;
+}
 /* .tg-pinch-helper {
   touch-action: none;
   -moz-user-select: none;

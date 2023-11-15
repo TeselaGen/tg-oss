@@ -2,7 +2,7 @@ import React from "react";
 
 export function SequenceName({ sequenceName, sequenceLength, isProtein }) {
   return (
-    <div key="circViewSvgCenterText" style={{ textAlign: "center" }}>
+    <div key="sequenceNameText" className="sequenceNameText">
       <span>{sequenceName} </span>
       <br />
       <span>
