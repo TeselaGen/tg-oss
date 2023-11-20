@@ -6,9 +6,7 @@
         "type": "lib",
         "data": {
           "root": "packages/sequence-utils",
-          "sourceRoot": "packages/sequence-utils/src",
           "name": "sequence-utils",
-          "projectType": "library",
           "targets": {
             "nx-release-publish": {
               "dependsOn": ["^nx-release-publish"],
@@ -69,6 +67,8 @@
               "configurations": {}
             }
           },
+          "sourceRoot": "packages/sequence-utils/src",
+          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
@@ -79,9 +79,7 @@
         "type": "lib",
         "data": {
           "root": "packages/bounce-loader",
-          "sourceRoot": "packages/bounce-loader/src",
           "name": "bounce-loader",
-          "projectType": "library",
           "targets": {
             "nx-release-publish": {
               "dependsOn": ["^nx-release-publish"],
@@ -179,29 +177,11 @@
               "configurations": {}
             }
           },
+          "sourceRoot": "packages/bounce-loader/src",
+          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
-        }
-      },
-      "shared-demo": {
-        "name": "shared-demo",
-        "type": "lib",
-        "data": {
-          "root": "packages/shared-demo",
-          "sourceRoot": "packages/shared-demo",
-          "name": "shared-demo",
-          "projectType": "library",
-          "targets": {
-            "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
-              "executor": "@nx/js:release-publish",
-              "options": {},
-              "configurations": {}
-            }
-          },
-          "implicitDependencies": [],
-          "tags": []
         }
       },
       "bio-parsers": {
@@ -209,9 +189,7 @@
         "type": "lib",
         "data": {
           "root": "packages/bio-parsers",
-          "sourceRoot": "packages/bio-parsers/src",
           "name": "bio-parsers",
-          "projectType": "library",
           "targets": {
             "nx-release-publish": {
               "dependsOn": ["^nx-release-publish"],
@@ -272,6 +250,8 @@
               "configurations": {}
             }
           },
+          "sourceRoot": "packages/bio-parsers/src",
+          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
@@ -282,9 +262,7 @@
         "type": "lib",
         "data": {
           "root": "packages/range-utils",
-          "sourceRoot": "packages/range-utils/src",
           "name": "range-utils",
-          "projectType": "library",
           "targets": {
             "nx-release-publish": {
               "dependsOn": ["^nx-release-publish"],
@@ -345,9 +323,31 @@
               "configurations": {}
             }
           },
+          "sourceRoot": "packages/range-utils/src",
+          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
+        }
+      },
+      "shared-demo": {
+        "name": "shared-demo",
+        "type": "lib",
+        "data": {
+          "root": "packages/shared-demo",
+          "sourceRoot": "packages/shared-demo",
+          "name": "shared-demo",
+          "projectType": "library",
+          "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            }
+          },
+          "implicitDependencies": [],
+          "tags": []
         }
       },
       "file-utils": {
@@ -355,9 +355,7 @@
         "type": "lib",
         "data": {
           "root": "packages/file-utils",
-          "sourceRoot": "packages/file-utils/src",
           "name": "file-utils",
-          "projectType": "library",
           "targets": {
             "nx-release-publish": {
               "dependsOn": ["^nx-release-publish"],
@@ -418,6 +416,8 @@
               "configurations": {}
             }
           },
+          "sourceRoot": "packages/file-utils/src",
+          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
@@ -428,9 +428,7 @@
         "type": "lib",
         "data": {
           "root": "packages/uploader",
-          "sourceRoot": "packages/uploader/src",
           "name": "uploader",
-          "projectType": "library",
           "targets": {
             "nx-release-publish": {
               "dependsOn": ["^nx-release-publish"],
@@ -463,6 +461,8 @@
               "configurations": {}
             }
           },
+          "sourceRoot": "packages/uploader/src",
+          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
@@ -473,9 +473,7 @@
         "type": "lib",
         "data": {
           "root": "packages/ove",
-          "sourceRoot": "packages/ove/src",
           "name": "ove",
-          "projectType": "library",
           "targets": {
             "nx-release-publish": {
               "dependsOn": ["^nx-release-publish"],
@@ -616,6 +614,8 @@
               "configurations": {}
             }
           },
+          "sourceRoot": "packages/ove/src",
+          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
@@ -626,9 +626,7 @@
         "type": "lib",
         "data": {
           "root": "packages/ui",
-          "sourceRoot": "packages/ui/src",
           "name": "ui",
-          "projectType": "library",
           "targets": {
             "nx-release-publish": {
               "dependsOn": ["^nx-release-publish"],
@@ -751,6 +749,8 @@
               "configurations": {}
             }
           },
+          "sourceRoot": "packages/ui/src",
+          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "tags": [],
           "implicitDependencies": []
@@ -766,7 +766,6 @@
         }
       ],
       "bounce-loader": [],
-      "shared-demo": [],
       "bio-parsers": [
         {
           "source": "bio-parsers",
@@ -780,6 +779,7 @@
         }
       ],
       "range-utils": [],
+      "shared-demo": [],
       "file-utils": [],
       "uploader": [],
       "ove": [

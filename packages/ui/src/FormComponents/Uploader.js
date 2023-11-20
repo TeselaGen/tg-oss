@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import {
   Button,
   Callout,
@@ -127,7 +126,6 @@ function UploaderInner({
   callout: _callout,
   fileLimit,
   readBeforeUpload, //read the file using the browser's FileReader before passing it to onChange and/or uploading it
-  uploadInBulk, //tnr: not yet implemented
   showUploadList = true,
   beforeUpload,
   fileList, //list of files with options: {name, loading, error, url, originalName, downloadName}
@@ -145,8 +143,7 @@ function UploaderInner({
   initializeForm,
   showFilesCount,
   threeDotMenuItems,
-  onPreviewClick,
-  axiosInstance = window.api || axios
+  onPreviewClick
 }) {
   //on component did mount
   const validateAgainstSchemaStore = useRef(new ValidateAgainstSchema());
@@ -172,10 +169,10 @@ function UploaderInner({
   const accept = !_accept
     ? undefined
     : isPlainObject(_accept)
-    ? [_accept]
-    : isArray(_accept)
-    ? _accept
-    : _accept.split(",").map(a => ({ type: a }));
+      ? [_accept]
+      : isArray(_accept)
+        ? _accept
+        : _accept.split(",").map(a => ({ type: a }));
   if (
     (validateAgainstSchema || autoUnzip) &&
     accept &&
@@ -387,69 +384,51 @@ function UploaderInner({
     if (!keepGoing) return;
 
     if (action) {
-      if (uploadInBulk) {
-        //tnr: not yet implemented
-        /* const config = {
-        onUploadProgress: function(progressEvent) {
-          let percentCompleted = Math.round(
-            progressEvent.loaded * 100 / progressEvent.total
-          );
-        }
-      };
-
-      axios
-        .post(action, data, config)
-        .then(function(res) {
-          onChange(res.data);
-        })
-        .catch(function(err) {
-        }); */
-      } else {
-        const responses = [];
-
-        await Promise.all(
-          acceptedFiles.map(fileToUpload => {
-            const data = new FormData();
-            data.append("file", fileToUpload);
-
-            return axiosInstance
-              .post(action, data)
-              .then(function (res) {
-                responses.push(res.data && res.data[0]);
-                onFileSuccess(res.data[0]).then(() => {
-                  cleanedFileList = cleanedFileList.map(file => {
-                    const fileToReturn = {
-                      ...file,
-                      ...res.data[0]
-                    };
-                    if (fileToReturn.id === fileToUpload.id) {
-                      fileToReturn.loading = false;
-                    }
-                    return fileToReturn;
-                  });
-                  onChange(cleanedFileList);
-                });
-              })
-              .catch(function (err) {
-                console.error("Error uploading file:", err);
-                responses.push({
-                  ...fileToUpload,
-                  error: err && err.msg ? err.msg : err
-                });
-                cleanedFileList = cleanedFileList.map(file => {
-                  const fileToReturn = { ...file };
-                  if (fileToReturn.id === fileToUpload.id) {
-                    fileToReturn.loading = false;
-                    fileToReturn.error = true;
-                  }
-                  return fileToReturn;
-                });
-                onChange(cleanedFileList);
+      const responses = [];
+      await Promise.all(
+        acceptedFiles.map(async fileToUpload => {
+          const data = new FormData();
+          data.append("file", fileToUpload);
+          try {
+            const res = await (window.api
+              ? window.api.post(action, data)
+              : fetch(action, {
+                  method: "POST",
+                  body: data
+                }));
+            responses.push(res.data && res.data[0]);
+            onFileSuccess(res.data[0]).then(() => {
+              cleanedFileList = cleanedFileList.map(file => {
+                const fileToReturn = {
+                  ...file,
+                  ...res.data[0]
+                };
+                if (fileToReturn.id === fileToUpload.id) {
+                  fileToReturn.loading = false;
+                }
+                return fileToReturn;
               });
-          })
-        );
-        onFieldSubmit(responses);
-      }
+              onChange(cleanedFileList);
+            });
+          } catch (err) {
+            console.error("Error uploading file:", err);
+            responses.push({
+              ...fileToUpload,
+              error: err && err.msg ? err.msg : err
+            });
+            cleanedFileList = cleanedFileList.map(file => {
+              const fileToReturn = { ...file };
+              if (fileToReturn.id === fileToUpload.id) {
+                fileToReturn.loading = false;
+                fileToReturn.error = true;
+              }
+              return fileToReturn;
+            });
+            onChange(cleanedFileList);
+          }
+        })
+      );
+      onFieldSubmit(responses);
     } else {
       onChange(
         cleanedFileList.map(function (file) {
@@ -848,8 +827,8 @@ function UploaderInner({
                             multipleFiles
                               ? ""
                               : file.name
-                              ? `"${file.name}"`
-                              : ""
+                                ? `"${file.name}"`
+                                : ""
                           }`
                         },
                         doAllFilesHaveSameHeaders,
@@ -1036,8 +1015,8 @@ function UploaderInner({
                             hasEditClick
                               ? "Edit"
                               : onPreviewClick
-                              ? "Preview"
-                              : undefined
+                                ? "Preview"
+                                : undefined
                           }
                           style={{ marginRight: 5 }}
                           icon={icon}
@@ -1177,8 +1156,8 @@ function getFileDownloadAttr(exampleFile) {
           exampleFile.startsWith("https") || exampleFile.startsWith("www")
             ? exampleFile
             : baseUrl
-            ? urljoin(baseUrl, "exampleFiles", exampleFile)
-            : exampleFile
+              ? urljoin(baseUrl, "exampleFiles", exampleFile)
+              : exampleFile
       };
 }
 

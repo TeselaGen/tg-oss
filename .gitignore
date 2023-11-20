@@ -49,3 +49,4 @@ playwright-report
 playwright/.cache
 downloads
 .vite
+.nx

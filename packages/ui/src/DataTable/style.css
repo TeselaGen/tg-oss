@@ -157,9 +157,9 @@
 }
 
 /* add margin bottom to last row so it does not get covered by scrollbar */
-.ReactTable .rt-tr-group:last-child {
+/* .ReactTable .rt-tr-group:last-child {
   margin-bottom: 20px;
-}
+} */
 
 .bp3-icon-standard.bp3-disabled {
   cursor: not-allowed;
