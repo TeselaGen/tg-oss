@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.3.48",
+  "version": "0.3.50",
   "main": "./src/index.js",
   "exports": {
     ".": {
@@ -15,7 +15,6 @@
     "@blueprintjs/icons": "3.33.0",
     "@blueprintjs/select": "3.18.11",
     "@teselagen/react-table": "6.10.16",
-    "axios": "^0.21.1",
     "bluebird": "3.7.2",
     "buffer": "5.7.1",
     "color": "^3.2.1",
