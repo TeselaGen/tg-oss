@@ -7,8 +7,12 @@ export default function getAminoAcidStringFromSequenceString(sequenceString) {
   );
   const aaArray = [];
   let aaString = "";
-  aminoAcidsPerBase.forEach(aa => {
+  aminoAcidsPerBase.forEach((aa, index) => {
     if (!aa.fullCodon) {
+      return;
+    }
+    // Check if the current amino acid is the last in the sequence and is a stop codon
+    if (index === aminoAcidsPerBase.length - 1 && aa.aminoAcid.value === '*') {
       return;
     }
     aaArray[aa.aminoAcidIndex] = aa.aminoAcid.value;
