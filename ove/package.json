@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.3.58",
+  "version": "0.3.59",
   "main": "./src/index.js",
   "exports": {
     ".": {
@@ -22,7 +22,6 @@
     "@teselagen/react-list": "0.8.18",
     "@teselagen/react-table": "6.10.16",
     "@use-gesture/react": "^10.2.23",
-    "axios": "^0.21.1",
     "bluebird": "3.7.2",
     "bson-objectid": "2.0.4",
     "buffer": "5.7.1",
