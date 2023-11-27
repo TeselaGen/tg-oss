@@ -143,7 +143,9 @@ const reducer = createReducer(
           const newPanels = removeItem(group, indexToClose);
           let mostRecentIndex = 0;
           newPanels.forEach(p => {
-            if (p.lastActive > newPanels[mostRecentIndex].lastActive) {
+            if (
+              (p.lastActive || 0) > (newPanels[mostRecentIndex].lastActive || 0)
+            ) {
               mostRecentIndex = newPanels.indexOf(p);
             }
           });
@@ -191,8 +193,8 @@ const reducer = createReducer(
               panelId === panel.id
                 ? true
                 : isPanelInGroup
-                ? false
-                : panel.active
+                  ? false
+                  : panel.active
           };
         });
       });
@@ -209,14 +211,14 @@ const reducer = createReducer(
               panelId === panel.id
                 ? true
                 : isPanelInGroup
-                ? false
-                : panel.active,
+                  ? false
+                  : panel.active,
             fullScreen:
               panelId === panel.id
                 ? !panel.fullScreen
                 : isPanelInGroup
-                ? false
-                : panel.fullScreen
+                  ? false
+                  : panel.fullScreen
           };
         });
       });
@@ -271,7 +273,7 @@ export default (state, action) => {
   nextState.forEach(pg => {
     pg.forEach(p => {
       if (p.active) {
-        p.lastActive = Date.now().toString();
+        p.lastActive = Date.now();
       }
     });
   });
