@@ -298,7 +298,11 @@ function UploaderInner({
             ];
 
             const mainExampleData = {};
-            const mainSchema = a.validateAgainstSchema.fields.map(f => {
+            const fieldsToUse = [
+              ...validateAgainstSchema.fields,
+              ...a.exampleDownloadFields
+            ];
+            const mainSchema = fieldsToUse.map(f => {
               mainExampleData[f.displayName || f.path] =
                 f.example || f.defaultValue;
               return {
@@ -309,7 +313,7 @@ function UploaderInner({
               };
             });
             const b = await writeXlsxFile(
-              [[mainExampleData], a.validateAgainstSchema.fields, helperText],
+              [[mainExampleData], fieldsToUse, helperText],
               {
                 headerStyle: {
                   fontWeight: "bold"
@@ -328,13 +332,17 @@ function UploaderInner({
               description: "Download Example CSV File",
               exampleFile: () => {
                 const rows = [];
+                const schemaToUse = [
+                  ...a.validateAgainstSchema.fields,
+                  ...a.validateAgainstSchema.exampleDownloadFields
+                ];
                 rows.push(
-                  a.validateAgainstSchema.fields.map(f => {
+                  schemaToUse.map(f => {
                     return `${f.displayName || f.path}`;
                   })
                 );
                 rows.push(
-                  a.validateAgainstSchema.fields.map(f => {
+                  schemaToUse.map(f => {
                     return `${f.example || f.defaultValue || ""}`;
                   })
                 );
