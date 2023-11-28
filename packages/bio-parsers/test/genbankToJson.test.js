@@ -865,7 +865,7 @@ ORIGIN
     });
   });
 
-  it("will convert U base pairs to T for DNA", () => {
+  it("will not convert U base pairs to T for DNA", () => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/genbankWithU.gb"),
       "utf8"
@@ -875,8 +875,8 @@ ORIGIN
     res.should.be.an("array");
     res[0].success.should.be.true;
     res[0].parsedSequence.features.length.should.equal(1);
+    expect(res[0].parsedSequence.sequence).toContain("u");
     expect(res[0].parsedSequence.sequence).toContain("t");
-    expect(res[0].parsedSequence.sequence).not.toContain("u");
   });
   it("will NOT convert U base pairs to T for RNA", () => {
     const string = fs.readFileSync(

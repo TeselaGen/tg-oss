@@ -1,7 +1,7 @@
 import findSequenceMatches from "./findSequenceMatches";
 
 describe("findSequenceMatches", () => {
-  it("ambiguous protein sequence with * as stop codon", () => {
+  it("ambiguous protein sequence with asterisk as stop codon", () => {
     expect(
       findSequenceMatches("mmhlrl*", "Mxxlrl*", {
         isAmbiguous: true,
@@ -29,7 +29,7 @@ describe("findSequenceMatches", () => {
       }
     ]);
   });
-  it("protein sequence with * as stop codon", () => {
+  it("protein sequence with asterisk as stop codon", () => {
     expect(
       findSequenceMatches("mmhlrl*", "mMh", {
         isProteinSequence: true /* isProteinSearch: true */
@@ -132,11 +132,11 @@ describe("findSequenceMatches", () => {
     const matches = findSequenceMatches("atg", "*", { isAmbiguous: true });
     expect(matches).toEqual([]);
   });
-  it("ambiguous, dna searches with *", () => {
+  it("ambiguous, dna searches with asterisk", () => {
     const matches = findSequenceMatches("atg", "", { isAmbiguous: true });
     expect(matches).toEqual([]);
   });
-  it(" AA with * as stop codon", () => {
+  it("AA with asterisk as stop codon in atgtaa", () => {
     expect(
       findSequenceMatches("atgtaa", "M*", { isProteinSearch: true })
     ).toEqual([
@@ -146,7 +146,7 @@ describe("findSequenceMatches", () => {
       }
     ]);
   });
-  it(" AA with * as stop codon", () => {
+  it("AA with asterisk as stop codon in atgtaaccc", () => {
     expect(
       findSequenceMatches("atgtaaccc", "M**", { isProteinSearch: true })
     ).toEqual([]);
@@ -164,7 +164,7 @@ describe("findSequenceMatches", () => {
       }
     ]);
   });
-  it("works with ambiguous AA with * in search string", () => {
+  it("works with ambiguous AA with asterisk in search string", () => {
     expect(
       findSequenceMatches("atgtaa", "M*", {
         isProteinSearch: true,

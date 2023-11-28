@@ -64,18 +64,22 @@ function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
   if (isProteinSearch) {
     sequencesToCheck = [
       {
-        seqToCheck: getAminoAcidStringFromSequenceString(sequenceToUse),
+        seqToCheck: getAminoAcidStringFromSequenceString(sequenceToUse, {
+          doNotExcludeAsterisk: true
+        }),
         offset: 0
       },
       {
         seqToCheck: getAminoAcidStringFromSequenceString(
-          sequenceToUse.substr(1)
+          sequenceToUse.substr(1),
+          { doNotExcludeAsterisk: true }
         ),
         offset: 1
       },
       {
         seqToCheck: getAminoAcidStringFromSequenceString(
-          sequenceToUse.substr(2)
+          sequenceToUse.substr(2),
+          { doNotExcludeAsterisk: true }
         ),
         offset: 2
       }

@@ -165,14 +165,14 @@ ggagagguagagagagg
         isDNA: true
       }
     );
-    expect(result[0].parsedSequence.sequence[7]).toEqual("t");
+    expect(result[0].parsedSequence.sequence[7]).toEqual("u");
     const result2 = await fastaToJson(
       `>mySeq1
 GGAGAGGUAGAGAGAGG
       `,
       { isDNA: true }
     );
-    expect(result2[0].parsedSequence.sequence[7]).toEqual("T");
+    expect(result2[0].parsedSequence.sequence[7]).toEqual("U");
   });
   it("handles parseName  option correctly", async function () {
     const fastaStr = `>gb|M73307|AGMA13GT

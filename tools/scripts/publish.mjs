@@ -24,7 +24,7 @@ function invariant(condition, message) {
 
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-let [, , name, version, tag = "next"] = process.argv;
+let [, , name, version, tag = "latest"] = process.argv;
 
 // Get all internal dependencies to write them to the package.json in the dist folder
 execSync(`yarn nx graph --file=output.json`);
