@@ -334,7 +334,7 @@ function UploaderInner({
                 const rows = [];
                 const schemaToUse = [
                   ...a.validateAgainstSchema.fields,
-                  ...a.validateAgainstSchema.exampleDownloadFields
+                  ...(a.validateAgainstSchema.exampleDownloadFields ?? [])
                 ];
                 rows.push(
                   schemaToUse.map(f => {
