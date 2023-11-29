@@ -28,55 +28,10 @@
 
 - CODE: https://github.com/TeselaGen/tg-oss/packages/file-utils
 
-# Repo Philosophy
+# Contributing
 
-This is a monorepo composed of multiple packages under /packages.
-There are two types of packages, utils and ui (react) packages.
-UI packages have everything util packages have but also have a demo and e2e cypress tests.
-The config files for each package should extend the root config files.
+This project welcomes contributions. Please have a look at the [CONTRIBUTING](./CONTRIBUTING.md) file to learn about how to get started after a fresh clone.
 
-# NX
+# License
 
-We use NX to run tasks (https://nx.dev) and cache the task results.
-NX allows us to only lint/build/test the packages that have changed since the last commit and caches the results of the tasks for efficient reruns.
-
-## Getting Started (CONTRIBUTING)
-
-Install Deps
-
-```bash
-yarn
-```
-
-Install vscode extension for nx
-
-Run commands (build/start/test/lint etc..) from the nx extension in vscode or from the command line
-
-Or run them manually from the command line
-
-```bash
-nx run <package-name>:<command>
-
-eg
-nx run ui:start
-nx run ove:start
-nx run ove:launch-e2e
-nx run ove:build
-```
-
-```bash
-nx run --target:<command>
-
-eg
-nx run-many --target:build
-nx run-many --target:build
-```
-
-Profit!
-
-## How to Publish
-
-using the vscode command prompt (cmd+shift+p):
-Nx: run-many
-publish
-Execute: nx run-many --target=publish
+All code from this repository is placed under the [MIT License](./LICENSE).
