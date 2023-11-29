@@ -1041,10 +1041,19 @@ ORIGIN
           { start: 0, end: 1 },
           { start: 2, end: 3 }
         ]
+      },
+      // Origin-spanning features
+      {
+        input: "complement(join(3..4,1..2))",
+        output: [{ start: 2, end: 1 }]
+      },
+      {
+        input: "join(3..4,1..2)",
+        output: [{ start: 2, end: 1 }]
       }
     ];
     testCases.forEach(({ input, output }) => {
-      const result = parseFeatureLocation(input);
+      const result = parseFeatureLocation(input, 0, 0, 0, 1, 4);
       expect(result).toEqual(output);
     });
   });
