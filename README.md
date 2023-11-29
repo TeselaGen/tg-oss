@@ -10,23 +10,26 @@
 **@teselagen/ui** (reusable react components)
 
 - DEMO: https://teselagen.github.io/tg-oss/ui
-- CODE: https://github.com/TeselaGen/tg-oss/packages/ui
+- CODE: [packages/ui](./packages/ui)
 
 **@teselagen/bio-parsers** (parsers and formatters for genbank/fasta/json/snapgene/geneious/jbei-xml)
 
-- CODE: https://github.com/TeselaGen/tg-oss/packages/bio-parsers
+- CODE: [packages/bio-parsers](./packages/bio-parsers)
 
 **@teselagen/sequence-utils** (util functions for working with biological sequences (dna/rna/protein))
 
 - CODE: https://github.com/TeselaGen/tg-oss/packages/sequence-utils
+- CODE: [packages/sequence-utils](./packages/sequence-utils)
 
 **@teselagen/range-utils** (util functions for working with biological ranges e.g. {start: 2, end: 61})
 
 - CODE: https://github.com/TeselaGen/tg-oss/packages/range-utils
+- CODE: [packages/range-utils](./packages/range-utils)
 
 **@teselagen/file-utils** (util functions for working with files and blobs)
 
 - CODE: https://github.com/TeselaGen/tg-oss/packages/file-utils
+- CODE: [packages/file-utils](./packages/file-utils)
 
 # Contributing
 
