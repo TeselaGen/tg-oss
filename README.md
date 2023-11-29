@@ -5,7 +5,7 @@
 **@teselagen/ove** (open-source vector editor - a tool for viewing and manipulating DNA/AA sequences)
 
 - DEMO: https://teselagen.github.io/tg-oss/ove
-- CODE: https://github.com/TeselaGen/tg-oss/packages/ove
+- CODE: [packages/ove](./packages/ove)
 
 **@teselagen/ui** (reusable react components)
 
