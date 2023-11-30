@@ -943,7 +943,9 @@ class DataTable extends React.Component {
         // keep this so that pasting into spreadsheets works.
         format: "text/plain"
       });
-    window.toastr.success(message);
+    if (message) {
+      window.toastr.success(message);
+    }
   };
 
   handleCopyTable = e => {
