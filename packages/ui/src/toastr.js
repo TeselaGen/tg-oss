@@ -1,4 +1,5 @@
 import { Position, Toaster, Intent } from "@blueprintjs/core";
+import classNames from "classnames";
 
 const TopToaster = Toaster.create({
   className: "top-toaster",
@@ -41,7 +42,7 @@ const generateToast = intent => (message, options) => {
           : undefined,
       action: options.action,
       icon: options.icon,
-      className: options.className
+      className: classNames("preserve-newline", options.className)
     },
     options.key
   );

@@ -1,8 +1,26 @@
+import { debounce, uniq } from "lodash";
 import {
   ambiguous_dna_letters,
   ambiguous_rna_letters,
   extended_protein_letters
 } from "./bioData";
+
+let allWarnings = [];
+
+let makeToast = () => {
+  if (typeof window !== "undefined" && window.toastr && allWarnings.length) {
+    window.toastr.warning(allWarnings.join("\n"));
+  }
+  allWarnings = [];
+};
+
+makeToast = debounce(makeToast, 200);
+
+function showWarnings(warnings) {
+  allWarnings = allWarnings.concat(warnings);
+  makeToast.cancel();
+  makeToast();
+}
 
 export default function filterSequenceString(
   sequenceString = "",
@@ -62,16 +80,12 @@ export default function filterSequenceString(
     warnings.push(
       `${
         name ? `Sequence ${name}: ` : ""
-      }Invalid character(s) detected and removed: ${invalidChars
+      }Invalid character(s) detected and removed: ${uniq(invalidChars)
         .slice(0, 100)
         .join(", ")} `
     );
   }
-  if (typeof window !== "undefined" && window.toastr && warnings.length) {
-    warnings.forEach(warning => {
-      window.toastr.warning(warning);
-    });
-  }
+  showWarnings(warnings);
 
   return [sanitizedVal, warnings];
 }
@@ -85,13 +99,15 @@ export function getAcceptedChars({
   return isProtein
     ? `${extended_protein_letters.toLowerCase()}}`
     : isOligo
-    ? ambiguous_rna_letters.toLowerCase() + "t"
-    : isRna
-    ? ambiguous_rna_letters.toLowerCase() + "t"
-    : isMixedRnaAndDna
-    ? ambiguous_rna_letters.toLowerCase() + ambiguous_dna_letters.toLowerCase()
-    : //just plain old dna
-      ambiguous_rna_letters.toLowerCase() + ambiguous_dna_letters.toLowerCase();
+      ? ambiguous_rna_letters.toLowerCase() + "t"
+      : isRna
+        ? ambiguous_rna_letters.toLowerCase() + "t"
+        : isMixedRnaAndDna
+          ? ambiguous_rna_letters.toLowerCase() +
+            ambiguous_dna_letters.toLowerCase()
+          : //just plain old dna
+            ambiguous_rna_letters.toLowerCase() +
+            ambiguous_dna_letters.toLowerCase();
 }
 export function getReplaceChars({
   isOligo,
@@ -102,14 +118,14 @@ export function getReplaceChars({
   return isProtein
     ? {}
     : // {".": "*"}
-    isOligo
-    ? {}
-    : isRna
-    ? { t: "u" }
-    : isMixedRnaAndDna
-    ? {}
-    : //just plain old dna
-      {};
+      isOligo
+      ? {}
+      : isRna
+        ? { t: "u" }
+        : isMixedRnaAndDna
+          ? {}
+          : //just plain old dna
+            {};
 }
 
 export const filterRnaString = (s, o) =>
