@@ -307,7 +307,9 @@ class _LinearView extends React.Component {
                   updateLabelsForInViewFeatures();
                 },
                 rowContainerStyle: {
-                  height: isNaN(height - 36) ? "auto" : height - 36,
+                  height: isNaN(height - 36)
+                    ? "auto"
+                    : height - 36 - (hideName ? 0 : 20),
                   width: innerWidth + 26,
                   paddingRight: marginWidth / 2,
                   ...(isLinViewZoomed &&

@@ -83,6 +83,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
     "@cypress/code-coverage": "^3.12.10",
+    "@fontsource/ubuntu-mono": "^5.0.18",
     "@gmod/gff": "^1.2.1",
     "@jscutlery/semver": "^4.0.0",
     "@nx/cypress": "17.1.2",

@@ -1,11 +1,14 @@
 .ve-monospace-font {
-  font-family: Monaco, monospace;
-  font-size: 11px;
+  font-family: "Ubuntu Mono", Monaco, monospace;
+  font-size: 12px;
 }
 .rowViewTextContainer text {
   user-select: none;
 }
-.translationLayer text {
+.translationLayer text,
+.tg-prime-direction,
+.sequenceNameText,
+.veAxis text {
   user-select: none;
 }
 .ve-sequence-reverse {
