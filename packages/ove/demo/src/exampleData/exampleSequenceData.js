@@ -3,1169 +3,299 @@
 //   parts: [{name: 'hello there', start: 0,end:3, id: '1241i'}],
 //   features: [{name: 'oh hi', start: 0,end:3, id: '12kkoo'}],
 // }
-
 export default {
-  __typename: "sequence",
-  id: "3d80748a-1271-4556-b562-b6700736791a",
-  name: "traj-wl",
-  circular: false,
-  description:
-    "GoldenGate ligation of pJLD1_Cace_crt - pDN2-Pfer - pJLD2_Cace_bcd_etfAB - pDN4-Pwl - pJLD3_Cace_thlA into pMTL8315_16_Pfer_TpepN .",
-  size: 4736,
-  aliases: [],
-  sequenceType: {
-    __typename: "sequenceType",
-    code: "LINEAR_DNA",
-    name: "Linear DNA"
-  },
-  taggedItems: [],
-  parts: [],
-  type: "DNA",
-  isOligo: false,
-  isRna: false,
-  proteinSequence: "",
-  sequence:
-    "atgccacgatcctcgccctgctggcgaagatcgaagagaagcaggacgagcttggcaaggtcatgatgggcgtggtccgcccgagggcagagccatgacttttttagccgctaaaacggccggggggtgcgcgtgattgccaagcacgtccccatgcgctccatcaagaagagcgacttcgcggagctggtgaagtacatcaccgacgagcaaggcaagaccgatcgggccccctgcaggataaaaaaattgtagataaattttataaaatagttttatctacaatttttttatcaggaaacagctatgaccgcggccgctcactatctgcggaacctgcctccttatctgataaaaaatattcgctgcatctttgacttgttattttctttcaaatgcctaatggaattgtgagcggataacaattaattatcttttaaaattataacaaatgtgataaaatacaggggatgaaaacattatctaaaaattaaggaggtgttactcatggaacttaataatgtaatattggaaaaagaaggaaaagtagctgtagtaacgattaatagacccaaagcattaaatgcattaaattcagatactttaaaagaaatggattatgttataggtgaaatagaaaatgattcagaagtacttgcagttatacttacaggtgcgggagagaaaagctttgttgcaggagctgacatatcggaaatgaaggaaatgaatactattgaaggtagaaaatttggcatactaggtaataaagtgtttagaaggttggaattgcttgaaaagccagtaattgctgcagttaatggatttgcacttggcggcggctgtgagatagctatgtcttgcgatataagaatcgcatcttcaaatgcaagatttggacagcctgaagttggattaggtattacaccagggtttggcggcactcagagattatctagattagtaggtatgggaatggctaagcaacttatatttacagcacaaaatataaaggcagatgaagctttaagaataggacttgtaaataaagtagtagaaccttctgaattaatgaatactgcaaaagaaatagctaataaaatagtctctaatgcaccagtggcagttaaattatcaaaacaagcaataaatagaggtatgcaatgtgacatagatacggcacttgctttcgaatcagaagcatttggtgaatgcttctctactgaagaccaaaaagatgctatgacagcatttattgaaaaacgaaagattgaaggattcaaaaatagataagtcgcgctaataagaagaagtgtgaaaaagcgcagctgaaatagctgcgcttttttgtgtcataaggcgcgctcactatctgcggaacctgcctccttatctgataaaaaatattcgctgcatctttgacttgttattttctttcaaatgcctaatggaattgtgagcggataacaattaattatcttttaaaattataacaaatgtgataaaatacaggggatgaaaacattatctaaaaattaaggaggtgtttctaatggattttaatttaacaagagaacaagaattagtaagacagatggttagagaatttgctgaaaatgaagttaaacctatagcagcagaaattgatgaaacagaaagatttccaatggaaaatgtaaagaaaatgggtcagtatggtatgatgggaattccattttcaaaagagtatggtggcgcaggtggagatgtattatcttatataatcgccgttgaggaattatcaaaggtttgcggtactacaggagttattctttcagcacatacatcactttgtgcttcattaataaatgaacatggtacagaagaacaaaaacaaaaatatttagtacctttagctaaaggtgaaaaaataggtgcttatggattgactgagccaaatgcaggaacagattctggagcacaacaaacagtagctgtacttgaaggagatcattatgtaattaatggttcaaaaatattcataactaatggaggagttgcagatacttttgttatatttgcaatgactgacagaactaaaggaacaaaaggtatatcagcatttataatagaaaaaggcttcaaaggtttctctattggtaaagttgaacaaaagcttggaataagagcttcatcaacaactgaacttgtatttgaagatatgatagtaccagtagaaaacatgattggtaaagaaggaaaaggcttccctatagcaatgaaaactcttgatggaggaagaattggtatagcagctcaagctttaggtatagctgaaggtgctttcaacgaagcaagagcttacatgaaggagagaaaacaatttggaagaagccttgacaaattccaaggtcttgcatggatgatggcagatatggatgtagctatagaatcagctagatatttagtatataaagcagcatatcttaaacaagcaggacttccatacacagttgatgctgcaagagctaagcttcatgctgcaaatgtagcaatggatgtaacaactaaggcagtacaattatttggtggatacggatatacaaaagattatccagttgaaagaatgatgagagatgctaagataactgaaatatatgaaggaacttcagaagttcagaaattagttatttcaggaaaaatttttagataatttaaggaggttaagaggatgaatatagttgtttgtttaaaacaagttccagatacagcggaagttagaatagatccagttaagggaacacttataagagaaggagttccatcaataataaatccagatgataaaaacgcacttgaggaagctttagtattaaaagataattatggtgcacatgtaacagttataagtatgggacctccacaagctaaaaatgctttagtagaagctttggctatgggtgctgatgaagctgtacttttaacagatagagcatttggaggagcagatacacttgcgacttcacatacaattgcagcaggaattaagaagctaaaatatgatatagtttttgctggaaggcaggctatagatggagatacagctcaggttggaccagaaatagctgagcatcttggaatacctcaagtaacttatgttgagaaagttgaagttgatggagatactttaaagattagaaaagcttgggaagatggatatgaagttgttgaagttaagacaccagttcttttaacagcaattaaagaattaaatgttccaagatatatgagtgtagaaaaaatattcggagcatttgataaagaagtaaaaatgtggactgccgatgatatagatgtagataaggctaatttaggtcttaaaggttcaccaactaaagttaagaagtcatcaactaaagaagttaaaggacagggagaagttattgataagcctgttaaggaagcagctgcatatgttgtctcaaaattaaaagaagaacactatatttaagttaggagggatttttcaatgaataaagcagattacaagggcgtatgggtgtttgctgaacaaagagacggagaattacaaaaggtatcattggaattattaggtaaaggtaaggaaatggctgagaaattaggcgttgaattaacagctgttttacttggacataatactgaaaaaatgtcaaaggatttattatctcatggagcagataaggttttagcagcagataatgaacttttagcacatttttcaacagatggatatgctaaagttatatgtgatttagttaatgaaagaaagccagaaatattattcataggagctactttcataggaagagatttaggaccaagaatagcagcaagactttctactggtttaactgctgattgtacatcacttgacatagatgtagaaaatagagatttattggctacaagaccagcgtttggtggaaatttgatagctacaatagtttgttcagaccacagaccacaaatggctacagtaagacctggtgtgtttgaaaaattacctgttaatgatgcaaatgtttctgatgataaaatagaaaaagttgcaattaaattaacagcatcagacataagaacaaaagtttcaaaagttgttaagcttgctaaagatattgcagatatcggagaagctaaggtattagttgctggtggtagaggagttggaagcaaagaaaactttgaaaaacttgaagagttagcaagtttacttggtggaacaatagccgcttcaagagcagcaatagaaaaagaatgggttgataaggaccttcaagtaggtcaaactggtaaaactgtaagaccaactctttatattgcatgtggtatatcaggagctatccagcatttagcaggtatgcaagattcagattacataattgctataaataaagatgtagaagccccaataatgaaggtagcagatttggctatagttggtgatgtaaataaagttgtaccagaattaatagctcaagttaaagctgctaataattaagtcggctcaatcatactcgaggcgcgcagcctgaatggcgaatggcgctagcataatcaatcgtcccttcgtgtaaacgaaggggcgttttttatttggcgcgtcgttttacaacggagatagtcataatagttccagaatagttcaatttagaaattagactaaacttcaaaatgtttgttaaatatataccaaactagtatagatattttttaaa",
-  proteinSize: 0,
+  parts: [
+    {
+      name: "pj5_00001",
+      start: 0,
+      end: 5298,
+      id: "10",
+      tags: ["1:2", "5"]
+    },
+    {
+      start: 10,
+      end: 30,
+      name: "Part 0",
+      id: "0",
+      tags: ["8"]
+    },
+    {
+      start: 1000,
+      end: 3000,
+      name: "Curtis' Part",
+      id: "9",
+      tags: ["1:2", "5"]
+    }
+  ],
   primers: [
     {
-      __typename: "sequenceFeature",
-      id: "2dcb722c-b8f7-4626-bfde-4f02c81d0bc0",
-      start: 55,
-      end: 71,
+      name: "Example Primer 1",
+      start: 280,
+      end: 300,
       type: "primer_bind",
-      name: "Untitled Feature",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
-    },
-    {
-      __typename: "sequenceFeature",
-      id: "fc1336b8-3350-4262-b984-2f2f1b2af68e",
-      start: 294,
-      end: 311,
-      type: "primer_bind",
-      name: "M13R",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
-    },
-    {
-      __typename: "sequenceFeature",
-      id: "db1facf1-62a8-4310-9c07-f319b0398bb5",
-      start: 294,
-      end: 311,
-      type: "primer_bind",
-      name: "Untitled Feature",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
-    },
-    {
-      __typename: "sequenceFeature",
-      id: "e9bed332-2603-4c6a-a95f-7539cfc16127",
-      start: 1357,
-      end: 1387,
-      type: "primer_bind",
-      name: "Untitled Feature",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
-    },
-    {
-      __typename: "sequenceFeature",
-      id: "288e872a-0984-4132-8639-728b6b44a7d6",
-      start: 1442,
-      end: 1462,
-      type: "primer_bind",
-      name: "Untitled Feature",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
-    },
-    {
-      __typename: "sequenceFeature",
-      id: "effcc54b-1cb3-4bf9-b178-deca89bef633",
-      start: 2482,
-      end: 2501,
-      type: "primer_bind",
-      name: "Untitled Feature",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
-    },
-    {
-      __typename: "sequenceFeature",
-      id: "fc906f6f-43c8-48cf-ac29-b1e4b1fd446d",
-      start: 3406,
-      end: 3431,
-      type: "primer_bind",
-      name: "Untitled Feature",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
-    },
-    {
-      __typename: "sequenceFeature",
-      id: "23da0b81-88b6-4afb-b225-7c55636e18d1",
-      start: 4633,
-      end: 4654,
-      type: "primer_bind",
-      name: "Untitled Feature",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
-    },
-    {
-      __typename: "sequenceFeature",
-      id: "4d879676-a2df-4e3e-af56-219bb7268946",
-      start: 4634,
-      end: 4664,
-      type: "primer_bind",
-      name: "Untitled Feature",
-      strand: 1,
-      notes: {},
-      arrowheadType: null,
-      useLinkedOligo: false,
-      annotationTypePlural: "primers",
-      forward: true,
-      color: "#53d969"
+      forward: true
     }
+  ],
+  afeatures: [
+    // {
+    //   notes: {},
+    //   type: "promoter",
+    //   strand: 1,
+    //   name: "I'm a nice Long Sentence wahooo hahahahaha",
+    //   // start: 4900,
+    //   // end: 440
+    //   start: 4163,
+    //   end: 2650
+    // },
+    {
+      notes: {
+        preferred5PrimeOverhangs: [""],
+        preferred3PrimeOverhangs: [""]
+      },
+      arrowheadType: "NONE",
+      type: "misc_feature",
+      strand: 1,
+      name: "CmR I'm a real long label",
+      start: 4513,
+      end: 5172
+    }
+    // {
+    //   notes: {},
+    //   type: "promoter",
+    //   strand: 1,
+    //   name: "I'm a nice Long Sentence wahooo hahahahaha",
+    //   // start: 4900,
+    //   // end: 440
+    //   start: 1590,
+    //   end: 2650
+    // },
+    // {
+    //   notes: {},
+    //   type: "promoter",
+    //   strand: 1,
+    //   name: "I'm a nice Long Sentence wahooo hahahahaha",
+    //   // start: 4900,
+    //   // end: 440
+    //   start: 1590,
+    //   end: 2650
+    // },
+    // {
+    //   notes: {},
+    //   type: "promoter",
+    //   strand: 1,
+    //   name: "I'm a nice Long Sentence wahooo hahahahaha",
+    //   // start: 4900,
+    //   // end: 440
+    //   start: 1590,
+    //   end: 2650
+    // },
   ],
   features: [
     {
       notes: {},
-      __typename: "sequenceFeature",
-      id: "ef590c19-6e77-4b03-8036-997479d07aae",
-      start: 0,
-      end: 97,
       type: "CDS",
-      name: "traJ",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#EF6500"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "a0f85044-78e0-4c27-ba3a-b84c43f63871",
-      start: 0,
-      end: 508,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "814381f2-fc78-4c50-afc7-b6e34afb185c",
-      start: 0,
-      end: 508,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "23544ad6-8d4f-45dd-93a0-4b4b417c0c54",
-      start: 0,
-      end: 313,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "16ea0e84-598a-433a-8b13-65c6324d8e01",
-      start: 0,
-      end: 231,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "bf490516-80b7-466b-9bee-e369e2c9c650",
-      start: 232,
-      end: 508,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      strand: -1,
+      name: "araC",
+      start: 6,
+      end: 884,
+      locations: [
+        { start: 6, end: 24 },
+        { start: 28, end: 48 },
+        { start: 500, end: 884 }
+      ]
     },
     {
       notes: {},
-      __typename: "sequenceFeature",
-      id: "5e9821ce-3a61-4e53-a544-3a1fff67b57c",
-      start: 240,
-      end: 293,
+      type: "protein_bind",
+      strand: 1,
+      name: "Operator I2 and I1",
+      start: 1123,
+      end: 1161
+    },
+    {
+      notes: { vntifkey: ["4"] },
+      type: "CDS",
+      strand: 1,
+      name: "signal_peptide",
+      start: 1952,
+      end: 2014
+    },
+    {
+      notes: {},
       type: "terminator",
-      name: "CD0164 terminator",
       strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#F51600"
+      name: "dbl term",
+      start: 2033,
+      end: 2161
     },
     {
       notes: {},
-      __typename: "sequenceFeature",
-      id: "d09d1f06-bc5a-4fd2-85ec-97719aaafa21",
-      start: 294,
-      end: 311,
-      type: "misc_feature",
-      name: "Untitled Feature",
+      type: "protein_bind",
       strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      name: "operator O1",
+      start: 1071,
+      end: 1092
     },
     {
-      notes: { note: ["Geneious type: promoter prokaryotic"] },
-      __typename: "sequenceFeature",
-      id: "fdcc2fc9-e992-4ada-9ae7-3a45171b490a",
-      start: 314,
-      end: 506,
-      type: "misc_feature",
-      name: "Geneious type: promoter prokaryotic",
+      notes: {},
+      type: "misc_binding",
       strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      name: "CAP site",
+      start: 1114,
+      end: 1127
     },
     {
-      notes: { note: ["Geneious type: Editing History Replacement"] },
-      __typename: "sequenceFeature",
-      id: "31101be4-97e7-48b2-8fb9-b5522deb7ad0",
-      start: 320,
-      end: 508,
-      type: "misc_feature",
-      name: "Geneious type: Editing History Replacement",
+      notes: {},
+      type: "promoter",
       strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      name: "pBAD promoter",
+      start: 1160,
+      end: 1187
     },
     {
-      notes: { note: ["Geneious type: primer_bind_reverse"] },
-      __typename: "sequenceFeature",
-      id: "4bd0c118-c433-4930-b0e8-fe0716cca356",
-      start: 483,
-      end: 506,
+      notes: { vntifkey: ["4"] },
+      type: "CDS",
+      strand: 1,
+      name: "GFPuv",
+      start: 1235,
+      end: 2017
+    },
+    {
+      notes: {},
       type: "misc_feature",
-      name: "Geneious type: primer_bind_reverse",
+      strand: 1,
+      name: "XhoI_silent_mutation",
+      start: 1660,
+      end: 1660
+    },
+    { notes: {}, type: "RBS", strand: 1, name: "RBS", start: 1215, end: 1234 },
+    {
+      notes: {},
+      type: "protein_bind",
+      strand: 1,
+      name: "operator O2",
+      start: 913,
+      end: 930
+    },
+    {
+      notes: {},
+      type: "misc_feature",
+      strand: 1,
+      name: "BamHI_silent_mutation",
+      start: 1759,
+      end: 1759
+    },
+    {
+      notes: {},
+      type: "misc_marker",
       strand: -1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: false,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: motif"] },
-      __typename: "sequenceFeature",
-      id: "0646b997-38ec-4c2e-80cb-7b7468716775",
-      start: 493,
-      end: 498,
-      type: "misc_feature",
-      name: "Geneious type: motif",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: region"] },
-      __typename: "sequenceFeature",
-      id: "21af0ddc-88e4-4529-bc39-c2caf723b3ab",
-      start: 502,
-      end: 508,
-      type: "misc_feature",
-      name: "Geneious type: region",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: region"] },
-      __typename: "sequenceFeature",
-      id: "4643100b-f326-4b61-8d57-a588a476612c",
-      start: 502,
-      end: 508,
-      type: "misc_feature",
-      name: "Geneious type: region",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: ligation"] },
-      __typename: "sequenceFeature",
-      id: "6ba32971-a3f3-4de9-ad1f-fe1c0f21e8f3",
-      start: 505,
-      end: 508,
-      type: "misc_feature",
-      name: "Geneious type: ligation",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "ea99d7be-9a30-4e51-b23b-1d1d9aa98f47",
-      start: 505,
-      end: 1300,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      name: "CmR",
+      start: 4513,
+      end: 5172
     },
     {
       notes: {},
-      __typename: "sequenceFeature",
-      id: "f992efca-60d3-492f-bf52-6ea6926f7705",
-      start: 507,
-      end: 1292,
-      type: "CDS",
-      name: "Untitled Feature",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#EF6500"
-    },
-    {
-      notes: { note: ["Geneious type: origin"] },
-      __typename: "sequenceFeature",
-      id: "53dd886d-a617-4a95-94d8-c75bb322e2e8",
-      start: 1292,
-      end: 1293,
-      type: "misc_feature",
-      name: "Geneious type: origin",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Editing History Insertion"] },
-      __typename: "sequenceFeature",
-      id: "2f9c08f6-1c9f-4a42-a8dd-a518921a1c0d",
-      start: 1297,
-      end: 1554,
-      type: "misc_feature",
-      name: "Geneious type: Editing History Insertion",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: motif"] },
-      __typename: "sequenceFeature",
-      id: "b52d4a64-2a44-46bb-8633-09162142c7df",
-      start: 1297,
-      end: 1300,
-      type: "misc_feature",
-      name: "Geneious type: motif",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      type: "rep_origin",
+      strand: -1,
+      name: "pSC101**",
+      start: 2163,
+      end: 4391
     },
     {
       notes: {},
-      __typename: "sequenceFeature",
-      id: "8d153c7d-5a80-40f5-bddc-bdb885397b96",
-      start: 1297,
-      end: 1554,
-      type: "CDS",
-      name: "Untitled Feature",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#EF6500"
-    },
-    {
-      notes: { note: ["Geneious type: ligation"] },
-      __typename: "sequenceFeature",
-      id: "9472db91-af55-4ec6-a4e1-f5789a3544da",
-      start: 1297,
-      end: 1300,
-      type: "misc_feature",
-      name: "Geneious type: ligation",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "42307dc9-f57f-46ff-af2a-40d73498b943",
-      start: 1297,
-      end: 1554,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Inserted sequence"] },
-      __typename: "sequenceFeature",
-      id: "470eca56-0ed4-4496-89ea-99e0ec08dfd8",
-      start: 1304,
-      end: 1554,
-      type: "misc_feature",
-      name: "Geneious type: Inserted sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: {},
-      __typename: "sequenceFeature",
-      id: "e27826a0-3b14-41b5-b151-34bfbb274cd7",
-      start: 1304,
-      end: 1357,
       type: "terminator",
-      name: "Untitled Feature",
       strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#F51600"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "c4fa3994-be5c-4780-8540-11907511763b",
-      start: 1304,
-      end: 1554,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: primer_bind_reverse"] },
-      __typename: "sequenceFeature",
-      id: "a97e24ab-c5a5-4d7f-b142-66b6a532c397",
-      start: 1336,
-      end: 1369,
-      type: "misc_feature",
-      name: "Geneious type: primer_bind_reverse",
-      strand: -1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: false,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: promoter prokaryotic"] },
-      __typename: "sequenceFeature",
-      id: "f251ca53-0247-4e7b-a5f1-825fe78fffdf",
-      start: 1363,
-      end: 1551,
-      type: "misc_feature",
-      name: "Geneious type: promoter prokaryotic",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "0096c357-9380-4412-a8dd-1e24b7e587a3",
-      start: 1363,
-      end: 1551,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: primer_bind_reverse"] },
-      __typename: "sequenceFeature",
-      id: "0b2ac06b-5c88-4c39-b95b-2f93ae8ad6b1",
-      start: 1442,
-      end: 1462,
-      type: "misc_feature",
-      name: "Geneious type: primer_bind_reverse",
-      strand: -1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: false,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: ligation"] },
-      __typename: "sequenceFeature",
-      id: "2c951529-b5e0-4ef7-ac73-4f1f82d82719",
-      start: 1551,
-      end: 1554,
-      type: "misc_feature",
-      name: "Geneious type: ligation",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "f114f9bc-6af2-497b-adc6-6c428b698b86",
-      start: 1551,
-      end: 4526,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: origin"] },
-      __typename: "sequenceFeature",
-      id: "b9ac6732-edcd-4d99-9428-cf0c04f1f1ed",
-      start: 1551,
-      end: 1552,
-      type: "misc_feature",
-      name: "Geneious type: origin",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      name: "T0",
+      start: 4392,
+      end: 4497
     },
     {
       notes: {},
-      __typename: "sequenceFeature",
-      id: "ed741c92-a068-4c08-ba0c-676ebbeb567b",
-      start: 1552,
-      end: 4518,
-      type: "CDS",
-      name: "Untitled Feature",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#EF6500"
-    },
-    {
-      notes: { note: ["Geneious type: primer_bind_reverse"] },
-      __typename: "sequenceFeature",
-      id: "4d15a0f2-be13-4cef-8a5c-2f3f86fe5114",
-      start: 2511,
-      end: 2531,
-      type: "misc_feature",
-      name: "Geneious type: primer_bind_reverse",
+      type: "promoter",
       strand: -1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: false,
-      color: "#006FEF"
+      name: "araE promoter",
+      start: 1035,
+      end: 1063
     },
     {
-      notes: { note: ["Geneious type: primer_bind_reverse"] },
-      __typename: "sequenceFeature",
-      id: "6f4ec087-8c05-4ea3-8dc0-7768454daf06",
-      start: 3438,
-      end: 3461,
+      notes: {
+        preferred5PrimeOverhangs: [""],
+        preferred3PrimeOverhangs: [""]
+      },
       type: "misc_feature",
-      name: "Geneious type: primer_bind_reverse",
       strand: -1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: false,
-      color: "#006FEF"
+      name: "araD",
+      start: 6,
+      end: 884
     },
     {
-      notes: { note: ["Geneious type: Editing History Insertion"] },
-      __typename: "sequenceFeature",
-      id: "d4b1eb5c-0207-4832-b3e5-741b92238c13",
-      start: 4523,
-      end: 4735,
+      notes: {
+        preferred5PrimeOverhangs: [""],
+        preferred3PrimeOverhangs: [""],
+        tag: ["terminator"]
+      },
       type: "misc_feature",
-      name: "Geneious type: Editing History Insertion",
       strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      name: "dbl term",
+      start: 2033,
+      end: 2161
     },
     {
-      notes: { note: ["Geneious type: motif"] },
-      __typename: "sequenceFeature",
-      id: "256387b1-66bf-4acc-ab7e-aa20c1098924",
-      start: 4523,
-      end: 4526,
+      notes: {
+        preferred5PrimeOverhangs: [""],
+        preferred3PrimeOverhangs: [""]
+      },
       type: "misc_feature",
-      name: "Geneious type: motif",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: {},
-      __typename: "sequenceFeature",
-      id: "8fcdf1d3-711d-46e3-bc9c-c76e9ebce47a",
-      start: 4523,
-      end: 4735,
-      type: "CDS",
-      name: "Untitled Feature",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#EF6500"
-    },
-    {
-      notes: { note: ["Geneious type: ligation"] },
-      __typename: "sequenceFeature",
-      id: "1a8bcf5d-64e6-4f59-bb41-55df2640f238",
-      start: 4523,
-      end: 4526,
-      type: "misc_feature",
-      name: "Geneious type: ligation",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "00aa33ce-a070-4c8b-a749-816dee64ff71",
-      start: 4523,
-      end: 4735,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: {},
-      __typename: "sequenceFeature",
-      id: "3ebd9332-b1c9-4481-87d4-fdfaee384ed7",
-      start: 4530,
-      end: 4633,
-      type: "terminator",
-      name: "Untitled Feature",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#F51600"
-    },
-    {
-      notes: { note: ["Geneious type: ligation"] },
-      __typename: "sequenceFeature",
-      id: "b7975212-61f6-4938-b7ef-aa00dde23e37",
-      start: 4530,
-      end: 4533,
-      type: "misc_feature",
-      name: "Geneious type: ligation",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "3946de91-1995-482f-9c5b-c938a0569e52",
-      start: 4530,
-      end: 4635,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "6339c624-9ce0-4e5c-8a87-34023ad7c9b7",
-      start: 4530,
-      end: 4533,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: primer_bind_reverse"] },
-      __typename: "sequenceFeature",
-      id: "4c81ad56-2600-4c84-8de4-23317e86c74f",
-      start: 4616,
-      end: 4645,
-      type: "misc_feature",
-      name: "Geneious type: primer_bind_reverse",
       strand: -1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: false,
-      color: "#006FEF"
+      name: "CmR I'm a real long label",
+      start: 4513,
+      end: 5172
     },
     {
-      notes: { note: ["Geneious type: primer_bind_reverse"] },
-      __typename: "sequenceFeature",
-      id: "8c1194d4-d70e-4fc2-9670-5b370a5e9eb2",
-      start: 4633,
-      end: 4654,
+      notes: {
+        preferred5PrimeOverhangs: [""],
+        preferred3PrimeOverhangs: [""],
+        tag: ["cds"]
+      },
       type: "misc_feature",
-      name: "Geneious type: primer_bind_reverse",
+      strand: 1,
+      name: "GFPuv",
+      start: 1241,
+      end: 1951
+    },
+    {
+      notes: {
+        preferred5PrimeOverhangs: [""],
+        preferred3PrimeOverhangs: [""]
+      },
+      type: "misc_feature",
       strand: -1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: false,
-      color: "#006FEF"
+      name: "pSC101**",
+      start: 2163,
+      end: 4391
     },
     {
-      notes: { note: ["Geneious type: Inserted sequence"] },
-      __typename: "sequenceFeature",
-      id: "9a825d33-c13e-4354-9721-6eeba11c857e",
-      start: 4636,
-      end: 4735,
+      notes: {
+        preferred5PrimeOverhangs: [""],
+        preferred3PrimeOverhangs: [""]
+      },
       type: "misc_feature",
-      name: "Geneious type: Inserted sequence",
       strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: promoter prokaryotic"] },
-      __typename: "sequenceFeature",
-      id: "1a2168ba-562c-4b93-89b6-975d0fb0928e",
-      start: 4636,
-      end: 4735,
-      type: "misc_feature",
-      name: "Geneious type: promoter prokaryotic",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
-    },
-    {
-      notes: { note: ["Geneious type: Concatenated sequence"] },
-      __typename: "sequenceFeature",
-      id: "a9f1e5f6-0e86-4fb5-b6d0-86f3da086803",
-      start: 4636,
-      end: 4735,
-      type: "misc_feature",
-      name: "Geneious type: Concatenated sequence",
-      strand: 1,
-      arrowheadType: null,
-      annotationTypePlural: "features",
-      forward: true,
-      color: "#006FEF"
+      name: "pS8c-vector_backbone",
+      start: 2015,
+      end: 1237
     }
   ],
-  lineageAnnotations: [],
-  assemblyPieces: [],
-  warnings: [],
-  translations: [],
-  guides: []
+  name: "pj5_00001",
+  sequence:
+    "gacgtcttatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcgctcgggctggccccggtgcattttttaaatacccgcgagaaatagagttgatcgtcaaaaccaacattgcgaccgacggtggcgataggcatccgggtggtgctcaaaagcagcttcgcctggctgatacgttggtcctcgcgccagcttaagacgctaatccctaactgctggcggaaaagatgtgacagacgcgacggcgacaagcaaacatgctgtgcgacgctggcgatatcaaaattgctgtctgccaggtgatcgctgatgtactgacaagcctcgcgtacccgattatccatcggtggatggagcgactcgttaatcgcttccatgcgccgcagtaacaattgctcaagcagatttatcgccagcagctccgaatagcgcccttccccttgcccggcgttaatgatttgcccaaacaggtcgctgaaatgcggctggtgcgcttcatccgggcgaaagaaccccgtattggcaaatattgacggccagttaagccattcatgccagtaggcgcgcggacgaaagtaaacccactggtgataccattcgcgagcctccggatgacgaccgtagtgatgaatctctcctggcgggaacagcaaaatatcacccggtcggcaaacaaattctcgtccctgatttttcaccaccccctgaccgcgaatggtgagattgagaatataacctttcattcccagcggtcggtcgataaaaaaatcgagataaccgttggcctcaatcggcgttaaacccgccaccagatgggcattaaacgagtatcccggcagcaggggatcattttgcgcttcagccatacttttcatactcccgccattcagagaagaaaccaattgtccatattgcatcagacattgccgtcactgcgtcttttactggctcttctcgctaaccaaaccggtaaccccgcttattaaaagcattctgtaacaaagcgggaccaaagccatgacaaaaacgcgtaacaaaagtgtctataatcacggcagaaaagtccacattgattatttgcacggcgtcacactttgctatgccatagcatttttatccataagattagcggattctacctgacgctttttatcgcaactctctactgtttctccatacccgtttttttgggaatttttaagaaggagatatacatatgagtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatccggcttcagccggtttgccggctgaaagcgctatttcttccagaattgccatgattttttccccacgggaggcgtcactggctcccgtgttgtcggcagctttgattcgataagcagcatcgcctgtttcaggctgtctatgtgtgactgttgagctgtaacaagttgtctcaggtgttcaatttcatgttctagttgctttgttttactggtttcacctgttctattaggtgttacatgctgttcatctgttacattgtcgatctgttcatggtgaacagctttgaatgcaccaaaaactcgtaaaagctctgatgtatctatcttttttacaccgttttcatctgtgcatatggacagttttccctttgatatgtaacggtgaacagttgttctacttttgtttgttagtcttgatgcttcactgatagatacaagagccataagaacctcagatccttccgtatttagccagtatgttctctagtgtggttcgttgtttttgcgtgagccatgagaacgaaccattgagatcatacttactttgcatgtcactcaaaaattttgcctcaaaactggtgagctgaatttttgcagttaaagcatcgtgtagtgtttttcttagtccgttatgtaggtaggaatctgatgtaatggttgttggtattttgtcaccattcatttttatctggttgttctcaagttcggttacgagatccatttgtctatctagttcaacttggaaaatcaacgtatcagtcgggcggcctcgcttatcaaccaccaatttcatattgctgtaagtgtttaaatctttacttattggtttcaaaacccattggttaagccttttaaactcatggtagttattttcaagcattaacatgaacttaaattcatcaaggctaatctctatatttgccttgtgagttttcttttgtgttagttcttttaataaccactcataaatcctcatagagtatttgttttcaaaagacttaacatgttccagattatattttatgaatttttttaactggaaaagataaggcaatatctcttcactaaaaactaattctaatttttcgcttgagaacttggcatagtttgtccactggaaaatctcaaagcctttaaccaaaggattcctgatttccacagttctcgtcatcagctctctggttgctttagctaatacaccataagcattttccctactgatgttcatcatctgagcgtattggttataagtgaacgataccgtccgttctttccttgtagggttttcaatcgtggggttgagtagtgccacacagcataaaattagcttggtttcatgctccgttaagtcatagcgactaatcgctagttcatttgctttgaaaacaactaattcagacatacatctcaattggtctaggtgattttaatcactataccaattgagatgggctagtcaatgataattactagtccttttcccgggtgatctgggtatctgtaaattctgctagacctttgctggaaaacttgtaaattctgctagaccctctgtaaattccgctagacctttgtgtgttttttttgtttatattcaagtggttataatttatagaataaagaaagaataaaaaaagataaaaagaatagatcccagccctgtgtataactcactactttagtcagttccgcagtattacaaaaggatgtcgcaaacgctgtttgctcctctacaaaacagaccttaaaaccctaaaggcttaagtagcaccctcgcaagctcgggcaaatcgctgaatattccttttgtctccgaccatcaggcacctgagtcgctgtctttttcgtgacattcagttcgctgcgctcacggctctggcagtgaatgggggtaaatggcactacaggcgccttttatggattcatgcaaggaaactacccataatacaagaaaagcccgtcacgggcttctcagggcgttttatggcgggtctgctatgtggtgctatctgactttttgctgttcagcagttcctgccctctgattttccagtctgaccacttcggattatcccgtgacaggtcattcagactggctaatgcacccagtaaggcagcggtatcatcaacaggcttacccgtcttactgtccctagtgcttggattctcaccaataaaaaacgcccggcggcaaccgagcgttctgaacaaatccagatggagttctgaggtcattactggatctatcaacaggagtccaagcgagctcgatatcaaattacgccccgccctgccactcatcgcagtactgttgtaattcattaagcattctgccgacatggaagccatcacaaacggcatgatgaacctgaatcgccagcggcatcagcaccttgtcgccttgcgtataatatttgcccatggtgaaaacgggggcgaagaagttgtccatattggccacgtttaaatcaaaactggtgaaactcacccagggattggctgagacgaaaaacatattctcaataaaccctttagggaaataggccaggttttcaccgtaacacgccacatcttgcgaatatatgtgtagaaactgccggaaatcgtcgtggtattcactccagagcgatgaaaacgtttcagtttgctcatggaaaacggtgtaacaagggtgaacactatcccatatcaccagctcaccgtctttcattgccatacgaaattccggatgagcattcatcaggcgggcaagaatgtgaataaaggccggataaaacttgtgcttatttttctttacggtctttaaaaaggccgtaatatccagctgaacggtctggttataggtacattgagcaactgactgaaatgcctcaaaatgttctttacgatgccattgggatatatcaacggtggtatatccagtgatttttttctccattttagcttccttagctcctgaaaatctcgataactcaaaaaatacgcccggtagtgatcttatttcattatggtgaaagttggaacctcttacgtgccgatcaacgtctcattttcgccagatatc",
+  date: "24-APR-2018",
+  circular: true,
+  // cutsiteLabelColors: { single: "#984d00", double: "#810000" , multi: "#797a00" },
+  comments: [],
+  teselagen_unique_id: "5adf735aa1811801e17d8aac",
+  extraLines: [],
+  type: "DNA",
+  size: 5299,
+  id: "jdosjio81"
 };
-
-// export default {
-//   parts: [
-//     {
-//       name: "pj5_00001",
-//       start: 0,
-//       end: 5298,
-//       id: "10",
-//       tags: ["1:2", "5"]
-//     },
-//     {
-//       start: 10,
-//       end: 30,
-//       name: "Part 0",
-//       id: "0",
-//       tags: ["8"]
-//     },
-//     {
-//       start: 1000,
-//       end: 3000,
-//       name: "Curtis' Part",
-//       id: "9",
-//       tags: ["1:2", "5"]
-//     }
-//   ],
-//   primers: [
-//     {
-//       name: "Example Primer 1",
-//       start: 280,
-//       end: 300,
-//       type: "primer_bind",
-//       forward: true
-//     }
-//   ],
-//   afeatures: [
-//     // {
-//     //   notes: {},
-//     //   type: "promoter",
-//     //   strand: 1,
-//     //   name: "I'm a nice Long Sentence wahooo hahahahaha",
-//     //   // start: 4900,
-//     //   // end: 440
-//     //   start: 4163,
-//     //   end: 2650
-//     // },
-//     {
-//       notes: {
-//         preferred5PrimeOverhangs: [""],
-//         preferred3PrimeOverhangs: [""]
-//       },
-//       arrowheadType: "NONE",
-//       type: "misc_feature",
-//       strand: 1,
-//       name: "CmR I'm a real long label",
-//       start: 4513,
-//       end: 5172
-//     }
-//     // {
-//     //   notes: {},
-//     //   type: "promoter",
-//     //   strand: 1,
-//     //   name: "I'm a nice Long Sentence wahooo hahahahaha",
-//     //   // start: 4900,
-//     //   // end: 440
-//     //   start: 1590,
-//     //   end: 2650
-//     // },
-//     // {
-//     //   notes: {},
-//     //   type: "promoter",
-//     //   strand: 1,
-//     //   name: "I'm a nice Long Sentence wahooo hahahahaha",
-//     //   // start: 4900,
-//     //   // end: 440
-//     //   start: 1590,
-//     //   end: 2650
-//     // },
-//     // {
-//     //   notes: {},
-//     //   type: "promoter",
-//     //   strand: 1,
-//     //   name: "I'm a nice Long Sentence wahooo hahahahaha",
-//     //   // start: 4900,
-//     //   // end: 440
-//     //   start: 1590,
-//     //   end: 2650
-//     // },
-//   ],
-//   features: [
-//     {
-//       notes: {},
-//       type: "CDS",
-//       strand: -1,
-//       name: "araC",
-//       start: 6,
-//       end: 884,
-//       locations: [
-//         { start: 6, end: 24 },
-//         { start: 28, end: 48 },
-//         { start: 500, end: 884 }
-//       ]
-//     },
-//     {
-//       notes: {},
-//       type: "protein_bind",
-//       strand: 1,
-//       name: "Operator I2 and I1",
-//       start: 1123,
-//       end: 1161
-//     },
-//     {
-//       notes: { vntifkey: ["4"] },
-//       type: "CDS",
-//       strand: 1,
-//       name: "signal_peptide",
-//       start: 1952,
-//       end: 2014
-//     },
-//     {
-//       notes: {},
-//       type: "terminator",
-//       strand: 1,
-//       name: "dbl term",
-//       start: 2033,
-//       end: 2161
-//     },
-//     {
-//       notes: {},
-//       type: "protein_bind",
-//       strand: 1,
-//       name: "operator O1",
-//       start: 1071,
-//       end: 1092
-//     },
-//     {
-//       notes: {},
-//       type: "misc_binding",
-//       strand: 1,
-//       name: "CAP site",
-//       start: 1114,
-//       end: 1127
-//     },
-//     {
-//       notes: {},
-//       type: "promoter",
-//       strand: 1,
-//       name: "pBAD promoter",
-//       start: 1160,
-//       end: 1187
-//     },
-//     {
-//       notes: { vntifkey: ["4"] },
-//       type: "CDS",
-//       strand: 1,
-//       name: "GFPuv",
-//       start: 1235,
-//       end: 2017
-//     },
-//     {
-//       notes: {},
-//       type: "misc_feature",
-//       strand: 1,
-//       name: "XhoI_silent_mutation",
-//       start: 1660,
-//       end: 1660
-//     },
-//     { notes: {}, type: "RBS", strand: 1, name: "RBS", start: 1215, end: 1234 },
-//     {
-//       notes: {},
-//       type: "protein_bind",
-//       strand: 1,
-//       name: "operator O2",
-//       start: 913,
-//       end: 930
-//     },
-//     {
-//       notes: {},
-//       type: "misc_feature",
-//       strand: 1,
-//       name: "BamHI_silent_mutation",
-//       start: 1759,
-//       end: 1759
-//     },
-//     {
-//       notes: {},
-//       type: "misc_marker",
-//       strand: -1,
-//       name: "CmR",
-//       start: 4513,
-//       end: 5172
-//     },
-//     {
-//       notes: {},
-//       type: "rep_origin",
-//       strand: -1,
-//       name: "pSC101**",
-//       start: 2163,
-//       end: 4391
-//     },
-//     {
-//       notes: {},
-//       type: "terminator",
-//       strand: 1,
-//       name: "T0",
-//       start: 4392,
-//       end: 4497
-//     },
-//     {
-//       notes: {},
-//       type: "promoter",
-//       strand: -1,
-//       name: "araE promoter",
-//       start: 1035,
-//       end: 1063
-//     },
-//     {
-//       notes: {
-//         preferred5PrimeOverhangs: [""],
-//         preferred3PrimeOverhangs: [""]
-//       },
-//       type: "misc_feature",
-//       strand: -1,
-//       name: "araD",
-//       start: 6,
-//       end: 884
-//     },
-//     {
-//       notes: {
-//         preferred5PrimeOverhangs: [""],
-//         preferred3PrimeOverhangs: [""],
-//         tag: ["terminator"]
-//       },
-//       type: "misc_feature",
-//       strand: 1,
-//       name: "dbl term",
-//       start: 2033,
-//       end: 2161
-//     },
-//     {
-//       notes: {
-//         preferred5PrimeOverhangs: [""],
-//         preferred3PrimeOverhangs: [""]
-//       },
-//       type: "misc_feature",
-//       strand: -1,
-//       name: "CmR I'm a real long label",
-//       start: 4513,
-//       end: 5172
-//     },
-//     {
-//       notes: {
-//         preferred5PrimeOverhangs: [""],
-//         preferred3PrimeOverhangs: [""],
-//         tag: ["cds"]
-//       },
-//       type: "misc_feature",
-//       strand: 1,
-//       name: "GFPuv",
-//       start: 1241,
-//       end: 1951
-//     },
-//     {
-//       notes: {
-//         preferred5PrimeOverhangs: [""],
-//         preferred3PrimeOverhangs: [""]
-//       },
-//       type: "misc_feature",
-//       strand: -1,
-//       name: "pSC101**",
-//       start: 2163,
-//       end: 4391
-//     },
-//     {
-//       notes: {
-//         preferred5PrimeOverhangs: [""],
-//         preferred3PrimeOverhangs: [""]
-//       },
-//       type: "misc_feature",
-//       strand: 1,
-//       name: "pS8c-vector_backbone",
-//       start: 2015,
-//       end: 1237
-//     }
-//   ],
-//   name: "pj5_00001",
-//   sequence:
-//     "gacgtcttatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcgctcgggctggccccggtgcattttttaaatacccgcgagaaatagagttgatcgtcaaaaccaacattgcgaccgacggtggcgataggcatccgggtggtgctcaaaagcagcttcgcctggctgatacgttggtcctcgcgccagcttaagacgctaatccctaactgctggcggaaaagatgtgacagacgcgacggcgacaagcaaacatgctgtgcgacgctggcgatatcaaaattgctgtctgccaggtgatcgctgatgtactgacaagcctcgcgtacccgattatccatcggtggatggagcgactcgttaatcgcttccatgcgccgcagtaacaattgctcaagcagatttatcgccagcagctccgaatagcgcccttccccttgcccggcgttaatgatttgcccaaacaggtcgctgaaatgcggctggtgcgcttcatccgggcgaaagaaccccgtattggcaaatattgacggccagttaagccattcatgccagtaggcgcgcggacgaaagtaaacccactggtgataccattcgcgagcctccggatgacgaccgtagtgatgaatctctcctggcgggaacagcaaaatatcacccggtcggcaaacaaattctcgtccctgatttttcaccaccccctgaccgcgaatggtgagattgagaatataacctttcattcccagcggtcggtcgataaaaaaatcgagataaccgttggcctcaatcggcgttaaacccgccaccagatgggcattaaacgagtatcccggcagcaggggatcattttgcgcttcagccatacttttcatactcccgccattcagagaagaaaccaattgtccatattgcatcagacattgccgtcactgcgtcttttactggctcttctcgctaaccaaaccggtaaccccgcttattaaaagcattctgtaacaaagcgggaccaaagccatgacaaaaacgcgtaacaaaagtgtctataatcacggcagaaaagtccacattgattatttgcacggcgtcacactttgctatgccatagcatttttatccataagattagcggattctacctgacgctttttatcgcaactctctactgtttctccatacccgtttttttgggaatttttaagaaggagatatacatatgagtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatccggcttcagccggtttgccggctgaaagcgctatttcttccagaattgccatgattttttccccacgggaggcgtcactggctcccgtgttgtcggcagctttgattcgataagcagcatcgcctgtttcaggctgtctatgtgtgactgttgagctgtaacaagttgtctcaggtgttcaatttcatgttctagttgctttgttttactggtttcacctgttctattaggtgttacatgctgttcatctgttacattgtcgatctgttcatggtgaacagctttgaatgcaccaaaaactcgtaaaagctctgatgtatctatcttttttacaccgttttcatctgtgcatatggacagttttccctttgatatgtaacggtgaacagttgttctacttttgtttgttagtcttgatgcttcactgatagatacaagagccataagaacctcagatccttccgtatttagccagtatgttctctagtgtggttcgttgtttttgcgtgagccatgagaacgaaccattgagatcatacttactttgcatgtcactcaaaaattttgcctcaaaactggtgagctgaatttttgcagttaaagcatcgtgtagtgtttttcttagtccgttatgtaggtaggaatctgatgtaatggttgttggtattttgtcaccattcatttttatctggttgttctcaagttcggttacgagatccatttgtctatctagttcaacttggaaaatcaacgtatcagtcgggcggcctcgcttatcaaccaccaatttcatattgctgtaagtgtttaaatctttacttattggtttcaaaacccattggttaagccttttaaactcatggtagttattttcaagcattaacatgaacttaaattcatcaaggctaatctctatatttgccttgtgagttttcttttgtgttagttcttttaataaccactcataaatcctcatagagtatttgttttcaaaagacttaacatgttccagattatattttatgaatttttttaactggaaaagataaggcaatatctcttcactaaaaactaattctaatttttcgcttgagaacttggcatagtttgtccactggaaaatctcaaagcctttaaccaaaggattcctgatttccacagttctcgtcatcagctctctggttgctttagctaatacaccataagcattttccctactgatgttcatcatctgagcgtattggttataagtgaacgataccgtccgttctttccttgtagggttttcaatcgtggggttgagtagtgccacacagcataaaattagcttggtttcatgctccgttaagtcatagcgactaatcgctagttcatttgctttgaaaacaactaattcagacatacatctcaattggtctaggtgattttaatcactataccaattgagatgggctagtcaatgataattactagtccttttcccgggtgatctgggtatctgtaaattctgctagacctttgctggaaaacttgtaaattctgctagaccctctgtaaattccgctagacctttgtgtgttttttttgtttatattcaagtggttataatttatagaataaagaaagaataaaaaaagataaaaagaatagatcccagccctgtgtataactcactactttagtcagttccgcagtattacaaaaggatgtcgcaaacgctgtttgctcctctacaaaacagaccttaaaaccctaaaggcttaagtagcaccctcgcaagctcgggcaaatcgctgaatattccttttgtctccgaccatcaggcacctgagtcgctgtctttttcgtgacattcagttcgctgcgctcacggctctggcagtgaatgggggtaaatggcactacaggcgccttttatggattcatgcaaggaaactacccataatacaagaaaagcccgtcacgggcttctcagggcgttttatggcgggtctgctatgtggtgctatctgactttttgctgttcagcagttcctgccctctgattttccagtctgaccacttcggattatcccgtgacaggtcattcagactggctaatgcacccagtaaggcagcggtatcatcaacaggcttacccgtcttactgtccctagtgcttggattctcaccaataaaaaacgcccggcggcaaccgagcgttctgaacaaatccagatggagttctgaggtcattactggatctatcaacaggagtccaagcgagctcgatatcaaattacgccccgccctgccactcatcgcagtactgttgtaattcattaagcattctgccgacatggaagccatcacaaacggcatgatgaacctgaatcgccagcggcatcagcaccttgtcgccttgcgtataatatttgcccatggtgaaaacgggggcgaagaagttgtccatattggccacgtttaaatcaaaactggtgaaactcacccagggattggctgagacgaaaaacatattctcaataaaccctttagggaaataggccaggttttcaccgtaacacgccacatcttgcgaatatatgtgtagaaactgccggaaatcgtcgtggtattcactccagagcgatgaaaacgtttcagtttgctcatggaaaacggtgtaacaagggtgaacactatcccatatcaccagctcaccgtctttcattgccatacgaaattccggatgagcattcatcaggcgggcaagaatgtgaataaaggccggataaaacttgtgcttatttttctttacggtctttaaaaaggccgtaatatccagctgaacggtctggttataggtacattgagcaactgactgaaatgcctcaaaatgttctttacgatgccattgggatatatcaacggtggtatatccagtgatttttttctccattttagcttccttagctcctgaaaatctcgataactcaaaaaatacgcccggtagtgatcttatttcattatggtgaaagttggaacctcttacgtgccgatcaacgtctcattttcgccagatatc",
-//   date: "24-APR-2018",
-//   circular: true,
-//   // cutsiteLabelColors: { single: "#984d00", double: "#810000" , multi: "#797a00" },
-//   comments: [],
-//   teselagen_unique_id: "5adf735aa1811801e17d8aac",
-//   extraLines: [],
-//   type: "DNA",
-//   size: 5299,
-//   id: "jdosjio81"
-// };
