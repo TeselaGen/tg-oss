@@ -1,6 +1,20 @@
+@font-face {
+  font-family: "Menlo";
+  src: url("./Menlo.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Monaco";
+  src: url("./Monaco.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
 .ve-monospace-font {
-  font-family: "Ubuntu Mono", Monaco, monospace;
-  font-size: 12px;
+  font-family: Menlo, Monaco, monospace;
+  font-size: 10px;
 }
 .rowViewTextContainer text {
   user-select: none;
@@ -16,7 +30,6 @@
 }
 
 .veCircularView .ve-monospace-font {
-  font-family: "Lucida Console", Monaco, monospace;
   font-size: 14px;
 }
 
