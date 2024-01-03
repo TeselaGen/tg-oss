@@ -60,8 +60,8 @@ let clearMe;
             dataTitle && !recentlyHidden
               ? [1300, 1300]
               : dataTitle
-              ? [150, 150]
-              : [0, 0],
+                ? [150, 150]
+                : [0, 0],
           allowHTML: true,
           ...(dataTitle && {
             followCursor: dataTitle ? "initial" : false
@@ -171,6 +171,7 @@ let clearMe;
           isEllipsized &&
           el.offsetWidth < el.scrollWidth - 4 && //the -4 is adding a teeny bit of tolerance to fix issues with the column headers getting tooltips even when fully visible
           !el.classList.contains("no-data-tip") &&
+          !parentIncludesNoChildDataTip(el, 0) &&
           !document.body.classList.contains("drag-active") &&
           el.textContent &&
           el.textContent?.trim?.().length !== 0
@@ -189,3 +190,11 @@ let clearMe;
     }
   });
 })();
+
+function parentIncludesNoChildDataTip(el, count) {
+  if (count > 4) return false;
+  if (!el) return false;
+  // if attr data-no-child-data-tip is preset on the element, then we don't want to show a tooltip on any of its children
+  if (el.getAttribute("data-no-child-data-tip")) return true;
+  return parentIncludesNoChildDataTip(el.parentElement, count + 1);
+}

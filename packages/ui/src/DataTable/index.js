@@ -99,6 +99,8 @@ class DataTable extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.helperProp) {
+      this.props.helperProp.updateValidationHelper =
+        this.updateValidationHelper;
       this.props.helperProp.addEditableTableEntities =
         this.addEditableTableEntities;
       this.props.helperProp.getEditableTableInfoAndThrowFormError =
@@ -797,18 +799,21 @@ class DataTable extends React.Component {
       });
     }
   };
+  updateValidationHelper = () => {
+    const { entities, reduxFormCellValidation } = computePresets(this.props);
+    this.updateValidation(entities, reduxFormCellValidation);
+  };
 
   updateValidation = (entities, newCellValidate) => {
     const { change, schema } = computePresets(this.props);
-    change(
-      "reduxFormCellValidation",
-      validateTableWideErrors({
-        entities,
-        schema,
-        newCellValidate,
-        props: this.props
-      })
-    );
+    const tableWideErr = validateTableWideErrors({
+      entities,
+      schema,
+      newCellValidate,
+      props: this.props
+    });
+    change("reduxFormCellValidation", tableWideErr);
+    this.forceUpdate();
   };
   handleDeleteCell = () => {
     const {
@@ -943,7 +948,9 @@ class DataTable extends React.Component {
         // keep this so that pasting into spreadsheets works.
         format: "text/plain"
       });
-    window.toastr.success(message);
+    if (message) {
+      window.toastr.success(message);
+    }
   };
 
   handleCopyTable = e => {
@@ -1244,8 +1251,8 @@ class DataTable extends React.Component {
     compactClassName += extraCompact
       ? " tg-extra-compact-table"
       : compact
-      ? " tg-compact-table"
-      : "";
+        ? " tg-compact-table"
+        : "";
 
     const hasFilters =
       filters.length ||
@@ -1534,10 +1541,10 @@ class DataTable extends React.Component {
                   const nextCellId = up
                     ? cellIdAbove
                     : down
-                    ? cellIdBelow
-                    : left
-                    ? cellIdToLeft
-                    : cellIdToRight;
+                      ? cellIdBelow
+                      : left
+                        ? cellIdToLeft
+                        : cellIdToRight;
 
                   e.stopPropagation();
                   e.preventDefault();
@@ -1745,8 +1752,8 @@ class DataTable extends React.Component {
                 extraCompact
                   ? itemSizeEstimators.compact
                   : compact
-                  ? itemSizeEstimators.normal
-                  : itemSizeEstimators.comfortable
+                    ? itemSizeEstimators.normal
+                    : itemSizeEstimators.comfortable
               }
               TfootComponent={() => {
                 return <button>hasdfasdf</button>;
@@ -2027,7 +2034,8 @@ class DataTable extends React.Component {
         this.startCellEdit(cellId);
       },
       ...(err && {
-        "data-tip": err?.message || err
+        "data-tip": err?.message || err,
+        "data-no-child-data-tip": true
       }),
       onContextMenu: e => {
         if (!isPrimarySelected) {

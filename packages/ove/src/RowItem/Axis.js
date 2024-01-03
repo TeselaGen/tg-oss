@@ -111,8 +111,11 @@ const Axis = function (props) {
           i === 0 //if first label in row, or last label in row, we add checks to make sure the axis number labels don't go outside of the width of the row
             ? Math.max(positionLength, xCenter)
             : i === tickMarkPositions.length - 1
-            ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
-            : xCenter;
+              ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
+              : xCenter;
+      }
+      if (i === tickMarkPositions.length - 1) {
+        x = Math.min(x, xEnd - positionLength / 2);
       }
       tickMarkSVG.push(
         <text

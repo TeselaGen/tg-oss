@@ -224,3 +224,21 @@ button:not(:disabled):active {
 .bp3-tabs.bp3-vertical > .bp3-tab-panel {
   min-width: 0px;
 }
+.bp3-toast[class*="bp3-intent-"] .bp3-button.tg-clear-all-toasts:hover {
+  /* background: blue !important; */
+  /* background: unset !important; */
+  background-color: #137cbd !important;
+}
+
+/* .bp3-toast .tg-clear-all-toasts {
+  background: unset !important;
+  color: unset !important;
+  padding: unset !important;
+  margin: unset !important;
+  font-size: unset !important;
+  line-height: unset !important;
+  border: unset !important;
+  box-shadow: unset !important;
+  text-align: unset !important;
+  cursor: pointer !important;
+} */

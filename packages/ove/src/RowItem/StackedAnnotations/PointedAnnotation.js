@@ -302,7 +302,7 @@ function PointedAnnotation(props) {
             annotation.labelClassName
           )}
           style={{
-            fontSize: ".9em",
+            // fontSize: ".8em",
             fill: _textColor
           }}
           transform={`translate(${textOffset},${height - 2})`}

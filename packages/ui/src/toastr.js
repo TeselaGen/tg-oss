@@ -1,4 +1,5 @@
-import { Position, Toaster, Intent } from "@blueprintjs/core";
+import { Position, Toaster, Intent, Classes } from "@blueprintjs/core";
+import classNames from "classnames";
 
 const TopToaster = Toaster.create({
   className: "top-toaster",
@@ -31,22 +32,68 @@ const generateToast = intent => (message, options) => {
   if (intent === Intent.DANGER) {
     console.error("Toastr error message: ", message);
   }
+
+  const maybeAddClearAll = () => {
+    // wipe any existing clear all buttons
+    const existingClearAllButtons =
+      document.querySelectorAll(`.tg-clear-all-toasts`);
+    existingClearAllButtons.forEach(button => {
+      button.remove();
+    });
+    const activeToasts = document.querySelectorAll(
+      `.bp3-toast:not(.bp3-toast-exit)`
+    );
+    if (activeToasts.length > 1) {
+      // add custom clear all button
+
+      const topToaster = document.querySelector(`.bp3-toast`);
+      if (!topToaster) return;
+      const closeButton = document.createElement("div");
+      closeButton.classList.add(
+        Classes.BUTTON,
+        Classes.LARGE,
+        Classes.INTENT_PRIMARY,
+        "tg-clear-all-toasts"
+      );
+      closeButton.innerText = "Clear all";
+      closeButton.onclick = window.__tgClearAllToasts;
+      // position the button to the right of the message
+      closeButton.style.position = "absolute";
+      closeButton.style.right = "-100px";
+
+      topToaster.appendChild(closeButton);
+    }
+  };
   const uniqKey = toastToUse.show(
     {
       intent,
       message,
+      onDismiss: () => {
+        if (options.onDismiss) {
+          options.onDismiss();
+        }
+        setTimeout(() => {
+          maybeAddClearAll();
+        }, 0);
+      },
       timeout:
-        options.timeout || updatedTimeout || intent === Intent.DANGER
-          ? 60000
-          : undefined,
+        options.timeout ||
+        updatedTimeout ||
+        (!window.Cypress && intent === Intent.DANGER ? 60000 : undefined),
       action: options.action,
       icon: options.icon,
-      className: options.className
+      className: classNames("preserve-newline", options.className)
     },
     options.key
   );
+  setTimeout(() => {
+    maybeAddClearAll();
+  }, 0);
   function clear() {
     toastToUse.dismiss(uniqKey);
+    setTimeout(() => {
+      maybeAddClearAll();
+    }, 0);
   }
   clear.key = uniqKey;
   return clear;

@@ -300,7 +300,7 @@ function UploaderInner({
             const mainExampleData = {};
             const fieldsToUse = [
               ...validateAgainstSchema.fields,
-              ...a.exampleDownloadFields
+              ...(validateAgainstSchema.exampleDownloadFields ?? [])
             ];
             const mainSchema = fieldsToUse.map(f => {
               mainExampleData[f.displayName || f.path] =

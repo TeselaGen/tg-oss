@@ -1,10 +1,13 @@
 .veLinearView .veRowItemWrapper {
   display: flex;
   justify-content: center;
-}
-.veLinearView.isLinViewZoomed .veRowItemWrapper {
   overflow: auto;
 }
+
+/* tnw: we had added overflow: auto; only when isLinViewZoomed to prevent the scrollbar from showing up in cases where we didn't want it. We'll need to figure how to prevent the scrollbar from appearing in a different way since we DO need to the scrollbar in certain cases even when isLinViewZoomed=false */
+/* .veLinearView.isLinViewZoomed .veRowItemWrapper {
+  overflow: auto;
+} */
 .sequenceNameText {
   text-align: center;
   padding-top: 20px;

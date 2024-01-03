@@ -1,11 +1,28 @@
+@font-face {
+  font-family: "Menlo";
+  src: url("./Menlo.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Monaco";
+  src: url("./Monaco.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
 .ve-monospace-font {
-  font-family: Monaco, monospace;
-  font-size: 11px;
+  font-family: Menlo, Monaco, monospace;
+  font-size: 10px;
 }
 .rowViewTextContainer text {
   user-select: none;
 }
-.translationLayer text {
+.translationLayer text,
+.tg-prime-direction,
+.sequenceNameText,
+.veAxis text {
   user-select: none;
 }
 .ve-sequence-reverse {
@@ -13,7 +30,6 @@
 }
 
 .veCircularView .ve-monospace-font {
-  font-family: "Lucida Console", Monaco, monospace;
   font-size: 14px;
 }
 
