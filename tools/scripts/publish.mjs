@@ -26,6 +26,7 @@ function invariant(condition, message) {
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
 let [, , name, version, tag = "latest"] = process.argv;
 
+execSync(`yarn auto-changelog -p`);
 // Get all internal dependencies to write them to the package.json in the dist folder
 execSync(`yarn nx graph --file=output.json`);
 const r = readFileSync(`output.json`).toString();
