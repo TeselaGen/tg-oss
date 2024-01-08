@@ -126,7 +126,7 @@ export const setupCsvParserOptions = (parserOptions = {}) => {
   return papaParseOpts;
 };
 
-const normalizeCsvHeaderHelper = h => snakeCase(h.toUpperCase()).toUpperCase();
+const normalizeCsvHeaderHelper = h => snakeCase(h).toUpperCase();
 
 export function normalizeCsvHeader(header) {
   if (header.startsWith("ext-") || header.startsWith("EXT-")) {
@@ -145,8 +145,11 @@ export const parseCsvFile = (csvFile, parserOptions = {}) => {
           results &&
           results.data?.length &&
           results.errors &&
-          results.errors.length === 1 &&
-          results.errors[0].code === `UndetectableDelimiter`
+          ((results.errors.length === 1 &&
+            results.errors[0].code === `UndetectableDelimiter`) ||
+            results.errors.every(
+              e => e.code === `TooFewFields` || e.code === `TooManyFields`
+            ))
         ) {
           return resolve(results);
         } else if (results && results.errors && results.errors.length) {
