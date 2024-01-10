@@ -705,7 +705,15 @@ function UploaderInner({
                     if (isCsvOrExcelFile(file)) {
                       let parsedF;
                       try {
-                        parsedF = await parseCsvOrExcelFile(file);
+                        parsedF = await parseCsvOrExcelFile(file, {
+                          csvParserOptions: isFunction(
+                            validateAgainstSchema.csvParserOptions
+                          )
+                            ? validateAgainstSchema.csvParserOptions({
+                                validateAgainstSchema
+                              })
+                            : validateAgainstSchema.csvParserOptions
+                        });
                       } catch (error) {
                         console.error("error:", error);
                         window.toastr &&

@@ -1,4 +1,4 @@
-import { forEach, isArray, map } from "lodash";
+import { forEach, isArray, map, snakeCase } from "lodash";
 import { nanoid } from "nanoid";
 import Fuse from "fuse.js";
 import { editCellHelper } from "../DataTable/editCellHelper";
@@ -89,24 +89,17 @@ async function matchSchemas({ userSchema, officialSchema }) {
 
     //if there are any exact matches, push them onto the results array
     userSchema.fields.forEach((uh, i) => {
-      const pathMatch =
-        uh.path.toLowerCase().replace(/ /g, "") ===
-        h.path.toLowerCase().replace(/ /g, "");
+      const pathMatch = norm(uh.path) === norm(h.path);
       const displayNameMatch =
-        h.displayName &&
-        uh.path.toLowerCase().replace(/ /g, "") ===
-          getTextFromEl(h.displayName).toLowerCase().replace(/ /g, "");
+        h.displayName && norm(uh.path) === norm(getTextFromEl(h.displayName));
       const hasAlternatePathMatch =
         h.alternatePathMatch &&
         (isArray(h.alternatePathMatch)
-          ? h.alternatePathMatch.some(alternatePathMatch => {
-              return (
-                uh.path.toLowerCase().replace(/ /g, "") ===
-                alternatePathMatch.toLowerCase().replace(/ /g, "")
-              );
-            })
-          : uh.path.toLowerCase().replace(/ /g, "") ===
-            h.alternatePathMatch.toLowerCase().replace(/ /g, ""));
+          ? h.alternatePathMatch
+          : [h.alternatePathMatch]
+        ).some(alternatePathMatch => {
+          return norm(uh.path) === norm(alternatePathMatch);
+        });
 
       if (pathMatch || displayNameMatch || hasAlternatePathMatch) {
         result = result.filter(({ path }) => path === uh.path);
@@ -231,4 +224,8 @@ async function resolveValidateAgainstSchema() {
   //     }
   //   }
   // })
+}
+
+function norm(h) {
+  return snakeCase(h).toLowerCase().replace(/ /g, "");
 }
