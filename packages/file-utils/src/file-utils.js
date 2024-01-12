@@ -126,7 +126,7 @@ export const setupCsvParserOptions = (parserOptions = {}) => {
   return papaParseOpts;
 };
 
-const normalizeCsvHeaderHelper = h => snakeCase(h).toUpperCase();
+const normalizeCsvHeaderHelper = h => snakeCase(camelCase(h)).toUpperCase();
 
 export function normalizeCsvHeader(header) {
   if (header.startsWith("ext-") || header.startsWith("EXT-")) {
