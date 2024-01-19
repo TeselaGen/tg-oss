@@ -26,6 +26,7 @@ function invariant(condition, message) {
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
 let [, , name, version, tag = "latest"] = process.argv;
 
+execSync(`git pull`);
 execSync(`yarn auto-changelog -p`);
 // Get all internal dependencies to write them to the package.json in the dist folder
 execSync(`yarn nx graph --file=output.json`);
@@ -113,3 +114,6 @@ invariant(
 execSync(
   `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
 );
+
+execSync(`git commit -am "chore: publish ${name}@${version}"`);
+execSync(`git push`);
