@@ -182,6 +182,7 @@ export default class FilterAndSortMenu extends React.Component {
           intent={Intent.SUCCESS}
           text="Filter"
           secondaryText="Clear"
+          secondaryIntent={Intent.DANGER}
           secondaryAction={() => {
             currentFilter && removeSingleFilter(currentFilter.filterOn);
           }}

@@ -54,6 +54,16 @@ https://nx.dev/core-features/integrate-with-editors
 
 Using the vscode command prompt (cmd+shift+p):
 
+Nx: run
+Select package
+publish
+
+```
+nx run ui:publish
+```
+
+Or
+
 Nx: run-many
 publish
 Execute: nx run-many --target=publish
