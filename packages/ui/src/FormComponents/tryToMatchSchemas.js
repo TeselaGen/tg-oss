@@ -1,4 +1,4 @@
-import { forEach, isArray, map, snakeCase } from "lodash";
+import { forEach, isArray, isPlainObject, map, snakeCase } from "lodash";
 import { nanoid } from "nanoid";
 import Fuse from "fuse.js";
 import { editCellHelper } from "../DataTable/editCellHelper";
@@ -82,25 +82,42 @@ async function matchSchemas({ userSchema, officialSchema }) {
   let csvValidationIssue = false;
   const fuse = new Fuse(userSchema.fields, options);
 
+  const matchedAltPaths = [];
   officialSchema.fields.forEach(h => {
     let hasMatch = false;
     //run fuse search for results
     let result = fuse.search(h.path) || [];
 
+    const hadNormalPathMatch = userSchema.fields.some(
+      uh => norm(uh.path) === norm(h.path)
+    );
     //if there are any exact matches, push them onto the results array
     userSchema.fields.forEach((uh, i) => {
       const pathMatch = norm(uh.path) === norm(h.path);
       const displayNameMatch =
         h.displayName && norm(uh.path) === norm(getTextFromEl(h.displayName));
       const hasAlternatePathMatch =
+        !hadNormalPathMatch &&
         h.alternatePathMatch &&
         (isArray(h.alternatePathMatch)
           ? h.alternatePathMatch
           : [h.alternatePathMatch]
-        ).some(alternatePathMatch => {
-          return norm(uh.path) === norm(alternatePathMatch);
+        ).find(alternatePathMatch => {
+          let altPath = alternatePathMatch;
+          if (isPlainObject(alternatePathMatch)) {
+            altPath = alternatePathMatch.path;
+          }
+          return norm(uh.path) === norm(altPath);
         });
 
+      if (hasAlternatePathMatch) {
+        matchedAltPaths.push(
+          hasAlternatePathMatch.path || hasAlternatePathMatch
+        );
+        if (hasAlternatePathMatch.format) {
+          h.format = hasAlternatePathMatch.format;
+        }
+      }
       if (pathMatch || displayNameMatch || hasAlternatePathMatch) {
         result = result.filter(({ path }) => path === uh.path);
         //add a fake perfect match result to make sure we get the match
