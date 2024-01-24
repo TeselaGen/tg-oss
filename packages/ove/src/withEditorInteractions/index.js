@@ -532,7 +532,7 @@ function VectorInteractionHOC(Component /* options */) {
       showConfirmationDialog({
         cancelButtonText: null,
         confirmButtonText: "OK",
-        canEscapeKeyCancel: true,
+        canEscapeKeyClose: true,
         // intent: Intent.NONE,
         // onCancel: undefined,
         text: (
@@ -958,7 +958,7 @@ function VectorInteractionHOC(Component /* options */) {
                         const doAction = await showConfirmationDialog({
                           text: "A part already exists that matches this feature's range. Do you want to make one anyways?",
                           confirmButtonText: "Create Part",
-                          canEscapeKeyCancel: true //this is false by default
+                          canEscapeKeyClose: true //this is false by default
                         });
                         if (!doAction) return; //early return
                       }

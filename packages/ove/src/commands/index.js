@@ -493,7 +493,7 @@ const editCommandDefs = {
         ),
         confirmButtonText: "Back",
         cancelButtonText: null,
-        canEscapeKeyCancel: true //this is false by default
+        canEscapeKeyClose: true //this is false by default
       })
   },
   versionNumber: {

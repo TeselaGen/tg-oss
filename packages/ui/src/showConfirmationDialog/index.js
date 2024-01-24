@@ -10,7 +10,7 @@ import DialogFooter from "../DialogFooter";
 //     intent: Intent.DANGER, //applied to the right most confirm button
 //     confirmButtonText: "Yep!",
 //     cancelButtonText: "Nope",
-//     canEscapeKeyCancel: true //this is false by default
+//     canEscapeKeyClose: true //this is false by default
 // });
 // console.info("doAction:", doAction);
 
@@ -48,9 +48,10 @@ export class AlertWrapper extends Component {
       fourthButtonText,
       fourthButtonIntent,
       handleSubmit,
-      canEscapeKeyCancel,
       confirmButtonText = "OK",
       cancelButtonText = "Cancel",
+      canEscapeKeyClose,
+      canOutsideClickClose,
       intent = Intent.PRIMARY,
       ...rest
     } = this.props;
@@ -70,6 +71,9 @@ export class AlertWrapper extends Component {
         onConfirm={
           handleSubmit ? handleSubmit(v => doClose(v)) : () => doClose(true)
         }
+        onClose={() => doClose(false)}
+        canOutsideClickClose={canOutsideClickClose}
+        canEscapeKeyClose={canEscapeKeyClose}
         {...rest}
         {...(noCancelButton && {
           onCancel: undefined,

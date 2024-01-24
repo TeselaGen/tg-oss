@@ -56,6 +56,7 @@ import ReactMarkdown from "react-markdown";
 import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
 import remarkGfm from "remark-gfm";
+import { evaluate } from "mathjs";
 
 import TgSelect from "../TgSelect";
 import { withHotkeys } from "../utils/hotkeyUtils";
@@ -89,6 +90,7 @@ import { editCellHelper } from "./editCellHelper";
 import { getCellVal } from "./getCellVal";
 import { getVals } from "./getVals";
 import { throwFormError } from "../throwFormError";
+import showConfirmationDialog from "../showConfirmationDialog";
 enablePatches();
 
 const PRIMARY_SELECTED_VAL = "main_cell";
@@ -614,7 +616,8 @@ class DataTable extends React.Component {
       reduxFormCellValidation,
       change,
       schema,
-      entities
+      entities,
+      allowFormulas
     } = computePresets(this.props);
 
     if (isCellEditable) {
@@ -649,6 +652,14 @@ class DataTable extends React.Component {
             pasteData = pasteData.slice(1);
           }
         } catch (e) {
+          let hasReplace = false;
+          if (toPaste.inclues("=") && allowFormulas) {
+            // replace any commas inside brackets with %%comma%% so that we can parse it out later
+            toPaste.replace(/\(([^)]+)\)/g, (match) => {
+              hasReplace = true;
+              return match.replace(/,/g, "%%comma%%");
+            });
+          }
           if (toPaste.includes(",")) {
             //try papaparsing it out as a csv if it contains commas
             try {
@@ -661,6 +672,14 @@ class DataTable extends React.Component {
             } catch (error) {
               console.error(`error p982qhgpf9qh`, error);
             }
+          }
+          if (hasReplace) {
+            // put the commas back in
+            pasteData = pasteData.map(row => {
+              return row.map(cell => {
+                return cell.replace(/%%comma%%/g, ",");
+              });
+            });
           }
         }
         pasteData = pasteData.length ? pasteData : defaultParsePaste(toPaste);
@@ -2370,6 +2389,7 @@ class DataTable extends React.Component {
       isCellEditable,
       cellRenderer,
       withCheckboxes,
+      allowFormulas,
       SubComponent,
       shouldShowSubComponent,
       entities,
@@ -2444,6 +2464,87 @@ class DataTable extends React.Component {
         }
       });
     }
+    if (allowFormulas) {
+      columnsToRender.push({
+        Header: () => {
+          return (
+            <InfoHelper
+              content="Formulas"
+              isButton
+              minimal
+              small
+              style={{ padding: 2 }}
+              popoverProps={{
+                modifiers: {
+                  preventOverflow: { enabled: false },
+                  hide: { enabled: false }
+                }
+              }}
+              onClick={() => {
+                showConfirmationDialog({
+                  text: (
+                    <div
+                      style={{
+                        padding: 10,
+                        width: 500,
+                        overflow: "auto"
+                      }}
+                    >
+                      <h3>Formulas</h3>
+                      <div>
+                        <p>
+                          Formulas are supported in the following columns:
+                          <ul>
+                            {columns.map((c, i) => {
+                              if (c.allowFormulas) {
+                                return <li>{this.renderColumnHeader(c, i)}</li>;
+                              }
+                              return null;
+                            })}
+                          </ul>
+                        </p>
+                      </div>
+                    </div>
+                  ),
+                  confirmButtonText: "Ok",
+                  noCancelButton: true,
+                  canOutsideClickClose: true,
+                  canEscapeKeyClose: true
+                });
+              }}
+              // className={classNames("tg-expander-all")}
+              icon="help"
+            />
+          );
+        },
+        Cell: props => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%"
+              }}
+            >
+              {props.index + 1}
+            </div>
+          );
+        },
+        width: 35,
+        resizable: false,
+        getHeaderProps: () => {
+          return {
+            className: "tg-react-table-checkbox-header-container",
+            immovable: "true"
+          };
+        },
+        getProps: () => {
+          return {
+            className: "tg-react-table-index-cell-container"
+          };
+        }
+      });
+    }
 
     if (withCheckboxes) {
       columnsToRender.push({
@@ -2465,10 +2566,10 @@ class DataTable extends React.Component {
       });
     }
 
-    columns.forEach(column => {
+    columns.forEach((column, i) => {
       const tableColumn = {
         ...column,
-        Header: this.renderColumnHeader(column),
+        Header: this.renderColumnHeader(column, i),
         accessor: column.path,
         getHeaderProps: () => ({
           // needs to be a string because it is getting passed
@@ -2489,6 +2590,41 @@ class DataTable extends React.Component {
             row,
             this.props
           );
+          return val;
+        };
+      } else if (column.allowFormulas) {
+        tableColumn.Cell = row => {
+          let val = cloneDeep(row.value);
+
+          if (!val) return "";
+          if (typeof val === "number") return val;
+          if (val.startsWith("=")) {
+            // fill in any variables with their values
+            val = val.toLowerCase().replace(/([A-Z]+[0-9]+)/gi, match => {
+              // match = E12 or B4
+              const [letter, rowIndex] = match.split(/(\d+)/);
+              const entity = entities.find((e, i) => {
+                return i === rowIndex - 1;
+              });
+              const letterIndex = letter.toUpperCase().charCodeAt(0) - 65;
+              const col = columns[letterIndex];
+              if (!col) {
+                return match;
+              }
+              const { path } = col;
+              if (!entity) return match;
+              const val = entity[path];
+              if (val === undefined) return match;
+              return val;
+            });
+            const toEval = val.slice(1);
+            try {
+              val = evaluate(toEval);
+              return val;
+            } catch (e) {
+              return "#ERROR";
+            }
+          }
           return val;
         };
       } else if (column.render) {
@@ -2546,6 +2682,7 @@ class DataTable extends React.Component {
         const cellId = `${rowId}:${row.column.path}`;
         let val = oldFunc(...args);
         const oldVal = val;
+        const formulaVal = row.original?.[row.column.path];
         const text = this.getCopyTextForCell(val, row, column);
         const isBool = column.type === "boolean";
         const dataTest = {
@@ -2612,7 +2749,7 @@ class DataTable extends React.Component {
                   shouldSelectAll={reduxFormEditingCellSelectAll}
                   cancelEdit={this.cancelCellEdit}
                   isNumeric={column.type === "number"}
-                  initialValue={text}
+                  initialValue={column.allowFormulas ? formulaVal : text}
                   finishEdit={newVal => {
                     this.finishCellEdit(cellId, newVal);
                   }}
@@ -3272,7 +3409,7 @@ class DataTable extends React.Component {
     ContextMenu.show(menu, { left: e.clientX, top: e.clientY });
   };
 
-  renderColumnHeader = column => {
+  renderColumnHeader = (column, index) => {
     const {
       addFilters,
       setOrder,
@@ -3287,7 +3424,8 @@ class DataTable extends React.Component {
       compact,
       isCellEditable,
       extraCompact,
-      entities
+      entities,
+      allowFormulas
     } = computePresets(this.props);
     const {
       displayName,
@@ -3450,6 +3588,11 @@ class DataTable extends React.Component {
         {columnTitleTextified && !noTitle && (
           <React.Fragment>
             {maybeCheckbox}
+            {allowFormulas && (
+              <div>
+                {String.fromCharCode(65 + index)}:
+              </div>
+            )}
             <span
               title={columnTitleTextified}
               className={classNames({

@@ -20,7 +20,22 @@ export const editCellHelper = ({
   let error;
   if (nv === undefined && colSchema.defaultValue !== undefined)
     nv = colSchema.defaultValue;
+  if (colSchema.allowFormulas && typeof nv === "string" && nv[0] === "=") {
+    // if the nv is missing a closing paren, add it
+    // count the number of open parens
+    // count the number of close parens
+    // if the number of open parens is greater than the number of close parens, add a close paren
+    const openParens = (nv.match(/\(/g) || []).length;
+    const closeParens = (nv.match(/\)/g) || []).length;
+    if (openParens > closeParens) {
+      nv = nv + ")";
+    }
+    console.log(`nv:`,nv)
+    // if the nv is a valid formula, evaluate it
+    // if the nv is not a valid formula, return the error
 
+    
+  }
   if (format) {
     nv = format(nv, colSchema);
   }

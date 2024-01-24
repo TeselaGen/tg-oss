@@ -44,7 +44,7 @@ export default function Ladder({
                 intent: "danger",
                 confirmButtonText: "Delete",
                 cancelButtonText: "Cancel",
-                canEscapeKeyCancel: true
+                canEscapeKeyClose: true
               });
               if (!confirm) {
                 return;

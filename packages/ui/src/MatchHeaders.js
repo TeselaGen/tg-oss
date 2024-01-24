@@ -150,7 +150,7 @@ export function MatchHeaders({
                             intent: Intent.DANGER,
                             confirmButtonText: "Yes",
                             cancelButtonText: "No"
-                            // canEscapeKeyCancel: true //this is false by default
+                            // canEscapeKeyClose: true //this is false by default
                           });
                           if (doAction) {
                             clearEntities();

@@ -217,7 +217,7 @@ export const updateCircular = props => async isCircular => {
     const doAction = await showConfirmationDialog({
       intent: Intent.DANGER, //applied to the right most confirm button
       confirmButtonText: "Truncate Annotations",
-      canEscapeKeyCancel: true, //this is false by default
+      canEscapeKeyClose: true, //this is false by default
       text: "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
     });
     if (!doAction) return; //stop early
@@ -404,7 +404,7 @@ export default compose(
           const doAction = await showConfirmationDialog({
             // intent: Intent.DANGER, //applied to the right most confirm button
             confirmButtonText: "Create Translation",
-            canEscapeKeyCancel: true, //this is false by default
+            canEscapeKeyClose: true, //this is false by default
             text: "This region has already been translated. Are you sure you want to make another translation for it?"
           });
           if (!doAction) return; //stop early

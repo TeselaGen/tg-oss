@@ -7,6 +7,7 @@ import DemoWrapper from "../DemoWrapper";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
 import { toNumber } from "lodash";
+import ExcelCell from "packages/ui/src/ExcelCell";
 
 const chance = new Chance();
 function getEnts(num) {
@@ -16,15 +17,15 @@ function getEnts(num) {
         i < 20
           ? "Tom" + (88 + i) + (i % 5 !== 0 ? " a" : "")
           : i < 25
-          ? "Nancy" + (88 + i)
-          : chance.name(),
+            ? "Nancy" + (88 + i)
+            : chance.name(),
       id: nanoid(),
       type:
         i === 0
           ? "fail"
           : i === 1 || i === 22
-          ? "too old"
-          : chance.pickone(["new", "old"]),
+            ? "too old"
+            : chance.pickone(["new", "old"]),
       howMany:
         i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
       isProtein: true,
@@ -50,6 +51,9 @@ export default function SimpleTable(p) {
   const [defaultValAsFunc, defaultValAsFuncComp] = useToggle({
     type: "defaultValAsFunc"
   });
+  const [allowFormulas, allowFormulasComp] = useToggle({
+    type: "allowFormulas"
+  });
   // const [tagValuesAsObjects, tagValuesAsObjectsComp] = useToggle({
   //   type: "tagValuesAsObjects"
   // });
@@ -66,7 +70,8 @@ export default function SimpleTable(p) {
           },
           format: newVal => {
             return newVal?.toLowerCase();
-          }
+          },
+          allowFormulas
         },
         {
           path: "type",
@@ -109,16 +114,19 @@ export default function SimpleTable(p) {
         }
       ]
     };
-  }, [defaultValAsFunc]);
+  }, [defaultValAsFunc, allowFormulas]);
   return (
     <div>
+      <ExcelCell></ExcelCell>
       <OptionsSection>
         {numComp}
         {defaultValAsFuncComp}
+        {allowFormulasComp}
         {/* {tagValuesAsObjectsComp} */}
       </OptionsSection>
       <DemoWrapper>
         <DataTable
+          allowFormulas={allowFormulas}
           key={key.current}
           formName="editableCellTable"
           isSimple

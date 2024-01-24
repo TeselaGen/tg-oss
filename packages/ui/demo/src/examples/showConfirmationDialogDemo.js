@@ -44,7 +44,7 @@ export default function Demo() {
               confirmButtonText: "Yep!",
               cancelButtonText: "Nope", //pass null to make the cancel button disappear
               // cancelButtonText: null, //pass null to make the cancel button disappear
-              canEscapeKeyCancel: true //this is false by default
+              canEscapeKeyClose: true //this is false by default
             });
             console.info("confirm:", confirm);
             window.toastr.success(`confirm =  ${confirm}`);
