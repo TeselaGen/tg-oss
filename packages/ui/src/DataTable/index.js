@@ -56,8 +56,6 @@ import ReactMarkdown from "react-markdown";
 import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
 import remarkGfm from "remark-gfm";
-import { evaluate } from "mathjs";
-
 import TgSelect from "../TgSelect";
 import { withHotkeys } from "../utils/hotkeyUtils";
 import InfoHelper from "../InfoHelper";
@@ -421,7 +419,9 @@ class DataTable extends React.Component {
           }
           //mutative
           const { error } = editCellHelper({
+            entities,
             entity: e,
+            schema,
             columnSchema,
             newVal: e[columnSchema.path]
           });
@@ -632,6 +632,8 @@ class DataTable extends React.Component {
           toPaste = e.clipboardData.getData("text/plain");
         }
         const jsonToPaste = e.clipboardData.getData("application/json");
+        let hasReplace = false;
+
         try {
           const pastedJson = [];
           JSON.parse(jsonToPaste).forEach(row => {
@@ -652,12 +654,12 @@ class DataTable extends React.Component {
             pasteData = pasteData.slice(1);
           }
         } catch (e) {
-          let hasReplace = false;
-          if (toPaste.inclues("=") && allowFormulas) {
+          if (toPaste.includes("=") && allowFormulas) {
             // replace any commas inside brackets with %%comma%% so that we can parse it out later
-            toPaste.replace(/\(([^)]+)\)/g, (match) => {
+            toPaste = toPaste.replace(/\(([^)]+)\)/g, match => {
               hasReplace = true;
-              return match.replace(/,/g, "%%comma%%");
+              const toRet =  match.replace(/,/g, "%%comma%%");
+              return toRet;
             });
           }
           if (toPaste.includes(",")) {
@@ -673,17 +675,18 @@ class DataTable extends React.Component {
               console.error(`error p982qhgpf9qh`, error);
             }
           }
-          if (hasReplace) {
-            // put the commas back in
-            pasteData = pasteData.map(row => {
-              return row.map(cell => {
-                return cell.replace(/%%comma%%/g, ",");
-              });
-            });
-          }
+         
         }
         pasteData = pasteData.length ? pasteData : defaultParsePaste(toPaste);
+        if (hasReplace) {
+          // put the commas back in
 
+          pasteData = pasteData.map(row => {
+            return row.map(cell => {
+              return cell.replace(/%%comma%%/g, ",");
+            });
+          });
+        }
         if (!pasteData || !pasteData.length) return;
 
         if (pasteData.length === 1 && pasteData[0].length === 1) {
@@ -700,6 +703,7 @@ class DataTable extends React.Component {
               const entity = entityIdToEntity[rowId].e;
               delete entity._isClean;
               const { error } = editCellHelper({
+                entities,
                 entity,
                 path,
                 schema,
@@ -747,6 +751,7 @@ class DataTable extends React.Component {
                       const path = indexToPath[cellIndexToChange];
                       if (path) {
                         const { error } = editCellHelper({
+                          entities,
                           entity,
                           path,
                           schema,
@@ -854,6 +859,7 @@ class DataTable extends React.Component {
         const entity = entityIdToEntity[rowId].e;
         delete entity._isClean;
         const { error } = editCellHelper({
+          entities,
           entity,
           path,
           schema,
@@ -1486,10 +1492,7 @@ class DataTable extends React.Component {
                 // if (isArrowKey && e.target?.tagName !== "INPUT") {
                 const isTabKey = e.keyCode === 9;
                 // const isEnter = e.keyCode === 13;
-                // console.log(`onKeydown datatable inner`);
-                // console.log(`isEnter:`, isEnter)
                 const isArrowKey = e.keyCode >= 37 && e.keyCode <= 40;
-                // console.log(`e.target?.tagName:`,e.target?.tagName)
                 if (
                   (isArrowKey && e.target?.tagName !== "INPUT") ||
                   isTabKey
@@ -2279,6 +2282,7 @@ class DataTable extends React.Component {
       });
       delete entity._isClean;
       const { error } = editCellHelper({
+        entities,
         entity,
         path,
         schema,
@@ -2594,37 +2598,40 @@ class DataTable extends React.Component {
         };
       } else if (column.allowFormulas) {
         tableColumn.Cell = row => {
-          let val = cloneDeep(row.value);
+          const val = row.value;
 
           if (!val) return "";
           if (typeof val === "number") return val;
-          if (val.startsWith("=")) {
-            // fill in any variables with their values
-            val = val.toLowerCase().replace(/([A-Z]+[0-9]+)/gi, match => {
-              // match = E12 or B4
-              const [letter, rowIndex] = match.split(/(\d+)/);
-              const entity = entities.find((e, i) => {
-                return i === rowIndex - 1;
-              });
-              const letterIndex = letter.toUpperCase().charCodeAt(0) - 65;
-              const col = columns[letterIndex];
-              if (!col) {
-                return match;
-              }
-              const { path } = col;
-              if (!entity) return match;
-              const val = entity[path];
-              if (val === undefined) return match;
-              return val;
-            });
-            const toEval = val.slice(1);
-            try {
-              val = evaluate(toEval);
-              return val;
-            } catch (e) {
-              return "#ERROR";
-            }
+          if (val.formula) {
+            return val.value;
           }
+          // if (val.startsWith("=")) {
+          //   // fill in any variables with their values
+          //   val = val.toLowerCase().replace(/([A-Z]+[0-9]+)/gi, match => {
+          //     // match = E12 or B4
+          //     const [letter, rowIndex] = match.split(/(\d+)/);
+          //     const entity = entities.find((e, i) => {
+          //       return i === rowIndex - 1;
+          //     });
+          //     const letterIndex = letter.toUpperCase().charCodeAt(0) - 65;
+          //     const col = columns[letterIndex];
+          //     if (!col) {
+          //       return match;
+          //     }
+          //     const { path } = col;
+          //     if (!entity) return match;
+          //     const val = entity[path];
+          //     if (val === undefined) return match;
+          //     return val;
+          //   });
+          //   const toEval = val.slice(1);
+          //   try {
+          //     val = evaluate(toEval);
+          //     return val;
+          //   } catch (e) {
+          //     return "#ERROR";
+          //   }
+          // }
           return val;
         };
       } else if (column.render) {
@@ -2683,6 +2690,10 @@ class DataTable extends React.Component {
         let val = oldFunc(...args);
         const oldVal = val;
         const formulaVal = row.original?.[row.column.path];
+        if (row.index === 0) {
+          console.log(`row:`,row)
+          console.log(`formulaVal:`, formulaVal)
+        }
         const text = this.getCopyTextForCell(val, row, column);
         const isBool = column.type === "boolean";
         const dataTest = {
@@ -2749,7 +2760,7 @@ class DataTable extends React.Component {
                   shouldSelectAll={reduxFormEditingCellSelectAll}
                   cancelEdit={this.cancelCellEdit}
                   isNumeric={column.type === "number"}
-                  initialValue={column.allowFormulas ? formulaVal : text}
+                  initialValue={formulaVal?.formula || text}
                   finishEdit={newVal => {
                     this.finishCellEdit(cellId, newVal);
                   }}
@@ -3059,6 +3070,7 @@ class DataTable extends React.Component {
               }
             }
             const { error } = editCellHelper({
+              entities,
               entity: entityToUpdate,
               path: cellPath,
               schema,
@@ -3588,11 +3600,7 @@ class DataTable extends React.Component {
         {columnTitleTextified && !noTitle && (
           <React.Fragment>
             {maybeCheckbox}
-            {allowFormulas && (
-              <div>
-                {String.fromCharCode(65 + index)}:
-              </div>
-            )}
+            {allowFormulas && <div>{String.fromCharCode(65 + index)}:</div>}
             <span
               title={columnTitleTextified}
               className={classNames({

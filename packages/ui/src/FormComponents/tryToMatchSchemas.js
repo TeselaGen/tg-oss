@@ -160,6 +160,8 @@ async function matchSchemas({ userSchema, officialSchema }) {
       return editableFields.some(columnSchema => {
         //mutative
         const { error } = editCellHelper({
+          schema: officialSchema,
+          entities: userSchema.userData,
           entity: e,
           columnSchema,
           newVal: columnSchema.hasMatch

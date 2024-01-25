@@ -57,9 +57,33 @@ export default function SimpleTable(p) {
   // const [tagValuesAsObjects, tagValuesAsObjectsComp] = useToggle({
   //   type: "tagValuesAsObjects"
   // });
+  let entsToUse;
   const [entities, setEnts] = useState([]);
+  entsToUse = entities;
 
   const schema = useMemo(() => {
+    if (allowFormulas) {
+      entsToUse = [
+        {
+          col1: "=sum(b1,b2,a2)",
+          col2: 44
+        },
+        {
+          col1: "=sum(b1,b2)",
+          col2: 44
+        },
+        {
+          col1: "=sum(a1,b3)",
+          col2: 44
+        },
+      ];
+      return {
+        fields: [
+          { path: "col1", allowFormulas: true },
+          { path: "col2", allowFormulas: true }
+        ]
+      };
+    }
     return {
       fields: [
         {
@@ -69,7 +93,7 @@ export default function SimpleTable(p) {
               return "Must include the letter 'a'";
           },
           format: newVal => {
-            return newVal?.toLowerCase();
+            return newVal?.toLowerCase?.();
           },
           allowFormulas
         },
@@ -115,6 +139,7 @@ export default function SimpleTable(p) {
       ]
     };
   }, [defaultValAsFunc, allowFormulas]);
+  console.log(`entsToUse:`,entsToUse)
   return (
     <div>
       <ExcelCell></ExcelCell>
@@ -131,7 +156,7 @@ export default function SimpleTable(p) {
           formName="editableCellTable"
           isSimple
           isCellEditable
-          entities={entities}
+          entities={entsToUse}
           schema={schema}
           // isEntityDisabled={
           //   isEntityDisabled
