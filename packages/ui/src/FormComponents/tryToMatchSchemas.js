@@ -140,6 +140,20 @@ async function matchSchemas({ userSchema, officialSchema }) {
         "It looks like some of the headers in your uploaded file(s) do not match the expected headers. Please look over and correct any issues with the mappings below.";
     }
   });
+  const ignoredUserSchemaFields = [];
+  userSchema.fields.forEach(uh => {
+    if (
+      !officialSchema.fields.find(
+        h =>
+          norm(h.path) === norm(uh.path) ||
+          norm(h.displayName) === norm(uh.path) ||
+          matchedAltPaths.includes(uh.path)
+      )
+    ) {
+      ignoredUserSchemaFields.push(uh);
+    }
+  });
+
   if (officialSchema.coerceUserSchema) {
     officialSchema.coerceUserSchema({ userSchema, officialSchema });
   }
@@ -214,7 +228,11 @@ async function matchSchemas({ userSchema, officialSchema }) {
   //   //all the headers match up as does the actual data
   //   return { csvValidationIssue };
   // }
-
+  if (!csvValidationIssue && ignoredUserSchemaFields.length) {
+    csvValidationIssue = `It looks like the following headers in your file didn't map to any of the accepted headers: ${ignoredUserSchemaFields
+      .map(f => f.displayName || f.path)
+      .join(", ")}`;
+  }
   return {
     searchResults: officialSchema.fields,
     csvValidationIssue
