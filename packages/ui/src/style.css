@@ -242,3 +242,7 @@ button:not(:disabled):active {
   text-align: unset !important;
   cursor: pointer !important;
 } */
+
+.bp3-dialog-header .bp3-heading {
+  width: 10px; /* tnw: this is a hack to prevent the dialog title from causing the dialog width to expand larger than the dialog content*/
+}
