@@ -402,9 +402,9 @@ class DataTable extends React.Component {
   ) => {
     const { schema } = this.props;
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
-    const validationErrors = {};
+    let validationErrors = {};
     const updateGroup = {};
-    
+
     const newEnts = immer(entities, entities => {
       entities.forEach((e, index) => {
         editableFields.forEach(columnSchema => {
@@ -419,7 +419,7 @@ class DataTable extends React.Component {
             }
           }
           //mutative
-          const { error } = editCellHelper({
+          const { errors } = editCellHelper({
             updateGroup,
             depGraph: this.depGraph,
             entities,
@@ -428,9 +428,13 @@ class DataTable extends React.Component {
             columnSchema,
             newVal: e[columnSchema.path]
           });
-          if (error) {
-            const rowId = getIdOrCodeOrIndex(e, index);
-            validationErrors[`${rowId}:${columnSchema.path}`] = error;
+          if (errors) {
+            validationErrors = {
+              ...validationErrors,
+              ...errors
+            };
+            // const rowId = getIdOrCodeOrIndex(e, index);
+            // validationErrors[`${rowId}:${columnSchema.path}`] = errors;
           }
         });
       });
@@ -459,9 +463,7 @@ class DataTable extends React.Component {
                 }
                 // convert the field index to a letter
                 const fieldLetter = String.fromCharCode(65 + fi);
-                depGraph[dep].push(
-                  `${fieldLetter}${i + 1}`
-                );
+                depGraph[dep].push(`${fieldLetter}${i + 1}`);
               });
             }
           }
@@ -725,7 +727,7 @@ class DataTable extends React.Component {
         if (!pasteData || !pasteData.length) return;
 
         if (pasteData.length === 1 && pasteData[0].length === 1) {
-          const newCellValidate = {
+          let newCellValidate = {
             ...reduxFormCellValidation
           };
           // single paste value, fill all cells with value
@@ -737,7 +739,7 @@ class DataTable extends React.Component {
 
               const entity = entityIdToEntity[rowId].e;
               delete entity._isClean;
-              const { error } = editCellHelper({
+              const { errors } = editCellHelper({
                 updateGroup,
                 depGraph: this.depGraph,
                 entities,
@@ -746,8 +748,11 @@ class DataTable extends React.Component {
                 schema,
                 newVal: formatPasteData({ newVal, path, schema })
               });
-              if (error) {
-                newCellValidate[cellId] = error;
+              if (errors) {
+                newCellValidate = {
+                  ...newCellValidate,
+                  ...errors
+                };
               } else {
                 delete newCellValidate[cellId];
               }
@@ -758,7 +763,7 @@ class DataTable extends React.Component {
           // handle paste in same format
           const primarySelectedCell = this.getPrimarySelectedCellId();
           if (primarySelectedCell) {
-            const newCellValidate = {
+            let newCellValidate = {
               ...reduxFormCellValidation
             };
 
@@ -787,7 +792,7 @@ class DataTable extends React.Component {
                       delete entity._isClean;
                       const path = indexToPath[cellIndexToChange];
                       if (path) {
-                        const { error } = editCellHelper({
+                        const { errors } = editCellHelper({
                           updateGroup,
                           depGraph: this.depGraph,
                           entities,
@@ -804,8 +809,11 @@ class DataTable extends React.Component {
                         if (!newSelectedCells[cellId]) {
                           newSelectedCells[cellId] = true;
                         }
-                        if (error) {
-                          newCellValidate[cellId] = error;
+                        if (errors) {
+                          newCellValidate = {
+                            ...newCellValidate,
+                            ...errors
+                          };
                         } else {
                           delete newCellValidate[cellId];
                         }
@@ -885,7 +893,7 @@ class DataTable extends React.Component {
       schema,
       entities
     } = computePresets(this.props);
-    const newCellValidate = {
+    let newCellValidate = {
       ...reduxFormCellValidation
     };
     if (isEmpty(reduxFormSelectedCells)) return;
@@ -899,7 +907,7 @@ class DataTable extends React.Component {
         rowIds.push(rowId);
         const entity = entityIdToEntity[rowId].e;
         delete entity._isClean;
-        const { error } = editCellHelper({
+        const { errors } = editCellHelper({
           updateGroup,
           depGraph: this.depGraph,
           entities,
@@ -908,8 +916,11 @@ class DataTable extends React.Component {
           schema,
           newVal: ""
         });
-        if (error) {
-          newCellValidate[cellId] = error;
+        if (errors) {
+          newCellValidate = {
+            ...newCellValidate,
+            ...errors
+          };
         } else {
           delete newCellValidate[cellId];
         }
@@ -2325,9 +2336,9 @@ class DataTable extends React.Component {
       const entity = entities.find((e, i) => {
         return getIdOrCodeOrIndex(e, i) === rowId;
       });
-      console.log(`entity:`, entity)
+      console.log(`entity:`, entity);
       delete entity._isClean;
-      const { error } = editCellHelper({
+      const { errors } = editCellHelper({
         updateGroup,
         depGraph: this.depGraph,
         entities,
@@ -2338,7 +2349,7 @@ class DataTable extends React.Component {
       });
       this.updateValidation(entities, {
         ...reduxFormCellValidation,
-        [cellId]: error
+        ...errors
       });
     });
     !doNotStopEditing && this.refocusTable();
@@ -2959,7 +2970,7 @@ class DataTable extends React.Component {
         };
       }
 
-      const newCellValidate = {
+      let newCellValidate = {
         ...reduxFormCellValidation
       };
       const entityMap = getEntityIdToEntity(entities);
@@ -3117,7 +3128,7 @@ class DataTable extends React.Component {
                 newVal = selectedCellVal;
               }
             }
-            const { error } = editCellHelper({
+            const { errors } = editCellHelper({
               updateGroup,
               depGraph: this.depGraph,
               entities,
@@ -3126,7 +3137,14 @@ class DataTable extends React.Component {
               schema,
               newVal
             });
-            newCellValidate[cellId] = error;
+            if (errors) {
+              newCellValidate = {
+                ...newCellValidate,
+                ...errors
+              };
+            } else {
+              delete newCellValidate[cellId];
+            }
           }
         });
       });
