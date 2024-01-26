@@ -729,7 +729,8 @@ function UploaderInner({
                         csvValidationIssue: _csvValidationIssue,
                         matchedHeaders,
                         userSchema,
-                        searchResults
+                        searchResults,
+                        ignoredHeadersMsg
                       } = await tryToMatchSchemas({
                         incomingData: parsedF.data,
                         validateAgainstSchema
@@ -790,6 +791,7 @@ function UploaderInner({
                           filesWIssues.push({
                             file,
                             csvValidationIssue,
+                            ignoredHeadersMsg,
                             matchedHeaders,
                             userSchema,
                             searchResults
@@ -798,6 +800,7 @@ function UploaderInner({
                           filesWOIssues.push({
                             file,
                             csvValidationIssue,
+                            ignoredHeadersMsg,
                             matchedHeaders,
                             userSchema,
                             searchResults

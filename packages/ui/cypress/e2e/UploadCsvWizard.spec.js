@@ -114,6 +114,19 @@ describe("UploadCsvWizard.spec", () => {
       `It looks like there wasn't any data in your file. Please add some data and try again`
     );
   });
+  it(`uploading a file with errors and ignored columns should warn about the ignored columns`, () => {
+    cy.visit("#/UploadCsvWizard");
+    cy.uploadFile(
+      ".tg-dropzone",
+      "testUploadWizard_ignoredHeaders.csv",
+      "text/csv",
+      true
+    );
+
+    cy.contains(
+      `It looks like there wasn't any data in your file. Please add some data and try again`
+    );
+  });
   it(`wizard should let a "perfect" file that uses a display name through without any additional steps`, () => {
     cy.visit("#/UploadCsvWizard");
     cy.uploadFile(
