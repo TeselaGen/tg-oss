@@ -61,26 +61,48 @@ export default function SimpleTable(p) {
   const [entities, setEnts] = useState([]);
   entsToUse = entities;
 
+  // const depGraph = {
+  //   a1: ["a3"],
+  //   a2: ["a1"],
+  //   a3: [],
+  //   b1: ["a1", "a2"],
+  //   b2: ["a2"],
+  //   b3: ["a3"]
+  // };
   const schema = useMemo(() => {
     if (allowFormulas) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       entsToUse = [
+        // {
+        //   id: 'asdfoi',
+        //   a: "=sum(b1,a2)",
+        //   b: 44
+        // },
+        // {
+        //   id: 'f22f2f',
+        //   a: "=sum(b2)",
+        //   b: 44
+        // },
         {
-          col1: "=sum(b1,b2,a2)",
-          col2: 44
+          id: 'asdfoi',
+          a: "=sum(b1,a2)",
+          b: 44
         },
         {
-          col1: "=sum(b1,b2)",
-          col2: 44
+          id: 'f22f2f',
+          a: "=sum(b1,b2,a1)",
+          b: 44
         },
-        {
-          col1: "=sum(a1,b3)",
-          col2: 44
-        },
+        // {
+        //   id: '22f3f',
+        //   a: "=sum(a1,b3)",
+        //   b: 44
+        // }
       ];
       return {
         fields: [
-          { path: "col1", allowFormulas: true },
-          { path: "col2", allowFormulas: true }
+          { path: "a", allowFormulas: true },
+          { path: "b", allowFormulas: true }
         ]
       };
     }
@@ -139,7 +161,7 @@ export default function SimpleTable(p) {
       ]
     };
   }, [defaultValAsFunc, allowFormulas]);
-  console.log(`entsToUse:`,entsToUse)
+  console.log(`entsToUse:`, entsToUse);
   return (
     <div>
       <ExcelCell></ExcelCell>

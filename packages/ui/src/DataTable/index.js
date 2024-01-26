@@ -403,7 +403,8 @@ class DataTable extends React.Component {
     const { schema } = this.props;
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
     const validationErrors = {};
-
+    const updateGroup = {};
+    
     const newEnts = immer(entities, entities => {
       entities.forEach((e, index) => {
         editableFields.forEach(columnSchema => {
@@ -419,6 +420,8 @@ class DataTable extends React.Component {
           }
           //mutative
           const { error } = editCellHelper({
+            updateGroup,
+            depGraph: this.depGraph,
             entities,
             entity: e,
             schema,
@@ -437,6 +440,37 @@ class DataTable extends React.Component {
       validationErrors
     };
   };
+  buildDepGraph = ents => {
+    const { schema } = this.props;
+    const depGraph = {};
+    schema.fields.forEach((field, fi) => {
+      if (field.allowFormulas) {
+        ents.forEach((ent, i) => {
+          const val = ent[field.path];
+          if (val && typeof val === "string" && val[0] === "=") {
+            const formula = val.slice(1);
+            const deps = formula.match(/[A-Z]+[0-9]+/gi);
+            if (deps) {
+              deps.forEach(_dep => {
+                const dep = _dep.toUpperCase();
+
+                if (!depGraph[dep]) {
+                  depGraph[dep] = [];
+                }
+                // convert the field index to a letter
+                const fieldLetter = String.fromCharCode(65 + fi);
+                depGraph[dep].push(
+                  `${fieldLetter}${i + 1}`
+                );
+              });
+            }
+          }
+        });
+      }
+    });
+    this.depGraph = depGraph;
+  };
+
   formatAndValidateTableInitial = () => {
     const {
       _origEntities,
@@ -445,10 +479,11 @@ class DataTable extends React.Component {
       change,
       reduxFormCellValidation
     } = this.props;
-    const { newEnts, validationErrors } = this.formatAndValidateEntities(
+    const ents =
       initialEntities ||
-        (entities && entities.length ? entities : _origEntities)
-    );
+      (entities && entities.length ? entities : _origEntities);
+    this.buildDepGraph(ents);
+    const { newEnts, validationErrors } = this.formatAndValidateEntities(ents);
     change("reduxFormEntities", newEnts);
     const toKeep = {};
     //on the initial load we want to keep any async table wide errors
@@ -619,6 +654,7 @@ class DataTable extends React.Component {
       entities,
       allowFormulas
     } = computePresets(this.props);
+    const updateGroup = {};
 
     if (isCellEditable) {
       if (isEmpty(reduxFormSelectedCells)) return;
@@ -658,7 +694,7 @@ class DataTable extends React.Component {
             // replace any commas inside brackets with %%comma%% so that we can parse it out later
             toPaste = toPaste.replace(/\(([^)]+)\)/g, match => {
               hasReplace = true;
-              const toRet =  match.replace(/,/g, "%%comma%%");
+              const toRet = match.replace(/,/g, "%%comma%%");
               return toRet;
             });
           }
@@ -675,7 +711,6 @@ class DataTable extends React.Component {
               console.error(`error p982qhgpf9qh`, error);
             }
           }
-         
         }
         pasteData = pasteData.length ? pasteData : defaultParsePaste(toPaste);
         if (hasReplace) {
@@ -703,6 +738,8 @@ class DataTable extends React.Component {
               const entity = entityIdToEntity[rowId].e;
               delete entity._isClean;
               const { error } = editCellHelper({
+                updateGroup,
+                depGraph: this.depGraph,
                 entities,
                 entity,
                 path,
@@ -751,6 +788,8 @@ class DataTable extends React.Component {
                       const path = indexToPath[cellIndexToChange];
                       if (path) {
                         const { error } = editCellHelper({
+                          updateGroup,
+                          depGraph: this.depGraph,
                           entities,
                           entity,
                           path,
@@ -850,6 +889,8 @@ class DataTable extends React.Component {
       ...reduxFormCellValidation
     };
     if (isEmpty(reduxFormSelectedCells)) return;
+    const updateGroup = {};
+
     const rowIds = [];
     this.updateEntitiesHelper(entities, entities => {
       const entityIdToEntity = getEntityIdToEntity(entities);
@@ -859,6 +900,8 @@ class DataTable extends React.Component {
         const entity = entityIdToEntity[rowId].e;
         delete entity._isClean;
         const { error } = editCellHelper({
+          updateGroup,
+          depGraph: this.depGraph,
           entities,
           entity,
           path,
@@ -2274,14 +2317,19 @@ class DataTable extends React.Component {
       schema,
       reduxFormCellValidation
     } = computePresets(this.props);
+    const updateGroup = {};
+
     const [rowId, path] = cellId.split(":");
     !doNotStopEditing && change("reduxFormEditingCell", null);
     this.updateEntitiesHelper(entities, entities => {
       const entity = entities.find((e, i) => {
         return getIdOrCodeOrIndex(e, i) === rowId;
       });
+      console.log(`entity:`, entity)
       delete entity._isClean;
       const { error } = editCellHelper({
+        updateGroup,
+        depGraph: this.depGraph,
         entities,
         entity,
         path,
@@ -2691,8 +2739,8 @@ class DataTable extends React.Component {
         const oldVal = val;
         const formulaVal = row.original?.[row.column.path];
         if (row.index === 0) {
-          console.log(`row:`,row)
-          console.log(`formulaVal:`, formulaVal)
+          console.log(`row:`, row);
+          console.log(`formulaVal:`, formulaVal);
         }
         const text = this.getCopyTextForCell(val, row, column);
         const isBool = column.type === "boolean";
@@ -2898,7 +2946,7 @@ class DataTable extends React.Component {
     if (!allSelectedPaths) {
       allSelectedPaths = [primaryCellPath];
     }
-
+    const updateGroup = {};
     this.updateEntitiesHelper(entities, entities => {
       let newReduxFormSelectedCells;
       if (selectedPaths) {
@@ -3070,6 +3118,8 @@ class DataTable extends React.Component {
               }
             }
             const { error } = editCellHelper({
+              updateGroup,
+              depGraph: this.depGraph,
               entities,
               entity: entityToUpdate,
               path: cellPath,
@@ -3237,6 +3287,42 @@ class DataTable extends React.Component {
     });
     this.refocusTable();
   };
+  insertColumns = ({ above, numRows = 1, appendToBottom } = {}) => {
+    const { entities = [], reduxFormCellValidation } = computePresets(
+      this.props
+    );
+
+    const primaryCellId = this.getPrimarySelectedCellId();
+    const [rowId] = primaryCellId?.split(":") || [];
+    this.updateEntitiesHelper(entities, entities => {
+      const newEntities = times(numRows).map(() => ({ id: nanoid() }));
+
+      const indexToInsert = entities.findIndex((e, i) => {
+        return getIdOrCodeOrIndex(e, i) === rowId;
+      });
+      const insertIndex = above ? indexToInsert : indexToInsert + 1;
+      const insertIndexToUse = appendToBottom ? entities.length : insertIndex;
+      let { newEnts, validationErrors } = this.formatAndValidateEntities(
+        newEntities,
+        {
+          useDefaultValues: true,
+          indexToStartAt: insertIndexToUse
+        }
+      );
+
+      newEnts = newEnts.map(e => ({
+        ...e,
+        _isClean: true
+      }));
+      this.updateValidation(entities, {
+        ...reduxFormCellValidation,
+        ...validationErrors
+      });
+
+      entities.splice(insertIndexToUse, 0, ...newEnts);
+    });
+    this.refocusTable();
+  };
 
   showContextMenu = (e, idMap) => {
     const {
@@ -3368,6 +3454,22 @@ class DataTable extends React.Component {
         {isCellEditable && (
           <>
             <MenuItem
+              icon="add-column-left"
+              text="Add Column Left"
+              key="addColumnLeft"
+              onClick={() => {
+                this.insertRows({ above: true });
+              }}
+            ></MenuItem>
+            <MenuItem
+              icon="add-column-right"
+              text="Add Column Right"
+              key="addColumnRight"
+              onClick={() => {
+                this.insertRows({});
+              }}
+            ></MenuItem>
+            <MenuItem
               icon="add-row-top"
               text="Add Row Above"
               key="addRowAbove"
@@ -3383,6 +3485,7 @@ class DataTable extends React.Component {
                 this.insertRows({});
               }}
             ></MenuItem>
+
             <MenuItem
               icon="remove"
               text={`Remove Row${selectedRowIds.length > 1 ? "s" : ""}`}

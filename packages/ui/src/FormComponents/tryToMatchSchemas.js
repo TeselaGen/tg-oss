@@ -156,10 +156,13 @@ async function matchSchemas({ userSchema, officialSchema }) {
   const editableFields = officialSchema.fields.filter(f => !f.isNotEditable);
   let hasErr;
   if (!csvValidationIssue) {
+    const updateGroup = {};
+
     userSchema.userData.some(e => {
       return editableFields.some(columnSchema => {
         //mutative
         const { error } = editCellHelper({
+          updateGroup,
           schema: officialSchema,
           entities: userSchema.userData,
           entity: e,

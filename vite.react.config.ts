@@ -51,7 +51,7 @@ export default ({ name }: { name: string; dir: string }) =>
             }
           }
         : {}),
-      cacheDir: `../../node_modules/.vite/${name}`,
+      // cacheDir: `../../node_modules/.vite/${name}`,
       server: {
         port
       },
