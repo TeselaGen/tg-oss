@@ -7,7 +7,7 @@ import DemoWrapper from "../DemoWrapper";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
 import { toNumber } from "lodash";
-import ExcelCell from "packages/ui/src/ExcelCell";
+// import ExcelCell from "packages/ui/src/ExcelCell";
 
 const chance = new Chance();
 function getEnts(num) {
@@ -84,15 +84,15 @@ export default function SimpleTable(p) {
         //   b: 44
         // },
         {
-          id: 'asdfoi',
+          id: "asdfoi",
           a: "=sum(b1,a2)",
           b: 44
         },
         {
-          id: 'f22f2f',
+          id: "f22f2f",
           a: "=sum(b1,b2,a1)",
           b: 44
-        },
+        }
         // {
         //   id: '22f3f',
         //   a: "=sum(a1,b3)",
@@ -161,10 +161,9 @@ export default function SimpleTable(p) {
       ]
     };
   }, [defaultValAsFunc, allowFormulas]);
-  console.log(`entsToUse:`, entsToUse);
   return (
     <div>
-      <ExcelCell></ExcelCell>
+      {/* <ExcelCell></ExcelCell> */}
       <OptionsSection>
         {numComp}
         {defaultValAsFuncComp}

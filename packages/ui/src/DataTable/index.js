@@ -428,14 +428,10 @@ class DataTable extends React.Component {
             columnSchema,
             newVal: e[columnSchema.path]
           });
-          if (errors) {
-            validationErrors = {
-              ...validationErrors,
-              ...errors
-            };
-            // const rowId = getIdOrCodeOrIndex(e, index);
-            // validationErrors[`${rowId}:${columnSchema.path}`] = errors;
-          }
+          validationErrors = {
+            ...validationErrors,
+            ...errors
+          };
         });
       });
     });
@@ -748,14 +744,10 @@ class DataTable extends React.Component {
                 schema,
                 newVal: formatPasteData({ newVal, path, schema })
               });
-              if (errors) {
-                newCellValidate = {
-                  ...newCellValidate,
-                  ...errors
-                };
-              } else {
-                delete newCellValidate[cellId];
-              }
+              newCellValidate = {
+                ...newCellValidate,
+                ...errors
+              };
             });
             this.updateValidation(entities, newCellValidate);
           });
@@ -809,14 +801,10 @@ class DataTable extends React.Component {
                         if (!newSelectedCells[cellId]) {
                           newSelectedCells[cellId] = true;
                         }
-                        if (errors) {
-                          newCellValidate = {
-                            ...newCellValidate,
-                            ...errors
-                          };
-                        } else {
-                          delete newCellValidate[cellId];
-                        }
+                        newCellValidate = {
+                          ...newCellValidate,
+                          ...errors
+                        };
                       }
                     }
                   }
@@ -916,14 +904,10 @@ class DataTable extends React.Component {
           schema,
           newVal: ""
         });
-        if (errors) {
-          newCellValidate = {
-            ...newCellValidate,
-            ...errors
-          };
-        } else {
-          delete newCellValidate[cellId];
-        }
+        newCellValidate = {
+          ...newCellValidate,
+          ...errors
+        };
       });
       this.updateValidation(entities, newCellValidate);
     });
@@ -2336,7 +2320,6 @@ class DataTable extends React.Component {
       const entity = entities.find((e, i) => {
         return getIdOrCodeOrIndex(e, i) === rowId;
       });
-      console.log(`entity:`, entity);
       delete entity._isClean;
       const { errors } = editCellHelper({
         updateGroup,
@@ -2749,10 +2732,6 @@ class DataTable extends React.Component {
         let val = oldFunc(...args);
         const oldVal = val;
         const formulaVal = row.original?.[row.column.path];
-        if (row.index === 0) {
-          console.log(`row:`, row);
-          console.log(`formulaVal:`, formulaVal);
-        }
         const text = this.getCopyTextForCell(val, row, column);
         const isBool = column.type === "boolean";
         const dataTest = {
@@ -3137,14 +3116,10 @@ class DataTable extends React.Component {
               schema,
               newVal
             });
-            if (errors) {
-              newCellValidate = {
-                ...newCellValidate,
-                ...errors
-              };
-            } else {
-              delete newCellValidate[cellId];
-            }
+            newCellValidate = {
+              ...newCellValidate,
+              ...errors
+            };
           }
         });
       });

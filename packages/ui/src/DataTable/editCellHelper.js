@@ -1,4 +1,4 @@
-import { isEmpty, isString,  set } from "lodash";
+import { isString, set } from "lodash";
 import { defaultValidators } from "./defaultValidators";
 import { defaultFormatters } from "./defaultFormatters";
 import { evaluate } from "mathjs";
@@ -57,7 +57,7 @@ export const editCellHelper = ({
   const cellId = `${getIdOrCodeOrIndex(entity)}:${colSchema.path}`;
 
   const { format, validate, type } = colSchema;
-  let errors;
+  let errors = {};
   if (nv === undefined && colSchema.defaultValue !== undefined) {
     nv = colSchema.defaultValue;
   }
@@ -79,7 +79,7 @@ export const editCellHelper = ({
     // if the nv is a valid formula, evaluate it and evaluate any nested formulas
     // if the nv is not a valid formula, return the error
     // fill in any variables with their values
-    let error 
+    let error;
     nv = nv.toLowerCase().replace(/([A-Z]+[0-9]+)/gi, _match => {
       const match = _match.toUpperCase();
       if (updateGroup[match] === "__Currently&&Updating__") {
@@ -119,24 +119,20 @@ export const editCellHelper = ({
           entities,
           nestLevel: nestLevel + 1
         });
-        if (_errors) {
-          errors = {
-            ...errors,
-            ..._errors
-          };
-        }
+        errors = {
+          ...errors,
+          ..._errors
+        };
         val = value?.formula ? value.value : value;
       }
 
       return val;
     });
-    
+
     const toEval = nv.slice(1);
     try {
       if (!error) {
-      
         nv = evaluate(toEval);
-  
         nv = {
           formula: ogFormula,
           value: `${nv}`
@@ -165,37 +161,32 @@ export const editCellHelper = ({
   if (defaultFormatters[type]) {
     nv = defaultFormatters[type](nv, colSchema);
   }
-  if (validate && !isEmpty(errors)) {
+  if (validate && !hasErrors(errors)) {
     const error = validate(nv, colSchema, entity);
-    if (error) {
-      errors = {
-        ...errors,
-        [cellId]: error
-      };
-    }
+    errors = {
+      ...errors,
+      [cellId]: error
+    };
   }
-  if (!isEmpty(errors)) {
+  if (!hasErrors(errors)) {
     const validator =
       defaultValidators[type] ||
       type === "string" ||
       (type === undefined && defaultValidators.string);
     if (validator) {
       const error = validator(nv, colSchema);
-      if (error) {
-        errors = {
-          ...errors,
-          [cellId]: error
-        };
-      }
+      errors = {
+        ...errors,
+        [cellId]: error
+      };
     }
   }
   const value = hasFormula || nv;
   set(entity, path, value);
+  updateGroup[cellAlphaNum] = value;
   if (entities && entities.length) {
     // go through the depGraph and update any cells that depend on this cell
-
     const cellDepGraph = depGraph[cellAlphaNum];
-
     if (cellDepGraph && cellDepGraph.length) {
       cellDepGraph.forEach(depCellAlphaNum => {
         if (depCellAlphaNum === cellAlphaNum) return;
@@ -224,18 +215,18 @@ export const editCellHelper = ({
           depLevel: depLevel + 1,
           nestLevel: nestLevel
         });
-        if (_errors) {
-          errors = {
-            ...errors,
-            ..._errors
-          };
-        }
+        errors = {
+          ...errors,
+          ..._errors
+        };
       });
     }
   }
   updateGroup[cellAlphaNum] = value?.formula ? value.value : value;
-
-  return { entity, errors: isEmpty(errors) ? undefined : errors, value };
+  if (!hasErrors(errors)) {
+    errors[cellId] = undefined;
+  }
+  return { entity, errors: errors, value };
 };
 
 function getCellAlphaNum({ entities, entity, colSchema, schema }) {
@@ -245,3 +236,7 @@ function getCellAlphaNum({ entities, entity, colSchema, schema }) {
   const cellAlphaNum = `${colLetter}${rowIndex}`;
   return cellAlphaNum;
 }
+
+const hasErrors = errors => {
+  return Object.values(errors).some(e => e);
+};
