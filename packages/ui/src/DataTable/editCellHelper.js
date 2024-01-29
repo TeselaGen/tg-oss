@@ -1,4 +1,4 @@
-import { isString, set } from "lodash";
+import { get, isNumber, isString, set, toNumber } from "lodash";
 import { defaultValidators } from "./defaultValidators";
 import { defaultFormatters } from "./defaultFormatters";
 import { evaluate } from "mathjs";
@@ -66,7 +66,6 @@ export const editCellHelper = ({
   let hasFormula = false;
   if (colSchema.allowFormulas && typeof nv === "string" && nv[0] === "=") {
     const ogFormula = nv;
-    // console.log(`ogFormula:`, ogFormula);
     // if the nv is missing a closing paren, add it
     // count the number of open parens
     // count the number of close parens
@@ -80,20 +79,32 @@ export const editCellHelper = ({
     // if the nv is not a valid formula, return the error
     // fill in any variables with their values
     let error;
-    nv = nv.toLowerCase().replace(/([A-Z]+[0-9]+)/gi, _match => {
+    // if nv contains : then it is a range
+    // if (nv.includes(":")) {
+    //   // replace the range with the the values of the range
+    //   // get the start and end of the range
+
+    // }
+    const { rangeErr, replacedFormula } = replaceFormulaRanges({
+      formula: nv,
+      schema,
+      entities
+    });
+    error = rangeErr;
+    nv = replacedFormula;
+    nv = nv.replace(/([A-Z]+[0-9]+)/gi, _match => {
       const match = _match.toUpperCase();
       if (updateGroup[match] === "__Currently&&Updating__") {
         error = `Circular Loop Detected between ${cellAlphaNum} and ${match}`;
         return "circular_loop_detected";
       }
-
-      // match = E12 or B4
+      // match will equal E12 or B4 for example
       const [letter, rowIndex] = match.split(/(\d+)/);
       const entity = entities.find((e, i) => {
         return i === rowIndex - 1;
       });
       const columns = schema.fields;
-      const letterIndex = letter.toUpperCase().charCodeAt(0) - 65;
+      const letterIndex = lettersToNumber(letter);
       const col = columns[letterIndex];
       if (!col) {
         return match;
@@ -102,7 +113,7 @@ export const editCellHelper = ({
       if (!entity) return match;
       let val = entity[path];
 
-      if (val === undefined) return match;
+      if (val === undefined) return 0;
       if (val?.formula) {
         val = val.formula;
       }
@@ -124,8 +135,11 @@ export const editCellHelper = ({
           ..._errors
         };
         val = value?.formula ? value.value : value;
+      } else if (!isNaN(toNumber(val))) {
+        return val
+      } else if (isString(val)) {
+        return 0
       }
-
       return val;
     });
 
@@ -232,11 +246,78 @@ export const editCellHelper = ({
 function getCellAlphaNum({ entities, entity, colSchema, schema }) {
   const rowIndex = entities.indexOf(entity) + 1;
   const colIndex = schema.fields.indexOf(colSchema);
-  const colLetter = String.fromCharCode(65 + colIndex);
+  const colLetter = getColLetFromIndex(colIndex);
   const cellAlphaNum = `${colLetter}${rowIndex}`;
   return cellAlphaNum;
 }
 
 const hasErrors = errors => {
   return Object.values(errors).some(e => e);
+};
+
+export const getColLetFromIndex = index => {
+  if (index > 25)
+    return (
+      getColLetFromIndexHelper(index / 26 - 1) +
+      getColLetFromIndexHelper(index % 26)
+    );
+  return getColLetFromIndexHelper(index);
+};
+const getColLetFromIndexHelper = index => {
+  return String.fromCharCode(65 + index);
+};
+
+const lettersToNumber = letters => {
+  let n = 0;
+  for (let p = 0; p < letters.length; p++) {
+    n = letters[p].charCodeAt() - 64 + n * 26;
+  }
+  return n - 1;
+};
+
+export const replaceFormulaRanges = ({ formula, schema, entities }) => {
+  let error;
+  const replaced = formula
+    .toLowerCase()
+    .replace(/([A-Z]*[0-9]*:[A-Z]*[0-9]*)/gi, _match => {
+      // if (_match.includes(":")) {
+      //   console.log(`_match:`, _match);
+      // }
+      const match = _match.toUpperCase();
+      const [start, end] = match.split(":");
+      const [startLetter, _startRowIndex] = start.split(/(\d+)/);
+      const [endLetter, _endRowIndex] = end.split(/(\d+)/);
+      let startRowIndex = parseInt(_startRowIndex);
+      let endRowIndex = parseInt(_endRowIndex);
+      let toRet = "";
+
+      if (startLetter !== endLetter) {
+        error = `Ranges must be in the same column`;
+        return "range_in_different_columns";
+      }
+      if (!startLetter && !endLetter && _startRowIndex === _endRowIndex) {
+        // we have a range like 1:1
+        const rowIndex = startRowIndex;
+        const startColIndex = 1;
+        const endColIndex = schema.fields.length;
+        for (let i = startColIndex; i <= endColIndex; i++) {
+          const colLet = getColLetFromIndex(i - 1);
+          toRet += `${colLet}${rowIndex}${i === endColIndex ? "" : ","}`;
+        }
+        return toRet;
+      }
+      if (_startRowIndex === undefined && _endRowIndex === undefined) {
+        // we have a range like A:A
+        startRowIndex = 1;
+        endRowIndex = entities.length;
+      }
+      for (let j = startRowIndex; j <= endRowIndex; j++) {
+        toRet += `${startLetter}${j}${j === endRowIndex ? "" : ","}`;
+      }
+      return toRet;
+    });
+  return {
+    replacedFormula: replaced,
+    error
+  };
 };

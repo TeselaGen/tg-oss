@@ -84,7 +84,11 @@ import { CellDragHandle } from "./CellDragHandle";
 import { nanoid } from "nanoid";
 import { SwitchField } from "../FormComponents";
 import { validateTableWideErrors } from "./validateTableWideErrors";
-import { editCellHelper } from "./editCellHelper";
+import {
+  editCellHelper,
+  getColLetFromIndex,
+  replaceFormulaRanges
+} from "./editCellHelper";
 import { getCellVal } from "./getCellVal";
 import { getVals } from "./getVals";
 import { throwFormError } from "../throwFormError";
@@ -400,6 +404,7 @@ class DataTable extends React.Component {
     entities,
     { useDefaultValues, indexToStartAt } = {}
   ) => {
+    console.log(`entities:`, entities)
     const { schema } = this.props;
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
     let validationErrors = {};
@@ -449,7 +454,12 @@ class DataTable extends React.Component {
           const val = ent[field.path];
           if (val && typeof val === "string" && val[0] === "=") {
             const formula = val.slice(1);
-            const deps = formula.match(/[A-Z]+[0-9]+/gi);
+            const { error, replacedFormula } = replaceFormulaRanges({
+              formula,
+              entities: ents,
+              schema
+            });
+            const deps = replacedFormula.match(/[A-Z]+[0-9]+/gi);
             if (deps) {
               deps.forEach(_dep => {
                 const dep = _dep.toUpperCase();
@@ -458,7 +468,7 @@ class DataTable extends React.Component {
                   depGraph[dep] = [];
                 }
                 // convert the field index to a letter
-                const fieldLetter = String.fromCharCode(65 + fi);
+                const fieldLetter = getColLetFromIndex(fi);
                 depGraph[dep].push(`${fieldLetter}${i + 1}`);
               });
             }
@@ -665,6 +675,7 @@ class DataTable extends React.Component {
         } else if (e.clipboardData && e.clipboardData.getData) {
           toPaste = e.clipboardData.getData("text/plain");
         }
+        const htmlToPaste = e.clipboardData.getData("text/html");
         const jsonToPaste = e.clipboardData.getData("application/json");
         let hasReplace = false;
 
@@ -2647,33 +2658,6 @@ class DataTable extends React.Component {
           if (val.formula) {
             return val.value;
           }
-          // if (val.startsWith("=")) {
-          //   // fill in any variables with their values
-          //   val = val.toLowerCase().replace(/([A-Z]+[0-9]+)/gi, match => {
-          //     // match = E12 or B4
-          //     const [letter, rowIndex] = match.split(/(\d+)/);
-          //     const entity = entities.find((e, i) => {
-          //       return i === rowIndex - 1;
-          //     });
-          //     const letterIndex = letter.toUpperCase().charCodeAt(0) - 65;
-          //     const col = columns[letterIndex];
-          //     if (!col) {
-          //       return match;
-          //     }
-          //     const { path } = col;
-          //     if (!entity) return match;
-          //     const val = entity[path];
-          //     if (val === undefined) return match;
-          //     return val;
-          //   });
-          //   const toEval = val.slice(1);
-          //   try {
-          //     val = evaluate(toEval);
-          //     return val;
-          //   } catch (e) {
-          //     return "#ERROR";
-          //   }
-          // }
           return val;
         };
       } else if (column.render) {
@@ -3259,6 +3243,7 @@ class DataTable extends React.Component {
       });
       const insertIndex = above ? indexToInsert : indexToInsert + 1;
       const insertIndexToUse = appendToBottom ? entities.length : insertIndex;
+      console.log(`yarr`)
       let { newEnts, validationErrors } = this.formatAndValidateEntities(
         newEntities,
         {
@@ -3266,35 +3251,42 @@ class DataTable extends React.Component {
           indexToStartAt: insertIndexToUse
         }
       );
+      console.log(`jarr`)
 
       newEnts = newEnts.map(e => ({
         ...e,
         _isClean: true
       }));
+      entities.forEach(e => {
+        if (e.formula) {
+          console.log(`e.formula:`, e.formula);
+        }
+      });
       this.updateValidation(entities, {
         ...reduxFormCellValidation,
         ...validationErrors
       });
+      // we need to make sure any entities with formulas are updated
 
       entities.splice(insertIndexToUse, 0, ...newEnts);
     });
     this.refocusTable();
   };
-  insertColumns = ({ above, numRows = 1, appendToBottom } = {}) => {
+  insertColumns = ({ toTheLeft, numColumns = 1, appendToEnd } = {}) => {
     const { entities = [], reduxFormCellValidation } = computePresets(
       this.props
     );
 
     const primaryCellId = this.getPrimarySelectedCellId();
-    const [rowId] = primaryCellId?.split(":") || [];
+    const [rowId, columnName] = primaryCellId?.split(":") || [];
     this.updateEntitiesHelper(entities, entities => {
-      const newEntities = times(numRows).map(() => ({ id: nanoid() }));
+      const newEntities = times(numColumns).map(() => ({ id: nanoid() }));
 
       const indexToInsert = entities.findIndex((e, i) => {
         return getIdOrCodeOrIndex(e, i) === rowId;
       });
-      const insertIndex = above ? indexToInsert : indexToInsert + 1;
-      const insertIndexToUse = appendToBottom ? entities.length : insertIndex;
+      const insertIndex = toTheLeft ? indexToInsert : indexToInsert + 1;
+      const insertIndexToUse = appendToEnd ? entities.length : insertIndex;
       let { newEnts, validationErrors } = this.formatAndValidateEntities(
         newEntities,
         {
@@ -3451,7 +3443,7 @@ class DataTable extends React.Component {
               text="Add Column Left"
               key="addColumnLeft"
               onClick={() => {
-                this.insertRows({ above: true });
+                this.insertColumns({ toTheLeft: true });
               }}
             ></MenuItem>
             <MenuItem
@@ -3459,7 +3451,7 @@ class DataTable extends React.Component {
               text="Add Column Right"
               key="addColumnRight"
               onClick={() => {
-                this.insertRows({});
+                this.insertColumns({});
               }}
             ></MenuItem>
             <MenuItem
@@ -3674,7 +3666,15 @@ class DataTable extends React.Component {
     }
 
     const columnTitleTextified = getTextFromEl(columnTitle);
-
+    let inner = renderTitleInner ? renderTitleInner : columnTitle;
+    const getLetterifiedColumnTitle = () => {
+      const letter = getColLetFromIndex(index);
+      if (inner?.toUpperCase() === letter) {
+        inner = letter;
+        return null;
+      }
+      return <div>{getColLetFromIndex(index)}:</div>;
+    };
     return (
       <div
         {...(description && {
@@ -3696,7 +3696,7 @@ class DataTable extends React.Component {
         {columnTitleTextified && !noTitle && (
           <React.Fragment>
             {maybeCheckbox}
-            {allowFormulas && <div>{String.fromCharCode(65 + index)}:</div>}
+            {allowFormulas && getLetterifiedColumnTitle()}
             <span
               title={columnTitleTextified}
               className={classNames({
@@ -3708,7 +3708,7 @@ class DataTable extends React.Component {
                 display: "inline-block"
               }}
             >
-              {renderTitleInner ? renderTitleInner : columnTitle}{" "}
+              {inner}{" "}
             </span>
           </React.Fragment>
         )}

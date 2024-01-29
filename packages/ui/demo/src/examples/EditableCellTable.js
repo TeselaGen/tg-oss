@@ -7,7 +7,6 @@ import DemoWrapper from "../DemoWrapper";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
 import { toNumber } from "lodash";
-// import ExcelCell from "packages/ui/src/ExcelCell";
 
 const chance = new Chance();
 function getEnts(num) {
@@ -54,58 +53,8 @@ export default function SimpleTable(p) {
   const [allowFormulas, allowFormulasComp] = useToggle({
     type: "allowFormulas"
   });
-  // const [tagValuesAsObjects, tagValuesAsObjectsComp] = useToggle({
-  //   type: "tagValuesAsObjects"
-  // });
-  let entsToUse;
   const [entities, setEnts] = useState([]);
-  entsToUse = entities;
-
-  // const depGraph = {
-  //   a1: ["a3"],
-  //   a2: ["a1"],
-  //   a3: [],
-  //   b1: ["a1", "a2"],
-  //   b2: ["a2"],
-  //   b3: ["a3"]
-  // };
   const schema = useMemo(() => {
-    if (allowFormulas) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      entsToUse = [
-        // {
-        //   id: 'asdfoi',
-        //   a: "=sum(b1,a2)",
-        //   b: 44
-        // },
-        // {
-        //   id: 'f22f2f',
-        //   a: "=sum(b2)",
-        //   b: 44
-        // },
-        {
-          id: "asdfoi",
-          a: "=sum(b1,a2)",
-          b: 44
-        },
-        {
-          id: "f22f2f",
-          a: "=sum(b1,b2,a1)",
-          b: 44
-        }
-        // {
-        //   id: '22f3f',
-        //   a: "=sum(a1,b3)",
-        //   b: 44
-        // }
-      ];
-      return {
-        fields: [
-          { path: "a", allowFormulas: true },
-          { path: "b", allowFormulas: true }
-        ]
-      };
-    }
     return {
       fields: [
         {
@@ -163,7 +112,6 @@ export default function SimpleTable(p) {
   }, [defaultValAsFunc, allowFormulas]);
   return (
     <div>
-      {/* <ExcelCell></ExcelCell> */}
       <OptionsSection>
         {numComp}
         {defaultValAsFuncComp}
@@ -177,7 +125,7 @@ export default function SimpleTable(p) {
           formName="editableCellTable"
           isSimple
           isCellEditable
-          entities={entsToUse}
+          entities={entities}
           schema={schema}
           // isEntityDisabled={
           //   isEntityDisabled

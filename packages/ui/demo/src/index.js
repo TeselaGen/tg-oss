@@ -26,6 +26,7 @@ import ScrollToTopDemo from "./examples/ScrollToTop";
 
 import showAppSpinnerDemo from "./examples/showAppSpinnerDemo";
 import EditableCellTable from "./examples/EditableCellTable";
+import ExcelTable from "./examples/ExcelTable";
 import "./style.css";
 import React from "react";
 import { render } from "react-dom";
@@ -48,6 +49,9 @@ const demos = {
   },
   "DataTable - EditableCellTable": {
     demo: EditableCellTable
+  },
+  "DataTable - ExcelTable": {
+    demo: ExcelTable
   },
   "DataTable - SimpleTable": {
     demo: SimpleTable
