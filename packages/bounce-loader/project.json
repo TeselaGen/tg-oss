@@ -33,7 +33,7 @@
       "command": "cd packages/bounce-loader && npx playwright test --ui"
     },
     "launch-e2e2": {
-      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
+      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser electron\" \"nx run bounce-loader:start\""
     },
     "e2e-playwright": {
       "command": "cd packages/bounce-loader && npx playwright test"

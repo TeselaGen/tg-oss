@@ -210,7 +210,6 @@ export const editCellHelper = ({
         }
         // console.log(`evaluate deps`, cellDepGraph, `for cell`, cellAlphaNum);
         const [depColLetter, depRowIndex] = depCellAlphaNum.split(/(\d+)/);
-
         const depEntity = entities[depRowIndex - 1];
         const depColIndex = depColLetter.charCodeAt(0) - 65;
         const depColSchema = schema.fields[depColIndex];

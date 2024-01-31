@@ -73,7 +73,7 @@
       "options": {
         "watch": true,
         "headed": true,
-        "browser": "chrome",
+        "browser": "electron",
         "cypressConfig": "packages/ove/cypress.config.ts",
         "devServerTarget": "ove:start:ci",
         "testingType": "e2e"

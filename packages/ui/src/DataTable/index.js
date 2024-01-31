@@ -402,9 +402,8 @@ class DataTable extends React.Component {
   };
   formatAndValidateEntities = (
     entities,
-    { useDefaultValues, indexToStartAt } = {}
+    { useDefaultValues, indexToStartAt, depGraphToUse } = {}
   ) => {
-    console.log(`entities:`, entities)
     const { schema } = this.props;
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
     let validationErrors = {};
@@ -426,7 +425,7 @@ class DataTable extends React.Component {
           //mutative
           const { errors } = editCellHelper({
             updateGroup,
-            depGraph: this.depGraph,
+            depGraph: depGraphToUse || this.depGraph,
             entities,
             entity: e,
             schema,
@@ -3248,19 +3247,43 @@ class DataTable extends React.Component {
         newEntities,
         {
           useDefaultValues: true,
-          indexToStartAt: insertIndexToUse
+          indexToStartAt: insertIndexToUse,
+          depGraphToUse: {}
         }
       );
+
       console.log(`jarr`)
 
       newEnts = newEnts.map(e => ({
         ...e,
         _isClean: true
       }));
+      
       entities.forEach(e => {
-        if (e.formula) {
-          console.log(`e.formula:`, e.formula);
-        }
+        Object.values(e).forEach((v) => {
+          if (v?.formula) {
+            console.log(`v.formula:`,v.formula)
+            // update the formula to shift the row numbers up or down as needed 
+            v.formula = v.formula.replace(/([A-Z]+[0-9]+)/gi, (match, p1) => {
+              console.log(`p1:`, p1)
+              console.log(`match:`, match)
+              // update the match number 
+              const num = Number(match.replace(/[A-Z]+/gi, ''));
+              console.log(`num:`, num)
+              console.log(`insertIndexToUse:`, insertIndexToUse)
+              if (insertIndexToUse < num) {
+                console.log(`newEnts.length:`,newEnts.length)
+                const newNum = num + newEnts.length
+                console.log(`newNum:`, newNum)
+                // if the insert index is above the match number then we need to add 1 to the row number
+                return `${p1}${newNum}`;
+              }
+            })
+            console.log(`v.formula:`,v.formula)
+
+            
+          }
+        })
       });
       this.updateValidation(entities, {
         ...reduxFormCellValidation,
