@@ -43,6 +43,7 @@ import { initialize } from "redux-form";
 import classNames from "classnames";
 import { compose } from "recompose";
 import convertSchema from "../DataTable/utils/convertSchema";
+import { LoadingDots } from "./LoadingDots";
 
 configure({ isolateGlobalState: true });
 const helperText = [
@@ -115,7 +116,7 @@ class ValidateAgainstSchema {
 const emptyPromise = Promise.resolve.bind(Promise);
 
 function UploaderInner({
-  accept: _accept,
+  accept: __accept,
   contentOverride: maybeContentOverride,
   innerIcon,
   innerText,
@@ -138,23 +139,52 @@ function UploaderInner({
   dropzoneProps = {},
   overflowList,
   autoUnzip,
-  disabled,
+  _disabled,
   noBuildCsvOption,
   initializeForm,
   showFilesCount,
   threeDotMenuItems,
   onPreviewClick
 }) {
+  let dropzoneDisabled = _disabled;
+  let _accept = __accept;
   //on component did mount
   const validateAgainstSchemaStore = useRef(new ValidateAgainstSchema());
-  const callout =
-    _callout ||
-    (isArray(_accept) ? _accept : [_accept]).find?.(a => a?.callout)?.callout;
+  const [resolvedAccept, setResolvedAccept] = useState();
+  if (resolvedAccept) {
+    _accept = resolvedAccept;
+  }
+  const isAcceptPromise =
+    __accept?.then ||
+    (Array.isArray(__accept) ? __accept.some(a => a?.then) : false);
+  const acceptLoading =
+    !resolvedAccept && isAcceptPromise && `Accept Loading...`;
+
+  if (isAcceptPromise && !resolvedAccept) {
+    Promise.allSettled(Array.isArray(__accept) ? __accept : [__accept]).then(
+      results => {
+        const resolved = flatMap(results, r => r.value);
+        setResolvedAccept(resolved);
+      }
+    );
+    _accept = [];
+  }
+
+  if (acceptLoading) dropzoneDisabled = true;
+  const accept = !_accept
+    ? undefined
+    : !isAcceptPromise && !resolvedAccept
+      ? []
+      : isPlainObject(_accept)
+        ? [_accept]
+        : isArray(_accept)
+          ? _accept
+          : _accept.split(",").map(a => ({ type: a }));
+  const callout = _callout || accept.find?.(a => a?.callout)?.callout;
+
   const validateAgainstSchemaToUse =
     _validateAgainstSchema ||
-    (isArray(_accept) ? _accept : [_accept]).find?.(
-      a => a?.validateAgainstSchema
-    )?.validateAgainstSchema;
+    accept.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema;
 
   useEffect(() => {
     // validateAgainstSchema
@@ -166,13 +196,7 @@ function UploaderInner({
   if (validateAgainstSchemaToUse) {
     validateAgainstSchema = validateAgainstSchemaStore.current;
   }
-  const accept = !_accept
-    ? undefined
-    : isPlainObject(_accept)
-      ? [_accept]
-      : isArray(_accept)
-        ? _accept
-        : _accept.split(",").map(a => ({ type: a }));
+
   if (
     (validateAgainstSchema || autoUnzip) &&
     accept &&
@@ -471,7 +495,7 @@ function UploaderInner({
           className="tg-uploader-inner"
           style={{ width: "100%", height: "fit-content", minWidth: 0 }}
         >
-          {simpleAccept && (
+          {(simpleAccept || acceptLoading) && (
             <div
               className={Classes.TEXT_MUTED}
               style={{ fontSize: 11, marginBottom: 5 }}
@@ -601,13 +625,19 @@ function UploaderInner({
                     })}
                   </span>
                 </div>
+              ) : acceptLoading ? (
+                // make the dots below "load"
+
+                <>
+                  Accept Loading<LoadingDots></LoadingDots>
+                </>
               ) : (
                 <>Accepts {simpleAccept}</>
               )}
             </div>
           )}
           <Dropzone
-            disabled={disabled}
+            disabled={dropzoneDisabled}
             onClick={evt => evt.preventDefault()}
             multiple={fileLimit !== 1}
             accept={
@@ -922,7 +952,8 @@ function UploaderInner({
                     "tg-dropzone-active": isDragActive,
                     "tg-dropzone-reject": isDragReject, // tnr: the acceptClassName/rejectClassName doesn't work with file extensions (only mimetypes are supported when dragging). Thus we'll just always turn the drop area blue when dragging and let the filtering occur on drop. See https://github.com/react-dropzone/react-dropzone/issues/888#issuecomment-773938074
                     "tg-dropzone-accept": isDragAccept,
-                    "tg-dropzone-disabled": disabled
+                    "tg-dropzone-disabled": dropzoneDisabled,
+                    "bp3-disabled": dropzoneDisabled
                   })}
                 >
                   <input {...getInputProps()} />

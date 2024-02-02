@@ -62,6 +62,7 @@
   border-color: rgb(91, 157, 211);
 }
 .tg-dropzone-disabled {
+  cursor: not-allowed;
   border-color: rgb(136, 133, 132) !important;
   opacity: 0.8;
 }

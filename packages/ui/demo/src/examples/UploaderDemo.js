@@ -8,9 +8,15 @@ export default function UploaderDemo() {
   const [disabled, disabledToggleComp] = useToggle({
     type: "disabled"
   });
+
   const [advancedAccept, advancedAcceptToggleComp] = useToggle({
     type: "accept",
-    label: "Toggle Advance Accept"
+    label: "Advance Accept"
+  });
+
+  const [awaitAcceptExample, awaitAcceptExampleComp] = useToggle({
+    type: "awaitAccept",
+    label: "Await Accept"
   });
   const [autoUnzip, autoUnzipToggleComp] = useToggle({
     type: "autoUnzip"
@@ -24,89 +30,92 @@ export default function UploaderDemo() {
       <OptionsSection>
         {disabledToggleComp}
         {advancedAcceptToggleComp}
+        {awaitAcceptExampleComp}
         {autoUnzipToggleComp}
       </OptionsSection>
       <DemoWrapper>
         <Uploader
           autoUnzip={autoUnzip}
           accept={
-            advancedAccept
-              ? [
-                  {
-                    type: "ab1",
-                    description: "Sequence Trace Format",
-                    exampleFiles: [
-                      {
-                        description: "Download File 1",
-                        exampleFile:
-                          "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                      },
-                      {
-                        description: "View File 2",
-                        icon: "link",
-                        exampleFile:
-                          "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                      }
-                    ]
-                  },
-                  {
-                    type: "dna",
-                    description:
-                      "SnapGene DNA Format I'm a superrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrr long message",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  },
-                  {
-                    type: "template",
-                    isTemplate: true,
-                    description: "I'm a template file",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  },
-                  {
-                    type: "json",
-                    description: "TeselaGen JSON Format",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  },
-                  {
-                    type: ["fasta", "fas", "fa", "fna", "ffn", "txt"],
-                    description: "Fasta Format",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  },
-                  {
-                    type: ["csv", "xlsx"],
-                    description: "TeselaGen CSV Format",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  },
-                  {
-                    type: ["gb", "gbk", "txt"],
-                    description: "Genbank Format",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  },
-                  {
-                    type: ["gp", "genpep", "txt"],
-                    description: "Genbank Protein Format",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  },
-                  {
-                    type: ["xml", "rdf"],
-                    description: "SBOL XML Format",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  },
-                  {
-                    type: ".dna",
-                    description: "SnapGene DNA File",
-                    exampleFile:
-                      "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
-                  }
-                ]
-              : ["gb", "gp"]
+            awaitAcceptExample
+              ? awaitExampleFn()
+              : advancedAccept
+                ? [
+                    {
+                      type: "ab1",
+                      description: "Sequence Trace Format",
+                      exampleFiles: [
+                        {
+                          description: "Download File 1",
+                          exampleFile:
+                            "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                        },
+                        {
+                          description: "View File 2",
+                          icon: "link",
+                          exampleFile:
+                            "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                        }
+                      ]
+                    },
+                    {
+                      type: "dna",
+                      description:
+                        "SnapGene DNA Format I'm a superrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrrsuperrrrrrrrrrr long message",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    },
+                    {
+                      type: "template",
+                      isTemplate: true,
+                      description: "I'm a template file",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    },
+                    {
+                      type: "json",
+                      description: "TeselaGen JSON Format",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    },
+                    {
+                      type: ["fasta", "fas", "fa", "fna", "ffn", "txt"],
+                      description: "Fasta Format",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    },
+                    {
+                      type: ["csv", "xlsx"],
+                      description: "TeselaGen CSV Format",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    },
+                    {
+                      type: ["gb", "gbk", "txt"],
+                      description: "Genbank Format",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    },
+                    {
+                      type: ["gp", "genpep", "txt"],
+                      description: "Genbank Protein Format",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    },
+                    {
+                      type: ["xml", "rdf"],
+                      description: "SBOL XML Format",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    },
+                    {
+                      type: ".dna",
+                      description: "SnapGene DNA File",
+                      exampleFile:
+                        "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+                    }
+                  ]
+                : ["gb", "gp"]
           }
           onChange={f => {
             if (f.length > 0) {
@@ -118,4 +127,30 @@ export default function UploaderDemo() {
       </DemoWrapper>
     </div>
   );
+}
+
+function awaitExampleFn() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve([
+        {
+          type: "ab1",
+          description: "Sequence Trace Format",
+          exampleFiles: [
+            {
+              description: "Download File 1",
+              exampleFile:
+                "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+            },
+            {
+              description: "View File 2",
+              icon: "link",
+              exampleFile:
+                "https://teselagen.github.io/json-schema-viewer/#/view/%23?url=.%2Fschemas%2Fdesign.json"
+            }
+          ]
+        }
+      ]);
+    }, 1000);
+  });
 }
