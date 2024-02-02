@@ -28,10 +28,11 @@ export default async function tryToMatchSchemas({
   await resolveValidateAgainstSchema(validateAgainstSchema);
   const userSchema = getSchema(incomingData);
 
-  const { searchResults, csvValidationIssue } = await matchSchemas({
-    userSchema,
-    officialSchema: validateAgainstSchema
-  });
+  const { searchResults, csvValidationIssue, ignoredHeadersMsg } =
+    await matchSchemas({
+      userSchema,
+      officialSchema: validateAgainstSchema
+    });
 
   const incomingHeadersToScores = {};
 
@@ -67,6 +68,7 @@ export default async function tryToMatchSchemas({
   });
 
   return {
+    ignoredHeadersMsg,
     csvValidationIssue,
     matchedHeaders,
     userSchema,
@@ -140,6 +142,23 @@ async function matchSchemas({ userSchema, officialSchema }) {
         "It looks like some of the headers in your uploaded file(s) do not match the expected headers. Please look over and correct any issues with the mappings below.";
     }
   });
+  const ignoredUserSchemaFields = [];
+  userSchema.fields.forEach(uh => {
+    if (
+      !officialSchema.fields.find(
+        h =>
+          norm(h.path) === norm(uh.path) ||
+          norm(h.displayName) === norm(uh.path) ||
+          matchedAltPaths.includes(uh.path)
+      )
+    ) {
+      // check that the column does contain data (if it doesn't, it's probably a blank column)
+      if (userSchema.userData.some(e => e[uh.path])) {
+        ignoredUserSchemaFields.push(uh);
+      }
+    }
+  });
+
   if (officialSchema.coerceUserSchema) {
     officialSchema.coerceUserSchema({ userSchema, officialSchema });
   }
@@ -215,14 +234,16 @@ async function matchSchemas({ userSchema, officialSchema }) {
     }
     // csvValidationIssue = `Some of the data doesn't look quite right. Do these header mappings look correct?`;
   }
-  // if (!csvValidationIssue) {
-  //   //all the headers match up as does the actual data
-  //   return { csvValidationIssue };
-  // }
-
+  let ignoredHeadersMsg;
+  if (ignoredUserSchemaFields.length) {
+    ignoredHeadersMsg = `It looks like the following headers in your file didn't map to any of the accepted headers: ${ignoredUserSchemaFields
+      .map(f => f.displayName || f.path)
+      .join(", ")}`;
+  }
   return {
     searchResults: officialSchema.fields,
-    csvValidationIssue
+    csvValidationIssue,
+    ignoredHeadersMsg
   };
 }
 

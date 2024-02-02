@@ -76,6 +76,7 @@ const UploadCsvWizardDialog = compose(
   doAllFilesHaveSameHeaders,
   destroyForms,
   csvValidationIssue,
+  ignoredHeadersMsg,
   searchResults,
   matchedHeaders,
   userSchema,
@@ -103,10 +104,6 @@ const UploadCsvWizardDialog = compose(
     const tabs = (
       <>
         <Callout style={{ marginBottom: 10, flexGrow: 0 }} intent="warning">
-          {/* <div>
-            It looks like some of the headers/data in your uploaded files have
-            issues.
-          </div> */}
           <div>
             Please look over each of the following files and correct any issues.
           </div>
@@ -222,6 +219,7 @@ const UploadCsvWizardDialog = compose(
                       destroyForms,
                       setFilesWIssues,
                       csvValidationIssue,
+                      ignoredHeadersMsg,
                       searchResults,
                       matchedHeaders,
                       userSchema,
@@ -266,6 +264,7 @@ const UploadCsvWizardDialog = compose(
                 reduxFormEntitiesArray,
                 // onMultiFileUploadSubmit,
                 csvValidationIssue,
+                ignoredHeadersMsg,
                 searchResults,
                 matchedHeaders,
                 userSchema,
@@ -312,6 +311,7 @@ const UploadCsvWizardDialog = compose(
           searchResults,
           onUploadWizardFinish,
           csvValidationIssue,
+          ignoredHeadersMsg,
           matchedHeaders,
           //fromRedux:
           changeForm,
@@ -344,6 +344,7 @@ const UploadCsvWizardDialogInner = compose(
   searchResults,
   onUploadWizardFinish,
   csvValidationIssue,
+  ignoredHeadersMsg,
   matchedHeaders,
   //fromRedux:
   handleSubmit,
@@ -383,6 +384,7 @@ const UploadCsvWizardDialogInner = compose(
         {...{
           onMultiFileUploadSubmit,
           csvValidationIssue,
+          ignoredHeadersMsg,
           searchResults,
           matchedHeaders,
           userSchema,
@@ -412,10 +414,10 @@ const UploadCsvWizardDialogInner = compose(
           !hasSubmitted
             ? "Review and Edit Data"
             : onMultiFileUploadSubmit
-            ? isThisTheLastBadFile
-              ? "Finalize Files"
-              : "Next File"
-            : "Add File"
+              ? isThisTheLastBadFile
+                ? "Finalize Files"
+                : "Next File"
+              : "Add File"
         }
         submitting={submitting}
         disabled={

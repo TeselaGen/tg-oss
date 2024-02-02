@@ -114,6 +114,19 @@ describe("UploadCsvWizard.spec", () => {
       `It looks like there wasn't any data in your file. Please add some data and try again`
     );
   });
+  it(`uploading a file with errors and ignored columns should warn about the ignored columns`, () => {
+    cy.visit("#/UploadCsvWizard");
+    cy.uploadFile(
+      ".tg-dropzone",
+      "testUploadWizard_ignoredHeaders.csv",
+      "text/csv",
+      true
+    );
+
+    cy.contains(
+      `It looks like the following headers in your file didn't map to any of the accepted headers: zoink`
+    );
+  });
   it(`wizard should let a "perfect" file that uses a display name through without any additional steps`, () => {
     cy.visit("#/UploadCsvWizard");
     cy.uploadFile(
@@ -164,7 +177,7 @@ describe("UploadCsvWizard.spec", () => {
     );
 
     cy.get(`.tg-test-is-regex`).click();
-    cy.contains("typo").click({ force: true });
+    cy.contains(".tg-select-option", "typo").click({ force: true });
     cy.contains(".bp3-dialog", `zonk`).should("exist"); //the data from the file should be previewed
 
     cy.contains("Review and Edit Data").click();
@@ -177,7 +190,7 @@ describe("UploadCsvWizard.spec", () => {
       `.hasCellError[data-tip="Please enter a value here"] [data-test="tgCell_sequence"]:first`
     ).dblclick({ force: true });
     cy.focused().type("g{enter}");
-    cy.dragBetween(`.cellDragHandle`, `button:contains(Add 10 Rows)`);
+    cy.dragBetween(`.cellDragHandle`, `.rt-tr-last-row`);
     cy.contains("Add File").click();
     cy.contains(`testUploadWizard_messedUpHeaders.csv`);
     cy.contains(`Added Fixed Up File`);

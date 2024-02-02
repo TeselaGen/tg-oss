@@ -13,6 +13,7 @@ export function MatchHeaders({
   onMultiFileUploadSubmit,
   doAllFilesHaveSameHeaders,
   csvValidationIssue,
+  ignoredHeadersMsg,
   searchResults,
   matchedHeaders,
   userSchema,
@@ -35,6 +36,11 @@ export function MatchHeaders({
       {!onMultiFileUploadSubmit && (
         <Callout style={{ width: "fit-content" }} intent="warning">
           {csvValidationIssue}
+        </Callout>
+      )}
+      {!onMultiFileUploadSubmit && ignoredHeadersMsg && (
+        <Callout style={{ width: "fit-content" }} intent="warning">
+          {ignoredHeadersMsg}
         </Callout>
       )}
       <br></br>

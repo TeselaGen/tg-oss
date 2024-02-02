@@ -9,7 +9,7 @@ let allWarnings = [];
 
 let makeToast = () => {
   if (typeof window !== "undefined" && window.toastr && allWarnings.length) {
-    window.toastr.warning(allWarnings.join("\n"));
+    window.toastr.warning(uniq(allWarnings).join("\n"));
   }
   allWarnings = [];
 };
