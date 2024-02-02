@@ -104,10 +104,6 @@ const UploadCsvWizardDialog = compose(
     const tabs = (
       <>
         <Callout style={{ marginBottom: 10, flexGrow: 0 }} intent="warning">
-          {/* <div>
-            It looks like some of the headers/data in your uploaded files have
-            issues.
-          </div> */}
           <div>
             Please look over each of the following files and correct any issues.
           </div>

@@ -1950,7 +1950,8 @@ class DataTable extends React.Component {
         getRowClassName && getRowClassName(rowInfo, state, this.props),
         {
           disabled: rowDisabled,
-          selected: rowSelected && !withCheckboxes
+          selected: rowSelected && !withCheckboxes,
+          "rt-tr-last-row": rowInfo.index === entities.length - 1
         }
       ),
       "data-test-id": dataId === undefined ? rowInfo.index : dataId,

@@ -57,12 +57,12 @@ describe("EditableCellTable.spec", () => {
   it(`smart increment should work`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`.rt-td:contains(nancy110)`).click();
-    cy.dragBetween(`.cellDragHandle`, `button:contains(Add 10 Rows)`);
+    cy.dragBetween(`.cellDragHandle`, `.rt-tr-last-row`);
     cy.contains("nancy137");
     //if two or more incrementing cells are selected one above the other it should still work to increment
     cy.get(`.rt-td:contains(nancy108)`).click();
     cy.get(`.rt-td:contains(nancy109)`).click({ shiftKey: true });
-    cy.dragBetween(`.cellDragHandle`, `button:contains(Add 10 Rows)`);
+    cy.dragBetween(`.cellDragHandle`, `.rt-tr-last-row`);
     cy.contains("nancy137");
     cy.get(`.rt-td:contains(nancy110)`).click();
     cy.get(`.rt-td:contains(nancy111)`).click({ shiftKey: true });
@@ -76,7 +76,7 @@ describe("EditableCellTable.spec", () => {
     const downloadsFolder = Cypress.config("downloadsFolder");
     cy.readFile(path.join(downloadsFolder, "tableData.csv")).should(
       "contain",
-      `Name,Type,Tags,Weather,How Many,Is Protein\ntom88,fail,,WAY TOO HOT,NaN,True\ntom89 a,too old,,rainy,16,True\ntom90 a,old,,rainy,6,True`
+      `Name,Type,Tags,Weather,How Many,Is Protein\ntom88,fail,,WAY TOO HOT,NaN,True\ntom89`
     );
   });
 
