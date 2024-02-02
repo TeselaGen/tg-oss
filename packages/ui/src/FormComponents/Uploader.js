@@ -169,11 +169,10 @@ function UploaderInner({
     );
     _accept = [];
   }
-
   if (acceptLoading) dropzoneDisabled = true;
   const accept = !_accept
     ? undefined
-    : !isAcceptPromise && !resolvedAccept
+    : isAcceptPromise && !resolvedAccept
       ? []
       : isPlainObject(_accept)
         ? [_accept]
