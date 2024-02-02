@@ -139,7 +139,7 @@ function UploaderInner({
   dropzoneProps = {},
   overflowList,
   autoUnzip,
-  _disabled,
+  disabled: _disabled,
   noBuildCsvOption,
   initializeForm,
   showFilesCount,
@@ -179,11 +179,11 @@ function UploaderInner({
         : isArray(_accept)
           ? _accept
           : _accept.split(",").map(a => ({ type: a }));
-  const callout = _callout || accept.find?.(a => a?.callout)?.callout;
+  const callout = _callout || accept?.find?.(a => a?.callout)?.callout;
 
   const validateAgainstSchemaToUse =
     _validateAgainstSchema ||
-    accept.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema;
+    accept?.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema;
 
   useEffect(() => {
     // validateAgainstSchema

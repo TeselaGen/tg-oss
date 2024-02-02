@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { arrayMove } from "react-sortable-hoc";
 import copy from "copy-to-clipboard";
+import download from "downloadjs";
 import {
   invert,
   toNumber,
@@ -880,7 +881,10 @@ class DataTable extends React.Component {
       onFinishMsg: "Column Copied"
     });
   };
-  handleCopyRows = (rowElsToCopy, { specificColumn, onFinishMsg } = {}) => {
+  handleCopyRows = (
+    rowElsToCopy,
+    { specificColumn, onFinishMsg, isDownload } = {}
+  ) => {
     let textToCopy = [];
     const jsonToCopy = [];
     forEach(rowElsToCopy, rowEl => {
@@ -890,8 +894,15 @@ class DataTable extends React.Component {
     });
     textToCopy = textToCopy.filter(text => text).join("\n");
     if (!textToCopy) return window.toastr.warning("No text to copy");
-
-    this.handleCopyHelper(textToCopy, jsonToCopy, onFinishMsg || "Row Copied");
+    if (isDownload) {
+      download(textToCopy.replaceAll("\t", ","), "tableData.csv", "text/csv");
+    } else {
+      this.handleCopyHelper(
+        textToCopy,
+        jsonToCopy,
+        onFinishMsg || "Row Copied"
+      );
+    }
   };
   updateEntitiesHelper = (ents, fn) => {
     const { change, reduxFormEntitiesUndoRedoStack = { currentVersion: 0 } } =
@@ -953,11 +964,12 @@ class DataTable extends React.Component {
     }
   };
 
-  handleCopyTable = e => {
+  handleCopyTable = (e, opts) => {
     try {
       const allRowEls = getAllRows(e);
       if (!allRowEls) return;
       this.handleCopyRows(allRowEls, {
+        ...opts,
         onFinishMsg: "Table Copied"
       });
     } catch (error) {
@@ -1721,28 +1733,7 @@ class DataTable extends React.Component {
               ref={n => {
                 if (n) this.table = n;
               }}
-              additionalBodyEl={
-                isCellEditable &&
-                !onlyShowRowsWErrors && (
-                  <div
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <Button
-                      icon="add"
-                      onClick={() => {
-                        this.insertRows({ numRows: 10, appendToBottom: true });
-                      }}
-                      minimal
-                    >
-                      Add 10 Rows
-                    </Button>
-                  </div>
-                )
-              }
+              // additionalBodyEl={}
               className={classNames({
                 isCellEditable,
                 "tg-table-loading": isLoading,
@@ -1801,7 +1792,37 @@ class DataTable extends React.Component {
               SubComponent={SubComponentToUse}
               {...ReactTableProps}
             />
-
+            {isCellEditable && (
+              <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center"
+                  }}
+                >
+                  {!onlyShowRowsWErrors && (
+                    <Button
+                      icon="add"
+                      onClick={() => {
+                        this.insertRows({ numRows: 10, appendToBottom: true });
+                      }}
+                      minimal
+                    >
+                      Add 10 Rows
+                    </Button>
+                  )}
+                </div>
+                <Button
+                  onClick={e => {
+                    this.handleCopyTable(e, { isDownload: true });
+                  }}
+                  data-tip="Download Table as CSV"
+                  minimal
+                  icon="download"
+                ></Button>
+              </div>
+            )}
             {!noFooter && (
               <div
                 className="data-table-footer"

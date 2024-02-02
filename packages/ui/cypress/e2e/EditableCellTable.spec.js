@@ -1,3 +1,5 @@
+import path from "path";
+
 describe("EditableCellTable.spec", () => {
   it(`cell checkboxes and the header checkbox should work`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
@@ -67,6 +69,15 @@ describe("EditableCellTable.spec", () => {
     cy.dragBetween(`.cellDragHandle`, `.rt-td:contains(nancy113)`);
     // make sure simple case still works
     cy.get(`.rt-td:contains(nancy113)`);
+  });
+  it(`download csv of table button should work`, () => {
+    cy.visit("#/DataTable%20-%20EditableCellTable");
+    cy.get(`[data-tip="Download Table as CSV"]`).click();
+    const downloadsFolder = Cypress.config("downloadsFolder");
+    cy.readFile(path.join(downloadsFolder, "tableData.csv")).should(
+      "contain",
+      `Name,Type,Tags,Weather,How Many,Is Protein\ntom88,fail,,WAY TOO HOT,NaN,True\ntom89 a,too old,,rainy,16,True\ntom90 a,old,,rainy,6,True`
+    );
   });
 
   it(`drag should be repeating down`, () => {
