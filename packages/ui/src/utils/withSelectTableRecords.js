@@ -27,7 +27,10 @@ export default function (_tableFormName, propName = "selectTableRecords") {
           let records = _records;
           if (_records && !Array.isArray(_records)) records = [records];
           records.forEach(record => {
-            selectedEntityIdMap[record.id] = { entity: record };
+            selectedEntityIdMap[record.id] = {
+              entity: record,
+              time: Date.now()
+            };
           });
           props.changeFormValue(
             tableFormName,
