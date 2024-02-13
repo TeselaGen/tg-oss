@@ -29,7 +29,8 @@ import {
   times,
   some,
   isFunction,
-  every
+  every,
+  uniq
 } from "lodash";
 import joinUrl from "url-join";
 
@@ -405,7 +406,7 @@ class DataTable extends React.Component {
     entities,
     { useDefaultValues, indexToStartAt, depGraphToUse } = {}
   ) => {
-    const { schema } = this.props;
+    const { schema, allowFormulas } = this.props;
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
     let validationErrors = {};
     const updateGroup = {};
@@ -425,6 +426,7 @@ class DataTable extends React.Component {
           }
           //mutative
           const { errors } = editCellHelper({
+            allowFormulas,
             updateGroup,
             depGraph: depGraphToUse || this.depGraph,
             entities,
@@ -452,9 +454,11 @@ class DataTable extends React.Component {
       if (field.allowFormulas) {
         ents.forEach((ent, i) => {
           const val = ent[field.path];
-          if (val && typeof val === "string" && val[0] === "=") {
-            const formula = val.slice(1);
-            const { error, replacedFormula } = replaceFormulaRanges({
+          const formula =
+            val &&
+            (val.formula || (typeof val === "string" && val[0] === "=" && val));
+          if (formula) {
+            const { replacedFormula } = replaceFormulaRanges({
               formula,
               entities: ents,
               schema
@@ -485,12 +489,13 @@ class DataTable extends React.Component {
       entities,
       initialEntities,
       change,
-      reduxFormCellValidation
+      reduxFormCellValidation,
+      allowFormulas
     } = this.props;
     const ents =
       initialEntities ||
       (entities && entities.length ? entities : _origEntities);
-    this.buildDepGraph(ents);
+    allowFormulas && this.buildDepGraph(ents);
     const { newEnts, validationErrors } = this.formatAndValidateEntities(ents);
     change("reduxFormEntities", newEnts);
     const toKeep = {};
@@ -675,7 +680,6 @@ class DataTable extends React.Component {
         } else if (e.clipboardData && e.clipboardData.getData) {
           toPaste = e.clipboardData.getData("text/plain");
         }
-        const htmlToPaste = e.clipboardData.getData("text/html");
         const jsonToPaste = e.clipboardData.getData("application/json");
         let hasReplace = false;
 
@@ -747,6 +751,7 @@ class DataTable extends React.Component {
               const entity = entityIdToEntity[rowId].e;
               delete entity._isClean;
               const { errors } = editCellHelper({
+                allowFormulas,
                 updateGroup,
                 depGraph: this.depGraph,
                 entities,
@@ -796,6 +801,7 @@ class DataTable extends React.Component {
                       const path = indexToPath[cellIndexToChange];
                       if (path) {
                         const { errors } = editCellHelper({
+                          allowFormulas,
                           updateGroup,
                           depGraph: this.depGraph,
                           entities,
@@ -890,7 +896,8 @@ class DataTable extends React.Component {
       reduxFormSelectedCells,
       reduxFormCellValidation,
       schema,
-      entities
+      entities,
+      allowFormulas
     } = computePresets(this.props);
     let newCellValidate = {
       ...reduxFormCellValidation
@@ -907,6 +914,7 @@ class DataTable extends React.Component {
         const entity = entityIdToEntity[rowId].e;
         delete entity._isClean;
         const { errors } = editCellHelper({
+          allowFormulas,
           updateGroup,
           depGraph: this.depGraph,
           entities,
@@ -982,6 +990,7 @@ class DataTable extends React.Component {
       this.props;
     const [nextState, patches, inversePatches] = produceWithPatches(ents, fn);
     if (!inversePatches.length) return;
+
     const thatNewNew = [...nextState];
     thatNewNew.isDirty = true;
     change("reduxFormEntities", thatNewNew);
@@ -2342,7 +2351,8 @@ class DataTable extends React.Component {
       entities = [],
       change,
       schema,
-      reduxFormCellValidation
+      reduxFormCellValidation,
+      allowFormulas
     } = computePresets(this.props);
     const updateGroup = {};
 
@@ -2354,6 +2364,7 @@ class DataTable extends React.Component {
       });
       delete entity._isClean;
       const { errors } = editCellHelper({
+        allowFormulas,
         updateGroup,
         depGraph: this.depGraph,
         entities,
@@ -2931,7 +2942,8 @@ class DataTable extends React.Component {
       schema,
       reduxFormCellValidation,
       change,
-      reduxFormSelectedCells
+      reduxFormSelectedCells,
+      allowFormulas
     } = this.props;
     const primaryCellId = this.getPrimarySelectedCellId();
     const [primaryRowId, primaryCellPath] = primaryCellId.split(":");
@@ -3113,6 +3125,7 @@ class DataTable extends React.Component {
               }
             }
             const { errors } = editCellHelper({
+              allowFormulas,
               updateGroup,
               depGraph: this.depGraph,
               entities,
@@ -3250,9 +3263,11 @@ class DataTable extends React.Component {
   };
 
   insertRows = ({ above, numRows = 1, appendToBottom } = {}) => {
-    const { entities = [], reduxFormCellValidation } = computePresets(
-      this.props
-    );
+    const {
+      entities = [],
+      reduxFormCellValidation,
+      allowFormulas
+    } = computePresets(this.props);
 
     const primaryCellId = this.getPrimarySelectedCellId();
     const [rowId] = primaryCellId?.split(":") || [];
@@ -3264,7 +3279,6 @@ class DataTable extends React.Component {
       });
       const insertIndex = above ? indexToInsert : indexToInsert + 1;
       const insertIndexToUse = appendToBottom ? entities.length : insertIndex;
-      console.log(`yarr`)
       let { newEnts, validationErrors } = this.formatAndValidateEntities(
         newEntities,
         {
@@ -3274,39 +3288,17 @@ class DataTable extends React.Component {
         }
       );
 
-      console.log(`jarr`)
-
       newEnts = newEnts.map(e => ({
         ...e,
         _isClean: true
       }));
-      
-      entities.forEach(e => {
-        Object.values(e).forEach((v) => {
-          if (v?.formula) {
-            console.log(`v.formula:`,v.formula)
-            // update the formula to shift the row numbers up or down as needed 
-            v.formula = v.formula.replace(/([A-Z]+[0-9]+)/gi, (match, p1) => {
-              console.log(`p1:`, p1)
-              console.log(`match:`, match)
-              // update the match number 
-              const num = Number(match.replace(/[A-Z]+/gi, ''));
-              console.log(`num:`, num)
-              console.log(`insertIndexToUse:`, insertIndexToUse)
-              if (insertIndexToUse < num) {
-                console.log(`newEnts.length:`,newEnts.length)
-                const newNum = num + newEnts.length
-                console.log(`newNum:`, newNum)
-                // if the insert index is above the match number then we need to add 1 to the row number
-                return `${p1}${newNum}`;
-              }
-            })
-            console.log(`v.formula:`,v.formula)
+      allowFormulas &&
+        updateEntityFormulasToInsertDelete({
+          entities,
+          insertIndex: insertIndexToUse,
+          numEnts: newEnts.length
+        });
 
-            
-          }
-        })
-      });
       this.updateValidation(entities, {
         ...reduxFormCellValidation,
         ...validationErrors
@@ -3314,6 +3306,7 @@ class DataTable extends React.Component {
       // we need to make sure any entities with formulas are updated
 
       entities.splice(insertIndexToUse, 0, ...newEnts);
+      allowFormulas && this.buildDepGraph(entities);
     });
     this.refocusTable();
   };
@@ -3323,7 +3316,7 @@ class DataTable extends React.Component {
     );
 
     const primaryCellId = this.getPrimarySelectedCellId();
-    const [rowId, columnName] = primaryCellId?.split(":") || [];
+    const [rowId] = primaryCellId?.split(":") || [];
     this.updateEntitiesHelper(entities, entities => {
       const newEntities = times(numColumns).map(() => ({ id: nanoid() }));
 
@@ -3524,7 +3517,8 @@ class DataTable extends React.Component {
                 const {
                   entities = [],
                   reduxFormCellValidation,
-                  reduxFormSelectedCells = {}
+                  reduxFormSelectedCells = {},
+                  allowFormulas
                 } = computePresets(this.props);
                 const selectedRowIds = Object.keys(reduxFormSelectedCells).map(
                   cellId => {
@@ -3533,16 +3527,33 @@ class DataTable extends React.Component {
                   }
                 );
                 this.updateEntitiesHelper(entities, entities => {
-                  const ents = entities.filter(
-                    (e, i) => !selectedRowIds.includes(getIdOrCodeOrIndex(e, i))
+                  const deleteIndices = uniq(
+                    selectedRowIds
+                      .map(
+                        id =>
+                          entities.findIndex(
+                            (e, i) => getIdOrCodeOrIndex(e, i) === id
+                          ) + 1
+                      )
+                      .sort((a, b) => a - b)
                   );
+                  allowFormulas &&
+                    updateEntityFormulasToInsertDelete({
+                      entities,
+                      deleteIndices
+                    });
+
+                  deleteIndices.reverse().forEach(indexToRemove => {
+                    entities.splice(indexToRemove - 1, 1);
+                  });
+
                   this.updateValidation(
-                    ents,
+                    entities,
                     omitBy(reduxFormCellValidation, (v, cellId) =>
                       selectedRowIds.includes(cellId.split(":")[0])
                     )
                   );
-                  return ents;
+                  // return ents;
                 });
                 this.refocusTable();
               }}
@@ -4107,3 +4118,61 @@ export function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
   });
   return { entsToUse, validationToUse };
 }
+
+const updateEntityFormulasToInsertDelete = ({
+  entities,
+  deleteIndices,
+  insertIndex,
+  numEnts = 1
+}) => {
+  const isInsert = !deleteIndices;
+  entities.forEach(e => {
+    Object.values(e).forEach(v => {
+      if (v?.formula) {
+        // update the formula to shift the row numbers up or down as needed
+        v.formula = v.formula.replace(/([A-Z]+[0-9]+)/gi, match => {
+          const letter = match.replace(/[0-9]+/gi, "");
+          // update the match number
+          const num = Number(match.replace(/[A-Z]+/gi, ""));
+          if (isInsert) {
+            if (num > insertIndex) {
+              // if the insert index is above the match number then we need to add 1 to the row number
+              const newNum = num + numEnts;
+              return `${letter}${newNum}`;
+            }
+          } else {
+            let newNum = num;
+            deleteIndices.forEach(i => {
+              if (num > i) {
+                newNum = num - 1;
+              }
+            });
+            return `${letter}${newNum}`;
+          }
+          return match;
+        });
+        v.formula = v.formula.replace(/([0-9]+:[0-9]+)/gi, match => {
+          const [num1, num2] = match.split(":");
+          if (num1 === num2) {
+            const num = Number(num1);
+            if (isInsert) {
+              if (num > insertIndex) {
+                const newNum = num + numEnts;
+                return `${newNum}:${newNum}`;
+              }
+            } else {
+              let newNum = num;
+              deleteIndices.forEach(i => {
+                if (num > i) {
+                  newNum = num - 1;
+                }
+              });
+              return `${newNum}:${newNum}`;
+            }
+          }
+          return match;
+        });
+      }
+    });
+  });
+};

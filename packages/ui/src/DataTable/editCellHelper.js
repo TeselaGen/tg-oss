@@ -1,4 +1,4 @@
-import { get, isNumber, isString, set, toNumber } from "lodash";
+import { isString, set, toNumber } from "lodash";
 import { defaultValidators } from "./defaultValidators";
 import { defaultFormatters } from "./defaultFormatters";
 import { evaluate } from "mathjs";
@@ -23,13 +23,9 @@ export const editCellHelper = ({
   newVal,
   entities,
   nestLevel = 0,
-  depLevel = 0
+  depLevel = 0,
+  allowFormulas
 }) => {
-  // nestLevel === 0 && console.log(`depGraph:`, depGraph);
-  // console.log(`nestLevel:`, nestLevel);
-  // console.log(`depLevel:`, depLevel);
-  // console.log(`updateGroup:`, updateGroup);
-  // // if (nestLevel === 2) return
   let nv = newVal;
   if (nv?.formula) {
     nv = nv.formula;
@@ -44,7 +40,6 @@ export const editCellHelper = ({
     colSchema,
     schema
   });
-  // console.log(`evaluating cellAlphaNum:`, cellAlphaNum);
   if (
     updateGroup[cellAlphaNum] !== undefined &&
     updateGroup[cellAlphaNum] !== "__Currently&&Updating__"
@@ -55,13 +50,12 @@ export const editCellHelper = ({
     updateGroup[cellAlphaNum] = "__Currently&&Updating__";
   }
   const cellId = `${getIdOrCodeOrIndex(entity)}:${colSchema.path}`;
-
+  const oldVal = entity[path];
   const { format, validate, type } = colSchema;
   let errors = {};
   if (nv === undefined && colSchema.defaultValue !== undefined) {
     nv = colSchema.defaultValue;
   }
-  // console.log(`nv:`, nv);
 
   let hasFormula = false;
   if (colSchema.allowFormulas && typeof nv === "string" && nv[0] === "=") {
@@ -81,10 +75,8 @@ export const editCellHelper = ({
     let error;
     // if nv contains : then it is a range
     // if (nv.includes(":")) {
-    //   // replace the range with the the values of the range
-    //   // get the start and end of the range
-
-    // }
+    // replace the range with the the values of the range
+    // get the start and end of the range
     const { rangeErr, replacedFormula } = replaceFormulaRanges({
       formula: nv,
       schema,
@@ -136,9 +128,9 @@ export const editCellHelper = ({
         };
         val = value?.formula ? value.value : value;
       } else if (!isNaN(toNumber(val))) {
-        return val
+        return val;
       } else if (isString(val)) {
-        return 0
+        return 0;
       }
       return val;
     });
@@ -196,9 +188,17 @@ export const editCellHelper = ({
     }
   }
   const value = hasFormula || nv;
-  set(entity, path, value);
+  if (
+    // if the formula and its value is the same as it was, don't set it again otherwise it will be added to the undo/redo stack
+    !(
+      hasFormula &&
+      value.value === oldVal?.value && value.formula === oldVal?.formula
+    )
+  ) {
+    set(entity, path, value);
+  }
   updateGroup[cellAlphaNum] = value;
-  if (entities && entities.length) {
+  if (allowFormulas && entities && entities.length) {
     // go through the depGraph and update any cells that depend on this cell
     const cellDepGraph = depGraph[cellAlphaNum];
     if (cellDepGraph && cellDepGraph.length) {
@@ -211,12 +211,14 @@ export const editCellHelper = ({
         // console.log(`evaluate deps`, cellDepGraph, `for cell`, cellAlphaNum);
         const [depColLetter, depRowIndex] = depCellAlphaNum.split(/(\d+)/);
         const depEntity = entities[depRowIndex - 1];
+        if (!depEntity) debugger;
         const depColIndex = depColLetter.charCodeAt(0) - 65;
         const depColSchema = schema.fields[depColIndex];
         const depPath = depColSchema.path;
         const depNewVal = depEntity[depPath];
 
         const { errors: _errors } = editCellHelper({
+          allowFormulas,
           updateGroup,
           depGraph,
           entity: depEntity,
