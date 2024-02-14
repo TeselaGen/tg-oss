@@ -279,8 +279,6 @@ export default class Minimap extends React.Component {
           display: "flex",
           flexDirection: "column",
           overflowX: "visible"
-
-          // overflowY: "hidden"
         }}
         onClick={this.handleMinimapClick}
       >
@@ -292,9 +290,7 @@ export default class Minimap extends React.Component {
             }
           }}
           style={{
-            // maxHeight: 350,
             overflowY: minimapTracksPartialHeight > 190 ? "auto" : "hidden",
-            // overflowY: "auto",
             overflowX: "hidden",
             position: "relative"
           }}
@@ -320,7 +316,6 @@ export default class Minimap extends React.Component {
               <div
                 style={{
                   marginTop: -3
-                  // paddingLeft: nameDivWidth
                 }}
                 ref={ref}
               >
@@ -336,15 +331,15 @@ export default class Minimap extends React.Component {
 
         <Axis
           {...{
-            row: { start: 0, end: seqLength },
+            row: { start: 0, end: seqLength - 1 },
             tickSpacing: massageTickSpacing(Math.floor(seqLength / 10)),
             bpsPerRow: seqLength,
             charWidth,
             annotationHeight: 15,
             sequenceLength: seqLength,
             style: {
-              // paddingLeft: nameDivWidth,
-              height: 17
+              height: 17,
+              width: "100%"
             }
           }}
         />

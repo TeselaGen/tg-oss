@@ -77,8 +77,6 @@ const Axis = function (props) {
   }
 
   const yStart = 0;
-  // const yEnd = annotationHeight / 3;
-
   const tickMarkSVG = [];
 
   tickMarkPositions.forEach(function ({ tickMarkPosition, xCenter }, i) {
@@ -101,7 +99,6 @@ const Axis = function (props) {
           row.start + tickMarkPosition,
           sequenceLength
         ) + (isProtein ? 0 : 1);
-
       const positionLength = position.toString().length * 4;
       const textInner = divideBy3(position + (isProtein ? 1 : 0), isProtein);
 
@@ -136,6 +133,7 @@ const Axis = function (props) {
     <svg
       className="veRowViewAxis veAxis"
       height={annotationHeight}
+      width={width}
       style={{ marginTop, overflow: "visible", display: "block", ...style }}
     >
       {tickMarkSVG}

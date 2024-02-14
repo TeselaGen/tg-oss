@@ -146,11 +146,12 @@ export default function RowItem(props) {
   } = annotationVisibility;
 
   const { sequence = "", cutsites = [] } = row;
-
-  const reverseSequence = getComplementSequenceString(
-    (alignmentData && alignmentData.sequence) || sequence,
-    isRna
-  );
+  const reverseSequence = showReverseSequence
+    ? getComplementSequenceString(
+        (alignmentData && alignmentData.sequence) || sequence,
+        isRna
+      )
+    : "";
   const getGaps = useMemo(() => {
     if (alignmentData) {
       const gapMap = getGapMap(alignmentData.sequence);
@@ -341,7 +342,6 @@ export default function RowItem(props) {
     },
     alignmentType
   };
-
   return (
     <div
       style={rowContainerStyle}

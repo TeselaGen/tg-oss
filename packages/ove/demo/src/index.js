@@ -50,8 +50,7 @@ const Demo = () => {
       { name: "EnzymeViewer", url: "EnzymeViewer" },
       { name: "CircularView", url: "CircularView" },
       { name: "RowView", url: "RowView" },
-      { name: "LinearView", url: "LinearView" },
-      { name: "ToolBar", url: "ToolBar" }
+      { name: "LinearView", url: "LinearView" }
     ].map(({ url, name }) => {
       return (
         <div key={name} style={{ height: 20, marginLeft: 10 }}>

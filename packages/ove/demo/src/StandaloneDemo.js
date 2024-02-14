@@ -518,7 +518,6 @@ export default class StandaloneDemo extends React.Component {
               this.setState({ isDialogOpen: false });
               this.mountEditor();
             }}
-            backdropProps={{ style: { zIndex: 1050 } }}
             title="yooo"
             isOpen={isDialogOpen}
           >

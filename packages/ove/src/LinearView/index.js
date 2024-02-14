@@ -214,6 +214,16 @@ class _LinearView extends React.Component {
         updateLabelsForInViewFeatures();
       }
     };
+    const tickSpacingToUse =
+      tickSpacing ||
+      (isLinViewZoomed
+        ? massageTickSpacing(Math.ceil(120 / this.charWidth))
+        : massageTickSpacing(
+            Math.floor(
+              (this.getMaxLength() / (sequenceData.isProtein ? 9 : 10)) *
+                Math.max(1, Math.log10(1 / this.charWidth))
+            )
+          ));
     return (
       <Draggable
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
@@ -291,7 +301,6 @@ class _LinearView extends React.Component {
           {!noWarnings && (
             <VeTopRightContainer>{this.paredDownMessages}</VeTopRightContainer>
           )}
-
           <PinchHelperToUse {...(linearZoomEnabled && pinchHandler)}>
             <RowItem
               {...{
@@ -326,13 +335,7 @@ class _LinearView extends React.Component {
                 bpsPerRow,
                 fullSequence: sequenceData.sequence,
                 emptyText: getEmptyText({ sequenceData, caretPosition }),
-                tickSpacing:
-                  tickSpacing ||
-                  (isLinViewZoomed
-                    ? massageTickSpacing(Math.ceil(120 / this.charWidth))
-                    : Math.floor(
-                        this.getMaxLength() / (sequenceData.isProtein ? 9 : 10)
-                      )),
+                tickSpacing: tickSpacingToUse,
                 annotationVisibility: {
                   ...rest.annotationVisibility,
                   ...((!isLinViewZoomed || this.charWidth < 5) && {
