@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { MultiSelect, getCreateNewItem } from "@blueprintjs/select";
 import { Keys, Button, MenuItem, Tag } from "@blueprintjs/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { filter, isEqual } from "lodash";
 import classNames from "classnames";
 import "./style.css";
@@ -10,6 +10,7 @@ import fuzzysearch from "fuzzysearch";
 import getTextFromEl from "../utils/getTextFromEl";
 import { getTagColorStyle, getTagProps } from "../utils/tagUtils";
 import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
+import { compose } from "redux";
 
 class TgSelect extends React.Component {
   constructor(props) {
@@ -384,27 +385,54 @@ class TgSelect extends React.Component {
     );
   }
 }
-export default withProps(props => {
-  const { multi, value, options } = props;
-  let optionsToRet = options;
-  // based on incoming value hide those selected options from the option list
-  if (multi && value) {
-    const valArray = getValueArray(value);
-    optionsToRet = options.filter(op => {
-      const isOptionSelected = valArray.some(val => {
-        if (!val) return false;
-        const matching = isEqual(val.value, op.value);
-        return matching;
+
+const withAsyncOptions = Component => props => {
+  const { loadOptions, options, ...rest } = props;
+  const [asyncOptions, setAsyncOptions] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  useEffect(() => {
+    if (loadOptions) {
+      setLoading(true);
+      loadOptions().then(options => {
+        setAsyncOptions(options);
+        setLoading(false);
       });
-      return !isOptionSelected;
-    });
-  }
-  return {
-    // unfilteredOptions is needed for finding selected items
-    unfilteredOptions: options,
-    options: optionsToRet
-  };
-})(TgSelect);
+    }
+  }, [loadOptions]);
+
+  return (
+    <Component
+      {...rest}
+      isLoading={isLoading || rest.isLoading}
+      options={loadOptions ? asyncOptions : options}
+    />
+  );
+};
+
+export default compose(
+  withAsyncOptions,
+  withProps(props => {
+    const { multi, value, options = [] } = props;
+    let optionsToRet = options;
+    // based on incoming value hide those selected options from the option list
+    if (multi && value) {
+      const valArray = getValueArray(value);
+      optionsToRet = options.filter(op => {
+        const isOptionSelected = valArray.some(val => {
+          if (!val) return false;
+          const matching = isEqual(val.value, op.value);
+          return matching;
+        });
+        return !isOptionSelected;
+      });
+    }
+    return {
+      // unfilteredOptions is needed for finding selected items
+      unfilteredOptions: options,
+      options: optionsToRet
+    };
+  })
+)(TgSelect);
 
 const itemDisabled = i => i.disabled;
 const noResultsDefault = <div>No Results...</div>;
@@ -440,11 +468,13 @@ export const itemListPredicate = (_queryString = "", items, isSimpleSearch) => {
       text: item.toLowerCase
         ? item.toLowerCase()
         : item.label
-        ? item.label.toLowerCase
-          ? item.label.toLowerCase()
-          : getTextFromEl(item.label).toLowerCase()
-        : (item.value && item.value.toLowerCase && item.value.toLowerCase()) ||
-          ""
+          ? item.label.toLowerCase
+            ? item.label.toLowerCase()
+            : getTextFromEl(item.label).toLowerCase()
+          : (item.value &&
+              item.value.toLowerCase &&
+              item.value.toLowerCase()) ||
+            ""
     };
   });
   let toRet = toSearchArr.filter(({ text }) =>

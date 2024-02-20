@@ -1,12 +1,11 @@
 import React, { useMemo, useRef, useState } from "react";
-import DataTable from "../../../src/DataTable";
+import DataTable from "../DataTable";
 import DemoWrapper from "../DemoWrapper";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
 import { nanoid } from "nanoid";
-import { forEach, map } from "lodash";
-import { getColLetFromIndex } from "packages/ui/src/DataTable/editCellHelper";
-// import ExcelCell from "packages/ui/src/ExcelCell";
+import { map } from "lodash";
+import { getColLetFromIndex } from "../DataTable/editCellHelper";
 
 export default function SimpleTable(p) {
   const key = useRef(0);
@@ -55,16 +54,16 @@ export default function SimpleTable(p) {
           b: 44,
           aa: 42,
           cc: 88
-        }
-        ,{
+        },
+        {
           a: "=sum(1:1)",
           aa: 42,
-          cc: 89,
-        }
-        ,{
+          cc: 89
+        },
+        {
           a: "=sum(aa:aa)",
           aa: 42,
-          cc: 89,
+          cc: 89
         }
       ]);
       return {

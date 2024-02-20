@@ -21,7 +21,8 @@ export const isZipFile = file => {
   return type === "application/zip" || type === "application/x-zip-compressed";
 };
 
-export const getExt = file => file?.name?.split(".").pop();
+export const getExt = file =>
+  (file?.name || file?.originalname)?.split(".").pop();
 export const isExcelFile = file => getExt(file) === "xlsx";
 export const isCsvFile = file => getExt(file) === "csv";
 export const isTextFile = file => ["text", "txt"].includes(getExt(file));

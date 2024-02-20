@@ -358,8 +358,10 @@ const noSelection = ({ selectionLayer = {} }) =>
   !(selectionLayer.start > -1 && selectionLayer.end > -1) &&
   "Selection Required";
 
-const triggerClipboardCommand = type => {
-  const wrapper = document.querySelector(".veVectorInteractionWrapper");
+const triggerClipboardCommand = (type, props) => {
+  const wrapper = document.querySelector(
+    `.${props.editorName} .veVectorInteractionWrapper`
+  );
   if (!wrapper) {
     return window.toastr.info(`Cannot trigger a ${type} in the current view`);
   }
@@ -395,8 +397,8 @@ const editCommandDefs = {
       (props.readOnly && readOnlyDisabledTooltip) ||
       props.sequenceLength === 0,
     isHidden: props => props.readOnly || props.disableBpEditing,
-    handler: () => {
-      triggerClipboardCommand("cut");
+    handler: props => {
+      triggerClipboardCommand("cut", props);
     },
     hotkey: "mod+x"
   },
@@ -417,7 +419,7 @@ const editCommandDefs = {
   copy: {
     isDisabled: props => props.sequenceLength === 0,
 
-    handler: () => triggerClipboardCommand("copy"),
+    handler: props => triggerClipboardCommand("copy", props),
     hotkey: "mod+c"
   },
 
@@ -425,7 +427,7 @@ const editCommandDefs = {
     isDisabled: props => props.readOnly && readOnlyDisabledTooltip,
     isHidden: props => props.readOnly || props.disableBpEditing,
 
-    handler: () => triggerClipboardCommand("paste"),
+    handler: props => triggerClipboardCommand("paste", props),
     hotkey: "mod+v"
   },
 

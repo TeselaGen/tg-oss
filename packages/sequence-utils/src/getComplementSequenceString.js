@@ -1,9 +1,8 @@
 import DNAComplementMap from "./DNAComplementMap";
 import { merge } from "lodash";
 
-// ac.throw([ac.string,ac.bool],arguments);
 export default function getComplementSequenceString(sequence, isRna) {
-  // ac.throw([ac.string],arguments);
+  if (typeof sequence !== "string") return "";
   let complementSeqString = "";
   const complementMap = merge(
     DNAComplementMap,

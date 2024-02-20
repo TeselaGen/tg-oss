@@ -192,7 +192,8 @@ export const editCellHelper = ({
     // if the formula and its value is the same as it was, don't set it again otherwise it will be added to the undo/redo stack
     !(
       hasFormula &&
-      value.value === oldVal?.value && value.formula === oldVal?.formula
+      value.value === oldVal?.value &&
+      value.formula === oldVal?.formula
     )
   ) {
     set(entity, path, value);
@@ -211,7 +212,7 @@ export const editCellHelper = ({
         // console.log(`evaluate deps`, cellDepGraph, `for cell`, cellAlphaNum);
         const [depColLetter, depRowIndex] = depCellAlphaNum.split(/(\d+)/);
         const depEntity = entities[depRowIndex - 1];
-        if (!depEntity) debugger;
+        // if (!depEntity) debugger;
         const depColIndex = depColLetter.charCodeAt(0) - 65;
         const depColSchema = schema.fields[depColIndex];
         const depPath = depColSchema.path;
