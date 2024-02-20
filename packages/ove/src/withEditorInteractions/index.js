@@ -304,8 +304,8 @@ function VectorInteractionHOC(Component /* options */) {
         (this.sequenceDataToCopy || {}).textToCopy !== undefined
           ? this.sequenceDataToCopy.textToCopy
           : seqData.isProtein
-          ? seqData.proteinSequence
-          : seqData.sequence;
+            ? seqData.proteinSequence
+            : seqData.sequence;
 
       seqData.textToCopy = textToCopy;
 
@@ -431,12 +431,12 @@ function VectorInteractionHOC(Component /* options */) {
           isCaretAtEndOfSeq
             ? newSeqData.sequence.length
             : rangeToDelete.start > newSeqData.sequence.length
-            ? //we're deleting around the origin so set the cursor to the 0 position
-              0
-            : normalizePositionByRangeLength(
-                rangeToDelete.start,
-                newSeqData.sequence.length
-              )
+              ? //we're deleting around the origin so set the cursor to the 0 position
+                0
+              : normalizePositionByRangeLength(
+                  rangeToDelete.start,
+                  newSeqData.sequence.length
+                )
         );
         if (showToast) window.toastr.success("Sequence Deleted Successfully");
       }
@@ -516,8 +516,8 @@ function VectorInteractionHOC(Component /* options */) {
         event.metaKey
           ? annotation
           : event.altKey
-          ? annotation.bottomSnipPosition
-          : annotation.topSnipPosition
+            ? annotation.bottomSnipPosition
+            : annotation.topSnipPosition
       );
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
@@ -939,39 +939,41 @@ function VectorInteractionHOC(Component /* options */) {
           ...(readOnly
             ? []
             : [
-                ...(parts && [
-                  "--",
-                  {
-                    text: "Make a Part from Feature",
-                    onClick: async () => {
-                      const { sequenceData, upsertPart } = this.props;
-                      if (
-                        some(sequenceData.parts, part => {
+                ...(parts
+                  ? [
+                      "--",
+                      {
+                        text: "Make a Part from Feature",
+                        onClick: async () => {
+                          const { sequenceData, upsertPart } = this.props;
                           if (
-                            part.start === annotation.start &&
-                            part.end === annotation.end
+                            some(sequenceData.parts, part => {
+                              if (
+                                part.start === annotation.start &&
+                                part.end === annotation.end
+                              ) {
+                                return true;
+                              }
+                            })
                           ) {
-                            return true;
+                            const doAction = await showConfirmationDialog({
+                              text: "A part already exists that matches this feature's range. Do you want to make one anyways?",
+                              confirmButtonText: "Create Part",
+                              canEscapeKeyCancel: true //this is false by default
+                            });
+                            if (!doAction) return; //early return
                           }
-                        })
-                      ) {
-                        const doAction = await showConfirmationDialog({
-                          text: "A part already exists that matches this feature's range. Do you want to make one anyways?",
-                          confirmButtonText: "Create Part",
-                          canEscapeKeyCancel: true //this is false by default
-                        });
-                        if (!doAction) return; //early return
+                          upsertPart({
+                            start: annotation.start,
+                            end: annotation.end,
+                            type: annotation.type,
+                            forward: annotation.forward,
+                            name: annotation.name
+                          });
+                        }
                       }
-                      upsertPart({
-                        start: annotation.start,
-                        end: annotation.end,
-                        type: annotation.type,
-                        forward: annotation.forward,
-                        name: annotation.name
-                      });
-                    }
-                  }
-                ]),
+                    ]
+                  : []),
                 {
                   text: "Merge With Another Feature",
                   onClick: () => {
@@ -1185,8 +1187,8 @@ function getGenbankFromSelection(selectedSeqData, sequenceData) {
       name: spansEntireSeq
         ? selectedSeqData.name
         : just1Feat
-        ? feats[0].name
-        : selectedSeqData.name + "_partial",
+          ? feats[0].name
+          : selectedSeqData.name + "_partial",
       circular: spansEntireSeq ? selectedSeqData.circular : false
     })
   };
@@ -1247,17 +1249,17 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
     caretPosition > -1
       ? caretPosition
       : selectionLayer.start > selectionLayer.end
-      ? maintainOriginSplit
-        ? newSeqData.size - selectionStartDistanceFromEnd
-        : 0
-      : selectionLayer.start;
+        ? maintainOriginSplit
+          ? newSeqData.size - selectionStartDistanceFromEnd
+          : 0
+        : selectionLayer.start;
   const newSelectionLayerEnd =
     newSelectionLayerStart +
     (seqDataToInsert.sequence
       ? seqDataToInsert.sequence.length - 1
       : seqDataToInsert.proteinSequence
-      ? seqDataToInsert.proteinSequence.length * 3 - 1
-      : 0);
+        ? seqDataToInsert.proteinSequence.length * 3 - 1
+        : 0);
   selectionLayerUpdate({
     start: newSelectionLayerStart,
     end: newSelectionLayerEnd % newSeqData.sequence.length

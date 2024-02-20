@@ -2041,6 +2041,23 @@ clickOverrides: {
                 then the bases of primers can be edited.
                 `
               })}
+              {renderToggle({
+                that: this,
+                type: "annotationsToSupport",
+                hook: shouldUpdate => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      annotationsToSupport: {
+                        parts: false
+                      }
+                    });
+                },
+                description: `If annotationsToSupport: {
+                  parts: false,
+                } is passed to updateEditor
+                then parts won't be shown.
+                `
+              })}
               {editorHandlers.length ? (
                 <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
               ) : null}
