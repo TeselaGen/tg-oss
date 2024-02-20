@@ -1,11 +1,11 @@
 import React, { useMemo, useRef, useState } from "react";
-import DataTable from "../DataTable";
+import DataTable from "../../../src/DataTable";
 import DemoWrapper from "../DemoWrapper";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
 import { nanoid } from "nanoid";
 import { map } from "lodash";
-import { getColLetFromIndex } from "../DataTable/editCellHelper";
+import { getColLetFromIndex } from "../../../src/DataTable/editCellHelper";
 
 export default function SimpleTable(p) {
   const key = useRef(0);
