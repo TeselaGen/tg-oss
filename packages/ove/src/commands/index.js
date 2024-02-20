@@ -360,7 +360,7 @@ const noSelection = ({ selectionLayer = {} }) =>
 
 const triggerClipboardCommand = (type, props) => {
   const wrapper = document.querySelector(
-    `#${props.editorName} .veVectorInteractionWrapper`
+    `.${props.editorName} .veVectorInteractionWrapper`
   );
   if (!wrapper) {
     return window.toastr.info(`Cannot trigger a ${type} in the current view`);
