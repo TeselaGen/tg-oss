@@ -15,6 +15,7 @@ import { viewColumn, openColumn } from "../DataTable/viewColumn";
 import pureNoFunc from "../utils/pureNoFunc";
 import tgFormValues from "../utils/tgFormValues";
 import getTableConfigFromStorage from "./utils/getTableConfigFromStorage";
+import computePresets from "./utils/computePresets";
 
 export default compose(
   // maybe we need this in some cases?
@@ -40,6 +41,7 @@ export default compose(
         ...ownProps.tableParams
       };
     }
+    propsToUse = computePresets(propsToUse);
 
     const {
       schema,
@@ -126,8 +128,8 @@ export default compose(
               return field.render
                 ? !field.render(val, e)
                 : cellRenderer[field.path]
-                ? !cellRenderer[field.path](val, e)
-                : !val;
+                  ? !cellRenderer[field.path](val, e)
+                  : !val;
             });
           }
           if (noValsForField) {

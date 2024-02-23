@@ -75,7 +75,6 @@ import SearchBar from "./SearchBar";
 import DisplayOptions from "./DisplayOptions";
 import DisabledLoadingComponent from "./DisabledLoadingComponent";
 import SortableColumns from "./SortableColumns";
-import computePresets from "./utils/computePresets";
 import dataTableEnhancer from "./dataTableEnhancer";
 import defaultProps from "./defaultProps";
 
@@ -526,7 +525,7 @@ class DataTable extends React.Component {
       setShowForcedHidden
     } = this.props;
     isCellEditable && this.formatAndValidateTableInitial();
-    this.updateFromProps({}, computePresets(this.props));
+    this.updateFromProps({}, this.props);
     document.addEventListener("paste", this.handlePaste);
 
     if (!entities.length && !isLoading && !showForcedHiddenColumns) {
@@ -554,7 +553,7 @@ class DataTable extends React.Component {
     //   }
     // }
 
-    this.updateFromProps(computePresets(oldProps), computePresets(this.props));
+    this.updateFromProps(oldProps, this.props);
 
     // comment in to test what is causing re-render
     // Object.entries(this.props).forEach(
@@ -570,7 +569,7 @@ class DataTable extends React.Component {
   handleRowMove = (type, shiftHeld) => e => {
     e.preventDefault();
     e.stopPropagation();
-    const props = computePresets(this.props);
+    const props = this.props;
     const {
       noSelect,
       entities,
@@ -640,9 +639,7 @@ class DataTable extends React.Component {
     });
   };
   handleCopyHotkey = e => {
-    const { isCellEditable, reduxFormSelectedEntityIdMap } = computePresets(
-      this.props
-    );
+    const { isCellEditable, reduxFormSelectedEntityIdMap } = this.props;
 
     if (isCellEditable) {
       this.handleCopySelectedCells(e);
@@ -672,7 +669,7 @@ class DataTable extends React.Component {
       schema,
       entities,
       allowFormulas
-    } = computePresets(this.props);
+    } = this.props;
     const updateGroup = {};
 
     if (isCellEditable) {
@@ -851,7 +848,7 @@ class DataTable extends React.Component {
       isSingleSelect,
       isCellEditable,
       schema
-    } = computePresets(this.props);
+    } = this.props;
     if (isSingleSelect) return;
     e.preventDefault();
 
@@ -877,17 +874,17 @@ class DataTable extends React.Component {
       finalizeSelection({
         idMap: newIdMap,
         entities,
-        props: computePresets(this.props)
+        props: this.props
       });
     }
   };
   updateValidationHelper = () => {
-    const { entities, reduxFormCellValidation } = computePresets(this.props);
+    const { entities, reduxFormCellValidation } = this.props;
     this.updateValidation(entities, reduxFormCellValidation);
   };
 
   updateValidation = (entities, newCellValidate) => {
-    const { change, schema } = computePresets(this.props);
+    const { change, schema } = this.props;
     const tableWideErr = validateTableWideErrors({
       entities,
       schema,
@@ -904,7 +901,7 @@ class DataTable extends React.Component {
       schema,
       entities,
       allowFormulas
-    } = computePresets(this.props);
+    } = this.props;
     let newCellValidate = {
       ...reduxFormCellValidation
     };
@@ -1072,11 +1069,7 @@ class DataTable extends React.Component {
     }
   };
   handleCopySelectedCells = (e, opts) => {
-    const {
-      entities = [],
-      reduxFormSelectedCells,
-      schema
-    } = computePresets(this.props);
+    const { entities = [], reduxFormSelectedCells, schema } = this.props;
     // if the current selection is consecutive cells then copy with
     // tabs between. if not then just select primary selected cell
     const getEmptyMsg = () => window.toastr.warning("No text to copy");
@@ -1136,7 +1129,7 @@ class DataTable extends React.Component {
   };
 
   handleCopySelectedRows = (selectedRecords, e, opts) => {
-    const { entities = [] } = computePresets(this.props);
+    const { entities = [] } = this.props;
     const idToIndex = entities.reduce((acc, e, i) => {
       acc[e.id || e.code] = i;
       return acc;
@@ -1196,7 +1189,7 @@ class DataTable extends React.Component {
       moveColumnPersist,
       syncDisplayOptionsToDb,
       change
-    } = computePresets(this.props);
+    } = this.props;
     let moveColumnPersistToUse = moveColumnPersist;
     if (moveColumnPersist && withDisplayOptions && !syncDisplayOptionsToDb) {
       //little hack to make localstorage changes get reflected in UI (we force an update to get the enhancers to run again :)
@@ -1234,7 +1227,7 @@ class DataTable extends React.Component {
   ));
 
   addEntitiesToSelection = entities => {
-    const propPresets = computePresets(this.props);
+    const propPresets = this.props;
     const { isEntityDisabled, reduxFormSelectedEntityIdMap } = propPresets;
     const idMap = reduxFormSelectedEntityIdMap || {};
     const newIdMap = cloneDeep(idMap) || {};
@@ -1252,7 +1245,7 @@ class DataTable extends React.Component {
 
   render() {
     const { fullscreen } = this.state;
-    const propPresets = computePresets(this.props);
+    const propPresets = this.props;
     const {
       extraClasses,
       className,
@@ -1581,7 +1574,7 @@ class DataTable extends React.Component {
                   isTabKey
                   // || (isEnter && e.target?.tagName === "INPUT")
                 ) {
-                  const { schema, entities } = computePresets(this.props);
+                  const { schema, entities } = this.props;
                   const left = e.keyCode === 37;
                   const up = e.keyCode === 38;
                   const down = e.keyCode === 40 || e.keyCode === 13;
@@ -1815,7 +1808,7 @@ class DataTable extends React.Component {
                     finalizeSelection({
                       idMap: {},
                       entities,
-                      props: computePresets(this.props)
+                      props: this.props
                     });
                   }}
                 />
@@ -1974,7 +1967,7 @@ class DataTable extends React.Component {
       change,
       getRowClassName,
       isCellEditable
-    } = computePresets(this.props);
+    } = this.props;
     if (!rowInfo) {
       return {
         className: "no-row-data"
@@ -2006,7 +1999,7 @@ class DataTable extends React.Component {
         if (e.detail > 1) {
           return; //cancel multiple quick clicks
         }
-        rowClick(e, rowInfo, entities, computePresets(this.props));
+        rowClick(e, rowInfo, entities, this.props);
       },
       //row right click
       onContextMenu: e => {
@@ -2033,7 +2026,7 @@ class DataTable extends React.Component {
           finalizeSelection({
             idMap: newIdMap,
             entities,
-            props: computePresets(this.props)
+            props: this.props
           });
         }
         this.showContextMenu(e, newIdMap);
@@ -2063,7 +2056,7 @@ class DataTable extends React.Component {
       change,
       reduxFormSelectedCells = {},
       reduxFormEditingCell
-    } = computePresets(this.props);
+    } = this.props;
     const newSelectedCells = { ...reduxFormSelectedCells };
     newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
     //check if the cell is already selected and editing and if so, don't change it
@@ -2087,7 +2080,7 @@ class DataTable extends React.Component {
       reduxFormSelectedCells = {},
       isEntityDisabled,
       change
-    } = computePresets(this.props);
+    } = this.props;
     if (!isCellEditable) return {}; //only allow cell selection to do stuff here
     if (!rowInfo) return {};
     const entity = rowInfo.original;
@@ -2195,7 +2188,7 @@ class DataTable extends React.Component {
       reduxFormEditingCell,
       reduxFormSelectedCells = {},
       isEntityDisabled
-    } = computePresets(this.props);
+    } = this.props;
     const [rowId, cellPath] = cellId.split(":");
     const entityMap = getEntityIdToEntity(entities);
     const { e: entity, i: rowIndex } = entityMap[rowId];
@@ -2310,7 +2303,7 @@ class DataTable extends React.Component {
       noUserSelect,
       entities,
       isEntityDisabled
-    } = computePresets(this.props);
+    } = this.props;
     const checkedRows = getSelectedRowsFromEntities(
       entities,
       reduxFormSelectedEntityIdMap
@@ -2350,7 +2343,7 @@ class DataTable extends React.Component {
           finalizeSelection({
             idMap: newIdMap,
             entities,
-            props: computePresets(this.props)
+            props: this.props
           });
         }}
         /* eslint-enable react/jsx-no-bind */
@@ -2367,7 +2360,7 @@ class DataTable extends React.Component {
       noUserSelect,
       entities,
       isEntityDisabled
-    } = computePresets(this.props);
+    } = this.props;
     const checkedRows = getSelectedRowsFromEntities(
       entities,
       reduxFormSelectedEntityIdMap
@@ -2384,7 +2377,7 @@ class DataTable extends React.Component {
       <Checkbox
         disabled={noSelect || noUserSelect || isEntityDisabled(entity)}
         onClick={e => {
-          rowClick(e, row, entities, computePresets(this.props));
+          rowClick(e, row, entities, this.props);
         }}
         checked={isSelected}
       />
@@ -2398,7 +2391,7 @@ class DataTable extends React.Component {
       schema,
       reduxFormCellValidation,
       allowFormulas
-    } = computePresets(this.props);
+    } = this.props;
     const updateGroup = {};
 
     const [rowId, path] = cellId.split(":");
@@ -2427,7 +2420,7 @@ class DataTable extends React.Component {
   };
 
   cancelCellEdit = () => {
-    const { change } = computePresets(this.props);
+    const { change } = this.props;
     change("reduxFormEditingCell", null);
     this.refocusTable();
   };
@@ -2441,9 +2434,7 @@ class DataTable extends React.Component {
   };
 
   isSelectionARectangle = () => {
-    const { entities, reduxFormSelectedCells, schema } = computePresets(
-      this.props
-    );
+    const { entities, reduxFormSelectedCells, schema } = this.props;
     if (
       reduxFormSelectedCells &&
       Object.keys(reduxFormSelectedCells).length > 1
@@ -2535,7 +2526,7 @@ class DataTable extends React.Component {
       change,
       reduxFormSelectedCells,
       reduxFormEditingCell
-    } = computePresets(this.props);
+    } = this.props;
     const { columns } = this.state;
     if (!columns.length) {
       return columns;
@@ -3200,7 +3191,7 @@ class DataTable extends React.Component {
     });
   };
   getCopyTextForCell = (val, row = {}, column = {}) => {
-    const { cellRenderer } = computePresets(this.props);
+    const { cellRenderer } = this.props;
     // TODOCOPY we need a way to potentially omit certain columns from being added as a \t element (talk to taoh about this)
     let text = typeof val !== "string" ? row.value : val;
 
@@ -3252,9 +3243,7 @@ class DataTable extends React.Component {
   };
 
   addEditableTableEntities = incomingEnts => {
-    const { entities = [], reduxFormCellValidation } = computePresets(
-      this.props
-    );
+    const { entities = [], reduxFormCellValidation } = this.props;
 
     this.updateEntitiesHelper(entities, entities => {
       const newEntities = incomingEnts.map(e => ({
@@ -3285,8 +3274,7 @@ class DataTable extends React.Component {
     });
   };
   getEditableTableInfoAndThrowFormError = () => {
-    const { schema, reduxFormEntities, reduxFormCellValidation } =
-      computePresets(this.props);
+    const { schema, reduxFormEntities, reduxFormCellValidation } = this.props;
     const { entsToUse, validationToUse } = removeCleanRows(
       reduxFormEntities,
       reduxFormCellValidation
@@ -3319,7 +3307,7 @@ class DataTable extends React.Component {
       entities = [],
       reduxFormCellValidation,
       allowFormulas
-    } = computePresets(this.props);
+    } = this.props;
 
     const primaryCellId = this.getPrimarySelectedCellId();
     const [rowId] = primaryCellId?.split(":") || [];
@@ -3363,9 +3351,7 @@ class DataTable extends React.Component {
     this.refocusTable();
   };
   insertColumns = ({ toTheLeft, numColumns = 1, appendToEnd } = {}) => {
-    const { entities = [], reduxFormCellValidation } = computePresets(
-      this.props
-    );
+    const { entities = [], reduxFormCellValidation } = this.props;
 
     const primaryCellId = this.getPrimarySelectedCellId();
     const [rowId] = primaryCellId?.split(":") || [];
@@ -3408,7 +3394,7 @@ class DataTable extends React.Component {
       isCellEditable,
       entities = [],
       reduxFormSelectedCells = {}
-    } = computePresets(this.props);
+    } = this.props;
     let selectedRecords;
     if (isCellEditable) {
       const rowIds = {};
@@ -3594,7 +3580,7 @@ class DataTable extends React.Component {
                   reduxFormCellValidation,
                   reduxFormSelectedCells = {},
                   allowFormulas
-                } = computePresets(this.props);
+                } = this.props;
                 const selectedRowIds = Object.keys(reduxFormSelectedCells).map(
                   cellId => {
                     const [rowId] = cellId.split(":");
@@ -3657,7 +3643,7 @@ class DataTable extends React.Component {
       extraCompact,
       entities,
       allowFormulas
-    } = computePresets(this.props);
+    } = this.props;
     const {
       displayName,
       description,
