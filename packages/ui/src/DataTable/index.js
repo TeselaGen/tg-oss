@@ -45,7 +45,8 @@ import {
   Popover,
   Intent,
   Callout,
-  Tooltip
+  Tooltip,
+  Divider
 } from "@blueprintjs/core";
 import classNames from "classnames";
 import scrollIntoView from "dom-scroll-into-view";
@@ -88,6 +89,7 @@ import { SwitchField } from "../FormComponents";
 import { validateTableWideErrors } from "./validateTableWideErrors";
 import {
   editCellHelper,
+  getCellAlphaNumHelper,
   getColLetFromIndex,
   replaceFormulaRanges
 } from "./editCellHelper";
@@ -226,8 +228,10 @@ class DataTable extends React.Component {
           reduxFormEntitiesUndoRedoStack.currentVersion
         ].inversePatches
       );
+      this.buildDepGraph(nextState);
       const { newEnts, validationErrors } =
         this.formatAndValidateEntities(nextState);
+
       change("reduxFormEntities", newEnts);
       this.updateValidation(newEnts, validationErrors);
       change("reduxFormEntitiesUndoRedoStack", {
@@ -250,8 +254,10 @@ class DataTable extends React.Component {
         entities,
         reduxFormEntitiesUndoRedoStack[nextV].patches
       );
+      this.buildDepGraph(nextState);
       const { newEnts, validationErrors } =
         this.formatAndValidateEntities(nextState);
+
       change("reduxFormEntities", newEnts);
       this.updateValidation(newEnts, validationErrors);
       change("reduxFormEntitiesUndoRedoStack", {
@@ -448,7 +454,8 @@ class DataTable extends React.Component {
     };
   };
   buildDepGraph = ents => {
-    const { schema } = this.props;
+    const { schema, allowFormulas } = this.props;
+    if (!allowFormulas) return;
     const depGraph = {};
     schema.fields.forEach((field, fi) => {
       if (field.allowFormulas) {
@@ -489,13 +496,12 @@ class DataTable extends React.Component {
       entities,
       initialEntities,
       change,
-      reduxFormCellValidation,
-      allowFormulas
+      reduxFormCellValidation
     } = this.props;
     const ents =
       initialEntities ||
       (entities && entities.length ? entities : _origEntities);
-    allowFormulas && this.buildDepGraph(ents);
+    this.buildDepGraph(ents);
     const { newEnts, validationErrors } = this.formatAndValidateEntities(ents);
     change("reduxFormEntities", newEnts);
     const toKeep = {};
@@ -937,15 +943,16 @@ class DataTable extends React.Component {
     this.handleCopyHotkey(e);
   };
 
-  getCellCopyText = cellWrapper => {
+  getCellCopyText = (cellWrapper, isFormulaCopy) => {
+    // note - all copy/download functions use this helper to get the text to copy
     const text = cellWrapper && cellWrapper.getAttribute("data-copy-text");
+    const formula = cellWrapper && cellWrapper.getAttribute("data-formula");
     const jsonText = cellWrapper && cellWrapper.getAttribute("data-copy-json");
-
     const textContent = text || cellWrapper.textContent || "";
-    return [textContent, jsonText];
+    return [(isFormulaCopy && formula) || textContent, jsonText];
   };
 
-  handleCopyColumn = (e, cellWrapper, selectedRecords) => {
+  handleCopyColumn = ({ e, cellWrapper, selectedRecords, opts }) => {
     const specificColumn = cellWrapper.getAttribute("data-test");
     let rowElsToCopy = getAllRows(e);
     if (!rowElsToCopy) return;
@@ -959,17 +966,21 @@ class DataTable extends React.Component {
     if (!rowElsToCopy) return;
     this.handleCopyRows(rowElsToCopy, {
       specificColumn,
-      onFinishMsg: "Column Copied"
+      onFinishMsg: "Column Copied",
+      ...opts
     });
   };
   handleCopyRows = (
     rowElsToCopy,
-    { specificColumn, onFinishMsg, isDownload } = {}
+    { specificColumn, onFinishMsg, isDownload, isFormulaCopy } = {}
   ) => {
     let textToCopy = [];
     const jsonToCopy = [];
     forEach(rowElsToCopy, rowEl => {
-      const [t, j] = this.getRowCopyText(rowEl, { specificColumn });
+      const [t, j] = this.getRowCopyText(rowEl, {
+        specificColumn,
+        isFormulaCopy
+      });
       textToCopy.push(t);
       jsonToCopy.push(j);
     });
@@ -1006,7 +1017,7 @@ class DataTable extends React.Component {
     });
   };
 
-  getRowCopyText = (rowEl, { specificColumn } = {}) => {
+  getRowCopyText = (rowEl, { specificColumn, isFormulaCopy } = {}) => {
     //takes in a row element
     if (!rowEl) return [];
     const textContent = [];
@@ -1024,7 +1035,7 @@ class DataTable extends React.Component {
       ) {
         return [];
       }
-      const [t, j] = this.getCellCopyText(cellChild);
+      const [t, j] = this.getCellCopyText(cellChild, isFormulaCopy);
       textContent.push(t);
       jsonText.push(j);
     });
@@ -1048,7 +1059,8 @@ class DataTable extends React.Component {
 
   handleCopyTable = (e, opts) => {
     try {
-      const allRowEls = getAllRows(e);
+      let allRowEls = getAllRows(e);
+      if (opts.noHeader) allRowEls = [...allRowEls].slice(1);
       if (!allRowEls) return;
       this.handleCopyRows(allRowEls, {
         ...opts,
@@ -1059,7 +1071,7 @@ class DataTable extends React.Component {
       window.toastr.error("Error copying rows.");
     }
   };
-  handleCopySelectedCells = e => {
+  handleCopySelectedCells = (e, opts) => {
     const {
       entities = [],
       reduxFormSelectedCells,
@@ -1067,7 +1079,8 @@ class DataTable extends React.Component {
     } = computePresets(this.props);
     // if the current selection is consecutive cells then copy with
     // tabs between. if not then just select primary selected cell
-    if (isEmpty(reduxFormSelectedCells)) return;
+    const getEmptyMsg = () => window.toastr.warning("No text to copy");
+    if (isEmpty(reduxFormSelectedCells)) return getEmptyMsg();
     const pathToIndex = getFieldPathToIndex(schema);
     const entityIdToEntity = getEntityIdToEntity(entities);
     const selectionGrid = [];
@@ -1090,7 +1103,7 @@ class DataTable extends React.Component {
         selectionGrid[eInfo.i][cellIndex] = true;
       }
     });
-    if (firstRowIndex === undefined) return;
+    if (firstRowIndex === undefined) return getEmptyMsg();
     const allRows = getAllRows(e);
     let fullCellText = "";
     const fullJson = [];
@@ -1104,7 +1117,7 @@ class DataTable extends React.Component {
       } else {
         const jsonRow = [];
         // ignore header
-        let [rowCopyText, json] = this.getRowCopyText(allRows[i + 1]);
+        let [rowCopyText, json] = this.getRowCopyText(allRows[i + 1], opts);
         rowCopyText = rowCopyText.split("\t");
         times(row.length, i => {
           const cell = row[i];
@@ -1117,12 +1130,12 @@ class DataTable extends React.Component {
         fullJson.push(jsonRow);
       }
     });
-    if (!fullCellText) return window.toastr.warning("No text to copy");
+    if (!fullCellText) return getEmptyMsg();
 
     this.handleCopyHelper(fullCellText, fullJson, "Selected cells copied");
   };
 
-  handleCopySelectedRows = (selectedRecords, e) => {
+  handleCopySelectedRows = (selectedRecords, e, opts) => {
     const { entities = [] } = computePresets(this.props);
     const idToIndex = entities.reduce((acc, e, i) => {
       acc[e.id || e.code] = i;
@@ -1143,7 +1156,8 @@ class DataTable extends React.Component {
       const rowEls = rowNumbersToCopy.map(i => allRowEls[i]);
 
       this.handleCopyRows(rowEls, {
-        onFinishMsg: "Selected rows copied"
+        onFinishMsg: "Selected rows copied",
+        ...opts
       });
     } catch (error) {
       console.error(`error:`, error);
@@ -2085,8 +2099,7 @@ class DataTable extends React.Component {
       cellIdToRight,
       cellIdBelow,
       cellIdToLeft,
-      rowDisabled,
-      columnIndex
+      rowDisabled
     } = getCellInfo({
       columnIndex: column.index,
       columnPath: column.path,
@@ -2106,18 +2119,18 @@ class DataTable extends React.Component {
       selectedRightBorder,
       selectedBottomBorder,
       selectedLeftBorder;
-    if (reduxFormSelectedCells[cellId]) {
+    const isSelected = reduxFormSelectedCells[cellId];
+    if (isSelected) {
       selectedTopBorder = !reduxFormSelectedCells[cellIdAbove];
       selectedRightBorder = !reduxFormSelectedCells[cellIdToRight];
       selectedBottomBorder = !reduxFormSelectedCells[cellIdBelow];
       selectedLeftBorder = !reduxFormSelectedCells[cellIdToLeft];
     }
-    const isPrimarySelected =
-      reduxFormSelectedCells[cellId] === PRIMARY_SELECTED_VAL;
+    const isPrimarySelected = isSelected === PRIMARY_SELECTED_VAL;
     const className = classNames({
-      isSelectedCell: reduxFormSelectedCells[cellId],
+      isSelectedCell: isSelected,
       isPrimarySelected,
-      isSecondarySelected: reduxFormSelectedCells[cellId] === true,
+      isSecondarySelected: isSelected === true,
       noSelectedTopBorder: !selectedTopBorder,
       isCleanRow: _isClean,
       noSelectedRightBorder: !selectedRightBorder,
@@ -2126,8 +2139,12 @@ class DataTable extends React.Component {
       isDropdownCell: column.type === "dropdown",
       isEditingCell: reduxFormEditingCell === cellId,
       hasCellError: !!err,
-      "no-data-tip": reduxFormSelectedCells[cellId]
+      "no-data-tip": isSelected
     });
+    const clickProps = {
+      isRowIndexColumn: column.isRowIndexColumn,
+      cellId
+    };
     return {
       onDoubleClick: () => {
         // cell double click
@@ -2139,7 +2156,12 @@ class DataTable extends React.Component {
         "data-no-child-data-tip": true
       }),
       onContextMenu: e => {
-        if (!isPrimarySelected) {
+        if (!isSelected) {
+          this.handleCellClick({
+            event: e,
+            ...clickProps
+          });
+        } else if (!isPrimarySelected) {
           const primaryCellId = this.getPrimarySelectedCellId();
           const newSelectedCells = { ...reduxFormSelectedCells };
           if (primaryCellId) {
@@ -2156,17 +2178,14 @@ class DataTable extends React.Component {
       onClick: event => {
         this.handleCellClick({
           event,
-          cellId,
-          rowDisabled,
-          rowIndex,
-          columnIndex
+          ...clickProps
         });
       },
       className
     };
   };
 
-  handleCellClick = ({ event, cellId }) => {
+  handleCellClick = ({ event, cellId, isRowIndexColumn }) => {
     if (!cellId) return;
     // cell click, cellclick
     const {
@@ -2185,10 +2204,36 @@ class DataTable extends React.Component {
     const rowDisabled = isEntityDisabled(entity);
 
     if (rowDisabled) return;
+
     let newSelectedCells = {
       ...reduxFormSelectedCells
     };
-    if (newSelectedCells[cellId] && !event.shiftKey) {
+    if (isRowIndexColumn) {
+      // it's like the whole row is being selected
+      let isThereAnUnselectedCell = false;
+      const allCellsInRow = {};
+      schema.fields.forEach(f => {
+        const toSelectId = `${rowId}:${f.path}`;
+        if (!reduxFormSelectedCells[toSelectId]) {
+          isThereAnUnselectedCell = true;
+        }
+        allCellsInRow[toSelectId] = true;
+      });
+      if (event.metaKey || event.shiftKey) {
+        if (isThereAnUnselectedCell) {
+          newSelectedCells = {
+            ...newSelectedCells,
+            ...allCellsInRow
+          };
+        } else {
+          forEach(allCellsInRow, (c, key) => {
+            delete newSelectedCells[key];
+          });
+        }
+      } else {
+        newSelectedCells = allCellsInRow;
+      }
+    } else if (newSelectedCells[cellId] && !event.shiftKey) {
       // don't deselect if editing
       if (reduxFormEditingCell === cellId) return;
       if (event.metaKey) {
@@ -2555,6 +2600,7 @@ class DataTable extends React.Component {
     }
     if (allowFormulas) {
       columnsToRender.push({
+        isRowIndexColumn: true,
         Header: () => {
           return (
             <InfoHelper
@@ -2627,9 +2673,9 @@ class DataTable extends React.Component {
             immovable: "true"
           };
         },
-        getProps: () => {
+        getProps: (p, b) => {
           return {
-            className: "tg-react-table-index-cell-container"
+            className: `tg-row-index-${b.index}`
           };
         }
       });
@@ -2745,15 +2791,19 @@ class DataTable extends React.Component {
         const [row] = args;
         const rowId = getIdOrCodeOrIndex(row.original, row.index);
         const cellId = `${rowId}:${row.column.path}`;
+        const alphaNum = getCellAlphaNumHelper(i, row.index);
         let val = oldFunc(...args);
         const oldVal = val;
-        const formulaVal = row.original?.[row.column.path];
         const text = this.getCopyTextForCell(val, row, column);
         const isBool = column.type === "boolean";
-        const dataTest = {
-          "data-test": "tgCell_" + column.path
-        };
         const fullValue = row.original?.[row.column.path];
+        const dataTest = {
+          "data-test": "tgCell_" + column.path,
+          "data-cell-alpha": alphaNum,
+          ...(fullValue?.formula && {
+            "data-formula": fullValue.formula
+          })
+        };
         if (isCellEditable && isBool) {
           val = (
             <Checkbox
@@ -2814,7 +2864,7 @@ class DataTable extends React.Component {
                   shouldSelectAll={reduxFormEditingCellSelectAll}
                   cancelEdit={this.cancelCellEdit}
                   isNumeric={column.type === "number"}
-                  initialValue={formulaVal?.formula || text}
+                  initialValue={fullValue?.formula || text}
                   finishEdit={newVal => {
                     this.finishCellEdit(cellId, newVal);
                   }}
@@ -2864,7 +2914,9 @@ class DataTable extends React.Component {
                       __strVal: fullValue,
                       __genSelCol: column.path
                     }
-                  : { __strVal: text }
+                  : allowFormulas
+                    ? { __strVal: fullValue }
+                    : { __strVal: text }
               )}
               title={title || undefined}
             >
@@ -3306,7 +3358,7 @@ class DataTable extends React.Component {
       // we need to make sure any entities with formulas are updated
 
       entities.splice(insertIndexToUse, 0, ...newEnts);
-      allowFormulas && this.buildDepGraph(entities);
+      this.buildDepGraph(entities);
     });
     this.refocusTable();
   };
@@ -3352,6 +3404,7 @@ class DataTable extends React.Component {
       history,
       contextMenu,
       isCopyable,
+      allowFormulas,
       isCellEditable,
       entities = [],
       reduxFormSelectedCells = {}
@@ -3382,43 +3435,44 @@ class DataTable extends React.Component {
         e.target.querySelector(".tg-cell-wrapper") ||
         e.target.closest(".tg-cell-wrapper");
       if (cellWrapper) {
-        copyMenuItems.push(
+        copyMenuItems.push(opts => (
           <MenuItem
             key="copyCell"
             onClick={() => {
               //TODOCOPY: we need to make sure that the cell copy is being used by the row copy.. right now we have 2 different things going on
               //do we need to be able to copy hidden cells? It seems like it should just copy what's on the page..?
-              const specificColumn = cellWrapper.getAttribute("data-test");
-              this.handleCopyRows([cellWrapper.closest(".rt-tr")], {
-                specificColumn,
-                onFinishMsg: "Cell copied"
-              });
-              const [text, jsonText] = this.getCellCopyText(cellWrapper);
-              this.handleCopyHelper(text, jsonText);
+              this.handleCopySelectedCells(e, opts);
             }}
-            text="Cell"
+            text={`Cell${
+              Object.keys(reduxFormSelectedCells).length > 1 ? "s" : ""
+            }`}
           />
-        );
+        ));
 
-        copyMenuItems.push(
+        copyMenuItems.push(opts => (
           <MenuItem
             key="copyColumn"
             onClick={() => {
-              this.handleCopyColumn(e, cellWrapper);
+              this.handleCopyColumn({ e, cellWrapper, opts });
             }}
-            text="Column"
+            text={selectedRecords.length > 1 ? "Single Column" : "Column"}
           />
-        );
+        ));
         if (selectedRecords.length > 1) {
-          copyMenuItems.push(
+          copyMenuItems.push(opts => (
             <MenuItem
               key="copyColumnSelected"
               onClick={() => {
-                this.handleCopyColumn(e, cellWrapper, selectedRecords);
+                this.handleCopyColumn({
+                  e,
+                  cellWrapper,
+                  selectedRecords,
+                  opts
+                });
               }}
-              text="Column (Selected)"
+              text="Selected Columns"
             />
-          );
+          ));
         }
       }
       if (selectedRecords.length === 0 || selectedRecords.length === 1) {
@@ -3428,38 +3482,48 @@ class DataTable extends React.Component {
           e.target.closest(".tg-cell-wrapper") ||
           e.target.closest(".rt-td");
         const row = cell.closest(".rt-tr");
-        copyMenuItems.push(
+        copyMenuItems.push(opts => (
           <MenuItem
             key="copySelectedRows"
             onClick={() => {
-              this.handleCopyRows([row]);
+              this.handleCopyRows([row], opts);
               // loop through each cell in the row
             }}
             text="Row"
           />
-        );
+        ));
       } else if (selectedRecords.length > 1) {
-        copyMenuItems.push(
+        copyMenuItems.push(opts => (
           <MenuItem
             key="copySelectedRows"
             onClick={() => {
-              this.handleCopySelectedRows(selectedRecords, e);
+              this.handleCopySelectedRows(selectedRecords, e, opts);
               // loop through each cell in the row
             }}
             text="Rows"
           />
-        );
+        ));
       }
-      copyMenuItems.push(
+      copyMenuItems.push(opts => (
         <MenuItem
           key="copyFullTableRows"
           onClick={() => {
-            this.handleCopyTable(e);
+            this.handleCopyTable(e, opts);
             // loop through each cell in the row
           }}
           text="Table"
         />
-      );
+      ));
+      copyMenuItems.push(opts => (
+        <MenuItem
+          key="copyFullTableRowsNoHeader"
+          onClick={() => {
+            this.handleCopyTable(e, { ...opts, noHeader: true });
+            // loop through each cell in the row
+          }}
+          text="Table Without Header"
+        />
+      ));
     }
     const selectedRowIds = Object.keys(reduxFormSelectedCells).map(cellId => {
       const [rowId] = cellId.split(":");
@@ -3471,9 +3535,20 @@ class DataTable extends React.Component {
         {itemsToRender}
         {copyMenuItems.length && (
           <MenuItem icon="clipboard" key="copyOpts" text="Copy">
-            {copyMenuItems}
+            {copyMenuItems.map(f => f())}
           </MenuItem>
         )}
+        {copyMenuItems.length && allowFormulas && (
+          <MenuItem
+            data-tip="This will copy the underlying formula (if there are any) instead of the evaluated value"
+            icon="clipboard"
+            key="copyOptsFormulas"
+            text="Copy Formula"
+          >
+            {copyMenuItems.map(f => f({ isFormulaCopy: true }))}
+          </MenuItem>
+        )}
+        <Divider></Divider>
         {isCellEditable && (
           <>
             <MenuItem
@@ -3492,6 +3567,7 @@ class DataTable extends React.Component {
                 this.insertColumns({});
               }}
             ></MenuItem>
+            <Divider></Divider>
             <MenuItem
               icon="add-row-top"
               text="Add Row Above"
@@ -3508,10 +3584,9 @@ class DataTable extends React.Component {
                 this.insertRows({});
               }}
             ></MenuItem>
-
             <MenuItem
               icon="remove"
-              text={`Remove Row${selectedRowIds.length > 1 ? "s" : ""}`}
+              text={`Remove Row${uniq(selectedRowIds).length > 1 ? "s" : ""}`}
               key="removeRow"
               onClick={() => {
                 const {
@@ -4094,7 +4169,13 @@ const formatPasteData = ({ schema, newVal, path }) => {
       newVal = undefined;
     }
   } else {
-    newVal = Object.hasOwn(newVal, "__strVal") ? newVal.__strVal : newVal;
+    newVal = Object.hasOwn(newVal, "__strVal")
+      ? newVal.__strVal?.formula
+        ? newVal.__strVal.formula
+        : newVal.__strVal
+      : isEmpty(newVal)
+        ? undefined
+        : newVal;
   }
   return newVal;
 };

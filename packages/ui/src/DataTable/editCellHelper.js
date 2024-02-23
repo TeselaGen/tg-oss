@@ -104,8 +104,7 @@ export const editCellHelper = ({
       const { path } = col;
       if (!entity) return match;
       let val = entity[path];
-
-      if (val === undefined) return 0;
+      if (val === undefined || val === "") return 0;
       if (val?.formula) {
         val = val.formula;
       }
@@ -212,7 +211,8 @@ export const editCellHelper = ({
         // console.log(`evaluate deps`, cellDepGraph, `for cell`, cellAlphaNum);
         const [depColLetter, depRowIndex] = depCellAlphaNum.split(/(\d+)/);
         const depEntity = entities[depRowIndex - 1];
-        // if (!depEntity) debugger;
+        // if (!depEntity) debugger
+        // if (!depEntity) return
         const depColIndex = depColLetter.charCodeAt(0) - 65;
         const depColSchema = schema.fields[depColIndex];
         const depPath = depColSchema.path;
@@ -246,10 +246,13 @@ export const editCellHelper = ({
 };
 
 function getCellAlphaNum({ entities, entity, colSchema, schema }) {
-  const rowIndex = entities.indexOf(entity) + 1;
+  const rowIndex = entities.indexOf(entity);
   const colIndex = schema.fields.indexOf(colSchema);
+  return getCellAlphaNumHelper(colIndex, rowIndex);
+}
+export function getCellAlphaNumHelper(colIndex, rowIndex) {
   const colLetter = getColLetFromIndex(colIndex);
-  const cellAlphaNum = `${colLetter}${rowIndex}`;
+  const cellAlphaNum = `${colLetter}${rowIndex + 1}`;
   return cellAlphaNum;
 }
 

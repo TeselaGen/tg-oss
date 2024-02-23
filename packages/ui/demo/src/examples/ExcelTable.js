@@ -64,7 +64,14 @@ export default function SimpleTable(p) {
           a: "=sum(aa:aa)",
           aa: 42,
           cc: 89
-        }
+        },
+        ...map(new Array(100), () => {
+          return {
+            a: 11,
+            b: 12,
+            c: 13
+          };
+        })
       ]);
       return {
         fields: [
