@@ -768,6 +768,7 @@ class DataTable extends React.Component {
                 ...errors
               };
             });
+            this.buildDepGraph(entities);
             this.updateValidation(entities, newCellValidate);
           });
         } else {
@@ -830,6 +831,7 @@ class DataTable extends React.Component {
                   }
                 });
               });
+              this.buildDepGraph(entities);
               this.updateValidation(entities, newCellValidate);
             });
             change("reduxFormSelectedCells", newSelectedCells);
@@ -931,6 +933,7 @@ class DataTable extends React.Component {
           ...errors
         };
       });
+      this.buildDepGraph(entities);
       this.updateValidation(entities, newCellValidate);
     });
   };
@@ -950,7 +953,7 @@ class DataTable extends React.Component {
   };
 
   handleCopyColumn = ({ e, cellWrapper, selectedRecords, opts }) => {
-    const specificColumn = cellWrapper.getAttribute("data-test");
+    const specificColumn = cellWrapper.getAttribute("data-column");
     let rowElsToCopy = getAllRows(e);
     if (!rowElsToCopy) return;
     if (selectedRecords) {
@@ -1028,7 +1031,7 @@ class DataTable extends React.Component {
       }
       if (
         specificColumn &&
-        cellChild.getAttribute("data-test") !== specificColumn
+        cellChild.getAttribute("data-column") !== specificColumn
       ) {
         return [];
       }
@@ -1054,7 +1057,7 @@ class DataTable extends React.Component {
     }
   };
 
-  handleCopyTable = (e, opts) => {
+  handleCopyTable = (e, opts = {}) => {
     try {
       let allRowEls = getAllRows(e);
       if (opts.noHeader) allRowEls = [...allRowEls].slice(1);
@@ -2411,6 +2414,7 @@ class DataTable extends React.Component {
         schema,
         newVal
       });
+      this.buildDepGraph(entities);
       this.updateValidation(entities, {
         ...reduxFormCellValidation,
         ...errors
@@ -2789,6 +2793,7 @@ class DataTable extends React.Component {
         const isBool = column.type === "boolean";
         const fullValue = row.original?.[row.column.path];
         const dataTest = {
+          "data-column": column.path,
           "data-test": "tgCell_" + column.path,
           "data-cell-alpha": alphaNum,
           ...(fullValue?.formula && {
@@ -3184,7 +3189,7 @@ class DataTable extends React.Component {
           }
         });
       });
-
+      this.buildDepGraph(entities);
       // select the new cells
       this.updateValidation(entities, newCellValidate);
       change("reduxFormSelectedCells", newReduxFormSelectedCells);
@@ -3266,7 +3271,7 @@ class DataTable extends React.Component {
       } else {
         entities.splice(entities.length, 0, ...newEnts);
       }
-
+      this.buildDepGraph(entities);
       this.updateValidation(entities, {
         ...reduxFormCellValidation,
         ...validationErrors
@@ -3607,7 +3612,7 @@ class DataTable extends React.Component {
                   deleteIndices.reverse().forEach(indexToRemove => {
                     entities.splice(indexToRemove - 1, 1);
                   });
-
+                  this.buildDepGraph(entities);
                   this.updateValidation(
                     entities,
                     omitBy(reduxFormCellValidation, (v, cellId) =>
@@ -3799,6 +3804,7 @@ class DataTable extends React.Component {
             <strong>${columnTitle}:</strong> <br>
             ${description} ${isUnique ? "<br>Must be unique" : ""}</div>`
         })}
+        data-column={column.path}
         data-test={columnTitleTextified}
         data-path={path}
         data-copy-text={columnTitleTextified}

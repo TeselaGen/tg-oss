@@ -38,6 +38,16 @@ describe("ExcelTable.spec", () => {
     );
   });
 
+  it(`cell deps should be tracked correctly when a cell is edited`, () => {
+    cy.visit("#/DataTable%20-%20ExcelTable");
+    cy.get(`[data-cell-alpha=D1]`).dblclick({
+      force: true
+    });
+    cy.focused().type(`=sum(a1,c2){enter}`);
+    cy.get(`[data-cell-alpha=D1]:contains(88)`);
+    cy.get(`[data-cell-alpha=C2]`).type(`99{enter}`);
+    cy.get(`[data-cell-alpha=D1]:contains(187)`);
+  });
   it(`circular loops should be detected correctly`, () => {
     cy.visit("#/DataTable%20-%20ExcelTable?simpleCircularLoop=true");
     cy.get(`[data-tip="Circular Loop Detected between A2 and A1"]`).dblclick();
