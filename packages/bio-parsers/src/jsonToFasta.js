@@ -17,7 +17,7 @@ export default function jsonToFasta(jsonSequence, options) {
   options = options || {};
   let seqToUse = sequence;
   let sizeToUse = size;
-  if (isProtein && proteinSequence) {
+  if (isProtein && proteinSequence && !options?.useDNA) {
     seqToUse = proteinSequence;
     sizeToUse = proteinSize;
   }

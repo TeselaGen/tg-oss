@@ -42,6 +42,7 @@ export default [
         submenu: [
           { cmd: "exportSequenceAsGenbank" },
           { cmd: "exportSequenceAsFasta" },
+          { cmd: "exportDNASequenceAsFasta" },
           { cmd: "exportSequenceAsTeselagenJson" }
         ]
       },

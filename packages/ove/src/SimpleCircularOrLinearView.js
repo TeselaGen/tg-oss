@@ -102,8 +102,8 @@ export default props => {
   )
     ? CircularView
     : _sequenceData.isOligo && _sequenceData.sequence
-    ? SimpleOligoPreview
-    : LinearView;
+      ? SimpleOligoPreview
+      : LinearView;
   if (withChoosePreviewType && previewType === "row") {
     Component = RowView;
     tickSpacing = undefined;
@@ -292,6 +292,7 @@ const DownloadBtn = withHandlers({ exportSequenceToFile })(props => {
             [
               "exportSequenceAsGenbank",
               "exportSequenceAsFasta",
+              "exportDNASequenceAsFasta",
               "exportSequenceAsTeselagenJson"
             ],
             [

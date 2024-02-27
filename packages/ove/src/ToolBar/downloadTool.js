@@ -29,6 +29,7 @@ const Dropdown = withEditorProps(props => {
         [
           "exportSequenceAsGenbank",
           "exportSequenceAsFasta",
+          "exportDNASequenceAsFasta",
           "exportSequenceAsTeselagenJson"
         ],
         getCommands({ props })
