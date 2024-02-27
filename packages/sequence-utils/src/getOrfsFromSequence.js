@@ -4,21 +4,13 @@ import getReverseComplementSequenceString from "./getReverseComplementSequenceSt
 /**
  * @private
  * Finds ORFs in a given DNA forward in a given frame.
- * @param  {Int} frame The frame to look in.
- * @param  {String}sequence The dna sequence.
- * @param  {Int} minimumOrfSize The minimum length of ORF to return.
- * @param  {boolean} forward Should we find forward facing orfs or reverse facing orfs
- * @return {Teselagen.bio.orf.ORF[]} The list of ORFs found.
+ * frame - The frame to look in.
+ * sequence - The dna sequence.
+ * minimumOrfSize - The minimum length of ORF to return.
+ * forward - Should we find forward facing orfs or reverse facing orfs
+ * return - The list of ORFs found.
  */
 export default function getOrfsFromSequence(options) {
-  // ac.throw([ac.shape({
-  //     sequence: ac.string,
-  //     minimumOrfSize: ac.posInt,
-  //     forward: ac.bool,
-  //     circular: ac.bool
-  // })], arguments);
-
-  // const frame = options.frame;
   let sequence = options.sequence;
   const minimumOrfSize = options.minimumOrfSize;
   const forward = options.forward;
@@ -38,7 +30,6 @@ export default function getOrfsFromSequence(options) {
   const re = useAdditionalOrfStartCodons
     ? /(?=((?:A[TU]G|G[TU]G|C[TU]G)(?:.{3})*?(?:[TU]AG|[TU]AA|[TU]GA)))/gi
     : /(?=((?:A[TU]G)(?:.{3})*?(?:[TU]AG|[TU]AA|[TU]GA)))/gi;
-  // const str = 'tatgaatgaatgffffffatgfftaaftaafatgfatgfffffsdfatgffatgfffstaafftaafffffffffffffffatgtaaataa\n\natgffftaaf\n\natgffatgftaafftaa\n\natgatgftaafftaa\n\natgatgtaataa\n\ntttttttttttttaatgatgfffffffffftaa';
   let m;
   const orfRanges = [];
   //loop through orf hits!
@@ -103,8 +94,6 @@ export default function getOrfsFromSequence(options) {
     } else {
       orfEnds[orf.end] = index;
       if (!forward) {
-        // if (originalSequenceLength - orf.end - 1 == 3657) {
-        // }
         //this check needs to come after the above assignment of orfEnds
         //flip the start and ends
         const endHolder = orf.end; //temp variable
