@@ -16,12 +16,12 @@ const calcTmMethods = {
 
   /**
    * Calculates temperature for DNA sequence using a given algorithm.
-   * @param  {String} sequence The DNA sequence to use.
-   * @param  {String} type Either Teselagen.bio.tools.TemperatureCalculator.TABLE_BRESLAUER, TABLE_SUGIMOTO, or TABLE_UNIFIED
-   * @param  {Double} A Helix initation for deltaS. Defaults to -10.8.
-   * @param  {Double} R The gas constant, in cal/(K*mol). Defaults to 0.5e-6M.
-   * @param  {Double} Na THe monovalent salt concentration. Defaults to 50e-3M.
-   * @return {Double} Temperature for the given sequence, in Celsius.
+   * sequence - The DNA sequence to use.
+   * type - Either Teselagen.bio.tools.TemperatureCalculator.TABLE_BRESLAUER, TABLE_SUGIMOTO, or TABLE_UNIFIED
+   * A - Helix initation for deltaS. Defaults to -10.8.
+   * R - The gas constant, in cal/(K*mol). Defaults to 0.5e-6M.
+   * Na - THe monovalent salt concentration. Defaults to 50e-3M.
+   * return - Temperature for the given sequence, in Celsius.
    */
   calculateTemperature: function (sequence, type, A, R, C, Na) {
     if (typeof type === "undefined") {
