@@ -291,8 +291,8 @@ const DownloadBtn = withHandlers({ exportSequenceToFile })(props => {
           showContextMenu(
             [
               "exportSequenceAsGenbank",
-              "exportSequenceAsFasta",
               "exportDNASequenceAsFasta",
+              "exportProteinSequenceAsFasta",
               "exportSequenceAsTeselagenJson"
             ],
             [

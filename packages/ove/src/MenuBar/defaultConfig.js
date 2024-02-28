@@ -41,8 +41,8 @@ export default [
         showInSearchMenu: true,
         submenu: [
           { cmd: "exportSequenceAsGenbank" },
-          { cmd: "exportSequenceAsFasta" },
           { cmd: "exportDNASequenceAsFasta" },
+          { cmd: "exportProteinSequenceAsFasta" },
           { cmd: "exportSequenceAsTeselagenJson" }
         ]
       },
