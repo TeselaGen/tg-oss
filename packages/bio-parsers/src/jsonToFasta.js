@@ -15,8 +15,8 @@ export default function jsonToFasta(jsonSequence, options) {
   } = cleanedData;
 
   options = {
-    sequence: isProtein && proteinSequence ? proteinSequence : size,
-    size: isProtein && proteinSequence ? proteinSize : sequence,
+    sequence: isProtein && proteinSequence ? proteinSequence : sequence,
+    size: isProtein && proteinSequence ? proteinSize : size,
     ...options
   };
   const seqToUse = options.sequence;
