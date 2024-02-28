@@ -65,6 +65,7 @@
       "options": {
         "watch": true,
         "headed": true,
+        "browser": "electron",
         "cypressConfig": "packages/ui/cypress.config.ts",
         "devServerTarget": "ui:start:ci",
         "testingType": "e2e"

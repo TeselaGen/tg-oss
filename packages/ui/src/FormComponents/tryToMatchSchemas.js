@@ -180,7 +180,7 @@ async function matchSchemas({ userSchema, officialSchema }) {
     userSchema.userData.some(e => {
       return editableFields.some(columnSchema => {
         //mutative
-        const { error } = editCellHelper({
+        const { errors } = editCellHelper({
           updateGroup,
           schema: officialSchema,
           entities: userSchema.userData,
@@ -190,10 +190,11 @@ async function matchSchemas({ userSchema, officialSchema }) {
             ? e[columnSchema.matches[0]?.item?.path]
             : undefined
         });
-        if (error) {
+        const firstErr = Object.values(errors).find(e => e);
+        if (firstErr) {
           hasErr = `${
             columnSchema.displayName || startCase(camelCase(columnSchema.path))
-          }: ${error}`;
+          }: ${firstErr}`;
           return true;
         }
 

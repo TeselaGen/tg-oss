@@ -50,10 +50,11 @@ export default function SimpleTable(p) {
   const [defaultValAsFunc, defaultValAsFuncComp] = useToggle({
     type: "defaultValAsFunc"
   });
-  const [allowFormulas, allowFormulasComp] = useToggle({
-    type: "allowFormulas"
-  });
+  // const [tagValuesAsObjects, tagValuesAsObjectsComp] = useToggle({
+  //   type: "tagValuesAsObjects"
+  // });
   const [entities, setEnts] = useState([]);
+
   const schema = useMemo(() => {
     return {
       fields: [
@@ -64,9 +65,8 @@ export default function SimpleTable(p) {
               return "Must include the letter 'a'";
           },
           format: newVal => {
-            return newVal?.toLowerCase?.();
-          },
-          allowFormulas
+            return newVal?.toLowerCase();
+          }
         },
         {
           path: "type",
@@ -109,18 +109,16 @@ export default function SimpleTable(p) {
         }
       ]
     };
-  }, [defaultValAsFunc, allowFormulas]);
+  }, [defaultValAsFunc]);
   return (
     <div>
       <OptionsSection>
         {numComp}
         {defaultValAsFuncComp}
-        {allowFormulasComp}
         {/* {tagValuesAsObjectsComp} */}
       </OptionsSection>
       <DemoWrapper>
         <DataTable
-          allowFormulas={allowFormulas}
           key={key.current}
           formName="editableCellTable"
           isSimple
