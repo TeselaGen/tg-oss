@@ -65,7 +65,7 @@ h6 {
   width: 100%;
   text-align: center;
   padding: 12px 0;
-  background: #003f66;
+  /* background: #003f66; */
 }
 
 .demo-header h1 {
@@ -98,7 +98,8 @@ h6 {
   overflow: auto;
 }
 
-.bp3-dark .demo-area-container {
+.bp3-dark .demo-area-container,
+.bp3-dark .demo-header {
   background: #2f343c;
 }
 

@@ -1,7 +1,8 @@
 import { HTMLSelect } from "@blueprintjs/core";
 import React, { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
-export default function VersionSwitcher({ packageName = "ove" }) {
+export default function VersionSwitcher({ packageName = "ove", testBadge }) {
   const [options, setOptions] = useState([]);
   const pjson = useRef({});
   //runs on component load
@@ -16,6 +17,7 @@ export default function VersionSwitcher({ packageName = "ove" }) {
             "https://api.github.com/repos/teselagen/tg-oss/git/trees/gh-pages"
           )
         ).json();
+        console.log(`res:`, res);
         const packageNode = res.tree.find(e => {
           return e.path.toLowerCase() === packageName;
         });
@@ -54,23 +56,23 @@ export default function VersionSwitcher({ packageName = "ove" }) {
 
   return options.length ? (
     <div style={{ display: "flex", alignItems: "center" }}>
-      <div style={{ paddingTop: 3 }}>
+      <div style={{ paddingTop: 13, display: "flex", marginRight: 20 }}>
         <iframe
           src="https://ghbtns.com/github-btn.html?user=teselagen&repo=tg-oss&type=star&count=true"
           frameBorder="0"
           scrolling="0"
-          width="150"
+          width="100"
           height="20"
           title="GitHub"
         ></iframe>
+        {testBadge && <ReactMarkdown children={testBadge} />}
       </div>
-      <div>Version:</div>{" "}
       <HTMLSelect
         minimal
         onChange={function onChange(e) {
           window.location.href = `https://teselagen.github.io/tg-oss/${packageName}/version/${e.currentTarget.value}/#/Editor`;
         }}
-        value={pjson.version}
+        value={pjson.current.version}
         options={options}
       ></HTMLSelect>
       <a
@@ -84,6 +86,6 @@ export default function VersionSwitcher({ packageName = "ove" }) {
     </div>
   ) : (
     //fallback to just showing the version
-    <div style={{ marginTop: 5 }}>Version: {pjson.version}</div>
+    <div style={{ marginTop: 13 }}>{pjson.current.version}</div>
   );
 }

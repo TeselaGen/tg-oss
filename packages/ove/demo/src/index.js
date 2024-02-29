@@ -130,10 +130,13 @@ const Demo = () => {
               minimal
               icon="menu"
             ></Button>
-            <VersionSwitcher packageName="ove" />
+            <VersionSwitcher
+              packageName="ove"
+              testBadge={`[![@teselagen/ove](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/mp89gp/master&style=flat&logo=cypress)](https://cloud.cypress.io/projects/mp89gp/runs)`}
+            />
             <a
               href="https://github.com/TeselaGen/ove-electron#installation-instructions"
-              style={{ marginTop: 5, marginLeft: 10 }}
+              style={{ marginTop: 13, marginLeft: 10 }}
             >
               This is a developer demo. Get the App?
             </a>{" "}
@@ -142,6 +145,7 @@ const Demo = () => {
               key="theme"
             >
               <Button
+                style={{ marginTop: 3, marginRight: 3 }}
                 data-test="tg-toggle-dark-mode"
                 icon={isDarkMode ? "flash" : "moon"}
                 intent={isDarkMode ? "warning" : undefined}
