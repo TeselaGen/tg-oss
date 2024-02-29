@@ -19,6 +19,7 @@ import {
 } from "../../../src/utils/commandControls";
 import { MenuItem } from "@blueprintjs/core";
 import DemoWrapper from "../DemoWrapper";
+import "./MenuBarStyle.css";
 
 export default class MenuBarDemo extends React.Component {
   constructor(props) {

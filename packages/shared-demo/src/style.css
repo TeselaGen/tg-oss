@@ -1,15 +1,19 @@
+html,
+#demo,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 #demo {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
-html {
-  margin: 0;
-  width: 100%;
+
+body.bp3-dark {
+  background: #293742;
 }
 
 body.bp3-dark {
@@ -65,7 +69,7 @@ h6 {
   width: 100%;
   text-align: center;
   padding: 12px 0;
-  /* background: #003f66; */
+  background: #ebf1f5;
 }
 
 .demo-header h1 {
@@ -94,7 +98,7 @@ h6 {
 
 .demo-area-container {
   background: #f6f7f9;
-  height: calc(100vh - 50px);
+  height: 100%;
   overflow: auto;
 }
 
@@ -107,7 +111,7 @@ h6 {
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 rgb(17 20 24 / 15%);
-  height: calc(100vh - 50px);
+  height: 100%;
   overflow-y: auto;
 }
 
@@ -135,8 +139,4 @@ h6 {
 
 .bp3-dark .demo-wrapper {
   background: #252a31;
-}
-.noCodeNewline code {
-  display: inline;
-  white-space: unset;
 }
