@@ -314,6 +314,7 @@ Cypress.Commands.add("replaceSelection", sequenceString => {
   cy.contains(".bp3-menu-item", "Replace").click();
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(200);
+  cy.contains(".bp3-menu-item", "Replace").should("not.exist");
   cy.get(".sequenceInputBubble input").type(
     (Cypress.config("isInteractive") ? "" : "            ") +
       `${sequenceString}{enter}`

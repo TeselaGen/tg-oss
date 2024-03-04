@@ -81,6 +81,12 @@ export default function filterSequenceString(
       `${
         name ? `Sequence ${name}: ` : ""
       }Invalid character(s) detected and removed: ${uniq(invalidChars)
+        .map(c => {
+          if (c === " ") {
+            return "space";
+          }
+          return c;
+        })
         .slice(0, 100)
         .join(", ")} `
     );

@@ -60,7 +60,8 @@ describe("zoomCircularView.spec", function () {
       ".veRotateCircularSlider .bp3-slider-handle",
       ".ve-tool-container-downloadTool"
     );
-    cy.get(`.circularViewSvg g[style="transform: rotate(150deg);"]`);
+    cy.get(`.circularViewSvg g[style="transform: rotate(0deg);"]`);
+    cy.get(`.veCircularViewLabelText:contains(Example Primer 1)`);
     cy.dragBetween(
       ".veZoomCircularSlider .bp3-slider-handle",
       ".veZoomCircularSlider .bp3-icon-plus"
