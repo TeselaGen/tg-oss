@@ -19,8 +19,9 @@ import StandaloneDemo from "./StandaloneDemo";
 import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
-import VersionHistoryView from "../../src/VersionHistoryView";
 import EditorDemo from "./EditorDemo";
+import VersionHistoryViewDemo from "./VersionHistoryViewDemo";
+
 import "./style.css";
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { DemoPage } from "@teselagen/shared-demo";
@@ -31,15 +32,21 @@ const demos = {
     demo: EditorDemo
   },
   Standalone: {
+    noDemoMargin: true,
+
     demo: StandaloneDemo
   },
   VersionHistoryView: {
-    demo: VersionHistoryView
+    demo: VersionHistoryViewDemo
   },
   StandaloneAlignment: {
+    noDemoMargin: true,
+
     demo: StandaloneAlignmentDemo
   },
   Alignment: {
+    noDemoMargin: true,
+
     demo: AlignmentDemo
   },
   SimpleCircularOrLinearView: {

@@ -85,7 +85,7 @@ export default function VersionSwitcher({
           <a
             target="_blank"
             rel="noopener noreferrer"
-            style={{ marginLeft: 10 }}
+            style={{ marginLeft: 10, marginTop: 2 }}
             href="https://github.com/TeselaGen/tg-oss/blob/master/CHANGELOG.md"
           >
             Changelog

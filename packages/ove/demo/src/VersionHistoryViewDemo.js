@@ -6,10 +6,9 @@ export default () => {
       <VersionHistoryView
         onSave={() => {
           window.alert("onSave triggered!");
-          // console.info("onSave triggered:", args);
         }}
         exitVersionHistoryView={() => {
-          window.alert("exit requested!");
+          window.history.go(-1);
         }}
         getSequenceAtVersion={versionId => {
           // in a real version we'd go to server and get a real sequence based on the version id
@@ -17,7 +16,7 @@ export default () => {
           // return seq
           if (versionId === 2) {
             return {
-              sequence: "thomaswashere"
+              sequence: "thmaswashr"
             };
           } else if (versionId === 3) {
             return {

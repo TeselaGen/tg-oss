@@ -36,7 +36,7 @@ export default ({ demos, isOpen, setIsOpen }) => {
             setIsOpen(false);
           }}
           minimal
-          text={"Hide Components"}
+          text={"Hide Sidebar"}
           intent="primary"
           icon="chevron-left"
         ></Button>

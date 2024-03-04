@@ -53,7 +53,6 @@ const DemoPage = ({ moduleName, demos, showComponentList }) => {
               justifyContent: "space-between",
               padding: "5px 20px",
               height: 50,
-              zIndex: 20,
               alignItems: "center"
             }}
           >
@@ -64,8 +63,7 @@ const DemoPage = ({ moduleName, demos, showComponentList }) => {
                     onClick={() => {
                       setIsOpen(true);
                     }}
-                    text={"Show Components"}
-                    // data-tip="Show Component List"
+                    text={"Show Sidebar"}
                     style={{ height: "fit-content", marginRight: 10 }}
                     minimal
                     intent="primary"
@@ -105,49 +103,36 @@ const DemoPage = ({ moduleName, demos, showComponentList }) => {
             </Tooltip>
           </div>
 
-          <div
-            className="demo-area-container"
-            style={{
-              // overflow: "auto",
-              // padding: 40,
-              // minWidth: 0,
-              width: "100%",
-              height: "100%"
-            }}
-          >
-            <Route
-              exact
-              path="/"
-              render={() => <Redirect to={Object.keys(demos)[0]} />}
-            />
-            {Object.keys(demos).map(function (key, index) {
-              const demo = demos[key];
-              return (
-                <React.Fragment key={key}>
-                  <Route
-                    exact
-                    path={`/${key}`}
-                    url={demo.url}
-                    component={DemoComponentWrapper(demo, key)}
-                  />
-                  {Object.keys(demo.childLinks || []).map(
-                    (childKey, index2) => {
-                      const childDemo = demo.childLinks[childKey];
-                      return (
-                        <Route
-                          exact
-                          key={key + childKey + index + index2}
-                          path={`/${key}/${childKey}`}
-                          url={childDemo.url}
-                          component={DemoComponentWrapper(childDemo, childKey)}
-                        />
-                      );
-                    }
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </div>
+          <Route
+            exact
+            path="/"
+            render={() => <Redirect to={Object.keys(demos)[0]} />}
+          />
+          {Object.keys(demos).map(function (key, index) {
+            const demo = demos[key];
+            return (
+              <React.Fragment key={key}>
+                <Route
+                  exact
+                  path={`/${key}`}
+                  url={demo.url}
+                  component={DemoComponentWrapper(demo, key)}
+                />
+                {Object.keys(demo.childLinks || []).map((childKey, index2) => {
+                  const childDemo = demo.childLinks[childKey];
+                  return (
+                    <Route
+                      exact
+                      key={key + childKey + index + index2}
+                      path={`/${key}/${childKey}`}
+                      url={childDemo.url}
+                      component={DemoComponentWrapper(childDemo, childKey)}
+                    />
+                  );
+                })}
+              </React.Fragment>
+            );
+          })}
         </div>
       </div>
     </Router>
@@ -175,10 +160,12 @@ const demoPropsSchema = [
   }
 ];
 
-const DemoComponentWrapper = (
-  { demo: Demo, DemoComponent, props = [] },
-  demoTitle
-) => {
+const DemoComponentWrapper = ({
+  demo: Demo,
+  noDemoMargin,
+  DemoComponent,
+  props = []
+}) => {
   return withRouter(({ history }) => {
     let component;
     if (DemoComponent) {
@@ -209,6 +196,21 @@ const DemoComponentWrapper = (
         </>
       );
     }
-    return component;
+    return (
+      <div
+        className="demo-area-container"
+        style={{
+          ...(!noDemoMargin && {
+            overflow: "auto",
+            padding: 40,
+            minWidth: 0
+          }),
+          width: "100%",
+          height: "100%"
+        }}
+      >
+        {component}
+      </div>
+    );
   });
 };
