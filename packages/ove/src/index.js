@@ -5,11 +5,6 @@ import "./style.css";
 export { getUserGroupLabel } from "./CutsiteFilter/AdditionalCutsiteInfoDialog";
 
 window.tgCreateMenu = showContextMenu;
-// window.tgCreateMenu = (menu, e, e2) => {
-//   (e||e2).stopPropagation()
-//   (e || e2)
-// } //add this to the window so people can easily override the default context menus
-
 FocusStyleManager.onlyShowFocusOnTabs();
 export { getGaps } from "./AlignmentView/getGaps";
 export { default as createVectorEditor } from "./createVectorEditor";
