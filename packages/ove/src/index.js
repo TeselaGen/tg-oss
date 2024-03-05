@@ -3,7 +3,6 @@ import { showContextMenu } from "@teselagen/ui";
 import "./createVectorEditor";
 import "./style.css";
 export { getUserGroupLabel } from "./CutsiteFilter/AdditionalCutsiteInfoDialog";
-
 window.tgCreateMenu = showContextMenu;
 FocusStyleManager.onlyShowFocusOnTabs();
 export { getGaps } from "./AlignmentView/getGaps";
