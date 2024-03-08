@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Icon, Tooltip, Button, Classes } from "@blueprintjs/core";
+import { Tooltip, Button, Classes } from "@blueprintjs/core";
 import classNames from "classnames";
 import "./style.css";
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -42,18 +42,21 @@ class DemoHeader extends Component {
           alignItems: "center"
         }}
       >
-        <VersionSwitcher packageName="ui" />
+        <VersionSwitcher
+          packageName="ui"
+          testBadge={`[![@teselagen/ui](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/gwixeq/master&style=flat&logo=cypress)](https://cloud.cypress.io/projects/gwixeq/runs)`}
+        />
 
         <a
-          style={{ fontSize: 16, color: "white" }}
+          style={{ fontSize: 16 }}
           href="https://github.com/TeselaGen/tg-oss/tree/master/packages/ui"
         >
-          TeselaGen React Components <Icon icon="link" />
+          @teselagen/ui
         </a>
         <Tooltip content={darkTheme ? "Light Theme" : "Dark Theme"} key="theme">
           <Button
             icon={darkTheme ? "flash" : "moon"}
-            className={classNames(Classes.MINIMAL, "tg-dark-theme-button")}
+            className={classNames(Classes.MINIMAL)}
             onClick={() => this.toggleTheme()}
           />
         </Tooltip>
