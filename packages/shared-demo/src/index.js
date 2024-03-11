@@ -1,2 +1,3 @@
 import VersionSwitcher from "./VersionSwitcher";
-export { VersionSwitcher };
+import DemoPage from "./DemoPage";
+export { VersionSwitcher, DemoPage };

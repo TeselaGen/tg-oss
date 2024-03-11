@@ -779,7 +779,13 @@
         }
       ],
       "range-utils": [],
-      "shared-demo": [],
+      "shared-demo": [
+        {
+          "source": "shared-demo",
+          "target": "ui",
+          "type": "static"
+        }
+      ],
       "file-utils": [],
       "uploader": [],
       "ove": [

@@ -1049,6 +1049,7 @@ export class AlignmentView extends React.Component {
       additionalSelectionLayerRightClickedOptions,
       selectionLayerRightClicked,
       additionalTopEl,
+      additionalTopLeftEl,
       handleAlignmentRename,
       alignmentVisibilityToolOptions
     } = this.props;
@@ -1449,6 +1450,7 @@ export class AlignmentView extends React.Component {
                   }}
                   className="ve-alignment-top-bar"
                 >
+                  {additionalTopLeftEl}
                   {handleBackButtonClicked && (
                     <Tooltip content="Back to Pairwise Alignment Overview">
                       <Button

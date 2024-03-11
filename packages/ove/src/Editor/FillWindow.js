@@ -30,6 +30,7 @@ export default class FillWindow extends React.Component {
       <div
         {...rest}
         style={{
+          zIndex: 10,
           width,
           height,
           position: "fixed",

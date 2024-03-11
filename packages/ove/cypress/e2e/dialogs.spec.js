@@ -22,7 +22,8 @@ describe("dialogs", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veLabelText", "araD").rightclick({ force: true });
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
+    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.contains(".bp3-menu-item", "New Feature").should("not.exist");
     cy.focused().type("new feat");
     cy.screenshot();
 

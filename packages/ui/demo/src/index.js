@@ -13,10 +13,8 @@ import TgSelectDemo from "./examples/TgSelectDemo";
 import InfoHelper from "./examples/InfoHelper";
 import Loading from "./examples/Loading";
 import PromptUnsavedChanges from "./examples/PromptUnsavedChanges";
-import DemoNav from "./DemoNav";
-import DemoHeader from "./DemoHeader";
-import { DataTable } from "../../src";
-
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { DemoPage } from "@teselagen/shared-demo";
 import FillWindowExample from "./examples/FillWindow";
 
 import TimelineDemo from "./examples/TimelineDemo";
@@ -26,14 +24,11 @@ import ScrollToTopDemo from "./examples/ScrollToTop";
 
 import showAppSpinnerDemo from "./examples/showAppSpinnerDemo";
 import EditableCellTable from "./examples/EditableCellTable";
-import "./style.css";
 import React from "react";
 import { render } from "react-dom";
-import { HashRouter as Router, Route, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import { FocusStyleManager } from "@blueprintjs/core";
-import isMobile from "is-mobile";
 import AdvancedOptionsDemo from "./examples/AdvancedOptionsDemo";
 import FormComponents from "./examples/FormComponents";
 import UploadCsvWizard from "./examples/UploadCsvWizard";
@@ -254,149 +249,10 @@ const demos = {
   // }
 };
 
-const demoPropsSchema = [
-  {
-    displayName: "Name",
-    path: "name",
-    width: 200,
-    render: v => <span style={{ color: "#5bc0de" }}>{v}</span>
-  },
-  {
-    displayName: "Type",
-    width: 200,
-    path: "type",
-    render: v => <span style={{ color: "#ff758d" }}>{v}</span>
-  },
-  {
-    displayName: "Description",
-    path: "description"
-  }
-];
-
-function DemoComponentWrapper(
-  { demo: Demo, DemoComponent, props = [] },
-  demoTitle
-) {
-  return () => {
-    let component;
-    if (DemoComponent) {
-      component = <DemoComponent />;
-    } else {
-      component = (
-        <div>
-          <Demo></Demo>
-          {!!props.length && (
-            <React.Fragment>
-              <h6
-                style={{
-                  marginTop: 25,
-                  marginBottom: 15
-                }}
-              >
-                Properties
-              </h6>
-
-              <DataTable
-                formName="demoProps"
-                entities={props}
-                isSimple
-                schema={demoPropsSchema}
-              />
-            </React.Fragment>
-          )}
-        </div>
-      );
-    }
-    return (
-      <React.Fragment>
-        <div
-          style={{
-            marginBottom: 20,
-            justifyContent: "space-between",
-            width: "100%",
-            display: "flex"
-          }}
-        >
-          <h4>{demoTitle}</h4>
-          <br></br>
-          <a
-            href={"https://github.com/TeselaGen/tg-oss/tree/master/packages/ui"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Component Source
-          </a>
-        </div>
-        {component}
-      </React.Fragment>
-    );
-  };
-}
-
 const Demo = () => {
   return (
     <Provider store={store}>
-      <Router>
-        <div style={{ width: "100%" }}>
-          <DemoHeader />
-          <div
-            style={{
-              display: isMobile() ? "inherit" : "flex",
-              paddingTop: 50, // add header
-              maxWidth: "100%",
-              minWidth: 0,
-              width: "100%"
-            }}
-          >
-            <DemoNav demos={demos} />
-            <div
-              className="demo-area-container"
-              style={{
-                overflow: "auto",
-                padding: 40,
-                minWidth: 0,
-                width: "100%"
-              }}
-            >
-              <Route
-                exact
-                path="/"
-                render={() => <Redirect to={Object.keys(demos)[0]} />}
-              />
-              {Object.keys(demos).map(function (key, index) {
-                const demo = demos[key];
-                return (
-                  <React.Fragment key={key}>
-                    <Route
-                      exact
-                      path={`/${key}`}
-                      url={demo.url}
-                      component={DemoComponentWrapper(demo, key)}
-                    />
-                    {Object.keys(demo.childLinks || []).map(
-                      (childKey, index2) => {
-                        const childDemo = demo.childLinks[childKey];
-                        return (
-                          <Route
-                            exact
-                            key={key + childKey + index + index2}
-                            path={`/${key}/${childKey}`}
-                            url={childDemo.url}
-                            component={DemoComponentWrapper(
-                              childDemo,
-                              childKey
-                            )}
-                          />
-                        );
-                      }
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </Router>
+      <DemoPage moduleName="ui" demos={demos} showComponentList></DemoPage>
     </Provider>
   );
 };
