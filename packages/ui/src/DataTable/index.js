@@ -2420,7 +2420,13 @@ class DataTable extends React.Component {
         ...errors
       });
     });
-    !doNotStopEditing && this.refocusTable();
+    setTimeout(() => {
+      // do not try to refocus the table if another cell has already been selected
+      const isCellIdStillSelected = this.props.reduxFormSelectedCells[cellId];
+      if (isCellIdStillSelected) {
+        !doNotStopEditing && this.refocusTable();
+      }
+    }, 0);
   };
 
   cancelCellEdit = () => {
