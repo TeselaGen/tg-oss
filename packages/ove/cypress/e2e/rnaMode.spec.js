@@ -20,11 +20,8 @@ describe("rna editing in OVE", function () {
     cy.contains("uuaugacaacuugacggcuacaucauucacuuuuucuuca").should("not.exist");
     cy.contains("uuuugacgt");
     cy.selectRange(10, 11);
+    cy.replaceSelection("      tguugttuuuuuuuuuuuuuuuaa{enter}");
     cy.get(".veRowViewSelectionLayer.notCaret").first().rightclick();
-    cy.contains(".bp3-menu-item", "Replace").click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
-    cy.focused().type("      tguugttuuuuuuuuuuuuuuuaa{enter}", { delay: 20 });
     cy.contains("Selecting 24 bps from 10 to 33"); //the t's should not be filtered out and neither should the u's
     cy.contains("tguugttuuuuuuuuuuuuuuuaa");
   });

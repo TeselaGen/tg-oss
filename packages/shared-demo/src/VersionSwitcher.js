@@ -1,13 +1,19 @@
 import { HTMLSelect } from "@blueprintjs/core";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
-export default function VersionSwitcher({ packageName = "ove" }) {
+export default function VersionSwitcher({
+  packageName = "ove",
+  testBadge,
+  leftComponent
+}) {
   const [options, setOptions] = useState([]);
-  const pjson = useRef({});
+  const [version, setVersion] = useState("");
   //runs on component load
   useEffect(() => {
     (async function fetchData() {
-      pjson.current = await import(`../../${packageName}/package.json`);
+      const res = await import(`../../${packageName}/package.json`);
+      setVersion(res.version);
 
       try {
         if (window.Cypress) return;
@@ -52,38 +58,43 @@ export default function VersionSwitcher({ packageName = "ove" }) {
     })();
   }, ["packageName"]);
 
-  return options.length ? (
+  return (
     <div style={{ display: "flex", alignItems: "center" }}>
-      <div style={{ paddingTop: 3 }}>
+      {leftComponent}
+      <div style={{ paddingTop: 13, display: "flex", marginRight: 20 }}>
         <iframe
           src="https://ghbtns.com/github-btn.html?user=teselagen&repo=tg-oss&type=star&count=true"
           frameBorder="0"
           scrolling="0"
-          width="150"
+          width="100"
           height="20"
           title="GitHub"
         ></iframe>
+        {testBadge && <ReactMarkdown children={testBadge} />}
       </div>
-      <div>Version:</div>{" "}
-      <HTMLSelect
-        minimal
-        onChange={function onChange(e) {
-          window.location.href = `https://teselagen.github.io/tg-oss/${packageName}/version/${e.currentTarget.value}/#/Editor`;
-        }}
-        value={pjson.version}
-        options={options}
-      ></HTMLSelect>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ marginLeft: 10 }}
-        href="https://github.com/TeselaGen/tg-oss/blob/master/CHANGELOG.md"
-      >
-        Changelog
-      </a>
+      {options.length ? (
+        <div>
+          <HTMLSelect
+            minimal
+            onChange={function onChange(e) {
+              window.location.href = `https://teselagen.github.io/tg-oss/${packageName}/version/${e.currentTarget.value}/#/Editor`;
+            }}
+            value={version}
+            options={options}
+          ></HTMLSelect>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ marginLeft: 10, marginTop: 2 }}
+            href="https://github.com/TeselaGen/tg-oss/blob/master/CHANGELOG.md"
+          >
+            Changelog
+          </a>
+        </div>
+      ) : (
+        //fallback to just showing the version
+        <div>{version}</div>
+      )}
     </div>
-  ) : (
-    //fallback to just showing the version
-    <div style={{ marginTop: 5 }}>Version: {pjson.version}</div>
   );
 }

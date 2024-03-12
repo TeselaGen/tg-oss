@@ -1,16 +1,3 @@
-body.bp3-dark {
-  background: #293742;
-}
-
-html,
-body,
-#app,
-#demo {
-  margin: 0px;
-  padding: 0px;
-  height: 100%;
-}
-
 .toggle-button-holder {
   flex-shrink: 0;
 }
@@ -22,9 +9,7 @@ body,
 }
 .tgOptionContainer {
   z-index: 1000;
-  position: absolute;
   overflow-y: auto;
-  left: 0px;
   padding-top: 10px;
   width: 250px;
   height: 100%;

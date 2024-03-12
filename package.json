@@ -121,7 +121,7 @@
     "chance": "^1.1.11",
     "classnames": "^2.3.2",
     "concurrently": "^8.2.2",
-    "cypress": "13.5.1",
+    "cypress": "13.6.6",
     "cypress-vite": "^1.4.0",
     "esbuild": "^0.19.5",
     "eslint": "~8.53.0",
@@ -151,7 +151,7 @@
     "tslib": "^2.6.2",
     "typescript": "~5.2.2",
     "validate.io-nonnegative-integer-array": "^1.0.1",
-    "vite": "^4.3.9",
+    "vite": "^5.1.5",
     "vite-plugin-dts": "~3.5.4",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-libcss": "^1.1.1",
@@ -164,6 +164,7 @@
     "packages/*"
   ],
   "volta": {
-    "node": "16.20.2"
+    "node": "16.20.2",
+    "yarn": "1.22.21"
   }
 }

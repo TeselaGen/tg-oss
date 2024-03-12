@@ -56,17 +56,22 @@ describe("zoomCircularView.spec", function () {
   });
   it(`rotating and then zooming should maintain your current rotation if nothing has been selected yet`, () => {
     cy.visit("");
+    cy.get(`.veCircularViewLabelText:contains(pBAD)`);
+    cy.get(`.veCircularViewLabelText:contains(pBAD promoter)`).should(
+      "not.exist"
+    );
     cy.dragBetween(
       ".veRotateCircularSlider .bp3-slider-handle",
-      ".ve-tool-container-downloadTool"
+      ".veTabCircularMap"
     );
-    cy.get(`.circularViewSvg g[style="transform: rotate(150deg);"]`);
+    cy.get(`.circularViewSvg g[style="transform: rotate(255deg);"]`);
+    cy.get(`.veCircularViewLabelText:contains(pBAD promoter)`);
     cy.dragBetween(
       ".veZoomCircularSlider .bp3-slider-handle",
       ".veZoomCircularSlider .bp3-icon-plus"
     );
     //after zoom in make sure we're not rotated back to the start of the sequence
-    cy.get(`.veCircularViewFeature:contains(pSC101**)`).should("exist");
+    cy.get(`.veCircularViewFeature:contains(GFPuv)`).should("exist");
     cy.get(`.veAnnotations-part .veLabelText:contains(Part 0)`).should(
       "not.exist"
     );

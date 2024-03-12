@@ -50,8 +50,8 @@ const getUpperOrLowerSeq = defaultMemoize(
     uppercaseSequenceMapFont === "uppercase"
       ? sequence.toUpperCase()
       : uppercaseSequenceMapFont === "lowercase"
-      ? sequence.toLowerCase()
-      : sequence
+        ? sequence.toLowerCase()
+        : sequence
 );
 
 const getTypesToOmit = annotationsToSupport => {
@@ -284,7 +284,7 @@ export const importSequenceFromFile =
     }
   };
 
-export const exportSequenceToFile = props => format => {
+export const exportSequenceToFile = props => (format, options) => {
   const { sequenceData } = props;
   let convert, fileExt;
 
@@ -304,7 +304,9 @@ export const exportSequenceToFile = props => format => {
     console.error(`Invalid export format: '${format}'`); // dev error
     return;
   }
-  const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
+  const blob = new Blob([convert(sequenceData, options)], {
+    type: "text/plain"
+  });
   const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
   FileSaver.saveAs(blob, filename);
   window.toastr.success("File Downloaded Successfully");
@@ -441,16 +443,16 @@ export default compose(
             selectionLayer.start > -1
               ? { ...selectionLayer, id: undefined }
               : caretPosition > -1
-              ? {
-                  start: caretPosition,
-                  end: sequenceData.isProtein
-                    ? caretPosition + 2
-                    : caretPosition
-                }
-              : {
-                  start: 0,
-                  end: sequenceData.isProtein ? 2 : 0
-                };
+                ? {
+                    start: caretPosition,
+                    end: sequenceData.isProtein
+                      ? caretPosition + 2
+                      : caretPosition
+                  }
+                : {
+                    start: 0,
+                    end: sequenceData.isProtein ? 2 : 0
+                  };
           showAddOrEditAnnotationDialog({
             type: key.toLowerCase(),
             annotation: {

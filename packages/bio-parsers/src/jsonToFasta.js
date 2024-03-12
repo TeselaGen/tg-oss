@@ -14,13 +14,13 @@ export default function jsonToFasta(jsonSequence, options) {
     proteinSequence
   } = cleanedData;
 
-  options = options || {};
-  let seqToUse = sequence;
-  let sizeToUse = size;
-  if (isProtein && proteinSequence) {
-    seqToUse = proteinSequence;
-    sizeToUse = proteinSize;
-  }
+  options = {
+    sequence: isProtein && proteinSequence ? proteinSequence : sequence,
+    size: isProtein && proteinSequence ? proteinSize : size,
+    ...options
+  };
+  const seqToUse = options.sequence;
+  const sizeToUse = options.size;
   // options.reformatSeqName = options.reformatSeqName === false ? false : true;
   let fastaString = "";
   fastaString += `>${name || "Untitled Sequence"}|`;

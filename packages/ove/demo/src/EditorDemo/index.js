@@ -460,23 +460,17 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
     const dropTarget = document.querySelector(".veTabProperties")
           dragMock.dragStart(dragSource).dragEnter(dropTarget).dragOver(dropTarget).delay(500).dragEnd()
         }}>click me!</button> */}
-        <div style={{ width: 250 }}>
-          {renderToggle({
-            that: this,
-            alwaysShow: true,
-            type: "showDemoOptions",
-            label: "Show Demo Options",
-            hotkey: `cmd+'`
-          })}
-        </div>
 
         <div
+          className={"EditorDemo"}
           style={{
             display: "flex",
             position: "relative",
             // flexDirection: "column",
             flexGrow: "1",
-            minHeight: 0
+            minHeight: 0,
+            height: "100%",
+            width: "100%"
           }}
         >
           {
@@ -493,6 +487,14 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 })
               }}
             >
+              <div style={{ width: 0, height: 0, display: "none" }}>
+                {renderToggle({
+                  that: this,
+                  alwaysShow: true,
+                  type: "showDemoOptions",
+                  label: "Show Demo Options"
+                })}
+              </div>
               <div style={{ paddingLeft: 10, paddingRight: 10 }}>
                 <Button
                   icon="refresh"
@@ -2069,6 +2071,26 @@ clickOverrides: {
 
           <Editor
             ToolBarProps={{
+              contentLeft: (
+                <Button
+                  minimal
+                  data-tip={
+                    this.state.showDemoOptions
+                      ? "Hide Demo Options"
+                      : "Show Demo Options"
+                  }
+                  icon={
+                    this.state.showDemoOptions
+                      ? "chevron-left"
+                      : "chevron-right"
+                  }
+                  onClick={() => {
+                    this.setState({
+                      showDemoOptions: !this.state.showDemoOptions
+                    });
+                  }}
+                ></Button>
+              ),
               toolList: defaultToolList.map(t => {
                 if (t !== "alignmentTool") return t;
                 return {
@@ -2079,9 +2101,6 @@ clickOverrides: {
             }}
             panelMap={{
               myCustomTab: MyCustomTab
-            }}
-            style={{
-              ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
             {...this.state}
             {...(this.state.readOnly && { readOnly: true })}

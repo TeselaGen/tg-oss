@@ -299,7 +299,7 @@ body:not(.drag-active)
 }
 
 .ReactTable .rt-tr-group.selected {
-  background: lightblue !important;
+  background: #e4f3f8 !important;
 }
 
 .ReactTable .rt-tr-group.disabled {
@@ -523,7 +523,9 @@ body:not(.drag-active)
 .bp3-dark .ReactTable .rt-tbody {
   background: #30404d !important;
 }
-
+.ReactTable .rt-thead.-header {
+  box-shadow: none;
+}
 .bp3-dark .ReactTable .rt-thead.-header {
   color: #f5f8fa !important;
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Dialog, Classes } from "@blueprintjs/core";
 import { Rnd } from "react-rnd";
+import { debounce } from "lodash";
 import "./style.css";
 
 const defaultDialogWidth = 400;
@@ -13,9 +14,11 @@ export default class ResizableDraggableDialog extends React.Component {
       this.setDefaults();
       try {
         const el = this.containerEl.querySelector(".bp3-dialog-body");
-        this.resizeObs = new ResizeObserver(() => {
-          this.setDefaults({ doNotSetXOrWidth: true });
-        });
+        this.resizeObs = new ResizeObserver(
+          debounce(() => {
+            this.setDefaults({ doNotSetXOrWidth: true });
+          })
+        );
         this.resizeObs.observe(el);
       } catch (e) {
         console.warn(

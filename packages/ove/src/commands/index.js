@@ -264,9 +264,24 @@ const fileCommandDefs = {
     handler: props =>
       props.exportSequenceToFile(isProtein(props) ? "genpept" : "genbank")
   },
-  exportSequenceAsFasta: {
-    name: "Download FASTA File",
-    handler: props => props.exportSequenceToFile("fasta")
+  exportDNASequenceAsFasta: {
+    name: props =>
+      `Download ${props.sequenceData.isProtein ? "DNA " : ""}FASTA File`,
+    isHidden: props => !props.sequenceData.sequence,
+    handler: props =>
+      props.exportSequenceToFile("fasta", {
+        sequence: props.sequenceData.sequence,
+        size: props.sequenceData.size
+      })
+  },
+  exportProteinSequenceAsFasta: {
+    name: "Download AA FASTA File",
+    isHidden: props => !props.sequenceData.proteinSequence,
+    handler: props =>
+      props.exportSequenceToFile("fasta", {
+        sequence: props.sequenceData.proteinSequence,
+        size: props.sequenceData.proteinSize
+      })
   },
   exportSequenceAsTeselagenJson: {
     name: "Download Teselagen JSON File",

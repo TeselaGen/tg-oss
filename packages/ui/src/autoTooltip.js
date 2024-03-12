@@ -54,6 +54,7 @@ let clearMe;
 
         el.classList.add(id);
         const inst = tippy(`.${id}`, {
+          theme: "teselagen",
           plugins: [followCursor],
           content,
           delay:
