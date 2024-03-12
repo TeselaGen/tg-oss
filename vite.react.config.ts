@@ -43,6 +43,17 @@ export default ({ name }: { name: string; dir: string }) =>
       mode = "production";
     }
     const port = getPort(name);
+    const plugin1 = vitePluginVirtualHtml({
+      pages: {
+        index: {
+          entry: "./demo/index.js", // MUST
+          title: ` demo`, // optional, default: ''
+          body: `
+          <div id="demo"></div>
+  ` // optional, default: '<div id="app"></div>'
+        }
+      }
+    });
     return {
       ...(command === "build"
         ? {
@@ -71,6 +82,7 @@ export default ({ name }: { name: string; dir: string }) =>
         viteTsConfigPaths({
           root: "../../"
         }),
+
         ...(command === "build" && !isDemo
           ? [
               // noBundlePlugin({ copy: "**/*.css" }),
@@ -87,19 +99,7 @@ export default ({ name }: { name: string; dir: string }) =>
                 ]
               })
             ]
-          : [
-              vitePluginVirtualHtml({
-                pages: {
-                  index: {
-                    entry: "./demo/index.js", // MUST
-                    title: `${name} demo`, // optional, default: ''
-                    body: `
-                    <div id="demo"></div>
-            ` // optional, default: '<div id="app"></div>'
-                  }
-                }
-              })
-            ])
+          : [plugin1])
       ],
       esbuild: {
         loader: "jsx",
@@ -110,12 +110,12 @@ export default ({ name }: { name: string; dir: string }) =>
         minifySyntax: false
       },
       optimizeDeps: {
-        esbuildOptions: {
-          loader: {
-            ".js": "jsx",
-            ".ts": "tsx"
-          }
-        }
+        // esbuildOptions: {
+        //   loader: {
+        //     ".js": "jsx",
+        //     ".ts": "tsx"
+        //   }
+        // }
       },
 
       // Uncomment this if you are using workers.
