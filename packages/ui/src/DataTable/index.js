@@ -1675,7 +1675,8 @@ class DataTable extends React.Component {
                 const rowDisabled = isEntityDisabled(entity);
                 const isNum = e.keyCode >= 48 && e.keyCode <= 57;
                 const isLetter = e.keyCode >= 65 && e.keyCode <= 90;
-                if (!isNum && !isLetter) return;
+                const isEqlSign = e.keyCode === 187;
+                if (!isNum && !isLetter && !isEqlSign) return;
                 if (rowDisabled) return;
                 this.startCellEdit(cellId, { shouldSelectAll: true });
                 e.stopPropagation();
