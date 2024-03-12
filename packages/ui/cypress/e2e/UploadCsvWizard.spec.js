@@ -660,7 +660,7 @@ a,,desc,,false,dna,misc_feature
     cy.get(`.bp3-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
+    cy.wait(2000);
     cy.get(
       `.tg-upload-file-list-item:contains(testUploadWizard_invalidData.csv) .tg-upload-file-list-item-edit`
     ).click();

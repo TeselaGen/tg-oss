@@ -1080,10 +1080,6 @@ function UploaderInner({
                                 incomingData: file.parsedData,
                                 validateAgainstSchema
                               });
-                              console.error(
-                                `file.name to be edited:`,
-                                file.name
-                              );
 
                               const { newEntities, fileName } =
                                 await showSimpleInsertDataDialog(
