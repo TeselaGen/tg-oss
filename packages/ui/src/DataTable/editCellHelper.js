@@ -15,6 +15,7 @@ import getIdOrCodeOrIndex from "./utils/getIdOrCodeOrIndex";
 // };
 
 export const editCellHelper = ({
+  _cellAlphaNum,
   updateGroup,
   depGraph,
   entity,
@@ -35,12 +36,14 @@ export const editCellHelper = ({
   const colSchema =
     columnSchema || schema?.fields?.find(({ path: p }) => p === path) || {};
   path = path || colSchema.path;
-  const cellAlphaNum = getCellAlphaNum({
-    entities,
-    entity,
-    colSchema,
-    schema
-  });
+  const cellAlphaNum =
+    _cellAlphaNum ||
+    getCellAlphaNum({
+      entities,
+      entity,
+      colSchema,
+      schema
+    });
   if (
     updateGroup[cellAlphaNum] !== undefined &&
     updateGroup[cellAlphaNum] !== "__Currently&&Updating__"
@@ -112,6 +115,7 @@ export const editCellHelper = ({
       if (isString(val) && val[0] === "=") {
         // if the value is a formula, evaluate it
         const { value, errors: _errors } = editCellHelper({
+          _cellAlphaNum: match,
           updateGroup,
           depGraph,
           entity,
@@ -152,10 +156,7 @@ export const editCellHelper = ({
         value: `#ERROR`,
         error: e.message
       };
-      errors = {
-        ...errors,
-        [cellId]: e.message
-      };
+      errors[cellId] = e.message;
     }
     hasFormula = nv;
     nv = nv.value;
@@ -169,10 +170,7 @@ export const editCellHelper = ({
   }
   if (validate && !hasErrors(errors)) {
     const error = validate(nv, colSchema, entity);
-    errors = {
-      ...errors,
-      [cellId]: error
-    };
+    errors[cellId] = error;
   }
   if (!hasErrors(errors)) {
     const validator =
@@ -181,10 +179,7 @@ export const editCellHelper = ({
       (type === undefined && defaultValidators.string);
     if (validator) {
       const error = validator(nv, colSchema);
-      errors = {
-        ...errors,
-        [cellId]: error
-      };
+      errors[cellId] = error;
     }
   }
   const value = hasFormula || nv;
@@ -220,6 +215,7 @@ export const editCellHelper = ({
         const depNewVal = depEntity[depPath];
 
         const { errors: _errors } = editCellHelper({
+          _cellAlphaNum: depCellAlphaNum,
           allowFormulas,
           updateGroup,
           depGraph,
@@ -241,7 +237,7 @@ export const editCellHelper = ({
   }
   updateGroup[cellAlphaNum] = value?.formula ? value.value : value;
   if (!hasErrors(errors)) {
-    errors[cellId] = undefined;
+    delete errors[cellId];
   }
   return { entity, errors: errors, value };
 };
@@ -258,7 +254,7 @@ export function getCellAlphaNumHelper(colIndex, rowIndex) {
 }
 
 const hasErrors = errors => {
-  return Object.values(errors).some(e => e);
+  return !!Object.values(errors)[0];
 };
 
 export const getColLetFromIndex = index => {

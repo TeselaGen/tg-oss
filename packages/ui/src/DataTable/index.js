@@ -415,10 +415,11 @@ class DataTable extends React.Component {
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
     let validationErrors = {};
     const updateGroup = {};
-
+    const depGraph = depGraphToUse || this.depGraph;
+    console.time("formatAndValidateEntities");
     const newEnts = immer(entities, entities => {
       entities.forEach((e, index) => {
-        editableFields.forEach(columnSchema => {
+        editableFields.forEach((columnSchema, colIndex) => {
           if (useDefaultValues) {
             if (e[columnSchema.path] === undefined) {
               if (isFunction(columnSchema.defaultValue)) {
@@ -431,9 +432,10 @@ class DataTable extends React.Component {
           }
           //mutative
           const { errors } = editCellHelper({
+            _cellAlphaNum: getCellAlphaNumHelper(colIndex, index),
             allowFormulas,
             updateGroup,
-            depGraph: depGraphToUse || this.depGraph,
+            depGraph,
             entities,
             entity: e,
             schema,
@@ -447,6 +449,7 @@ class DataTable extends React.Component {
         });
       });
     });
+    console.timeEnd("formatAndValidateEntities");
     return {
       newEnts,
       validationErrors
@@ -671,7 +674,6 @@ class DataTable extends React.Component {
       allowFormulas
     } = this.props;
     const updateGroup = {};
-
     if (isCellEditable) {
       if (isEmpty(reduxFormSelectedCells)) return;
       try {
@@ -1044,6 +1046,10 @@ class DataTable extends React.Component {
   };
 
   handleCopyHelper = (stringToCopy, jsonToCopy, message) => {
+    if (window.Cypress) {
+      window.Cypress.__savedClipboardData = stringToCopy;
+      window.Cypress.__savedClipboardDataJson = jsonToCopy;
+    }
     !window.Cypress &&
       copy(stringToCopy, {
         onCopy: clipboardData => {
@@ -1128,7 +1134,11 @@ class DataTable extends React.Component {
     });
     if (!fullCellText) return getEmptyMsg();
 
-    this.handleCopyHelper(fullCellText, fullJson, "Selected cells copied");
+    this.handleCopyHelper(
+      fullCellText,
+      fullJson,
+      `Selected cell${Object.values(reduxFormSelectedCells).length === 1 ? "" : "s"} copied`
+    );
   };
 
   handleCopySelectedRows = (selectedRecords, e, opts) => {

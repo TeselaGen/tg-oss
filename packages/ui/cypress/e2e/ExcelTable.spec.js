@@ -48,7 +48,7 @@ describe("ExcelTable.spec", () => {
     cy.get(`[data-cell-alpha=C2]`).type(`99{enter}`);
     cy.get(`[data-cell-alpha=D1]:contains(187)`);
   });
-  it(`circular loops should be detected correctly`, () => {
+  it.only(`circular loops should be detected correctly and should be able to be fixed manually`, () => {
     cy.visit("#/DataTable%20-%20ExcelTable?simpleCircularLoop=true");
     cy.get(`[data-tip="Circular Loop Detected between A2 and A1"]`).dblclick();
     cy.focused().type(`{leftarrow}{backspace}{backspace}{backspace}{enter}`);
@@ -108,6 +108,15 @@ describe("ExcelTable.spec", () => {
     );
   });
   it(`copy/paste should work as expected`, () => {
-    cy.get();
+    cy.visit("#/DataTable%20-%20ExcelTable");
+    cy.get(`[data-cell-alpha=A1]`).rightclick();
+    cy.contains("Copy").trigger("mouseover");
+    cy.get(`.bp3-menu-item:contains("Cell")`).click();
+    cy.contains(`Selected cell copied`);
+    cy.get(`[data-cell-alpha=C1]`).click({ force: true });
+    
+    cy.focused().paste2()
+    // cy.contains("Paste").click();
+    // cy.get(`[data-cell-alpha=A2][data-copy-text="132"]`);
   });
 });

@@ -109,6 +109,26 @@ Cypress.Commands.add("uploadBlobFiles", (selector, files, noFileList) => {
 });
 
 Cypress.Commands.add(
+  "paste2",
+  { prevSubject: true, element: true },
+  ($element, data) => {
+    const clipboardData = new DataTransfer();
+    clipboardData.setData("text", data || Cypress.__savedClipboardData);
+    clipboardData.setData("application/json", data || Cypress.__savedClipboardDataJson);
+    const pasteEvent = new ClipboardEvent("paste", {
+      bubbles: true,
+      cancelable: true,
+      data,
+      clipboardData
+    });
+
+    cy.get($element).then(() => {
+      $element[0].dispatchEvent(pasteEvent);
+    });
+  }
+);
+
+Cypress.Commands.add(
   "paste",
   { prevSubject: true },
   (selector, pastePayload) => {
