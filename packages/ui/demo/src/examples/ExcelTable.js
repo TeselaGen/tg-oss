@@ -65,7 +65,7 @@ export default function SimpleTable(p) {
           aa: 42,
           cc: 89
         },
-        ...map(new Array(100), () => {
+        ...map(new Array(40), () => {
           return {
             a: "=sum(B:B)",
             b: 12,

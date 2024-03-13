@@ -1,4 +1,4 @@
-import _, { isString, set, toNumber } from "lodash";
+import { isString, set, toNumber } from "lodash";
 import { defaultValidators } from "./defaultValidators";
 import { defaultFormatters } from "./defaultFormatters";
 import { evaluate } from "mathjs";
@@ -56,9 +56,7 @@ export const editCellHelper = ({
   const cellId = `${getIdOrCodeOrIndex(entity)}:${colSchema.path}`;
   const oldVal = entity[path];
   const { format, validate, type } = colSchema;
-  let errors = {
-    __hasErrors: false
-  };
+  let errors = {};
   if (nv === undefined && colSchema.defaultValue !== undefined) {
     nv = colSchema.defaultValue;
   }
@@ -128,7 +126,10 @@ export const editCellHelper = ({
           entities,
           nestLevel: nestLevel + 1
         });
-        errors = mergeErrors(errors, _errors);
+        errors = {
+          ...errors,
+          ..._errors
+        };
         val = value?.formula ? value.value : value;
       } else if (!isNaN(toNumber(val))) {
         return val;
@@ -156,7 +157,6 @@ export const editCellHelper = ({
         error: e.message
       };
       errors[cellId] = e.message;
-      errors.__hasErrors = true;
     }
     hasFormula = nv;
     nv = nv.value;
@@ -170,9 +170,6 @@ export const editCellHelper = ({
   }
   if (validate && !hasErrors(errors)) {
     const error = validate(nv, colSchema, entity);
-    if (error) {
-      errors.__hasErrors = true;
-    }
     errors[cellId] = error;
   }
   if (!hasErrors(errors)) {
@@ -182,9 +179,6 @@ export const editCellHelper = ({
       (type === undefined && defaultValidators.string);
     if (validator) {
       const error = validator(nv, colSchema);
-      if (error) {
-        errors.__hasErrors = true;
-      }
       errors[cellId] = error;
     }
   }
@@ -233,15 +227,18 @@ export const editCellHelper = ({
           depLevel: depLevel + 1,
           nestLevel: nestLevel
         });
-        errors = mergeErrors(errors, _errors);
+        errors = {
+          ...errors,
+          ..._errors
+        };
       });
     }
   }
   updateGroup[cellAlphaNum] = value?.formula ? value.value : value;
   if (!hasErrors(errors)) {
-    errors[cellId] = undefined;
+    delete errors[cellId];
   }
-  return { entity, errors, value };
+  return { entity, errors: errors, value };
 };
 
 function getCellAlphaNum({ entities, entity, colSchema, schema }) {
@@ -256,7 +253,7 @@ export function getCellAlphaNumHelper(colIndex, rowIndex) {
 }
 
 const hasErrors = errors => {
-  return errors.__hasErrors;
+  return !!Object.values(errors)[0];
 };
 
 export const getColLetFromIndex = index => {
@@ -285,6 +282,7 @@ export const replaceFormulaRanges = ({ formula, schema, entities }) => {
     .toLowerCase()
     .replace(/([A-Z]*[0-9]*:[A-Z]*[0-9]*)/gi, _match => {
       // if (_match.includes(":")) {
+      //   console.log(`_match:`, _match);
       // }
       const match = _match.toUpperCase();
       const [start, end] = match.split(":");
@@ -324,16 +322,3 @@ export const replaceFormulaRanges = ({ formula, schema, entities }) => {
     error
   };
 };
-
-function mergeErrors(errors, _errors) {
-  let hasErrors = false;
-  if (_errors.__hasErrors || errors.__hasErrors) {
-    hasErrors = true;
-  }
-  errors = {
-    ...errors,
-    ..._errors,
-    __hasErrors: hasErrors
-  };
-  return errors;
-}
