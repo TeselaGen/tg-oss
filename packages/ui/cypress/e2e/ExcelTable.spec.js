@@ -149,10 +149,9 @@ describe("ExcelTable.spec", () => {
     cy.get(`.isSelectedCell [data-cell-alpha=A2]`);
     cy.get(`.isSelectedCell [data-cell-alpha=E2]`);
   });
-  it(`dragging should work as expected`, () => {
+  it(`dragging of formula should work as expected`, () => {
     cy.visit("#/DataTable%20-%20ExcelTable?dragExample=true");
     cy.get(`[data-cell-alpha=A1]`).click({ force: true });
-    cy.get(`[data-cell-alpha=A2]`).click({ shiftKey: true });
     cy.dragBetween(`.cellDragHandle`, `.rt-tr-last-row`);
     cy.get(`[data-cell-alpha=A2][data-copy-text="45"]`);
     cy.get(`[data-cell-alpha=A4][data-copy-text="47"]`);
@@ -170,7 +169,7 @@ describe("ExcelTable.spec", () => {
     cy.get(`[data-cell-alpha=C8][data-copy-text="51"]`);
     cy.get(`[data-cell-alpha=C14][data-copy-text="57"]`);
   });
-  it(`copy/paste should work as expected`, () => {
+  it(`copy/paste of formula should work as expected`, () => {
     cy.visit("#/DataTable%20-%20ExcelTable?dragExample=true");
     cy.get(`[data-cell-alpha=A1]`).click({ force: true });
     cy.get(`[data-cell-alpha=B1]`).click({ force: true, shiftKey: true });

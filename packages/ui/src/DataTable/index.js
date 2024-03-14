@@ -30,7 +30,8 @@ import {
   some,
   isFunction,
   every,
-  uniq
+  uniq,
+  has
 } from "lodash";
 import joinUrl from "url-join";
 
@@ -3042,12 +3043,16 @@ class DataTable extends React.Component {
         const column = pathToField[selectedPath];
 
         const selectedCellVal = getCellVal(selectedEnt, selectedPath, column);
+        let selectedSimpleVal = selectedCellVal;
+        if (has(selectedCellVal, "value")) {
+          selectedSimpleVal = selectedCellVal.value;
+        }
         const cellIndexOfSelectedPath = pathToIndex[selectedPath];
         let incrementStart;
         let incrementPrefix;
         let incrementPad = 0;
         if (column.type === "string" || column.type === "number") {
-          const cellNumStr = getNumberStrAtEnd(selectedCellVal);
+          const cellNumStr = getNumberStrAtEnd(selectedSimpleVal);
           const cellNum = Number(cellNumStr);
           const entityAbovePrimaryCell =
             entities[entityMap[primaryRowId].i - 1];
@@ -3066,7 +3071,7 @@ class DataTable extends React.Component {
               if (!isNaN(cellAboveNum)) {
                 const isIncremental = cellNum - cellAboveNum === 1;
                 if (isIncremental) {
-                  const cellTextNoNum = stripNumberAtEnd(selectedCellVal);
+                  const cellTextNoNum = stripNumberAtEnd(selectedSimpleVal);
                   const sameText =
                     stripNumberAtEnd(cellAboveVal) === cellTextNoNum;
                   if (sameText) {
@@ -3144,6 +3149,7 @@ class DataTable extends React.Component {
           });
         }
 
+        // if formula is prefixed with a dollar sign then it is fixed in place
         cellsToSelect.forEach(cellId => {
           const [rowId, cellPath] = cellId.split(":");
           if (cellPath !== selectedPath) return;

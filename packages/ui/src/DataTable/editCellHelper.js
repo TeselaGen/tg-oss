@@ -279,6 +279,26 @@ const lettersToNumber = letters => {
   return n - 1;
 };
 
+export function offsetFormulaByIndex({
+  newRowIndex,
+  oldRowIndex,
+  newColIndex,
+  oldColIndex,
+  formula
+}) {
+  return formula.replace(/([A-Z]+[0-9]+)/gi, _match => {
+    const match = _match.toUpperCase();
+    const [letter, rowIndex] = match.split(/(\d+)/);
+    const letterIndex = lettersToNumber(letter);
+    const colIndex = letterIndex;
+    const rowIndexInt = parseInt(rowIndex);
+    if (rowIndexInt === oldRowIndex && colIndex === oldColIndex) {
+      return getCellAlphaNumHelper(newColIndex, newRowIndex);
+    }
+    return match;
+  });
+}
+
 export const replaceFormulaRanges = ({ formula, schema, entities }) => {
   let error;
   const replaced = formula
