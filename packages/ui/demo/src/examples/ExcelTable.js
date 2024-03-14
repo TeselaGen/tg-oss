@@ -49,16 +49,21 @@ export default function SimpleTable(p) {
       setEnts([
         {
           a: "=c1",
-          b: "=$c$1",
+          b: "=c$1",
           c: 44,
           d: 11
         },
         {
           a: undefined,
           b: undefined,
-          c: 44,
-          d: 11
-        }
+          c: 45,
+          d: 12
+        },
+        {
+          c: 46,
+          d: 13
+        },
+        { c: 47, d: 14 }
       ]);
       return {
         fields: [

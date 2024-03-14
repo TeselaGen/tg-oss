@@ -442,10 +442,6 @@ class DataTable extends React.Component {
             newVal: e[columnSchema.path]
           });
           Object.assign(validationErrors, errors);
-          // validationErrors = {
-          //   ...validationErrors,
-          //   ...errors
-          // };
         });
       });
     });

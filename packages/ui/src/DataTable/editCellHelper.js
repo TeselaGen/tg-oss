@@ -283,6 +283,7 @@ export const replaceFormulaRanges = ({ formula, schema, entities }) => {
   let error;
   const replaced = formula
     .toLowerCase()
+    .replaceAll("$", "")
     .replace(/([A-Z]*[0-9]*:[A-Z]*[0-9]*)/gi, _match => {
       // if (_match.includes(":")) {
       // }
