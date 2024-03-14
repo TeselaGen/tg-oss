@@ -137,7 +137,7 @@
             "launch-e2e2": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
+                "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser electron\" \"nx run bounce-loader:start\""
               },
               "configurations": {}
             },
@@ -570,7 +570,7 @@
               "options": {
                 "watch": true,
                 "headed": true,
-                "browser": "chrome",
+                "browser": "electron",
                 "cypressConfig": "packages/ove/cypress.config.ts",
                 "devServerTarget": "ove:start:ci",
                 "testingType": "e2e"
@@ -712,7 +712,7 @@
               "options": {
                 "watch": true,
                 "headed": true,
-                "browser": "chrome",
+                "browser": "electron",
                 "cypressConfig": "packages/ui/cypress.config.ts",
                 "devServerTarget": "ui:start:ci",
                 "testingType": "e2e"

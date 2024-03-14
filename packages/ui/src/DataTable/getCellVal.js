@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import { get, has } from "lodash";
 import { isString } from "lodash";
 import { isTruthy } from "./isTruthy";
 
@@ -15,6 +15,9 @@ export const getCellVal = (ent, path, col) => {
       selectedCellVal === 1 ||
       selectedCellVal === "yes";
     selectedCellVal = isTruthy(selectedCellVal);
+  }
+  if (has(selectedCellVal, "value")) {
+    return selectedCellVal.value;
   }
   return selectedCellVal;
 };
