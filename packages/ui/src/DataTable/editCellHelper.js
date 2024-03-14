@@ -271,7 +271,7 @@ const getColLetFromIndexHelper = index => {
   return String.fromCharCode(65 + index);
 };
 
-const lettersToNumber = letters => {
+export const lettersToNumber = letters => {
   let n = 0;
   for (let p = 0; p < letters.length; p++) {
     n = letters[p].charCodeAt() - 64 + n * 26;
