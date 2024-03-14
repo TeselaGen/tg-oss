@@ -12,6 +12,9 @@ export default function SimpleTable(p) {
   const [simpleCircularLoop, simpleCircularLoopComp] = useToggle({
     type: "simpleCircularLoop"
   });
+  const [dragExample, dragExampleComp] = useToggle({
+    type: "dragExample"
+  });
   const [manyColumns, manyColumnsComp] = useToggle({
     type: "manyColumns"
   });
@@ -39,6 +42,30 @@ export default function SimpleTable(p) {
         fields: [
           { path: "a", allowFormulas: true },
           { path: "b", allowFormulas: true }
+        ]
+      };
+    }
+    if (dragExample) {
+      setEnts([
+        {
+          a: "=c1",
+          b: "=$c$1",
+          c: 44,
+          d: 11
+        },
+        {
+          a: undefined,
+          b: undefined,
+          c: 44,
+          d: 11
+        }
+      ]);
+      return {
+        fields: [
+          { path: "a", allowFormulas: true },
+          { path: "b", allowFormulas: true },
+          { path: "c", allowFormulas: true },
+          { path: "d", allowFormulas: true }
         ]
       };
     }
@@ -126,12 +153,13 @@ export default function SimpleTable(p) {
         { path: "e", allowFormulas: true }
       ]
     };
-  }, [simpleCircularLoop, manyColumns, simpleRangeExample]);
+  }, [simpleCircularLoop, manyColumns, simpleRangeExample, dragExample]);
   return (
     <div>
       {/* <ExcelCell></ExcelCell> */}
       <OptionsSection>
         {simpleCircularLoopComp}
+        {dragExampleComp}
         {manyColumnsComp}
         {simpleRangeExampleComp}
       </OptionsSection>

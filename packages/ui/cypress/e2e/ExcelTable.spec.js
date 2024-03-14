@@ -48,7 +48,7 @@ describe("ExcelTable.spec", () => {
     cy.get(`[data-cell-alpha=C2]`).type(`99{enter}`);
     cy.get(`[data-cell-alpha=D1]:contains(187)`);
   });
-  it.only(`circular loops should be detected correctly and should be able to be fixed manually`, () => {
+  it(`circular loops should be detected correctly and should be able to be fixed manually`, () => {
     cy.visit("#/DataTable%20-%20ExcelTable?simpleCircularLoop=true");
     cy.get(`[data-tip="Circular Loop Detected between A2 and A1"]`).dblclick();
     cy.focused().type(`{leftarrow}{backspace}{backspace}{backspace}{enter}`);
@@ -113,10 +113,44 @@ describe("ExcelTable.spec", () => {
     cy.contains("Copy").trigger("mouseover");
     cy.get(`.bp3-menu-item:contains("Cell")`).click();
     cy.contains(`Selected cell copied`);
-    cy.get(`[data-cell-alpha=C1]`).click({ force: true });
-    
-    cy.focused().paste2()
-    // cy.contains("Paste").click();
-    // cy.get(`[data-cell-alpha=A2][data-copy-text="132"]`);
+    cy.get(`[data-cell-alpha=D1]`).click({ force: true });
+    cy.focused().paste();
+    cy.get(
+      `[data-cell-alpha=D1][data-formula="=sum(b1,a2)"][data-copy-text="88"]`
+    );
+    cy.get(`[data-cell-alpha=D1]`).rightclick();
+    cy.contains("Copy Formula").trigger("mouseover");
+    cy.get(`.bp3-menu-item:contains("Cell")`).click();
+    cy.contains(`Selected cell copied`);
+    cy.get(`[data-cell-alpha=E1]`).click({ force: true });
+    cy.focused().paste();
+    cy.get(
+      `[data-cell-alpha=E1][data-formula="=sum(b1,a2)"][data-copy-text="88"]`
+    );
+    cy.get(`[data-cell-alpha=D1]`).rightclick();
+    cy.contains("Copy Formula").trigger("mouseover");
+    cy.get(`.bp3-menu-item:contains("Table"):first`).click();
+    cy.contains(`Table Copied`);
+    cy.contains("Add 10 Rows").click();
+    cy.get(`[data-cell-alpha=A3]`).click({ force: true });
+    cy.focused().paste();
+    cy.get(
+      `[data-cell-alpha=D3][data-formula="=sum(b1,a2)"][data-copy-text="88"]`
+    );
+  });
+  it(`clicking the row number should highlight the whole row`, () => {
+    cy.visit("#/DataTable%20-%20ExcelTable");
+    cy.get(`.tg-row-index-0`).click();
+    cy.get(`.isSelectedCell [data-cell-alpha=A1]`);
+    cy.get(`.isSelectedCell [data-cell-alpha=E1]`);
+    cy.get(`.tg-row-index-1`).click({ shiftKey: true });
+    cy.get(`.isSelectedCell [data-cell-alpha=A1]`);
+    cy.get(`.isSelectedCell [data-cell-alpha=E1]`);
+    cy.get(`.isSelectedCell [data-cell-alpha=A2]`);
+    cy.get(`.isSelectedCell [data-cell-alpha=E2]`);
+  });
+  it(`dragging should work as expected`, () => {
+    cy.visit("#/DataTable%20-%20ExcelTable?dragExample=true");
+    cy.get(`[data-cell-alpha=A1]`).click({ force: true });
   });
 });

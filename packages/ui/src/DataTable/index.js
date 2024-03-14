@@ -413,10 +413,9 @@ class DataTable extends React.Component {
   ) => {
     const { schema, allowFormulas } = this.props;
     const editableFields = schema.fields.filter(f => !f.isNotEditable);
-    let validationErrors = {};
+    const validationErrors = {};
     const updateGroup = {};
     const depGraph = depGraphToUse || this.depGraph;
-    console.time("formatAndValidateEntities");
     const newEnts = immer(entities, entities => {
       entities.forEach((e, index) => {
         editableFields.forEach((columnSchema, colIndex) => {
@@ -442,14 +441,14 @@ class DataTable extends React.Component {
             columnSchema,
             newVal: e[columnSchema.path]
           });
-          validationErrors = {
-            ...validationErrors,
-            ...errors
-          };
+          Object.assign(validationErrors, errors);
+          // validationErrors = {
+          //   ...validationErrors,
+          //   ...errors
+          // };
         });
       });
     });
-    console.timeEnd("formatAndValidateEntities");
     return {
       newEnts,
       validationErrors
@@ -1046,14 +1045,15 @@ class DataTable extends React.Component {
   };
 
   handleCopyHelper = (stringToCopy, jsonToCopy, message) => {
+    const jToC = JSON.stringify(jsonToCopy);
     if (window.Cypress) {
       window.Cypress.__savedClipboardData = stringToCopy;
-      window.Cypress.__savedClipboardDataJson = jsonToCopy;
+      window.Cypress.__savedClipboardDataJson = jToC;
     }
     !window.Cypress &&
       copy(stringToCopy, {
         onCopy: clipboardData => {
-          clipboardData.setData("application/json", JSON.stringify(jsonToCopy));
+          clipboardData.setData("application/json", jToC);
         },
         // keep this so that pasting into spreadsheets works.
         format: "text/plain"
