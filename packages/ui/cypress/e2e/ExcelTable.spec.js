@@ -152,6 +152,7 @@ describe("ExcelTable.spec", () => {
   it(`dragging should work as expected`, () => {
     cy.visit("#/DataTable%20-%20ExcelTable?dragExample=true");
     cy.get(`[data-cell-alpha=A1]`).click({ force: true });
+    cy.get(`[data-cell-alpha=A2]`).click({ shiftKey: true });
     cy.dragBetween(`.cellDragHandle`, `.rt-tr-last-row`);
     cy.get(`[data-cell-alpha=A2][data-copy-text="45"]`);
     cy.get(`[data-cell-alpha=A4][data-copy-text="47"]`);
@@ -159,6 +160,15 @@ describe("ExcelTable.spec", () => {
     cy.dragBetween(`.cellDragHandle`, `.rt-tr-last-row`);
     cy.get(`[data-cell-alpha=B2][data-copy-text="44"]`);
     cy.get(`[data-cell-alpha=B4][data-copy-text="44"]`);
+  });
+  it(`dragging down with incrementation should work as expected`, () => {
+    cy.visit("#/DataTable%20-%20ExcelTable?dragExample=true");
+    cy.get("button:contains(Add 10 Rows)").click();
+    cy.get(`[data-cell-alpha=C3]`).click({ force: true });
+    cy.dragBetween(`.cellDragHandle`, `.rt-tr-last-row`);
+    cy.get(`[data-cell-alpha=C3][data-copy-text="46"]`);
+    cy.get(`[data-cell-alpha=C8][data-copy-text="51"]`);
+    cy.get(`[data-cell-alpha=C14][data-copy-text="57"]`);
   });
   it(`copy/paste should work as expected`, () => {
     cy.visit("#/DataTable%20-%20ExcelTable?dragExample=true");

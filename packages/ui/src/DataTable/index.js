@@ -3015,6 +3015,7 @@ class DataTable extends React.Component {
       allSelectedPaths = [primaryCellPath];
     }
     const updateGroup = {};
+    const prevEnts = entities;
     this.updateEntitiesHelper(entities, entities => {
       let newReduxFormSelectedCells;
       if (selectedPaths) {
@@ -3030,7 +3031,8 @@ class DataTable extends React.Component {
       let newCellValidate = {
         ...reduxFormCellValidation
       };
-      const entityMap = getEntityIdToEntity(entities);
+      const entityMap = getEntityIdToEntity(prevEnts);
+      const updateAbleEntityMap = getEntityIdToEntity(entities);
       const { e: selectedEnt } = entityMap[primaryRowId];
       const firstCellToSelectRowIndex =
         entityMap[cellsToSelect[0]?.split(":")[0]]?.i;
@@ -3079,7 +3081,8 @@ class DataTable extends React.Component {
             }
             if (incrementStart === undefined) {
               const draggingDown =
-                firstCellToSelectRowIndex > selectionGrid?.[0][0].rowIndex;
+                firstCellToSelectRowIndex >
+                selectionGrid?.[0]?.[cellIndexOfSelectedPath]?.rowIndex;
               if (selectedPaths && draggingDown) {
                 let checkIncrement;
                 let prefix;
@@ -3145,7 +3148,8 @@ class DataTable extends React.Component {
           const [rowId, cellPath] = cellId.split(":");
           if (cellPath !== selectedPath) return;
           newReduxFormSelectedCells[cellId] = true;
-          const { e: entityToUpdate, i: rowIndex } = entityMap[rowId] || {};
+          const { e: entityToUpdate, i: rowIndex } =
+            updateAbleEntityMap[rowId] || {};
           if (entityToUpdate) {
             delete entityToUpdate._isClean;
             let newVal;
@@ -4140,6 +4144,7 @@ function endsWithNumber(str) {
 }
 
 function getNumberStrAtEnd(str) {
+  if (typeof str !== "string") str = str.toString();
   if (endsWithNumber(str)) {
     return str.match(/[0-9]+$/)[0];
   }

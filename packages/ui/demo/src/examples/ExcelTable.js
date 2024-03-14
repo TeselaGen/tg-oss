@@ -54,7 +54,7 @@ export default function SimpleTable(p) {
           d: 11
         },
         {
-          a: undefined,
+          a: 45,
           b: undefined,
           c: 45,
           d: 12
