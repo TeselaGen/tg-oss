@@ -160,7 +160,7 @@ describe("ExcelTable.spec", () => {
     cy.get(`[data-cell-alpha=B2][data-copy-text="44"]`);
     cy.get(`[data-cell-alpha=B4][data-copy-text="44"]`);
   });
-  it(`copying should work as expected`, () => {
+  it(`copy/paste should work as expected`, () => {
     cy.visit("#/DataTable%20-%20ExcelTable?dragExample=true");
     cy.get(`[data-cell-alpha=A1]`).click({ force: true });
     cy.get(`[data-cell-alpha=B1]`).click({ force: true, shiftKey: true });
