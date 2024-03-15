@@ -44,7 +44,7 @@ export function MatchHeaders({
         </Callout>
       )}
       <br></br>
-      <tr
+      <div
         style={{
           display: "flex",
           minHeight: 50,
@@ -52,7 +52,7 @@ export function MatchHeaders({
           justifyContent: "space-between"
         }}
       >
-        <td
+        <div
           style={{
             width: 200,
             marginLeft: 20,
@@ -61,8 +61,8 @@ export function MatchHeaders({
           }}
         >
           Accepted Headers
-        </td>
-        <td
+        </div>
+        <div
           style={{
             width: 200,
             marginLeft: 20,
@@ -71,7 +71,7 @@ export function MatchHeaders({
           }}
         >
           Your Headers
-        </td>
+        </div>
         <td
           style={{
             fontWeight: "bold",
@@ -80,7 +80,7 @@ export function MatchHeaders({
         >
           Data Preview
         </td>
-      </tr>
+      </div>
       {searchResults.map(({ path, displayName, type }, i) => {
         const userMatchedHeader = matchedHeaders[path];
         const opts = flatMap(userSchema.fields, ({ path: pathInner }) => {
