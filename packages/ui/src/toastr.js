@@ -32,6 +32,9 @@ const generateToast = intent => (message, options) => {
   if (intent === Intent.DANGER) {
     console.error("Toastr error message: ", message);
   }
+  if (intent === Intent.WARNING) {
+    console.error("Toastr warning message: ", message);
+  }
 
   const maybeAddClearAll = () => {
     // wipe any existing clear all buttons
