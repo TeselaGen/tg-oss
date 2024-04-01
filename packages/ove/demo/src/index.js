@@ -1,5 +1,3 @@
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import "../../../ui/src/external_styles";
 import React, { useMemo } from "react";
 import { Provider } from "react-redux";
 
