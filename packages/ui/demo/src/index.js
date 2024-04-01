@@ -1,3 +1,4 @@
+import "../../src/external_styles";
 import CollapsibleCard from "./examples/CollapsibleCard";
 import MenuBar from "./examples/MenuBar";
 import HotkeysDialog from "./examples/HotkeysDialog";
