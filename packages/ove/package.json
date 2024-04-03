@@ -8,8 +8,5 @@
       "require": "./index.cjs.js"
     },
     "./style.css": "./style.css"
-  },
-  "volta": {
-    "node": "16.20.2"
   }
 }
