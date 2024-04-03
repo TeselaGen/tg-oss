@@ -14,6 +14,7 @@ export default class Loading extends React.Component {
         longerThan200MS: true
       });
     }, 200);
+    console.log("aweea");
   }
 
   componentWillUnmount() {

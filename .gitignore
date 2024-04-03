@@ -50,3 +50,5 @@ playwright/.cache
 downloads
 .vite
 .nx
+.yarn
+.turbo

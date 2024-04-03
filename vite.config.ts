@@ -3,12 +3,11 @@ import { defineConfig } from "vite";
 
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import dts from "vite-plugin-dts";
-import { joinPathFragments } from "@nx/devkit";
 import { camelCase } from "lodash";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import path from "path";
 
 //vite config for simple iso packages
-
 const conf = ({
   name,
   dir,
@@ -23,7 +22,7 @@ const conf = ({
     plugins: [
       dts({
         entryRoot: "src",
-        tsconfigPath: joinPathFragments(dir, "tsconfig.json")
+        tsconfigPath: path.join(dir, "tsconfig.json")
       }),
       viteTsConfigPaths({
         root: "../../"

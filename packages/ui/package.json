@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.3.79",
+  "version": "0.3.81",
   "main": "./src/index.js",
   "exports": {
     ".": {
@@ -8,5 +8,24 @@
       "require": "./index.cjs.js"
     },
     "./style.css": "./style.css"
+  },
+  "scripts": {
+    "start": "yarn p:start",
+    "e2e-open": "yarn p:e2e-open",
+    "build2": "turbo build --filter ui",
+    "build3": "yarn p:build",
+    "build": "yarn p:build",
+    "build-demo": "yarn p:build-demo",
+    "dev": "yarn p:dev",
+    "e2e": "yarn p:e2e",
+    "lint": "yarn p:lint",
+    "lint2": "yarn run -T eslint --debug",
+    "test": "yarn p:test"
+  },
+  "eslintConfig": {
+    "extends": "../../.eslintrc.json"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

@@ -10,5 +10,16 @@
   },
   "devDependencies": {
     "mock-fs": "^5.2.0"
+  },
+  "scripts": {
+    "build": "yarn p:build",
+    "lint": "yarn p:lint",
+    "test": "yarn p:test"
+  },
+  "eslintConfig": {
+    "extends": "../../.eslintrc.json"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

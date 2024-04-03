@@ -224,6 +224,7 @@ class MenuBar extends React.Component {
     const { isOpen, openIndex } = this.state;
     return (
       <div className={"tg-menu-bar " + className} style={style}>
+        {/*eslint-disable-next-line no-undef */}
         <this.hotkeyEnabler></this.hotkeyEnabler>
         {menu.map((topLevelItem, i) => {
           const dataKeys = pickBy(topLevelItem, function (value, key) {

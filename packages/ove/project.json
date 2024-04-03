@@ -12,17 +12,7 @@
         "lintFilePatterns": ["packages/ove/**/*.{ts,tsx,js,jsx}"]
       }
     },
-    "start": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["cd packages/ove && yarn vite"]
-      },
-      "configurations": {
-        "ci": {
-          "readyWhen": "ready in"
-        }
-      }
-    },
+
     "publish": {
       "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
       "dependsOn": ["test", "build", "build_umd"]
