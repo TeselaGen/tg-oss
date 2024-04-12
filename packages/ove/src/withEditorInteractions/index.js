@@ -286,7 +286,11 @@ function VectorInteractionHOC(Component /* options */) {
               }
             }
           ),
-        { doNotRemoveInvalidChars: true, annotationsAsObjects: true }
+        {
+          doNotRemoveInvalidChars: true,
+          annotationsAsObjects: true,
+          includeProteinSequence: true
+        }
       );
 
       if (
@@ -308,7 +312,6 @@ function VectorInteractionHOC(Component /* options */) {
             : seqData.sequence;
 
       seqData.textToCopy = textToCopy;
-
       clipboardData.setData("text/plain", textToCopy);
       clipboardData.setData("application/json", JSON.stringify(seqData));
       e.preventDefault();

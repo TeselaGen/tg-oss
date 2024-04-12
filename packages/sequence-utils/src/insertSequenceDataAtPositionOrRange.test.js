@@ -83,6 +83,28 @@ describe("insertSequenceData", () => {
     postInsertSeq.sequence.should.equal("atgatagatagggagaaa");
     postInsertSeq.proteinSequence.should.equal("MIDREK");
   });
+  it("inserts protein seq into a dna seq correctly", () => {
+    const sequenceToInsert = {
+      isProtein: true,
+      sequence: "atagatagg",
+      proteinSequence: "IDR"
+    };
+    const sequenceToInsertInto = {
+      //  012345
+      isProtein: false,
+      sequence: "atgagagagaaa",
+      proteinSequence: "MREK"
+    };
+    const range = { start: 3, end: 5 };
+    const postInsertSeq = insertSequenceDataAtPositionOrRange(
+      sequenceToInsert,
+      sequenceToInsertInto,
+      range
+    );
+    postInsertSeq.sequence.should.equal("atgatagatagggagaaa");
+    postInsertSeq.isProtein.should.equal(false);
+    postInsertSeq.proteinSequence.should.equal("MIDREK");
+  });
   it("inserts characters at correct range and computes the new size correctly", () => {
     const sequenceToInsert = {
       sequence: "rrrrrrr"
