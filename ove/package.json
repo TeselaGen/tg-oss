@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.4.4",
+  "version": "0.4.9",
   "main": "./src/index.js",
   "exports": {
     ".": {
@@ -8,9 +8,6 @@
       "require": "./index.cjs.js"
     },
     "./style.css": "./style.css"
-  },
-  "volta": {
-    "node": "16.20.2"
   },
   "dependencies": {
     "@blueprintjs/core": "3.52.0",
@@ -36,8 +33,8 @@
     "dom-to-image": "^2.6.0",
     "downloadjs": "^1.4.7",
     "escape-string-regexp": "1.0.5",
-    "fast-xml-parser": "4.2.7",
-    "fflate": "0.8.0",
+    "fast-xml-parser": "4.3.5",
+    "fflate": "0.8.2",
     "file-saver": "^2.0.5",
     "fuse.js": "^6.6.2",
     "fuzzysearch": "^1.0.3",
@@ -67,7 +64,7 @@
     "react-measure": "^2.5.2",
     "react-redux": "^8.0.5",
     "react-rnd": "^10.2.4",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.3.4",
     "react-sizeme": "^2.6.12",
     "react-sortable-hoc": "^0.6.8",
     "react-transition-group": "^2.4.0",
