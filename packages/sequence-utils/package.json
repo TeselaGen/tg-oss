@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/sequence-utils",
-  "version": "0.3.19",
+  "version": "0.3.24",
   "type": "commonjs",
   "dependencies": {
     "bson-objectid": "^2.0.4",

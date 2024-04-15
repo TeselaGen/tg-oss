@@ -115,5 +115,5 @@ execSync(
   `npm publish --access public --registry https://registry.npmjs.org/ --tag ${tag}`
 );
 
-execSync(`git commit -am "chore: publish ${name}@${version}"`);
-execSync(`git push`);
+// execSync(`git commit -am "chore: publish ${name}@${version}"`);
+// execSync(`git push`);
