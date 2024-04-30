@@ -28,6 +28,11 @@ import {
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
 import DemoWrapper from "../DemoWrapper";
+import {
+  FileUploadFieldHook,
+  InputFieldHook
+} from "../../../src/HookFormComponents";
+import { useForm } from "react-hook-form";
 
 // const getOptions = function(input, callback) {
 //   setTimeout(function() {
@@ -41,6 +46,7 @@ import DemoWrapper from "../DemoWrapper";
 // };
 
 function FormComponentsDemo({ handleSubmit }) {
+  const { handleSubmit: handleSubmit2, reset, setValue, control } = useForm({});
   const [disableFileUploadField, disableFileUploadFieldComp] = useToggle({
     type: "disableFileUploadField"
   });
@@ -59,16 +65,51 @@ function FormComponentsDemo({ handleSubmit }) {
       type: "reactSelectFielddisallowClear",
       label: "disallowClear"
     });
-  // const [disabled, disabledToggleComp] = useToggle({
-  //   type: "disabled"
-  // });
-
+  window.toastr.info("Renderin");
   return (
     <Provider store={store}>
       <div className="form-components">
+        <InputFieldHook
+          // clickToEdit
+          name={"inputFieldWithClickToEdit"}
+          control={control}
+          inlineLabel={inlineLabels}
+          onFieldSubmit={onFieldSubmit}
+          label="InputField with clickToEdit=true"
+          placeholder="Enter note..."
+        />
+        <FileUploadFieldHook
+          control={control}
+          label="File limit and type"
+          onFieldSubmit={function (fileList) {
+            console.info("do something with the finished file list:", fileList);
+          }}
+          className={"fileUploadLimitAndType"}
+          accept={[".gb"]}
+          action={"//jsonplaceholder.typicode.com/posts/"}
+          name={"<FileUploadField/> uploadfield"}
+          fileLimit={1}
+          inlineLabel={inlineLabels}
+        />
+        <Button
+          onClick={handleSubmit2(
+            data => {
+              console.log(`weee`, data);
+              window.toastr.info(
+                `Hook Form Submitted ${JSON.stringify(data, null, 2)}`
+              );
+            },
+            () => {
+              window.toastr.error("Hook Form Submission Failed");
+            }
+          )}
+        >
+          Submit Hook Form
+        </Button>
         <h3 className="form-component-title">
           Blueprint Redux Form Components
         </h3>
+
         <InputField
           clickToEdit
           name={"inputFieldWithClickToEdit"}
@@ -164,7 +205,7 @@ function FormComponentsDemo({ handleSubmit }) {
               );
             }}
             className={"fileUploadLimitAndType"}
-            accept={[".json"]}
+            accept={[".gb"]}
             action={"//jsonplaceholder.typicode.com/posts/"}
             name={"<FileUploadField/> uploadfield"}
             fileLimit={1}

@@ -53,6 +53,7 @@
     "react-dom": "18.2.0",
     "react-draggable": "4.4.5",
     "react-dropzone": "^11.4.2",
+    "react-hook-form": "^7.51.3",
     "react-markdown": "8.0.7",
     "react-measure": "^2.5.2",
     "react-redux": "^8.0.5",
