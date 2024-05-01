@@ -30,23 +30,14 @@ import OptionsSection from "../OptionsSection";
 import DemoWrapper from "../DemoWrapper";
 import {
   FileUploadFieldHook,
-  InputFieldHook
+  InputFieldHook,
+  hookForm
 } from "../../../src/HookFormComponents";
 import { useForm } from "react-hook-form";
 
-// const getOptions = function(input, callback) {
-//   setTimeout(function() {
-//     callback(null, {
-//       options: [{ value: "one", label: "One" }, { value: "two", label: "Two" }],
-//       // CAREFUL! Only set this to true when there are no more options,
-//       // or more specific queries will not be sent to the server.
-//       complete: true
-//     });
-//   }, 500);
-// };
 
 function FormComponentsDemo({ handleSubmit }) {
-  const { handleSubmit: handleSubmit2, reset, setValue, control } = useForm({});
+  const { handleSubmit: handleSubmit2, control } = useForm({});
   const [disableFileUploadField, disableFileUploadFieldComp] = useToggle({
     type: "disableFileUploadField"
   });
@@ -68,20 +59,22 @@ function FormComponentsDemo({ handleSubmit }) {
   window.toastr.info("Renderin");
   return (
     <Provider store={store}>
+      {/* probably not recommended to use hook form via a HOC */}
+      <HookFormDemo></HookFormDemo>
       <div className="form-components">
         <InputFieldHook
           // clickToEdit
           name={"inputFieldWithClickToEdit"}
           control={control}
           inlineLabel={inlineLabels}
-          onFieldSubmit={onFieldSubmit}
+          onFieldSubmit={onFieldSubmit} //this isn't working yet
           label="InputField with clickToEdit=true"
           placeholder="Enter note..."
         />
         <FileUploadFieldHook
           control={control}
           label="File limit and type"
-          onFieldSubmit={function (fileList) {
+          onFieldSubmit={function (fileList) { //this isn't working yet
             console.info("do something with the finished file list:", fileList);
           }}
           className={"fileUploadLimitAndType"}
@@ -644,6 +637,56 @@ function FormComponentsDemo({ handleSubmit }) {
     </Provider>
   );
 }
+function HookFormComponentsDemo({ handleSubmit }) {
+ 
+  const [inlineLabels, inlineLabelsComp] = useToggle({
+    type: "inlineLabels"
+  });
+ 
+  window.toastr.info("Renderin");
+  return (
+    <Provider store={store}>
+      {inlineLabelsComp}
+      <div className="form-components">
+        <InputFieldHook
+          // clickToEdit
+          name={"inputFieldWithClickToEdit"}
+          inlineLabel={inlineLabels}
+          onFieldSubmit={onFieldSubmit}
+          label="InputField with clickToEdit=true"
+          placeholder="Enter note..."
+        />
+        <FileUploadFieldHook
+          label="File limit and type"
+          onFieldSubmit={function (fileList) {
+            console.info("do something with the finished file list:", fileList);
+          }}
+          className={"fileUploadLimitAndType"}
+          accept={[".gb"]}
+          action={"//jsonplaceholder.typicode.com/posts/"}
+          name={"<FileUploadField/> uploadfield"}
+          fileLimit={1}
+          inlineLabel={inlineLabels}
+        />
+        <Button
+          onClick={handleSubmit(
+            data => {
+              console.log(`weee`, data);
+              window.toastr.info(
+                `Hook Form Submitted ${JSON.stringify(data, null, 2)}`
+              );
+            },
+            () => {
+              window.toastr.error("Hook Form Submission Failed");
+            }
+          )}
+        >
+          Submit Hook Form
+        </Button>
+      </div>
+    </Provider>
+  );
+}
 const validate = values => {
   const errors = {};
   if (!values.inputField) {
@@ -668,6 +711,11 @@ export default reduxForm({
   form: "demoForm",
   validate
 })(FormComponentsDemo);
+
+// probably not recommended to use hook form via a HOC but this is closest to how we use redux form currently:
+const HookFormDemo  = hookForm({
+  // opts here?
+})(HookFormComponentsDemo);
 
 function onFieldSubmit(val) {
   console.info("on field submit", val);

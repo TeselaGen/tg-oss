@@ -1,7 +1,12 @@
 import classNames from "classnames";
 import { isNumber, noop, kebabCase, isPlainObject, isEqual } from "lodash";
 import React, { useContext, useState } from "react";
-import { Controller, useController } from "react-hook-form";
+import {
+  Controller,
+  FormProvider,
+  useController,
+  useForm
+} from "react-hook-form";
 
 import {
   InputGroup,
@@ -216,7 +221,16 @@ function LabelWithTooltipInfo({ label, tooltipInfo, labelStyle }) {
 //   };
 // }
 
-export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
+export const hookForm = opts => Comp => props => {
+  const methods = useForm(opts);
+  return (
+    <FormProvider {...methods}>
+      <Comp {...methods} {...props}></Comp>
+    </FormProvider>
+  );
+};
+
+const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
   return props => {
     const {
       massageDefaultIdValue,
