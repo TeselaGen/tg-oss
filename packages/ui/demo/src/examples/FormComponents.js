@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import React from "react";
+import React, { useState } from "react";
 import { Provider } from "react-redux";
 import { reduxForm } from "redux-form";
 import { Icon, Button, MenuItem } from "@blueprintjs/core";
@@ -23,7 +23,8 @@ import {
   ReactColorField,
   SuggestField,
   InfoHelper,
-  showConfirmationDialog
+  showConfirmationDialog,
+  Cron
 } from "../../../src";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
@@ -59,12 +60,25 @@ function FormComponentsDemo({ handleSubmit }) {
       type: "reactSelectFielddisallowClear",
       label: "disallowClear"
     });
+  const [value, setValue] = useState("");
+  console.log(`value:`, value);
+
   // const [disabled, disabledToggleComp] = useToggle({
   //   type: "disabled"
   // });
 
   return (
     <Provider store={store}>
+      <Cron
+        mode="single"
+        value={value}
+        setValue={v => {
+          console.log(`v:`, v);
+          setValue(v);
+        }}
+        // allowedDropdowns={["hours", "month-days", "period", "week-days"]}
+        // allowedPeriods={["hour", "day", "month", "year", "week"]}
+      />
       <div className="form-components">
         <h3 className="form-component-title">
           Blueprint Redux Form Components

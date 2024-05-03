@@ -228,6 +228,7 @@ class TgSelect extends React.Component {
       options,
       unfilteredOptions,
       value,
+      noToggle,
       creatable,
       optionRenderer, //pull this one out here so it doesn't get passsed along
       tagInputProps,
@@ -268,7 +269,7 @@ class TgSelect extends React.Component {
             onClick={this.handleClear}
           />
         )}
-        {noResults !== null && (
+        {!noToggle && noResults !== null && (
           <Button
             onClick={e => {
               if (this.state.isOpen) {
@@ -502,4 +503,8 @@ function getSort(text, queryString) {
   else if (text.includes(queryString)) ret = text.indexOf(queryString);
   else ret = text.length;
   return ret;
+}
+
+export const SimpleSelect = () => {
+  return <TgSelect  />;
 }
