@@ -77,6 +77,6 @@ describe("filterSequenceString", () => {
       }
     );
 
-    expect(str).toBe("BXZJUObbbxtgalbmfwkqespvicyhrnd");
+    expect(str).toBe("BXZJUO*bbbxtgalbmfwkqespvicyhrnd");
   });
 });

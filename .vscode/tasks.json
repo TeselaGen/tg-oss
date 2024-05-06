@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "nx",
+      "project": "",
+      "command": "run-many",
+      "flags": [
+        "--target=publish",
+        "--projects=bio-parsers,ove,sequence-utils,ui"
+      ],
+      "problemMatcher": [],
+      "label": "nx: nx run-many --target=publish --projects=bio-parsers,ove,sequence-utils,ui"
+    }
+  ]
+}

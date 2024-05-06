@@ -833,7 +833,7 @@ export function getQueryParams({
             console.error(
               "No schema for field found!",
               ccDisplayName,
-              schema.fields
+              JSON.stringify(schema.fields, null, 2)
             );
         }
       });

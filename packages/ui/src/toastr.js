@@ -82,7 +82,10 @@ const generateToast = intent => (message, options) => {
       timeout:
         options.timeout ||
         updatedTimeout ||
-        (!window.Cypress && intent === Intent.DANGER ? 60000 : undefined),
+        (!window.Cypress &&
+        (intent === Intent.DANGER || intent === Intent.WARNING)
+          ? 60000
+          : undefined),
       action: options.action,
       icon: options.icon,
       className: classNames("preserve-newline", options.className)

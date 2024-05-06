@@ -57,7 +57,7 @@
     "react-measure": "^2.5.2",
     "react-redux": "^8.0.5",
     "react-rnd": "^10.2.4",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.3.4",
     "react-sizeme": "^2.6.12",
     "react-sortable-hoc": "^0.6.8",
     "react-transition-group": "^2.4.0",
@@ -155,7 +155,6 @@
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-libcss": "^1.1.1",
     "vite-plugin-static-copy": "^0.17.0",
-    "vite-plugin-virtual-html": "^1.1.10",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^0.34.6"
   },
@@ -163,7 +162,7 @@
     "packages/*"
   ],
   "volta": {
-    "node": "16.20.2",
+    "node": "18.17.0",
     "yarn": "1.22.21"
   }
 }

@@ -4,7 +4,6 @@ import fs from "node:fs";
 import react from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import * as esbuild from "esbuild";
-// import vitePluginVirtualHtml from "vite-plugin-virtual-html";
 import libCss from "vite-plugin-libcss";
 import { camelCase } from "lodash";
 import { getPort } from "./getPort";
@@ -87,19 +86,7 @@ export default ({ name }: { name: string; dir: string }) =>
                 ]
               })
             ]
-          : [
-              //   vitePluginVirtualHtml({
-              //     pages: {
-              //       index: {
-              //         entry: "./demo/index.js", // MUST
-              //         title: `${name} demo`, // optional, default: ''
-              //         body: `
-              //         <div id="demo"></div>
-              // ` // optional, default: '<div id="app"></div>'
-              //       }
-              //     }
-              //   })
-            ])
+          : [])
       ],
       esbuild: {
         loader: "jsx",

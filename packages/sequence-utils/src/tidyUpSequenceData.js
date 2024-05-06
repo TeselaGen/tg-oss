@@ -8,6 +8,7 @@ import filterSequenceString from "./filterSequenceString";
 import tidyUpAnnotation from "./tidyUpAnnotation";
 import getDegenerateDnaStringFromAaString from "./getDegenerateDnaStringFromAAString";
 import { getFeatureTypes } from "./featureTypesAndColors";
+import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
 
 export default function tidyUpSequenceData(pSeqData, options = {}) {
   const {
@@ -16,6 +17,7 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
     doNotRemoveInvalidChars,
     additionalValidChars,
     noTranslationData,
+    includeProteinSequence,
     doNotProvideIdsForAnnotations,
     noCdsTranslations,
     convertAnnotationsFromAAIndices,
@@ -55,7 +57,8 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
   if (!doNotRemoveInvalidChars) {
     if (seqData.isProtein) {
       const [newSeq] = filterSequenceString(seqData.proteinSequence, {
-        ...(topLevelSeqData || seqData)
+        ...(topLevelSeqData || seqData),
+        isProtein: true
       });
       seqData.proteinSequence = newSeq;
     } else {
@@ -78,6 +81,10 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
       true,
       null,
       true
+    );
+  } else if (includeProteinSequence) {
+    seqData.proteinSequence = getAminoAcidStringFromSequenceString(
+      seqData.sequence
     );
   }
 
