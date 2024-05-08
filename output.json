@@ -48,7 +48,7 @@
               ],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
+                "command": "cd packages/sequence-utils && bun vitest run --changed --config vite.config.ts"
               },
               "configurations": {}
             },
@@ -122,7 +122,7 @@
             "start": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/bounce-loader && yarn vite"
+                "command": "cd packages/bounce-loader && bun vite"
               },
               "configurations": {}
             },
@@ -137,7 +137,7 @@
             "launch-e2e2": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
+                "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && bun cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
               },
               "configurations": {}
             },
@@ -152,7 +152,7 @@
             "e2e2": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
+                "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && bun cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
               },
               "configurations": {}
             },
@@ -164,7 +164,7 @@
               ],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
+                "command": "cd packages/bounce-loader && bun vitest run --changed --config vite.config.ts"
               },
               "configurations": {}
             },
@@ -231,7 +231,7 @@
               ],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
+                "command": "cd packages/bio-parsers && bun vitest run --changed --config vite.config.ts"
               },
               "configurations": {}
             },
@@ -304,7 +304,7 @@
               ],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts"
+                "command": "cd packages/range-utils && bun vitest run --changed --config vite.config.ts"
               },
               "configurations": {}
             },
@@ -397,7 +397,7 @@
               ],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/file-utils && yarn vitest run --changed --config vite.config.ts"
+                "command": "cd packages/file-utils && bun vitest run --changed --config vite.config.ts"
               },
               "configurations": {}
             },
@@ -498,7 +498,7 @@
             "start": {
               "executor": "nx:run-commands",
               "options": {
-                "commands": ["cd packages/ove && yarn vite"]
+                "commands": ["cd packages/ove && bun vite"]
               },
               "configurations": {
                 "ci": {
@@ -560,7 +560,7 @@
             "pushToGhPages": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "yarn gh-pages -a -d demo-dist"
+                "command": "bun gh-pages -a -d demo-dist"
               },
               "configurations": {}
             },
@@ -609,7 +609,7 @@
               ],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts"
+                "command": "cd packages/ove && bun vitest run --changed --config vite.config.ts"
               },
               "configurations": {}
             }
@@ -691,14 +691,14 @@
             "pushToGhPages": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "yarn gh-pages -a -d demo-dist"
+                "command": "bun gh-pages -a -d demo-dist"
               },
               "configurations": {}
             },
             "start": {
               "executor": "nx:run-commands",
               "options": {
-                "commands": ["cd packages/ui && yarn vite"]
+                "commands": ["cd packages/ui && bun vite"]
               },
               "configurations": {
                 "ci": {
@@ -744,7 +744,7 @@
               ],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts"
+                "command": "cd packages/ui && bun vitest run --changed --config vite.config.ts"
               },
               "configurations": {}
             }

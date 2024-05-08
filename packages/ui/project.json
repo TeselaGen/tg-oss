@@ -46,12 +46,12 @@
     "pushToGhPages": {
       //tnw: waiting for https://github.com/nrwl/nx/issues/15064 to be able to work with "build:demo"
       // "dependsOn": ["build:demo"],
-      "command": "yarn gh-pages -a -d demo-dist"
+      "command": "bun gh-pages -a -d demo-dist"
     },
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["cd packages/ui && yarn vite"]
+        "commands": ["cd packages/ui && bun vite"]
       },
       "configurations": {
         "ci": {
@@ -88,7 +88,7 @@
       }
     },
     "test": {
-      "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts"
+      "command": "cd packages/ui && bun vitest run --changed --config vite.config.ts"
     }
   }
 }

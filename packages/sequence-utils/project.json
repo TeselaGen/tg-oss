@@ -23,7 +23,7 @@
       "dependsOn": ["test", "build"]
     },
     "test": {
-      "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
+      "command": "cd packages/sequence-utils && bun vitest run --changed --config vite.config.ts"
     },
     "lint": {
       "executor": "@nx/linter:eslint",

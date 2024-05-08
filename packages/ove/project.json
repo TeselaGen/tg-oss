@@ -15,7 +15,7 @@
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["cd packages/ove && yarn vite"]
+        "commands": ["cd packages/ove && bun vite"]
       },
       "configurations": {
         "ci": {
@@ -65,7 +65,7 @@
     "pushToGhPages": {
       //tnw: waiting for https://github.com/nrwl/nx/issues/15064 to be able to work with "build:demo", until then just run build:demo manually first
       // "dependsOn": ["build:demo"],
-      "command": "yarn gh-pages -a -d demo-dist"
+      "command": "bun gh-pages -a -d demo-dist"
     },
 
     "launch-e2e": {
@@ -99,7 +99,7 @@
       }
     },
     "test": {
-      "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts"
+      "command": "cd packages/ove && bun vitest run --changed --config vite.config.ts"
     }
   }
 }

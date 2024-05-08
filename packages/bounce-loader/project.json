@@ -27,22 +27,22 @@
       }
     },
     "start": {
-      "command": "cd packages/bounce-loader && yarn vite"
+      "command": "cd packages/bounce-loader && bun vite"
     },
     "launch-e2e": {
       "command": "cd packages/bounce-loader && npx playwright test --ui"
     },
     "launch-e2e2": {
-      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
+      "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && bun cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
     },
     "e2e-playwright": {
       "command": "cd packages/bounce-loader && npx playwright test"
     },
     "e2e2": {
-      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
+      "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && bun cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
     },
     "test": {
-      "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
+      "command": "cd packages/bounce-loader && bun vitest run --changed --config vite.config.ts"
     },
     "publish": {
       "command": "node tools/scripts/publish.mjs bounce-loader {args.ver} {args.tag}",

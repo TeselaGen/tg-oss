@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn lint-staged --relative
+bun lint-staged --relative
 
-yarn nx affected --target=test --base=master --head=HEAD
+bun nx affected --target=test --base=master --head=HEAD
 
-# yarn auto-changelog -p && git add CHANGELOG.md #tnw - trying to run this only on version bumps
+# bun auto-changelog -p && git add CHANGELOG.md #tnw - trying to run this only on version bumps

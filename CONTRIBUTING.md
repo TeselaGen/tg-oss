@@ -11,10 +11,10 @@ The config files for each package should extend the root config files.
 
 Fork the repo, clone your fork locally and get into the project's root directory.
 
-Install dependencies with `yarn`:
+Install dependencies with `bun`:
 
 ```bash
-yarn
+bun
 ```
 
 ## Running tasks

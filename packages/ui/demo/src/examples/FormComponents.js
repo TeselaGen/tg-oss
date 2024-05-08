@@ -99,7 +99,7 @@ function FormComponentsDemo({ handleSubmit }) {
             fileList={[
               {
                 uid: 1, //you must set a unique id for this to work properly
-                name: "yarn_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf.lock",
+                name: "bun_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf.lock",
                 status: "error"
               }
             ]}
@@ -119,7 +119,7 @@ function FormComponentsDemo({ handleSubmit }) {
               fileList={[
                 {
                   uid: 1, //you must set a unique id for this to work properly
-                  name: "yarn.lock",
+                  name: "bun.lock",
                   status: "error"
                 }
               ]}
@@ -138,7 +138,7 @@ function FormComponentsDemo({ handleSubmit }) {
             fileList={[
               {
                 uid: 1, //you must set a unique id for this to work properly
-                name: "yarn.lock",
+                name: "bun.lock",
                 status: "error"
               }
             ]}

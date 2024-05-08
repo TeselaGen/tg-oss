@@ -23,7 +23,7 @@
       "dependsOn": ["test", "build"]
     },
     "test": {
-      "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
+      "command": "cd packages/bio-parsers && bun test --changed --config vite.config.ts"
     },
     "lint": {
       "executor": "@nx/linter:eslint",
