@@ -148,8 +148,8 @@ function UploaderInner({
 }) {
   let dropzoneDisabled = _disabled;
   let _accept = __accept;
-  //on component did mount
   const validateAgainstSchemaStore = useRef(new ValidateAgainstSchema());
+  const [acceptLoading, setAcceptLoading] = useState();
   const [resolvedAccept, setResolvedAccept] = useState();
   if (resolvedAccept) {
     _accept = resolvedAccept;
@@ -157,16 +157,19 @@ function UploaderInner({
   const isAcceptPromise =
     __accept?.then ||
     (Array.isArray(__accept) ? __accept.some(a => a?.then) : false);
-  const acceptLoading =
-    !resolvedAccept && isAcceptPromise && `Accept Loading...`;
-
+  useEffect(() => {
+    if (isAcceptPromise) {
+      setAcceptLoading(true);
+      Promise.allSettled(Array.isArray(__accept) ? __accept : [__accept]).then(
+        results => {
+          const resolved = flatMap(results, r => r.value);
+          setAcceptLoading(false);
+          setResolvedAccept(resolved);
+        }
+      );
+    }
+  }, [__accept, isAcceptPromise]);
   if (isAcceptPromise && !resolvedAccept) {
-    Promise.allSettled(Array.isArray(__accept) ? __accept : [__accept]).then(
-      results => {
-        const resolved = flatMap(results, r => r.value);
-        setResolvedAccept(resolved);
-      }
-    );
     _accept = [];
   }
   if (acceptLoading) dropzoneDisabled = true;
@@ -499,7 +502,7 @@ function UploaderInner({
               className={Classes.TEXT_MUTED}
               style={{ fontSize: 11, marginBottom: 5 }}
             >
-              {advancedAccept ? (
+              {advancedAccept && !acceptLoading ? (
                 <div style={{}}>
                   Accepts &nbsp;
                   <span style={{}}>

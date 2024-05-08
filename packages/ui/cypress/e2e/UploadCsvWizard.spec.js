@@ -481,6 +481,29 @@ a,,desc,,false,dna,misc_feature
     );
   });
 
+  it(`async promise accept should still allow the schema to be updated dynamically (changing )`, () => {
+    cy.visit("#/UploadCsvWizard?isAcceptPromise=true");
+    cy.contains("Accept Loading");
+    cy.contains("Accept Loading").should("not.exist");
+    cy.tgToggle("enforceNameUnique");
+    cy.contains("Accept Loading");
+    cy.contains("Accept Loading").should("not.exist");
+    cy.uploadFile(
+      ".tg-dropzone",
+      "testUploadWizard_invalidDataNonUnique.csv",
+      "text/csv",
+      true
+    );
+
+    cy.contains(`It looks like there was an error with your data`);
+    cy.contains("Review and Edit Data").click();
+    cy.get(`[data-tip="This value must be unique"]`);
+    cy.get(`.hasCellError:last [data-test="tgCell_name"]`);
+    cy.get(`button:contains(Add File).bp3-disabled`);
+    cy.contains(`Cancel`).click();
+    cy.contains(`File Upload Aborted`);
+    cy.get(`.bp3-dialog`).should("not.exist");
+  });
   it(`isUnique should trigger validation error on file upload`, () => {
     cy.visit("#/UploadCsvWizard");
     cy.tgToggle("enforceNameUnique");

@@ -28,7 +28,10 @@ export function validateTableWideErrors({
     });
   }
   const displayNameMap = {};
+  const fieldUpperToPath = {};
+
   forEach(schema.fields, f => {
+    fieldUpperToPath[f.path.toUpperCase()] = f.path;
     displayNameMap[f.path] = f.displayName || startCase(camelCase(f.path));
   });
   function getDisplayName(path) {
@@ -80,6 +83,28 @@ export function validateTableWideErrors({
       });
     });
   }
+
+  const requireIfs = [];
+  schema.fields.forEach(col => {
+    const { path, requireIf } = col;
+    if (requireIf) {
+      const requireIfPath = fieldUpperToPath[requireIf.toUpperCase()];
+      requireIfs.push([requireIfPath, path]);
+    }
+  });
+  requireIfs.forEach(([requireIfPath, path]) => {
+    entities.forEach(entity => {
+      const requireIfVal = getCellVal(entity, requireIfPath);
+      const pathVal = getCellVal(entity, path);
+      if (requireIfVal && !pathVal) {
+        const cellId = `${getIdOrCodeOrIndex(entity)}:${path}`;
+        newCellValidate[cellId] = {
+          message: `This field is required if ${displayNameMap[requireIfPath]} is present`,
+          _isTableWideError: true
+        };
+      }
+    });
+  });
   if (schema.requireAllOrNone) {
     (isArray(schema.requireAllOrNone[0])
       ? schema.requireAllOrNone

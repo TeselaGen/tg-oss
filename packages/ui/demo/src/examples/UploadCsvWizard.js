@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import { Button } from "@blueprintjs/core";
 import store from "../store";
@@ -218,6 +218,11 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
     type: "enforceNameUnique",
     description: "If checked, will require that the names be unique"
   });
+  const [isAcceptPromise, isAcceptPromiseComp] = useToggle({
+    type: "isAcceptPromise",
+    description:
+      "Check this to make the schema being passed in an async promise"
+  });
   const [asyncNameValidation, asyncNameValidationComp] = useToggle({
     type: "asyncNameValidation",
     description:
@@ -276,11 +281,59 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
       label: "use async getValues For Dropdown (WIP)"
     });
 
+  const [accept, setAccept] = React.useState([]);
+  useEffect(() => {
+    const __accept = [
+      {
+        type: [".csv", ".xlsx"],
+        validateAgainstSchema: simpleSchema
+          ? simpleValidateAgainst
+          : validateAgainstSchema({
+              alternateHeaders,
+              coerceUserSchema,
+              requireAllOrNone,
+              allowExtendedProps,
+              requireAtLeastOneOf,
+              getValuesForDropdownExample,
+              requireExactlyOneOf,
+              idAsPathShouldError,
+              asyncNameValidation,
+              enforceNameUnique,
+              // allowEitherNameOrId,
+              multipleExamples
+            }),
+        exampleFile: "/manual_data_entry (3).csv"
+      }
+    ];
+    if (isAcceptPromise) {
+      setAccept(
+        new Promise(resolve => setTimeout(() => resolve(__accept), 1000))
+      );
+    } else {
+      setAccept(__accept);
+    }
+  }, [
+    isAcceptPromise,
+    alternateHeaders,
+    simpleSchema,
+    coerceUserSchema,
+    requireAllOrNone,
+    allowExtendedProps,
+    requireAtLeastOneOf,
+    getValuesForDropdownExample,
+    requireExactlyOneOf,
+    idAsPathShouldError,
+    asyncNameValidation,
+    enforceNameUnique,
+    multipleExamples
+  ]);
+
   return (
     <DemoWrapper>
       <h6>Options</h6>
       {simpleSchemaComp}
       {enforceNameUniqueComp}
+      {isAcceptPromiseComp}
       {asyncNameValidationComp}
       {atLeastOneComp}
       {requireAllOrNoneComp}
@@ -303,28 +356,7 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
         }}
         isRequired
         className={"fileUploadLimitAndType"}
-        accept={[
-          {
-            type: [".csv", ".xlsx"],
-            validateAgainstSchema: simpleSchema
-              ? simpleValidateAgainst
-              : validateAgainstSchema({
-                  alternateHeaders,
-                  coerceUserSchema,
-                  requireAllOrNone,
-                  allowExtendedProps,
-                  requireAtLeastOneOf,
-                  getValuesForDropdownExample,
-                  requireExactlyOneOf,
-                  idAsPathShouldError,
-                  asyncNameValidation,
-                  enforceNameUnique,
-                  // allowEitherNameOrId,
-                  multipleExamples
-                }),
-            exampleFile: "/manual_data_entry (3).csv"
-          }
-        ]}
+        accept={accept}
         name={"exampleFile"}
         fileLimit={allowMultipleFiles ? undefined : 1}
       />
