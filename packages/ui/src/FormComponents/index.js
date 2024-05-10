@@ -828,8 +828,8 @@ export const renderSelect = props => {
           placeholder && value === ""
             ? "__placeholder__"
             : typeof value !== "string"
-            ? sortify(value) //deterministically sort and stringify the object/number coming in because select fields only support string values
-            : value
+              ? sortify(value) //deterministically sort and stringify the object/number coming in because select fields only support string values
+              : value
         }
         disabled={disabled}
         {...(hideValue ? { value: "" } : {})}
@@ -947,19 +947,39 @@ export const renderBlueprintRadioGroup = ({
   ...rest
 }) => {
   const optionsToUse = getOptions(options);
-  return (
-    <RadioGroup
-      {...input}
-      {...removeUnwantedProps(rest)}
-      selectedValue={input.value}
-      label={undefined} //removing label from radio group because our label already handles it
-      onChange={function (e, val, ...args) {
-        input.onChange(e, val, ...args);
-        onFieldSubmit(e.target ? e.target.value : val);
-      }}
-      options={optionsToUse}
-    />
-  );
+  if (
+    options.some(opt => {
+      if (opt.value === "true") {
+        throw new Error(
+          'RadioGroup values cannot be strings of "true" or "false", they must be actual booleans'
+        );
+      }
+      return false;
+    })
+  )
+    return (
+      <RadioGroup
+        {...input}
+        {...removeUnwantedProps(rest)}
+        selectedValue={input.value}
+        label={undefined} //removing label from radio group because our label already handles it
+        onChange={function (e) {
+          let val = e.target.value;
+          if (val === "true") {
+            val = true;
+          }
+          if (val === "false") {
+            val = false;
+          }
+          if (val === "") {
+            val = false;
+          }
+          input.onChange(val);
+          onFieldSubmit(val);
+        }}
+        options={optionsToUse}
+      />
+    );
 };
 
 export class RenderReactColorPicker extends React.Component {

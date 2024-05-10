@@ -181,11 +181,11 @@ function FormComponentsDemo({ handleSubmit }) {
             options={[
               {
                 label: "Option 1",
-                value: "true"
+                value: true
               },
               {
                 label: "Option 2",
-                value: ""
+                value: false
               }
             ]}
           />
@@ -625,7 +625,10 @@ const validate = values => {
 
 export default reduxForm({
   form: "demoForm",
-  validate
+  validate,
+  initialValues: {
+    radioGroup: false
+  }
 })(FormComponentsDemo);
 
 function onFieldSubmit(val) {

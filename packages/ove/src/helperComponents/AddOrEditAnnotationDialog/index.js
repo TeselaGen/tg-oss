@@ -368,11 +368,9 @@ class AddOrEditAnnotationDialog extends React.Component {
               inline
               tooltipError
               options={[
-                { label: "Positive", value: "true" },
-                { label: "Negative", value: "false" }
+                { label: "Positive", value: true },
+                { label: "Negative", value: false }
               ]}
-              normalize={value => value === "true" || false}
-              format={value => (value ? "true" : "false")}
               name="forward"
               label="Strand"
             />
