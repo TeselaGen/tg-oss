@@ -1042,6 +1042,21 @@ ORIGIN
           { start: 2, end: 3 }
         ]
       },
+      // Single position location in join
+      {
+        input: "complement(join(1,3..4))",
+        output: [
+          { start: 0, end: 0 },
+          { start: 2, end: 3 }
+        ]
+      },
+      {
+        input: "complement(join(1..2,3))",
+        output: [
+          { start: 0, end: 1 },
+          { start: 2, end: 2 }
+        ]
+      },
       // Origin-spanning features
       {
         input: "complement(join(3..4,1..2))",
@@ -1056,6 +1071,37 @@ ORIGIN
       const result = parseFeatureLocation(input, 0, 0, 0, 1, 4);
       expect(result).toEqual(output);
     });
+  });
+  it("correctly parses origin-spanning features in genbank files", () => {
+    const str = `LOCUS       .                         20 bp    DNA     circular UNK 01-JAN-1980
+        DEFINITION  .
+        ACCESSION   <unknown id>
+        VERSION     <unknown id>
+        KEYWORDS    .
+        SOURCE      .
+          ORGANISM  .
+                    .
+        FEATURES             Location/Qualifiers
+             misc_feature    join(19..20,1)
+        ORIGIN
+                1 aaaaaaaaaa aaaaaaaaaa
+        //
+
+`;
+    const result = genbankToJson(str);
+
+    expect(result[0].parsedSequence.features[0].locations).toEqual(
+      undefined,
+      "origin-spanning locations should have been merged"
+    );
+    expect(result[0].parsedSequence.features[0].start).toEqual(
+      18,
+      "start should be 18"
+    );
+    expect(result[0].parsedSequence.features[0].end).toEqual(
+      0,
+      "end should be 0"
+    );
   });
 });
 
