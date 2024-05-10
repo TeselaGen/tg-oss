@@ -8,6 +8,40 @@ import splitStringIntoLines from "./utils/splitStringIntoLines.js";
 
 import createInitialSequence from "./utils/createInitialSequence";
 
+function wrapOriginSpanningFeatures(
+  locArrayInput,
+  sequenceLength,
+  inclusive1BasedStart,
+  inclusive1BasedEnd
+) {
+  // In genbank files, locations of origin-spanning features are represented as follows:
+  // complement(join(490883..490885,1..879)) (for a circular sequence of length 490885)
+  // Then, for locations in locArray we check if there is a location that ends at sequenceLength
+  // joined with a location that starts at 1. If so, we merge them into a single location.
+  // (see https://github.com/TeselaGen/tg-oss/issues/35)
+
+  // make a deep copy of the array to avoid modifying the original
+  const locArrayOutput = locArrayInput.map(loc => ({ ...loc }));
+
+  // Iterate by pairs of features
+  for (let i = 0; i < locArrayOutput.length - 1; i++) {
+    const firstFeature = locArrayOutput[i];
+    const secondFeature = locArrayOutput[i + 1];
+    if (
+      firstFeature.end === sequenceLength - (inclusive1BasedEnd ? 0 : 1) &&
+      secondFeature.start === 1 - (inclusive1BasedStart ? 0 : 1)
+    ) {
+      // Merge the two features
+      locArrayOutput[i] = {
+        start: firstFeature.start,
+        end: secondFeature.end
+      };
+      locArrayOutput.splice(i + 1, 1);
+    }
+  }
+  return locArrayOutput;
+}
+
 export function parseFeatureLocation(
   locStr,
   isProtein,
@@ -17,22 +51,37 @@ export function parseFeatureLocation(
   sequenceLength
 ) {
   locStr = locStr.trim();
-  const locArr = [];
-  locStr.replace(/(\d+)/g, function (string, match) {
-    locArr.push(match);
-  });
-  const locArray = [];
-  for (let i = 0; i < locArr.length; i += 2) {
-    const start = parseInt(locArr[i], 10) - (inclusive1BasedStart ? 0 : 1);
-    let end = parseInt(locArr[i + 1], 10) - (inclusive1BasedEnd ? 0 : 1);
-    if (isNaN(end)) {
-      //if no end is supplied, assume that the end should be set to whatever the start is
-      //this makes a feature location passed as:
-      //147
-      //function like:
-      //147..147
-      end = start;
+  const positionsArray = [];
+  // Genbank feature locations can be:
+  // 4 -> single base (equivalent to 4..4)
+  // 4..8 -> range
+  // complement(4..8) -> complement of range
+  // join(4..8, 10..12) -> join of ranges
+  // complement(join(4..8, 10..12)) -> complement of join of ranges
+  // but also
+  // join(4, 10..12) -> join of single base and range
+  // First we split with commas to obtain pairs of positions
+  const locationParts = locStr.split(",");
+  locationParts.forEach(locPart => {
+    // Extract two integers from loc, if only one is present
+    // we push the same one as the end (e.g. if location is `4` we push
+    // 4 twice
+    const extractedPositions = locPart.match(/(\d+)/g);
+    // Sometimes the location is split between two lines and has a trailing comma
+    if (extractedPositions === null) {
+      return;
     }
+    positionsArray.push(extractedPositions[0]);
+    positionsArray.push(extractedPositions[1] || extractedPositions[0]);
+  });
+
+  const locArray = [];
+  for (let i = 0; i < positionsArray.length; i += 2) {
+    const start =
+      parseInt(positionsArray[i], 10) - (inclusive1BasedStart ? 0 : 1);
+    const end =
+      parseInt(positionsArray[i + 1], 10) - (inclusive1BasedEnd ? 0 : 1);
+
     const location = {
       start: start,
       end: end
@@ -41,31 +90,21 @@ export function parseFeatureLocation(
       isProtein ? convertAACaretPositionOrRangeToDna(location) : location
     );
   }
-  // In genbank files, origin-spanning features are represented as follows:
-  // complement(join(490883..490885,1..879)) (for a circular sequence of length 490885)
-  // Then, for locations in locArray we check if there is a feature that ends at sequenceLength
-  // joined with a feature that starts at 1. If so, we merge them into a single feature.
-  // (see https://github.com/TeselaGen/tg-oss/issues/35)
 
-  if (isCircular) {
-    // Iterate by pairs of features
-    for (let i = 0; i < locArray.length; i += 2) {
-      const firstFeature = locArray[i];
-      const secondFeature = locArray[i + 1];
-      if (
-        firstFeature.end === sequenceLength - (inclusive1BasedEnd ? 0 : 1) &&
-        secondFeature.start === 1 - (inclusive1BasedStart ? 0 : 1)
-      ) {
-        // Merge the two features
-        locArray[i] = {
-          start: firstFeature.start,
-          end: secondFeature.end
-        };
-        locArray.splice(i + 1, 1);
-      }
-    }
+  // sequenceLength will not be set when this is called during genbank parsing,
+  // and the wrapping is done in endSeq > postProcessCurSeq > postProcessGenbankFeature
+  // However, this is useful if the function is used as a standalone parser of
+  // feature locations.
+  if (isCircular && sequenceLength) {
+    return wrapOriginSpanningFeatures(
+      locArray,
+      sequenceLength,
+      inclusive1BasedStart,
+      inclusive1BasedEnd
+    );
+  } else {
+    return locArray;
   }
-  return locArray;
 }
 
 function genbankToJson(string, options = {}) {
@@ -182,7 +221,7 @@ function genbankToJson(string, options = {}) {
           parseOrigin(line, key);
           break;
         case genbankAnnotationKey.END_SEQUENCE_TAG:
-          endSeq();
+          endSeq(options);
           break;
         case genbankAnnotationKey.DEFINITION_TAG:
           line = line.replace(/DEFINITION/, "");
@@ -321,10 +360,10 @@ function genbankToJson(string, options = {}) {
 
   return results;
 
-  function endSeq() {
+  function endSeq(options) {
     //do some post processing clean-up
     hasFoundLocus = false;
-    postProcessCurSeq();
+    postProcessCurSeq(options);
     //push the result into the resultsArray
     resultsArray.push(result || { success: false });
   }
@@ -341,11 +380,13 @@ function genbankToJson(string, options = {}) {
     }
   }
 
-  function postProcessCurSeq() {
+  function postProcessCurSeq(options) {
     if (result && result.parsedSequence && result.parsedSequence.features) {
       for (let i = 0; i < result.parsedSequence.features.length; i++) {
         result.parsedSequence.features[i] = postProcessGenbankFeature(
-          result.parsedSequence.features[i]
+          result.parsedSequence.features[i],
+          result.parsedSequence,
+          options
         );
       }
     }
@@ -656,7 +697,7 @@ function genbankToJson(string, options = {}) {
     return runon;
   }
 
-  function postProcessGenbankFeature(feat) {
+  function postProcessGenbankFeature(feat, parsedSequence, options) {
     if (feat.notes.label) {
       feat.name = feat.notes.label[0];
     } else if (feat.notes.gene) {
@@ -697,6 +738,16 @@ function genbankToJson(string, options = {}) {
             : undefined;
       delete feat.notes.direction;
     }
+    if (parsedSequence.circular) {
+      const { inclusive1BasedStart, inclusive1BasedEnd } = options;
+      feat.locations = wrapOriginSpanningFeatures(
+        feat.locations,
+        parsedSequence.sequence.length,
+        inclusive1BasedStart,
+        inclusive1BasedEnd
+      );
+    }
+
     return feat;
   }
 }
