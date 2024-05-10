@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.3.83",
+  "version": "0.4.3",
   "main": "./src/index.js",
   "exports": {
     ".": {
@@ -17,6 +17,7 @@
     "@teselagen/react-table": "6.10.16",
     "bluebird": "3.7.2",
     "buffer": "5.7.1",
+    "classnames": "^2.3.2",
     "color": "^3.2.1",
     "copy-to-clipboard": "^3.3.1",
     "dayjs": "^1.10.4",
@@ -42,7 +43,7 @@
     "react-markdown": "8.0.7",
     "react-redux": "^8.0.5",
     "react-rnd": "^10.2.4",
-    "react-router-dom": "^5.3.4",
+    "react-router-dom": "^4.3.1",
     "react-sortable-hoc": "^0.6.8",
     "react-transition-group": "^2.4.0",
     "recompose": "npm:react-recompose@0.31.1",
