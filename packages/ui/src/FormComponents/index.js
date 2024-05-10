@@ -950,36 +950,38 @@ export const renderBlueprintRadioGroup = ({
   if (
     options.some(opt => {
       if (opt.value === "true") {
-        throw new Error(
-          'RadioGroup values cannot be strings of "true" or "false", they must be actual booleans'
-        );
+        return true;
       }
       return false;
     })
-  )
-    return (
-      <RadioGroup
-        {...input}
-        {...removeUnwantedProps(rest)}
-        selectedValue={input.value}
-        label={undefined} //removing label from radio group because our label already handles it
-        onChange={function (e) {
-          let val = e.target.value;
-          if (val === "true") {
-            val = true;
-          }
-          if (val === "false") {
-            val = false;
-          }
-          if (val === "") {
-            val = false;
-          }
-          input.onChange(val);
-          onFieldSubmit(val);
-        }}
-        options={optionsToUse}
-      />
+  ) {
+    throw new Error(
+      'RadioGroup values cannot be strings of "true" or "false", they must be actual booleans'
     );
+  }
+  return (
+    <RadioGroup
+      {...input}
+      {...removeUnwantedProps(rest)}
+      selectedValue={input.value}
+      label={undefined} //removing label from radio group because our label already handles it
+      onChange={function (e) {
+        let val = e.target.value;
+        if (val === "true") {
+          val = true;
+        }
+        if (val === "false") {
+          val = false;
+        }
+        if (val === "") {
+          val = false;
+        }
+        input.onChange(val);
+        onFieldSubmit(val);
+      }}
+      options={optionsToUse}
+    />
+  );
 };
 
 export class RenderReactColorPicker extends React.Component {
