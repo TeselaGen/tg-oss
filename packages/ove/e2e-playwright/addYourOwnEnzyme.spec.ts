@@ -1,8 +1,11 @@
+import { test, expect, Page } from "@playwright/test";
+
 // @ts-check
-const { test, expect } = require("@playwright/test");
 
 test("cutsite cut numbers should update as cutsites are added", async ({
   page
+}: {
+  page: Page;
 }) => {
   await page.goto(""); // Replace 'URL_HERE' with the actual URL
 

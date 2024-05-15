@@ -1,11 +1,12 @@
-//function to calculate whether a position is closer to the range start than the range end
 import getShortestDistanceBetweenTwoPositions from "./getShortestDistanceBetweenTwoPositions";
 
+// function to calculate whether a position is closer to the range start than the range end
+
 export default function isPositionCloserToRangeStartThanRangeEnd(
-  position,
-  range,
-  maxLength
-) {
+  position: number,
+  range: { start: number; end: number },
+  maxLength: number
+): boolean {
   const distanceFromStart = getShortestDistanceBetweenTwoPositions(
     range.start,
     position,

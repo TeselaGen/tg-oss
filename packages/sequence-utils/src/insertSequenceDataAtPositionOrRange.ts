@@ -1,5 +1,5 @@
 import { getRangeLength } from "@teselagen/range-utils";
-import { map, cloneDeep } from "lodash";
+import { map, cloneDeep, flatMap } from "lodash";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import rotateSequenceDataToPosition from "./rotateSequenceDataToPosition";
 import { adjustRangeToDeletionOfAnotherRange } from "@teselagen/range-utils";
@@ -7,13 +7,29 @@ import tidyUpSequenceData from "./tidyUpSequenceData";
 import { modifiableTypes } from "./annotationTypes";
 import adjustBpsToReplaceOrInsert from "./adjustBpsToReplaceOrInsert";
 import adjustAnnotationsToInsert from "./adjustAnnotationsToInsert";
+import {
+  Annotation,
+  CaretPositionOrRange,
+  ChromatogramData,
+  Range,
+  SequenceData
+} from "./types"; // Import the SequenceData type from the appropriate file
 
+type InsertSequenceDataAtPositionOrRangeOpts = {
+  maintainOriginSplit?: boolean;
+};
 export default function insertSequenceDataAtPositionOrRange(
-  _sequenceDataToInsert,
-  _existingSequenceData,
-  caretPositionOrRange,
-  options = {}
-) {
+  _sequenceDataToInsert: SequenceData, // Replace 'any' with the specific type for _sequenceDataToInsert
+  _existingSequenceData: SequenceData,
+  caretPositionOrRange: CaretPositionOrRange, // Replace 'any' with the specific type for caretPositionOrRange
+  options: InsertSequenceDataAtPositionOrRangeOpts = {}
+): SequenceData {
+  const range =
+    typeof caretPositionOrRange === "object"
+      ? caretPositionOrRange
+      : { start: -1, end: -1 };
+  const caret =
+    typeof caretPositionOrRange === "number" ? caretPositionOrRange : -1;
   //maintainOriginSplit means that if you're inserting around the origin with n bps selected before the origin
   //when inserting new seq, n bps of the new seq should go in before the origin and the rest should be
   //inserted at the sequence start
@@ -37,6 +53,7 @@ export default function insertSequenceDataAtPositionOrRange(
     getRangeLength(caretPositionOrRange, existingSequenceData.sequence.length);
 
   if (
+    typeof caretPositionOrRange === "object" &&
     caretPositionOrRange.start > -1 &&
     getRangeLength(
       caretPositionOrRange,
@@ -48,7 +65,7 @@ export default function insertSequenceDataAtPositionOrRange(
       {
         ...existingSequenceData,
         ...modifiableTypes.reduce((acc, type) => {
-          return (acc[type] = []);
+          return { ...acc, [type]: [] };
         }, {}),
         sequence: "",
         doNotRemoveInvalidChars: true,
@@ -63,12 +80,12 @@ export default function insertSequenceDataAtPositionOrRange(
     newSequenceData.chromatogramData.baseTraces
   ) {
     //handle chromatogramData updates
-    if (caretPositionOrRange && caretPositionOrRange.start > -1) {
-      if (caretPositionOrRange.start > caretPositionOrRange.end) {
+    if (range.start > -1) {
+      if (range.start > range.end) {
         newSequenceData.chromatogramData = trimChromatogram({
           chromatogramData: newSequenceData.chromatogramData,
           range: {
-            start: caretPositionOrRange.start,
+            start: range.start,
             end: newSequenceData.sequence.length
           },
           justBaseCalls: isInsertSameLengthAsSelection
@@ -77,7 +94,7 @@ export default function insertSequenceDataAtPositionOrRange(
           chromatogramData: newSequenceData.chromatogramData,
           range: {
             start: 0,
-            end: caretPositionOrRange.end
+            end: range.end
           },
           justBaseCalls: isInsertSameLengthAsSelection
         });
@@ -85,23 +102,29 @@ export default function insertSequenceDataAtPositionOrRange(
         newSequenceData.chromatogramData = trimChromatogram({
           chromatogramData: newSequenceData.chromatogramData,
           range: {
-            start: caretPositionOrRange.start,
-            end: caretPositionOrRange.end
+            start: range.start,
+            end: range.end
           },
           justBaseCalls: isInsertSameLengthAsSelection
         });
       }
     }
     if (sequenceDataToInsert.sequence) {
-      insertIntoChromatogram({
-        chromatogramData: newSequenceData.chromatogramData,
-        caretPosition:
-          caretPositionOrRange.start > -1
-            ? caretPositionOrRange.start
-            : caretPositionOrRange,
-        seqToInsert: sequenceDataToInsert.sequence,
-        justBaseCalls: isInsertSameLengthAsSelection
-      });
+      if (range.start > -1) {
+        insertIntoChromatogram({
+          chromatogramData: newSequenceData.chromatogramData,
+          caretPosition: range.start,
+          seqToInsert: sequenceDataToInsert.sequence,
+          justBaseCalls: isInsertSameLengthAsSelection
+        });
+      } else {
+        insertIntoChromatogram({
+          chromatogramData: newSequenceData.chromatogramData,
+          caretPosition: caret,
+          seqToInsert: sequenceDataToInsert.sequence,
+          justBaseCalls: isInsertSameLengthAsSelection
+        });
+      }
     }
   }
 
@@ -124,9 +147,8 @@ export default function insertSequenceDataAtPositionOrRange(
     let existingAnnotations = existingSequenceData[annotationType];
     //update the annotations:
     //handle the delete if necessary
-    if (caretPositionOrRange && caretPositionOrRange.start > -1) {
+    if (range.start > -1) {
       //we have a range! so let's delete it!
-      const range = caretPositionOrRange;
       caretPosition = range.start > range.end ? 0 : range.start;
       //update all annotations for the deletion
       existingAnnotations = adjustAnnotationsToDelete(
@@ -153,15 +175,11 @@ export default function insertSequenceDataAtPositionOrRange(
       )
     );
   });
-  if (
-    maintainOriginSplit &&
-    caretPositionOrRange &&
-    caretPositionOrRange.start > caretPositionOrRange.end
-  ) {
+  if (maintainOriginSplit && caret === -1 && range.start > range.end) {
     //we're replacing around the origin and maintainOriginSplit=true
     //so rotate the resulting seqData n bps
     const caretPosToRotateTo =
-      existingSequenceData.sequence.length - caretPositionOrRange.start;
+      existingSequenceData.sequence.length - range.start;
     return rotateSequenceDataToPosition(
       newSequenceData,
       Math.min(caretPosToRotateTo, insertLength)
@@ -170,8 +188,12 @@ export default function insertSequenceDataAtPositionOrRange(
   return newSequenceData;
 }
 
-function adjustAnnotationsToDelete(annotationsToBeAdjusted, range, maxLength) {
-  return map(annotationsToBeAdjusted, annotation => {
+function adjustAnnotationsToDelete(
+  annotationsToBeAdjusted: Annotation[],
+  range: { start: number; end: number },
+  maxLength: number
+) {
+  return map(annotationsToBeAdjusted, (annotation: Annotation) => {
     const newRange = adjustRangeToDeletionOfAnotherRange(
       annotation,
       range,
@@ -179,9 +201,13 @@ function adjustAnnotationsToDelete(annotationsToBeAdjusted, range, maxLength) {
     );
     const newLocations =
       annotation.locations &&
-      annotation.locations
-        .map(loc => adjustRangeToDeletionOfAnotherRange(loc, range, maxLength))
-        .filter(range => !!range);
+      flatMap(annotation.locations, (loc: Range) => {
+        const newR = adjustRangeToDeletionOfAnotherRange(loc, range, maxLength);
+        if (newR) {
+          return newR;
+        }
+        return [];
+      });
     if (newLocations && newLocations.length) {
       return {
         ...newRange,
@@ -192,7 +218,11 @@ function adjustAnnotationsToDelete(annotationsToBeAdjusted, range, maxLength) {
     } else {
       return newRange;
     }
-  }).filter(range => !!range); //filter any fully deleted ranges
+  }).filter(
+    (
+      range: Range | { locations?: Range[]; start: number; end: number } | null
+    ): range is Range => !!range
+  );
 }
 
 function insertIntoChromatogram({
@@ -200,7 +230,12 @@ function insertIntoChromatogram({
   caretPosition,
   seqToInsert,
   justBaseCalls
-}) {
+}: {
+  chromatogramData: ChromatogramData;
+  caretPosition: number;
+  seqToInsert: string;
+  justBaseCalls: boolean;
+}): ChromatogramData | undefined {
   if (!seqToInsert.length) return;
 
   chromatogramData.baseCalls &&
@@ -240,13 +275,18 @@ function trimChromatogram({
   chromatogramData,
   range: { start, end },
   justBaseCalls
-}) {
+}: {
+  chromatogramData: ChromatogramData;
+  range: { start: number; end: number };
+  justBaseCalls: boolean;
+}): ChromatogramData {
   [
     "baseCalls",
     ...(justBaseCalls ? [] : ["qualNums", "baseTraces", "basePos"])
   ].forEach(type => {
-    chromatogramData[type] &&
-      chromatogramData[type].splice(start, end - start + 1);
+    if (Array.isArray(chromatogramData[type])) {
+      (chromatogramData[type] as unknown[]).splice(start, end - start + 1);
+    }
   });
 
   return chromatogramData;

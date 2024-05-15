@@ -28,7 +28,7 @@ const rollupPlugin = (matchers: RegExp[]) => ({
   load(id: string) {
     if (matchers.some(matcher => matcher.test(id))) {
       const file = fs.readFileSync(id, { encoding: "utf-8" });
-      return esbuild.transformSync(file, { loader: "jsx" }).code;
+      return esbuild.transformSync(file, { loader: "tsx" }).code;
     }
     return undefined;
   }
@@ -89,7 +89,7 @@ export default ({ name }: { name: string; dir: string }) =>
           : [])
       ],
       esbuild: {
-        loader: "jsx",
+        loader: "tsx",
         include: sourceJSPattern,
         exclude: [],
         keepNames: true,

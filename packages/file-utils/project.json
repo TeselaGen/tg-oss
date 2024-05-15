@@ -29,7 +29,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/file-utils/**/*.js"]
+        "lintFilePatterns": ["packages/file-utils/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
