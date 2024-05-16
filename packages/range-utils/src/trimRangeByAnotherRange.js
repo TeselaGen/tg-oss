@@ -6,21 +6,27 @@ import { extend } from "lodash";
 /**
  * trims range, but does *not* adjust it
  * returns a new range if there is one, or null, if it is trimmed completely
- * @param  {object} rangeToBeTrimmed  {start: number, end: number}
- * @param  {object} trimmingRange {start: number, end: number}
- * @param  {number} sequenceLength
- * @return {object | null} {start: number, end: number} || null
+ * @param  {object} subRange  {start:
+ *                                  end:
+ *                                  }
+ * @param  {object} containerRange {start:
+ *                                  end:
+ *                                  }
+ * @param  {int} sequenceLength
+ * @return {object} || null        {start:
+ *                                  end:
+ *                                  }
  */
 export default function trimRangeByAnotherRange(
-  rangeToBeTrimmed: { start: number; end: number },
-  trimmingRange: { start: number; end: number },
-  sequenceLength: number
-): { start: number; end: number } | null {
+  rangeToBeTrimmed,
+  trimmingRange,
+  sequenceLength
+) {
   if (!rangeToBeTrimmed || !trimmingRange) {
     console.warn("invalid range input");
-    return null;
+    return null; //a null return val means something went wrong with this function
   }
-  let position: number;
+  let position;
   for (position of [
     rangeToBeTrimmed.start,
     rangeToBeTrimmed.end,
@@ -29,17 +35,21 @@ export default function trimRangeByAnotherRange(
   ]) {
     if (position < 0 || (!position && position !== 0)) {
       console.warn("invalid range input");
-      return null;
+      return null; //a null return val means something went wrong with this function
     }
   }
+  //get the overlaps of the ranges
   const overlaps = getOverlapsOfPotentiallyCircularRanges(
     rangeToBeTrimmed,
     trimmingRange,
     sequenceLength
   );
+  //split the range to be trimmed into pieces if necessary
   if (!overlaps.length) {
+    //just return the range to be trimmed
     return rangeToBeTrimmed;
   }
+  //and trim both pieces by the already calculated overlaps
   const splitRangesToBeTrimmed = splitRangeIntoTwoPartsIfItIsCircular(
     rangeToBeTrimmed,
     sequenceLength
@@ -51,11 +61,12 @@ export default function trimRangeByAnotherRange(
           trimNonCicularRangeByAnotherNonCircularRange(
             nonCircularRangeToBeTrimmed,
             overlap
-          ) as { start: number; end: number; type: string };
+          );
       }
     });
     splitRangesToBeTrimmed[index] = nonCircularRangeToBeTrimmed;
   });
+  //filter out any of the split ranges that have been fully deleted!
   const outputSplitRanges = splitRangesToBeTrimmed.filter(
     function (trimmedRange) {
       if (trimmedRange) {
@@ -65,9 +76,9 @@ export default function trimRangeByAnotherRange(
     }
   );
 
-  let outputTrimmedRange: { start: number; end: number } | undefined;
+  let outputTrimmedRange;
   if (outputSplitRanges.length < 0) {
-    // do nothing to the output trimmed range
+    //do nothing to the output trimmed range
   } else if (outputSplitRanges.length === 1) {
     outputTrimmedRange = outputSplitRanges[0];
   } else if (outputSplitRanges.length === 2) {
@@ -89,5 +100,4 @@ export default function trimRangeByAnotherRange(
       end: outputTrimmedRange.end
     });
   }
-  return null;
 }

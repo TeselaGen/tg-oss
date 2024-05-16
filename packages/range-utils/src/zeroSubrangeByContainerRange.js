@@ -1,7 +1,6 @@
-import trimRangeByAnotherRange from "./trimRangeByAnotherRange";
-
 //
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
+import trimRangeByAnotherRange from "./trimRangeByAnotherRange";
 
 /**
  * "zeroes" a subrange of a container range by
@@ -12,16 +11,17 @@ import trimRangeByAnotherRange from "./trimRangeByAnotherRange";
  * @param  {object} containerRange {start:
  *                                     end:
  *                                     }
- * @param  {number} sequenceLength
+ * @param  {int} sequenceLength
  * @return {object}                {start:
  *                                     end:
  *                                     }
  */
 export default function zeroSubrangeByContainerRange(
-  subRange: { start: number; end: number },
-  containerRange: { start: number; end: number },
-  sequenceLength: number
-): { start: number; end: number } {
+  subRange,
+  containerRange,
+  sequenceLength
+) {
+  // ac.throw([ac.range, ac.range, ac.posInt], arguments);
   //first check to make sure the container range fully contains the subRange
   const trimmedSubRange = trimRangeByAnotherRange(
     subRange,
@@ -33,11 +33,9 @@ export default function zeroSubrangeByContainerRange(
       "subRange must be fully contained by containerRange! Otherwise this function does not make sense"
     );
   }
-  const newSubrange: { start: number; end: number } = {
-    start: subRange.start - containerRange.start,
-    end: subRange.end - containerRange.start
-  };
-
+  const newSubrange = {};
+  newSubrange.start = subRange.start - containerRange.start;
+  newSubrange.end = subRange.end - containerRange.start;
   if (newSubrange.start < 0) {
     newSubrange.start += sequenceLength;
   }
