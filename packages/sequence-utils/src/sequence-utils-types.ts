@@ -1,12 +1,9 @@
+import { Range } from "@teselagen/range-utils";
+
 export type SequenceData = {
   sequence: string;
   proteinSequence?: string;
   chromatogramData?: ChromatogramData;
-};
-
-export type Range = {
-  start: number;
-  end: number;
 };
 
 export type CaretPosition = number;
