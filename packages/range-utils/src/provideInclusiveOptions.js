@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { assign } from "lodash";
 
-export default function provideInclusiveOptions(
-  funToWrap: (...args: any[]) => any
-): (...args: any[]) => any {
-  return function (...args: any[]): any {
+export default function provideInclusiveOptions(funToWrap) {
+  return function () {
+    const args = Array.prototype.slice.call(arguments);
     const options = args[args.length - 1];
     if (
       options &&
       (options.inclusive1BasedEnd || options.inclusive1BasedStart)
     ) {
-      args.forEach(function (arg: any, index: number) {
+      args.forEach(function (arg, index) {
         if (arg && arg.start > -1 && options.inclusive1BasedStart) {
           args[index] = assign(arg, { start: arg.start - 1 });
         }
