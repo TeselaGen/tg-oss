@@ -1,5 +1,5 @@
-import { getRangeLength, Range } from "@teselagen/range-utils";
-import { map, cloneDeep } from "lodash";
+import { getRangeLength } from "@teselagen/range-utils";
+import { map, cloneDeep, flatMap } from "lodash";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import rotateSequenceDataToPosition from "./rotateSequenceDataToPosition";
 import { adjustRangeToDeletionOfAnotherRange } from "@teselagen/range-utils";
@@ -11,8 +11,9 @@ import {
   Annotation,
   CaretPositionOrRange,
   ChromatogramData,
+  Range,
   SequenceData
-} from "./sequence-utils-types"; // Import the SequenceData type from the appropriate file
+} from "./types"; // Import the SequenceData type from the appropriate file
 
 type InsertSequenceDataAtPositionOrRangeOpts = {
   maintainOriginSplit?: boolean;
@@ -23,11 +24,10 @@ export default function insertSequenceDataAtPositionOrRange(
   caretPositionOrRange: CaretPositionOrRange, // Replace 'any' with the specific type for caretPositionOrRange
   options: InsertSequenceDataAtPositionOrRangeOpts = {}
 ): SequenceData {
-  const range: Range =
+  const range =
     typeof caretPositionOrRange === "object"
       ? caretPositionOrRange
       : { start: -1, end: -1 };
-
   const caret =
     typeof caretPositionOrRange === "number" ? caretPositionOrRange : -1;
   //maintainOriginSplit means that if you're inserting around the origin with n bps selected before the origin
@@ -50,7 +50,7 @@ export default function insertSequenceDataAtPositionOrRange(
 
   const isInsertSameLengthAsSelection =
     sequenceDataToInsert.sequence.length ===
-    getRangeLength(range, existingSequenceData.sequence.length);
+    getRangeLength(caretPositionOrRange, existingSequenceData.sequence.length);
 
   if (
     typeof caretPositionOrRange === "object" &&
@@ -201,7 +201,7 @@ function adjustAnnotationsToDelete(
     );
     const newLocations =
       annotation.locations &&
-      annotation.locations.flatMap((loc: Range): Range | [] => {
+      flatMap(annotation.locations, (loc: Range) => {
         const newR = adjustRangeToDeletionOfAnotherRange(loc, range, maxLength);
         if (newR) {
           return newR;

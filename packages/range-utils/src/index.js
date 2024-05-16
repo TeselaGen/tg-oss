@@ -39,6 +39,7 @@ export { default as modulateRangeBySequenceLength } from "./modulateRangeBySeque
 export { default as normalizePositionByRangeLength } from "./normalizePositionByRangeLength";
 export { default as normalizePositionByRangeLength1Based } from "./normalizePositionByRangeLength1Based";
 export { default as normalizeRange } from "./normalizeRange";
+export { default as provideInclusiveOptions } from "./provideInclusiveOptions";
 export { default as reversePositionInRange } from "./reversePositionInRange";
 export { default as splitRangeIntoTwoPartsIfItIsCircular } from "./splitRangeIntoTwoPartsIfItIsCircular";
 export { default as translateRange } from "./translateRange";
@@ -48,4 +49,3 @@ export { default as trimRangeByAnotherRange } from "./trimRangeByAnotherRange";
 export { default as zeroSubrangeByContainerRange } from "./zeroSubrangeByContainerRange";
 export { default as adjustRangeToRotation } from "./adjustRangeToRotation";
 export { default as getZeroedRangeOverlaps } from "./getZeroedRangeOverlaps";
-export * from "./range-utils-types";

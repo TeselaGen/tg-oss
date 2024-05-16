@@ -1,40 +1,26 @@
 import normalizePositionByRangeLength from "./normalizePositionByRangeLength";
-import {
-  InclusiveOptions,
-  convertIncomingRangeByInclusiveOptions,
-  convertOutgoingRangeByInclusiveOptions
-} from "./provideInclusiveOptions";
+import provideInclusiveOptions from "./provideInclusiveOptions";
 
-export default function invertRange(
+export default provideInclusiveOptions(invertRange);
+
+function invertRange(
   rangeOrCaret: { start: number; end: number } | number,
-  rangeMax: number,
-  options: InclusiveOptions = {}
+  rangeMax: number
 ): { start: number; end: number } | undefined {
-  let toRet;
-
   if (typeof rangeOrCaret === "object" && rangeOrCaret.start > -1) {
-    rangeOrCaret = convertIncomingRangeByInclusiveOptions(
-      rangeOrCaret,
-      options
-    );
     const start = rangeOrCaret.end + 1;
     const end = rangeOrCaret.start - 1;
-
-    toRet = {
+    return {
       start: normalizePositionByRangeLength(start, rangeMax, false),
       end: normalizePositionByRangeLength(end, rangeMax, false)
     };
-    toRet = convertOutgoingRangeByInclusiveOptions(toRet, options);
   } else {
     if (typeof rangeOrCaret === "number" && rangeOrCaret > -1) {
-      toRet = {
+      return {
         start: normalizePositionByRangeLength(rangeOrCaret, rangeMax, false),
         end: normalizePositionByRangeLength(rangeOrCaret - 1, rangeMax, false)
       };
-      toRet = convertOutgoingRangeByInclusiveOptions(toRet, options);
     }
   }
-  toRet = undefined;
-
-  return toRet;
+  return undefined;
 }
