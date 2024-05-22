@@ -152,6 +152,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                 features: [
                   {
                     name: "Feat 1",
+                    forward: true,
                     id: "fakeId2",
                     color: "green",
                     start: 1,
@@ -193,6 +194,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                     overlapsSelf: true,
                     start: 25,
                     end: 30,
+                    forward: true,
                     ...(this.state.togglePartColor && {
                       color: "override_blue"
                     }),
