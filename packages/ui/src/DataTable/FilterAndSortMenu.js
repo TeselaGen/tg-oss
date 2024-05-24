@@ -1,5 +1,5 @@
 import { DateInput, DateRangeInput } from "@blueprintjs/datetime";
-import { camelCase } from "lodash";
+import { camelCase } from "lodash-es";
 import classNames from "classnames";
 import React from "react";
 import {

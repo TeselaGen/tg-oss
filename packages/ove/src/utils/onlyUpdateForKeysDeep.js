@@ -1,6 +1,6 @@
-import { pick } from "lodash";
+import { pick } from "lodash-es";
 import { shouldUpdate } from "recompose";
-import { isEqualWith, isFunction } from "lodash";
+import { isEqualWith, isFunction } from "lodash-es";
 
 // import deepEqual from "deep-equal";
 

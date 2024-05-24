@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import cutsitesSelector from "./cutsitesSelector";
 import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSelector";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
-import { flatMap } from "lodash";
+import { flatMap } from "lodash-es";
 import isEnzymeFilterAndSelector from "./isEnzymeFilterAndSelector";
 
 export default createSelector(

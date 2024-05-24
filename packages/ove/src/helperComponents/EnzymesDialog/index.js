@@ -22,7 +22,7 @@ import withEditorProps from "../../withEditorProps";
 import EnzymeViewer from "../../EnzymeViewer";
 import "./style.css";
 
-import { map, flatMap, countBy, reduce, uniq, omitBy } from "lodash";
+import { map, flatMap, countBy, reduce, uniq, omitBy } from "lodash-es";
 import {
   aliasedEnzymesByName,
   defaultEnzymesByName,

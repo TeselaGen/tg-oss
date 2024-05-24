@@ -1,4 +1,4 @@
-import { debounce, noop, startCase } from "lodash";
+import { debounce, noop, startCase } from "lodash-es";
 import draggableClassnames from "../constants/draggableClassnames";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";

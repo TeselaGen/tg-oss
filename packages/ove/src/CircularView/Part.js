@@ -1,5 +1,5 @@
 import React from "react";
-import { startsWith } from "lodash";
+import { startsWith } from "lodash-es";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
 
 export default function Part({

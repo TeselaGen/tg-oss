@@ -1,4 +1,4 @@
-import { map } from "lodash";
+import { map } from "lodash-es";
 import { adjustRangeToRotation } from "@teselagen/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import { modifiableTypes } from "./annotationTypes";

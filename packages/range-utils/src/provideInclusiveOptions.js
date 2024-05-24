@@ -1,4 +1,4 @@
-import { assign } from "lodash";
+import { assign } from "lodash-es";
 
 export default function provideInclusiveOptions(funToWrap) {
   return function () {

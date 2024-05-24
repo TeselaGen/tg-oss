@@ -1,6 +1,6 @@
 import { Button } from "@blueprintjs/core";
 import draggableClassnames from "../constants/draggableClassnames";
-import { some, debounce, noop } from "lodash";
+import { some, debounce, noop } from "lodash-es";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";

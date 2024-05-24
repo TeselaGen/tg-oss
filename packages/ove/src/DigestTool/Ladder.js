@@ -8,8 +8,8 @@ import { showDialog } from "../GlobalDialogUtils";
 import { AddLaddersDialog } from "./AddLaddersDialog";
 import { ladderDefaults } from "./ladderDefaults";
 import useLadders from "../utils/useLadders";
-import { map } from "lodash";
-import { filter } from "lodash";
+import { map } from "lodash-es";
+import { filter } from "lodash-es";
 
 export default function Ladder({
   // gelDigestEnzymes = [],

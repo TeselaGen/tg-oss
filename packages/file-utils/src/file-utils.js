@@ -1,5 +1,5 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-import { camelCase, flatMap, remove, startsWith, snakeCase } from "lodash";
+import { camelCase, flatMap, remove, startsWith, snakeCase } from "lodash-es";
 import { loadAsync } from "jszip";
 import Promise from "bluebird";
 import { parse, unparse } from "papaparse";

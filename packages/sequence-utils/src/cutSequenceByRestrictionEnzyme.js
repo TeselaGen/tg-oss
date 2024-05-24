@@ -1,4 +1,4 @@
-import { assign } from "lodash";
+import { assign } from "lodash-es";
 import shortid from "shortid";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 

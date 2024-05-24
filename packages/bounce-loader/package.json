@@ -2,6 +2,7 @@
   "name": "@teselagen/bounce-loader",
   "version": "0.3.11",
   "main": "./src/index.js",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./index.es.js",

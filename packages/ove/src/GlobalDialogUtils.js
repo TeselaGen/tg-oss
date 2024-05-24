@@ -1,6 +1,6 @@
 import shortid from "shortid";
 
-import { cloneDeep, startCase } from "lodash";
+import { cloneDeep, startCase } from "lodash-es";
 import { convertRangeTo1Based } from "@teselagen/range-utils";
 
 export const dialogHolder = {};

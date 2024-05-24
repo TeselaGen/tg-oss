@@ -1,4 +1,4 @@
-import { debounce, find, get, some, isArray } from "lodash";
+import { debounce, find, get, some, isArray } from "lodash-es";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "@teselagen/ui";
 import {
@@ -33,7 +33,7 @@ import CommandHotkeyHandler from "./CommandHotkeyHandler";
 import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 /* eslint-enable */
 
-import { flatMap, map, filter, pick, camelCase } from "lodash";
+import { flatMap, map, filter, pick, camelCase } from "lodash-es";
 
 import { ToolBar } from "../ToolBar";
 import CircularView from "../CircularView";

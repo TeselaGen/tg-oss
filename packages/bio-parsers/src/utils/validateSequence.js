@@ -4,10 +4,10 @@ import {
   filterSequenceString,
   guessIfSequenceIsDnaAndNotProtein
 } from "@teselagen/sequence-utils";
-import { filter, some, upperFirst } from "lodash";
+import { filter, some, upperFirst } from "lodash-es";
 import pragmasAndTypes from "./pragmasAndTypes.js";
-import { forEach } from "lodash";
-import { map } from "lodash";
+import { forEach } from "lodash-es";
+import { map } from "lodash-es";
 import { unmangleUrls } from "./unmangleUrls";
 import { reformatName } from "./NameUtils.js";
 

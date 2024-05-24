@@ -1,5 +1,5 @@
 import React from "react";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 
 export default class FillWindow extends React.Component {
   updateDimensions = debounce(() => {

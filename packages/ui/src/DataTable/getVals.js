@@ -1,4 +1,4 @@
-import { isFunction } from "lodash";
+import { isFunction } from "lodash-es";
 
 export function getVals(values) {
   if (isFunction(values)) {

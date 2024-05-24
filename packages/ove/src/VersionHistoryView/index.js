@@ -6,7 +6,7 @@ import { DataTable } from "@teselagen/ui";
 import Editor from "../Editor";
 import FillWindow from "../Editor/FillWindow";
 import withEditorProps from "../withEditorProps";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 const SIDE_PANEL_WIDTH = 350;
 

@@ -19,7 +19,7 @@ import {
   isArray,
   isString,
   noop
-} from "lodash";
+} from "lodash-es";
 import fuzzysearch from "fuzzysearch";
 
 // https://github.com/palantir/blueprint/issues/2820

@@ -1,6 +1,6 @@
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 // ------------------------------------
 // Actions

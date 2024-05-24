@@ -1,8 +1,8 @@
 import getIdOrCodeOrIndex from "./utils/getIdOrCodeOrIndex";
 import { getCellVal } from "./getCellVal";
-import { forEach, isArray } from "lodash";
-import { startCase } from "lodash";
-import { camelCase } from "lodash";
+import { forEach, isArray } from "lodash-es";
+import { startCase } from "lodash-es";
+import { camelCase } from "lodash-es";
 
 const uniqueMsg = "This value must be unique";
 export function validateTableWideErrors({

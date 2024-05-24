@@ -6,10 +6,10 @@ import {
   calculatePercentGC,
   aliasedEnzymesByName
 } from "@teselagen/sequence-utils";
-import { get, sortBy } from "lodash";
+import { get, sortBy } from "lodash-es";
 import VeWarning from "../helperComponents/VeWarning";
 import { normalizePositionByRangeLength } from "@teselagen/range-utils";
-import { filter } from "lodash";
+import { filter } from "lodash-es";
 
 export function getSelectionMessage({
   caretPosition = -1,

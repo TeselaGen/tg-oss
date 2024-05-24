@@ -14,7 +14,7 @@ import { divideBy3 } from "../utils/proteinUtils";
 import "./createSequenceInputPopupStyle.css";
 import { Classes } from "@blueprintjs/core";
 import { getNodeToRefocus } from "../utils/editorUtils";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 let div;
 

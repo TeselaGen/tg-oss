@@ -5,7 +5,7 @@ import { reduxForm } from "redux-form";
 import useLadders from "../utils/useLadders";
 import { MenuItem } from "@blueprintjs/core";
 import downloadjs from "downloadjs";
-import { isArray } from "lodash";
+import { isArray } from "lodash-es";
 import { hideDialog } from "../GlobalDialogUtils";
 
 export const AddLaddersDialog = compose(

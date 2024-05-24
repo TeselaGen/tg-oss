@@ -8,7 +8,7 @@ import {
   MenuItem
 } from "@blueprintjs/core";
 import React from "react";
-import { map, startCase } from "lodash";
+import { map, startCase } from "lodash-es";
 import pureNoFunc from "../utils/pureNoFunc";
 // import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 

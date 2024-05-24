@@ -5,7 +5,7 @@ import copyToClipboard from "copy-to-clipboard";
 import RowItem from "../RowItem";
 import "./style.css";
 import classNames from "classnames";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 export default ({
   extraClasses = "",

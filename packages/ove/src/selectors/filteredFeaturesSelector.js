@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { omitBy } from "lodash";
+import { omitBy } from "lodash-es";
 import featuresSelector from "./featuresSelector";
 import sequenceLengthSelector from "./sequenceLengthSelector";
 import { hideAnnByLengthFilter } from "../utils/editorUtils";

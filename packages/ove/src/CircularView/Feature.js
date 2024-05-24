@@ -1,4 +1,4 @@
-import { startsWith } from "lodash";
+import { startsWith } from "lodash-es";
 import React from "react";
 
 import drawDirectedPiePiece from "./drawDirectedPiePiece";

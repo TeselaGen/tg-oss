@@ -8,7 +8,7 @@ import {
   KeyCombo
 } from "@blueprintjs/core";
 import { lifecycle, mapProps } from "recompose";
-import { omit } from "lodash";
+import { omit } from "lodash-es";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 

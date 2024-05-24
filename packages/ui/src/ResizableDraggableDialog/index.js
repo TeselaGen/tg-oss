@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, Classes } from "@blueprintjs/core";
 import { Rnd } from "react-rnd";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import "./style.css";
 
 const defaultDialogWidth = 400;

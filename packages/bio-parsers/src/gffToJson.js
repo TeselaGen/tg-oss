@@ -1,5 +1,5 @@
 import gff from "@gmod/gff";
-import { get } from "lodash";
+import { get } from "lodash-es";
 
 function gffToJson(string) {
   const arrayOfThings = gff.parseStringSync(string);

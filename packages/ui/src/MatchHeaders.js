@@ -1,12 +1,12 @@
 import React from "react";
 import { Callout, Card, Intent } from "@blueprintjs/core";
 import immer, { setAutoFreeze } from "immer";
-import { flatMap, forEach } from "lodash";
+import { flatMap, forEach } from "lodash-es";
 import { ReactSelectField } from "./FormComponents";
 import showConfirmationDialog from "./showConfirmationDialog";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 import { typeToCommonType } from "./typeToCommonType";
-import { camelCase } from "lodash";
+import { camelCase } from "lodash-es";
 
 setAutoFreeze(false);
 export function MatchHeaders({

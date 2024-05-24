@@ -13,7 +13,7 @@ import {
   map,
   noop,
   sortBy
-} from "lodash";
+} from "lodash-es";
 import SingleEnzymeCutsiteInfo from "../helperComponents/PropertiesDialog/SingleEnzymeCutsiteInfo";
 import { showDialog } from "../GlobalDialogUtils";
 

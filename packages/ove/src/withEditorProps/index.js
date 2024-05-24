@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "@teselagen/ui";
-import { some, map, keyBy, omit, isArray, noop } from "lodash";
+import { some, map, keyBy, omit, isArray, noop } from "lodash-es";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,

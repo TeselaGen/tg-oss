@@ -1,4 +1,4 @@
-import { forEach } from "lodash";
+import { forEach } from "lodash-es";
 
 const debug = 0;
 // const debug = console.log("comment me back out!") || 1;

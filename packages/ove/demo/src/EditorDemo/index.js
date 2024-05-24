@@ -25,7 +25,7 @@ import {
   autoAnnotateParts,
   autoAnnotatePrimers
 } from "../../../src/AutoAnnotate";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";

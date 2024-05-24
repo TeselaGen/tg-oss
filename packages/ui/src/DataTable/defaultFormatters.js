@@ -1,4 +1,4 @@
-import { toNumber } from "lodash";
+import { toNumber } from "lodash-es";
 import { getVals } from "./getVals";
 import { isValueEmpty } from "./isValueEmpty";
 import { isTruthy } from "./isTruthy";

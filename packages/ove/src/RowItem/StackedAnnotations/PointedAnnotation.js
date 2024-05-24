@@ -5,7 +5,7 @@ import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAn
 
 import React, { useState } from "react";
 import { doesLabelFitInAnnotation } from "../utils";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
 import { getStripedPattern } from "../../utils/editorUtils";
 import { ANNOTATION_LABEL_FONT_WIDTH } from "../constants";

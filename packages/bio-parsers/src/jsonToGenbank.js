@@ -1,5 +1,5 @@
 /* eslint-disable no-var*/
-import { get, cloneDeep, map, each, isObject, flatMap } from "lodash";
+import { get, cloneDeep, map, each, isObject, flatMap } from "lodash-es";
 import color from "color";
 
 import pragmasAndTypes from "./utils/pragmasAndTypes.js";
@@ -343,8 +343,8 @@ function featureToGenbankString(feat, options) {
       feat.arrowheadType.toUpperCase() === "BOTH"
         ? "BOTH"
         : feat.arrowheadType.toUpperCase() === "NONE"
-        ? "NONE"
-        : undefined;
+          ? "NONE"
+          : undefined;
 
     if (valToAdd) addToNotes(feat, "direction", valToAdd);
   }

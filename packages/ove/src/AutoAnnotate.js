@@ -31,7 +31,7 @@ import {
   showConfirmationDialog,
   wrapDialog
 } from "@teselagen/ui";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 import withEditorProps from "./withEditorProps";
 import { useEffect, useState } from "react";
 import { Colors, Tab, Tabs } from "@blueprintjs/core";

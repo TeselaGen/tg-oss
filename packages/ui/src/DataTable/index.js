@@ -30,7 +30,7 @@ import {
   some,
   isFunction,
   every
-} from "lodash";
+} from "lodash-es";
 import joinUrl from "url-join";
 
 import {

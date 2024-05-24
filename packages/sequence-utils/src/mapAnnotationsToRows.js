@@ -1,4 +1,4 @@
-import { each, forEach, startsWith, filter } from "lodash";
+import { each, forEach, startsWith, filter } from "lodash-es";
 
 import {
   getYOffsetForPotentiallyCircularRange,

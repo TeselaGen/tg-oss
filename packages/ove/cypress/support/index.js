@@ -1,4 +1,4 @@
-import { isString } from "lodash";
+import { isString } from "lodash-es";
 import toRegexRange from "to-regex-range";
 import insertSequenceDataAtPositionOrRange from "@teselagen/sequence-utils/src/insertSequenceDataAtPositionOrRange";
 // ***********************************************

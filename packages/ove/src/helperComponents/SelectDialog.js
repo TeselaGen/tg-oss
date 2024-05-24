@@ -8,7 +8,7 @@ import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 
 import { NumericInputField } from "@teselagen/ui";
-import { get } from "lodash";
+import { get } from "lodash-es";
 import { getRangeLength } from "@teselagen/range-utils";
 import { tryToRefocusEditor } from "../utils/editorUtils";
 

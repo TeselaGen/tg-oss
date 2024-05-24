@@ -30,7 +30,7 @@ import {
   isFunction,
   unset,
   omit
-} from "lodash";
+} from "lodash-es";
 import { getSequenceDataBetweenRange } from "@teselagen/sequence-utils";
 import ReactList from "@teselagen/react-list";
 import ReactDOM from "react-dom";
@@ -56,9 +56,9 @@ import { ResizeSensor } from "@blueprintjs/core";
 import ReactDraggable from "react-draggable";
 import draggableClassnames from "../constants/draggableClassnames";
 import Caret from "../RowItem/Caret";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import { view } from "@risingstack/react-easy-state";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
 

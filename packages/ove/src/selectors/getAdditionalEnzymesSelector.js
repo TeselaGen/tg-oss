@@ -1,4 +1,4 @@
-import { pickBy } from "lodash";
+import { pickBy } from "lodash-es";
 import { createSelector } from "reselect";
 import { getLowerCaseObj } from "../utils/arrayUtils";
 import { getCustomEnzymes } from "../utils/editorUtils";

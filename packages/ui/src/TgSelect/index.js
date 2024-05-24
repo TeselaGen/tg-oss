@@ -2,7 +2,7 @@
 import { MultiSelect, getCreateNewItem } from "@blueprintjs/select";
 import { Keys, Button, MenuItem, Tag } from "@blueprintjs/core";
 import React, { useEffect, useState } from "react";
-import { filter, isEqual } from "lodash";
+import { filter, isEqual } from "lodash-es";
 import classNames from "classnames";
 import "./style.css";
 import { withProps } from "recompose";

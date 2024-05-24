@@ -1,5 +1,5 @@
 import React from "react";
-import { isFunction } from "lodash";
+import { isFunction } from "lodash-es";
 import reactDom from "react-dom";
 import rerenderOnWindowResize from "./rerenderOnWindowResize";
 import "./FillWindow.css";

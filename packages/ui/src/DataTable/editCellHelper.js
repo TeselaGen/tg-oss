@@ -1,4 +1,4 @@
-import { set } from "lodash";
+import { set } from "lodash-es";
 import { defaultValidators } from "./defaultValidators";
 import { defaultFormatters } from "./defaultFormatters";
 

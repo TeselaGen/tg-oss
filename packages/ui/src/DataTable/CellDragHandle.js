@@ -1,5 +1,5 @@
-import { flatMap } from "lodash";
-import { forEach } from "lodash";
+import { flatMap } from "lodash-es";
+import { forEach } from "lodash-es";
 import React, { useRef } from "react";
 import ReactDOM from "react-dom";
 

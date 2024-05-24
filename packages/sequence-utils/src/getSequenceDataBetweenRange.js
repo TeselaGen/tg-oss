@@ -1,4 +1,4 @@
-import { flatMap, extend, forEach, startCase } from "lodash";
+import { flatMap, extend, forEach, startCase } from "lodash-es";
 import { getRangeLength } from "@teselagen/range-utils";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import insertSequenceDataAtPosition from "./insertSequenceDataAtPosition";

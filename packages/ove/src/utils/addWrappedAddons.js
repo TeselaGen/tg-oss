@@ -1,4 +1,4 @@
-import { flatMap } from "lodash";
+import { flatMap } from "lodash-es";
 import { normalizePositionByRangeLength } from "@teselagen/range-utils";
 
 export function addWrappedAddons(anns, seqLen) {

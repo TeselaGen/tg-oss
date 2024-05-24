@@ -1,4 +1,4 @@
-import { isObject } from "lodash";
+import { isObject } from "lodash-es";
 import isRangeWithinRange from "./isRangeWithinRange";
 import isPositionWithinRange from "./isPositionWithinRange";
 

@@ -7,11 +7,11 @@ import {
   take,
   flatten,
   noop
-} from "lodash";
+} from "lodash-es";
 import { Suggest } from "@blueprintjs/select";
 import "./style.css";
 import { Popover, Position, Menu, Button } from "@blueprintjs/core";
-import { some } from "lodash";
+import { some } from "lodash-es";
 import {
   createDynamicMenu,
   DynamicMenuItem,

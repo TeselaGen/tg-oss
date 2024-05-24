@@ -1,6 +1,6 @@
 import createSimpleDialog from "./createSimpleDialog";
 import { NumericInputField } from "@teselagen/ui";
-import { get } from "lodash";
+import { get } from "lodash-es";
 import { tryToRefocusEditor } from "../utils/editorUtils";
 
 export default createSimpleDialog({

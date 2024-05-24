@@ -1,12 +1,12 @@
 import { Chance } from "chance";
-import { times } from "lodash";
+import { times } from "lodash-es";
 import { nanoid } from "nanoid";
 import React, { useMemo, useRef, useState } from "react";
 import DataTable from "../../../src/DataTable";
 import DemoWrapper from "../DemoWrapper";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
-import { toNumber } from "lodash";
+import { toNumber } from "lodash-es";
 
 const chance = new Chance();
 function getEnts(num) {
@@ -16,15 +16,15 @@ function getEnts(num) {
         i < 20
           ? "Tom" + (88 + i) + (i % 5 !== 0 ? " a" : "")
           : i < 25
-          ? "Nancy" + (88 + i)
-          : chance.name(),
+            ? "Nancy" + (88 + i)
+            : chance.name(),
       id: nanoid(),
       type:
         i === 0
           ? "fail"
           : i === 1 || i === 22
-          ? "too old"
-          : chance.pickone(["new", "old"]),
+            ? "too old"
+            : chance.pickone(["new", "old"]),
       howMany:
         i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
       isProtein: true,

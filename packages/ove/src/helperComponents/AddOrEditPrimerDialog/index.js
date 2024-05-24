@@ -16,7 +16,7 @@ import { convertRangeTo0Based } from "@teselagen/range-utils";
 import classNames from "classnames";
 import "./style.css";
 import { getSequenceWithinRange } from "@teselagen/range-utils";
-import { flatMap } from "lodash";
+import { flatMap } from "lodash-es";
 import CaretPositioning, {
   selectionSaveCaretPosition
 } from "./EditCaretPosition";
@@ -84,8 +84,8 @@ const CustomContentEditable = generateField(function CustomContentEditable({
         isMatch
           ? ""
           : isAmbiguousMatch
-          ? "tg-ambiguous-match-seq"
-          : "tg-no-match-seq"
+            ? "tg-ambiguous-match-seq"
+            : "tg-no-match-seq"
       }">${b}</span>`;
     }
   );

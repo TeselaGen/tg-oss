@@ -1,7 +1,7 @@
 import React from "react";
 import { Icon, Slider, Intent } from "@blueprintjs/core";
 import { preventDefaultStopPropagation } from "../utils/editorUtils";
-import { clamp, isNumber } from "lodash";
+import { clamp, isNumber } from "lodash-es";
 import "./UncontrolledSliderWithPlusMinusBtns.css";
 
 export default class UncontrolledSliderWithPlusMinusBtns extends React.Component {

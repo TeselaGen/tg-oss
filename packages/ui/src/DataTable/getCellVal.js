@@ -1,5 +1,5 @@
-import { get } from "lodash";
-import { isString } from "lodash";
+import { get } from "lodash-es";
+import { isString } from "lodash-es";
 import { isTruthy } from "./isTruthy";
 
 export const getCellVal = (ent, path, col) => {

@@ -4,7 +4,7 @@ import {
   setCurrentParamsOnUrl,
   getCurrentParamsFromUrl
 } from "@teselagen/ui";
-import { transform, isEqual, isObject } from "lodash";
+import { transform, isEqual, isObject } from "lodash-es";
 
 export function setupOptions({ that, defaultState, props }) {
   const editorDemoState = getCurrentParamsFromUrl(props.history.location);

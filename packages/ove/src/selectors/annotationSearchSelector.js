@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { filter } from "lodash";
+import { filter } from "lodash-es";
 export const searchableTypes = ["parts", "features", "primers"];
 
 function annotationSearchSelector(isOpen, searchString, ...rest) {

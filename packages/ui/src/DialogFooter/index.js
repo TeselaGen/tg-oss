@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { Intent, Button, Classes } from "@blueprintjs/core";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 import classNames from "classnames";
 
 function DialogFooter({

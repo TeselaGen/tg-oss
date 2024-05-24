@@ -1,5 +1,5 @@
 import shortid from "shortid";
-import { flatMap, cloneDeep } from "lodash";
+import { flatMap, cloneDeep } from "lodash-es";
 import {
   normalizePositionByRangeLength,
   getRangeLength

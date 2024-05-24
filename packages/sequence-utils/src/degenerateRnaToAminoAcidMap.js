@@ -1,4 +1,4 @@
-import { invert } from "lodash";
+import { invert } from "lodash-es";
 import aminoAcidToDegenerateRnaMap from "./aminoAcidToDegenerateRnaMap";
 
 const degenerateRnaToAminoAcidMap = invert(aminoAcidToDegenerateRnaMap);

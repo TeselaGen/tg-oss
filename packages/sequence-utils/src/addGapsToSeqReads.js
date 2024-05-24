@@ -1,6 +1,6 @@
 import insertGapsIntoRefSeq from "./insertGapsIntoRefSeq.js";
 
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 
 // bam.seq: NTGTAAGTCGTGAAAAAANCNNNCATATTNCGGAGGTAAAAATGAAAA...
 // bam.pos: 43

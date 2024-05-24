@@ -3,7 +3,7 @@ import relaxLabelAngles from "./relaxLabelAngles";
 import withHover from "../../helperComponents/withHover";
 import "./style.css";
 import React from "react";
-import { cloneDeep, clamp, noop } from "lodash";
+import { cloneDeep, clamp, noop } from "lodash-es";
 import { avoidOverlapWith } from "../drawAnnotations";
 
 const fontWidthToFontSize = 1.75;

@@ -1,4 +1,4 @@
-import { map, flatMap } from "lodash";
+import { map, flatMap } from "lodash-es";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import { removeItem } from "../utils/arrayUtils";

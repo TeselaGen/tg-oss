@@ -1,4 +1,4 @@
-import { isEmpty, forEach, range } from "lodash";
+import { isEmpty, forEach, range } from "lodash-es";
 import { getSelectedRowsFromEntities } from "./selection";
 import getIdOrCodeOrIndex from "./getIdOrCodeOrIndex";
 import { getRecordsFromIdMap } from "./withSelectedEntities";
@@ -151,6 +151,6 @@ export function finalizeSelection({ idMap, entities, props }) {
   selectedRecords.length === 0
     ? onDeselect()
     : selectedRecords.length > 1
-    ? onMultiRowSelect(selectedRecords)
-    : onSingleRowSelect(selectedRecords[0]);
+      ? onMultiRowSelect(selectedRecords)
+      : onSingleRowSelect(selectedRecords[0]);
 }

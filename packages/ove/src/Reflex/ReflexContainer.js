@@ -9,7 +9,7 @@ import ReflexEvents from "./ReflexEvents";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import React from "react";
-import { cloneDeep, round } from "lodash";
+import { cloneDeep, round } from "lodash-es";
 
 class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////

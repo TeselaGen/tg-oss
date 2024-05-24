@@ -1,7 +1,7 @@
 import React from "react";
 
 import { reduxForm } from "redux-form";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 import { withProps } from "recompose";
 import { InputField, wrapDialog } from "@teselagen/ui";
 import { compose } from "redux";

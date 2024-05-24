@@ -1,5 +1,5 @@
 import { genericCommandFactory } from "@teselagen/ui";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 export function oveCommandFactory(instance, commandDefs) {
   return genericCommandFactory({

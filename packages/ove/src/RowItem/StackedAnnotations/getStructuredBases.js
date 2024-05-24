@@ -1,4 +1,4 @@
-import { clone } from "lodash";
+import { clone } from "lodash-es";
 import { getRangeLength, getSequenceWithinRange } from "@teselagen/range-utils";
 import { getComplementSequenceString } from "@teselagen/sequence-utils";
 import { bioData } from "@teselagen/sequence-utils";

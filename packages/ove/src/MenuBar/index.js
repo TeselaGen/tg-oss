@@ -1,7 +1,7 @@
 import React from "react";
 import { MenuBar, commandMenuEnhancer } from "@teselagen/ui";
 import { compose } from "redux";
-import { memoize } from "lodash";
+import { memoize } from "lodash-es";
 import withEditorProps from "../withEditorProps";
 import menuDef from "./defaultConfig";
 import getCommands from "../commands";

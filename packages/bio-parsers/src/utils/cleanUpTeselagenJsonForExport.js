@@ -1,4 +1,4 @@
-import { cloneDeep, forEach } from "lodash";
+import { cloneDeep, forEach } from "lodash-es";
 
 export default function cleanUpTeselagenJsonForExport(tgJson) {
   const seqData = cloneDeep(tgJson);

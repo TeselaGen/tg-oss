@@ -1,7 +1,7 @@
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 import getReverseComplementAnnotation from "./getReverseComplementAnnotation";
 import { annotationTypes } from "./annotationTypes";
-import { map } from "lodash";
+import { map } from "lodash-es";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 
 import getSequenceDataBetweenRange from "./getSequenceDataBetweenRange";

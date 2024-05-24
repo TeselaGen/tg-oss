@@ -1,7 +1,7 @@
 import getOverlapsOfPotentiallyCircularRanges from "./getOverlapsOfPotentiallyCircularRanges";
 import splitRangeIntoTwoPartsIfItIsCircular from "./splitRangeIntoTwoPartsIfItIsCircular";
 import trimNonCicularRangeByAnotherNonCircularRange from "./trimNonCicularRangeByAnotherNonCircularRange";
-import { extend } from "lodash";
+import { extend } from "lodash-es";
 
 /**
  * trims range, but does *not* adjust it

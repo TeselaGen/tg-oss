@@ -1,5 +1,5 @@
 import React from "react";
-import { flatMap, isString, pick } from "lodash";
+import { flatMap, isString, pick } from "lodash-es";
 import versionHistoryTool from "./versionHistoryTool";
 // import {connectToEditor} from "../withEditorProps";
 import MenuBar from "../MenuBar";

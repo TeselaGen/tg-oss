@@ -1,4 +1,4 @@
-import { get, keyBy, filter } from "lodash";
+import { get, keyBy, filter } from "lodash-es";
 
 const genbankFeatureTypes = [
   { name: "-10_signal", color: "#4ECDC4" },

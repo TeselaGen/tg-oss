@@ -1,4 +1,4 @@
-import { merge } from "lodash";
+import { merge } from "lodash-es";
 import * as createYourOwnEnzyme from "./createYourOwnEnzyme";
 import * as showGCContent from "./showGCContent";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";

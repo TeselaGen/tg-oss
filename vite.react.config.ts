@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import * as esbuild from "esbuild";
 import libCss from "vite-plugin-libcss";
-import { camelCase } from "lodash";
+import { camelCase } from "lodash-es";
 import { getPort } from "./getPort";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import path from "node:path";

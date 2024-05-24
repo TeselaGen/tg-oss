@@ -9,7 +9,7 @@ import { Dialog, Button } from "@blueprintjs/core";
 import ab1ParsedGFPvv50 from "../../scratch/ab1ParsedGFPvv50.json";
 import ab1ParsedGFPvv60 from "../../scratch/ab1ParsedGFPvv60.json";
 import alignmentDataPairwise from "./exampleData/alignmentDataPairwise.json";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 

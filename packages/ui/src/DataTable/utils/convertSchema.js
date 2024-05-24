@@ -1,5 +1,5 @@
-import { camelCase } from "lodash";
-import { startCase, keyBy, map } from "lodash";
+import { camelCase } from "lodash-es";
+import { startCase, keyBy, map } from "lodash-es";
 
 function convertSchema(schema) {
   let schemaToUse = schema;

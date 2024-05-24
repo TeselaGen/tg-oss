@@ -12,7 +12,7 @@ import {
   doesSearchValMatchText
 } from "@teselagen/ui";
 import { lifecycle, mapProps } from "recompose";
-import { omit } from "lodash";
+import { omit } from "lodash-es";
 import ReactMarkdown from "react-markdown";
 
 const omitProps = keys => mapProps(props => omit(props, keys));

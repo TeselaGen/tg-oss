@@ -1,6 +1,6 @@
 import chai from "chai";
 import assert from "assert";
-import { map } from "lodash";
+import { map } from "lodash-es";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import { getDiffFromSeqs, patchSeqWithDiff, reverseSeqDiff } from "./diffUtils";
 import chaiSubset from "chai-subset";

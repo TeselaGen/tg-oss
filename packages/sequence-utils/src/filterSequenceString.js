@@ -1,4 +1,4 @@
-import { debounce, uniq } from "lodash";
+import { debounce, uniq } from "lodash-es";
 import {
   ambiguous_dna_letters,
   ambiguous_rna_letters,

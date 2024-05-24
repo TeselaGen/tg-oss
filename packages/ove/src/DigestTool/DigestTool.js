@@ -18,7 +18,7 @@ import {
 } from "@blueprintjs/core";
 import withEditorInteractions from "../withEditorInteractions";
 import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
-import { noop, pick } from "lodash";
+import { noop, pick } from "lodash-es";
 
 const MAX_DIGEST_CUTSITES = 50;
 const MAX_PARTIAL_DIGEST_CUTSITES = 10;

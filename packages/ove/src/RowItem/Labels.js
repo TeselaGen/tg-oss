@@ -4,7 +4,7 @@ import withHover from "../helperComponents/withHover";
 import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
-import { reduce, values, startCase, filter, clamp } from "lodash";
+import { reduce, values, startCase, filter, clamp } from "lodash-es";
 import { getRangeLength } from "@teselagen/range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";

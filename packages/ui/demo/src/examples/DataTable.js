@@ -8,7 +8,7 @@ import {
   NumericInput
 } from "@blueprintjs/core";
 import { Chance } from "chance";
-import { times } from "lodash";
+import { times } from "lodash-es";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { withRouter } from "react-router-dom";

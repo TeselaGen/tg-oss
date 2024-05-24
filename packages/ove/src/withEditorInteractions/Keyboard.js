@@ -1,4 +1,4 @@
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 import React from "react";
 
 class Clipboard extends React.Component {

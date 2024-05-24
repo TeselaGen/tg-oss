@@ -1,5 +1,5 @@
 import { getRangeLength } from "@teselagen/range-utils";
-import { map, cloneDeep } from "lodash";
+import { map, cloneDeep } from "lodash-es";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import rotateSequenceDataToPosition from "./rotateSequenceDataToPosition";
 import { adjustRangeToDeletionOfAnotherRange } from "@teselagen/range-utils";

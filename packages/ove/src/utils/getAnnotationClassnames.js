@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { upperFirst } from "lodash";
+import { upperFirst } from "lodash-es";
 
 export default function getAnnotationClassnames(
   { overlapsSelf },

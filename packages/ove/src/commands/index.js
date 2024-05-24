@@ -25,7 +25,7 @@ import {
   some,
   sortBy,
   noop
-} from "lodash";
+} from "lodash-es";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";

@@ -4,7 +4,7 @@ import {
   withSelectedEntities,
   createCommandMenu
 } from "@teselagen/ui";
-import { map } from "lodash";
+import { map } from "lodash-es";
 // import { Button } from "@blueprintjs/core";
 import { getRangeLength } from "@teselagen/range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";

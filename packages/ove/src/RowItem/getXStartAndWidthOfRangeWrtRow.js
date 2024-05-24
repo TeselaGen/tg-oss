@@ -1,5 +1,5 @@
 import { normalizePositionByRangeLength } from "@teselagen/range-utils";
-import { isNumber } from "lodash";
+import { isNumber } from "lodash-es";
 
 export default function getXStartAndWidthOfRangeWrtRow({
   range,

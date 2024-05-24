@@ -39,7 +39,7 @@ import { store, view } from "@risingstack/react-easy-state";
 
 import withEditorProps from "../../withEditorProps";
 import { withProps } from "recompose";
-import { map, flatMap, round } from "lodash";
+import { map, flatMap, round } from "lodash-es";
 import "./style.css";
 
 class AddOrEditAnnotationDialog extends React.Component {

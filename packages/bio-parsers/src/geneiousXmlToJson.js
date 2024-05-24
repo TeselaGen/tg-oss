@@ -7,8 +7,8 @@ import {
 } from "./utils/searchWholeObjByName";
 
 import { XMLParser } from "fast-xml-parser";
-import { forEach, flatMap } from "lodash";
-import { filter } from "lodash";
+import { forEach, flatMap } from "lodash-es";
+import { filter } from "lodash-es";
 
 //Here's what should be in the callback:
 // {

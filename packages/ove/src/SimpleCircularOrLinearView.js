@@ -13,7 +13,7 @@ import { HoveredIdContext } from "./helperComponents/withHover";
 import { visibilityDefaultValues } from "./redux/annotationVisibility";
 import { addWrappedAddons } from "./utils/addWrappedAddons";
 import { SimpleOligoPreview } from "./SimpleOligoPreview";
-import { cloneDeep, flatMap, map, startCase } from "lodash";
+import { cloneDeep, flatMap, map, startCase } from "lodash-es";
 import {
   Button,
   ButtonGroup,

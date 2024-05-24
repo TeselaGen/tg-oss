@@ -6,7 +6,7 @@ import {
   KeyCombo,
   Classes /*, Tooltip*/
 } from "@blueprintjs/core";
-// import { startCase } from "lodash";
+// import { startCase } from "lodash-es";
 import classNames from "classnames";
 import {
   getHotkeyProps /*, hotkeysById, comboToLabel*/

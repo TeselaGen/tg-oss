@@ -10,7 +10,7 @@ import {
   popoverOverflowModifiers,
   removeDuplicatesIcon
 } from "@teselagen/ui";
-import { map, upperFirst, pick, startCase, isFunction } from "lodash";
+import { map, upperFirst, pick, startCase, isFunction } from "lodash-es";
 import {
   AnchorButton,
   ButtonGroup,
