@@ -1,11 +1,140 @@
-import { translateRange, getSequenceWithinRange } from "@teselagen/range-utils";
+import {
+  translateRange,
+  getSequenceWithinRange,
+  flipContainedRange
+} from "@teselagen/range-utils";
 import revComp from "./getReverseComplementSequenceString";
 import getAA from "./getAminoAcidFromSequenceTriplet";
 
 //
 import proteinAlphabet from "./proteinAlphabet";
 
-// ac.throw([ac.string,ac.bool],arguments);
+/**
+ * @private
+ * Gets the next triplet of bases in the sequenceString
+ * @param  {Number} index The index of the sequenceString to start at
+ * @param  {String} sequenceString The dna sequenceString.
+ * @return {Object} The triplet of bases, the number of bases read, and the positions of the codon bases in the sequenceString
+ * @property {String} triplet The triplet of bases
+ * @property {Number} basesRead The number of bases read
+ * @property {Number[]} codonPositions The positions of the codon bases in the sequenceString
+ */
+function getNextTriplet(index, sequenceString) {
+  let triplet = "";
+  let internalIndex = index;
+  // Positions of codons relative to the coding sequence
+  // including introns.
+  const codonPositions = [];
+  while (triplet.length < 3) {
+    if (sequenceString[internalIndex]) {
+      triplet += sequenceString[internalIndex];
+      codonPositions.push(internalIndex);
+      internalIndex++;
+    } else {
+      break;
+    }
+  }
+  return { triplet, basesRead: internalIndex - index, codonPositions };
+}
+
+/**
+  * @private
+  * Returns a series of derived properties from the arguments to getAminoAcidDataForEachBaseOfDna
+  * @param  {String} originalSequenceString The dna sequenceString.
+  * @param  {boolean} forward Whether the translation is in the forward direction.
+  * @param  {Object} optionalSubrangeRange The range of the sequenceString to translate.
+  * @param  {boolean} isProteinSequence Whether the sequenceString is a protein sequence.
+  * @return {Object} The derived properties
+  * @property {String} sequenceString
+  * - If !isProtein: The subsequence within originalSequenceString that will be translated, defined by transaltionRange. If
+  *   !forward, this will be the reverse complement of the subsequence.
+  * - If isProtein: The originalSequenceString.
+  * @property {Object} translationRange The range of the originalSequenceString that we're translating (if !isProtein), or getting DNA-level
+    info for (if isProtein).
+  * @property {Number} originalSequenceStringLength The length of the full DNA sequence. If !isProtein it's the length of originalSequenceString
+  * @property {Number} sequenceStringLength The length of the DNA sequence that would give the translation.
+*/
+function getTranslatedSequenceProperties(
+  originalSequenceString,
+  forward,
+  optionalSubrangeRange,
+  isProteinSequence
+) {
+  const originalSequenceStringLength = isProteinSequence
+    ? originalSequenceString.length * 3
+    : originalSequenceString.length;
+
+  let sequenceString = originalSequenceString;
+  const translationRange = { start: 0, end: originalSequenceStringLength - 1 };
+
+  if (optionalSubrangeRange) {
+    sequenceString = getSequenceWithinRange(
+      optionalSubrangeRange,
+      originalSequenceString
+    );
+    translationRange.start = optionalSubrangeRange.start;
+    translationRange.end = optionalSubrangeRange.end;
+  }
+
+  const sequenceStringLength = isProteinSequence
+    ? sequenceString.length * 3
+    : sequenceString.length;
+
+  if (!isProteinSequence && !forward) {
+    sequenceString = revComp(sequenceString);
+  }
+
+  // If a CDS has introns, make a list with the positions of the intron bases
+  if (
+    !isProteinSequence &&
+    optionalSubrangeRange &&
+    optionalSubrangeRange.positions
+  ) {
+    // TODO: Implement intronBases
+    // const intronBases = [];
+  }
+
+  return {
+    sequenceString,
+    translationRange,
+    sequenceStringLength,
+    originalSequenceStringLength
+  };
+}
+
+/**
+ * Function to convert the position within the CDS (where A in ATG is 0, and T in ATG is 1)
+ * to the position in the main sequence
+ *
+ * @param  {Number} index The index of the sequenceString to start at
+ * @param  {boolean} forward Whether the translation is in the forward direction.
+ * @param  {Object} translationRange The range of the originalSequenceString that we're translating (if !isProtein), or getting DNA-level
+ * info for (if isProtein).
+ * @param  {Number} mainSequenceLength The length of the full DNA sequence. If !isProtein it's the length of originalSequenceString
+ * @return {Number} The position in the main sequence
+ *
+ */
+function positionInCdsToPositionInMainSequence(
+  index,
+  forward,
+  translationRange,
+  mainSequenceLength
+) {
+  let outputRange = translateRange(
+    { start: index, end: index },
+    translationRange.start,
+    mainSequenceLength
+  );
+  if (!forward) {
+    outputRange = flipContainedRange(
+      outputRange,
+      translationRange,
+      mainSequenceLength
+    );
+  }
+  return outputRange.start;
+}
+
 /**
  * @private
  * Gets aminoAcid data, including position in string and position in codon
@@ -24,140 +153,85 @@ export default function getAminoAcidDataForEachBaseOfDna(
   optionalSubrangeRange,
   isProteinSequence
 ) {
-  const originalSequenceStringLength = isProteinSequence
-    ? originalSequenceString.length * 3
-    : originalSequenceString.length;
-  let sequenceString = originalSequenceString;
-  let startOffset = 0;
-  if (optionalSubrangeRange) {
-    sequenceString = getSequenceWithinRange(
-      optionalSubrangeRange,
-      originalSequenceString
-    );
-    startOffset = optionalSubrangeRange.start;
-  }
-  const sequenceStringLength = isProteinSequence
-    ? sequenceString.length * 3
-    : sequenceString.length;
-
-  // ac.throw([ac.string,ac.bool],arguments);
-  const aminoAcidDataForEachBaseOfDNA = [];
-  let codonRange;
-  let revCompGapLength = 0;
-  let aminoAcidIndex = 0;
-  if (!forward) {
-    //compute the start of the amino acid sequence, but only if translating in the reverse direction
-    aminoAcidIndex = Math.floor((sequenceStringLength - 1) / 3);
-    //because we're translating in the reverse direction, we need to
-    //check to see if there are untranslated amino acids at the start of the sequenceString
-    revCompGapLength = sequenceStringLength % 3;
-    codonRange = translateRange(
-      {
-        start: 0,
-        end: revCompGapLength - 1
-      },
-      startOffset,
-      originalSequenceStringLength
-    );
-
-    if (revCompGapLength > 0) {
-      for (let i = 0; i < revCompGapLength; i++) {
-        aminoAcidDataForEachBaseOfDNA.push({
-          aminoAcid: getAA("xxx"), //fake xxx triplet returns the ambiguous X amino acid
-          positionInCodon: revCompGapLength - i - 1,
-          aminoAcidIndex,
-          sequenceIndex: codonRange.start + i,
-          codonRange,
-          fullCodon: false
-        });
-      }
-      aminoAcidIndex--;
-    }
-  }
-
-  //compute the bulk of the sequence
-  for (
-    let index = 2 + revCompGapLength;
-    index < sequenceStringLength;
-    index += 3
-  ) {
-    let aminoAcid;
-    if (isProteinSequence) {
-      aminoAcid =
-        proteinAlphabet[sequenceString[(index - 2) / 3].toUpperCase()];
-    } else {
-      let triplet = sequenceString.slice(index - 2, index + 1);
-      if (!forward) {
-        //we reverse the triplet
-        triplet = revComp(triplet);
-      }
-      aminoAcid = getAA(triplet);
-    }
-    codonRange = translateRange(
-      {
-        start: index - 2,
-        end: index
-      },
-      startOffset,
-      originalSequenceStringLength
-    );
-
-    aminoAcidDataForEachBaseOfDNA.push({
-      aminoAcid, //gap amino acid
-      positionInCodon: forward ? 0 : 2,
-      aminoAcidIndex,
-      sequenceIndex: codonRange.start,
-      codonRange,
-      fullCodon: true
-    });
-    aminoAcidDataForEachBaseOfDNA.push({
-      aminoAcid, //gap amino acid
-      positionInCodon: 1,
-      aminoAcidIndex,
-      sequenceIndex: codonRange.start + 1,
-      codonRange,
-      fullCodon: true
-    });
-    aminoAcidDataForEachBaseOfDNA.push({
-      aminoAcid, //gap amino acid
-      positionInCodon: forward ? 2 : 0,
-      aminoAcidIndex,
-      sequenceIndex: codonRange.start + 2,
-      codonRange,
-      fullCodon: true
-    });
-    if (forward) {
-      aminoAcidIndex++;
-    } else {
-      aminoAcidIndex--;
-    }
-  }
-
-  //compute the end of the sequence
-  //we'll never hit the following logic if translating in the reverse direction
-  const lengthOfEndBpsNotCoveredByAminoAcids =
-    sequenceStringLength - aminoAcidDataForEachBaseOfDNA.length;
-  codonRange = translateRange(
-    {
-      start: sequenceStringLength - lengthOfEndBpsNotCoveredByAminoAcids,
-      end: sequenceStringLength - 1
-    },
-    startOffset,
+  // Obtain derived properties, see getTranslatedSequenceProperties
+  const {
+    sequenceString,
+    translationRange,
+    sequenceStringLength,
     originalSequenceStringLength
+  } = getTranslatedSequenceProperties(
+    originalSequenceString,
+    forward,
+    optionalSubrangeRange,
+    isProteinSequence
   );
-  for (let j = 0; j < lengthOfEndBpsNotCoveredByAminoAcids; j++) {
-    aminoAcidDataForEachBaseOfDNA.push({
-      aminoAcid: getAA("xxx"), //fake xxx triplet returns the gap amino acid
-      positionInCodon: j,
-      aminoAcidIndex,
-      sequenceIndex: codonRange.start + j,
-      fullCodon: false,
-      codonRange
-    });
+
+  const aminoAcidDataForEachBaseOfDNA = [];
+  // Iterate over the DNA sequence length in increments of 3
+  for (let index = 0; index < sequenceStringLength; index += 3) {
+    let aminoAcid;
+    const aminoAcidIndex = index / 3;
+    let codonPositionsInCDS;
+
+    if (isProteinSequence) {
+      codonPositionsInCDS = [0, 1, 2].map(i => index + i);
+      aminoAcid = proteinAlphabet[sequenceString[index / 3].toUpperCase()];
+    } else {
+      // Get the triplet of DNA bases
+      const {
+        triplet,
+        basesRead,
+        codonPositions: _codonPositions
+      } = getNextTriplet(index, sequenceString);
+      codonPositionsInCDS = _codonPositions;
+
+      // If the triplet is not full, we need to add the gap xxx amino acid,
+      aminoAcid = triplet.length === 3 ? getAA(triplet) : getAA("xxx");
+      index += basesRead - triplet.length;
+      // TODO - add intron bases
+      // if (index === 3) {
+      //   aminoAcidDataForEachBaseOfDNA.push({});
+      // }
+    }
+
+    const absoluteCodonPositions = codonPositionsInCDS.map(i =>
+      positionInCdsToPositionInMainSequence(
+        i,
+        forward,
+        translationRange,
+        originalSequenceStringLength
+      )
+    );
+
+    const codonRange = forward
+      ? {
+          start: absoluteCodonPositions[0],
+          end: absoluteCodonPositions[codonPositionsInCDS.length - 1]
+        }
+      : {
+          start: absoluteCodonPositions[codonPositionsInCDS.length - 1],
+          end: absoluteCodonPositions[0]
+        };
+
+    for (let i = 0; i < codonPositionsInCDS.length; i++) {
+      aminoAcidDataForEachBaseOfDNA.push({
+        aminoAcid,
+        positionInCodon: i,
+        aminoAcidIndex,
+        sequenceIndex: absoluteCodonPositions[i],
+        codonRange,
+        fullCodon: codonPositionsInCDS.length === 3
+      });
+    }
   }
 
   if (sequenceStringLength !== aminoAcidDataForEachBaseOfDNA.length) {
     throw new Error("something went wrong!");
+  }
+
+  // Reverse the array if we're translating in the reverse direction
+  if (!forward) {
+    aminoAcidDataForEachBaseOfDNA.reverse();
   }
   return aminoAcidDataForEachBaseOfDNA;
 }
