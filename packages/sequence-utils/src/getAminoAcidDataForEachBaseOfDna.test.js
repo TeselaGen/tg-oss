@@ -5,6 +5,7 @@ import getAA from "./getAminoAcidFromSequenceTriplet";
 import assert from "assert";
 
 let aaData;
+let aaData2;
 describe("getAminoAcidDataForEachBaseOfDna tranlates a", () => {
   //: It gets correct amino acid mapping and position in codon for each basepair in sequence
   it("1 amino acid long sequence", () => {
@@ -418,5 +419,59 @@ describe("getAminoAcidDataForEachBaseOfDna tranlates a", () => {
         }
       }
     ]);
+  });
+  it("protein 1 amino acid long sequence", () => {
+    aaData = getAminoAcidDataForEachBaseOfDna("M", true, null, true);
+    aaData2 = getAminoAcidDataForEachBaseOfDna("atg", true, null, false);
+    assert.deepEqual(aaData, aaData2);
+  });
+  it("protein 1 amino acid long sequence in reverse direction", () => {
+    aaData = getAminoAcidDataForEachBaseOfDna("H", false, null, true);
+    aaData2 = getAminoAcidDataForEachBaseOfDna("atg", false, null, false);
+    assert.deepEqual(aaData, aaData2);
+  });
+  it("> 1 amino acid long sequence", () => {
+    aaData = getAminoAcidDataForEachBaseOfDna("MF", true, null, true);
+    aaData2 = getAminoAcidDataForEachBaseOfDna("atgttt", true, null, false);
+    assert.deepEqual(aaData, aaData2);
+  });
+  it("> 1 amino acid long sequence in reverse direction", () => {
+    aaData = getAminoAcidDataForEachBaseOfDna("KH", false, null, true);
+    aaData2 = getAminoAcidDataForEachBaseOfDna("atgttt", false, null, false);
+    assert.deepEqual(aaData, aaData2);
+  });
+  it.skip("protein 1 amino acid long sequence which is a subrange of a larger sequence", () => {
+    aaData = getAminoAcidDataForEachBaseOfDna(
+      "AMA",
+      true,
+      { start: 1, end: 1 },
+      true
+    );
+    aaData2 = getAminoAcidDataForEachBaseOfDna(
+      "xxxatgxxx",
+      true,
+      { start: 3, end: 5 },
+      false
+    );
+    // Unclear what the behavior should be here,
+    // for now it returns the same as the old code (ignores the start and end range)
+    assert.deepEqual(aaData, aaData2);
+  });
+  it.skip("protein 1 amino acid long sequence in reverse direaction which is a subrange of a larger sequence", () => {
+    aaData = getAminoAcidDataForEachBaseOfDna(
+      "AMA",
+      false,
+      { start: 1, end: 1 },
+      true
+    );
+    aaData2 = getAminoAcidDataForEachBaseOfDna(
+      "xxxatgxxx",
+      false,
+      { start: 3, end: 5 },
+      false
+    );
+    // Unclear what the behavior should be here,
+    // for now it returns the same as the old code (ignores the start and end range)
+    assert.deepEqual(aaData, aaData2);
   });
 });
