@@ -391,7 +391,8 @@ ORIGIN
         start: 0,
         end: 674,
         type: "protein",
-        strand: 1
+        strand: 1,
+        forward: true
       }
     );
   });
@@ -418,7 +419,8 @@ ORIGIN
         start: 1074,
         end: 3302,
         type: "rep_origin",
-        strand: -1
+        strand: -1,
+        forward: false
       }
     );
   });
@@ -438,7 +440,8 @@ ORIGIN
         start: 6,
         end: 882,
         type: "CDS",
-        strand: -1
+        strand: -1,
+        forward: false
       }
     );
     result[0].parsedSequence.features.should.include.something.that.deep.equals(
@@ -448,7 +451,8 @@ ORIGIN
         start: 4300,
         end: 4403,
         type: "terminator",
-        strand: 1
+        strand: 1,
+        forward: true
       }
     );
   });
@@ -539,7 +543,8 @@ ORIGIN
         start: 1073,
         end: 3301,
         type: "rep_origin",
-        strand: -1
+        strand: -1,
+        forward: false
       }
     );
     result.should.be.an("array");
@@ -573,7 +578,8 @@ ORIGIN
         start: 2010,
         end: 2669,
         type: "gene",
-        strand: -1
+        strand: -1,
+        forward: false
       }
     );
   });
@@ -758,7 +764,8 @@ ORIGIN
       start: 1238,
       end: 1234,
       type: "part",
-      strand: 1
+      strand: 1,
+      forward: true
     });
     result[0].parsedSequence.sequence.length.should.equal(5299);
   });
@@ -813,7 +820,8 @@ ORIGIN
       start: 1238,
       end: 1234,
       type: "part",
-      strand: 1
+      strand: 1,
+      forward: true
     });
     result[0].parsedSequence.parts.should.include.something.that.deep.equals({
       notes: {
@@ -825,7 +833,8 @@ ORIGIN
       start: 1238,
       end: 1234,
       type: "part",
-      strand: 1
+      strand: 1,
+      forward: true
     });
   });
   it("parses a .gb file with tags on parts, adding parts", function () {
@@ -848,7 +857,8 @@ ORIGIN
         start: 1238,
         end: 1234,
         type: "misc_feature",
-        strand: 1
+        strand: 1,
+        forward: true
       }
     );
     res[0].parsedSequence.parts.should.include.something.that.deep.equals({
@@ -861,7 +871,8 @@ ORIGIN
       start: 1238,
       end: 1234,
       type: "part",
-      strand: 1
+      strand: 1,
+      forward: true
     });
   });
 
@@ -931,7 +942,8 @@ ORIGIN
         strand: -1,
         name: "pSC101**",
         start: 1073,
-        end: 3301
+        end: 3301,
+        forward: false
       }
     );
   });
@@ -955,7 +967,8 @@ ORIGIN
         strand: 1,
         name: "M13 fwd",
         start: 378,
-        end: 394
+        end: 394,
+        forward: true
       }
     );
 
@@ -971,7 +984,8 @@ ORIGIN
         strand: 1,
         name: "lac operator",
         start: 548,
-        end: 564
+        end: 564,
+        forward: true
       }
     );
   });

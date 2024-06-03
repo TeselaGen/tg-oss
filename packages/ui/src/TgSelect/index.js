@@ -233,6 +233,7 @@ class TgSelect extends React.Component {
       tagInputProps,
       autoFocus,
       autoOpen,
+      mustHaveQueryToOpen,
       noResultsText,
       noResults: _noResults,
       inputProps,
@@ -251,6 +252,7 @@ class TgSelect extends React.Component {
 
     // Null is also a valid value for a React Component, noResultsDefault should only be appplied when noResults is undefined
     if (noResults === undefined) noResults = noResultsDefault;
+    const hasQuery = this.state.query?.length > 0;
     const hasValue = Array.isArray(value)
       ? value.length > 0
       : !!value || value === 0;
@@ -321,7 +323,9 @@ class TgSelect extends React.Component {
           wrapperTagName: "div",
           canEscapeKeyClose: true,
           onInteraction: this.onInteraction,
-          isOpen: this.state.isOpen,
+          isOpen: mustHaveQueryToOpen
+            ? hasQuery && this.state.isOpen
+            : this.state.isOpen,
           modifiers: popoverOverflowModifiers,
           ...popoverProps
         }}

@@ -577,6 +577,7 @@ function genbankToJson(string, options = {}) {
         const feat = getCurrentFeature();
         feat.type = key;
         feat.strand = strand;
+        feat.forward = strand === 1;
         feat.locations = feat.locations.concat(
           parseFeatureLocation(
             val,

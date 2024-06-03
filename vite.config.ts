@@ -66,6 +66,7 @@ const conf = ({
     build: {
       minify: false,
       target: "es2015",
+      emptyOutDir: true,
       outDir: `../../dist/${name}`,
       lib: {
         // Could also be a dictionary or array of multiple entry points.
@@ -86,9 +87,7 @@ const conf = ({
     },
     test: {
       globals: true,
-      cache: {
-        dir: "../../node_modules/.vitest"
-      },
+      cacheDir: "../../node_modules/.vitest",
       environment: testEnvironment || "node",
       include: [
         "src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
