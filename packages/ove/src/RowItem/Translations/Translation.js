@@ -57,12 +57,37 @@ class Translation extends React.Component {
     );
 
     //we then loop over all the amino acids in the sub range and draw them onto the row
+    let prevAaSliver;
+    let nextAaSliver = aminoAcidsForSubrange[1];
     const translationSVG = aminoAcidsForSubrange.map(
       function (aminoAcidSliver, index) {
+        if (aminoAcidSliver.positionInCodon === null) {
+          prevAaSliver = aminoAcidSliver;
+          nextAaSliver = aminoAcidsForSubrange[index + 2];
+          return (
+            <rect
+              x={index * charWidth}
+              y={height / 2 - height / 16}
+              width={charWidth}
+              height={height / 8}
+              fill="grey"
+              stroke="black"
+              strokeWidth={1}
+            ></rect>
+          );
+        }
         const isEndFiller =
-          index === 0 &&
-          aminoAcidSliver.positionInCodon === (annotation.forward ? 2 : 0);
-        // const isStartFiller = false
+          (prevAaSliver?.positionInCodon === null &&
+            aminoAcidSliver.positionInCodon === 1) ||
+          (index === 0 &&
+            aminoAcidSliver.positionInCodon === (annotation.forward ? 2 : 0));
+
+        const isStartFiller =
+          (nextAaSliver?.positionInCodon === null &&
+            aminoAcidSliver.positionInCodon === 0) ||
+          (index === aminoAcidsForSubrange.length - 1 &&
+            aminoAcidSliver.positionInCodon === (annotation.forward ? 0 : 2));
+
         let isTruncatedEnd =
           index === 0 && aminoAcidSliver.positionInCodon === 1;
         let isTruncatedStart =
@@ -73,15 +98,13 @@ class Translation extends React.Component {
           isTruncatedEnd = isTruncatedStart;
           isTruncatedStart = holder;
         }
-        const isStartFiller =
-          index === aminoAcidsForSubrange.length - 1 &&
-          aminoAcidSliver.positionInCodon === (annotation.forward ? 0 : 2);
-
         if (
           aminoAcidSliver.positionInCodon !== 1 &&
           !isStartFiller &&
           !isEndFiller
         ) {
+          prevAaSliver = aminoAcidSliver;
+          nextAaSliver = aminoAcidsForSubrange[index + 2];
           return null;
         }
         const { gapsInside, gapsBefore } = getGaps(aminoAcidSliver.codonRange);
@@ -103,6 +126,9 @@ class Translation extends React.Component {
         } else {
           color = aminoAcid.color;
         }
+        prevAaSliver = aminoAcidSliver;
+        nextAaSliver = aminoAcidsForSubrange[index + 2];
+
         return (
           <AASliver
             isFiller={isEndFiller || isStartFiller}
