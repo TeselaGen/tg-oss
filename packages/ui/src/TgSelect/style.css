@@ -2,6 +2,26 @@
   width: 100%;
   min-width: 170px;
 }
+.tg-select.tg-select-as-tag .bp3-tag.bp3-minimal.bp3-intent-primary {
+  color: white !important;
+}
+.tg-select.do-not-fill-width {
+  width: auto;
+  min-width: 50px;
+}
+.tg-select.tg-small .bp3-input {
+  min-height: 25px;
+  height: 25px;
+}
+.tg-select.tg-small input {
+  line-height: 10.5px;
+}
+.tg-select.tg-small .bp3-tag-input .bp3-input-ghost {
+  line-height: 10.5px;
+}
+.tg-select.tg-small .bp3-tag-input .bp3-tag-input-values {
+  margin-top: 2px;
+}
 .tg-select input {
   font-size: 14px;
 }

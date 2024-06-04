@@ -223,8 +223,9 @@ class TgSelect extends React.Component {
   };
 
   render() {
-    const {
+    let {
       multi,
+      asTag,
       options,
       unfilteredOptions,
       value,
@@ -237,6 +238,10 @@ class TgSelect extends React.Component {
       noResultsText,
       noResults: _noResults,
       inputProps,
+      backgroundColor,
+      doNotFillWidth,
+      noToggle,
+      small,
       placeholder,
       isLoading,
       disallowClear,
@@ -248,6 +253,14 @@ class TgSelect extends React.Component {
       renderCreateNewOption: _renderCreateNewOption = renderCreateNewOption,
       ...rest
     } = this.props;
+    if (asTag) {
+      small = true;
+      placeholder = " ";
+      backgroundColor = "red";
+      disallowClear = true;
+      doNotFillWidth = true;
+      noToggle = true;
+    }
     let noResults = _noResults;
 
     // Null is also a valid value for a React Component, noResultsDefault should only be appplied when noResults is undefined
@@ -270,7 +283,7 @@ class TgSelect extends React.Component {
             onClick={this.handleClear}
           />
         )}
-        {noResults !== null && (
+        {noResults !== null && !noToggle && (
           <Button
             onClick={e => {
               if (this.state.isOpen) {
@@ -301,7 +314,7 @@ class TgSelect extends React.Component {
         opt => opt && opt.value === ((value && value.value) || value)
       );
     });
-    return (
+    const toRet = (
       <MultiSelect
         onActiveItemChange={this.handleActiveItemChange}
         closeOnSelect={!multi}
@@ -318,7 +331,10 @@ class TgSelect extends React.Component {
           captureDismiss: true,
           minimal: true,
           className: classNames("tg-select", "tg-stop-dialog-form-enter", {
-            "tg-single-select": !multi
+            "tg-single-select": !multi,
+            "tg-select-as-tag": asTag,
+            "do-not-fill-width": doNotFillWidth,
+            "tg-small": small
           }),
           wrapperTagName: "div",
           canEscapeKeyClose: true,
@@ -387,6 +403,23 @@ class TgSelect extends React.Component {
         {...rest}
       />
     );
+    if (backgroundColor) {
+      return (
+        <div
+          style={{
+            backgroundColor: backgroundColor,
+            borderRadius: "4px 4px 4px 4px",
+            overflow: "hidden",
+            width: "fit-content",
+            color: "white",
+            border: "2px solid white"
+          }}
+        >
+          {toRet}
+        </div>
+      );
+    }
+    return toRet;
   }
 }
 
