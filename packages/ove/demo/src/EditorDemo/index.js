@@ -10,7 +10,7 @@ import immer from "immer";
 import biomsa from "biomsa";
 
 import store from "./../store";
-import { updateEditor, actions, addAlignment } from "../../../src/";
+import { updateEditor, actions, addAlignment, createVectorEditor, SimpleCircularOrLinearView } from "../../../src/";
 
 import Editor from "../../../src/Editor";
 import renderToggle from "./../utils/renderToggle";
@@ -29,8 +29,57 @@ import { startCase } from "lodash-es";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
-import { convertBasePosTraceToPerBpTrace } from "@teselagen/bio-parsers";
+import { convertBasePosTraceToPerBpTrace, genbankToJson } from "@teselagen/bio-parsers";
 import { defaultToolList } from "../../../src/ToolBar";
+
+
+function EditorComparison({ strand, circular, useTidyUpSequenceData }) {
+    // Read a genbank file and display it in the main editor
+    const { parsedSequence } = genbankToJson(`LOCUS       Untitled_Sequence           9 bp    DNA     circular SYN 03-JUN-2024
+    FEATURES             Location/Qualifiers
+         misc_feature    complement(2..36)
+                         /label="Mr Feature"
+         misc_feature    2..36
+                         /label="Mr Feature forward"
+    ORIGIN      
+            1 gagagagaggagagagagagagagagagagagagagagagaagagagag     
+    //`)[0];
+    // Change the strand and circularity of the sequence based on props
+    parsedSequence.circular = circular;
+    parsedSequence.features[0].strand = strand;
+    // Use / not use tidyUpSequenceData based on props
+    const processedSequence =  parsedSequence;
+
+    // Rendering code
+    const nodeRef = React.useRef(null);
+    React.useEffect(() => {
+        const editorProps = {
+            sequenceData: processedSequence,
+            // ...defaultMainEditorProps,
+        };
+        const editor = createVectorEditor(nodeRef.current, { editorName: 'mainEditor', height: '800' });
+        editor.updateEditor(editorProps);
+    }, [parsedSequence, strand, circular]);
+
+    return (
+        <div className="App">
+            <SimpleCircularOrLinearView
+                sequenceData={processedSequence}
+                editorName="previewEditor"
+                annotationLabelVisibility={{
+                    //set visibilities as you please
+                    features: true,
+                    parts: true,
+                    cutsites: false,
+                    primers: true
+                }}
+            ></SimpleCircularOrLinearView>
+            <div ref={nodeRef} />
+        </div>
+    );
+}
+
+
 const chromData = convertBasePosTraceToPerBpTrace(_chromData);
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
@@ -324,6 +373,7 @@ export default class EditorDemo extends React.Component {
       isFullscreen,
       withPreviewMode
     } = this.state;
+    return <EditorComparison></EditorComparison>
 
     const isNotDna =
       this.state.moleculeType === "RNA" ||
