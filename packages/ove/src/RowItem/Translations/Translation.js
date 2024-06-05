@@ -132,7 +132,12 @@ class Translation extends React.Component {
 
         return (
           <AASliver
-            isFiller={isEndFiller || isStartFiller}
+            // isTruncatedEnd && isTruncatedStart is the special case of a single base exon
+            isFiller={
+              isEndFiller ||
+              isStartFiller ||
+              (isTruncatedEnd && isTruncatedStart)
+            }
             isTruncatedEnd={isTruncatedEnd}
             isTruncatedStart={isTruncatedStart}
             onClick={function (event) {

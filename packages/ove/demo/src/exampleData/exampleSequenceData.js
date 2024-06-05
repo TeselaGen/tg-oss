@@ -8,6 +8,7 @@ export default {
       forward: true,
       locations: [
         { start: 0, end: 3 },
+        { start: 5, end: 5 },
         { start: 7, end: 10 }
       ],
       id: "12kkoo",

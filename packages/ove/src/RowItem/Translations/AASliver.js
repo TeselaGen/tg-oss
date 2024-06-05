@@ -36,8 +36,8 @@ function AASliver(props) {
   path = isFiller
     ? "25,0 49,0 60,50 49,100 25,100 38,50 25,0"
     : isTruncatedStart
-    ? // ? "0,0 50,0 60,50 50,100 00,100 16,50 0,0"
-      `M ${roundedCorner / 3}, 0
+      ? // ? "0,0 50,0 60,50 50,100 00,100 16,50 0,0"
+        `M ${roundedCorner / 3}, 0
                   L ${50 - roundedCorner / 3}, 0
                   Q 50 0 ${50 + roundedCorner * dirX1} ${roundedCorner * dirY1}
                   L ${60 - roundedCorner * dirX1}, ${50 - roundedCorner * dirY1}
@@ -59,9 +59,9 @@ function AASliver(props) {
                   L ${roundedCorner * dirX2}, ${roundedCorner * dirY2}
                   Q 0 0 ${roundedCorner / 3} 0
                   z`
-    : isTruncatedEnd
-    ? // ? "24,0 74,0 84,50 74,100 24,100 40,50 24,0"
-      `M ${24 + roundedCorner / 3}, 0
+      : isTruncatedEnd
+        ? // ? "24,0 74,0 84,50 74,100 24,100 40,50 24,0"
+          `M ${24 + roundedCorner / 3}, 0
                   L ${74 - roundedCorner / 3}, 0
                   Q 74 0 ${74 + roundedCorner * dirX1} ${roundedCorner * dirY1}
                   L ${84 - roundedCorner * dirX1}, ${50 - roundedCorner * dirY1}
@@ -83,7 +83,7 @@ function AASliver(props) {
                   L ${24 + roundedCorner * dirX2}, ${roundedCorner * dirY2}
                   Q 24 0 ${24 + roundedCorner / 3} 0
                   z`
-    : `M ${roundedCorner / 3}, 0
+        : `M ${roundedCorner / 3}, 0
                   L ${74 - roundedCorner / 3}, 0
                   Q 74 0 ${74 + roundedCorner * dirX1} ${roundedCorner * dirY1}
                   L ${84 - roundedCorner * dirX1}, ${50 - roundedCorner * dirY1}
@@ -130,10 +130,10 @@ function AASliver(props) {
               isFiller
                 ? "25,0 49,0 60,50 49,100 25,100 38,50 25,0"
                 : isTruncatedStart
-                ? "0,0 50,0 60,50 50,100 00,100 16,50 0,0"
-                : isTruncatedEnd
-                ? "24,0 74,0 84,50 74,100 24,100 40,50 24,0"
-                : "0,0 74,0 85,50 74,100 0,100 16,50 0,0"
+                  ? "0,0 50,0 60,50 50,100 00,100 16,50 0,0"
+                  : isTruncatedEnd
+                    ? "24,0 74,0 84,50 74,100 24,100 40,50 24,0"
+                    : "0,0 74,0 85,50 74,100 0,100 16,50 0,0"
             }
             strokeWidth="5"
             fill={color || "gray"}
@@ -148,7 +148,8 @@ function AASliver(props) {
           />
         ))}
 
-      {!isFiller && (
+      {/* isTruncatedEnd && isTruncatedStart is the special case of a single base exon */}
+      {(!isFiller || (isTruncatedEnd && isTruncatedStart)) && (
         <text
           fontSize={25}
           stroke="black"
