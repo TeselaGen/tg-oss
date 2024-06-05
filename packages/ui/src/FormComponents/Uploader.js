@@ -30,14 +30,14 @@ import {
   removeExt
 } from "@teselagen/file-utils";
 import tryToMatchSchemas from "./tryToMatchSchemas";
-import { forEach, isArray, isFunction, isPlainObject, noop } from "lodash";
-import { flatMap } from "lodash";
+import { forEach, isArray, isFunction, isPlainObject, noop } from "lodash-es";
+import { flatMap } from "lodash-es";
 import urljoin from "url-join";
 import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
 import writeXlsxFile from "write-excel-file";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 import { getNewName } from "./getNewName";
-import { isObject } from "lodash";
+import { isObject } from "lodash-es";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import classNames from "classnames";

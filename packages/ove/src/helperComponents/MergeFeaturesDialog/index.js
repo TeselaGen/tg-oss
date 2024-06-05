@@ -12,7 +12,7 @@ import {
 } from "@teselagen/ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
-import { flatMap } from "lodash";
+import { flatMap } from "lodash-es";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { CheckboxField } from "@teselagen/ui";

@@ -1,6 +1,6 @@
 import normalizePositionByRangeLength from "./normalizePositionByRangeLength";
 import provideInclusiveOptions from "./provideInclusiveOptions";
-import { assign } from "lodash";
+import { assign } from "lodash-es";
 export default provideInclusiveOptions(modulateRangeBySequenceLength);
 
 function modulateRangeBySequenceLength(range, seqLen) {

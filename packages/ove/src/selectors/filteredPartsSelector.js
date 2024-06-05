@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
 import partsSelector from "./partsSelector";
 import tagsToBoldSelector from "./tagsToBoldSelector";
-import { some, keyBy, omitBy } from "lodash";
-import { map } from "lodash";
+import { some, keyBy, omitBy } from "lodash-es";
+import { map } from "lodash-es";
 import sequenceLengthSelector from "./sequenceLengthSelector";
 import { hideAnnByLengthFilter } from "../utils/editorUtils";
 import { addWrappedAddons } from "../utils/addWrappedAddons";

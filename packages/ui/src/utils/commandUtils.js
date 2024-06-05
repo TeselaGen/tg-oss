@@ -1,4 +1,4 @@
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 
 // Generic factory function to create command objects.
 // TODO add documentation

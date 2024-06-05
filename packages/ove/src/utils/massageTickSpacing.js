@@ -1,4 +1,4 @@
-import { some } from "lodash";
+import { some } from "lodash-es";
 
 export function massageTickSpacing(spacing) {
   let toRet = spacing;

@@ -1,4 +1,4 @@
-import { omitBy, isNil } from "lodash";
+import { omitBy, isNil } from "lodash-es";
 //we use this to make adding preset prop groups simpler
 export default function computePresets(props = {}) {
   const { isSimple } = props;

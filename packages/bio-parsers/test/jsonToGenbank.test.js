@@ -265,7 +265,7 @@ describe("genbank exporter/parser conversion", function () {
 
     const result = parseGenbank(string);
     result[0].parsedSequence.features.should.include.something.that.deep.equals(
-      feat1
+      { ...feat1, forward: false }
     );
     result[0].parsedSequence.description.should.equal(description);
   });
@@ -308,6 +308,7 @@ describe("genbank exporter/parser conversion", function () {
     result[0].parsedSequence.features.should.include.something.that.deep.equals(
       {
         ...feat1,
+        forward: false,
         notes: {
           someNote: ["I include a URL "]
         }
@@ -331,7 +332,7 @@ describe("genbank exporter/parser conversion", function () {
       start: 6,
       end: 882,
       type: "CDS",
-      strand: -1
+      forward: false
     };
     const feat2 = {
       notes: {},
@@ -345,10 +346,10 @@ describe("genbank exporter/parser conversion", function () {
     result[0].success.should.be.true;
     result[0].parsedSequence.features.should.be.length(13);
     result[0].parsedSequence.features.should.include.something.that.deep.equals(
-      feat1
+      { ...feat1, strand: -1 }
     );
     result[0].parsedSequence.features.should.include.something.that.deep.equals(
-      feat2
+      { ...feat2, forward: true }
     );
     const exportedGenbankString = jsonToGenbank(result[0].parsedSequence);
     const res = parseGenbank(exportedGenbankString);
@@ -357,12 +358,14 @@ describe("genbank exporter/parser conversion", function () {
     res[0].success.should.be.true;
     res[0].parsedSequence.features.should.be.length(13);
 
-    res[0].parsedSequence.features.should.include.something.that.deep.equals(
-      feat1
-    );
-    res[0].parsedSequence.features.should.include.something.that.deep.equals(
-      feat2
-    );
+    res[0].parsedSequence.features.should.include.something.that.deep.equals({
+      ...feat1,
+      strand: -1
+    });
+    res[0].parsedSequence.features.should.include.something.that.deep.equals({
+      ...feat2,
+      forward: true
+    });
   });
 
   it("parses and converts pj5_00001 (aka testGenbankFile.gb) correctly (handling joined feature spans correctly also)", function () {

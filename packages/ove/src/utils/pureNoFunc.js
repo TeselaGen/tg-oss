@@ -1,5 +1,5 @@
 import { shouldUpdate } from "recompose";
-import { isEqualWith, isFunction } from "lodash";
+import { isEqualWith, isFunction } from "lodash-es";
 
 const isEq = (o1, o2) => {
   const isEq = isEqualWith(o1, o2, function (val1, val2) {

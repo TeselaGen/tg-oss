@@ -8,7 +8,7 @@ import shortid from "shortid";
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
 
 import { /* createReducer, */ createAction } from "redux-act";
-import { omit } from "lodash";
+import { omit } from "lodash-es";
 
 const alignmentAnnotationSettings = {
   axis: true,

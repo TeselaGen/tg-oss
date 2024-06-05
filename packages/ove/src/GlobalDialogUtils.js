@@ -1,6 +1,6 @@
 import shortid from "shortid";
 
-import { cloneDeep, startCase } from "lodash";
+import { cloneDeep, startCase } from "lodash-es";
 import { convertRangeTo1Based } from "@teselagen/range-utils";
 
 export const dialogHolder = {};
@@ -15,17 +15,32 @@ export function showDialog({
   if (!dialogHolder.dialogType && ModalComponent) {
     dialogHolder.dialogType = "TGCustomModal";
   }
+  // check if focused element in the dom is within a given editor and add an editor prop to the dialog
+  if (document.activeElement && document.activeElement.closest(".veEditor")) {
+    let editorName;
+    document.activeElement
+      .closest(".veEditor")
+      ?.className.split(" ")
+      .forEach(c => {
+        if (!c.trim()) return;
+        if (!c.trim().includes("veEditor")) {
+          editorName = c;
+        }
+      });
+    dialogHolder.editorName = editorName;
+  }
+
   dialogHolder.CustomModalComponent = ModalComponent;
   dialogHolder.props = props;
   dialogHolder.overrideName = overrideName;
-  dialogHolder.setUniqKey(shortid());
+  dialogHolder.setUniqKeyToForceRerender(shortid());
 }
 export function hideDialog() {
   delete dialogHolder.dialogType;
   delete dialogHolder.CustomModalComponent;
   delete dialogHolder.props;
   delete dialogHolder.overrideName;
-  dialogHolder.setUniqKey();
+  dialogHolder.setUniqKeyToForceRerender();
 }
 
 const typeToDialogType = {
@@ -57,8 +72,8 @@ export function showAddOrEditAnnotationDialog({
     annotation.strand === -1
       ? false
       : annotation.forward !== undefined
-      ? !!annotation.forward
-      : true;
+        ? !!annotation.forward
+        : true;
   showDialog({
     overrideName: `AddOrEdit${nameUpper}DialogOverride`,
     dialogType,

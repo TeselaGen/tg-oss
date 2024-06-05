@@ -2,7 +2,7 @@
 import shortid from "shortid";
 
 import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
-import { cloneDeep, flatMap } from "lodash";
+import { cloneDeep, flatMap } from "lodash-es";
 import { annotationTypes } from "./annotationTypes";
 import filterSequenceString from "./filterSequenceString";
 import tidyUpAnnotation from "./tidyUpAnnotation";

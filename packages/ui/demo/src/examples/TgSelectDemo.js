@@ -32,9 +32,14 @@ export default class TgSelectDemo extends React.Component {
       multi,
       isTagSelect,
       val,
+      noToggle,
+      small,
       creatable,
       disallowClear,
+      doNotFillWidth,
       hasError,
+      backgroundColor,
+      asTag,
       withStaticOptions
     } = this.state;
 
@@ -50,6 +55,26 @@ export default class TgSelectDemo extends React.Component {
             that: this,
             type: "disallowClear"
             // type: "reactSelectFieldcreatable"
+          })}
+          {renderToggle({
+            that: this,
+            type: "small"
+          })}
+          {renderToggle({
+            that: this,
+            type: "asTag"
+          })}
+          {renderToggle({
+            that: this,
+            type: "backgroundColor"
+          })}
+          {renderToggle({
+            that: this,
+            type: "doNotFillWidth"
+          })}
+          {renderToggle({
+            that: this,
+            type: "noToggle"
           })}
           {renderToggle({
             that: this,
@@ -83,7 +108,15 @@ export default class TgSelectDemo extends React.Component {
             intent={hasError ? "danger" : ""}
             creatable={creatable}
             disallowClear={disallowClear}
+            doNotFillWidth={doNotFillWidth}
+            backgroundColor={backgroundColor && "red"}
+            noToggle={noToggle}
+            small={small}
             value={val}
+            asTag={asTag}
+            {...(asTag && {
+              backgroundColor: "red"
+            })}
             autoFocus
             options={
               withStaticOptions

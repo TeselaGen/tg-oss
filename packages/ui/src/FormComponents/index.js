@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { SketchPicker } from "react-color";
-import { isNumber, noop, kebabCase, isPlainObject, isEqual } from "lodash";
+import { isNumber, noop, kebabCase, isPlainObject, isEqual } from "lodash-es";
 import mathExpressionEvaluator from "math-expression-evaluator";
 import React, { useContext, useState } from "react";
 import { Field, change } from "redux-form";
@@ -25,8 +25,8 @@ import {
 
 import { DateInput, DateRangeInput } from "@blueprintjs/datetime";
 import useDeepCompareEffect from "use-deep-compare-effect";
-import { difference } from "lodash";
-import { set } from "lodash";
+import { difference } from "lodash-es";
+import { set } from "lodash-es";
 import TgSelect from "../TgSelect";
 import TgSuggest from "../TgSuggest";
 import InfoHelper from "../InfoHelper";

@@ -1,4 +1,4 @@
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 import {
   getRangeLength,
   trimRangeByAnotherRange,
@@ -89,8 +89,8 @@ export const editorDragStarted = function (opts) {
   selectionStartOrEndGrabbed = opts.selectionStartGrabbed
     ? "start"
     : opts.selectionEndGrabbed
-    ? "end"
-    : null;
+      ? "end"
+      : null;
 };
 export const editorDragStopped = function () {
   document.body.classList.remove("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag

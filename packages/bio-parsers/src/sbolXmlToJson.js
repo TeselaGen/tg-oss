@@ -6,7 +6,7 @@ import searchWholeObjByName, {
 } from "./utils/searchWholeObjByName";
 
 import { XMLParser } from "fast-xml-parser";
-import { flatMap, get } from "lodash";
+import { flatMap, get } from "lodash-es";
 
 //Here's what should be in the callback:
 // {

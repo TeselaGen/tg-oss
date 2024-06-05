@@ -4,7 +4,7 @@ import React from "react";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
-import { pick } from "lodash";
+import { pick } from "lodash-es";
 
 export default connectToEditor(
   ({ readOnly, annotationVisibility = {}, toolBar = {} }) => {

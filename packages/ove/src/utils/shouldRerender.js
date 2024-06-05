@@ -1,4 +1,4 @@
-import { pick, isEqualWith, isFunction } from "lodash";
+import { pick, isEqualWith, isFunction } from "lodash-es";
 const shouldRerender = (propKeys, stateKeys, that) => {
   if (!that.hasRendered) {
     that.hasRendered = true;

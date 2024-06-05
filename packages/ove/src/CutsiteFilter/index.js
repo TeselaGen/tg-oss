@@ -8,8 +8,8 @@ import React, { useState } from "react";
 import "./style.css";
 import { popoverOverflowModifiers, TgSelect } from "@teselagen/ui";
 
-import { map, flatMap, includes, pickBy, isEmpty, noop } from "lodash";
-import { omit } from "lodash";
+import { map, flatMap, includes, pickBy, isEmpty, noop } from "lodash-es";
+import { omit } from "lodash-es";
 import { showDialog } from "../GlobalDialogUtils";
 import {
   addCutsiteGroupClickHandler,

@@ -1,4 +1,4 @@
-import { assign } from "lodash";
+import { assign } from "lodash-es";
 
 export default function convertRangeIndices(range, inputType, outputType) {
   inputType = inputType || {};
@@ -11,8 +11,8 @@ export default function convertRangeIndices(range, inputType, outputType) {
           ? 0
           : -1
         : outputType.inclusive1BasedStart
-        ? 1
-        : 0),
+          ? 1
+          : 0),
     end:
       Number(range.end) +
       (inputType.inclusive1BasedEnd
@@ -20,7 +20,7 @@ export default function convertRangeIndices(range, inputType, outputType) {
           ? 0
           : -1
         : outputType.inclusive1BasedEnd
-        ? 1
-        : 0)
+          ? 1
+          : 0)
   });
 }

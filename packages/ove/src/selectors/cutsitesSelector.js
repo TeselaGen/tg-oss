@@ -5,7 +5,7 @@ import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
 import { createSelector } from "reselect";
 
-import { flatMap as flatmap, map } from "lodash";
+import { flatMap as flatmap, map } from "lodash-es";
 import { getCutsitesFromSequence } from "@teselagen/sequence-utils";
 import { getLowerCaseObj } from "../utils/arrayUtils";
 

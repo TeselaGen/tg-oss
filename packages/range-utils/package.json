@@ -1,8 +1,8 @@
 {
   "name": "@teselagen/range-utils",
   "version": "0.3.7",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash-es": "^4.17.21"
   }
 }

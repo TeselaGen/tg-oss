@@ -1,5 +1,5 @@
 import React from "react";
-import { map } from "lodash";
+import { map } from "lodash-es";
 import { fudge2, realCharWidth } from "../constants";
 import getYOffset from "../../CircularView/getYOffset";
 import { getRangeLength } from "@teselagen/range-utils";
@@ -167,10 +167,10 @@ export function getBasesToShow({
                     b === "&"
                       ? "tg-no-show-seq"
                       : isMatch
-                      ? ""
-                      : isAmbiguousMatch
-                      ? "tg-ambiguous-match-seq"
-                      : "tg-no-match-seq"
+                        ? ""
+                        : isAmbiguousMatch
+                          ? "tg-ambiguous-match-seq"
+                          : "tg-no-match-seq"
                   }
                   textLength={textLength}
                 >

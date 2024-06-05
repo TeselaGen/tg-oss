@@ -1,5 +1,5 @@
 import { formValueSelector } from "redux-form";
-import { reduce } from "lodash";
+import { reduce } from "lodash-es";
 import { connect } from "react-redux";
 /**
  * @param {*string} formName

@@ -1,6 +1,6 @@
 //UNDER CONSTRUCTION
 
-import { get } from "lodash";
+import { get } from "lodash-es";
 
 import {
   normalizePositionByRangeLength,

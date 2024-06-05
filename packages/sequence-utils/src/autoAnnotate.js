@@ -1,5 +1,5 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-import { forEach, omitBy } from "lodash";
+import { forEach, omitBy } from "lodash-es";
 import { ambiguous_dna_values } from "./bioData";
 import aminoAcidToDegenerateDnaMap from "./aminoAcidToDegenerateDnaMap";
 import {

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { change, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { camelCase, isFunction, set } from "lodash";
+import { camelCase, isFunction, set } from "lodash-es";
 import { withRouter } from "react-router-dom";
 import { branch, compose } from "recompose";
 

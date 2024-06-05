@@ -9,7 +9,7 @@ import getArrayBufferFromFile from "./utils/getArrayBufferFromFile";
 import createInitialSequence from "./utils/createInitialSequence";
 import validateSequenceArray from "./utils/validateSequenceArray";
 import flattenSequenceArray from "./utils/flattenSequenceArray";
-import { get } from "lodash";
+import { get } from "lodash-es";
 import { XMLParser } from "fast-xml-parser";
 import extractFileExtension from "./utils/extractFileExtension";
 

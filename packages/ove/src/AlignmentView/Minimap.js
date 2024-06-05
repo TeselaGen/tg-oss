@@ -4,7 +4,7 @@ import ReactList from "@teselagen/react-list";
 import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 import { view } from "@risingstack/react-easy-state";
-import { flatMap, some, toNumber } from "lodash";
+import { flatMap, some, toNumber } from "lodash-es";
 import {
   getOverlapOfNonCircularRanges,
   invertRange,

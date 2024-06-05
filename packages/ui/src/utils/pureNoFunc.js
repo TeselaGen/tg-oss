@@ -3,7 +3,7 @@
  * when props are not deep equal. It will compare the string values of functions
  */
 import { shouldUpdate } from "recompose";
-import { isEqualWith, isFunction } from "lodash";
+import { isEqualWith, isFunction } from "lodash-es";
 
 /**
  * tgreen: This is an awful function which we should come up with a better solution for

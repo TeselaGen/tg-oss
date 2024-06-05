@@ -11,7 +11,7 @@ import {
 } from "@teselagen/ui";
 import { useEffect } from "react";
 import { hideDialog } from "./GlobalDialogUtils";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 import { tidyUpAnnotation } from "@teselagen/sequence-utils";
 
 const schemaFeatures = ["name", typeField, "start", "end", "strand"];

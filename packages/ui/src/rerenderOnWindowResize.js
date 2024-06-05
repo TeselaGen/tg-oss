@@ -1,4 +1,4 @@
-import { throttle } from "lodash";
+import { throttle } from "lodash-es";
 // use like this within a react component:
 
 // constructor(props){

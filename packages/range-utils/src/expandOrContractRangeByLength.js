@@ -1,4 +1,4 @@
-import { clone } from "lodash";
+import { clone } from "lodash-es";
 import normalizeRange from "./normalizeRange";
 
 export default function expandOrContractRangeByLength(

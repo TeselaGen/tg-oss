@@ -1,4 +1,4 @@
-import { isNumber } from "lodash";
+import { isNumber } from "lodash-es";
 import { getVals } from "./getVals";
 import { isValueEmpty } from "./isValueEmpty";
 

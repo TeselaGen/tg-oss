@@ -5,10 +5,13 @@ import react from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import * as esbuild from "esbuild";
 import libCss from "vite-plugin-libcss";
-import { camelCase } from "lodash";
+import { camelCase } from "lodash-es";
 import { getPort } from "./getPort";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import path from "node:path";
+import dts from "vite-plugin-dts";
+import { joinPathFragments } from "nx/src/devkit-exports";
+
 // import million from "million/compiler";
 //vite config for react packages
 
@@ -34,7 +37,7 @@ const rollupPlugin = (matchers: RegExp[]) => ({
   }
 });
 
-export default ({ name }: { name: string; dir: string }) =>
+export default ({ name, dir }: { name: string; dir: string }) =>
   defineConfig(({ command, mode = "production" }) => {
     const isDemo = mode === "demo";
     const isUmd = mode === "umd";
@@ -60,11 +63,11 @@ export default ({ name }: { name: string; dir: string }) =>
         // million.vite({
         //   auto: true
         // }),
-        // dts({
-        //   entryRoot: 'src',
-        //   tsConfigFilePath: joinPathFragments(dir, 'tsconfig.json'),
-        //   skipDiagnostics: true,
-        // }),
+        dts({
+          entryRoot: "src",
+          tsconfigPath: joinPathFragments(dir, "tsconfig.json")
+          // skipDiagnostics: true,
+        }),
         react(),
         libCss(),
         viteTsConfigPaths({

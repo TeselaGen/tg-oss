@@ -2,7 +2,7 @@
 import { MultiSelect, getCreateNewItem } from "@blueprintjs/select";
 import { Keys, Button, MenuItem, Tag } from "@blueprintjs/core";
 import React, { useEffect, useState } from "react";
-import { filter, isEqual } from "lodash";
+import { filter, isEqual } from "lodash-es";
 import classNames from "classnames";
 import "./style.css";
 import { withProps } from "recompose";
@@ -223,8 +223,9 @@ class TgSelect extends React.Component {
   };
 
   render() {
-    const {
+    let {
       multi,
+      asTag,
       options,
       unfilteredOptions,
       value,
@@ -233,9 +234,14 @@ class TgSelect extends React.Component {
       tagInputProps,
       autoFocus,
       autoOpen,
+      mustHaveQueryToOpen,
       noResultsText,
       noResults: _noResults,
       inputProps,
+      backgroundColor,
+      doNotFillWidth,
+      noToggle,
+      small,
       placeholder,
       isLoading,
       disallowClear,
@@ -247,10 +253,19 @@ class TgSelect extends React.Component {
       renderCreateNewOption: _renderCreateNewOption = renderCreateNewOption,
       ...rest
     } = this.props;
+    if (asTag) {
+      small = true;
+      placeholder = " ";
+      backgroundColor = "red";
+      disallowClear = true;
+      doNotFillWidth = true;
+      noToggle = true;
+    }
     let noResults = _noResults;
 
     // Null is also a valid value for a React Component, noResultsDefault should only be appplied when noResults is undefined
     if (noResults === undefined) noResults = noResultsDefault;
+    const hasQuery = this.state.query?.length > 0;
     const hasValue = Array.isArray(value)
       ? value.length > 0
       : !!value || value === 0;
@@ -268,7 +283,7 @@ class TgSelect extends React.Component {
             onClick={this.handleClear}
           />
         )}
-        {noResults !== null && (
+        {noResults !== null && !noToggle && (
           <Button
             onClick={e => {
               if (this.state.isOpen) {
@@ -299,7 +314,7 @@ class TgSelect extends React.Component {
         opt => opt && opt.value === ((value && value.value) || value)
       );
     });
-    return (
+    const toRet = (
       <MultiSelect
         onActiveItemChange={this.handleActiveItemChange}
         closeOnSelect={!multi}
@@ -316,12 +331,17 @@ class TgSelect extends React.Component {
           captureDismiss: true,
           minimal: true,
           className: classNames("tg-select", "tg-stop-dialog-form-enter", {
-            "tg-single-select": !multi
+            "tg-single-select": !multi,
+            "tg-select-as-tag": asTag,
+            "do-not-fill-width": doNotFillWidth,
+            "tg-small": small
           }),
           wrapperTagName: "div",
           canEscapeKeyClose: true,
           onInteraction: this.onInteraction,
-          isOpen: this.state.isOpen,
+          isOpen: mustHaveQueryToOpen
+            ? hasQuery && this.state.isOpen
+            : this.state.isOpen,
           modifiers: popoverOverflowModifiers,
           ...popoverProps
         }}
@@ -383,6 +403,23 @@ class TgSelect extends React.Component {
         {...rest}
       />
     );
+    if (backgroundColor) {
+      return (
+        <div
+          style={{
+            backgroundColor: backgroundColor,
+            borderRadius: "4px 4px 4px 4px",
+            overflow: "hidden",
+            width: "fit-content",
+            color: "white",
+            border: "2px solid white"
+          }}
+        >
+          {toRet}
+        </div>
+      );
+    }
+    return toRet;
   }
 }
 

@@ -1,7 +1,7 @@
 //./caretPosition.js
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 // ------------------------------------
 // Actions

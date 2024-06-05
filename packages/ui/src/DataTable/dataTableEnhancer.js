@@ -7,7 +7,7 @@
 import { reduxForm } from "redux-form";
 
 import { arrayMove } from "react-sortable-hoc";
-import { toArray, keyBy, get } from "lodash";
+import { toArray, keyBy, get } from "lodash-es";
 import { withProps, withState, branch, compose } from "recompose";
 import withTableParams from "../DataTable/utils/withTableParams";
 import convertSchema from "../DataTable/utils/convertSchema";
@@ -126,8 +126,8 @@ export default compose(
               return field.render
                 ? !field.render(val, e)
                 : cellRenderer[field.path]
-                ? !cellRenderer[field.path](val, e)
-                : !val;
+                  ? !cellRenderer[field.path](val, e)
+                  : !val;
             });
           }
           if (noValsForField) {

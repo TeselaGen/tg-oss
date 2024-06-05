@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { filter } from "lodash";
+import { filter } from "lodash-es";
 import featuresSelector from "./featuresSelector";
 
 function cdsFeaturesRawSelector(features) {

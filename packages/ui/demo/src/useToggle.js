@@ -16,7 +16,7 @@ import {
   getStringFromReactComponent,
   setCurrentParamsOnUrl
 } from "../../src";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 
 function HandleHotkeys({ combo, onKeyDown }) {
   const hotkeys = useMemo(

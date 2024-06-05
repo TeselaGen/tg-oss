@@ -2,7 +2,7 @@ import {
   modulateRangeBySequenceLength,
   flipContainedRange
 } from "@teselagen/range-utils";
-import { reduce, uniqBy } from "lodash";
+import { reduce, uniqBy } from "lodash-es";
 import escapeStringRegexp from "escape-string-regexp";
 import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
 import { ambiguous_dna_values, extended_protein_values } from "./bioData";

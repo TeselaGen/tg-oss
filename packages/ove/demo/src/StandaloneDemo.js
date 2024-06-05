@@ -9,7 +9,7 @@ import { Dialog, Button } from "@blueprintjs/core";
 import ab1ParsedGFPvv50 from "../../scratch/ab1ParsedGFPvv50.json";
 import ab1ParsedGFPvv60 from "../../scratch/ab1ParsedGFPvv60.json";
 import alignmentDataPairwise from "./exampleData/alignmentDataPairwise.json";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
@@ -487,30 +487,75 @@ export default class StandaloneDemo extends React.Component {
   }
   render() {
     const inner = (
-      <div
-        className="standaloneDemoNode"
-        style={{
-          width: "100%",
-          height: "100%",
-          zIndex: 1050,
-          flexGrow: 1
-        }}
-        ref={node => {
-          this.node = node;
-        }}
-      />
+      <>
+        <div
+          className="standaloneDemoNode"
+          style={{
+            width: "100%",
+            height: "100%",
+            zIndex: 1050,
+            flexGrow: 1
+          }}
+          ref={node => {
+            this.node = node;
+          }}
+        />
+        <div
+          className="standaloneDemoNode2"
+          style={{
+            width: "100%",
+            height: "100%",
+            zIndex: 1050,
+            flexGrow: 1
+          }}
+          ref={node => {
+            this.node2 = node;
+          }}
+        />
+      </>
     );
     const { isDialogOpen } = this.state;
     return (
       <div style={{ flexGrow: "1", display: "flex", flexDirection: "column" }}>
-        <Button
-          onClick={() => {
-            this.setState({ isDialogOpen: !isDialogOpen });
-            this.mountEditor();
-          }}
-        >
-          Open in a dialog
-        </Button>
+        <div>
+          <Button
+            onClick={() => {
+              this.setState({ isDialogOpen: !isDialogOpen });
+              this.mountEditor();
+            }}
+          >
+            Open in a dialog
+          </Button>
+          <Button
+            onClick={() => {
+              const editor2 = window.createVectorEditor(this.node2, {
+                editorName: "vector-editor2",
+                showMenuBar: true,
+                showCircularity: false
+              });
+
+              editor2.updateEditor({
+                sequenceData: {
+                  sequence: "atagatagagaggcccg",
+                  features: [
+                    {
+                      type: "misc_feature",
+                      start: 0,
+                      end: 10,
+                      id: "yourUniqueID",
+                      forward: true
+                    }
+                  ]
+                },
+                annotationsToSupport: {
+                  parts: false
+                }
+              });
+            }}
+          >
+            Open a second editor
+          </Button>
+        </div>
         {isDialogOpen ? (
           <Dialog
             style={{ width: 600 }}

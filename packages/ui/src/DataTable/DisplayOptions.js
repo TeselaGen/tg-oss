@@ -1,5 +1,5 @@
 import React from "react";
-import { map, isEmpty, noop } from "lodash";
+import { map, isEmpty, noop } from "lodash-es";
 import {
   Button,
   Checkbox,
@@ -151,8 +151,8 @@ export default class DisplayOptions extends React.Component {
                     extraCompact
                       ? "extraCompact"
                       : compact
-                      ? "compact"
-                      : "normal"
+                        ? "compact"
+                        : "normal"
                   }
                 >
                   <option className={Classes.POPOVER_DISMISS} value="normal">

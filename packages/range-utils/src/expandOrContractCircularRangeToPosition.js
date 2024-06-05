@@ -1,5 +1,5 @@
 import normalizePositionByRangeLength from "./normalizePositionByRangeLength";
-import { assign } from "lodash";
+import { assign } from "lodash-es";
 
 export default function expandOrContractCircularRangeToPosition(
   range,

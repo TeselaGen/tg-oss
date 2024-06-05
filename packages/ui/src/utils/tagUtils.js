@@ -1,4 +1,4 @@
-import { flatMap, keyBy } from "lodash";
+import { flatMap, keyBy } from "lodash-es";
 import determineBlackOrWhiteTextColor from "./determineBlackOrWhiteTextColor";
 
 export function getTagsAndTagOptions(allTags) {

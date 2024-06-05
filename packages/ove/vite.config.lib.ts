@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import libCss from "vite-plugin-libcss";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import packageJson from "../../package.json";
 
 const justSrc = [

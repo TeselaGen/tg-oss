@@ -1,4 +1,4 @@
-import { flatMap } from "lodash";
+import { flatMap } from "lodash-es";
 import splitRangeIntoTwoPartsIfItIsCircular from "./splitRangeIntoTwoPartsIfItIsCircular";
 import getOverlapOfNonCircularRanges from "./getOverlapOfNonCircularRanges";
 

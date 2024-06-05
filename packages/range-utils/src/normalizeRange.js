@@ -1,5 +1,5 @@
 //normalize range takes in a range that might be slightly outside of the rangeMax and wraps the start/end as necessary to fit
-import { assign } from "lodash";
+import { assign } from "lodash-es";
 
 import normalizePositionByRangeLength from "./normalizePositionByRangeLength";
 

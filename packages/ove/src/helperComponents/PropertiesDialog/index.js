@@ -1,7 +1,7 @@
 import React from "react";
 import { compose } from "redux";
 import { Tab, Tabs } from "@blueprintjs/core";
-import { flatMap, startCase } from "lodash";
+import { flatMap, startCase } from "lodash-es";
 import FeatureProperties from "./FeatureProperties";
 import GeneralProperties from "./GeneralProperties";
 import CutsiteProperties from "./CutsiteProperties";
@@ -13,7 +13,7 @@ import PartProperties from "./PartProperties";
 import { connectToEditor } from "../../withEditorProps";
 import "./style.css";
 import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
-import { pick } from "lodash";
+import { pick } from "lodash-es";
 
 const PropertiesContainer = Comp => props => {
   const { additionalFooterEls, additionalHeaderEls, ...rest } = props;

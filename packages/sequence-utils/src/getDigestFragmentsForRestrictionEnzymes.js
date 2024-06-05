@@ -1,6 +1,6 @@
 import getDigestFragmentsForCutsites from "./getDigestFragmentsForCutsites";
 import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme";
-import { flatMap } from "lodash";
+import { flatMap } from "lodash-es";
 
 export default function getDigestFragmentsForRestrictionEnzymes(
   sequence,

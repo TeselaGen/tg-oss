@@ -1,4 +1,4 @@
-import { omit } from "lodash";
+import { omit } from "lodash-es";
 
 import cleanUpTeselagenJsonForExport from "./utils/cleanUpTeselagenJsonForExport";
 import { tidyUpSequenceData } from "@teselagen/sequence-utils";

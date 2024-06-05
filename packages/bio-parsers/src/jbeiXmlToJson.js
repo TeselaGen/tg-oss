@@ -2,7 +2,7 @@
 
 import validateSequenceArray from "./utils/validateSequenceArray";
 import { XMLParser } from "fast-xml-parser";
-import { filter } from "lodash";
+import { filter } from "lodash-es";
 
 //Here's what should be in the callback:
 // {

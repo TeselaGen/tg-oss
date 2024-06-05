@@ -1,4 +1,4 @@
-import { cloneDeep, get, some } from "lodash";
+import { cloneDeep, get, some } from "lodash-es";
 import { getFeatureToColorMap, getFeatureTypes } from "./featureTypesAndColors";
 import shortid from "shortid";
 

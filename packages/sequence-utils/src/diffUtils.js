@@ -1,4 +1,4 @@
-import { cloneDeep, forEach } from "lodash";
+import { cloneDeep, forEach } from "lodash-es";
 import { diff, patch, reverse } from "jsondiffpatch/dist/jsondiffpatch.umd";
 
 import tidyUpSequenceData from "./tidyUpSequenceData";

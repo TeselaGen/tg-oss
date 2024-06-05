@@ -27,7 +27,7 @@ import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 import { getOrfColor } from "../constants/orfFrameToColorMap";
 import { getSingular } from "../utils/annotationTypes";
-import { upperFirst, map, flatMap, noop } from "lodash";
+import { upperFirst, map, flatMap, noop } from "lodash-es";
 
 import useAnnotationLimits from "../utils/useAnnotationLimits";
 import {
@@ -275,8 +275,8 @@ export function CircularView(props) {
                 rangeToShowLength < 10
                   ? 2
                   : rangeToShowLength < 50
-                  ? Math.ceil(rangeToShowLength / 25) * 5
-                  : Math.ceil(rangeToShowLength / 100) * 10,
+                    ? Math.ceil(rangeToShowLength / 25) * 5
+                    : Math.ceil(rangeToShowLength / 100) * 10,
               sequenceLength,
               isProtein
             }).map(pos => {
@@ -767,8 +767,8 @@ export function CircularView(props) {
               caretPosition > -1
                 ? caretPosition
                 : selectionLayer.start > -1
-                ? getMiddleOfRange(selectionLayer, sequenceLength)
-                : undefined;
+                  ? getMiddleOfRange(selectionLayer, sequenceLength)
+                  : undefined;
             if (caret !== undefined) {
               const radToRotateTo = (caret / sequenceLength) * Math.PI * 2;
               rotateHelper.current.triggerChange &&

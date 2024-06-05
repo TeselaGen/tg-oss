@@ -10,7 +10,7 @@ import {
 } from "@blueprintjs/core";
 import React from "react";
 import "./style.css";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 class ToolbarItem extends React.Component {
   toggleDropdown = ({ forceClose } = {}) => {

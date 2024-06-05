@@ -1,5 +1,5 @@
 import { adjustRangeToInsert } from "@teselagen/range-utils";
-import { map } from "lodash";
+import { map } from "lodash-es";
 
 export default function adjustAnnotationsToInsert(
   annotationsToBeAdjusted,

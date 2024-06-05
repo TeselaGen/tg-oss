@@ -3,7 +3,7 @@
 import chai from "chai";
 
 import { getRangeLength } from "@teselagen/range-utils";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import chaiSubset from "chai-subset";
 
 import deleteSequenceDataAtRange from "./deleteSequenceDataAtRange";

@@ -4,7 +4,7 @@ import {
   withSelectedEntities,
   createCommandMenu
 } from "@teselagen/ui";
-import { map, get } from "lodash";
+import { map, get } from "lodash-es";
 import CutsiteFilter from "../../CutsiteFilter";
 import { Button, ButtonGroup } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
@@ -12,7 +12,7 @@ import { compose } from "recompose";
 import selectors from "../../selectors";
 import commands from "../../commands";
 import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
-import { pick } from "lodash";
+import { pick } from "lodash-es";
 import SingleEnzymeCutsiteInfo from "./SingleEnzymeCutsiteInfo";
 import { withRestrictionEnzymes } from "../../CutsiteFilter/withRestrictionEnzymes";
 import { cutsitesSubmenu } from "../../MenuBar/viewSubmenu";

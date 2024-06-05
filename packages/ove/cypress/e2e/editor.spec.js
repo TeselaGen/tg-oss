@@ -1,4 +1,4 @@
-import { inRange } from "lodash";
+import { inRange } from "lodash-es";
 
 describe("editor", function () {
   beforeEach(() => {

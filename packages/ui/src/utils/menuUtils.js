@@ -19,18 +19,24 @@ import {
   isArray,
   isString,
   noop
-} from "lodash";
+} from "lodash-es";
 import fuzzysearch from "fuzzysearch";
-
+import classNames from "classnames";
 // https://github.com/palantir/blueprint/issues/2820
-function MenuItemLink({ text, onClick, icon, navTo }) {
+function MenuItemLink({ text, onClick, icon, navTo, active }) {
   const handleLinkClick = e => {
     e.target.closest(`.${Classes.POPOVER_DISMISS}`).click();
   };
 
   return (
     <li className={Classes.POPOVER_DISMISS} onClick={onClick}>
-      <Link onClick={handleLinkClick} to={navTo} className="bp3-menu-item">
+      <Link
+        onClick={handleLinkClick}
+        to={navTo}
+        className={classNames(Classes.MENU_ITEM, {
+          [Classes.ACTIVE]: active
+        })}
+      >
         {icon && <Icon icon={icon} />}
         <div className="bp3-text-overflow-ellipsis bp3-fill">{text}</div>
       </Link>

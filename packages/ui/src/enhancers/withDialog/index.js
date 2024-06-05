@@ -2,7 +2,7 @@ import React from "react";
 import { Dialog } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import { lifecycle, compose } from "recompose";
-import { camelCase } from "lodash";
+import { camelCase } from "lodash-es";
 import { nanoid } from "nanoid";
 import ResizableDraggableDialog from "../../ResizableDraggableDialog";
 

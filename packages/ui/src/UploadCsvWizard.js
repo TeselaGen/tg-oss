@@ -4,22 +4,22 @@ import { Callout, Icon, Intent, Tab, Tabs } from "@blueprintjs/core";
 import immer from "immer";
 import { observer } from "mobx-react";
 import "./UploadCsvWizard.css";
-import { isFunction } from "lodash";
+import { isFunction } from "lodash-es";
 import { compose } from "recompose";
 import SimpleStepViz from "./SimpleStepViz";
 import { nanoid } from "nanoid";
 import { tgFormValueSelector } from "./utils/tgFormValues";
-import { some } from "lodash";
-import { times } from "lodash";
+import { some } from "lodash-es";
+import { times } from "lodash-es";
 import DialogFooter from "./DialogFooter";
 import DataTable, { removeCleanRows } from "./DataTable";
 import wrapDialog from "./wrapDialog";
-import { omit } from "lodash";
+import { omit } from "lodash-es";
 import { connect } from "react-redux";
 import { MatchHeaders } from "./MatchHeaders";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { addSpecialPropToAsyncErrs } from "./FormComponents/tryToMatchSchemas";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import { InputField } from "./FormComponents";
 
 const getInitialSteps = csvValidationIssue => [

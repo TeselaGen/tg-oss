@@ -1,8 +1,8 @@
 import React from "react";
 import withEditorProps from "../withEditorProps";
 import { TgSelect, getKeyedTagsAndTagOptions } from "@teselagen/ui";
-import { flatMap } from "lodash";
-import { uniqBy } from "lodash";
+import { flatMap } from "lodash-es";
+import { uniqBy } from "lodash-es";
 
 export const PartTagSearch = withEditorProps(PartToolDropdown);
 

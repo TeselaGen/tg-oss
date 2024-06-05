@@ -1,4 +1,4 @@
-import { assign } from "lodash";
+import { assign } from "lodash-es";
 import normalizePositionByRangeLength from "./normalizePositionByRangeLength";
 
 export default function translateRange(

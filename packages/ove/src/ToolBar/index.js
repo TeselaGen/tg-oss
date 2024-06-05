@@ -1,10 +1,10 @@
 import React from "react";
-import { flatMap, isString, pick } from "lodash";
+import { flatMap, isString, pick } from "lodash-es";
 import versionHistoryTool from "./versionHistoryTool";
 // import {connectToEditor} from "../withEditorProps";
 import MenuBar from "../MenuBar";
 import "./style.css";
-import { Button, Tooltip } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
 
 import downloadTool from "./downloadTool";
 import importTool from "./importTool";
@@ -198,18 +198,17 @@ export function ToolBar(props) {
 }
 const CloseFullscreenButton = props => {
   return (
-    <Tooltip content="Close Fullscreen Mode">
-      <Button
-        minimal
-        style={{
-          marginTop: 2,
-          marginRight: 2
-        }}
-        onClick={props.onClick}
-        className="ve-close-fullscreen-button"
-        icon="minimize"
-      />
-    </Tooltip>
+    <Button
+      data-tip="Close Fullscreen Mode"
+      minimal
+      style={{
+        marginTop: 2,
+        marginRight: 2
+      }}
+      onClick={props.onClick}
+      className="ve-close-fullscreen-button"
+      icon="minimize"
+    />
   );
 };
 

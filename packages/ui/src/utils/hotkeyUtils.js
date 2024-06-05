@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useHotkeys } from "@blueprintjs/core";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 
 // This has been mostly superseded by blueprint's KeyCombo component, but may
 // still be useful for cases where we need plain text

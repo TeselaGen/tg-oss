@@ -1,4 +1,4 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import { getYOffsetsForPotentiallyCircularRanges } from "@teselagen/range-utils";
 import { annotationTypes } from "./annotationTypes";
 

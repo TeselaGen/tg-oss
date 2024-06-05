@@ -3,7 +3,7 @@ import { Button, Icon, Popover, RadioGroup } from "@blueprintjs/core";
 
 import { calculateTm, calculateNebTm } from "@teselagen/sequence-utils";
 
-import { isString } from "lodash";
+import { isString } from "lodash-es";
 import { popoverOverflowModifiers } from "@teselagen/ui";
 import useTmType from "../utils/useTmType";
 

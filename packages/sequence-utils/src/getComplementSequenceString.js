@@ -1,5 +1,5 @@
 import DNAComplementMap from "./DNAComplementMap";
-import { merge } from "lodash";
+import { merge } from "lodash-es";
 
 export default function getComplementSequenceString(sequence, isRna) {
   if (typeof sequence !== "string") return "";

@@ -11,7 +11,7 @@ import {
   flatMap,
   assign,
   noop
-} from "lodash";
+} from "lodash-es";
 import { getComplementSequenceString } from "@teselagen/sequence-utils";
 import React, { useMemo } from "react";
 import pluralize from "pluralize";
@@ -28,7 +28,7 @@ import "./style.css";
 import Chromatogram from "./Chromatograms/Chromatogram";
 import { rowHeights } from "../RowView/estimateRowHeight";
 import { getAllSelectionLayers } from "../utils/selectionLayer";
-import { filter } from "lodash";
+import { filter } from "lodash-es";
 import { defaultCharWidth } from "../constants/rowviewContants";
 import { CutsiteSelectionLayers } from "./CutsiteSelectionLayers";
 

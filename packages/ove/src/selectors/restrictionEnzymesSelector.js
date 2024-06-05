@@ -1,4 +1,4 @@
-import { forEach } from "lodash";
+import { forEach } from "lodash-es";
 import { createSelector } from "reselect";
 import {
   defaultEnzymesByName,

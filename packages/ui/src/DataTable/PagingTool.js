@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { withProps, withHandlers, compose } from "recompose";
 import classNames from "classnames";
-import { noop, get, toInteger } from "lodash";
+import { noop, get, toInteger } from "lodash-es";
 import { Button, Classes } from "@blueprintjs/core";
 import { onEnterOrBlurHelper } from "../utils/handlerHelpers";
 import { defaultPageSizes } from "./utils/queryParams";
@@ -95,8 +95,8 @@ const PagingTool = ({
       pageValue > lastPage
         ? lastPage
         : pageValue < 1 || isNaN(pageValue)
-        ? 1
-        : pageValue;
+          ? 1
+          : pageValue;
     setPageHandler(selectedPage);
   };
 

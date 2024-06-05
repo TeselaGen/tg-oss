@@ -1,5 +1,5 @@
 import React from "react";
-import { times, map } from "lodash";
+import { times, map } from "lodash-es";
 import { view } from "@risingstack/react-easy-state";
 import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 import { fudge2, realCharWidth } from "./constants";

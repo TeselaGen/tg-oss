@@ -9,9 +9,9 @@ import {
 } from "@teselagen/ui";
 import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "@teselagen/bio-parsers";
-import { flatMap } from "lodash";
+import { flatMap } from "lodash-es";
 import uniqid from "shortid";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import classNames from "classnames";
 
 import ToolbarItem from "./ToolbarItem";

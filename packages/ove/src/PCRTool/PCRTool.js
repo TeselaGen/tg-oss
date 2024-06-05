@@ -4,7 +4,7 @@ import React from "react";
 import withEditorInteractions from "../withEditorInteractions";
 import { ReactSelectField, tgFormValues } from "@teselagen/ui";
 import { reduxForm } from "redux-form";
-import { flatMap, forEach, keyBy } from "lodash";
+import { flatMap, forEach, keyBy } from "lodash-es";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import {
   getReverseComplementSequenceString,

@@ -7,7 +7,7 @@ import {
   InfoHelper
 } from "@teselagen/ui";
 import { getFeatureTypes } from "@teselagen/sequence-utils";
-import { get } from "lodash";
+import { get } from "lodash-es";
 
 const renderTypes = ({ readOnly }) => (
   <ReactSelectField

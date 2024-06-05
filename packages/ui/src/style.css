@@ -246,3 +246,17 @@ button:not(:disabled):active {
 .bp3-dialog-header .bp3-heading {
   width: 10px; /* tnw: this is a hack to prevent the dialog title from causing the dialog width to expand larger than the dialog content*/
 }
+
+/* to fix tooltip styling issue - https://github.com/palantir/blueprint/issues/3430 */
+.bp3-popover[style*="transform-origin"][style*="bottom"] .bp3-popover-arrow {
+  transform: translate(0, -0.5px);
+}
+.bp3-popover[style*="transform-origin"][style*="left"] .bp3-popover-arrow {
+  transform: translate(0.5px, 0);
+}
+.bp3-popover[style*="transform-origin"][style*="top"] .bp3-popover-arrow {
+  transform: translate(0, 0.5px);
+}
+.bp3-popover[style*="transform-origin"][style*="right"] .bp3-popover-arrow {
+  transform: translate(-0.5px, 0);
+}

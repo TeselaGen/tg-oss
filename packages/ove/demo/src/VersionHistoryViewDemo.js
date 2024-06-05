@@ -1,3 +1,4 @@
+import React from "react";
 import VersionHistoryView from "../../src/VersionHistoryView";
 
 export default () => {

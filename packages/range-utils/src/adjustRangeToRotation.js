@@ -1,6 +1,6 @@
-import { assign } from "lodash";
+import { assign } from "lodash-es";
 
-import { identity } from "lodash";
+import { identity } from "lodash-es";
 
 export default function adjustRangeToRotation(
   rangeToBeAdjusted,

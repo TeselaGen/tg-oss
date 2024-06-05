@@ -13,9 +13,9 @@ import {
   drop,
   isEmpty,
   isInteger
-} from "lodash";
+} from "lodash-es";
 import dayjs from "dayjs";
-import { flatMap } from "lodash";
+import { flatMap } from "lodash-es";
 
 const defaultPageSizes = [5, 10, 15, 25, 50, 100, 200, 400];
 

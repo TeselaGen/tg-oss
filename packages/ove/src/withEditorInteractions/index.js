@@ -10,7 +10,7 @@ import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "@teselagen/sequence-utils";
-import { some, map, noop } from "lodash";
+import { some, map, noop } from "lodash-es";
 import { Menu } from "@blueprintjs/core";
 import { branch } from "recompose";
 

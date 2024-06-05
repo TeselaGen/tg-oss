@@ -6,7 +6,7 @@ import {
   createCommandMenu
 } from "@teselagen/ui";
 import getCommands from "../../commands";
-import { map } from "lodash";
+import { map } from "lodash-es";
 import { getRangeLength } from "@teselagen/range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
