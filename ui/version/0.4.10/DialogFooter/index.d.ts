@@ -1,0 +1,23 @@
+export default DialogFooter;
+declare function DialogFooter({ hideModal, loading, submitting, onBackClick, style, onClick, secondaryAction, secondaryDisabled, secondaryNotMinimal, intent, secondaryIntent, backText, secondaryText, additionalButtons, className, secondaryClassName, text, disabled, containerClassname, noCancel }: {
+    hideModal: any;
+    loading: any;
+    submitting: any;
+    onBackClick: any;
+    style: any;
+    onClick?: ((...args: any[]) => void) | undefined;
+    secondaryAction: any;
+    secondaryDisabled: any;
+    secondaryNotMinimal: any;
+    intent?: "primary" | undefined;
+    secondaryIntent: any;
+    backText?: string | undefined;
+    secondaryText?: string | undefined;
+    additionalButtons: any;
+    className: any;
+    secondaryClassName?: string | undefined;
+    text?: string | undefined;
+    disabled: any;
+    containerClassname: any;
+    noCancel: any;
+}): import("react/jsx-runtime").JSX.Element;
