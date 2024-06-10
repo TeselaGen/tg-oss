@@ -1,0 +1,13 @@
+.tag-select-popover {
+  padding: 10px;
+}
+
+.tag-select-popover-inner {
+  max-height: 150px;
+  overflow: auto;
+  display: grid;
+  padding-top: 10px;
+  grid-column-gap: 5px;
+  row-gap: 8px;
+  grid-template-columns: max-content max-content;
+}

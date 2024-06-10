@@ -354,7 +354,7 @@ export default compose(
   ),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: props => {
-      return (
+      return async (
         _sequenceDataToInsert,
         _existingSequenceData,
         _caretPositionOrRange,
@@ -366,12 +366,12 @@ export default compose(
           caretPositionOrRange,
           options
         } = props.beforeSequenceInsertOrDelete
-          ? props.beforeSequenceInsertOrDelete(
+          ? (await props.beforeSequenceInsertOrDelete(
               tidyUpSequenceData(_sequenceDataToInsert),
               tidyUpSequenceData(_existingSequenceData),
               _caretPositionOrRange,
               _options
-            ) || {}
+            )) || {}
           : {};
         return [
           insertSequenceDataAtPositionOrRange(
@@ -483,7 +483,7 @@ export default compose(
       caretPositionUpdate(0);
     },
 
-    handleReverseComplementSelection: props => () => {
+    handleReverseComplementSelection: props => async () => {
       const {
         sequenceData,
         updateSequenceData,
@@ -499,7 +499,7 @@ export default compose(
           range: selectionLayer
         }
       );
-      const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
+      const [newSeqData] = await wrappedInsertSequenceDataAtPositionOrRange(
         reversedSeqData,
         sequenceData,
         selectionLayer,
@@ -510,7 +510,7 @@ export default compose(
       updateSequenceData(newSeqData);
     },
 
-    handleComplementSelection: props => () => {
+    handleComplementSelection: props => async () => {
       const {
         sequenceData,
         updateSequenceData,
@@ -523,7 +523,7 @@ export default compose(
       const comp = getComplementSequenceAndAnnotations(sequenceData, {
         range: selectionLayer
       });
-      const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
+      const [newSeqData] = await wrappedInsertSequenceDataAtPositionOrRange(
         comp,
         sequenceData,
         selectionLayer,

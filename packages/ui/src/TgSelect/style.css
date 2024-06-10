@@ -2,6 +2,13 @@
   width: 100%;
   min-width: 170px;
 }
+.tg-select.tg-select-as-tag {
+  /* background-color: red; */
+  border-radius: 4px;
+  width: fit-content;
+  color: white;
+  border: 2px solid white;
+}
 .tg-select.tg-select-as-tag .bp3-tag.bp3-minimal.bp3-intent-primary {
   color: white !important;
 }

@@ -97,6 +97,7 @@ const defaultState = {
   onCreateNewFromSubsequence: false,
   onDelete: true,
   beforeSequenceInsertOrDelete: false,
+  beforeSequenceInsertOrDeleteAsync: false,
   maintainOriginSplit: false,
   maxAnnotationsToDisplayAdjustment: false,
   truncateLabelsThatDoNotFit: true,
@@ -400,6 +401,13 @@ export default class EditorDemo extends React.Component {
         that: this,
         type: "onDelete",
         info: "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
+      }),
+      renderToggle({
+        that: this,
+        label:
+          "beforeSequenceInsertOrDeleteAsync (Run a check before the sequence is inserted/deleted)",
+        type: "beforeSequenceInsertOrDeleteAsync",
+        info: ``
       }),
       renderToggle({
         that: this,
@@ -2478,6 +2486,27 @@ clickOverrides: {
                     }, {})
                   },
                   options
+                };
+              }
+            })}
+            {...(this.state.beforeSequenceInsertOrDeleteAsync && {
+              beforeSequenceInsertOrDelete: async (
+                sequenceDataToInsert,
+                existingSequenceData,
+                caretPositionOrRange
+              ) => {
+                if (sequenceDataToInsert?.sequence?.includes("t")) {
+                  window.toastr.warning(
+                    "Stopping this insert since it includes a T"
+                  );
+                  throw new Error("stop this fn!");
+                } else if (caretPositionOrRange?.start > -1) {
+                  window.toastr.warning("No deletions/replaces allowed");
+                  throw new Error("stop this fn!");
+                }
+                return {
+                  sequenceDataToInsert,
+                  existingSequenceData
                 };
               }
             })}

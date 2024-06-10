@@ -23,7 +23,10 @@ export function showDialog({
       ?.className.split(" ")
       .forEach(c => {
         if (!c.trim()) return;
-        if (!c.trim().includes("veEditor")) {
+        if (
+          !c.trim().includes("veEditor") &&
+          !c.trim().includes("previewModeFullscreen")
+        ) {
           editorName = c;
         }
       });

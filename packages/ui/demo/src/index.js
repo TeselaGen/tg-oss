@@ -32,6 +32,7 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import AdvancedOptionsDemo from "./examples/AdvancedOptionsDemo";
 import FormComponents from "./examples/FormComponents";
 import UploadCsvWizard from "./examples/UploadCsvWizard";
+import TagSelectDemo from "./examples/TagSelectDemo";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -87,6 +88,9 @@ const demos = {
   },
   TgSelect: {
     demo: TgSelectDemo
+  },
+  TagSelect: {
+    demo: TagSelectDemo
   },
   CollapsibleCard: {
     demo: CollapsibleCard,

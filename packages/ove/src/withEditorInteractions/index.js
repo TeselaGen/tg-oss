@@ -202,7 +202,7 @@ function VectorInteractionHOC(Component /* options */) {
       });
     };
 
-    handlePaste = e => {
+    handlePaste = async e => {
       const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
@@ -248,7 +248,7 @@ function VectorInteractionHOC(Component /* options */) {
       if (!seqDataToInsert.sequence.length)
         return window.toastr.warning("Sorry no valid base pairs to paste");
 
-      insertAndSelectHelper({
+      await insertAndSelectHelper({
         seqDataToInsert,
         props: this.props
       });
@@ -344,7 +344,7 @@ function VectorInteractionHOC(Component /* options */) {
 
     handleCopy = this.handleCutOrCopy();
 
-    handleDnaInsert = ({ useEventPositioning }) => {
+    handleDnaInsert = async ({ useEventPositioning }) => {
       const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
@@ -371,8 +371,8 @@ function VectorInteractionHOC(Component /* options */) {
           selectionLayer,
           sequenceLength,
           caretPosition,
-          handleInsert: seqDataToInsert => {
-            insertAndSelectHelper({
+          handleInsert: async seqDataToInsert => {
+            await insertAndSelectHelper({
               props: this.props,
               seqDataToInsert
             });
@@ -383,7 +383,7 @@ function VectorInteractionHOC(Component /* options */) {
       }
     };
 
-    handleDnaDelete = (showToast = true) => {
+    handleDnaDelete = async (showToast = true) => {
       const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
@@ -424,11 +424,13 @@ function VectorInteractionHOC(Component /* options */) {
             isCaretAtEndOfSeq = true;
           }
         }
-        const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
-          {},
-          sequenceData,
-          rangeToDelete
-        );
+        const [newSeqData, { abortSeqChange }] =
+          await wrappedInsertSequenceDataAtPositionOrRange(
+            {},
+            sequenceData,
+            rangeToDelete
+          );
+        if (abortSeqChange) return;
         updateSequenceData(newSeqData);
         caretPositionUpdate(
           isCaretAtEndOfSeq
@@ -1197,7 +1199,7 @@ function getGenbankFromSelection(selectedSeqData, sequenceData) {
   };
 }
 
-const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
+const insertAndSelectHelper = async ({ seqDataToInsert, props }) => {
   const {
     updateSequenceData,
     wrappedInsertSequenceDataAtPositionOrRange,
@@ -1207,31 +1209,15 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
     selectionLayer,
     bpLimit
   } = props;
-
-  // sequenceData,
-  //             caretPosition,
-  //             selectionLayer
-
-  // updateSequenceData(
-  //   wrappedInsertSequenceDataAtPositionOrRange(
-  //     seqDataToInsert,
-  //     sequenceData,
-  //     caretPosition > -1 ? caretPosition : selectionLayer
-  //   )
-  // );
-
-  // const newSelectionLayerStart =
-  //   caretPosition > -1 ? caretPosition : (selectionLayer.start > selectionLayer.end ? 0 : selectionLayer.start);
-  // selectionLayerUpdate({
-  //   start: newSelectionLayerStart,
-  //   end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
-  // });
-  const [newSeqData, { maintainOriginSplit }] =
-    wrappedInsertSequenceDataAtPositionOrRange(
+  const [newSeqData, { maintainOriginSplit, abortSeqChange }] =
+    await wrappedInsertSequenceDataAtPositionOrRange(
       seqDataToInsert,
       sequenceData,
       caretPosition > -1 ? caretPosition : selectionLayer
     );
+  if (abortSeqChange) {
+    throw new Error("abortSeqChange");
+  }
   if (bpLimit) {
     if (newSeqData.sequence.length > bpLimit) {
       window.toastr.error(

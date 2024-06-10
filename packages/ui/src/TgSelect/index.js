@@ -403,22 +403,6 @@ class TgSelect extends React.Component {
         {...rest}
       />
     );
-    if (backgroundColor) {
-      return (
-        <div
-          style={{
-            backgroundColor: backgroundColor,
-            borderRadius: "4px 4px 4px 4px",
-            overflow: "hidden",
-            width: "fit-content",
-            color: "white",
-            border: "2px solid white"
-          }}
-        >
-          {toRet}
-        </div>
-      );
-    }
     return toRet;
   }
 }
