@@ -30,7 +30,11 @@ export default compose(
   withTableParams({
     isLocalCall: true
   }),
-  withState("showForcedHiddenColumns", "setShowForcedHidden", false),
+  branch(
+    props => props.showEmptyColumnsByDefault,
+    withState("showForcedHiddenColumns", "setShowForcedHidden", true),
+    withState("showForcedHiddenColumns", "setShowForcedHidden", false)
+  ),
   withProps(ownProps => {
     let propsToUse = ownProps;
     if (!ownProps.isTableParamsConnected) {

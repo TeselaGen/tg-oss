@@ -55,7 +55,7 @@ const entities = [
     bool: false
   },
   {
-    url: `*I'm some markdown* 
+    url: `*I'm some markdown*
 #### ayy`,
     name: "Sam",
     id: "4",
