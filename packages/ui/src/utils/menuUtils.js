@@ -23,7 +23,7 @@ import {
 import fuzzysearch from "fuzzysearch";
 import classNames from "classnames";
 // https://github.com/palantir/blueprint/issues/2820
-function MenuItemLink({ text, onClick, icon, navTo, active }) {
+export function MenuItemLink({ text, onClick, icon, navTo, active }) {
   const handleLinkClick = e => {
     e.target.closest(`.${Classes.POPOVER_DISMISS}`).click();
   };
@@ -34,7 +34,8 @@ function MenuItemLink({ text, onClick, icon, navTo, active }) {
         onClick={handleLinkClick}
         to={navTo}
         className={classNames(Classes.MENU_ITEM, {
-          [Classes.ACTIVE]: active
+          [Classes.ACTIVE]: active,
+          [Classes.INTENT_PRIMARY]: active
         })}
       >
         {icon && <Icon icon={icon} />}
