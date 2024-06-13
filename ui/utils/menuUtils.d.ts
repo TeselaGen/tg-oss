@@ -1,4 +1,11 @@
 import { Menu } from '../../../../node_modules/@blueprintjs/core';
+export function MenuItemLink({ text, onClick, icon, navTo, active }: {
+    text: any;
+    onClick: any;
+    icon: any;
+    navTo: any;
+    active: any;
+}): import("react/jsx-runtime").JSX.Element;
 export function showCommandContextMenu(menuDef: any, commands: any, config: any, event: any, onClose: any, context: any): void;
 export function showContextMenu(menuDef: any, enhancers: any, event: any, onClose: any, context: any, menuComp?: typeof Menu): void;
 export function getStringFromReactComponent(comp: any): any;
