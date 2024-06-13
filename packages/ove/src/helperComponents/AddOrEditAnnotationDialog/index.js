@@ -236,13 +236,6 @@ class AddOrEditAnnotationDialog extends React.Component {
             data.forward !== undefined
               ? data.forward
               : data.arrowheadType !== "BOTTOM";
-          // if (data.arrowheadType === "BOTH") {
-          //   data.arrowheadType = "BOTH";
-          // }
-          // if (data.arrowheadType === "NONE") {
-          //   data.arrowheadType = "NONE";
-          // }
-          // delete data.arrowheadType;
           if (
             annotationTypePlural === "features" &&
             allowMultipleFeatureDirections
@@ -274,7 +267,6 @@ class AddOrEditAnnotationDialog extends React.Component {
           }
           const hasJoinedLocations =
             updatedData.locations && updatedData.locations.length > 1;
-
           const newAnnotation = tidyUpAnnotation(
             convertRangeTo0Based({
               overlapsSelf: data.overlapsSelf,

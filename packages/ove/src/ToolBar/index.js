@@ -189,10 +189,12 @@ export function ToolBar(props) {
           items
         )}
       </div>
-      {additionalTopRightToolbarButtons}
-      {closeFullscreen && (
-        <CloseFullscreenButton onClick={handleFullscreenClose} />
-      )}
+      <div style={{ height: 34, display: "flex" }}>
+        {additionalTopRightToolbarButtons}
+        {closeFullscreen && (
+          <CloseFullscreenButton onClick={handleFullscreenClose} />
+        )}
+      </div>
     </div>
   );
 }
@@ -201,6 +203,7 @@ const CloseFullscreenButton = props => {
     <Button
       data-tip="Close Fullscreen Mode"
       minimal
+      intent="primary"
       style={{
         marginTop: 2,
         marginRight: 2
