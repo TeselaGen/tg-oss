@@ -254,6 +254,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               updatedData = data;
             }
           }
+          const _bases = updatedData.bases || bases;
           if (!data.useLinkedOligo) {
             delete updatedData.bases;
           }
@@ -291,6 +292,7 @@ class AddOrEditAnnotationDialog extends React.Component {
 
           if (beforeAnnotationCreate) {
             const shouldContinue = await beforeAnnotationCreate({
+              bases: _bases,
               annotationTypePlural,
               annotation: newAnnotation,
               props: this.props,
