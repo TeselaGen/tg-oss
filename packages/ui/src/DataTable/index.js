@@ -1,7 +1,6 @@
 /* eslint react/jsx-no-bind: 0 */
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import { arrayMove } from "react-sortable-hoc";
 import copy from "copy-to-clipboard";
 import download from "downloadjs";
 import {
@@ -46,11 +45,12 @@ import {
   Callout,
   Tooltip
 } from "@blueprintjs/core";
+import { arrayMove, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import classNames from "classnames";
 import scrollIntoView from "dom-scroll-into-view";
-import { SortableElement } from "react-sortable-hoc";
 import ReactTable from "@teselagen/react-table";
-import { withProps, branch, compose } from "recompose";
+import { withProps, compose } from "recompose";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import ReactMarkdown from "react-markdown";
@@ -1121,21 +1121,37 @@ class DataTable extends React.Component {
     withProps(props => {
       const { columnindex } = props;
       return {
-        index: columnindex || 0
+        index: columnindex || -1
       };
-    }),
-    branch(({ immovable }) => "true" !== immovable, SortableElement)
-  )(({ toggleSort, className, children, ...rest }) => (
-    <div
-      className={classNames("rt-th", className)}
-      onClick={e => toggleSort && toggleSort(e)}
-      role="columnheader"
-      tabIndex="-1" // Resolves eslint issues without implementing keyboard navigation incorrectly
-      {...rest}
-    >
-      {children}
-    </div>
-  ));
+    })
+  )(({ toggleSort, immovable, className, children, style, ...rest }) => {
+    const { attributes, listeners, setNodeRef, transform, transition } =
+      useSortable({
+        id: `${rest.index}`,
+        disabled: immovable === "true"
+      });
+
+    const sortStyles = {
+      transform: CSS.Transform.toString(transform),
+      transition
+    };
+
+    return (
+      <div
+        style={{ ...sortStyles, ...style }}
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+        className={classNames("rt-th", className)}
+        onClick={e => toggleSort && toggleSort(e)}
+        role="columnheader"
+        tabIndex="-1" // Resolves eslint issues without implementing keyboard navigation incorrectly
+        {...rest}
+      >
+        {children}
+      </div>
+    );
+  });
 
   addEntitiesToSelection = entities => {
     const propPresets = computePresets(this.props);

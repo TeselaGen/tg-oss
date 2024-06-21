@@ -6,7 +6,7 @@
  */
 import { reduxForm } from "redux-form";
 
-import { arrayMove } from "react-sortable-hoc";
+import { arrayMove } from "@dnd-kit/sortable";
 import { toArray, keyBy, get } from "lodash-es";
 import { withProps, withState, branch, compose } from "recompose";
 import withTableParams from "../DataTable/utils/withTableParams";
