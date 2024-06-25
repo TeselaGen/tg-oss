@@ -1,15 +1,11 @@
-/* eslint react/jsx-no-bind: 0 */
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import copy from "copy-to-clipboard";
-import download from "downloadjs";
 import {
   invert,
   toNumber,
   isEmpty,
   min,
   max,
-  flatMap,
   set,
   map,
   toString,
@@ -40,7 +36,6 @@ import {
   ContextMenu,
   Checkbox,
   Icon,
-  Popover,
   Intent,
   Callout,
   Tooltip
@@ -58,30 +53,50 @@ import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
 import remarkGfm from "remark-gfm";
 
-import TgSelect from "../TgSelect";
-import { withHotkeys } from "../utils/hotkeyUtils";
+import {
+  computePresets,
+  defaultParsePaste,
+  formatPasteData,
+  getAllRows,
+  getCellCopyText,
+  getCellInfo,
+  getEntityIdToEntity,
+  getFieldPathToIndex,
+  getFieldPathToField,
+  getIdOrCodeOrIndex,
+  getLastSelectedEntity,
+  getNewEntToSelect,
+  getNumberStrAtEnd,
+  getRecordsFromIdMap,
+  getRowCopyText,
+  getSelectedRowsFromEntities,
+  handleCopyColumn,
+  handleCopyHelper,
+  handleCopyRows,
+  isBottomRightCornerOfRectangle,
+  isEntityClean,
+  removeCleanRows,
+  stripNumberAtEnd
+} from "./utils";
 import InfoHelper from "../InfoHelper";
+import { withHotkeys } from "../utils/hotkeyUtils";
 import getTextFromEl from "../utils/getTextFromEl";
-import { getSelectedRowsFromEntities } from "./utils/selection";
 import rowClick, {
   changeSelectedEntities,
   finalizeSelection
 } from "./utils/rowClick";
 import PagingTool from "./PagingTool";
 import FilterAndSortMenu from "./FilterAndSortMenu";
-import getIdOrCodeOrIndex from "./utils/getIdOrCodeOrIndex";
 import SearchBar from "./SearchBar";
 import DisplayOptions from "./DisplayOptions";
 import DisabledLoadingComponent from "./DisabledLoadingComponent";
 import SortableColumns from "./SortableColumns";
-import computePresets from "./utils/computePresets";
 import dataTableEnhancer from "./dataTableEnhancer";
 import defaultProps from "./defaultProps";
 
 import "../toastr";
 import "@teselagen/react-table/react-table.css";
 import "./style.css";
-import { getRecordsFromIdMap } from "./utils/withSelectedEntities";
 import { CellDragHandle } from "./CellDragHandle";
 import { nanoid } from "nanoid";
 import { SwitchField } from "../FormComponents";
@@ -90,12 +105,22 @@ import { editCellHelper } from "./editCellHelper";
 import { getCellVal } from "./getCellVal";
 import { getVals } from "./getVals";
 import { throwFormError } from "../throwFormError";
+import { DropdownCell } from "./DropdownCell";
+import { EditableCell } from "./EditabelCell";
+import { ColumnFilterMenu } from "./ColumnFilterMenu";
 enablePatches();
 
 const PRIMARY_SELECTED_VAL = "main_cell";
 
 dayjs.extend(localizedFormat);
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
+
+const itemSizeEstimators = {
+  compact: () => 25.34,
+  normal: () => 33.34,
+  comfortable: () => 41.34
+};
+
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
@@ -179,6 +204,7 @@ class DataTable extends React.Component {
       }
     });
   }
+
   state = {
     columns: [],
     fullscreen: false
@@ -186,15 +212,11 @@ class DataTable extends React.Component {
 
   static defaultProps = defaultProps;
 
-  toggleFullscreen = () => {
-    this.setState({
-      fullscreen: !this.state.fullscreen
-    });
-  };
   handleEnterStartCellEdit = e => {
     e.stopPropagation();
     this.startCellEdit(this.getPrimarySelectedCellId());
   };
+
   flashTableBorder = () => {
     try {
       const table = ReactDOM.findDOMNode(this.table);
@@ -206,6 +228,7 @@ class DataTable extends React.Component {
       console.error(`err when flashing table border:`, e);
     }
   };
+
   handleUndo = () => {
     const {
       change,
@@ -231,6 +254,7 @@ class DataTable extends React.Component {
       });
     }
   };
+
   handleRedo = () => {
     const {
       change,
@@ -255,6 +279,7 @@ class DataTable extends React.Component {
       });
     }
   };
+
   updateFromProps = (oldProps, newProps) => {
     const {
       selectedIds,
@@ -397,6 +422,7 @@ class DataTable extends React.Component {
       }, 0);
     }
   };
+
   formatAndValidateEntities = (
     entities,
     { useDefaultValues, indexToStartAt } = {}
@@ -436,6 +462,7 @@ class DataTable extends React.Component {
       validationErrors
     };
   };
+
   formatAndValidateTableInitial = () => {
     const {
       _origEntities,
@@ -584,6 +611,7 @@ class DataTable extends React.Component {
       props
     });
   };
+
   handleCopyHotkey = e => {
     const { isCellEditable, reduxFormSelectedEntityIdMap } = computePresets(
       this.props
@@ -800,6 +828,7 @@ class DataTable extends React.Component {
       });
     }
   };
+
   updateValidationHelper = () => {
     const { entities, reduxFormCellValidation } = computePresets(this.props);
     this.updateValidation(entities, reduxFormCellValidation);
@@ -816,6 +845,7 @@ class DataTable extends React.Component {
     change("reduxFormCellValidation", tableWideErr);
     this.forceUpdate();
   };
+
   handleDeleteCell = () => {
     const {
       reduxFormSelectedCells,
@@ -856,54 +886,6 @@ class DataTable extends React.Component {
     this.handleCopyHotkey(e);
   };
 
-  getCellCopyText = cellWrapper => {
-    const text = cellWrapper && cellWrapper.getAttribute("data-copy-text");
-    const jsonText = cellWrapper && cellWrapper.getAttribute("data-copy-json");
-
-    const textContent = text || cellWrapper.textContent || "";
-    return [textContent, jsonText];
-  };
-
-  handleCopyColumn = (e, cellWrapper, selectedRecords) => {
-    const specificColumn = cellWrapper.getAttribute("data-test");
-    let rowElsToCopy = getAllRows(e);
-    if (!rowElsToCopy) return;
-    if (selectedRecords) {
-      const ids = selectedRecords.map(e => getIdOrCodeOrIndex(e)?.toString());
-      rowElsToCopy = Array.from(rowElsToCopy).filter(rowEl => {
-        const id = rowEl.closest(".rt-tr-group")?.getAttribute("data-test-id");
-        return id !== undefined && ids.includes(id);
-      });
-    }
-    if (!rowElsToCopy) return;
-    this.handleCopyRows(rowElsToCopy, {
-      specificColumn,
-      onFinishMsg: "Column Copied"
-    });
-  };
-  handleCopyRows = (
-    rowElsToCopy,
-    { specificColumn, onFinishMsg, isDownload } = {}
-  ) => {
-    let textToCopy = [];
-    const jsonToCopy = [];
-    forEach(rowElsToCopy, rowEl => {
-      const [t, j] = this.getRowCopyText(rowEl, { specificColumn });
-      textToCopy.push(t);
-      jsonToCopy.push(j);
-    });
-    textToCopy = textToCopy.filter(text => text).join("\n");
-    if (!textToCopy) return window.toastr.warning("No text to copy");
-    if (isDownload) {
-      download(textToCopy.replaceAll("\t", ","), "tableData.csv", "text/csv");
-    } else {
-      this.handleCopyHelper(
-        textToCopy,
-        jsonToCopy,
-        onFinishMsg || "Row Copied"
-      );
-    }
-  };
   updateEntitiesHelper = (ents, fn) => {
     const { change, reduxFormEntitiesUndoRedoStack = { currentVersion: 0 } } =
       this.props;
@@ -924,51 +906,11 @@ class DataTable extends React.Component {
     });
   };
 
-  getRowCopyText = (rowEl, { specificColumn } = {}) => {
-    //takes in a row element
-    if (!rowEl) return [];
-    const textContent = [];
-    const jsonText = [];
-
-    forEach(rowEl.children, cellEl => {
-      const cellChild = cellEl.querySelector(`[data-copy-text]`);
-      if (!cellChild) {
-        if (specificColumn) return []; //strip it
-        return; //just leave it blank
-      }
-      if (
-        specificColumn &&
-        cellChild.getAttribute("data-test") !== specificColumn
-      ) {
-        return [];
-      }
-      const [t, j] = this.getCellCopyText(cellChild);
-      textContent.push(t);
-      jsonText.push(j);
-    });
-
-    return [flatMap(textContent).join("\t"), jsonText];
-  };
-
-  handleCopyHelper = (stringToCopy, jsonToCopy, message) => {
-    !window.Cypress &&
-      copy(stringToCopy, {
-        onCopy: clipboardData => {
-          clipboardData.setData("application/json", JSON.stringify(jsonToCopy));
-        },
-        // keep this so that pasting into spreadsheets works.
-        format: "text/plain"
-      });
-    if (message) {
-      window.toastr.success(message);
-    }
-  };
-
   handleCopyTable = (e, opts) => {
     try {
       const allRowEls = getAllRows(e);
       if (!allRowEls) return;
-      this.handleCopyRows(allRowEls, {
+      handleCopyRows(allRowEls, {
         ...opts,
         onFinishMsg: "Table Copied"
       });
@@ -977,6 +919,7 @@ class DataTable extends React.Component {
       window.toastr.error("Error copying rows.");
     }
   };
+
   handleCopySelectedCells = e => {
     const {
       entities = [],
@@ -1022,7 +965,7 @@ class DataTable extends React.Component {
       } else {
         const jsonRow = [];
         // ignore header
-        let [rowCopyText, json] = this.getRowCopyText(allRows[i + 1]);
+        let [rowCopyText, json] = getRowCopyText(allRows[i + 1]);
         rowCopyText = rowCopyText.split("\t");
         times(row.length, i => {
           const cell = row[i];
@@ -1037,7 +980,7 @@ class DataTable extends React.Component {
     });
     if (!fullCellText) return window.toastr.warning("No text to copy");
 
-    this.handleCopyHelper(fullCellText, fullJson, "Selected cells copied");
+    handleCopyHelper(fullCellText, fullJson, "Selected cells copied");
   };
 
   handleCopySelectedRows = (selectedRecords, e) => {
@@ -1060,7 +1003,7 @@ class DataTable extends React.Component {
       if (!allRowEls) return;
       const rowEls = rowNumbersToCopy.map(i => allRowEls[i]);
 
-      this.handleCopyRows(rowEls, {
+      handleCopyRows(rowEls, {
         onFinishMsg: "Selected rows copied"
       });
     } catch (error) {
@@ -1117,6 +1060,7 @@ class DataTable extends React.Component {
       />
     );
   };
+
   getThComponent = compose(
     withProps(props => {
       const { columnindex } = props;
@@ -1335,7 +1279,11 @@ class DataTable extends React.Component {
         icon="fullscreen"
         active={fullscreen}
         minimal
-        onClick={this.toggleFullscreen}
+        onClick={() => {
+          this.setState({
+            fullscreen: !this.state.fullscreen
+          });
+        }}
       />
     );
 
@@ -1836,7 +1784,7 @@ class DataTable extends React.Component {
                   data-tip="Download Table as CSV"
                   minimal
                   icon="download"
-                ></Button>
+                />
               </div>
             )}
             {!noFooter && (
@@ -2194,6 +2142,7 @@ class DataTable extends React.Component {
 
     change("reduxFormSelectedCells", newSelectedCells);
   };
+
   renderCheckboxHeader = () => {
     const {
       reduxFormSelectedEntityIdMap,
@@ -2316,6 +2265,7 @@ class DataTable extends React.Component {
     change("reduxFormEditingCell", null);
     this.refocusTable();
   };
+
   refocusTable = () => {
     setTimeout(() => {
       const table = ReactDOM.findDOMNode(this.table)?.closest(
@@ -2638,7 +2588,7 @@ class DataTable extends React.Component {
                   }}
                   dataTest={dataTest}
                   cancelEdit={this.cancelCellEdit}
-                ></DropdownCell>
+                />
               );
             } else {
               return (
@@ -2654,7 +2604,7 @@ class DataTable extends React.Component {
                   finishEdit={newVal => {
                     this.finishCellEdit(cellId, newVal);
                   }}
-                ></EditableCell>
+                />
               );
             }
           }
@@ -2726,7 +2676,7 @@ class DataTable extends React.Component {
 
             {isSelectedCell &&
               (isRect
-                ? this.isBottomRightCornerOfRectangle({
+                ? isBottomRightCornerOfRectangle({
                     cellId,
                     selectionGrid,
                     lastRowIndex,
@@ -2741,7 +2691,7 @@ class DataTable extends React.Component {
                   cellId={cellId}
                   isSelectionARectangle={this.isSelectionARectangle}
                   onDragEnd={this.onDragEnd}
-                ></CellDragHandle>
+                />
               )}
           </>
         );
@@ -2750,26 +2700,6 @@ class DataTable extends React.Component {
       columnsToRender.push(tableColumn);
     });
     return columnsToRender;
-  };
-  isBottomRightCornerOfRectangle = ({
-    cellId,
-    selectionGrid,
-    lastRowIndex,
-    lastCellIndex,
-    entityMap,
-    pathToIndex
-  }) => {
-    selectionGrid.forEach(row => {
-      // remove undefineds from start of row
-      while (row[0] === undefined && row.length) row.shift();
-    });
-    const [rowId, cellPath] = cellId.split(":");
-    const ent = entityMap[rowId];
-    if (!ent) return;
-    const { i } = ent;
-    const cellIndex = pathToIndex[cellPath];
-    const isBottomRight = i === lastRowIndex && cellIndex === lastCellIndex;
-    return isBottomRight;
   };
 
   onDragEnd = cellsToSelect => {
@@ -2975,6 +2905,7 @@ class DataTable extends React.Component {
       change("reduxFormSelectedCells", newReduxFormSelectedCells);
     });
   };
+
   getCopyTextForCell = (val, row = {}, column = {}) => {
     const { cellRenderer } = computePresets(this.props);
     // TODOCOPY we need a way to potentially omit certain columns from being added as a \t element (talk to taoh about this)
@@ -3060,6 +2991,7 @@ class DataTable extends React.Component {
       });
     });
   };
+
   getEditableTableInfoAndThrowFormError = () => {
     const { schema, reduxFormEntities, reduxFormCellValidation } =
       computePresets(this.props);
@@ -3169,12 +3101,12 @@ class DataTable extends React.Component {
               //TODOCOPY: we need to make sure that the cell copy is being used by the row copy.. right now we have 2 different things going on
               //do we need to be able to copy hidden cells? It seems like it should just copy what's on the page..?
               const specificColumn = cellWrapper.getAttribute("data-test");
-              this.handleCopyRows([cellWrapper.closest(".rt-tr")], {
+              handleCopyRows([cellWrapper.closest(".rt-tr")], {
                 specificColumn,
                 onFinishMsg: "Cell copied"
               });
-              const [text, jsonText] = this.getCellCopyText(cellWrapper);
-              this.handleCopyHelper(text, jsonText);
+              const [text, jsonText] = getCellCopyText(cellWrapper);
+              handleCopyHelper(text, jsonText);
             }}
             text="Cell"
           />
@@ -3184,7 +3116,7 @@ class DataTable extends React.Component {
           <MenuItem
             key="copyColumn"
             onClick={() => {
-              this.handleCopyColumn(e, cellWrapper);
+              handleCopyColumn(e, cellWrapper);
             }}
             text="Column"
           />
@@ -3194,7 +3126,7 @@ class DataTable extends React.Component {
             <MenuItem
               key="copyColumnSelected"
               onClick={() => {
-                this.handleCopyColumn(e, cellWrapper, selectedRecords);
+                handleCopyColumn(e, cellWrapper, selectedRecords);
               }}
               text="Column (Selected)"
             />
@@ -3212,7 +3144,7 @@ class DataTable extends React.Component {
           <MenuItem
             key="copySelectedRows"
             onClick={() => {
-              this.handleCopyRows([row]);
+              handleCopyRows([row]);
               // loop through each cell in the row
             }}
             text="Row"
@@ -3486,7 +3418,7 @@ class DataTable extends React.Component {
         })}
       >
         {columnTitleTextified && !noTitle && (
-          <React.Fragment>
+          <>
             {maybeCheckbox}
             <span
               title={columnTitleTextified}
@@ -3501,7 +3433,7 @@ class DataTable extends React.Component {
             >
               {renderTitleInner ? renderTitleInner : columnTitle}{" "}
             </span>
-          </React.Fragment>
+          </>
         )}
         <div
           style={{ display: "flex", marginLeft: "auto", alignItems: "center" }}
@@ -3523,333 +3455,3 @@ const WrappedDT = dataTableEnhancer(DataTable);
 export default WrappedDT;
 const ConnectedPagingTool = dataTableEnhancer(PagingTool);
 export { ConnectedPagingTool };
-
-const itemSizeEstimators = {
-  compact: () => 25.34,
-  normal: () => 33.34,
-  comfortable: () => 41.34
-};
-
-function getCellInfo({
-  columnIndex,
-  columnPath,
-  rowId,
-  schema,
-  entities,
-  rowIndex,
-  isEntityDisabled,
-  entity
-}) {
-  const leftpath = schema.fields[columnIndex - 1]?.path;
-  const rightpath = schema.fields[columnIndex + 1]?.path;
-  const cellIdToLeft = leftpath && `${rowId}:${leftpath}`;
-  const cellIdToRight = rightpath && `${rowId}:${rightpath}`;
-  const rowAboveId =
-    entities[rowIndex - 1] &&
-    getIdOrCodeOrIndex(entities[rowIndex - 1], rowIndex - 1);
-  const rowBelowId =
-    entities[rowIndex + 1] &&
-    getIdOrCodeOrIndex(entities[rowIndex + 1], rowIndex + 1);
-  const cellIdAbove = rowAboveId && `${rowAboveId}:${columnPath}`;
-  const cellIdBelow = rowBelowId && `${rowBelowId}:${columnPath}`;
-
-  const cellId = `${rowId}:${columnPath}`;
-  const rowDisabled = isEntityDisabled(entity);
-  return {
-    cellId,
-    cellIdAbove,
-    cellIdToRight,
-    cellIdBelow,
-    cellIdToLeft,
-    rowDisabled
-  };
-}
-
-function ColumnFilterMenu({
-  FilterMenu,
-  filterActiveForColumn,
-  compact,
-  extraCompact,
-  ...rest
-}) {
-  const [columnFilterMenuOpen, setColumnFilterMenuOpen] = useState(false);
-  return (
-    <Popover
-      position="bottom"
-      onClose={() => {
-        setColumnFilterMenuOpen(false);
-      }}
-      isOpen={columnFilterMenuOpen}
-      modifiers={{
-        preventOverflow: { enabled: true },
-        hide: { enabled: false },
-        flip: { enabled: false }
-      }}
-    >
-      <Icon
-        style={{ marginLeft: 5 }}
-        icon="filter"
-        iconSize={extraCompact ? 14 : undefined}
-        onClick={() => {
-          setColumnFilterMenuOpen(!columnFilterMenuOpen);
-        }}
-        className={classNames("tg-filter-menu-button", {
-          "tg-active-filter": !!filterActiveForColumn
-        })}
-      />
-      <FilterMenu
-        togglePopover={() => {
-          setColumnFilterMenuOpen(false);
-        }}
-        {...rest}
-      />
-    </Popover>
-  );
-}
-
-function getLastSelectedEntity(idMap) {
-  let lastSelectedEnt;
-  let latestTime;
-  forEach(idMap, ({ time, entity }) => {
-    if (!latestTime || time > latestTime) {
-      lastSelectedEnt = entity;
-      latestTime = time;
-    }
-  });
-  return lastSelectedEnt;
-}
-
-function getNewEntToSelect({
-  type,
-  lastSelectedIndex,
-  entities,
-  isEntityDisabled
-}) {
-  let newIndexToSelect;
-  if (type === "up") {
-    newIndexToSelect = lastSelectedIndex - 1;
-  } else {
-    newIndexToSelect = lastSelectedIndex + 1;
-  }
-  const newEntToSelect = entities[newIndexToSelect];
-  if (!newEntToSelect) return;
-  if (isEntityDisabled && isEntityDisabled(newEntToSelect)) {
-    return getNewEntToSelect({
-      type,
-      lastSelectedIndex: newIndexToSelect,
-      entities,
-      isEntityDisabled
-    });
-  } else {
-    return newEntToSelect;
-  }
-}
-
-function getAllRows(e) {
-  const el = e.target.querySelector(".data-table-container")
-    ? e.target.querySelector(".data-table-container")
-    : e.target.closest(".data-table-container");
-
-  const allRowEls = el.querySelectorAll(".rt-tr");
-  if (!allRowEls || !allRowEls.length) {
-    return;
-  }
-  return allRowEls;
-}
-
-function EditableCell({
-  shouldSelectAll,
-  stopSelectAll,
-  initialValue,
-  finishEdit,
-  cancelEdit,
-  isNumeric,
-  dataTest
-}) {
-  const [v, setV] = useState(initialValue);
-  return (
-    <input
-      style={{
-        border: 0,
-        width: "95%",
-        fontSize: 12,
-        background: "none"
-      }}
-      ref={r => {
-        if (shouldSelectAll && r) {
-          r?.select();
-          stopSelectAll();
-        }
-      }}
-      {...dataTest}
-      type={isNumeric ? "number" : undefined}
-      value={v}
-      autoFocus
-      onKeyDown={e => {
-        if (e.key === "Enter") {
-          finishEdit(v);
-          e.stopPropagation();
-        } else if (e.key === "Escape") {
-          e.stopPropagation();
-          cancelEdit();
-        }
-      }}
-      onBlur={() => {
-        finishEdit(v);
-      }}
-      onChange={e => {
-        setV(e.target.value);
-      }}
-    ></input>
-  );
-}
-
-function DropdownCell({
-  options,
-  isMulti,
-  initialValue,
-  finishEdit,
-  cancelEdit,
-  dataTest
-}) {
-  const [v, setV] = useState(
-    isMulti
-      ? initialValue.split(",").map(v => ({ value: v, label: v }))
-      : initialValue
-  );
-  return (
-    <div
-      className={classNames("tg-dropdown-cell-edit-container", {
-        "tg-dropdown-cell-edit-container-multi": isMulti
-      })}
-    >
-      <TgSelect
-        small
-        multi={isMulti}
-        autoOpen
-        value={v}
-        onChange={val => {
-          if (isMulti) {
-            setV(val);
-            return;
-          }
-          finishEdit(val ? val.value : null);
-        }}
-        {...dataTest}
-        popoverProps={{
-          onClose: e => {
-            if (isMulti) {
-              if (e && e.key === "Escape") {
-                cancelEdit();
-              } else {
-                finishEdit(
-                  v && v.map
-                    ? v
-                        .map(v => v.value)
-                        .filter(v => v)
-                        .join(",")
-                    : v
-                );
-              }
-            } else {
-              cancelEdit();
-            }
-          }
-        }}
-        options={options.map(value => ({ label: value, value }))}
-      ></TgSelect>
-    </div>
-  );
-}
-
-function getFieldPathToIndex(schema) {
-  const fieldToIndex = {};
-  schema.fields.forEach((f, i) => {
-    fieldToIndex[f.path] = i;
-  });
-  return fieldToIndex;
-}
-
-function getFieldPathToField(schema) {
-  const fieldPathToField = {};
-  schema.fields.forEach(f => {
-    fieldPathToField[f.path] = f;
-  });
-  return fieldPathToField;
-}
-
-const defaultParsePaste = str => {
-  return str.split(/\r\n|\n|\r/).map(row => row.split("\t"));
-};
-
-function getEntityIdToEntity(entities) {
-  const entityIdToEntity = {};
-  entities.forEach((e, i) => {
-    entityIdToEntity[getIdOrCodeOrIndex(e, i)] = { e, i };
-  });
-  return entityIdToEntity;
-}
-
-function endsWithNumber(str) {
-  return /[0-9]+$/.test(str);
-}
-
-function getNumberStrAtEnd(str) {
-  if (endsWithNumber(str)) {
-    return str.match(/[0-9]+$/)[0];
-  }
-
-  return null;
-}
-
-function stripNumberAtEnd(str) {
-  return str?.replace?.(getNumberStrAtEnd(str), "");
-}
-
-export function isEntityClean(e) {
-  let isClean = true;
-  some(e, (val, key) => {
-    if (key === "id") return;
-    if (key === "_isClean") return;
-    if (val) {
-      isClean = false;
-      return true;
-    }
-  });
-  return isClean;
-}
-
-const formatPasteData = ({ schema, newVal, path }) => {
-  const pathToField = getFieldPathToField(schema);
-  const column = pathToField[path];
-  if (column.type === "genericSelect") {
-    if (newVal?.__genSelCol === path) {
-      newVal = newVal.__strVal;
-    } else {
-      newVal = undefined;
-    }
-  } else {
-    newVal = Object.hasOwn(newVal, "__strVal") ? newVal.__strVal : newVal;
-  }
-  return newVal;
-};
-
-export function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
-  const toFilterOut = {};
-  const entsToUse = (reduxFormEntities || []).filter(e => {
-    if (!(e._isClean || isEntityClean(e))) return true;
-    else {
-      toFilterOut[getIdOrCodeOrIndex(e)] = true;
-      return false;
-    }
-  });
-
-  const validationToUse = {};
-  forEach(reduxFormCellValidation, (v, k) => {
-    const [rowId] = k.split(":");
-    if (!toFilterOut[rowId]) {
-      validationToUse[k] = v;
-    }
-  });
-  return { entsToUse, validationToUse };
-}

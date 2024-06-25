@@ -124,8 +124,10 @@ export function changeSelectedEntities({ idMap, entities = [], change }) {
   change("reduxFormSelectedEntityIdMap", newIdMap);
 }
 
-export function finalizeSelection({ idMap, entities, props }) {
-  const {
+export function finalizeSelection({
+  idMap,
+  entities,
+  props: {
     onDeselect,
     onSingleRowSelect,
     onMultiRowSelect,
@@ -133,7 +135,8 @@ export function finalizeSelection({ idMap, entities, props }) {
     onRowSelect,
     noSelect,
     change
-  } = props;
+  }
+}) {
   if (noSelect) return;
   if (
     noDeselectAll &&

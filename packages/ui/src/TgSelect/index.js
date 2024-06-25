@@ -512,6 +512,7 @@ export const itemListPredicate = (_queryString = "", items, isSimpleSearch) => {
 export function simplesearch(needle, haystack) {
   return (haystack || "").indexOf(needle) !== -1;
 }
+
 function tagOptionRender(vals) {
   if (vals.noTagStyle) return vals.label;
   return <Tag {...getTagProps(vals)}></Tag>;
