@@ -1,4 +1,4 @@
-const { noop } = require("lodash");
+const { noop } = require("lodash-es");
 
 describe("zoomLinearView.spec", function () {
   it(`zooming to full zoom should have the underlying base pair sequence and amino acids show up.

@@ -11,6 +11,15 @@
       ],
       "problemMatcher": [],
       "label": "nx: nx run-many --target=publish --projects=bio-parsers,ove,sequence-utils,ui"
+    },
+    {
+      "type": "nx",
+      "project": "",
+      "command": "run",
+      "positional": "ui:publish",
+      "flags": [],
+      "problemMatcher": [],
+      "label": "nx: nx run ui:publish"
     }
   ]
 }

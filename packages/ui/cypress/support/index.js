@@ -24,7 +24,7 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 // cypress/support/index.js
-const { isString } = require("lodash");
+const { isString } = require("lodash-es");
 
 Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
   /* eslint-disable no-unexpected-multiline*/

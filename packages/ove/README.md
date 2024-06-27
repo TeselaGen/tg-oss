@@ -93,7 +93,7 @@ Upgrade instructions for any major or minor change can be found here:
 
 # Using this module in React
 
-## Example CRA repo with OVE
+## Example repo with OVE
 
 Here is where you can see how to run the `<Editor/>` in a Create-React-App environment: https://github.com/tnrich/ove-react-demo-repo
 
@@ -107,7 +107,7 @@ yarn start
 ## Installation (react)
 
 ```
-yarn add @teselagen/ove
+yarn add @teselagen/ove react react-dom
 ```
 
 ## Code (react)
