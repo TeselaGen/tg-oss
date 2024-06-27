@@ -1121,7 +1121,7 @@ class DataTable extends React.Component {
     withProps(props => {
       const { columnindex } = props;
       return {
-        index: columnindex || -1
+        index: columnindex ?? -1
       };
     })
   )(({ toggleSort, immovable, className, children, style, ...rest }) => {
