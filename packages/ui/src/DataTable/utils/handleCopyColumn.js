@@ -1,5 +1,5 @@
 import { getAllRows } from "./getAllRows";
-import getIdOrCodeOrIndex from "./getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 import { handleCopyRows } from "./handleCopyRows";
 
 export const handleCopyColumn = (e, cellWrapper, selectedRecords) => {

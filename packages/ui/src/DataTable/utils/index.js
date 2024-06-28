@@ -1,7 +1,7 @@
 import { isEntityClean } from "./isEntityClean";
 import { getSelectedRowsFromEntities } from "./selection";
 import { removeCleanRows } from "./removeCleanRows";
-import getIdOrCodeOrIndex from "./getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 import computePresets from "./computePresets";
 import { getRecordsFromIdMap } from "./withSelectedEntities";
 import { formatPasteData } from "./formatPasteData";

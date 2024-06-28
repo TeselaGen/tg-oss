@@ -59,7 +59,7 @@ describe("upload", () => {
       true
     );
 
-    cy.contains("type must be .json");
+    cy.contains("type must be .zip, .json");
     cy.uploadBlobFiles(
       ".fileUploadLimitAndType.tg-dropzone",
       [

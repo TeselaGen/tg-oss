@@ -1,4 +1,4 @@
-import getIdOrCodeOrIndex from "./getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 
 export const getFieldPathToIndex = schema => {
   const fieldToIndex = {};

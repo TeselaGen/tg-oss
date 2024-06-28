@@ -1,7 +1,7 @@
 import { isEntityClean } from "./isEntityClean";
 import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 
-export function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
+export const removeCleanRows = (reduxFormEntities, reduxFormCellValidation) => {
   const toFilterOut = {};
   const entsToUse = (reduxFormEntities || []).filter(e => {
     if (!(e._isClean || isEntityClean(e))) return true;
@@ -12,11 +12,11 @@ export function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
   });
 
   const validationToUse = {};
-  reduxFormCellValidation.forEach((v, k) => {
+  Object.entries(reduxFormCellValidation || {}).forEach(([k, v]) => {
     const [rowId] = k.split(":");
     if (!toFilterOut[rowId]) {
       validationToUse[k] = v;
     }
   });
   return { entsToUse, validationToUse };
-}
+};

@@ -1,6 +1,6 @@
 import { isEmpty, forEach, range } from "lodash-es";
 import { getSelectedRowsFromEntities } from "./selection";
-import getIdOrCodeOrIndex from "./getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 import { getRecordsFromIdMap } from "./withSelectedEntities";
 
 export default function rowClick(e, rowInfo, entities, props) {

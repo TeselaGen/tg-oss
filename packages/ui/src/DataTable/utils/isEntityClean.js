@@ -1,13 +1,15 @@
 export function isEntityClean(e) {
+  if (typeof e !== "object" || e === null) {
+    return true; // or return false depending on what you want for non-object inputs
+  }
   let isClean = true;
-  e.some((val, key) => {
-    if (key === "id") return false;
-    if (key === "_isClean") return false;
+  for (const [key, val] of Object.entries(e)) {
+    if (key === "id") continue;
+    if (key === "_isClean") continue;
     if (val) {
       isClean = false;
-      return true;
+      break;
     }
-    return false;
-  });
+  }
   return isClean;
 }

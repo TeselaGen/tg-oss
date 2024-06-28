@@ -7,22 +7,22 @@ export const getRowCopyText = (rowEl, { specificColumn } = {}) => {
   const textContent = [];
   const jsonText = [];
 
-  rowEl.children.forEach(cellEl => {
+  for (const cellEl of rowEl.children) {
     const cellChild = cellEl.querySelector(`[data-copy-text]`);
     if (!cellChild) {
-      if (specificColumn) return []; //strip it
-      return; //just leave it blank
+      if (specificColumn) continue; //strip it
+      continue; //just leave it blank
     }
     if (
       specificColumn &&
       cellChild.getAttribute("data-test") !== specificColumn
     ) {
-      return [];
+      continue;
     }
     const [t, j] = getCellCopyText(cellChild);
     textContent.push(t);
     jsonText.push(j);
-  });
+  }
 
   return [flatMap(textContent).join("\t"), jsonText];
 };
