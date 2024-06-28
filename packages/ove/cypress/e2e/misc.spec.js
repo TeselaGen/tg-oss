@@ -3,8 +3,8 @@ describe("miscellaneous tests that do not fit other categories", () => {
     cy.visit("");
     cy.get("body").type("{meta}/");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(100);
-    cy.focused()
+    cy.wait(200);
+    cy.get(`.tg-menu-bar-help-search input`)
       .type("yyyyy{leftarrow}{leftarrow}{leftarrow}xxxx", { delay: 40 })
       .should("have.value", "yyxxxxyyy");
   });
