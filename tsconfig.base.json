@@ -23,7 +23,7 @@
       "@teselagen/ui": ["packages/ui/src/index.js"],
       "@teselagen/uploader": ["packages/uploader/src/index.js"]
     },
-    "module": "commonjs",
+    "module": "ES6",
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
