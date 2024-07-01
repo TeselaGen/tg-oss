@@ -19,14 +19,29 @@ import { handleReadOnlyChange } from "../ToolBar/editTool";
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
 }))(props => {
-  const { onSave, readOnly, showReadOnly, disableSetReadOnly } = props;
+  const {
+    onSave,
+    readOnly,
+    showReadOnly,
+    disableSetReadOnly,
+    disableBpEditing
+  } = props;
   return showReadOnly ? (
     <StatusBarItem dataTest="veStatusBar-readOnly">
       {onSave ? (
         <HTMLSelect
+          data-tip={
+            !readOnly && disableBpEditing ? disableBpEditing : undefined
+          }
           options={[
-            { label: "Read Only", value: "readOnly" },
-            { label: "Editable", value: "editable" }
+            {
+              label: "Read Only",
+              value: "readOnly"
+            },
+            {
+              label: "Editable" + (disableBpEditing ? "*" : ""),
+              value: "editable"
+            }
           ]}
           disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
           className={Classes.MINIMAL}
@@ -209,6 +224,7 @@ const EditAvailabilityItem = connectToEditor(
 
 export function StatusBar({
   disableSetReadOnly,
+  disableBpEditing,
   onSave,
   editorName,
   showCircularity = true,
@@ -230,6 +246,7 @@ export function StatusBar({
         beforeReadOnlyChange={beforeReadOnlyChange}
         editorName={editorName}
         onSave={onSave}
+        disableBpEditing={disableBpEditing}
         disableSetReadOnly={disableSetReadOnly}
         showReadOnly={showReadOnly}
       />

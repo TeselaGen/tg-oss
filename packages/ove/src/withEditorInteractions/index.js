@@ -213,10 +213,10 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
 
       if (disableBpEditing) {
-        return window.toastr.warning("Sorry the underlying sequence is locked");
+        return this.createDisableBpEditingMsg();
       }
       if (readOnly) {
-        return window.toastr.warning("Sorry the sequence is Read-Only");
+        return this.createReadOnlyMsg();
       }
       if (!(caretPosition > -1 || selectionLayer.start > -1)) {
         return window.toastr.warning("Please place the cursor before pasting");
@@ -344,6 +344,33 @@ function VectorInteractionHOC(Component /* options */) {
 
     handleCopy = this.handleCutOrCopy();
 
+    getDuplicateAction = () => {
+      if (!this.props.onDuplicate) {
+        return undefined;
+      }
+      return {
+        action: {
+          text: "Create a Duplicate?",
+          onClick: () => {
+            window.__tgClearAllToasts();
+            this.props.onDuplicate(this.props.sequenceData, this.props);
+          }
+        }
+      };
+    };
+    createDisableBpEditingMsg = () => {
+      window.toastr.warning(
+        this.props.disableBpEditing,
+        this.getDuplicateAction()
+      );
+    };
+    createReadOnlyMsg = () => {
+      window.toastr.warning(
+        "Sorry the sequence is Read-Only",
+        this.getDuplicateAction()
+      );
+    };
+
     handleDnaInsert = async ({ useEventPositioning }) => {
       const {
         caretPosition = -1,
@@ -358,10 +385,10 @@ function VectorInteractionHOC(Component /* options */) {
       const sequenceLength = sequenceData.sequence.length;
       const isReplace = selectionLayer.start > -1;
       if (disableBpEditing) {
-        return window.toastr.warning("Sorry the underlying sequence is locked");
+        return this.createDisableBpEditingMsg();
       }
-      if (readOnly || disableBpEditing) {
-        window.toastr.warning("Sorry the sequence is Read-Only");
+      if (readOnly) {
+        return this.createReadOnlyMsg();
       } else {
         createSequenceInputPopup({
           useEventPositioning,
@@ -397,10 +424,10 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       if (disableBpEditing) {
-        return window.toastr.warning("Sorry the underlying sequence is locked");
+        return this.createDisableBpEditingMsg();
       }
-      if (readOnly || disableBpEditing) {
-        return window.toastr.warning("Sorry the sequence is Read-Only");
+      if (readOnly) {
+        return this.createReadOnlyMsg();
       }
       if (sequenceLength > 0) {
         let rangeToDelete = selectionLayer;
