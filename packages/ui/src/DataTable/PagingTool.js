@@ -5,7 +5,7 @@ import { noop, get, toInteger } from "lodash-es";
 import { Button, Classes } from "@blueprintjs/core";
 import { onEnterOrBlurHelper } from "../utils/handlerHelpers";
 import { defaultPageSizes } from "./utils/queryParams";
-import getIdOrCodeOrIndex from "./utils/getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "./utils";
 
 function PagingInput({ disabled, onBlur, defaultPage }) {
   const [page, setPage] = useState(defaultPage);

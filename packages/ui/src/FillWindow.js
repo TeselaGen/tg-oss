@@ -1,6 +1,5 @@
-import React from "react";
+import React, { createPortal } from "react";
 import { isFunction } from "lodash-es";
-import reactDom from "react-dom";
 import rerenderOnWindowResize from "./rerenderOnWindowResize";
 import "./FillWindow.css";
 
@@ -63,7 +62,7 @@ export default class FillWindow extends React.Component {
           : this.props.children}
       </div>
     );
-    if (asPortal) return reactDom.createPortal(inner, window.document.body);
+    if (asPortal) return createPortal(inner, window.document.body);
     return inner;
   }
 }

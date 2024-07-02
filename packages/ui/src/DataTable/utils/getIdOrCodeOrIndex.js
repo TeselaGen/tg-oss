@@ -1,4 +1,4 @@
-export default (record, rowIndex) => {
+export const getIdOrCodeOrIndex = (record, rowIndex) => {
   if (record.id || record.id === 0) {
     return record.id;
   } else if (record.code) {

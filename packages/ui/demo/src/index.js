@@ -25,7 +25,6 @@ import ScrollToTopDemo from "./examples/ScrollToTop";
 import showAppSpinnerDemo from "./examples/showAppSpinnerDemo";
 import EditableCellTable from "./examples/EditableCellTable";
 import React from "react";
-import { render } from "react-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import { FocusStyleManager } from "@blueprintjs/core";
@@ -33,6 +32,7 @@ import AdvancedOptionsDemo from "./examples/AdvancedOptionsDemo";
 import FormComponents from "./examples/FormComponents";
 import UploadCsvWizard from "./examples/UploadCsvWizard";
 import TagSelectDemo from "./examples/TagSelectDemo";
+import { createRoot } from "react-dom/client";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -261,4 +261,5 @@ const Demo = () => {
   );
 };
 
-render(<Demo />, document.querySelector("#demo"));
+const root = createRoot(document.querySelector("#demo"));
+root.render(<Demo />);

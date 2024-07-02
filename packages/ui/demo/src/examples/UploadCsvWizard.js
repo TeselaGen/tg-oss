@@ -6,7 +6,7 @@ import { FileUploadField } from "../../../src";
 import DemoWrapper from "../DemoWrapper";
 import { reduxForm } from "redux-form";
 import { useToggle } from "../useToggle";
-import getIdOrCodeOrIndex from "../../../src/DataTable/utils/getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "../../../src/DataTable/utils";
 
 const simpleValidateAgainst = {
   fields: [{ path: "name" }, { path: "description" }, { path: "sequence" }]
