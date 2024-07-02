@@ -360,13 +360,17 @@ function VectorInteractionHOC(Component /* options */) {
     };
     createDisableBpEditingMsg = () => {
       window.toastr.warning(
-        this.props.disableBpEditing,
+        typeof this.props.disableBpEditing === "string"
+          ? this.props.disableBpEditing
+          : "Sorry the underlying sequence is locked.",
         this.getDuplicateAction()
       );
     };
     createReadOnlyMsg = () => {
       window.toastr.warning(
-        "Sorry the sequence is Read-Only",
+        this.props.readOnly === "string"
+          ? this.props.readOnly
+          : "Sorry the sequence is Read-Only",
         this.getDuplicateAction()
       );
     };
