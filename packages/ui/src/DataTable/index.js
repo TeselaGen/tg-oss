@@ -1,15 +1,10 @@
-/* eslint react/jsx-no-bind: 0 */
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import copy from "copy-to-clipboard";
-import download from "downloadjs";
+import React, { createRef } from "react";
 import {
   invert,
   toNumber,
   isEmpty,
   min,
   max,
-  flatMap,
   set,
   map,
   toString,
@@ -31,7 +26,6 @@ import {
   every
 } from "lodash-es";
 import joinUrl from "url-join";
-
 import {
   Button,
   Menu,
@@ -40,7 +34,6 @@ import {
   ContextMenu,
   Checkbox,
   Icon,
-  Popover,
   Intent,
   Callout,
   Tooltip
@@ -58,30 +51,50 @@ import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
 import remarkGfm from "remark-gfm";
 
-import TgSelect from "../TgSelect";
-import { withHotkeys } from "../utils/hotkeyUtils";
+import {
+  computePresets,
+  defaultParsePaste,
+  formatPasteData,
+  getAllRows,
+  getCellCopyText,
+  getCellInfo,
+  getEntityIdToEntity,
+  getFieldPathToIndex,
+  getFieldPathToField,
+  getIdOrCodeOrIndex,
+  getLastSelectedEntity,
+  getNewEntToSelect,
+  getNumberStrAtEnd,
+  getRecordsFromIdMap,
+  getRowCopyText,
+  getSelectedRowsFromEntities,
+  handleCopyColumn,
+  handleCopyHelper,
+  handleCopyRows,
+  isBottomRightCornerOfRectangle,
+  isEntityClean,
+  removeCleanRows,
+  stripNumberAtEnd
+} from "./utils";
 import InfoHelper from "../InfoHelper";
+import { withHotkeys } from "../utils/hotkeyUtils";
 import getTextFromEl from "../utils/getTextFromEl";
-import { getSelectedRowsFromEntities } from "./utils/selection";
 import rowClick, {
   changeSelectedEntities,
   finalizeSelection
 } from "./utils/rowClick";
 import PagingTool from "./PagingTool";
 import FilterAndSortMenu from "./FilterAndSortMenu";
-import getIdOrCodeOrIndex from "./utils/getIdOrCodeOrIndex";
 import SearchBar from "./SearchBar";
 import DisplayOptions from "./DisplayOptions";
 import DisabledLoadingComponent from "./DisabledLoadingComponent";
 import SortableColumns from "./SortableColumns";
-import computePresets from "./utils/computePresets";
 import dataTableEnhancer from "./dataTableEnhancer";
 import defaultProps from "./defaultProps";
 
 import "../toastr";
 import "@teselagen/react-table/react-table.css";
 import "./style.css";
-import { getRecordsFromIdMap } from "./utils/withSelectedEntities";
 import { CellDragHandle } from "./CellDragHandle";
 import { nanoid } from "nanoid";
 import { SwitchField } from "../FormComponents";
@@ -90,15 +103,27 @@ import { editCellHelper } from "./editCellHelper";
 import { getCellVal } from "./getCellVal";
 import { getVals } from "./getVals";
 import { throwFormError } from "../throwFormError";
+import { DropdownCell } from "./DropdownCell";
+import { EditableCell } from "./EditabelCell";
+import { ColumnFilterMenu } from "./ColumnFilterMenu";
 enablePatches();
 
 const PRIMARY_SELECTED_VAL = "main_cell";
 
 dayjs.extend(localizedFormat);
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
+
+const itemSizeEstimators = {
+  compact: () => 25.34,
+  normal: () => 33.34,
+  comfortable: () => 41.34
+};
+
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
+
+    this.tableRef = createRef();
     if (this.props.helperProp) {
       this.props.helperProp.updateValidationHelper =
         this.updateValidationHelper;
@@ -179,25 +204,52 @@ class DataTable extends React.Component {
       }
     });
   }
+
   state = {
     columns: [],
-    fullscreen: false
+    fullscreen: false,
+    // This state prevents the first letter from not being written,
+    // when the user starts typing in a cell. It is quite hacky, we should
+    // refactor this in the future.
+    editableCellInitialValue: ""
   };
-
   static defaultProps = defaultProps;
 
-  toggleFullscreen = () => {
-    this.setState({
-      fullscreen: !this.state.fullscreen
-    });
+  getPrimarySelectedCellId = () => {
+    const { reduxFormSelectedCells = {} } = this.props;
+    for (const k of Object.keys(reduxFormSelectedCells)) {
+      if (reduxFormSelectedCells[k] === PRIMARY_SELECTED_VAL) {
+        return k;
+      }
+    }
   };
+
+  startCellEdit = (cellId, { shouldSelectAll } = {}) => {
+    const {
+      change,
+      reduxFormSelectedCells = {},
+      reduxFormEditingCell
+    } = computePresets(this.props);
+    const newSelectedCells = { ...reduxFormSelectedCells };
+    newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
+    //check if the cell is already selected and editing and if so, don't change it
+    if (reduxFormEditingCell === cellId) return;
+    change("reduxFormSelectedCells", newSelectedCells);
+    change("reduxFormEditingCell", cellId);
+    if (shouldSelectAll) {
+      //we should select the text
+      change("reduxFormEditingCellSelectAll", true);
+    }
+  };
+
   handleEnterStartCellEdit = e => {
     e.stopPropagation();
     this.startCellEdit(this.getPrimarySelectedCellId());
   };
+
   flashTableBorder = () => {
     try {
-      const table = ReactDOM.findDOMNode(this.table);
+      const table = this.tableRef.current.tableRef;
       table.classList.add("tgBorderBlue");
       setTimeout(() => {
         table.classList.remove("tgBorderBlue");
@@ -206,6 +258,59 @@ class DataTable extends React.Component {
       console.error(`err when flashing table border:`, e);
     }
   };
+
+  formatAndValidateEntities = (
+    entities,
+    { useDefaultValues, indexToStartAt } = {}
+  ) => {
+    const { schema } = this.props;
+    const editableFields = schema.fields.filter(f => !f.isNotEditable);
+    const validationErrors = {};
+
+    const newEnts = immer(entities, entities => {
+      entities.forEach((e, index) => {
+        editableFields.forEach(columnSchema => {
+          if (useDefaultValues) {
+            if (e[columnSchema.path] === undefined) {
+              if (isFunction(columnSchema.defaultValue)) {
+                e[columnSchema.path] = columnSchema.defaultValue(
+                  index + indexToStartAt,
+                  e
+                );
+              } else e[columnSchema.path] = columnSchema.defaultValue;
+            }
+          }
+          //mutative
+          const { error } = editCellHelper({
+            entity: e,
+            columnSchema,
+            newVal: e[columnSchema.path]
+          });
+          if (error) {
+            const rowId = getIdOrCodeOrIndex(e, index);
+            validationErrors[`${rowId}:${columnSchema.path}`] = error;
+          }
+        });
+      });
+    });
+    return {
+      newEnts,
+      validationErrors
+    };
+  };
+
+  updateValidation = (entities, newCellValidate) => {
+    const { change, schema } = computePresets(this.props);
+    const tableWideErr = validateTableWideErrors({
+      entities,
+      schema,
+      newCellValidate,
+      props: this.props
+    });
+    change("reduxFormCellValidation", tableWideErr);
+    this.forceUpdate();
+  };
+
   handleUndo = () => {
     const {
       change,
@@ -231,6 +336,7 @@ class DataTable extends React.Component {
       });
     }
   };
+
   handleRedo = () => {
     const {
       change,
@@ -255,6 +361,7 @@ class DataTable extends React.Component {
       });
     }
   };
+
   updateFromProps = (oldProps, newProps) => {
     const {
       selectedIds,
@@ -266,7 +373,6 @@ class DataTable extends React.Component {
       reduxFormExpandedEntityIdMap,
       change
     } = newProps;
-    const table = ReactDOM.findDOMNode(this.table);
 
     const idMap = reduxFormSelectedEntityIdMap;
 
@@ -332,7 +438,8 @@ class DataTable extends React.Component {
       // if not changing selectedIds then we just want to make sure selected entities
       // stored in redux are in proper format
       // if selected ids have changed then it will handle redux selection
-      const tableScrollElement = table.getElementsByClassName("rt-table")[0];
+      const tableScrollElement =
+        this.tableRef.current.tableRef.getElementsByClassName("rt-table")[0];
       const {
         entities: oldEntities = [],
         reduxFormSelectedEntityIdMap: oldIdMap
@@ -381,8 +488,9 @@ class DataTable extends React.Component {
       const entityIndexToScrollTo = entities.findIndex(
         e => e.id === idToScrollTo || e.code === idToScrollTo
       );
-      if (entityIndexToScrollTo === -1 || !table) return;
-      const tableBody = table.querySelector(".rt-tbody");
+      if (entityIndexToScrollTo === -1 || !this.tableRef.current) return;
+      const tableBody =
+        this.tableRef.current.tableRef.querySelector(".rt-tbody");
       if (!tableBody) return;
       const rowEl =
         tableBody.getElementsByClassName("rt-tr-group")[entityIndexToScrollTo];
@@ -397,45 +505,7 @@ class DataTable extends React.Component {
       }, 0);
     }
   };
-  formatAndValidateEntities = (
-    entities,
-    { useDefaultValues, indexToStartAt } = {}
-  ) => {
-    const { schema } = this.props;
-    const editableFields = schema.fields.filter(f => !f.isNotEditable);
-    const validationErrors = {};
 
-    const newEnts = immer(entities, entities => {
-      entities.forEach((e, index) => {
-        editableFields.forEach(columnSchema => {
-          if (useDefaultValues) {
-            if (e[columnSchema.path] === undefined) {
-              if (isFunction(columnSchema.defaultValue)) {
-                e[columnSchema.path] = columnSchema.defaultValue(
-                  index + indexToStartAt,
-                  e
-                );
-              } else e[columnSchema.path] = columnSchema.defaultValue;
-            }
-          }
-          //mutative
-          const { error } = editCellHelper({
-            entity: e,
-            columnSchema,
-            newVal: e[columnSchema.path]
-          });
-          if (error) {
-            const rowId = getIdOrCodeOrIndex(e, index);
-            validationErrors[`${rowId}:${columnSchema.path}`] = error;
-          }
-        });
-      });
-    });
-    return {
-      newEnts,
-      validationErrors
-    };
-  };
   formatAndValidateTableInitial = () => {
     const {
       _origEntities,
@@ -462,150 +532,24 @@ class DataTable extends React.Component {
     });
   };
 
-  componentDidMount() {
-    const {
-      isCellEditable,
-      entities = [],
-      isLoading,
-      showForcedHiddenColumns,
-      setShowForcedHidden
-    } = this.props;
-    isCellEditable && this.formatAndValidateTableInitial();
-    this.updateFromProps({}, computePresets(this.props));
-    document.addEventListener("paste", this.handlePaste);
-
-    if (!entities.length && !isLoading && !showForcedHiddenColumns) {
-      setShowForcedHidden(true);
-    }
-    // const table = ReactDOM.findDOMNode(this.table);
-    // let theads = table.getElementsByClassName("rt-thead");
-    // let tbody = table.getElementsByClassName("rt-tbody")[0];
-
-    // tbody.addEventListener("scroll", () => {
-    //   for (let i = 0; i < theads.length; i++) {
-    //     theads.item(i).scrollLeft = tbody.scrollLeft;
-    //   }
-    // });
-  }
-
-  componentDidUpdate(oldProps) {
-    // const tableBody = table.querySelector(".rt-tbody");
-    // const headerNode = table.querySelector(".rt-thead.-header");
-    // if (headerNode) headerNode.style.overflowY = "inherit";
-    // if (tableBody && tableBody.scrollHeight > tableBody.clientHeight) {
-    //   if (headerNode) {
-    //     headerNode.style.overflowY = "scroll";
-    //     headerNode.style.overflowX = "hidden";
-    //   }
-    // }
-
-    this.updateFromProps(computePresets(oldProps), computePresets(this.props));
-
-    // comment in to test what is causing re-render
-    // Object.entries(this.props).forEach(
-    //   ([key, val]) =>
-    //     oldProps[key] !== val && console.info(`Prop '${key}' changed`)
-    // );
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("paste", this.handlePaste);
-  }
-
-  handleRowMove = (type, shiftHeld) => e => {
-    e.preventDefault();
-    e.stopPropagation();
-    const props = computePresets(this.props);
-    const {
-      noSelect,
-      entities,
-      reduxFormSelectedEntityIdMap: idMap,
-      isEntityDisabled,
-      isSingleSelect
-    } = props;
-    let newIdMap = {};
-    const lastSelectedEnt = getLastSelectedEntity(idMap);
-
-    if (noSelect) return;
-    if (lastSelectedEnt) {
-      let lastSelectedIndex = entities.findIndex(
-        ent => ent === lastSelectedEnt
-      );
-      if (lastSelectedIndex === -1) {
-        if (lastSelectedEnt.id !== undefined) {
-          lastSelectedIndex = entities.findIndex(
-            ent => ent.id === lastSelectedEnt.id
-          );
-        } else if (lastSelectedEnt.code !== undefined) {
-          lastSelectedIndex = entities.findIndex(
-            ent => ent.code === lastSelectedEnt.code
-          );
-        }
+  updateEntitiesHelper = (ents, fn) => {
+    const { change, reduxFormEntitiesUndoRedoStack = { currentVersion: 0 } } =
+      this.props;
+    const [nextState, patches, inversePatches] = produceWithPatches(ents, fn);
+    if (!inversePatches.length) return;
+    const thatNewNew = [...nextState];
+    thatNewNew.isDirty = true;
+    change("reduxFormEntities", thatNewNew);
+    change("reduxFormEntitiesUndoRedoStack", {
+      ...omitBy(reduxFormEntitiesUndoRedoStack, (v, k) => {
+        return toNumber(k) > reduxFormEntitiesUndoRedoStack.currentVersion + 1;
+      }),
+      currentVersion: reduxFormEntitiesUndoRedoStack.currentVersion + 1,
+      [reduxFormEntitiesUndoRedoStack.currentVersion + 1]: {
+        inversePatches,
+        patches
       }
-      if (lastSelectedIndex === -1) {
-        return;
-      }
-      const newEntToSelect = getNewEntToSelect({
-        type,
-        lastSelectedIndex,
-        entities,
-        isEntityDisabled
-      });
-
-      if (!newEntToSelect) return;
-      if (shiftHeld && !isSingleSelect) {
-        if (idMap[newEntToSelect.id || newEntToSelect.code]) {
-          //the entity being moved to has already been selected
-          newIdMap = omit(idMap, [lastSelectedEnt.id || lastSelectedEnt.code]);
-          newIdMap[newEntToSelect.id || newEntToSelect.code].time =
-            Date.now() + 1;
-        } else {
-          //the entity being moved to has NOT been selected yet
-          newIdMap = {
-            ...idMap,
-            [newEntToSelect.id || newEntToSelect.code]: {
-              entity: newEntToSelect,
-              time: Date.now()
-            }
-          };
-        }
-      } else {
-        //no shiftHeld
-        newIdMap[newEntToSelect.id || newEntToSelect.code] = {
-          entity: newEntToSelect,
-          time: Date.now()
-        };
-      }
-    }
-
-    finalizeSelection({
-      idMap: newIdMap,
-      entities,
-      props
     });
-  };
-  handleCopyHotkey = e => {
-    const { isCellEditable, reduxFormSelectedEntityIdMap } = computePresets(
-      this.props
-    );
-
-    if (isCellEditable) {
-      this.handleCopySelectedCells(e);
-    } else {
-      this.handleCopySelectedRows(
-        getRecordsFromIdMap(reduxFormSelectedEntityIdMap),
-        e
-      );
-    }
-  };
-
-  getPrimarySelectedCellId = () => {
-    const { reduxFormSelectedCells = {} } = this.props;
-    for (const k of Object.keys(reduxFormSelectedCells)) {
-      if (reduxFormSelectedCells[k] === PRIMARY_SELECTED_VAL) {
-        return k;
-      }
-    }
   };
 
   handlePaste = e => {
@@ -762,6 +706,145 @@ class DataTable extends React.Component {
       }
     }
   };
+
+  componentDidMount() {
+    const {
+      isCellEditable,
+      entities = [],
+      isLoading,
+      showForcedHiddenColumns,
+      setShowForcedHidden
+    } = this.props;
+    isCellEditable && this.formatAndValidateTableInitial();
+    this.updateFromProps({}, computePresets(this.props));
+    document.addEventListener("paste", this.handlePaste);
+
+    if (!entities.length && !isLoading && !showForcedHiddenColumns) {
+      setShowForcedHidden(true);
+    }
+    // const table = this.tableRef.current.tableRef;
+    // let theads = table.getElementsByClassName("rt-thead");
+    // let tbody = table.getElementsByClassName("rt-tbody")[0];
+
+    // tbody.addEventListener("scroll", () => {
+    //   for (let i = 0; i < theads.length; i++) {
+    //     theads.item(i).scrollLeft = tbody.scrollLeft;
+    //   }
+    // });
+  }
+
+  componentDidUpdate(oldProps) {
+    // const tableBody = table.querySelector(".rt-tbody");
+    // const headerNode = table.querySelector(".rt-thead.-header");
+    // if (headerNode) headerNode.style.overflowY = "inherit";
+    // if (tableBody && tableBody.scrollHeight > tableBody.clientHeight) {
+    //   if (headerNode) {
+    //     headerNode.style.overflowY = "scroll";
+    //     headerNode.style.overflowX = "hidden";
+    //   }
+    // }
+
+    this.updateFromProps(computePresets(oldProps), computePresets(this.props));
+
+    // comment in to test what is causing re-render
+    // Object.entries(this.props).forEach(
+    //   ([key, val]) =>
+    //     oldProps[key] !== val && console.info(`Prop '${key}' changed`)
+    // );
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("paste", this.handlePaste);
+  }
+
+  handleRowMove = (type, shiftHeld) => e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const props = computePresets(this.props);
+    const {
+      noSelect,
+      entities,
+      reduxFormSelectedEntityIdMap: idMap,
+      isEntityDisabled,
+      isSingleSelect
+    } = props;
+    let newIdMap = {};
+    const lastSelectedEnt = getLastSelectedEntity(idMap);
+
+    if (noSelect) return;
+    if (lastSelectedEnt) {
+      let lastSelectedIndex = entities.findIndex(
+        ent => ent === lastSelectedEnt
+      );
+      if (lastSelectedIndex === -1) {
+        if (lastSelectedEnt.id !== undefined) {
+          lastSelectedIndex = entities.findIndex(
+            ent => ent.id === lastSelectedEnt.id
+          );
+        } else if (lastSelectedEnt.code !== undefined) {
+          lastSelectedIndex = entities.findIndex(
+            ent => ent.code === lastSelectedEnt.code
+          );
+        }
+      }
+      if (lastSelectedIndex === -1) {
+        return;
+      }
+      const newEntToSelect = getNewEntToSelect({
+        type,
+        lastSelectedIndex,
+        entities,
+        isEntityDisabled
+      });
+
+      if (!newEntToSelect) return;
+      if (shiftHeld && !isSingleSelect) {
+        if (idMap[newEntToSelect.id || newEntToSelect.code]) {
+          //the entity being moved to has already been selected
+          newIdMap = omit(idMap, [lastSelectedEnt.id || lastSelectedEnt.code]);
+          newIdMap[newEntToSelect.id || newEntToSelect.code].time =
+            Date.now() + 1;
+        } else {
+          //the entity being moved to has NOT been selected yet
+          newIdMap = {
+            ...idMap,
+            [newEntToSelect.id || newEntToSelect.code]: {
+              entity: newEntToSelect,
+              time: Date.now()
+            }
+          };
+        }
+      } else {
+        //no shiftHeld
+        newIdMap[newEntToSelect.id || newEntToSelect.code] = {
+          entity: newEntToSelect,
+          time: Date.now()
+        };
+      }
+    }
+
+    finalizeSelection({
+      idMap: newIdMap,
+      entities,
+      props
+    });
+  };
+
+  handleCopyHotkey = e => {
+    const { isCellEditable, reduxFormSelectedEntityIdMap } = computePresets(
+      this.props
+    );
+
+    if (isCellEditable) {
+      this.handleCopySelectedCells(e);
+    } else {
+      this.handleCopySelectedRows(
+        getRecordsFromIdMap(reduxFormSelectedEntityIdMap),
+        e
+      );
+    }
+  };
+
   handleSelectAllRows = e => {
     const {
       change,
@@ -800,22 +883,12 @@ class DataTable extends React.Component {
       });
     }
   };
+
   updateValidationHelper = () => {
     const { entities, reduxFormCellValidation } = computePresets(this.props);
     this.updateValidation(entities, reduxFormCellValidation);
   };
 
-  updateValidation = (entities, newCellValidate) => {
-    const { change, schema } = computePresets(this.props);
-    const tableWideErr = validateTableWideErrors({
-      entities,
-      schema,
-      newCellValidate,
-      props: this.props
-    });
-    change("reduxFormCellValidation", tableWideErr);
-    this.forceUpdate();
-  };
   handleDeleteCell = () => {
     const {
       reduxFormSelectedCells,
@@ -856,119 +929,11 @@ class DataTable extends React.Component {
     this.handleCopyHotkey(e);
   };
 
-  getCellCopyText = cellWrapper => {
-    const text = cellWrapper && cellWrapper.getAttribute("data-copy-text");
-    const jsonText = cellWrapper && cellWrapper.getAttribute("data-copy-json");
-
-    const textContent = text || cellWrapper.textContent || "";
-    return [textContent, jsonText];
-  };
-
-  handleCopyColumn = (e, cellWrapper, selectedRecords) => {
-    const specificColumn = cellWrapper.getAttribute("data-test");
-    let rowElsToCopy = getAllRows(e);
-    if (!rowElsToCopy) return;
-    if (selectedRecords) {
-      const ids = selectedRecords.map(e => getIdOrCodeOrIndex(e)?.toString());
-      rowElsToCopy = Array.from(rowElsToCopy).filter(rowEl => {
-        const id = rowEl.closest(".rt-tr-group")?.getAttribute("data-test-id");
-        return id !== undefined && ids.includes(id);
-      });
-    }
-    if (!rowElsToCopy) return;
-    this.handleCopyRows(rowElsToCopy, {
-      specificColumn,
-      onFinishMsg: "Column Copied"
-    });
-  };
-  handleCopyRows = (
-    rowElsToCopy,
-    { specificColumn, onFinishMsg, isDownload } = {}
-  ) => {
-    let textToCopy = [];
-    const jsonToCopy = [];
-    forEach(rowElsToCopy, rowEl => {
-      const [t, j] = this.getRowCopyText(rowEl, { specificColumn });
-      textToCopy.push(t);
-      jsonToCopy.push(j);
-    });
-    textToCopy = textToCopy.filter(text => text).join("\n");
-    if (!textToCopy) return window.toastr.warning("No text to copy");
-    if (isDownload) {
-      download(textToCopy.replaceAll("\t", ","), "tableData.csv", "text/csv");
-    } else {
-      this.handleCopyHelper(
-        textToCopy,
-        jsonToCopy,
-        onFinishMsg || "Row Copied"
-      );
-    }
-  };
-  updateEntitiesHelper = (ents, fn) => {
-    const { change, reduxFormEntitiesUndoRedoStack = { currentVersion: 0 } } =
-      this.props;
-    const [nextState, patches, inversePatches] = produceWithPatches(ents, fn);
-    if (!inversePatches.length) return;
-    const thatNewNew = [...nextState];
-    thatNewNew.isDirty = true;
-    change("reduxFormEntities", thatNewNew);
-    change("reduxFormEntitiesUndoRedoStack", {
-      ...omitBy(reduxFormEntitiesUndoRedoStack, (v, k) => {
-        return toNumber(k) > reduxFormEntitiesUndoRedoStack.currentVersion + 1;
-      }),
-      currentVersion: reduxFormEntitiesUndoRedoStack.currentVersion + 1,
-      [reduxFormEntitiesUndoRedoStack.currentVersion + 1]: {
-        inversePatches,
-        patches
-      }
-    });
-  };
-
-  getRowCopyText = (rowEl, { specificColumn } = {}) => {
-    //takes in a row element
-    if (!rowEl) return [];
-    const textContent = [];
-    const jsonText = [];
-
-    forEach(rowEl.children, cellEl => {
-      const cellChild = cellEl.querySelector(`[data-copy-text]`);
-      if (!cellChild) {
-        if (specificColumn) return []; //strip it
-        return; //just leave it blank
-      }
-      if (
-        specificColumn &&
-        cellChild.getAttribute("data-test") !== specificColumn
-      ) {
-        return [];
-      }
-      const [t, j] = this.getCellCopyText(cellChild);
-      textContent.push(t);
-      jsonText.push(j);
-    });
-
-    return [flatMap(textContent).join("\t"), jsonText];
-  };
-
-  handleCopyHelper = (stringToCopy, jsonToCopy, message) => {
-    !window.Cypress &&
-      copy(stringToCopy, {
-        onCopy: clipboardData => {
-          clipboardData.setData("application/json", JSON.stringify(jsonToCopy));
-        },
-        // keep this so that pasting into spreadsheets works.
-        format: "text/plain"
-      });
-    if (message) {
-      window.toastr.success(message);
-    }
-  };
-
   handleCopyTable = (e, opts) => {
     try {
       const allRowEls = getAllRows(e);
       if (!allRowEls) return;
-      this.handleCopyRows(allRowEls, {
+      handleCopyRows(allRowEls, {
         ...opts,
         onFinishMsg: "Table Copied"
       });
@@ -977,6 +942,7 @@ class DataTable extends React.Component {
       window.toastr.error("Error copying rows.");
     }
   };
+
   handleCopySelectedCells = e => {
     const {
       entities = [],
@@ -1022,7 +988,7 @@ class DataTable extends React.Component {
       } else {
         const jsonRow = [];
         // ignore header
-        let [rowCopyText, json] = this.getRowCopyText(allRows[i + 1]);
+        let [rowCopyText, json] = getRowCopyText(allRows[i + 1]);
         rowCopyText = rowCopyText.split("\t");
         times(row.length, i => {
           const cell = row[i];
@@ -1037,7 +1003,7 @@ class DataTable extends React.Component {
     });
     if (!fullCellText) return window.toastr.warning("No text to copy");
 
-    this.handleCopyHelper(fullCellText, fullJson, "Selected cells copied");
+    handleCopyHelper(fullCellText, fullJson, "Selected cells copied");
   };
 
   handleCopySelectedRows = (selectedRecords, e) => {
@@ -1060,7 +1026,7 @@ class DataTable extends React.Component {
       if (!allRowEls) return;
       const rowEls = rowNumbersToCopy.map(i => allRowEls[i]);
 
-      this.handleCopyRows(rowEls, {
+      handleCopyRows(rowEls, {
         onFinishMsg: "Selected rows copied"
       });
     } catch (error) {
@@ -1117,6 +1083,7 @@ class DataTable extends React.Component {
       />
     );
   };
+
   getThComponent = compose(
     withProps(props => {
       const { columnindex } = props;
@@ -1335,7 +1302,11 @@ class DataTable extends React.Component {
         icon="fullscreen"
         active={fullscreen}
         minimal
-        onClick={this.toggleFullscreen}
+        onClick={() => {
+          this.setState({
+            fullscreen: !this.state.fullscreen
+          });
+        }}
       />
     );
 
@@ -1490,24 +1461,17 @@ class DataTable extends React.Component {
             {...(isCellEditable && {
               tabIndex: -1,
               onKeyDown: e => {
-                // const isArrowKey =
-                //   (e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode === 9;
-                // if (isArrowKey && e.target?.tagName !== "INPUT") {
-                const isTabKey = e.keyCode === 9;
-                // const isEnter = e.keyCode === 13;
-                // console.log(`onKeydown datatable inner`);
-                // console.log(`isEnter:`, isEnter)
-                const isArrowKey = e.keyCode >= 37 && e.keyCode <= 40;
-                // console.log(`e.target?.tagName:`,e.target?.tagName)
+                const isTabKey = e.key === "Tab";
+                const isArrowKey = e.key.startsWith("Arrow");
                 if (
                   (isArrowKey && e.target?.tagName !== "INPUT") ||
                   isTabKey
                   // || (isEnter && e.target?.tagName === "INPUT")
                 ) {
                   const { schema, entities } = computePresets(this.props);
-                  const left = e.keyCode === 37;
-                  const up = e.keyCode === 38;
-                  const down = e.keyCode === 40 || e.keyCode === 13;
+                  const left = e.key === "ArrowLeft";
+                  const up = e.key === "ArrowUp";
+                  const down = e.key === "ArrowDown" || e.key === "Enter";
                   let cellIdToUse = this.getPrimarySelectedCellId();
                   const pathToIndex = getFieldPathToIndex(schema);
                   const entityMap = getEntityIdToEntity(entities);
@@ -1600,13 +1564,23 @@ class DataTable extends React.Component {
                 const entity = entityIdToEntity[rowId].e;
                 if (!entity) return;
                 const rowDisabled = isEntityDisabled(entity);
-                const isNum = e.keyCode >= 48 && e.keyCode <= 57;
-                const isLetter = e.keyCode >= 65 && e.keyCode <= 90;
-                if (!isNum && !isLetter) return;
+                const isNum = e.code?.startsWith("Digit");
+                const isLetter = e.code?.startsWith("Key");
+                if (!isNum && !isLetter) {
+                  this.setState(prev => ({
+                    ...prev,
+                    editableCellInitialValue: ""
+                  }));
+                  return;
+                } else {
+                  this.setState(prev => ({
+                    ...prev,
+                    editableCellInitialValue: e.key
+                  }));
+                }
                 if (rowDisabled) return;
                 this.startCellEdit(cellId, { shouldSelectAll: true });
                 e.stopPropagation();
-                // e.preventDefault();
               }
             })}
           >
@@ -1746,10 +1720,7 @@ class DataTable extends React.Component {
             )}
             <ReactTable
               data={filteredEnts}
-              ref={n => {
-                if (n) this.table = n;
-              }}
-              // additionalBodyEl={}
+              ref={this.tableRef}
               className={classNames({
                 isCellEditable,
                 "tg-table-loading": isLoading,
@@ -1836,7 +1807,7 @@ class DataTable extends React.Component {
                   data-tip="Download Table as CSV"
                   minimal
                   icon="download"
-                ></Button>
+                />
               </div>
             )}
             {!noFooter && (
@@ -1979,24 +1950,6 @@ class DataTable extends React.Component {
           onDoubleClick(rowInfo.original, rowInfo.index, history, e);
       }
     };
-  };
-
-  startCellEdit = (cellId, { shouldSelectAll } = {}) => {
-    const {
-      change,
-      reduxFormSelectedCells = {},
-      reduxFormEditingCell
-    } = computePresets(this.props);
-    const newSelectedCells = { ...reduxFormSelectedCells };
-    newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
-    //check if the cell is already selected and editing and if so, don't change it
-    if (reduxFormEditingCell === cellId) return;
-    change("reduxFormSelectedCells", newSelectedCells);
-    change("reduxFormEditingCell", cellId);
-    if (shouldSelectAll) {
-      //we should select the text
-      change("reduxFormEditingCellSelectAll", true);
-    }
   };
 
   getTableCellProps = (state, rowInfo, column) => {
@@ -2194,6 +2147,7 @@ class DataTable extends React.Component {
 
     change("reduxFormSelectedCells", newSelectedCells);
   };
+
   renderCheckboxHeader = () => {
     const {
       reduxFormSelectedEntityIdMap,
@@ -2316,9 +2270,10 @@ class DataTable extends React.Component {
     change("reduxFormEditingCell", null);
     this.refocusTable();
   };
+
   refocusTable = () => {
     setTimeout(() => {
-      const table = ReactDOM.findDOMNode(this.table)?.closest(
+      const table = this.tableRef.current?.tableRef?.closest(
         ".data-table-container>div"
       );
       table?.focus();
@@ -2595,7 +2550,6 @@ class DataTable extends React.Component {
             <Checkbox
               disabled={isEntityDisabled(row.original)}
               className="tg-cell-edit-boolean-checkbox"
-              // {...dataTest}
               checked={oldVal === "True"}
               onChange={e => {
                 const checked = e.target.checked;
@@ -2605,9 +2559,6 @@ class DataTable extends React.Component {
           );
           noEllipsis = true;
         } else {
-          // if (column.type === "genericSelect") {
-          //   val =
-          // }
           if (reduxFormEditingCell === cellId) {
             if (column.type === "genericSelect") {
               const GenericSelectComp = column.GenericSelectComp;
@@ -2638,7 +2589,7 @@ class DataTable extends React.Component {
                   }}
                   dataTest={dataTest}
                   cancelEdit={this.cancelCellEdit}
-                ></DropdownCell>
+                />
               );
             } else {
               return (
@@ -2650,11 +2601,18 @@ class DataTable extends React.Component {
                   shouldSelectAll={reduxFormEditingCellSelectAll}
                   cancelEdit={this.cancelCellEdit}
                   isNumeric={column.type === "number"}
-                  initialValue={text}
+                  initialValue={
+                    this.state.editableCellInitialValue.length
+                      ? this.state.editableCellInitialValue
+                      : text
+                  }
+                  isEditableCellInitialValue={
+                    !!this.state.editableCellInitialValue.length
+                  }
                   finishEdit={newVal => {
                     this.finishCellEdit(cellId, newVal);
                   }}
-                ></EditableCell>
+                />
               );
             }
           }
@@ -2726,7 +2684,7 @@ class DataTable extends React.Component {
 
             {isSelectedCell &&
               (isRect
-                ? this.isBottomRightCornerOfRectangle({
+                ? isBottomRightCornerOfRectangle({
                     cellId,
                     selectionGrid,
                     lastRowIndex,
@@ -2737,11 +2695,11 @@ class DataTable extends React.Component {
                 : isSelectedCell === PRIMARY_SELECTED_VAL) && (
                 <CellDragHandle
                   key={cellId}
-                  thisTable={this.table}
+                  thisTable={this.tableRef.current.tableRef}
                   cellId={cellId}
                   isSelectionARectangle={this.isSelectionARectangle}
                   onDragEnd={this.onDragEnd}
-                ></CellDragHandle>
+                />
               )}
           </>
         );
@@ -2750,26 +2708,6 @@ class DataTable extends React.Component {
       columnsToRender.push(tableColumn);
     });
     return columnsToRender;
-  };
-  isBottomRightCornerOfRectangle = ({
-    cellId,
-    selectionGrid,
-    lastRowIndex,
-    lastCellIndex,
-    entityMap,
-    pathToIndex
-  }) => {
-    selectionGrid.forEach(row => {
-      // remove undefineds from start of row
-      while (row[0] === undefined && row.length) row.shift();
-    });
-    const [rowId, cellPath] = cellId.split(":");
-    const ent = entityMap[rowId];
-    if (!ent) return;
-    const { i } = ent;
-    const cellIndex = pathToIndex[cellPath];
-    const isBottomRight = i === lastRowIndex && cellIndex === lastCellIndex;
-    return isBottomRight;
   };
 
   onDragEnd = cellsToSelect => {
@@ -2975,6 +2913,7 @@ class DataTable extends React.Component {
       change("reduxFormSelectedCells", newReduxFormSelectedCells);
     });
   };
+
   getCopyTextForCell = (val, row = {}, column = {}) => {
     const { cellRenderer } = computePresets(this.props);
     // TODOCOPY we need a way to potentially omit certain columns from being added as a \t element (talk to taoh about this)
@@ -3060,6 +2999,7 @@ class DataTable extends React.Component {
       });
     });
   };
+
   getEditableTableInfoAndThrowFormError = () => {
     const { schema, reduxFormEntities, reduxFormCellValidation } =
       computePresets(this.props);
@@ -3169,12 +3109,12 @@ class DataTable extends React.Component {
               //TODOCOPY: we need to make sure that the cell copy is being used by the row copy.. right now we have 2 different things going on
               //do we need to be able to copy hidden cells? It seems like it should just copy what's on the page..?
               const specificColumn = cellWrapper.getAttribute("data-test");
-              this.handleCopyRows([cellWrapper.closest(".rt-tr")], {
+              handleCopyRows([cellWrapper.closest(".rt-tr")], {
                 specificColumn,
                 onFinishMsg: "Cell copied"
               });
-              const [text, jsonText] = this.getCellCopyText(cellWrapper);
-              this.handleCopyHelper(text, jsonText);
+              const [text, jsonText] = getCellCopyText(cellWrapper);
+              handleCopyHelper(text, jsonText);
             }}
             text="Cell"
           />
@@ -3184,7 +3124,7 @@ class DataTable extends React.Component {
           <MenuItem
             key="copyColumn"
             onClick={() => {
-              this.handleCopyColumn(e, cellWrapper);
+              handleCopyColumn(e, cellWrapper);
             }}
             text="Column"
           />
@@ -3194,7 +3134,7 @@ class DataTable extends React.Component {
             <MenuItem
               key="copyColumnSelected"
               onClick={() => {
-                this.handleCopyColumn(e, cellWrapper, selectedRecords);
+                handleCopyColumn(e, cellWrapper, selectedRecords);
               }}
               text="Column (Selected)"
             />
@@ -3212,7 +3152,7 @@ class DataTable extends React.Component {
           <MenuItem
             key="copySelectedRows"
             onClick={() => {
-              this.handleCopyRows([row]);
+              handleCopyRows([row]);
               // loop through each cell in the row
             }}
             text="Row"
@@ -3263,7 +3203,7 @@ class DataTable extends React.Component {
               onClick={() => {
                 this.insertRows({ above: true });
               }}
-            ></MenuItem>
+            />
             <MenuItem
               icon="add-row-top"
               text="Add Row Below"
@@ -3271,7 +3211,7 @@ class DataTable extends React.Component {
               onClick={() => {
                 this.insertRows({});
               }}
-            ></MenuItem>
+            />
             <MenuItem
               icon="remove"
               text={`Remove Row${selectedRowIds.length > 1 ? "s" : ""}`}
@@ -3461,7 +3401,7 @@ class DataTable extends React.Component {
           }}
           indeterminate={isIndeterminate}
           checked={isChecked}
-        ></Checkbox>
+        />
       );
     }
 
@@ -3486,7 +3426,7 @@ class DataTable extends React.Component {
         })}
       >
         {columnTitleTextified && !noTitle && (
-          <React.Fragment>
+          <>
             {maybeCheckbox}
             <span
               title={columnTitleTextified}
@@ -3501,7 +3441,7 @@ class DataTable extends React.Component {
             >
               {renderTitleInner ? renderTitleInner : columnTitle}{" "}
             </span>
-          </React.Fragment>
+          </>
         )}
         <div
           style={{ display: "flex", marginLeft: "auto", alignItems: "center" }}
@@ -3523,333 +3463,3 @@ const WrappedDT = dataTableEnhancer(DataTable);
 export default WrappedDT;
 const ConnectedPagingTool = dataTableEnhancer(PagingTool);
 export { ConnectedPagingTool };
-
-const itemSizeEstimators = {
-  compact: () => 25.34,
-  normal: () => 33.34,
-  comfortable: () => 41.34
-};
-
-function getCellInfo({
-  columnIndex,
-  columnPath,
-  rowId,
-  schema,
-  entities,
-  rowIndex,
-  isEntityDisabled,
-  entity
-}) {
-  const leftpath = schema.fields[columnIndex - 1]?.path;
-  const rightpath = schema.fields[columnIndex + 1]?.path;
-  const cellIdToLeft = leftpath && `${rowId}:${leftpath}`;
-  const cellIdToRight = rightpath && `${rowId}:${rightpath}`;
-  const rowAboveId =
-    entities[rowIndex - 1] &&
-    getIdOrCodeOrIndex(entities[rowIndex - 1], rowIndex - 1);
-  const rowBelowId =
-    entities[rowIndex + 1] &&
-    getIdOrCodeOrIndex(entities[rowIndex + 1], rowIndex + 1);
-  const cellIdAbove = rowAboveId && `${rowAboveId}:${columnPath}`;
-  const cellIdBelow = rowBelowId && `${rowBelowId}:${columnPath}`;
-
-  const cellId = `${rowId}:${columnPath}`;
-  const rowDisabled = isEntityDisabled(entity);
-  return {
-    cellId,
-    cellIdAbove,
-    cellIdToRight,
-    cellIdBelow,
-    cellIdToLeft,
-    rowDisabled
-  };
-}
-
-function ColumnFilterMenu({
-  FilterMenu,
-  filterActiveForColumn,
-  compact,
-  extraCompact,
-  ...rest
-}) {
-  const [columnFilterMenuOpen, setColumnFilterMenuOpen] = useState(false);
-  return (
-    <Popover
-      position="bottom"
-      onClose={() => {
-        setColumnFilterMenuOpen(false);
-      }}
-      isOpen={columnFilterMenuOpen}
-      modifiers={{
-        preventOverflow: { enabled: true },
-        hide: { enabled: false },
-        flip: { enabled: false }
-      }}
-    >
-      <Icon
-        style={{ marginLeft: 5 }}
-        icon="filter"
-        iconSize={extraCompact ? 14 : undefined}
-        onClick={() => {
-          setColumnFilterMenuOpen(!columnFilterMenuOpen);
-        }}
-        className={classNames("tg-filter-menu-button", {
-          "tg-active-filter": !!filterActiveForColumn
-        })}
-      />
-      <FilterMenu
-        togglePopover={() => {
-          setColumnFilterMenuOpen(false);
-        }}
-        {...rest}
-      />
-    </Popover>
-  );
-}
-
-function getLastSelectedEntity(idMap) {
-  let lastSelectedEnt;
-  let latestTime;
-  forEach(idMap, ({ time, entity }) => {
-    if (!latestTime || time > latestTime) {
-      lastSelectedEnt = entity;
-      latestTime = time;
-    }
-  });
-  return lastSelectedEnt;
-}
-
-function getNewEntToSelect({
-  type,
-  lastSelectedIndex,
-  entities,
-  isEntityDisabled
-}) {
-  let newIndexToSelect;
-  if (type === "up") {
-    newIndexToSelect = lastSelectedIndex - 1;
-  } else {
-    newIndexToSelect = lastSelectedIndex + 1;
-  }
-  const newEntToSelect = entities[newIndexToSelect];
-  if (!newEntToSelect) return;
-  if (isEntityDisabled && isEntityDisabled(newEntToSelect)) {
-    return getNewEntToSelect({
-      type,
-      lastSelectedIndex: newIndexToSelect,
-      entities,
-      isEntityDisabled
-    });
-  } else {
-    return newEntToSelect;
-  }
-}
-
-function getAllRows(e) {
-  const el = e.target.querySelector(".data-table-container")
-    ? e.target.querySelector(".data-table-container")
-    : e.target.closest(".data-table-container");
-
-  const allRowEls = el.querySelectorAll(".rt-tr");
-  if (!allRowEls || !allRowEls.length) {
-    return;
-  }
-  return allRowEls;
-}
-
-function EditableCell({
-  shouldSelectAll,
-  stopSelectAll,
-  initialValue,
-  finishEdit,
-  cancelEdit,
-  isNumeric,
-  dataTest
-}) {
-  const [v, setV] = useState(initialValue);
-  return (
-    <input
-      style={{
-        border: 0,
-        width: "95%",
-        fontSize: 12,
-        background: "none"
-      }}
-      ref={r => {
-        if (shouldSelectAll && r) {
-          r?.select();
-          stopSelectAll();
-        }
-      }}
-      {...dataTest}
-      type={isNumeric ? "number" : undefined}
-      value={v}
-      autoFocus
-      onKeyDown={e => {
-        if (e.key === "Enter") {
-          finishEdit(v);
-          e.stopPropagation();
-        } else if (e.key === "Escape") {
-          e.stopPropagation();
-          cancelEdit();
-        }
-      }}
-      onBlur={() => {
-        finishEdit(v);
-      }}
-      onChange={e => {
-        setV(e.target.value);
-      }}
-    ></input>
-  );
-}
-
-function DropdownCell({
-  options,
-  isMulti,
-  initialValue,
-  finishEdit,
-  cancelEdit,
-  dataTest
-}) {
-  const [v, setV] = useState(
-    isMulti
-      ? initialValue.split(",").map(v => ({ value: v, label: v }))
-      : initialValue
-  );
-  return (
-    <div
-      className={classNames("tg-dropdown-cell-edit-container", {
-        "tg-dropdown-cell-edit-container-multi": isMulti
-      })}
-    >
-      <TgSelect
-        small
-        multi={isMulti}
-        autoOpen
-        value={v}
-        onChange={val => {
-          if (isMulti) {
-            setV(val);
-            return;
-          }
-          finishEdit(val ? val.value : null);
-        }}
-        {...dataTest}
-        popoverProps={{
-          onClose: e => {
-            if (isMulti) {
-              if (e && e.key === "Escape") {
-                cancelEdit();
-              } else {
-                finishEdit(
-                  v && v.map
-                    ? v
-                        .map(v => v.value)
-                        .filter(v => v)
-                        .join(",")
-                    : v
-                );
-              }
-            } else {
-              cancelEdit();
-            }
-          }
-        }}
-        options={options.map(value => ({ label: value, value }))}
-      ></TgSelect>
-    </div>
-  );
-}
-
-function getFieldPathToIndex(schema) {
-  const fieldToIndex = {};
-  schema.fields.forEach((f, i) => {
-    fieldToIndex[f.path] = i;
-  });
-  return fieldToIndex;
-}
-
-function getFieldPathToField(schema) {
-  const fieldPathToField = {};
-  schema.fields.forEach(f => {
-    fieldPathToField[f.path] = f;
-  });
-  return fieldPathToField;
-}
-
-const defaultParsePaste = str => {
-  return str.split(/\r\n|\n|\r/).map(row => row.split("\t"));
-};
-
-function getEntityIdToEntity(entities) {
-  const entityIdToEntity = {};
-  entities.forEach((e, i) => {
-    entityIdToEntity[getIdOrCodeOrIndex(e, i)] = { e, i };
-  });
-  return entityIdToEntity;
-}
-
-function endsWithNumber(str) {
-  return /[0-9]+$/.test(str);
-}
-
-function getNumberStrAtEnd(str) {
-  if (endsWithNumber(str)) {
-    return str.match(/[0-9]+$/)[0];
-  }
-
-  return null;
-}
-
-function stripNumberAtEnd(str) {
-  return str?.replace?.(getNumberStrAtEnd(str), "");
-}
-
-export function isEntityClean(e) {
-  let isClean = true;
-  some(e, (val, key) => {
-    if (key === "id") return;
-    if (key === "_isClean") return;
-    if (val) {
-      isClean = false;
-      return true;
-    }
-  });
-  return isClean;
-}
-
-const formatPasteData = ({ schema, newVal, path }) => {
-  const pathToField = getFieldPathToField(schema);
-  const column = pathToField[path];
-  if (column.type === "genericSelect") {
-    if (newVal?.__genSelCol === path) {
-      newVal = newVal.__strVal;
-    } else {
-      newVal = undefined;
-    }
-  } else {
-    newVal = Object.hasOwn(newVal, "__strVal") ? newVal.__strVal : newVal;
-  }
-  return newVal;
-};
-
-export function removeCleanRows(reduxFormEntities, reduxFormCellValidation) {
-  const toFilterOut = {};
-  const entsToUse = (reduxFormEntities || []).filter(e => {
-    if (!(e._isClean || isEntityClean(e))) return true;
-    else {
-      toFilterOut[getIdOrCodeOrIndex(e)] = true;
-      return false;
-    }
-  });
-
-  const validationToUse = {};
-  forEach(reduxFormCellValidation, (v, k) => {
-    const [rowId] = k.split(":");
-    if (!toFilterOut[rowId]) {
-      validationToUse[k] = v;
-    }
-  });
-  return { entsToUse, validationToUse };
-}
