@@ -59,7 +59,6 @@
         }
       }
     },
-
     "launch-e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {
