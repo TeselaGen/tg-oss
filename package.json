@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "patch-package",
-    "prepare": "husky install",
+    "prepare": "husky",
     "e2e": "nx affected --base=master --head=HEAD -t e2e",
     "test": "nx affected -t test"
   },

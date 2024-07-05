@@ -23,7 +23,14 @@ import {
 import fuzzysearch from "fuzzysearch";
 import classNames from "classnames";
 // https://github.com/palantir/blueprint/issues/2820
-export function MenuItemLink({ text, onClick, icon, navTo, active }) {
+export function MenuItemLink({ text, onClick, icon, navTo, active, disabled }) {
+  if (disabled) {
+    return (
+      <li className={Classes.POPOVER_DISMISS}>
+        <MenuItem icon={icon} disabled={true} text={text} />
+      </li>
+    );
+  }
   const handleLinkClick = e => {
     e.target.closest(`.${Classes.POPOVER_DISMISS}`).click();
   };
@@ -71,7 +78,6 @@ export const EnhancedMenuItem = compose(
   if (navTo) {
     MenuItemComp = MenuItemLink;
   }
-
   return (
     <MenuItemComp
       popoverProps={{
@@ -215,9 +221,14 @@ export const DynamicMenuItem = ({
     ...(doNotEnhanceTopLevelItem ? [ident] : enhancers)
   ].reduce((v, f) => f(v, context), def);
   let out;
-
   if (item.divider !== undefined) {
-    out = <MenuDivider {...(item.divider ? { title: item.divider } : {})} />;
+    out = (
+      <MenuDivider
+        {...(item.divider
+          ? { title: item.divider, className: item.className }
+          : {})}
+      />
+    );
   } else {
     const ItemComponent = item.component || EnhancedMenuItem;
     out = (

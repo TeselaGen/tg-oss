@@ -3,7 +3,7 @@ import { Button, Icon, Popover, RadioGroup } from "@blueprintjs/core";
 
 import { calculateTm, calculateNebTm } from "@teselagen/sequence-utils";
 
-import { isString } from "lodash-es";
+import { isNumber, isString } from "lodash-es";
 import { popoverOverflowModifiers } from "@teselagen/ui";
 import useTmType from "../utils/useTmType";
 
@@ -16,13 +16,17 @@ export default function MeltingTemp({
     </Button>
   )
 }) {
+  const [primerConc /* , setPrimerConcentration */] = React.useState(0.0000005);
+  const [monovalentCationConc /* , setMonovalentCationConc */] =
+    React.useState(0.05);
   const [tmType, setTmType] = useTmType();
-  const tm = (
-    {
-      default: calculateTm,
-      neb_tm: calculateNebTm
-    }[tmType] || calculateTm
-  )((sequence || "").toLowerCase());
+  let tm = (tmType === "neb_tm" ? calculateNebTm : calculateTm)(sequence, {
+    monovalentCationConc,
+    primerConc
+  });
+  if (isNumber(tm)) {
+    tm = tm.toFixed(1);
+  }
   const hasWarning = isString(tm) && tm.length > 7 && tm;
   return (
     <WrapperToUse dataTest="veStatusBar-selection-tm">
@@ -34,7 +38,7 @@ export default function MeltingTemp({
             <a
               rel="noopener noreferrer"
               target="_blank"
-              href="https://github.com/TeselaGen/@teselagen/sequence-utils"
+              href="https://github.com/TeselaGen/tg-oss/blob/master/packages/sequence-utils/src/calculateNebTm.js"
             >
               algorithms
             </a>
@@ -43,8 +47,8 @@ export default function MeltingTemp({
             <RadioGroup
               label="Choose Tm Type:"
               options={[
-                { value: "default", label: "Default Tm" },
-                { value: "neb_tm", label: "NEB Tm" }
+                { value: "default", label: "Default Tm (Breslauer)" },
+                { value: "neb_tm", label: "NEB Tm (SantaLucia)" }
               ]}
               onChange={e => setTmType(e.target.value)}
               selectedValue={tmType}

@@ -14,14 +14,17 @@ describe("statusBar", function () {
     cy.tgToggle("showMoleculeType", false);
     cy.get(`[data-test="veStatusBar-type"]`).should("not.exist");
   });
-  it("melting temp should be an option in the menu bar", function () {
+  it("melting temp should be an option in the menu bar, neb tm should work", function () {
     cy.visit("");
     cy.selectRange(10, 30);
     cy.contains("Melting Temp").should("not.exist");
     cy.get(".tg-menu-bar").contains("View").click();
     cy.get(".bp3-menu-item").contains("Melting Temp").click();
-    cy.contains("Melting Temp: 62.69").click();
+    cy.contains("Melting Temp: 62.7").click();
     cy.get(`[value="default"][checked]`);
+    cy.contains(`NEB Tm`).click();
+    cy.contains("Melting Temp: 62.7").should("not.exist");
+    cy.contains("Melting Temp: 64.6");
   });
   it(`if viewing a linear sequence in the circular view, there should be a little warning 
   on the circular view telling the user that the sequence is linear`, () => {

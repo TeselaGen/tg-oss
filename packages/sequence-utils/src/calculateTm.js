@@ -11,8 +11,8 @@ const calcTmMethods = {
 
   A: -10.8, // Helix initiation for deltaS
   R: 1.987, // Gas constant (cal/(K*mol)).
-  C: 0.5e-6, // Oligo concentration. 0.5uM is typical for PCR.
-  Na: 50e-3, // Monovalent salt concentration. 50mM is typical for PCR.
+  primerConc: 0.0000005, // Oligo concentration. 0.5uM is typical for PCR.
+  monovalentCationConc: 0.05, // Monovalent salt concentration. 50mM is typical for PCR.
 
   /**
    * Calculates temperature for DNA sequence using a given algorithm.
@@ -20,11 +20,17 @@ const calcTmMethods = {
    * type - Either Teselagen.bio.tools.TemperatureCalculator.TABLE_BRESLAUER, TABLE_SUGIMOTO, or TABLE_UNIFIED
    * A - Helix initation for deltaS. Defaults to -10.8.
    * R - The gas constant, in cal/(K*mol). Defaults to 0.5e-6M.
-   * Na - THe monovalent salt concentration. Defaults to 50e-3M.
+   * monovalentCationConc - THe monovalent salt concentration. Defaults to 50e-3M.
    * return - Temperature for the given sequence, in Celsius.
    */
-  calculateTemperature: function (sequence, type, A, R, C, Na) {
+  calculateTemperature: function (
+    _sequence,
+    { type, A, R, primerConc, monovalentCationConc } = {}
+  ) {
+    const sequence = _sequence.toLowerCase();
     if (typeof type === "undefined") {
+      // type = this.TABLE_SUGIMOTO  ;
+      // type = this.TABLE_UNIFIED;
       type = this.TABLE_BRESLAUER;
     } else if (
       type != this.TABLE_BRESLAUER &&
@@ -40,11 +46,11 @@ const calcTmMethods = {
     if (!R) {
       R = this.R;
     }
-    if (!C) {
-      C = this.C;
+    if (!primerConc) {
+      primerConc = this.primerConc;
     }
-    if (!Na) {
-      Na = this.Na;
+    if (!monovalentCationConc) {
+      monovalentCationConc = this.monovalentCationConc;
     }
 
     const sequenceLength = sequence.length;
@@ -56,7 +62,7 @@ const calcTmMethods = {
     const deltaHTable = this.getDeltaHTable(type);
     const deltaSTable = this.getDeltaSTable(type);
 
-    const neighbors = []; // List goes in order: aa, at, ac, ag, tt, ta, tc, tg, cc, ca, ct, cg, gg, gt, gc
+    const neighbors = []; // List goes in order: aa, at, ac, ag, tt, ta, tc, tg, cc, ca, ct, cg, gg, ga, gt, gc
 
     neighbors.push(this.calculateReps(sequence, "aa"));
     neighbors.push(this.calculateNumberOfOccurrences(sequence, "at"));
@@ -87,16 +93,12 @@ const calcTmMethods = {
     }
 
     const temperature =
-      (-1000.0 * sumDeltaH) / (A + -sumDeltaS + R * Math.log(C / 4.0)) -
+      (-1000.0 * sumDeltaH) /
+        (A + -sumDeltaS + R * Math.log(primerConc / 4.0)) -
       273.15 +
-      16.6 * Math.LOG10E * Math.log(Na);
+      16.6 * Math.LOG10E * Math.log(monovalentCationConc);
 
-    // If temperature is negative then return 0.
-    if (temperature < 0) {
-      return 0;
-    }
-
-    return temperature.toFixed(2);
+    return temperature;
   },
 
   /**
@@ -125,6 +127,41 @@ const calcTmMethods = {
       return null;
     }
   },
+  // "AA/TT": -7.9, 7.9
+  // "AT/TA": -7.2, 7.2
+  // "AC/TG": -8.4, 8.4
+  // "AG/TC": -7.8, 7.8
+  // "TT/AA": -7.9, 7.9
+  // "TA/AT": -7.2, 7.2
+  // "TG/AC": -8.5, 8.2
+  // "TC/AG": -8.2, 8.5
+  // "CC/GG": -8.0, 8.0
+  // "CA/GT": -8.5, 8.5
+  // "CT/GA": -7.8, 7.8
+  // "CG/GC": -10.6, 10.6
+  // "GG/CC": -8.0, 8.0
+  // "GA/CT": -8.2, 8.2,
+  // "GT/CA": -8.4, 8.4
+  // "GC/CG": -9.8, 9.8
+
+  // aa, at, ac, ag, tt, ta, tc, tg, cc, ca, ct, cg, gg, ga, gt, gc
+
+  // "AA/TT": -22.2,22.2,
+  // "AT/TA": -20.4,20.4,
+  // "AC/TG": -22.4,22.4,
+  // "AG/TC": -21.0,21.0,
+  // "TT/AA": -22.2,22.2,
+  // "TA/AT": -21.3,21.3,
+  // "TC/AG": -22.2,22.2,
+  // "TG/AC": -22.7,22.7,
+  // "CC/GG": -19.9,19.9,
+  // "CA/GT": -22.7,22.7,
+  // "CT/GA": -21.0,21.0,
+  // "CG/GC": -27.2,27.2,
+  // "GG/CC": -19.9,19.9,
+  // "GT/CA": -22.4,22.2,
+  // "GA/CT": -22.2,22.4,
+  // "GC/CG": -24.4,24.4
 
   /**
    * @private

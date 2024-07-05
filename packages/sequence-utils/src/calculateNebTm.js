@@ -9,8 +9,7 @@ import calculatePercentGc from "./calculatePercentGC";
 // primer concentration & monovalent cation concentration in M
 export default function calculateNebTm(
   sequence,
-  primerConc,
-  { monovalentCationConc } = {}
+  { monovalentCationConc = 0.05, primerConc = 0.0000005 } = {}
 ) {
   try {
     const checkForDegenerateBases = /[^atgc]/i.test(sequence);
