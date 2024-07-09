@@ -638,7 +638,9 @@ a,,desc,,false,dna,misc_feature
     cy.contains(".bp3-dialog", `Description`); //the expected headers should show up
     cy.contains("Review and Edit Data").click();
     cy.get(`.hasCellError`).type("haha{enter}");
-    // cy.get(`.hasCellError:last [data-test="tgCell_name"]`).type("haha{enter}", {force: true});
+    cy.get(`.hasCellError:last [data-test="tgCell_name"]`).type("haha{enter}", {
+      force: true
+    });
     cy.get(`button:contains(Next File):first`).click();
     cy.get(
       `.bp3-dialog .bp3-tab[aria-selected="true"]:contains(testUploadWizard_messedUpHeaders.csv) .bp3-icon-warning-sign`
@@ -682,53 +684,53 @@ a,,desc,,false,dna,misc_feature
       cy.window().then(win => {
         expect(win.exampleFile[0].parsedData).to.deep.equal([
           {
-            name: "a",
             description: "",
+            isRegex: false,
+            matchType: "dna",
+            name: "a",
             sequence: "tom",
-            isRegex: false,
-            matchType: "dna",
             type: "misc_feature"
           },
           {
+            description: "",
+            isRegex: false,
+            matchType: "dna",
             name: "a",
-            description: "",
             sequence: "g",
-            isRegex: false,
-            matchType: "dna",
             type: "misc_feature"
           },
           {
+            description: "",
+            isRegex: false,
+            matchType: "dna",
             name: "a",
-            description: "",
             sequence: "g",
-            isRegex: false,
-            matchType: "dna",
             type: "misc_feature"
           },
           {
-            name: "b",
             description: "",
-            sequence: "g",
             isRegex: false,
             matchType: "dna",
+            name: "b",
+            sequence: "g",
             type: "misc_feature"
           },
           {
-            name: "b",
             description: "",
-            sequence: "g",
             isRegex: false,
             matchType: "dna",
+            name: "b",
+            sequence: "g",
             type: "misc_feature"
           }
         ]);
         expect(win.exampleFile[1].parsedData).to.deep.equal([
           {
-            name: "a",
             description: "",
-            sequence: "robbin",
             isRegex: false,
             matchType: "dna",
+            name: "a",
+            sequence: "robbin",
             type: "misc_feature"
           },
           {

@@ -1,7 +1,7 @@
 import { camelCase } from "lodash-es";
 import { startCase, keyBy, map } from "lodash-es";
 
-function convertSchema(schema) {
+const convertSchema = schema => {
   let schemaToUse = schema;
   if (!schemaToUse.fields && Array.isArray(schema)) {
     schemaToUse = {
@@ -43,7 +43,7 @@ function convertSchema(schema) {
     return fieldToUse;
   });
   return schemaToUse;
-}
+};
 
 export function mergeSchemas(_originalSchema, _overrideSchema) {
   const originalSchema = convertSchema(_originalSchema);

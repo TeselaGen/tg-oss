@@ -65,7 +65,7 @@ function safeParse(val) {
 }
 function getFieldsMappedByCCDisplayName(schema) {
   return schema.fields.reduce((acc, field) => {
-    acc[camelCase(field.displayName || field.path)] = field;
+    acc[camelCase(field.path || field.displayName)] = field;
     return acc;
   }, {});
 }
@@ -82,7 +82,7 @@ function orderEntitiesLocal(orderArray, entities, schema, ownProps) {
         throw new Error(
           "Ruh roh, there should have been a column to sort on for " +
             order +
-            "but none was found in " +
+            " but none was found in " +
             schema.fields
         );
       }

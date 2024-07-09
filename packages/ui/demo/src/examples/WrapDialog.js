@@ -54,7 +54,7 @@ function DialogInner(p) {
             hideModal={() => {
               set2ndDialogOpen(false);
             }}
-          ></MyDialog>
+          />
         )}
         <Button
           onClick={() => {
@@ -63,8 +63,8 @@ function DialogInner(p) {
         >
           Show a datatable
         </Button>
-        {isDatatablePresent && <SimpleTable withSearch></SimpleTable>}
-        <InputGroup className={"enter-should-work-here"}></InputGroup>
+        {isDatatablePresent && <SimpleTable withSearch />}
+        <InputGroup className={"enter-should-work-here"} />
         <TgSelect
           value={val}
           onChange={val => {
@@ -75,7 +75,7 @@ function DialogInner(p) {
               color: "red",
               label: (
                 <span>
-                  hey <div>I'm some texttt</div> <Icon icon="circle"></Icon>
+                  hey <div>I'm some texttt</div> <Icon icon="circle" />
                 </span>
               ),
               value: "123y4"
@@ -91,12 +91,12 @@ function DialogInner(p) {
             { color: "white", label: "my: accomplice", value: "14:001212" }
           ]}
           className={"imTgSelect enter-should-work-if-popover-not-open"}
-        ></TgSelect>
-        <textarea className={"enter-should-not-work"}></textarea>
-        <textarea className={"tg-allow-dialog-form-enter"}></textarea>
-        <br></br>
+        />
+        <textarea className={"enter-should-not-work"} />
+        <textarea className={"tg-allow-dialog-form-enter"} />
+        <br />
         {isSubmitted && "Form Has Submitted"}
-        <br></br>
+        <br />
         <Button
           icon={isSubmitting ? "circle-arrow-down" : undefined}
           onClick={() => {
@@ -132,7 +132,7 @@ export default function WrapDialogDemo() {
               setOpen(false);
             }}
             isOpen={isOpen}
-          ></MyDialog>
+          />
         )}
       </div>
     </Provider>

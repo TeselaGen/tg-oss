@@ -18,7 +18,7 @@ import {
 } from "@blueprintjs/core";
 import withEditorInteractions from "../withEditorInteractions";
 import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
-import { noop, pick } from "lodash-es";
+import { pick } from "lodash-es";
 
 const MAX_DIGEST_CUTSITES = 50;
 const MAX_PARTIAL_DIGEST_CUTSITES = 10;
@@ -30,7 +30,7 @@ export class DigestTool extends React.Component {
       // height = 100,
       dimensions = {},
       lanes,
-      digestTool: { selectedFragment, computePartialDigest },
+      digestTool: { computePartialDigest },
       onDigestSave,
       computePartialDigestDisabled,
       computeDigestDisabled,
@@ -130,14 +130,6 @@ export class DigestTool extends React.Component {
                 withSearch={false}
                 onSingleRowSelect={({ onFragmentSelect }) => {
                   onFragmentSelect();
-                }}
-                reduxFormSelectedEntityIdMap={{
-                  input: {
-                    value: {
-                      [selectedFragment]: true
-                    },
-                    onChange: noop
-                  }
                 }}
                 formName="digestInfoTable"
                 entities={lanes[0].map(

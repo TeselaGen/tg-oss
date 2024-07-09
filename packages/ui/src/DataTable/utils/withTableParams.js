@@ -1,4 +1,3 @@
-import React, { useContext, useEffect } from "react";
 import { change, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import { camelCase, isFunction, set } from "lodash-es";
@@ -6,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import { branch, compose } from "recompose";
 
 import pureNoFunc from "../../utils/pureNoFunc";
-import TableFormTrackerContext from "../TableFormTrackerContext";
 import convertSchema from "./convertSchema";
 import { getRecordsFromReduxForm } from "./withSelectedEntities";
 import {
@@ -185,10 +183,6 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
         ownProps: mergedOpts
       }),
       formNameFromWithTPCall: formNameFromWithTableParamsCall,
-      randomVarToForceLocalStorageUpdate: formSelector(
-        state,
-        "localStorageForceUpdate"
-      ),
       currentParams,
       selectedEntities,
       ...(withSelectedEntities &&
@@ -280,20 +274,6 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
     return allMergedProps;
   }
 
-  function addFormTracking(Component) {
-    return props => {
-      const formTracker = useContext(TableFormTrackerContext);
-      const { formName } = props;
-      useEffect(() => {
-        if (formTracker.isActive && !formTracker.formNames.includes(formName)) {
-          formTracker.pushFormName(formName);
-        }
-      }, [formTracker, formName]);
-
-      return <Component {...props} />;
-    };
-  }
-
   const toReturn = compose(
     connect((state, ownProps) => {
       if (ownProps.isTableParamsConnected) {
@@ -305,13 +285,10 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
           formValueSelector(formName)(state, "reduxFormQueryParams") || {} //tnr: we need this to trigger withRouter and force it to update if it is nested in a redux-connected container.. very ugly but necessary
       };
     }),
-    branch(props => {
-      //don't use withRouter if noRouter is passed!
-      return !props.noRouter;
-    }, withRouter),
+    //don't use withRouter if noRouter is passed!
+    branch(props => !props.noRouter, withRouter),
     connect(mapStateToProps, mapDispatchToProps, mergeProps),
-    pureNoFunc,
-    addFormTracking
+    pureNoFunc
   );
   if (Component) {
     return toReturn(Component);

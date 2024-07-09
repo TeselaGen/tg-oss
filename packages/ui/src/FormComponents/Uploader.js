@@ -16,7 +16,6 @@ import classnames from "classnames";
 import { nanoid } from "nanoid";
 import papaparse, { unparse } from "papaparse";
 import downloadjs from "downloadjs";
-import { observer } from "mobx-react";
 import UploadCsvWizardDialog, {
   SimpleInsertDataDialog
 } from "../UploadCsvWizard";
@@ -160,7 +159,7 @@ const InnerDropZone = ({
   </section>
 );
 
-const UploaderInner = ({
+const Uploader = ({
   accept: __accept,
   contentOverride: maybeContentOverride,
   innerIcon,
@@ -1192,8 +1191,6 @@ const UploaderInner = ({
     </>
   );
 };
-
-const Uploader = observer(UploaderInner);
 
 export default Uploader;
 

@@ -2,7 +2,6 @@ import { isEntityClean } from "./isEntityClean";
 import { getSelectedRowsFromEntities } from "./selection";
 import { removeCleanRows } from "./removeCleanRows";
 import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
-import computePresets from "./computePresets";
 import { getRecordsFromIdMap } from "./withSelectedEntities";
 import { formatPasteData } from "./formatPasteData";
 import { getFieldPathToField } from "./getFieldPathToField";
@@ -23,9 +22,10 @@ import { handleCopyHelper } from "./handleCopyHelper";
 import { handleCopyRows } from "./handleCopyRows";
 import { handleCopyColumn } from "./handleCopyColumn";
 import { isBottomRightCornerOfRectangle } from "./isBottomRightCornerOfRectangle";
+import { handleCopyTable } from "./handleCopyTable";
+import { PRIMARY_SELECTED_VAL } from "./primarySelectedValue";
 
 export {
-  computePresets,
   defaultParsePaste,
   formatPasteData,
   getAllRows,
@@ -44,8 +44,10 @@ export {
   handleCopyColumn,
   handleCopyHelper,
   handleCopyRows,
+  handleCopyTable,
   isBottomRightCornerOfRectangle,
   isEntityClean,
+  PRIMARY_SELECTED_VAL,
   removeCleanRows,
   stripNumberAtEnd
 };

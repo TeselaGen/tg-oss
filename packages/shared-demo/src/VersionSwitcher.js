@@ -69,19 +69,20 @@ export default function VersionSwitcher({
           width="100"
           height="20"
           title="GitHub"
-        ></iframe>
+        />
         {testBadge && <ReactMarkdown children={testBadge} />}
       </div>
       {options.length ? (
         <div>
           <HTMLSelect
+            name="version-select"
             minimal
             onChange={function onChange(e) {
               window.location.href = `https://teselagen.github.io/tg-oss/${packageName}/version/${e.currentTarget.value}/#/Editor`;
             }}
             value={version}
             options={options}
-          ></HTMLSelect>
+          />
           <a
             target="_blank"
             rel="noopener noreferrer"

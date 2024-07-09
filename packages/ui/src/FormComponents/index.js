@@ -464,23 +464,26 @@ export const RenderBlueprintInput = props => {
   return inner;
 };
 
-export const renderBlueprintCheckbox = props => {
-  const { input, label, tooltipInfo, beforeOnChange, onFieldSubmit, ...rest } =
-    props;
-  return (
-    <Checkbox
-      {...removeUnwantedProps(rest)}
-      {...input}
-      checked={input.value}
-      label={<LabelWithTooltipInfo label={label} tooltipInfo={tooltipInfo} />}
-      onChange={getCheckboxOrSwitchOnChange({
-        beforeOnChange,
-        input,
-        onFieldSubmit
-      })}
-    />
-  );
-};
+export const renderBlueprintCheckbox = ({
+  input,
+  label,
+  tooltipInfo,
+  beforeOnChange,
+  onFieldSubmit,
+  ...rest
+}) => (
+  <Checkbox
+    {...removeUnwantedProps(rest)}
+    {...input}
+    checked={input.value}
+    label={<LabelWithTooltipInfo label={label} tooltipInfo={tooltipInfo} />}
+    onChange={getCheckboxOrSwitchOnChange({
+      beforeOnChange,
+      input,
+      onFieldSubmit
+    })}
+  />
+);
 
 const getCheckboxOrSwitchOnChange = ({
   beforeOnChange,
@@ -517,17 +520,14 @@ export const renderBlueprintSwitch = props => {
   );
 };
 
-export const renderFileUpload = props => {
-  const { input, onFieldSubmit, ...rest } = props;
-  return (
-    <Uploader
-      fileList={input.value}
-      onFieldSubmit={onFieldSubmit}
-      {...rest}
-      onChange={input.onChange}
-    />
-  );
-};
+export const renderFileUpload = ({ input, onFieldSubmit, ...rest }) => (
+  <Uploader
+    fileList={input.value}
+    onFieldSubmit={onFieldSubmit}
+    {...rest}
+    onChange={input.onChange}
+  />
+);
 
 export class renderBlueprintTextarea extends React.Component {
   state = {

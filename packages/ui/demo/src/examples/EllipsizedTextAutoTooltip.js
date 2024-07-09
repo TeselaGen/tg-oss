@@ -30,7 +30,7 @@ export default function EllipsizedTextAutoTooltip() {
               setOpen(false);
             }}
             isOpen={isOpen}
-          ></MyDialog>
+          />
         )}
 
         <code>{`<Button data-title="I'm a tooltip that works like a title">`}</code>
@@ -60,11 +60,9 @@ export default function EllipsizedTextAutoTooltip() {
         </div>
         <Button
           data-title={`I'm a tooltip that works like a title
-          
           zonk
           `}
           title={`I'm a tooltip that works like a title
-          
           zonk
           `}
           data-avoid=".avoidMe"
@@ -72,11 +70,11 @@ export default function EllipsizedTextAutoTooltip() {
           Hover me!
         </Button>
       </DemoWrapper>
-      <br></br>
+      <br />
       <DemoWrapper>
         <h5>
           Or, set the following CSS styles on an element to get the following{" "}
-          <br></br>
+          <br />
           tooltip auto-magically whenever text gets ellispized:{" "}
         </h5>
         <code>
@@ -95,9 +93,9 @@ overflow: "hidden",
 whiteSpace: "nowrap",
 textOverflow: "ellipsis"`}
         </code>
-        <br></br>
-        <br></br>
-        <br></br>
+        <br />
+        <br />
+        <br />
         <div
           style={{
             width: 190,
@@ -111,55 +109,54 @@ textOverflow: "ellipsis"`}
           lalasdlfasdflkajsdflI'm some long ellipsized text
           lalasdlfasdflkajsdflI'm some long ellipsized text lalasdlfasdflkajsdfl
         </div>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </DemoWrapper>
     </div>
   );
 }
 
-function DialogInner() {
-  return (
-    <div>
-      <Button data-tip="I'm a tooltip">Hover me!</Button>
-      <div
-        style={{
-          width: 190,
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis"
-        }}
-      >
-        Hover me, I'm some long ellipsized text lalasdlfasdflkajsdfl I'm some
-        long ellipsized text lalasdlfasdflkajsdflI'm some long ellipsized text
-        lalasdlfasdflkajsdflI'm some long ellipsized text
-        lalasdlfasdflkajsdflI'm some long ellipsized text lalasdlfasdflkajsdfl
-      </div>
+const DialogInner = () => (
+  <div>
+    <Button data-tip="I'm a tooltip">Hover me!</Button>
+    <div
+      style={{
+        width: 190,
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis"
+      }}
+    >
+      Hover me, I'm some long ellipsized text lalasdlfasdflkajsdfl I'm some long
+      ellipsized text lalasdlfasdflkajsdflI'm some long ellipsized text
+      lalasdlfasdflkajsdflI'm some long ellipsized text lalasdlfasdflkajsdflI'm
+      some long ellipsized text lalasdlfasdflkajsdfl
     </div>
-  );
-}
+  </div>
+);
+
 const MyDialog = wrapDialog({ title: "Dialog Demo" })(DialogInner);

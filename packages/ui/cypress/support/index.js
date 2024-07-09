@@ -43,10 +43,10 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
         })
       : cy.wrap(selector);
 
-  getOrWrap(dragSelector)
-    .trigger("mousedown")
-    .trigger("mousemove", 10, 10, { force: true });
-  getOrWrap(dropSelector).trigger("mousemove").trigger("mouseup");
+  getOrWrap(dragSelector).trigger("mousedown");
+  getOrWrap(dragSelector).trigger("mousemove", 10, 10, { force: true });
+  getOrWrap(dropSelector).trigger("mousemove");
+  getOrWrap(dropSelector).trigger("mouseup");
 });
 
 Cypress.Commands.add(

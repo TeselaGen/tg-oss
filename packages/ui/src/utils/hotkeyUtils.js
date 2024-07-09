@@ -96,7 +96,7 @@ export const withHotkeys = (hotkeys, handlers) => {
       React.cloneElement(children, newProps)
     ) : (
       //if not, then we'll return a div that can be used
-      <div className="hotkeyHandler" {...newProps}></div>
+      <div className="hotkeyHandler" {...newProps} />
     );
   };
 };

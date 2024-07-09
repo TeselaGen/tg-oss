@@ -43,6 +43,7 @@ export default ({ demos, isOpen, setIsOpen }) => {
       </div>
 
       <InputGroup
+        name="Filter"
         rightElement={
           search && (
             <Button
@@ -61,7 +62,7 @@ export default ({ demos, isOpen, setIsOpen }) => {
         style={{ marginBottom: 5 /* maxWidth: 200 */ }}
         placeholder="Filter..."
         leftElement={<Icon style={{ marginTop: 6 }} icon="search"></Icon>}
-      ></InputGroup>
+      />
       {Object.keys(demos)
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         .map(function (name, index) {

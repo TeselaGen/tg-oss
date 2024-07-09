@@ -1,30 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 export const EditableCell = ({
+  value,
+  setValue,
   cancelEdit,
   dataTest,
   finishEdit,
-  initialValue,
-  isEditableCellInitialValue,
-  isNumeric,
-  shouldSelectAll,
-  stopSelectAll
+  isNumeric
 }) => {
-  const [value, setValue] = useState(initialValue);
   const inputRef = useRef(null);
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
-      if (isEditableCellInitialValue && !isNumeric) {
-        inputRef.current.selectionStart = inputRef.current.value.length;
-        inputRef.current.selectionEnd = inputRef.current.value.length;
-      } else if (shouldSelectAll) {
-        inputRef.current.select();
-        stopSelectAll();
-      }
     }
-  }, [isEditableCellInitialValue, isNumeric, shouldSelectAll, stopSelectAll]);
+  }, [isNumeric]);
 
   return (
     <input
@@ -39,7 +29,7 @@ export const EditableCell = ({
       autoFocus
       onKeyDown={e => {
         if (e.key === "Enter") {
-          finishEdit(value);
+          e.target.blur();
           e.stopPropagation();
         } else if (e.key === "Escape") {
           e.stopPropagation();

@@ -48,7 +48,7 @@ export default compose(
           }))}
           withCheckboxes
           schema={annotationType === "feature" ? schemaFeatures : schemaOther}
-        ></DataTable>
+        />
       </div>
       <DialogFooter
         hideModal={hideDialog}
@@ -92,7 +92,7 @@ export default compose(
           hideDialog();
         })}
         text="Add"
-      ></DialogFooter>
+      />
     </div>
   );
 });

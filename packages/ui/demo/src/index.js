@@ -256,7 +256,7 @@ const demos = {
 const Demo = () => {
   return (
     <Provider store={store}>
-      <DemoPage moduleName="ui" demos={demos} showComponentList></DemoPage>
+      <DemoPage moduleName="ui" demos={demos} showComponentList />
     </Provider>
   );
 };

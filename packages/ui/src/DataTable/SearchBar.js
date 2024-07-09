@@ -5,7 +5,7 @@ import { onEnterHelper } from "../utils/handlerHelpers";
 import { InputField } from "../FormComponents";
 
 const SearchBar = ({
-  reduxFormSearchInput,
+  searchInput,
   setSearchTerm,
   loading,
   searchMenuButton,
@@ -29,7 +29,7 @@ const SearchBar = ({
         minimal
         icon="search"
         onClick={() => {
-          setSearchTerm(reduxFormSearchInput);
+          setSearchTerm(searchInput);
         }}
       />
     );
@@ -46,7 +46,7 @@ const SearchBar = ({
       {...onEnterHelper(e => {
         e.preventDefault();
         e.stopPropagation();
-        setSearchTerm(reduxFormSearchInput);
+        setSearchTerm(searchInput);
         e.nativeEvent.stopImmediatePropagation();
       })}
       rightElement={rightElement}

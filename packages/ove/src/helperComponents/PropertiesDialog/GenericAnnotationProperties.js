@@ -233,7 +233,7 @@ const genericAnnotationProperties = ({
                           )
                         });
                       }}
-                    ></AnchorButton>
+                    />
                   </Tooltip>
                   <Tooltip
                     position="top"
@@ -251,7 +251,7 @@ const genericAnnotationProperties = ({
                         annotationPropertiesSelectedEntities.length !== 1
                       }
                       icon="edit"
-                    ></AnchorButton>
+                    />
                   </Tooltip>
 
                   {["feature"].includes(annotationType) && (
@@ -291,7 +291,7 @@ const genericAnnotationProperties = ({
                       intent="danger"
                       disabled={!annotationPropertiesSelectedEntities.length}
                       icon="trash"
-                    ></AnchorButton>
+                    />
                   </Tooltip>
                 </ButtonGroup>
               )}
@@ -399,6 +399,6 @@ export function getVisFilter(submenu) {
       className="propertiesVisFilter"
       data-tip="Visibility Filter"
       menu={<Menu>{submenu}</Menu>}
-    ></DropdownButton>
+    />
   );
 }

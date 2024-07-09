@@ -11,8 +11,8 @@ export const withCommand =
         mappings[k] === "execute"
           ? event => cmd.execute({ event })
           : typeof mappings[k] === "function"
-          ? mappings[k](cmd, props)
-          : cmd[mappings[k]];
+            ? mappings[k](cmd, props)
+            : cmd[mappings[k]];
     });
 
     let out = <WrappedComponent {...mappedProps} {...props} />;
@@ -30,10 +30,10 @@ export const CmdCheckbox = withCommand({
   label: (cmd, props) =>
     props.name ||
     (props.prefix && (
-      <React.Fragment>
+      <>
         {props.prefix}
         {cmd.name}
-      </React.Fragment>
+      </>
     )) ||
     cmd.name,
   disabled: "isDisabled",

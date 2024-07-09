@@ -68,7 +68,7 @@ const DemoPage = ({ moduleName, demos, showComponentList }) => {
                     minimal
                     intent="primary"
                     icon="chevron-right"
-                  ></Button>
+                  />
                 )
               }
               packageName={`${moduleName}`}
@@ -173,7 +173,7 @@ const DemoComponentWrapper = ({
     } else {
       component = (
         <>
-          <Demo history={history}></Demo>
+          <Demo history={history} />
           {!!props.length && (
             <>
               <h6

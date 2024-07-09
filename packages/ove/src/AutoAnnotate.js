@@ -165,8 +165,9 @@ export const AutoAnnotateModal = compose(
                 >
                   download example
                 </a>
-                ) with the following columns:<br></br>
-                <br></br>
+                ) with the following columns:
+                <br />
+                <br />
                 <div style={{ display: "flex" }}>
                   name,description,sequence,type,
                   <span style={{ display: "flex" }}>
@@ -185,15 +186,15 @@ export const AutoAnnotateModal = compose(
                           regex matching
                         </span>
                       }
-                    ></InfoHelper>
+                    />
                   </span>
                   ,matchType
                 </div>
-                <br></br>
+                <br />
                 {annotationType !== "feature" && (
                   <>
                     <i>Note: the "type" column is optional</i>
-                    <br></br>
+                    <br />
                   </>
                 )}
               </div>
@@ -203,12 +204,12 @@ export const AutoAnnotateModal = compose(
                 fileLimit={1}
                 isRequired
                 accept=".csv"
-              ></FileUploadField>
+              />
             </div>
           }
           id="csvFile"
           title="CSV"
-        ></Tab>
+        />
         <Tab
           panel={
             <div>
@@ -234,7 +235,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                 name="apeFile"
                 isRequired
                 accept=".txt"
-              ></FileUploadField>
+              />
               {error && (
                 <div style={{ padding: 5, color: Colors.RED1 }}>{error}</div>
               )}
@@ -242,10 +243,10 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
           }
           id="apeFile"
           title="ApE File"
-        ></Tab>
+        />
         {getCustomAutoAnnotateList &&
           (loadingCustomAnnList ? (
-            <Tab disabled title="Loading..."></Tab>
+            <Tab disabled title="Loading..." />
           ) : (
             customAnnResponse &&
             customAnnResponse.list && (
@@ -263,13 +264,13 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                             : customAnnsSchemaNoType
                         }
                         entities={customAnnResponse.list}
-                      ></DataTable>
+                      />
                     </div>
                   ) : (
                     <div>No Annotations Found</div>
                   )
                 }
-              ></Tab>
+              />
             )
           ))}
       </Tabs>
@@ -451,7 +452,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
           }
         })}
         text="Annotate"
-      ></DialogFooter>
+      />
     </div>
   );
 });

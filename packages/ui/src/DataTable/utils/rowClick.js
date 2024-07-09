@@ -3,15 +3,25 @@ import { getSelectedRowsFromEntities } from "./selection";
 import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 import { getRecordsFromIdMap } from "./withSelectedEntities";
 
-export default function rowClick(e, rowInfo, entities, props) {
-  const {
+export default function rowClick(
+  e,
+  rowInfo,
+  entities,
+  {
     reduxFormSelectedEntityIdMap,
     isSingleSelect,
     noSelect,
     onRowClick,
     isEntityDisabled,
-    withCheckboxes
-  } = props;
+    withCheckboxes,
+    onDeselect,
+    onSingleRowSelect,
+    onMultiRowSelect,
+    noDeselectAll,
+    onRowSelect,
+    change
+  }
+) {
   const entity = rowInfo.original;
   onRowClick(e, entity, rowInfo);
   if (noSelect || isEntityDisabled(entity)) return;
@@ -101,7 +111,19 @@ export default function rowClick(e, rowInfo, entities, props) {
     }
   }
 
-  finalizeSelection({ idMap: newIdMap, entities, props });
+  finalizeSelection({
+    idMap: newIdMap,
+    entities,
+    props: {
+      onDeselect,
+      onSingleRowSelect,
+      onMultiRowSelect,
+      noDeselectAll,
+      onRowSelect,
+      noSelect,
+      change
+    }
+  });
 }
 
 export function changeSelectedEntities({ idMap, entities = [], change }) {

@@ -43,12 +43,12 @@ export default ({
   };
   if (displayToSide) {
     toReturn = (
-      <React.Fragment>
+      <>
         {IconInner}
         <span style={{ paddingLeft: 5, fontStyle: "italic" }}>
           {content || children}
         </span>
-      </React.Fragment>
+      </>
     );
   } else if (isPopover) {
     toReturn = <Popover {...toolTipOrPopoverProps} target={IconInner} />;

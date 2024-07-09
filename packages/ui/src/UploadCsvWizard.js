@@ -1,14 +1,12 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { reduxForm, change, formValueSelector, destroy } from "redux-form";
 import { Callout, Icon, Intent, Tab, Tabs } from "@blueprintjs/core";
 import immer from "immer";
-import { observer } from "mobx-react";
 import "./UploadCsvWizard.css";
 import { isFunction } from "lodash-es";
 import { compose } from "recompose";
 import SimpleStepViz from "./SimpleStepViz";
 import { nanoid } from "nanoid";
-import { tgFormValueSelector } from "./utils/tgFormValues";
 import { some } from "lodash-es";
 import { times } from "lodash-es";
 import DialogFooter from "./DialogFooter";
@@ -23,6 +21,10 @@ import { addSpecialPropToAsyncErrs } from "./FormComponents/tryToMatchSchemas";
 import { cloneDeep } from "lodash-es";
 import { InputField } from "./FormComponents";
 
+const useSelectorOptions = {
+  devModeChecks: { stabilityCheck: "never" }
+};
+
 const getInitialSteps = csvValidationIssue => [
   { text: "Review Headers", active: csvValidationIssue },
   { text: "Review Data", active: !csvValidationIssue }
@@ -35,9 +37,8 @@ const UploadCsvWizardDialog = compose(
   }),
   reduxForm({
     form: "UploadCsvWizardDialog"
-  }),
-  observer
-)(function UploadCsvWizardDialogOuter({
+  })
+)(({
   csvValidationIssue,
   doAllFilesHaveSameHeaders,
   filesWIssues: _filesWIssues,
@@ -48,7 +49,7 @@ const UploadCsvWizardDialog = compose(
   searchResults,
   userSchema,
   validateAgainstSchema
-}) {
+}) => {
   const dispatch = useDispatch();
   // will unmount state hook
   useEffect(() => {
@@ -90,7 +91,7 @@ const UploadCsvWizardDialog = compose(
         finishedFiles
       };
     }
-  });
+  }, useSelectorOptions);
 
   const [hasSubmittedOuter, setSubmittedOuter] = useState();
   const [steps, setSteps] = useState(getInitialSteps(true));
@@ -296,160 +297,159 @@ const UploadCsvWizardDialog = compose(
   }
 });
 
-const UploadCsvWizardDialogInner = reduxForm()(
-  function UploadCsvWizardDialogInner({
-    validateAgainstSchema,
-    userSchema,
-    searchResults,
-    onUploadWizardFinish,
-    csvValidationIssue,
-    ignoredHeadersMsg,
-    matchedHeaders,
-    handleSubmit,
-    fileIndex,
-    onBackClick,
-    changeForm,
-    setFilesWIssues,
-    doAllFilesHaveSameHeaders,
-    filesWIssues,
-    datatableFormName = "editableCellTable",
-    onMultiFileUploadSubmit,
-    isThisTheLastBadFile,
-    submitting
-  }) {
-    const [hasSubmitted, setSubmitted] = useState(!csvValidationIssue);
-    const [steps, setSteps] = useState(getInitialSteps(csvValidationIssue));
+const UploadCsvWizardDialogInner = reduxForm()(({
+  validateAgainstSchema,
+  userSchema,
+  searchResults,
+  onUploadWizardFinish,
+  csvValidationIssue,
+  ignoredHeadersMsg,
+  matchedHeaders,
+  handleSubmit,
+  fileIndex,
+  onBackClick,
+  changeForm,
+  setFilesWIssues,
+  doAllFilesHaveSameHeaders,
+  filesWIssues,
+  datatableFormName = "editableCellTable",
+  onMultiFileUploadSubmit,
+  isThisTheLastBadFile,
+  submitting
+}) => {
+  const [hasSubmitted, setSubmitted] = useState(!csvValidationIssue);
+  const [steps, setSteps] = useState(getInitialSteps(csvValidationIssue));
 
-    const { reduxFormEntities, reduxFormCellValidation } = useSelector(state =>
+  const { reduxFormEntities, reduxFormCellValidation } = useSelector(
+    state =>
       formValueSelector(datatableFormName)(
         state,
         "reduxFormEntities",
         "reduxFormCellValidation"
-      )
-    );
+      ),
+    useSelectorOptions
+  );
 
-    let inner;
-    if (hasSubmitted) {
-      inner = (
-        <PreviewCsvData
-          datatableFormName={datatableFormName}
-          showDoesDataLookCorrectMsg
-          initialEntities={reduxFormEntities || null}
-          matchedHeaders={matchedHeaders}
-          validateAgainstSchema={validateAgainstSchema}
-          userSchema={userSchema}
-        />
-      );
-    } else {
-      inner = (
-        <MatchHeaders
-          onMultiFileUploadSubmit={onMultiFileUploadSubmit}
-          csvValidationIssue={csvValidationIssue}
-          ignoredHeadersMsg={ignoredHeadersMsg}
-          searchResults={searchResults}
-          matchedHeaders={matchedHeaders}
-          userSchema={userSchema}
-          reduxFormEntitiesArray={[reduxFormEntities]}
-          changeForm={changeForm}
-          datatableFormName={datatableFormName}
-          setFilesWIssues={setFilesWIssues}
-          filesWIssues={filesWIssues}
-          fileIndex={fileIndex}
-        />
-      );
-    }
-    const { entsToUse, validationToUse } = removeCleanRows(
-      reduxFormEntities,
-      reduxFormCellValidation
+  let inner;
+  if (hasSubmitted) {
+    inner = (
+      <PreviewCsvData
+        datatableFormName={datatableFormName}
+        showDoesDataLookCorrectMsg
+        entities={reduxFormEntities || null}
+        matchedHeaders={matchedHeaders}
+        validateAgainstSchema={validateAgainstSchema}
+        userSchema={userSchema}
+      />
     );
-
-    return (
-      <div>
-        {!doAllFilesHaveSameHeaders && (
-          <SimpleStepViz style={{ marginTop: 8 }} steps={steps} />
-        )}
-        <div className="bp3-dialog-body">{inner}</div>
-        <DialogFooter
-          text={
-            !hasSubmitted
-              ? "Review and Edit Data"
-              : onMultiFileUploadSubmit
-                ? isThisTheLastBadFile
-                  ? "Finalize Files"
-                  : "Next File"
-                : "Add File"
-          }
-          submitting={submitting}
-          disabled={
-            hasSubmitted &&
-            (!entsToUse?.length || some(validationToUse, v => v))
-          }
-          intent={
-            hasSubmitted && onMultiFileUploadSubmit && isThisTheLastBadFile
-              ? Intent.SUCCESS
-              : Intent.PRIMARY
-          }
-          noCancel={onMultiFileUploadSubmit}
-          {...(hasSubmitted && {
-            onBackClick:
-              onBackClick ||
-              (() => {
-                setSteps(
-                  immer(steps, draft => {
-                    draft[0].active = true;
-                    draft[0].completed = false;
-                    draft[1].active = false;
-                  })
-                );
-                setSubmitted(false);
-              })
-          })}
-          onClick={handleSubmit(async function () {
-            if (!hasSubmitted) {
-              //step 1 submit
-              setSteps(
-                immer(steps, draft => {
-                  draft[0].active = false;
-                  draft[0].completed = true;
-                  draft[1].active = true;
-                })
-              );
-              setSubmitted(true);
-            } else {
-              if (!onMultiFileUploadSubmit) {
-                //do async validation here if needed
-                if (
-                  await asyncValidateHelper(
-                    validateAgainstSchema,
-                    entsToUse,
-                    changeForm,
-                    `editableCellTable`
-                  )
-                )
-                  return;
-              }
-              //step 2 submit
-              const payload = maybeStripIdFromEntities(
-                entsToUse,
-                validateAgainstSchema
-              );
-              return onMultiFileUploadSubmit
-                ? await onMultiFileUploadSubmit()
-                : onUploadWizardFinish({ res: [payload] });
-            }
-          })}
-          style={{ alignSelf: "end" }}
-        />
-      </div>
+  } else {
+    inner = (
+      <MatchHeaders
+        onMultiFileUploadSubmit={onMultiFileUploadSubmit}
+        csvValidationIssue={csvValidationIssue}
+        ignoredHeadersMsg={ignoredHeadersMsg}
+        searchResults={searchResults}
+        matchedHeaders={matchedHeaders}
+        userSchema={userSchema}
+        reduxFormEntitiesArray={[reduxFormEntities]}
+        changeForm={changeForm}
+        datatableFormName={datatableFormName}
+        setFilesWIssues={setFilesWIssues}
+        filesWIssues={filesWIssues}
+        fileIndex={fileIndex}
+      />
     );
   }
-);
+  const { entsToUse, validationToUse } = removeCleanRows(
+    reduxFormEntities,
+    reduxFormCellValidation
+  );
+
+  return (
+    <div>
+      {!doAllFilesHaveSameHeaders && (
+        <SimpleStepViz style={{ marginTop: 8 }} steps={steps} />
+      )}
+      <div className="bp3-dialog-body">{inner}</div>
+      <DialogFooter
+        text={
+          !hasSubmitted
+            ? "Review and Edit Data"
+            : onMultiFileUploadSubmit
+              ? isThisTheLastBadFile
+                ? "Finalize Files"
+                : "Next File"
+              : "Add File"
+        }
+        submitting={submitting}
+        disabled={
+          hasSubmitted && (!entsToUse?.length || some(validationToUse, v => v))
+        }
+        intent={
+          hasSubmitted && onMultiFileUploadSubmit && isThisTheLastBadFile
+            ? Intent.SUCCESS
+            : Intent.PRIMARY
+        }
+        noCancel={onMultiFileUploadSubmit}
+        {...(hasSubmitted && {
+          onBackClick:
+            onBackClick ||
+            (() => {
+              setSteps(
+                immer(steps, draft => {
+                  draft[0].active = true;
+                  draft[0].completed = false;
+                  draft[1].active = false;
+                })
+              );
+              setSubmitted(false);
+            })
+        })}
+        onClick={handleSubmit(async () => {
+          if (!hasSubmitted) {
+            //step 1 submit
+            setSteps(
+              immer(steps, draft => {
+                draft[0].active = false;
+                draft[0].completed = true;
+                draft[1].active = true;
+              })
+            );
+            setSubmitted(true);
+          } else {
+            if (!onMultiFileUploadSubmit) {
+              //do async validation here if needed
+              if (
+                await asyncValidateHelper(
+                  validateAgainstSchema,
+                  entsToUse,
+                  changeForm,
+                  `editableCellTable`
+                )
+              )
+                return;
+            }
+            //step 2 submit
+            const payload = maybeStripIdFromEntities(
+              entsToUse,
+              validateAgainstSchema
+            );
+            return onMultiFileUploadSubmit
+              ? await onMultiFileUploadSubmit()
+              : onUploadWizardFinish({ res: [payload] });
+          }
+        })}
+        style={{ alignSelf: "end" }}
+      />
+    </div>
+  );
+});
 
 export default UploadCsvWizardDialog;
 
 const exampleData = { userData: times(5).map(() => ({ _isClean: true })) };
 
-export const PreviewCsvData = observer(props => {
+export const PreviewCsvData = props => {
   const {
     matchedHeaders,
     isEditingExistingFile,
@@ -458,7 +458,7 @@ export const PreviewCsvData = observer(props => {
     datatableFormName,
     validateAgainstSchema,
     userSchema = exampleData,
-    initialEntities
+    entities
   } = props;
   const rerenderKey = useRef(0);
   rerenderKey.current = rerenderKey.current + 1;
@@ -502,6 +502,7 @@ export const PreviewCsvData = observer(props => {
       }
       return toRet;
     });
+
   return (
     <div style={{ minWidth: 400 }}>
       <Callout style={{ marginBottom: 5 }} intent="primary">
@@ -539,13 +540,12 @@ export const PreviewCsvData = observer(props => {
         isSimple
         keepDirtyOnReinitialize
         isCellEditable
-        initialEntities={(initialEntities ? initialEntities : data) || []}
-        entities={(initialEntities ? initialEntities : data) || []}
+        entities={(entities ? entities : data) || []}
         schema={validateAgainstSchema}
       />
     </div>
   );
-});
+};
 
 export const SimpleInsertDataDialog = compose(
   wrapDialog({
@@ -553,17 +553,9 @@ export const SimpleInsertDataDialog = compose(
     title: "Build CSV File",
     style: { width: "fit-content" }
   }),
-  reduxForm({ form: "SimpleInsertDataDialog" }),
-  tgFormValueSelector(
-    "simpleInsertEditableTable",
-    "reduxFormEntities",
-    "reduxFormCellValidation"
-  ),
-  observer
-)(function SimpleInsertDataDialog({
+  reduxForm({ form: "SimpleInsertDataDialog" })
+)(({
   onSimpleInsertDialogFinish,
-  reduxFormEntities,
-  reduxFormCellValidation,
   validateAgainstSchema,
   submitting,
   isEditingExistingFile,
@@ -572,16 +564,24 @@ export const SimpleInsertDataDialog = compose(
   headerMessage,
   handleSubmit,
   userSchema,
-  initialEntities
-}) {
+  entities
+}) => {
   const dispatch = useDispatch();
-  const { entsToUse, validationToUse } = removeCleanRows(
-    reduxFormEntities,
-    reduxFormCellValidation
+  const reduxFormEntities = useSelector(
+    state => state.form?.simpleInsertEditableTable?.values.reduxFormEntities,
+    useSelectorOptions
+  );
+  const reduxFormCellValidation = useSelector(
+    state =>
+      state.form?.simpleInsertEditableTable?.values.reduxFormCellValidation,
+    useSelectorOptions
+  );
+  const { entsToUse, validationToUse } = useMemo(
+    () => removeCleanRows(reduxFormEntities, reduxFormCellValidation),
+    [reduxFormEntities, reduxFormCellValidation]
   );
 
   const changeForm = (...args) => dispatch(change(...args));
-
   return (
     <>
       <div className="bp3-dialog-body">
@@ -602,8 +602,8 @@ export const SimpleInsertDataDialog = compose(
           headerMessage={headerMessage}
           validateAgainstSchema={validateAgainstSchema}
           userSchema={userSchema}
-          initialEntities={initialEntities}
-          datatableFormName={"simpleInsertEditableTable"}
+          entities={entities}
+          datatableFormName="simpleInsertEditableTable"
         />
       </div>
       <DialogFooter
