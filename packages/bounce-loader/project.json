@@ -45,7 +45,11 @@
       "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
     },
     "publish": {
-      "command": "node tools/scripts/publish.mjs bounce-loader {args.ver} {args.tag}",
+      "command": "node tools/scripts/publish.mjs bounce-loader latest",
+      "dependsOn": ["e2e", "build"]
+    },
+    "publish-beta": {
+      "command": "node tools/scripts/publish.mjs bounce-loader beta",
       "dependsOn": ["e2e", "build"]
     }
   }

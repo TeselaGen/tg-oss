@@ -19,7 +19,11 @@
       }
     },
     "publish": {
-      "command": "node tools/scripts/publish.mjs sequence-utils {args.ver} {args.tag}",
+      "command": "node tools/scripts/publish.mjs sequence-utils latest",
+      "dependsOn": ["test", "build"]
+    },
+    "publish-beta": {
+      "command": "node tools/scripts/publish.mjs sequence-utils beta",
       "dependsOn": ["test", "build"]
     },
     "test": {
