@@ -23,3 +23,9 @@ nx run ui:start
 ```
 nx run ui:publish
 ```
+
+## Publishing a beta version (for use when linking to a branch in another project)
+
+```
+nx run ui:publish-beta
+```
