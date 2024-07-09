@@ -224,6 +224,9 @@ button:not(:disabled):active {
 .bp3-tabs.bp3-vertical > .bp3-tab-panel {
   min-width: 0px;
 }
+.bp3-toast[class*="bp3-intent-"] .bp3-button.tg-clear-all-toasts {
+  border: 1px solid white !important;
+}
 .bp3-toast[class*="bp3-intent-"] .bp3-button.tg-clear-all-toasts:hover {
   /* background: blue !important; */
   /* background: unset !important; */
