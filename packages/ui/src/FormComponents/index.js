@@ -1,311 +1,43 @@
 import classNames from "classnames";
 import { SketchPicker } from "react-color";
-import { isNumber, noop, kebabCase, isPlainObject, isEqual } from "lodash-es";
+import { isNumber, noop, isPlainObject, isEqual } from "lodash-es";
 import mathExpressionEvaluator from "math-expression-evaluator";
-import React, { useContext, useState } from "react";
-import { Field, change } from "redux-form";
+import React, { useState } from "react";
+import { Field } from "redux-form";
 
 import "./style.css";
 import {
   InputGroup,
   NumericInput,
-  Intent,
   RadioGroup,
   Checkbox,
   EditableText,
-  Tooltip,
-  Position,
   Switch,
   Classes,
-  FormGroup,
   Button,
   TextArea,
   Popover
 } from "@blueprintjs/core";
 
 import { DateInput, DateRangeInput } from "@blueprintjs/datetime";
-import useDeepCompareEffect from "use-deep-compare-effect";
-import { difference } from "lodash-es";
-import { set } from "lodash-es";
 import TgSelect from "../TgSelect";
 import TgSuggest from "../TgSuggest";
-import InfoHelper from "../InfoHelper";
 import getDayjsFormatter from "../utils/getDayjsFormatter";
 import AsyncValidateFieldSpinner from "../AsyncValidateFieldSpinner";
-import {
-  AssignDefaultsModeContext,
-  WorkflowDefaultParamsContext,
-  workflowDefaultParamsObj
-} from "../AssignDefaultsModeContext";
+
 import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
 import Uploader from "./Uploader";
 import sortify from "./sortify";
-import { fieldRequired } from "./utils";
+import {
+  fieldRequired,
+  getOptions,
+  getCheckboxOrSwitchOnChange,
+  removeUnwantedProps,
+  LabelWithTooltipInfo
+} from "./utils";
+import { withAbstractWrapper } from "./AbstractField";
 
 export { fieldRequired };
-
-function getIntent({
-  showErrorIfUntouched,
-  meta: { touched, error, warning }
-}) {
-  const hasError = (touched || showErrorIfUntouched) && error;
-  const hasWarning = (touched || showErrorIfUntouched) && warning;
-  if (hasError) {
-    return Intent.DANGER;
-  } else if (hasWarning) {
-    return Intent.WARNING;
-  }
-}
-
-function getIntentClass(...args) {
-  const intent = getIntent(...args);
-  if (intent === Intent.DANGER) {
-    return Classes.INTENT_DANGER;
-  } else if (intent === Intent.WARNING) {
-    return Classes.INTENT_WARNING;
-  } else {
-    return "";
-  }
-}
-
-function removeUnwantedProps(props) {
-  const cleanedProps = { ...props };
-  delete cleanedProps.className;
-  delete cleanedProps.units;
-  delete cleanedProps.inlineLabel;
-  delete cleanedProps.isLabelTooltip;
-  delete cleanedProps.showErrorIfUntouched;
-  delete cleanedProps.onChange;
-  delete cleanedProps.containerStyle;
-  delete cleanedProps.onFieldSubmit;
-  delete cleanedProps.onBlur;
-  delete cleanedProps.intent;
-  delete cleanedProps.intentClass;
-  delete cleanedProps.meta;
-  delete cleanedProps.defaultValue;
-  delete cleanedProps.enableReinitialize;
-  delete cleanedProps.tabIndex;
-  delete cleanedProps.secondaryLabel;
-  delete cleanedProps.tooltipError;
-  delete cleanedProps.tooltipInfo;
-  delete cleanedProps.tooltipProps;
-  // delete cleanedProps.asyncValidate;
-  // delete cleanedProps.asyncValidating;
-  // delete cleanedProps.validateOnChange;
-  delete cleanedProps.hasCustomError;
-  if (cleanedProps.inputClassName) {
-    cleanedProps.className = cleanedProps.inputClassName;
-    delete cleanedProps.inputClassName;
-  }
-  return cleanedProps;
-}
-
-function LabelWithTooltipInfo({ label, tooltipInfo, labelStyle }) {
-  return tooltipInfo ? (
-    <div style={{ display: "flex", alignItems: "center", ...labelStyle }}>
-      {label}{" "}
-      <InfoHelper
-        style={{ marginLeft: "5px", marginTop: "-6px" }}
-        size={12}
-        content={tooltipInfo}
-      />
-    </div>
-  ) : (
-    label || null
-  );
-}
-
-class AbstractInput extends React.Component {
-  componentDidMount() {
-    const {
-      defaultValue,
-      enableReinitialize,
-      input: { value }
-    } = this.props;
-    if (
-      ((value !== false && !value) || enableReinitialize) &&
-      defaultValue !== undefined
-    ) {
-      this.updateDefaultValue();
-    }
-  }
-
-  componentDidUpdate(oldProps) {
-    const {
-      defaultValue: oldDefaultValue,
-      defaultValCount: oldDefaultValCount
-    } = oldProps;
-    const {
-      defaultValue,
-      defaultValCount,
-      enableReinitialize,
-      input: { value }
-    } = this.props;
-
-    if (
-      ((value !== false && !value) ||
-        enableReinitialize ||
-        defaultValCount !== oldDefaultValCount) &&
-      !isEqual(defaultValue, oldDefaultValue)
-    ) {
-      this.updateDefaultValue();
-    }
-  }
-
-  updateDefaultValue = () => {
-    const {
-      defaultValue,
-      input: { name },
-      meta: { dispatch, form },
-      onDefaultValChanged,
-      onFieldSubmit
-    } = this.props;
-    dispatch(change(form, name, defaultValue));
-    onDefaultValChanged &&
-      onDefaultValChanged(defaultValue, name, form, this.props);
-    onFieldSubmit && onFieldSubmit(defaultValue);
-  };
-
-  render() {
-    const {
-      children,
-      tooltipProps,
-      tooltipError,
-      disabled,
-      intent,
-      tooltipInfo,
-      label,
-      inlineLabel,
-      isLabelTooltip,
-      secondaryLabel,
-      className,
-      showErrorIfUntouched,
-      asyncValidating,
-      meta,
-      containerStyle,
-      leftEl,
-      rightEl,
-      labelStyle,
-      noOuterLabel,
-      fileLimit,
-      noMarginBottom,
-      assignDefaultButton,
-      showGenerateDefaultDot,
-      setAssignDefaultsMode,
-      startAssigningDefault,
-      input,
-      noFillField,
-      isRequired,
-      isLoadingDefaultValue
-    } = this.props;
-    const { touched, error, warning } = meta;
-
-    // if our custom field level validation is happening then we don't want to show the error visually
-    const showError =
-      (touched || showErrorIfUntouched) && error && !asyncValidating;
-    const showWarning = (touched || showErrorIfUntouched) && warning;
-    let componentToWrap =
-      isLabelTooltip || tooltipError ? (
-        <Tooltip
-          disabled={isLabelTooltip ? false : !showError}
-          intent={isLabelTooltip ? "none" : error ? "danger" : "warning"}
-          content={isLabelTooltip ? label : error || warning}
-          position={Position.TOP}
-          modifiers={popoverOverflowModifiers}
-          {...tooltipProps}
-        >
-          {children}
-        </Tooltip>
-      ) : (
-        children
-      );
-    const testClassName = "tg-test-" + kebabCase(input.name);
-    if (noFillField) {
-      componentToWrap = (
-        <div className="tg-no-fill-field">{componentToWrap}</div>
-      );
-    }
-
-    let helperText;
-    if (!tooltipError) {
-      if (showError) {
-        helperText = error;
-      } else if (showWarning) {
-        helperText = warning;
-      }
-    }
-
-    // if in a cypress test show message so that inputs will not be interactable
-    if (window.Cypress && isLoadingDefaultValue) {
-      return "Loading default value...";
-    }
-
-    let labelInfo = secondaryLabel;
-
-    const hasOuterLabel = !noOuterLabel && !isLabelTooltip;
-    function getFileLimitInfo() {
-      if (!fileLimit) return "";
-      return `max ${fileLimit} file${fileLimit === 1 ? "" : "s"}`;
-    }
-
-    if (isRequired && hasOuterLabel && label && !labelInfo) {
-      labelInfo = `(required${fileLimit ? `, ${getFileLimitInfo()}` : ""})`;
-    } else if (!labelInfo && fileLimit) {
-      labelInfo = `(${getFileLimitInfo()})`;
-    }
-
-    return (
-      <FormGroup
-        className={classNames(className, testClassName, {
-          "tg-flex-form-content": leftEl || rightEl,
-          "tg-tooltipError": tooltipError,
-          "tg-has-error": showError && error
-        })}
-        disabled={disabled}
-        helperText={helperText}
-        intent={intent}
-        label={
-          hasOuterLabel && (
-            <LabelWithTooltipInfo
-              labelStyle={labelStyle}
-              label={label}
-              tooltipInfo={tooltipInfo}
-            />
-          )
-        }
-        inline={inlineLabel}
-        labelInfo={labelInfo}
-        style={{
-          ...(noMarginBottom && { marginBottom: 0 }),
-          ...containerStyle
-        }}
-      >
-        {showGenerateDefaultDot && (
-          <div
-            style={{ zIndex: 10, position: "relative", height: 0, width: 0 }}
-          >
-            <div style={{ position: "absolute", left: "0px", top: "0px" }}>
-              <Tooltip
-                modifiers={popoverOverflowModifiers}
-                content="Allows a Default to be Set. Click to Enter Set Default Mode (or press Shift+D when outside the input field)"
-              >
-                <div
-                  onClick={() => {
-                    setAssignDefaultsMode(true);
-                    startAssigningDefault();
-                  }}
-                  className="generateDefaultDot"
-                ></div>
-              </Tooltip>
-            </div>
-          </div>
-        )}
-        {assignDefaultButton}
-        {leftEl} {componentToWrap} {rightEl}
-      </FormGroup>
-    );
-  }
-}
 
 export const renderBlueprintDateInput = props => {
   const { input, intent, onFieldSubmit, inputProps, ...rest } = props;
@@ -482,22 +214,6 @@ export const renderBlueprintCheckbox = props => {
   );
 };
 
-const getCheckboxOrSwitchOnChange = ({
-  beforeOnChange,
-  input,
-  onFieldSubmit
-}) =>
-  async function (e, val) {
-    const v = e.target ? e.target.checked : val;
-    if (beforeOnChange) {
-      const { stopEarly } = (await beforeOnChange(v, e)) || {};
-      if (stopEarly) return;
-      set(e, "target.checked", v);
-    }
-    input.onChange(e, val);
-    onFieldSubmit(v);
-  };
-
 export const renderBlueprintSwitch = props => {
   const { input, label, tooltipInfo, onFieldSubmit, beforeOnChange, ...rest } =
     props;
@@ -639,13 +355,6 @@ export class renderBlueprintTextarea extends React.Component {
     }
   }
 }
-
-// class ClickToEditWrapper extends React.Component {
-//   state = { isEditing: false };
-//   render() {
-//     return <div />;
-//   }
-// }
 
 export const renderBlueprintEditableText = props => {
   const { input, onFieldSubmit, ...rest } = props;
@@ -903,6 +612,7 @@ export const renderBlueprintNumericInput = props => {
     ...rest
   } = props;
   function handleBlurOrButtonClick(stringVal) {
+    // console.log(stringVal, typeof stringVal, "stringVal");
     if (rest.readOnly) return;
     try {
       const num = mathExpressionEvaluator.eval(stringVal);
@@ -925,8 +635,13 @@ export const renderBlueprintNumericInput = props => {
       {...(hideValue ? { value: "" } : {})}
       className={classNames(Classes.FILL, inputClassName)}
       onValueChange={(numericVal, stringVal) => {
-        // needed for redux form to change value
-        input.onChange(stringVal);
+        if (isNumber(stringVal)) {
+          input.onChange(numericVal);
+        } else {
+          // Allows to keep match expressions and empty strings
+          input.onChange(stringVal);
+        }
+
         //tnr: use this handler if you want to listen to all value changes!
         onAnyNumberChange && onAnyNumberChange(numericVal);
       }}
@@ -984,162 +699,53 @@ export const renderBlueprintRadioGroup = ({
   );
 };
 
-export class RenderReactColorPicker extends React.Component {
-  handleChange = color => {
-    const { input, onFieldSubmit } = this.props;
-
+export const renderReactColorPicker = props => {
+  const { input, onFieldSubmit, ...rest } = props;
+  const handleChange = color => {
     input.onChange(color.hex);
     onFieldSubmit(color.hex);
   };
 
-  render() {
-    const { input, onFieldSubmit, ...rest } = this.props;
-    return (
-      <Popover
-        position="bottom-right"
-        minimal
-        modifiers={popoverOverflowModifiers}
-        content={
-          <SketchPicker
-            className="tg-color-picker-selector"
-            color={input.value}
-            onChangeComplete={this.handleChange}
-            {...removeUnwantedProps(rest)}
-          />
-        }
+  return (
+    <Popover
+      position="bottom-right"
+      minimal
+      modifiers={popoverOverflowModifiers}
+      content={
+        <SketchPicker
+          className="tg-color-picker-selector"
+          color={input.value}
+          onChangeComplete={handleChange}
+          {...removeUnwantedProps(rest)}
+        />
+      }
+    >
+      <div
+        style={{
+          padding: "7px",
+          margin: "1px",
+          background: "#fff",
+          borderRadius: "1px",
+          boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
+          display: "inline-block",
+          cursor: "pointer"
+        }}
       >
         <div
+          className="tg-color-picker-selected-color"
           style={{
-            padding: "7px",
-            margin: "1px",
-            background: "#fff",
-            borderRadius: "1px",
-            boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
-            display: "inline-block",
-            cursor: "pointer"
+            width: "36px",
+            height: "14px",
+            borderRadius: "2px",
+            background: `${input.value}`
           }}
-        >
-          <div
-            className="tg-color-picker-selected-color"
-            style={{
-              width: "36px",
-              height: "14px",
-              borderRadius: "2px",
-              background: `${input.value}`
-            }}
-          />
-        </div>
-      </Popover>
-    );
-  }
-}
+        />
+      </div>
+    </Popover>
+  );
+};
 
-// tgreen: This doesn't work because the async validate function will not be automatically rerun onSubmit
-// class AddAsyncValidate extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       asyncValidating: false
-//     };
-//     this.runAsyncValidationDebounced = debounce(this.runAsyncValidation, 500);
-//   }
-
-//   componentDidUpdate(oldProps) {
-//     const {
-//       validateOnChange,
-//       input: { name, value },
-//       meta: { touched, form, dispatch }
-//     } = this.props;
-//     const newValue = value;
-//     const oldValue = oldProps.input.value;
-//     const valueHasChanged = newValue !== oldValue;
-//     if (validateOnChange && valueHasChanged) {
-//       this.runAsyncValidationDebounced(newValue);
-//     }
-//     // mark the input as touched after changing value
-//     if (valueHasChanged && !touched) {
-//       dispatch(touch(form, name));
-//     }
-//   }
-
-//   triggerAsyncValidation(error) {
-//     const {
-//       input: { name },
-//       meta: { dispatch, form },
-//       formAsyncErrors
-//     } = this.props;
-//     // this needs to get a fresh prop for formAsyncErrors otherwise it will get out of sync.
-//     // the test will catch this.
-//     dispatch(
-//       stopAsyncValidation(form, {
-//         ...formAsyncErrors,
-//         [name]: error
-//       })
-//     );
-//   }
-
-//   runAsyncValidation = async val => {
-//     const {
-//       input: { name },
-//       meta: { dispatch, form },
-//       asyncValidate
-//     } = this.props;
-
-//     this.setState({
-//       asyncValidating: true
-//     });
-//     // mark this field as invalid so that the user can not submit this form while async validating
-//     this.triggerAsyncValidation("asyncValidating");
-//     dispatch(startAsyncValidation(form));
-//     const error = await asyncValidate(val);
-//     this.triggerAsyncValidation(error);
-//     // if there is no error then clear it from redux
-//     if (!error) {
-//       dispatch(clearAsyncError(form, name));
-//     }
-
-//     this.setState({
-//       asyncValidating: false
-//     });
-
-//     return error;
-//   };
-
-//   onBlur = (...args) => {
-//     const { input } = this.props;
-//     // always run this on input blur so that the user cannot submit a form with a field that has not finished validating
-//     this.runAsyncValidation(input.value);
-//     input.onBlur(...args);
-//   };
-
-//   render() {
-//     const { asyncValidating } = this.state;
-//     const {
-//       passedComponent: Component,
-//       input,
-//       formAsyncErrors, // don't pass through
-//       dispatch, // don't pass through
-//       ...rest
-//     } = this.props;
-
-//     return (
-//       <Component
-//         {...rest}
-//         input={{
-//           ...input,
-//           onBlur: this.onBlur
-//         }}
-//         asyncValidating={asyncValidating}
-//       />
-//     );
-//   }
-// }
-
-// const WrappedAddAsyncValidate = connect((state, { meta }) => {
-//   return {
-//     formAsyncErrors: getFormAsyncErrors(meta.form)(state)
-//   };
-// })(AddAsyncValidate);
+/** RENDER UTILS */
 
 export function generateField(component, opts) {
   const compWithDefaultVal = withAbstractWrapper(component, opts);
@@ -1183,182 +789,7 @@ export function generateField(component, opts) {
   };
 }
 
-export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
-  return props => {
-    const {
-      massageDefaultIdValue,
-      generateDefaultValue,
-      defaultValueByIdOverride,
-      defaultValue: defaultValueFromProps,
-      isRequired,
-      ...rest
-    } = props;
-
-    //get is assign defaults mode
-    //if assign default value mode then add on to the component
-    const [defaultValCount, setDefaultValCount] = React.useState(0);
-    const [defaultValueFromBackend, setDefault] = useState();
-    const [allowUserOverride, setUserOverride] = useState(true);
-    const [isLoadingDefaultValue, setLoadingDefaultValue] = useState(false);
-    const { inAssignDefaultsMode, setAssignDefaultsMode } = useContext(
-      AssignDefaultsModeContext
-    );
-    // tnr: we might want to grab this context object off the window in the future and have it live in lims by default
-    // there is no reason for those vals to live in TRC. Example code below:
-    // const workflowParams = useContext(window.__tgDefaultValParamsContext || defaultNullContext);
-    const workflowParams = useContext(WorkflowDefaultParamsContext);
-
-    const caresAboutToolContext = generateDefaultValue?.params?.toolName;
-
-    const customParamsToUse = {
-      ...(caresAboutToolContext
-        ? { ...workflowDefaultParamsObj, ...workflowParams }
-        : {}),
-      ...(generateDefaultValue ? generateDefaultValue.customParams : {})
-    };
-
-    async function triggerGetDefault() {
-      if (!defaultValueByIdOverride) {
-        //if defaultValueByIdOverride is passed, we can skip over getting the value from the backend straight to massaging the default value
-        if (!window.__triggerGetDefaultValueRequest) return;
-        if (!generateDefaultValue) return;
-        setLoadingDefaultValue(true);
-        //custom params should match params keys. if not throw an error
-        const doParamsMatch = isEqual(
-          Object.keys({
-            ...(caresAboutToolContext ? workflowDefaultParamsObj : {}), //we don't want to compare these keys so we just spread them here
-            ...(generateDefaultValue.params || {})
-          }).sort(),
-          Object.keys(customParamsToUse).sort()
-        );
-        if (!doParamsMatch) {
-          console.warn(
-            `Issue with generateDefaultValue. customParams don't match params`
-          );
-          console.warn(
-            `generateDefaultValue.params:`,
-            generateDefaultValue.params
-          );
-          console.warn(`generateDefaultValue.customParams:`, customParamsToUse);
-          throw new Error(
-            `Issue with generateDefaultValue code=${
-              generateDefaultValue.code
-            }: Difference detected with: ${difference(
-              Object.keys(generateDefaultValue.params || {}),
-              Object.keys(customParamsToUse || {})
-            ).join(
-              ", "
-            )}. customParams passed into the field should match params (as defined in defaultValueConstants.js). See console for more details.`
-          );
-        }
-      }
-
-      try {
-        let { defaultValue, allowUserOverride } = defaultValueByIdOverride
-          ? { defaultValue: defaultValueByIdOverride }
-          : await window.__triggerGetDefaultValueRequest(
-              generateDefaultValue.code,
-              customParamsToUse
-            );
-        if (massageDefaultIdValue) {
-          const massagedRes = await massageDefaultIdValue({
-            defaultValueById: defaultValue
-          });
-          if (massagedRes.defaultValue) {
-            defaultValue = massagedRes.defaultValue;
-          }
-          if (massagedRes.preventUserOverrideFromBeingDisabled) {
-            allowUserOverride = true;
-          }
-        }
-        if (
-          ComponentToWrap === renderBlueprintCheckbox ||
-          ComponentToWrap === renderBlueprintSwitch
-        ) {
-          setDefault(defaultValue === "true");
-        } else {
-          if (typeof defaultValue === "string") {
-            // remove double spaces and leading/trailing
-            defaultValue = defaultValue.replace(/\s+/g, " ").trim();
-          }
-          setDefault(defaultValue);
-        }
-        setUserOverride(allowUserOverride);
-        setDefaultValCount(defaultValCount + 1);
-      } catch (error) {
-        console.error(`error aswf298f:`, error);
-      }
-      if (window.Cypress && window.Cypress.addFakeDefaultValueWait) {
-        await fakeWait();
-      }
-      setLoadingDefaultValue(false);
-    }
-    // if generateDefaultValue, hit the backend for that value
-    useDeepCompareEffect(() => {
-      // if the input already has a value we don't want to override with the default value request
-      if (rest.input.value) return;
-      triggerGetDefault();
-    }, [generateDefaultValue || {}]);
-    // const asyncValidating = props.asyncValidating;
-    const defaultProps = {
-      ...rest,
-      defaultValue: defaultValueFromBackend || defaultValueFromProps,
-      disabled: props.disabled || allowUserOverride === false,
-      readOnly: props.readOnly || isLoadingDefaultValue,
-      intent: getIntent(props),
-      intentClass: getIntentClass(props)
-    };
-
-    // don't show intent while async validating
-    // if (asyncValidating) {
-    //   delete defaultProps.intent;
-    //   delete defaultProps.intentClass;
-    // }
-
-    const startAssigningDefault = () =>
-      window.__showAssignDefaultValueModal &&
-      window.__showAssignDefaultValueModal({
-        ...props,
-        generateDefaultValue: {
-          ...props.generateDefaultValue,
-          customParams: customParamsToUse
-        },
-        onFinish: () => {
-          triggerGetDefault();
-        }
-      });
-
-    return (
-      <AbstractInput
-        {...{
-          ...opts,
-          defaultValCount,
-          isRequired,
-          ...defaultProps,
-          isLoadingDefaultValue,
-          showGenerateDefaultDot:
-            !inAssignDefaultsMode &&
-            window.__showGenerateDefaultDot &&
-            window.__showGenerateDefaultDot() &&
-            !!generateDefaultValue,
-          setAssignDefaultsMode,
-          startAssigningDefault,
-          assignDefaultButton: inAssignDefaultsMode && generateDefaultValue && (
-            <Button
-              onClick={startAssigningDefault}
-              small
-              style={{ background: "yellow", color: "black" }}
-            >
-              Assign Default
-            </Button>
-          )
-        }}
-      >
-        <ComponentToWrap {...defaultProps} />
-      </AbstractInput>
-    );
-  };
-};
+/** GENERATE FIELDS */
 
 export const InputField = generateField(RenderBlueprintInput);
 export const FileUploadField = generateField(renderFileUpload);
@@ -1381,26 +812,4 @@ export const RadioGroupField = generateField(renderBlueprintRadioGroup, {
 });
 export const ReactSelectField = generateField(renderReactSelect);
 export const SelectField = generateField(renderSelect);
-export const ReactColorField = generateField(RenderReactColorPicker);
-
-function getOptions(options) {
-  return (
-    options &&
-    options.map(function (opt) {
-      if (typeof opt === "string") {
-        return { label: opt, value: opt };
-      } else if (isNumber(opt)) return { label: opt.toString(), value: opt };
-      return opt;
-    })
-  );
-}
-
-function fakeWait() {
-  const fakeWaitNum = isNumber(window.Cypress.addFakeDefaultValueWait)
-    ? window.Cypress.addFakeDefaultValueWait
-    : 3000;
-
-  return new Promise(resolve => {
-    setTimeout(() => resolve(), fakeWaitNum);
-  });
-}
+export const ReactColorField = generateField(renderReactColorPicker);

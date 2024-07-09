@@ -35,7 +35,7 @@ import urljoin from "url-join";
 import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
 import writeXlsxFile from "write-excel-file";
 import { startCase } from "lodash-es";
-import { getNewName } from "./getNewName";
+import { getNewName } from "./utils";
 import { isObject } from "lodash-es";
 import { useDispatch } from "react-redux";
 import { initialize } from "redux-form";
