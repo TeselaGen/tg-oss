@@ -24,7 +24,11 @@
       }
     },
     "publish": {
-      "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}",
+      "command": "node tools/scripts/publish.mjs ove latest",
+      "dependsOn": ["test", "build", "build_umd"]
+    },
+    "publish-beta": {
+      "command": "node tools/scripts/publish.mjs ove beta",
       "dependsOn": ["test", "build", "build_umd"]
     },
     "build_umd": {

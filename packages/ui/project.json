@@ -13,7 +13,11 @@
       }
     },
     "publish": {
-      "command": "node tools/scripts/publish.mjs ui {args.ver} {args.tag}",
+      "command": "node tools/scripts/publish.mjs ui latest",
+      "dependsOn": ["test", "build"]
+    },
+    "publish-beta": {
+      "command": "node tools/scripts/publish.mjs ui beta",
       "dependsOn": ["test", "build"]
     },
     "build_simple": {

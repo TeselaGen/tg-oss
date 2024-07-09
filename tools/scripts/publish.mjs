@@ -22,9 +22,10 @@ function invariant(condition, message) {
   }
 }
 
-// Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
+// Executing publish script: node path/to/publish.mjs {name} --tag {tag}
+// tag by default is "next". Manually set to beta for beta versions or latest for stable versions.
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-let [, , name, version, tag = "latest"] = process.argv;
+let [, , name, tag = "next"] = process.argv;
 
 execSync(`git pull`);
 execSync(`yarn auto-changelog -p`);
@@ -58,51 +59,58 @@ invariant(
   project,
   `Could not find project "${name}" in the workspace. Is the project.json configured correctly?`
 );
-const outputPath = project.data?.targets?.build?.options?.outputPath;
+// const outputPath = project.data?.targets?.build?.options?.outputPath;
 const packagePath = project.data?.root;
 
-if (!tag || tag === "undefined") {
-  tag = "latest";
-}
-if (!version || version === "undefined") {
-  process.chdir(packagePath);
-  let json = JSON.parse(readFileSync(`package.json`).toString());
-  version = json.version;
+process.chdir(packagePath);
+let json = JSON.parse(readFileSync(`package.json`).toString());
+let version = json.version;
 
-  // Bump the version
+if (version.includes("-beta")) {
+  // If its not a beta version, remove beta version (version was already bumped when creating beta version)
+  if (tag !== "beta") {
+    const versionParts = version.split("-beta");
+    version = versionParts[0];
+  } else {
+    // Bump beta version only
+    const versionParts = version.split(".");
+    versionParts[3] = Number(versionParts[3]) + 1; // increase beta version
+    version = versionParts.join(".");
+  }
+} else {
+  // Update the version
   const versionParts = version.split(".");
   versionParts[2] = Number(versionParts[2]) + 1; // increase patch version
   version = versionParts.join(".");
 
-  // Updating the version in "package.json" before publishing
-  try {
-    json.version = version;
-    writeFileSync(`package.json`, JSON.stringify(json, null, 2));
-  } catch (e) {
-    console.error(
-      chalk.bold.red(
-        `Error writing package.json file from library build output.`
-      )
-    );
+  // If its beta, add beta version
+  if (tag === "beta") {
+    version = `${version}-beta.1`;
   }
-  process.chdir(path.resolve(`../../dist/${name}`));
-  json = JSON.parse(readFileSync(`package.json`).toString());
-  try {
-    json.version = version;
-    // json.type = "commonjs";
-    delete json.type;
-    json.license = "MIT";
-    json.dependencies = { ...deps, ...json.dependencies };
-    writeFileSync(`package.json`, JSON.stringify(json, null, 2));
-  } catch (e) {
-    console.error(
-      chalk.bold.red(
-        `Error writing package.json file from library build output.`
-      )
-    );
-  }
-} else {
-  process.chdir(path.resolve("../../", `dist/${name}`));
+}
+
+// Updating the version in "package.json" before publishing
+try {
+  json.version = version;
+  writeFileSync(`package.json`, JSON.stringify(json, null, 2));
+} catch (e) {
+  console.error(
+    chalk.bold.red(`Error writing package.json file from library build output.`)
+  );
+}
+process.chdir(path.resolve(`../../dist/${name}`));
+json = JSON.parse(readFileSync(`package.json`).toString());
+try {
+  json.version = version;
+  // json.type = "commonjs";
+  delete json.type;
+  json.license = "MIT";
+  json.dependencies = { ...deps, ...json.dependencies };
+  writeFileSync(`package.json`, JSON.stringify(json, null, 2));
+} catch (e) {
+  console.error(
+    chalk.bold.red(`Error writing package.json file from library build output.`)
+  );
 }
 
 invariant(

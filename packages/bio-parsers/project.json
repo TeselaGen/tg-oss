@@ -19,7 +19,11 @@
       }
     },
     "publish": {
-      "command": "node tools/scripts/publish.mjs bio-parsers {args.ver} {args.tag}",
+      "command": "node tools/scripts/publish.mjs bio-parsers latest",
+      "dependsOn": ["test", "build"]
+    },
+    "publish-beta": {
+      "command": "node tools/scripts/publish.mjs bio-parsers beta",
       "dependsOn": ["test", "build"]
     },
     "test": {
