@@ -925,8 +925,12 @@ export const renderBlueprintNumericInput = props => {
       {...(hideValue ? { value: "" } : {})}
       className={classNames(Classes.FILL, inputClassName)}
       onValueChange={(numericVal, stringVal) => {
-        // needed for redux form to change value
-        input.onChange(stringVal);
+        if (isNumber(stringVal)) {
+          input.onChange(numericVal);
+        } else {
+          // Allows to keep match expressions and empty strings
+          input.onChange(stringVal);
+        }
         //tnr: use this handler if you want to listen to all value changes!
         onAnyNumberChange && onAnyNumberChange(numericVal);
       }}
