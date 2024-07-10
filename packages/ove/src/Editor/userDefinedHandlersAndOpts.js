@@ -22,6 +22,7 @@ export const userDefinedHandlersAndOpts = [
   "disableSetReadOnly",
   "allowAnnotationEditLocking",
   "disableBpEditing",
+  "massageCmds",
   "showReadOnly",
   "showCircularity",
   "onHiddenEnzymeAdd",

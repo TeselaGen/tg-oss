@@ -1993,6 +1993,11 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "massageCmds",
+                info: `pass massageCmds={(cmds)=>{do logic here and return cmds}} to the <Editor> to massage the default commands before they are executed. You can use this to disable/change various hotkeys if you like. In this example we remove the cmd+p print hotkey`
+              })}
+              {renderToggle({
+                that: this,
                 type: "allowPanelTabDraggable",
                 description: `If allowPanelTabDraggable=true is passed to <Editor/>
                 then the panel tabs will be draggable (except mobiles).
@@ -2616,6 +2621,14 @@ clickOverrides: {
                 ];
               }
             })}
+            {...{
+              ...(this.state.massageCmds && {
+                massageCmds: cmds => {
+                  delete cmds.print.hotkey;
+                  return cmds;
+                }
+              })
+            }}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
             disableBpEditing={this.state.disableBpEditing}

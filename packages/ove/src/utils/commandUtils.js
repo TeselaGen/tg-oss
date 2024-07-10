@@ -13,6 +13,8 @@ export function oveCommandFactory(instance, commandDefs) {
       return args;
     },
     handleReturn: noop,
-    commandDefs
+    commandDefs: instance.props.massageCmds
+      ? instance.props.massageCmds(commandDefs)
+      : commandDefs
   });
 }

@@ -63,7 +63,15 @@
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "node tools/scripts/publish.mjs sequence-utils {args.ver} {args.tag}"
+                "command": "node tools/scripts/publish.mjs sequence-utils latest"
+              },
+              "configurations": {}
+            },
+            "publish-beta": {
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs sequence-utils beta"
               },
               "configurations": {}
             }
@@ -176,7 +184,15 @@
               "dependsOn": ["e2e", "build"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "node tools/scripts/publish.mjs bounce-loader {args.ver} {args.tag}"
+                "command": "node tools/scripts/publish.mjs bounce-loader latest"
+              },
+              "configurations": {}
+            },
+            "publish-beta": {
+              "dependsOn": ["e2e", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs bounce-loader beta"
               },
               "configurations": {}
             }
@@ -250,7 +266,15 @@
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "node tools/scripts/publish.mjs bio-parsers {args.ver} {args.tag}"
+                "command": "node tools/scripts/publish.mjs bio-parsers latest"
+              },
+              "configurations": {}
+            },
+            "publish-beta": {
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs bio-parsers beta"
               },
               "configurations": {}
             }
@@ -324,7 +348,15 @@
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "node tools/scripts/publish.mjs range-utils {args.ver} {args.tag}"
+                "command": "node tools/scripts/publish.mjs range-utils latest"
+              },
+              "configurations": {}
+            },
+            "publish-beta": {
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs range-utils beta"
               },
               "configurations": {}
             }
@@ -418,7 +450,15 @@
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "node tools/scripts/publish.mjs file-utils {args.ver} {args.tag}"
+                "command": "node tools/scripts/publish.mjs file-utils latest"
+              },
+              "configurations": {}
+            },
+            "publish-beta": {
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs file-utils beta"
               },
               "configurations": {}
             }
@@ -585,7 +625,15 @@
               "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "node tools/scripts/publish.mjs ove {args.ver} {args.tag}"
+                "command": "node tools/scripts/publish.mjs ove latest"
+              },
+              "configurations": {}
+            },
+            "publish-beta": {
+              "dependsOn": ["test", "build", "build_umd"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs ove beta"
               },
               "configurations": {}
             },
@@ -724,7 +772,15 @@
               "dependsOn": ["test", "build"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "node tools/scripts/publish.mjs ui {args.ver} {args.tag}"
+                "command": "node tools/scripts/publish.mjs ui latest"
+              },
+              "configurations": {}
+            },
+            "publish-beta": {
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs ui beta"
               },
               "configurations": {}
             },
