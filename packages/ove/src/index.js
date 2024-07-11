@@ -51,4 +51,4 @@ export { default as PositionAnnotationOnCircle } from "./CircularView/PositionAn
 export { default as EnzymeViewer } from "./EnzymeViewer";
 export { default as AlignmentView } from "./AlignmentView";
 export { default as getOveHotkeyDefs } from "./commands/getOveHotkeyDefs";
-export { default as getStructuredBases } from "./RowItem/StackedAnnotations/getStructuredBases";
+export { getStructuredBases } from "./RowItem/StackedAnnotations/getStructuredBases";
