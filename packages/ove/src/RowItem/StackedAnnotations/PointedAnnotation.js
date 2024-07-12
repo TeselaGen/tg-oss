@@ -239,7 +239,7 @@ function PointedAnnotation(props) {
         strokeWidth="1"
         stroke={stroke || "black"}
         opacity={opacity}
-        fill={isStriped ? "url(#diagonalHatch)" : fill || color}
+        fill={isStriped ? `url(#diagonalHatch-${id})` : fill || color}
         transform={
           forward
             ? null

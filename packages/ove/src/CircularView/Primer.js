@@ -26,13 +26,13 @@ export default function CircularPrimer(props) {
   });
   return (
     <React.Fragment>
-      {getStripedPattern({ color })}
+      {getStripedPattern({ color, id })}
       <path
         className="vePrimer veCircularViewPrimer"
         id={id}
         strokeWidth=".5"
         stroke="black"
-        fill="url(#diagonalHatch)"
+        fill={`url(#diagonalHatch-${id})`}
         d={path.print()}
       />
       {getInternalLabel({ ...props, colorToUse: color, textPath })}

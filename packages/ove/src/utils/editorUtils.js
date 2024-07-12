@@ -171,10 +171,10 @@ export function getSelFromWrappedAddon(selectionLayer, sequenceLength) {
   return selToUse;
 }
 
-export function getStripedPattern({ color }) {
+export function getStripedPattern({ color, id }) {
   return (
     <pattern
-      id="diagonalHatch"
+      id={`diagonalHatch-${id}`}
       patternUnits="userSpaceOnUse"
       width="4"
       height="4"
