@@ -28,28 +28,48 @@ export default {
     }
   ],
   primers: [
+    // {
+    //   name: "Example Primer 1",
+    //   start: 280,
+    //   end: 300,
+    //   type: "primer_bind",
+    //   forward: true
+    // },
+    // {
+    //   name: "Blue primer",
+    //   start: 1,
+    //   end: 20,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   color: "blue"
+    // },
+    // {
+    //   name: "Red primer",
+    //   start: 21,
+    //   end: 30,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   color: "red"
+    // },
+    // {
+    //   name: "Normal primer",
+    //   start: 1,
+    //   end: 4,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   color: "blue",
+    //   primerBindsOn: '3prime',
+    //   bases: "acgt"
+    // },
     {
-      name: "Example Primer 1",
-      start: 280,
-      end: 300,
-      type: "primer_bind",
-      forward: true
-    },
-    {
-      name: "Blue primer",
-      start: 1,
-      end: 20,
+      name: "Origin-spanning primer",
+      start: 5297,
+      end: 4,
       type: "primer_bind",
       forward: true,
-      color: "blue"
-    },
-    {
-      name: "Red primer",
-      start: 21,
-      end: 30,
-      type: "primer_bind",
-      forward: true,
-      color: "red"
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "tcgacgt"
     }
   ],
   afeatures: [

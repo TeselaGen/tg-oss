@@ -4,7 +4,7 @@ import { getComplementSequenceString } from "@teselagen/sequence-utils";
 import { bioData } from "@teselagen/sequence-utils";
 const { ambiguous_dna_values } = bioData;
 export function getStructuredBases({
-  annotationRange,
+  // annotationRange,
   forward,
   bases = "",
   start,
@@ -29,9 +29,8 @@ export function getStructuredBases({
     }
   }
   const aRange = {
-    //tnr: this probably needs to be changed in case annotation wraps origin
-    start: annotationRange.start - start,
-    end: annotationRange.end - start
+    start: 0,
+    end: basesToUse.length
   };
   const r = {
     aRange,
@@ -63,7 +62,7 @@ export function getStructuredBases({
     forward ? r.basesNoInserts : r.basesNoInserts.split("").reverse().join("")
   );
   r.basesNoInsertsWithMetaData = basesForRange.split("").map((b, i) => {
-    const indexOfBase = i + annotationRange.start;
+    const indexOfBase = (i + start) % sequenceLength;
     let seqForBase = (fullSequence && fullSequence[indexOfBase]) || "";
     if (!forward) {
       seqForBase = getComplementSequenceString(seqForBase);
