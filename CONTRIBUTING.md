@@ -67,3 +67,23 @@ Or
 Nx: run-many
 publish
 Execute: nx run-many --target=publish
+
+## Other
+
+### Running OVE unit tests
+
+In addition to cypress e2e tests, there are a few unit tests in OVE. To run them:
+
+- You must start the dev server, even if the tests don't load the page.
+- You have to be in the directory `packages/ove`
+
+```bash
+# Run the dev server (you can do this from any directory)
+yarn nx run ove:start
+
+# Move the package directory
+cd packages/ove
+
+# Run the unit test
+yarn cypress run --spec cypress/e2e/unit/getStructuredBases.spec.js
+```
