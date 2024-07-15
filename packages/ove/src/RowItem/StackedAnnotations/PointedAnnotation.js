@@ -233,7 +233,7 @@ function PointedAnnotation(props) {
           })}
         </title>
       )}
-      {isStriped && getStripedPattern({ color })}
+      {isStriped && getStripedPattern({ color, id })}
 
       <path
         strokeWidth="1"
