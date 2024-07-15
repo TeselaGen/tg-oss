@@ -30,7 +30,7 @@ export function getStructuredBases({
   }
   const aRange = {
     start: 0,
-    end: basesToUse.length
+    end: annLen - 1
   };
   const r = {
     aRange,
@@ -91,6 +91,5 @@ export function getStructuredBases({
         ...bases.split("").map(b => ({ b, isMatch: false }))
       );
     });
-
   return r;
 }

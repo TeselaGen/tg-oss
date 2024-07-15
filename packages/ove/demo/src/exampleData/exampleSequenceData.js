@@ -70,6 +70,56 @@ export default {
       color: "red",
       primerBindsOn: "3prime",
       bases: "tcgacgt"
+    },
+    {
+      name: "Origin-spanning reverse primer",
+      start: 5297,
+      end: 4,
+      type: "primer_bind",
+      forward: false,
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "acgtcga"
+    },
+    {
+      name: "Left tail primer",
+      start: 7,
+      end: 10,
+      type: "primer_bind",
+      forward: true,
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "aaaatatg"
+    },
+    {
+      name: "Right tail primer",
+      start: 11,
+      end: 14,
+      type: "primer_bind",
+      forward: true,
+      color: "red",
+      primerBindsOn: "5prime",
+      bases: "acaaaaaa"
+    },
+    {
+      name: "Left tail primer - reverse",
+      start: 21,
+      end: 24,
+      type: "primer_bind",
+      forward: false,
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "aaaaagcc"
+    },
+    {
+      name: "Right tail primer - reverse",
+      start: 40,
+      end: 43,
+      type: "primer_bind",
+      forward: false,
+      color: "red",
+      primerBindsOn: "5prime",
+      bases: "aagaaaaa"
     }
   ],
   afeatures: [
