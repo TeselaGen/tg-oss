@@ -18,23 +18,15 @@ export default ({
         runMode: 3,
         openMode: 0
       },
-      // Allow logging in the Cypress test runner
-      // calling cy.task('log', 'message') will log the message to the console
-      setupNodeEvents(on, config) {
-        on("task", {
-          log(message) {
-            console.log(message);
-            return null;
-          }
-        });
-        // on(
-        //   "file:preprocessor",
-        //   vitePreprocessor({
-        //     // configFile: "./vite.config.js",
-        //     configFile: path.resolve(__dirname, "./vite.config.js"),
-        //     mode: "development"
-        //   })
-      },
+      // setupNodeEvents(on, config) {
+      //   on(
+      //     "file:preprocessor",
+      //     vitePreprocessor({
+      //       // configFile: "./vite.config.js",
+      //       configFile: path.resolve(__dirname, "./vite.config.js"),
+      //       mode: "development"
+      //     })
+      //   );
 
       //   // return require("./cypress/plugins/index.js")(on, config);
       // },
