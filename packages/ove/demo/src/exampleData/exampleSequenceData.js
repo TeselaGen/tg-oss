@@ -28,28 +28,98 @@ export default {
     }
   ],
   primers: [
+    // {
+    //   name: "Example Primer 1",
+    //   start: 280,
+    //   end: 300,
+    //   type: "primer_bind",
+    //   forward: true
+    // },
+    // {
+    //   name: "Blue primer",
+    //   start: 1,
+    //   end: 20,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   color: "blue"
+    // },
+    // {
+    //   name: "Red primer",
+    //   start: 21,
+    //   end: 30,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   color: "red"
+    // },
+    // {
+    //   name: "Normal primer",
+    //   start: 1,
+    //   end: 4,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   color: "blue",
+    //   primerBindsOn: '3prime',
+    //   bases: "acgt"
+    // },
     {
-      name: "Example Primer 1",
-      start: 280,
-      end: 300,
-      type: "primer_bind",
-      forward: true
-    },
-    {
-      name: "Blue primer",
-      start: 1,
-      end: 20,
+      name: "Origin-spanning primer",
+      start: 5297,
+      end: 4,
       type: "primer_bind",
       forward: true,
-      color: "blue"
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "tcgacgt"
     },
     {
-      name: "Red primer",
+      name: "Origin-spanning reverse primer",
+      start: 5297,
+      end: 4,
+      type: "primer_bind",
+      forward: false,
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "acgtcga"
+    },
+    {
+      name: "Left tail primer",
+      start: 7,
+      end: 10,
+      type: "primer_bind",
+      forward: true,
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "aaaatatg"
+    },
+    {
+      name: "Right tail primer",
+      start: 11,
+      end: 14,
+      type: "primer_bind",
+      forward: true,
+      color: "red",
+      primerBindsOn: "5prime",
+      bases: "acaaaaaa"
+    },
+    {
+      name: "Left tail primer - reverse",
       start: 21,
-      end: 30,
+      end: 24,
       type: "primer_bind",
-      forward: true,
-      color: "red"
+      forward: false,
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "aaaaagcc"
+    },
+    {
+      name: "Right tail primer - reverse",
+      start: 40,
+      end: 43,
+      type: "primer_bind",
+      forward: false,
+      color: "red",
+      primerBindsOn: "5prime",
+      bases: "aagaaaaa"
     }
   ],
   afeatures: [
