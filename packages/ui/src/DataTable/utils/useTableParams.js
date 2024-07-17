@@ -14,10 +14,6 @@ import {
 } from "./queryParams";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
 
-const useSelectorOptions = {
-  devModeChecks: { stabilityCheck: "never" }
-};
-
 /*
 NOTE:
 This haven't been tested yet. It is the first version of what we should replace withTableParams
@@ -161,7 +157,7 @@ export default function useTableParams(
   } = useSelector(state => {
     if (!state.form[formName]) return {};
     return state.form[formName].values || {};
-  }, useSelectorOptions);
+  });
 
   const entities = reduxFormEntities || _origEntities;
 

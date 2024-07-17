@@ -638,9 +638,6 @@ a,,desc,,false,dna,misc_feature
     cy.contains(".bp3-dialog", `Description`); //the expected headers should show up
     cy.contains("Review and Edit Data").click();
     cy.get(`.hasCellError`).type("haha{enter}");
-    cy.get(`.hasCellError:last [data-test="tgCell_name"]`).type("haha{enter}", {
-      force: true
-    });
     cy.get(`button:contains(Next File):first`).click();
     cy.get(
       `.bp3-dialog .bp3-tab[aria-selected="true"]:contains(testUploadWizard_messedUpHeaders.csv) .bp3-icon-warning-sign`

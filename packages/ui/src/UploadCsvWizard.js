@@ -21,10 +21,6 @@ import { addSpecialPropToAsyncErrs } from "./FormComponents/tryToMatchSchemas";
 import { cloneDeep } from "lodash-es";
 import { InputField } from "./FormComponents";
 
-const useSelectorOptions = {
-  devModeChecks: { stabilityCheck: "never" }
-};
-
 const getInitialSteps = csvValidationIssue => [
   { text: "Review Headers", active: csvValidationIssue },
   { text: "Review Data", active: !csvValidationIssue }
@@ -91,7 +87,7 @@ const UploadCsvWizardDialog = compose(
         finishedFiles
       };
     }
-  }, useSelectorOptions);
+  });
 
   const [hasSubmittedOuter, setSubmittedOuter] = useState();
   const [steps, setSteps] = useState(getInitialSteps(true));
@@ -320,14 +316,12 @@ const UploadCsvWizardDialogInner = reduxForm()(({
   const [hasSubmitted, setSubmitted] = useState(!csvValidationIssue);
   const [steps, setSteps] = useState(getInitialSteps(csvValidationIssue));
 
-  const { reduxFormEntities, reduxFormCellValidation } = useSelector(
-    state =>
-      formValueSelector(datatableFormName)(
-        state,
-        "reduxFormEntities",
-        "reduxFormCellValidation"
-      ),
-    useSelectorOptions
+  const { reduxFormEntities, reduxFormCellValidation } = useSelector(state =>
+    formValueSelector(datatableFormName)(
+      state,
+      "reduxFormEntities",
+      "reduxFormCellValidation"
+    )
   );
 
   let inner;
@@ -568,13 +562,11 @@ export const SimpleInsertDataDialog = compose(
 }) => {
   const dispatch = useDispatch();
   const reduxFormEntities = useSelector(
-    state => state.form?.simpleInsertEditableTable?.values.reduxFormEntities,
-    useSelectorOptions
+    state => state.form?.simpleInsertEditableTable?.values.reduxFormEntities
   );
   const reduxFormCellValidation = useSelector(
     state =>
-      state.form?.simpleInsertEditableTable?.values.reduxFormCellValidation,
-    useSelectorOptions
+      state.form?.simpleInsertEditableTable?.values.reduxFormCellValidation
   );
   const { entsToUse, validationToUse } = useMemo(
     () => removeCleanRows(reduxFormEntities, reduxFormCellValidation),

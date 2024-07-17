@@ -102,10 +102,6 @@ const itemSizeEstimators = {
   comfortable: () => 41.34
 };
 
-const useSelectorOptions = {
-  devModeChecks: { stabilityCheck: "never" }
-};
-
 const DataTable = ({
   controlled_pageSize,
   formName = "tgDataTable",
@@ -161,17 +157,15 @@ const DataTable = ({
     reduxFormQueryParams = {},
     reduxFormSearchInput = "",
     reduxFormSelectedEntityIdMap = {}
-  } = useSelector(
-    state =>
-      formValueSelector(formName)(
-        state,
-        "reduxFormCellValidation",
-        "reduxFormEntities",
-        "reduxFormQueryParams",
-        "reduxFormSearchInput",
-        "reduxFormSelectedEntityIdMap"
-      ),
-    useSelectorOptions
+  } = useSelector(state =>
+    formValueSelector(formName)(
+      state,
+      "reduxFormCellValidation",
+      "reduxFormEntities",
+      "reduxFormQueryParams",
+      "reduxFormSearchInput",
+      "reduxFormSelectedEntityIdMap"
+    )
   );
 
   let props = ownProps;
