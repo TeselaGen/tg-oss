@@ -24,7 +24,8 @@ import {
   omitBy,
   times,
   toArray,
-  isFunction
+  isFunction,
+  isEqual
 } from "lodash-es";
 import {
   Button,
@@ -544,10 +545,19 @@ const DataTable = ({
             );
           })
           .concat(fieldsWithoutOrder);
-        setTableConfig(prev => ({
-          ...prev,
-          columnOrderings: schema.fields.map(f => f.path)
-        }));
+        // We shouldn't need to update the columnOrderings here, this could lead
+        // to unnecessary updates
+        if (
+          !isEqual(
+            schema.fields.map(f => f.path),
+            columnOrderings
+          )
+        ) {
+          setTableConfig(prev => ({
+            ...prev,
+            columnOrderings: schema.fields.map(f => f.path)
+          }));
+        }
       }
     }
     return { schema };
@@ -2395,6 +2405,7 @@ const DataTable = ({
           {...(isCellEditable && {
             tabIndex: -1,
             onKeyDown: e => {
+              e.stopPropagation();
               const isTabKey = e.key === "Tab";
               const isArrowKey = e.key.startsWith("Arrow");
               if (
@@ -2505,7 +2516,6 @@ const DataTable = ({
               startCellEdit(primarySelectedCellId, {
                 pressedKey: e.key
               });
-              e.stopPropagation();
             }
           })}
         >
