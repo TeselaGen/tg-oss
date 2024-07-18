@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { change } from "redux-form";
 import { useDispatch, useSelector } from "react-redux";
-import { camelCase, isFunction, keyBy, get } from "lodash-es";
+import { isFunction, keyBy, get } from "lodash-es";
 import TableFormTrackerContext from "../TableFormTrackerContext";
 import { viewColumn, openColumn } from "./viewColumn";
 import convertSchema from "./convertSchema";
@@ -10,7 +10,8 @@ import {
   makeDataTableHandlers,
   getQueryParams,
   setCurrentParamsOnUrl,
-  getCurrentParamsFromUrl
+  getCurrentParamsFromUrl,
+  getCCDisplayName
 } from "./queryParams";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
 
@@ -90,12 +91,7 @@ export default function useTableParams(
       );
     }
     if (orderByFirstColumn && !defaults?.order?.length) {
-      const r = [
-        camelCase(
-          convertedSchema.fields[0].displayName ||
-            convertedSchema.fields[0].path
-        )
-      ];
+      const r = [getCCDisplayName(convertedSchema.fields[0])];
       defaults.order = r;
     }
   } else {

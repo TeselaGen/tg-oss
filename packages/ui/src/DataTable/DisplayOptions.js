@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { map, isEmpty, noop } from "lodash-es";
+import { map, isEmpty, noop, startCase } from "lodash-es";
 import {
   Button,
   Checkbox,
@@ -10,6 +10,7 @@ import {
   Popover,
   Switch
 } from "@blueprintjs/core";
+import { getCCDisplayName } from "./utils/queryParams";
 
 const DisplayOptions = ({
   compact,
@@ -109,7 +110,7 @@ const DisplayOptions = ({
           {groupFields
             .filter(
               field =>
-                field.displayName
+                startCase(getCCDisplayName(field)) // We have to use startCase with the camelCase here because the displayName is not always a string
                   .toLowerCase()
                   .indexOf(searchTerm.toLowerCase()) > -1
             )

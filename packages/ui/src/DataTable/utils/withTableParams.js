@@ -1,6 +1,6 @@
 import { change, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
-import { camelCase, isFunction, set } from "lodash-es";
+import { isFunction, set } from "lodash-es";
 import { withRouter } from "react-router-dom";
 import { branch, compose } from "recompose";
 
@@ -12,7 +12,8 @@ import {
   getQueryParams,
   setCurrentParamsOnUrl,
   getMergedOpts,
-  getCurrentParamsFromUrl
+  getCurrentParamsFromUrl,
+  getCCDisplayName
 } from "./queryParams";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
 
@@ -99,12 +100,7 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
         mergedOpts.orderByFirstColumn &&
         !mergedOpts.defaults?.order?.length
       ) {
-        const r = [
-          camelCase(
-            convertedSchema.fields[0].displayName ||
-              convertedSchema.fields[0].path
-          )
-        ];
+        const r = [getCCDisplayName(convertedSchema.fields[0])];
         set(mergedOpts, "defaults.order", r);
       }
     } else {

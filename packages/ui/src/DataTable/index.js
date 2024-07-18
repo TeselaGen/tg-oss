@@ -86,6 +86,7 @@ import { viewColumn, openColumn } from "./viewColumn";
 import convertSchema from "./utils/convertSchema";
 import TableFormTrackerContext from "./TableFormTrackerContext";
 import {
+  getCCDisplayName,
   getCurrentParamsFromUrl,
   getQueryParams,
   makeDataTableHandlers,
@@ -207,12 +208,7 @@ const DataTable = ({
       );
     }
     if (orderByFirstColumn && !props.defaults?.order?.length) {
-      const r = [
-        camelCase(
-          convertedSchema.fields[0].displayName ||
-            convertedSchema.fields[0].path
-        )
-      ];
+      const r = [getCCDisplayName(convertedSchema.fields[0])];
       props.defaults.order = r;
     }
   } else {
@@ -2215,14 +2211,14 @@ const DataTable = ({
 
   const filtersOnNonDisplayedFields = [];
   if (filters && filters.length) {
-    schema.fields.forEach(({ isHidden, displayName, path }) => {
-      const ccDisplayName = camelCase(displayName || path);
-      if (isHidden) {
+    schema.fields.forEach(field => {
+      const ccDisplayName = getCCDisplayName(field);
+      if (field.isHidden) {
         filters.forEach(filter => {
           if (filter.filterOn === ccDisplayName) {
             filtersOnNonDisplayedFields.push({
               ...filter,
-              displayName
+              displayName: field.displayName
             });
           }
         });

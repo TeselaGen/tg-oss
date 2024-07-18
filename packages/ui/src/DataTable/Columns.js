@@ -38,6 +38,7 @@ import { EditableCell } from "./EditabelCell";
 import { getVals } from "./getVals";
 import { CellDragHandle } from "./CellDragHandle";
 import { getCellVal } from "./getCellVal";
+import { getCCDisplayName } from "./utils/queryParams";
 
 dayjs.extend(localizedFormat);
 
@@ -85,7 +86,7 @@ const renderColumnHeader = ({
     columnDataType === "color" ||
     isActionColumn ||
     columnFilterDisabled;
-  const ccDisplayName = camelCase(displayName || path);
+  const ccDisplayName = getCCDisplayName(column);
   let columnTitle = displayName || startCase(camelCase(path));
   if (isActionColumn) columnTitle = "";
 
