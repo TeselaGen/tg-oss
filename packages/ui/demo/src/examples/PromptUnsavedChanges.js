@@ -32,18 +32,12 @@ const MyDialog = wrapDialog({ title: "Prompt Unsaved Changes Demo" })(
 
 export default function PromptUnsavedChangesDemo() {
   const [isOpen, setOpen] = useState(true);
-
   return (
     <Provider store={store}>
       <div>
         <Button text="Open Dialog" onClick={() => setOpen(true)} />
         {isOpen && (
-          <MyDialog
-            hideModal={() => {
-              setOpen(false);
-            }}
-            isOpen={isOpen}
-          ></MyDialog>
+          <MyDialog hideModal={() => setOpen(false)} isOpen={isOpen} />
         )}
       </div>
     </Provider>

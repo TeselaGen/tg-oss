@@ -36,11 +36,16 @@ import writeXlsxFile from "write-excel-file";
 import { startCase } from "lodash-es";
 import { getNewName } from "./getNewName";
 import { isObject } from "lodash-es";
-import { useDispatch } from "react-redux";
-import { initialize } from "redux-form";
+// Check if importing and using them directly might generate problems
+// it shouldn't be a problem, but it's better to be safe than sorry
+import { change, initialize } from "redux-form";
 import classNames from "classnames";
 import convertSchema from "../DataTable/utils/convertSchema";
 import { LoadingDots } from "./LoadingDots";
+import { useDispatch } from "react-redux";
+
+const manualEnterMessage = "Build CSV File";
+const manualEnterSubMessage = "Paste or type data to build a CSV file";
 
 const helperText = [
   `How to Use This Template to Upload New Data`,
@@ -76,6 +81,51 @@ const setValidateAgainstSchema = newValidateAgainstSchema => {
     );
   }
   return schema;
+};
+
+const getFileDownloadAttr = exampleFile => {
+  const baseUrl = window?.frontEndConfig?.serverBasePath || "";
+  return isFunction(exampleFile)
+    ? { onClick: exampleFile }
+    : exampleFile && {
+        target: "_blank",
+        download: true,
+        href:
+          exampleFile.startsWith("https") || exampleFile.startsWith("www")
+            ? exampleFile
+            : baseUrl
+              ? urljoin(baseUrl, "exampleFiles", exampleFile)
+              : exampleFile
+      };
+};
+
+const stripId = (ents = []) =>
+  ents.map(ent => {
+    const { id, ...rest } = ent;
+    return rest;
+  });
+
+const getNewCsvFile = (ents, fileName) => {
+  const strippedEnts = stripId(ents);
+  return {
+    newFile: new File([papaparse.unparse(strippedEnts)], fileName),
+    cleanedEntities: strippedEnts
+  };
+};
+
+const trimFiles = (incomingFiles, fileLimit) => {
+  if (fileLimit) {
+    if (incomingFiles.length > fileLimit) {
+      window.toastr &&
+        window.toastr.warning(
+          `Detected additional files in your upload that we are ignoring. You can only upload ${fileLimit} file${
+            fileLimit > 1 ? "s" : ""
+          } at a time.`
+        );
+    }
+    return incomingFiles.slice(0, fileLimit);
+  }
+  return incomingFiles;
 };
 
 const InnerDropZone = ({
@@ -180,7 +230,7 @@ const Uploader = ({
   onFieldSubmit = noop, //called when all files have successfully uploaded
   // fileFinished = noop,
   onRemove = noop, //called when a file has been selected to be removed
-  onChange = noop, //this is almost always getting passed by redux-form, no need to pass this handler manually
+  onChange: _onChange = noop, //this is almost always getting passed by redux-form, no need to pass this handler manually
   onFileClick, // called when a file link in the filelist is clicked
   dropzoneProps = {},
   overflowList,
@@ -189,280 +239,29 @@ const Uploader = ({
   noBuildCsvOption,
   showFilesCount,
   threeDotMenuItems,
-  onPreviewClick
+  onPreviewClick,
+  noRedux = true,
+  meta: { form: formName } = {}
 }) => {
   const dispatch = useDispatch();
-  let dropzoneDisabled = _disabled;
-  let _accept = __accept;
   const [acceptLoading, setAcceptLoading] = useState();
   const [resolvedAccept, setResolvedAccept] = useState();
-
-  if (resolvedAccept) {
-    _accept = resolvedAccept;
-  }
-
-  const isAcceptPromise = useMemo(
-    () =>
-      __accept?.then ||
-      (Array.isArray(__accept) ? __accept.some(a => a?.then) : false),
-    [__accept]
-  );
-
-  useEffect(() => {
-    if (isAcceptPromise) {
-      setAcceptLoading(true);
-      Promise.allSettled(Array.isArray(__accept) ? __accept : [__accept]).then(
-        results => {
-          const resolved = flatMap(results, r => r.value);
-          setAcceptLoading(false);
-          setResolvedAccept(resolved);
-        }
-      );
-    }
-  }, [__accept, isAcceptPromise]);
-
-  if (isAcceptPromise && !resolvedAccept) {
-    _accept = [];
-  }
-
-  if (acceptLoading) dropzoneDisabled = true;
-  const accept = useMemo(
-    () =>
-      !_accept
-        ? undefined
-        : isAcceptPromise && !resolvedAccept
-          ? []
-          : isPlainObject(_accept)
-            ? [_accept]
-            : isArray(_accept)
-              ? _accept
-              : _accept.split(",").map(a => ({ type: a })),
-    [_accept, isAcceptPromise, resolvedAccept]
-  );
-
-  const callout = _callout || accept?.find?.(a => a?.callout)?.callout;
-
-  const validateAgainstSchema = useMemo(
-    () =>
-      setValidateAgainstSchema(
-        _validateAgainstSchema ||
-          accept?.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema
-      ),
-    [_validateAgainstSchema, accept]
-  );
-
-  if (
-    (validateAgainstSchema || autoUnzip) &&
-    accept &&
-    !accept.some(a => a.type === "zip")
-  ) {
-    accept?.unshift({
-      type: "zip",
-      description: "Any of the following types, just compressed"
-    });
-  }
   const [loading, setLoading] = useState(false);
   const filesToClean = useRef([]);
-
-  const { showDialogPromise: showUploadCsvWizardDialog, comp } = useDialog({
-    ModalComponent: UploadCsvWizardDialog
-  });
-
-  const { showDialogPromise: showSimpleInsertDataDialog, comp: comp2 } =
-    useDialog({
-      ModalComponent: SimpleInsertDataDialog
-    });
-
-  function cleanupFiles() {
-    filesToClean.current.forEach(file => URL.revokeObjectURL(file.preview));
-  }
-  useEffect(() => {
-    return () => {
-      cleanupFiles();
-    };
-  }, []);
-
-  let contentOverride = maybeContentOverride;
-  if (contentOverride && typeof contentOverride === "function") {
-    contentOverride = contentOverride({ loading });
-  }
-  let simpleAccept;
-  let handleManuallyEnterData;
-  let advancedAccept;
-
-  if (Array.isArray(accept)) {
-    if (accept.some(a => isPlainObject(a))) {
-      //advanced accept
-      advancedAccept = accept;
-      simpleAccept = flatMap(accept, a => {
-        if (a.validateAgainstSchema) {
-          if (!a.type) {
-            a.type = [".csv", ".xlsx"];
-          }
-          handleManuallyEnterData = async e => {
-            e.stopPropagation();
-            const { newEntities, fileName } = await showSimpleInsertDataDialog(
-              "onSimpleInsertDialogFinish",
-              {
-                validateAgainstSchema
-              }
-            );
-            if (!newEntities) {
-              return;
-            } else {
-              //check existing files to make sure the new file name gets incremented if necessary
-              // fileList
-              const newFileName = getNewName(fileListToUse, fileName);
-              const { newFile, cleanedEntities } = getNewCsvFile(
-                newEntities,
-                newFileName
-              );
-
-              const file = {
-                ...newFile,
-                parsedData: cleanedEntities,
-                meta: {
-                  fields: validateAgainstSchema.fields.map(({ path }) => path)
-                },
-                name: newFileName,
-                originFileObj: newFile,
-                originalFileObj: newFile,
-                id: nanoid(),
-                hasEditClick: true
-              };
-
-              const cleanedFileList = [file, ...fileListToUse].slice(
-                0,
-                fileLimit ? fileLimit : undefined
-              );
-              handleSecondHalfOfUpload({
-                acceptedFiles: cleanedFileList,
-                cleanedFileList
-              });
-
-              window.toastr.success(`File Added`);
-            }
-          };
-
-          const nameToUse =
-            startCase(
-              removeExt(
-                validateAgainstSchema.fileName || validateAgainstSchema.name
-              )
-            ) || "Example";
-
-          const handleDownloadXlsxFile = async () => {
-            const dataDictionarySchema = [
-              { value: f => f.displayName || f.path, column: `Column Name` },
-              // {
-              //   value: f => f.isUnique ? "Unique" : "",
-              //   column: `Unique?`
-              // },
-              {
-                value: f => (f.isRequired ? "Required" : "Optional"),
-                column: `Required?`
-              },
-              {
-                value: f => (f.type === "dropdown" ? "text" : f.type || "text"),
-                column: `Data Type`
-              },
-              {
-                value: f => f.description,
-                column: `Notes`
-              },
-              {
-                value: f => f.example || f.defaultValue || "",
-                column: `Example Data`
-              }
-            ];
-
-            const mainExampleData = {};
-            const fieldsToUse = [
-              ...validateAgainstSchema.fields,
-              ...(validateAgainstSchema.exampleDownloadFields ?? [])
-            ];
-            const mainSchema = fieldsToUse.map(f => {
-              mainExampleData[f.displayName || f.path] =
-                f.example || f.defaultValue;
-              return {
-                column: f.displayName || f.path,
-                value: v => {
-                  return v[f.displayName || f.path];
-                }
-              };
-            });
-            const b = await writeXlsxFile(
-              [[mainExampleData], fieldsToUse, helperText],
-              {
-                headerStyle: {
-                  fontWeight: "bold"
-                },
-                schema: [mainSchema, dataDictionarySchema, helperSchema],
-                sheets: [nameToUse, "Column Info", "Upload Instructions"],
-                filePath: "file.xlsx"
-              }
-            );
-            downloadjs(b, `${nameToUse}.xlsx`, "xlsx");
-          };
-          // handleDownloadXlsxFile()
-          a.exampleFiles = [
-            // ...(a.exampleFile ? [a.exampleFile] : []),
-            {
-              description: "Download Example CSV File",
-              exampleFile: () => {
-                const rows = [];
-                const schemaToUse = [
-                  ...a.validateAgainstSchema.fields,
-                  ...(a.validateAgainstSchema.exampleDownloadFields ?? [])
-                ];
-                rows.push(
-                  schemaToUse.map(f => {
-                    return `${f.displayName || f.path}`;
-                  })
-                );
-                rows.push(
-                  schemaToUse.map(f => {
-                    return `${f.example || f.defaultValue || ""}`;
-                  })
-                );
-                const csv = unparse(rows);
-
-                const downloadFn = window.Cypress?.downloadTest || downloadjs;
-                downloadFn(csv, `${nameToUse}.csv`, "csv");
-              }
-            },
-            {
-              description: "Download Example XLSX File",
-              subtext: "Includes Upload Instructions and Column Info",
-              exampleFile: handleDownloadXlsxFile
-            },
-            ...(noBuildCsvOption
-              ? []
-              : [
-                  {
-                    description: manualEnterMessage,
-                    subtext: manualEnterSubMessage,
-                    icon: "manually-entered-data",
-                    exampleFile: handleManuallyEnterData
-                  }
-                ])
-          ];
-          delete a.exampleFile;
-        }
-        if (a.type) return a.type;
-        return a;
-      });
-      simpleAccept = simpleAccept.join(", ");
-    } else {
-      simpleAccept = accept.join(", ");
+  // onChange received from redux-form is not working anymore,
+  // so we need to overwrite it for redux to works.
+  const onChange = val => {
+    if (noRedux) {
+      return _onChange(val);
     }
-  } else {
-    simpleAccept = accept;
-  }
+    return dispatch(change(formName, "exampleFile", val));
+  };
 
-  const fileListToUse = fileList ? fileList : [];
-
-  async function handleSecondHalfOfUpload({ acceptedFiles, cleanedFileList }) {
+  const handleSecondHalfOfUpload = async ({
+    acceptedFiles,
+    cleanedFileList
+  }) => {
+    // This onChange is not changing things, we need to check whether the error is here or later
     onChange(cleanedFileList); //tnw: this line is necessary, if you want to clear the file list in the beforeUpload, call onChange([])
     // beforeUpload is called, otherwise beforeUpload will not be able to truly cancel the upload
     const keepGoing = beforeUpload
@@ -527,7 +326,270 @@ const Uploader = ({
       );
     }
     setLoading(false);
+  };
+
+  const isAcceptPromise = useMemo(
+    () =>
+      __accept?.then ||
+      (Array.isArray(__accept) ? __accept.some(accept => accept?.then) : false),
+    [__accept]
+  );
+
+  let dropzoneDisabled = _disabled;
+  let _accept = __accept;
+
+  if (resolvedAccept) {
+    _accept = resolvedAccept;
   }
+
+  useEffect(() => {
+    if (isAcceptPromise) {
+      setAcceptLoading(true);
+      Promise.allSettled(Array.isArray(__accept) ? __accept : [__accept]).then(
+        results => {
+          const resolved = flatMap(results, r => r.value);
+          setAcceptLoading(false);
+          setResolvedAccept(resolved);
+        }
+      );
+    }
+  }, [__accept, isAcceptPromise]);
+
+  if (isAcceptPromise && !resolvedAccept) {
+    _accept = [];
+  }
+
+  if (acceptLoading) dropzoneDisabled = true;
+  const accept = useMemo(
+    () =>
+      !_accept
+        ? undefined
+        : isAcceptPromise && !resolvedAccept
+          ? []
+          : isPlainObject(_accept)
+            ? [_accept]
+            : isArray(_accept)
+              ? _accept
+              : _accept.split(",").map(accept => ({ type: accept })),
+    [_accept, isAcceptPromise, resolvedAccept]
+  );
+
+  const callout = _callout || accept?.find?.(a => a?.callout)?.callout;
+
+  const validateAgainstSchema = useMemo(
+    () =>
+      setValidateAgainstSchema(
+        _validateAgainstSchema ||
+          accept?.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema
+      ),
+    [_validateAgainstSchema, accept]
+  );
+
+  if (
+    (validateAgainstSchema || autoUnzip) &&
+    accept &&
+    !accept.some(a => a.type === "zip")
+  ) {
+    accept?.unshift({
+      type: "zip",
+      description: "Any of the following types, just compressed"
+    });
+  }
+
+  const { showDialogPromise: showUploadCsvWizardDialog, comp } = useDialog({
+    ModalComponent: UploadCsvWizardDialog
+  });
+
+  const { showDialogPromise: showSimpleInsertDataDialog, comp: comp2 } =
+    useDialog({
+      ModalComponent: SimpleInsertDataDialog
+    });
+
+  function cleanupFiles() {
+    filesToClean.current.forEach(file => URL.revokeObjectURL(file.preview));
+  }
+  useEffect(() => {
+    return () => {
+      cleanupFiles();
+    };
+  }, []);
+
+  let contentOverride = maybeContentOverride;
+  if (contentOverride && typeof contentOverride === "function") {
+    contentOverride = contentOverride({ loading });
+  }
+  let simpleAccept;
+  let handleManuallyEnterData;
+  let advancedAccept;
+
+  if (Array.isArray(accept)) {
+    if (accept.some(acc => isPlainObject(acc))) {
+      //advanced accept
+      advancedAccept = accept;
+      simpleAccept = flatMap(accept, acc => {
+        if (acc.validateAgainstSchema) {
+          if (!acc.type) {
+            acc.type = [".csv", ".xlsx"];
+          }
+          handleManuallyEnterData = async e => {
+            e.stopPropagation();
+            const { newEntities, fileName } = await showSimpleInsertDataDialog(
+              "onSimpleInsertDialogFinish",
+              {
+                validateAgainstSchema
+              }
+            );
+            if (!newEntities) return;
+            //check existing files to make sure the new file name gets incremented if necessary
+            // fileList
+            const newFileName = getNewName(fileListToUse, fileName);
+            const { newFile, cleanedEntities } = getNewCsvFile(
+              newEntities,
+              newFileName
+            );
+
+            const file = {
+              ...newFile,
+              parsedData: cleanedEntities,
+              meta: {
+                fields: validateAgainstSchema.fields.map(({ path }) => path)
+              },
+              name: newFileName,
+              originFileObj: newFile,
+              originalFileObj: newFile,
+              id: nanoid(),
+              hasEditClick: true
+            };
+
+            const cleanedFileList = [file, ...fileListToUse].slice(
+              0,
+              fileLimit ? fileLimit : undefined
+            );
+            handleSecondHalfOfUpload({
+              acceptedFiles: cleanedFileList,
+              cleanedFileList
+            });
+
+            window.toastr.success(`File Added`);
+          };
+
+          const nameToUse =
+            startCase(
+              removeExt(
+                validateAgainstSchema.fileName || validateAgainstSchema.name
+              )
+            ) || "Example";
+
+          const handleDownloadXlsxFile = async () => {
+            const dataDictionarySchema = [
+              { value: f => f.displayName || f.path, column: `Column Name` },
+              // {
+              //   value: f => f.isUnique ? "Unique" : "",
+              //   column: `Unique?`
+              // },
+              {
+                value: f => (f.isRequired ? "Required" : "Optional"),
+                column: `Required?`
+              },
+              {
+                value: f => (f.type === "dropdown" ? "text" : f.type || "text"),
+                column: `Data Type`
+              },
+              {
+                value: f => f.description,
+                column: `Notes`
+              },
+              {
+                value: f => f.example || f.defaultValue || "",
+                column: `Example Data`
+              }
+            ];
+
+            const mainExampleData = {};
+            const fieldsToUse = [
+              ...validateAgainstSchema.fields,
+              ...(validateAgainstSchema.exampleDownloadFields ?? [])
+            ];
+            const mainSchema = fieldsToUse.map(f => {
+              mainExampleData[f.displayName || f.path] =
+                f.example || f.defaultValue;
+              return {
+                column: f.displayName || f.path,
+                value: v => {
+                  return v[f.displayName || f.path];
+                }
+              };
+            });
+            const blobFile = await writeXlsxFile(
+              [[mainExampleData], fieldsToUse, helperText],
+              {
+                headerStyle: {
+                  fontWeight: "bold"
+                },
+                schema: [mainSchema, dataDictionarySchema, helperSchema],
+                sheets: [nameToUse, "Column Info", "Upload Instructions"],
+                filePath: "file.xlsx"
+              }
+            );
+            downloadjs(blobFile, `${nameToUse}.xlsx`, "xlsx");
+          };
+          // handleDownloadXlsxFile()
+          acc.exampleFiles = [
+            // ...(a.exampleFile ? [a.exampleFile] : []),
+            {
+              description: "Download Example CSV File",
+              exampleFile: () => {
+                const rows = [];
+                const schemaToUse = [
+                  ...acc.validateAgainstSchema.fields,
+                  ...(acc.validateAgainstSchema.exampleDownloadFields ?? [])
+                ];
+                rows.push(
+                  schemaToUse.map(f => {
+                    return `${f.displayName || f.path}`;
+                  })
+                );
+                rows.push(
+                  schemaToUse.map(f => {
+                    return `${f.example || f.defaultValue || ""}`;
+                  })
+                );
+                const csv = unparse(rows);
+
+                const downloadFn = window.Cypress?.downloadTest || downloadjs;
+                downloadFn(csv, `${nameToUse}.csv`, "csv");
+              }
+            },
+            {
+              description: "Download Example XLSX File",
+              subtext: "Includes Upload Instructions and Column Info",
+              exampleFile: handleDownloadXlsxFile
+            },
+            ...(noBuildCsvOption
+              ? []
+              : [
+                  {
+                    description: manualEnterMessage,
+                    subtext: manualEnterSubMessage,
+                    icon: "manually-entered-data",
+                    exampleFile: handleManuallyEnterData
+                  }
+                ])
+          ];
+          delete acc.exampleFile;
+        }
+        if (acc.type) return acc.type;
+        return acc;
+      });
+      simpleAccept = simpleAccept.join(", ");
+    } else {
+      simpleAccept = accept.join(", ");
+    }
+  } else {
+    simpleAccept = accept;
+  }
+
+  const fileListToUse = fileList ? fileList : [];
 
   return (
     <>
@@ -556,17 +618,20 @@ const Uploader = ({
               style={{ fontSize: 11, marginBottom: 5 }}
             >
               {advancedAccept && !acceptLoading ? (
-                <div style={{}}>
+                <div>
                   Accepts &nbsp;
-                  <span style={{}}>
-                    {advancedAccept.map((a, i) => {
+                  <span>
+                    {advancedAccept.map((accept, i) => {
                       const disabled = !(
-                        a.description ||
-                        a.exampleFile ||
-                        a.exampleFiles
+                        accept.description ||
+                        accept.exampleFile ||
+                        accept.exampleFiles
                       );
-                      const PopOrTooltip = a.exampleFiles ? Popover : Tooltip;
-                      const hasDownload = a.exampleFile || a.exampleFiles;
+                      const PopOrTooltip = accept.exampleFiles
+                        ? Popover
+                        : Tooltip;
+                      const hasDownload =
+                        accept.exampleFile || accept.exampleFiles;
                       const CustomTag = !hasDownload ? "span" : "a";
                       return (
                         <PopOrTooltip
@@ -575,40 +640,38 @@ const Uploader = ({
                           disabled={disabled}
                           modifiers={popoverOverflowModifiers}
                           content={
-                            a.exampleFiles ? (
+                            accept.exampleFiles ? (
                               <Menu>
-                                {a.exampleFiles.map(
+                                {accept.exampleFiles.map(
                                   (
                                     { description, subtext, exampleFile, icon },
                                     i
-                                  ) => {
-                                    return (
-                                      <MenuItem
-                                        icon={icon || "download"}
-                                        intent="primary"
-                                        text={
-                                          subtext ? (
-                                            <div>
-                                              <div>{description}</div>
-                                              <div
-                                                style={{
-                                                  fontSize: 11,
-                                                  fontStyle: "italic",
-                                                  color: Colors.GRAY3
-                                                }}
-                                              >
-                                                {subtext}
-                                              </div>{" "}
-                                            </div>
-                                          ) : (
-                                            description
-                                          )
-                                        }
-                                        {...getFileDownloadAttr(exampleFile)}
-                                        key={i}
-                                      />
-                                    );
-                                  }
+                                  ) => (
+                                    <MenuItem
+                                      icon={icon || "download"}
+                                      intent="primary"
+                                      text={
+                                        subtext ? (
+                                          <div>
+                                            <div>{description}</div>
+                                            <div
+                                              style={{
+                                                fontSize: 11,
+                                                fontStyle: "italic",
+                                                color: Colors.GRAY3
+                                              }}
+                                            >
+                                              {subtext}
+                                            </div>{" "}
+                                          </div>
+                                        ) : (
+                                          description
+                                        )
+                                      }
+                                      {...getFileDownloadAttr(exampleFile)}
+                                      key={i}
+                                    />
+                                  )
                                 )}
                               </Menu>
                             ) : (
@@ -618,20 +681,20 @@ const Uploader = ({
                                   wordBreak: "break-word"
                                 }}
                               >
-                                {a.description ? (
+                                {accept.description ? (
                                   <div
                                     style={{
                                       marginBottom: 4,
                                       fontStyle: "italic"
                                     }}
                                   >
-                                    {a.description}
+                                    {accept.description}
                                   </div>
                                 ) : (
                                   ""
                                 )}
-                                {a.exampleFile &&
-                                  (a.isTemplate
+                                {accept.exampleFile &&
+                                  (accept.isTemplate
                                     ? "Download Example Template"
                                     : "Download Example File")}
                               </div>
@@ -641,20 +704,20 @@ const Uploader = ({
                           <CustomTag
                             className="tgFileTypeDescriptor"
                             style={{ marginRight: 10, cursor: "pointer" }}
-                            {...getFileDownloadAttr(a.exampleFile)}
+                            {...getFileDownloadAttr(accept.exampleFile)}
                           >
-                            {(a.type
-                              ? isArray(a.type)
-                                ? a.type
-                                : [a.type]
-                              : [a]
+                            {(accept.type
+                              ? isArray(accept.type)
+                                ? accept.type
+                                : [accept.type]
+                              : [accept]
                             )
                               .map(t => {
                                 if (!t.startsWith) {
-                                  console.error(`Missing type here:`, a);
+                                  console.error(`Missing type here:`, accept);
                                   throw new Error(
                                     `Missing "type" here: ${JSON.stringify(
-                                      a,
+                                      accept,
                                       null,
                                       4
                                     )}`
@@ -700,7 +763,9 @@ const Uploader = ({
               simpleAccept
                 ? simpleAccept
                     .split(", ")
-                    .map(a => (a.startsWith(".") ? a : "." + a))
+                    .map(accept =>
+                      accept.startsWith(".") ? accept : "." + accept
+                    )
                     .join(", ")
                 : undefined
             }
@@ -712,7 +777,9 @@ const Uploader = ({
                     file,
                     simpleAccept
                       ?.split(", ")
-                      ?.map(a => (a.startsWith(".") ? a : "." + a)) || []
+                      ?.map(accept =>
+                        accept.startsWith(".") ? accept : "." + accept
+                      ) || []
                   );
                   acceptedFiles.push(...files.map(f => f.originFileObj));
                 } else {
@@ -951,7 +1018,6 @@ const Uploader = ({
 
                       file.hasEditClick = true;
                       file.parsedData = cleanedEntities;
-                      // file.name = newFileName;
                       file.originFileObj = newFile;
                       file.originalFileObj = newFile;
                     });
@@ -1103,21 +1169,20 @@ const Uploader = ({
                                     userSchema
                                   }
                                 );
-
                               if (!newEntities) {
                                 return;
                               } else {
                                 const { newFile, cleanedEntities } =
                                   getNewCsvFile(newEntities, fileName);
-                                const zoink = Object.assign({}, file, {
+                                const tmpFile = Object.assign({}, file, {
                                   ...newFile,
                                   originFileObj: newFile,
                                   originalFileObj: newFile,
                                   parsedData: cleanedEntities
                                 });
-                                zoink.name = newFile.name;
+                                tmpFile.name = newFile.name;
                                 fileList = [...fileList];
-                                fileList[index] = zoink;
+                                fileList[index] = tmpFile;
                                 handleSecondHalfOfUpload({
                                   acceptedFiles: fileList,
                                   cleanedFileList: fileList
@@ -1193,53 +1258,3 @@ const Uploader = ({
 };
 
 export default Uploader;
-
-function getFileDownloadAttr(exampleFile) {
-  const baseUrl = window?.frontEndConfig?.serverBasePath || "";
-  return isFunction(exampleFile)
-    ? { onClick: exampleFile }
-    : exampleFile && {
-        target: "_blank",
-        download: true,
-        href:
-          exampleFile.startsWith("https") || exampleFile.startsWith("www")
-            ? exampleFile
-            : baseUrl
-              ? urljoin(baseUrl, "exampleFiles", exampleFile)
-              : exampleFile
-      };
-}
-
-function getNewCsvFile(ents, fileName) {
-  const strippedEnts = stripId(ents);
-
-  return {
-    newFile: new File([papaparse.unparse(strippedEnts)], fileName),
-    cleanedEntities: strippedEnts
-  };
-}
-
-function stripId(ents = []) {
-  return ents.map(ent => {
-    const { id, ...rest } = ent;
-    return rest;
-  });
-}
-
-const manualEnterMessage = "Build CSV File";
-const manualEnterSubMessage = "Paste or type data to build a CSV file";
-
-function trimFiles(incomingFiles, fileLimit) {
-  if (fileLimit) {
-    if (fileLimit && incomingFiles.length > fileLimit) {
-      window.toastr &&
-        window.toastr.warning(
-          `Detected additional files in your upload that we are ignoring. You can only upload ${fileLimit} file${
-            fileLimit > 1 ? "s" : ""
-          } at a time.`
-        );
-    }
-    return incomingFiles.slice(0, fileLimit);
-  }
-  return incomingFiles;
-}

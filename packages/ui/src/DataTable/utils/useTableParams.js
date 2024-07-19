@@ -352,7 +352,6 @@ export default function useTableParams(
     reduxFormSearchInput,
     onlyShowRowsWErrors,
     reduxFormCellValidation,
-    reduxFormEntities,
     reduxFormSelectedCells,
     reduxFormSelectedEntityIdMap,
     reduxFormQueryParams,

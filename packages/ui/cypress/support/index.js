@@ -27,12 +27,9 @@
 const { isString } = require("lodash-es");
 
 Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
-  /* eslint-disable no-unexpected-multiline*/
-
   return cy
     .get(`[data-test="${type}"]`)
     [onOrOff ? "check" : "uncheck"]({ force: true });
-  /* eslint-enable no-unexpected-multiline*/
 });
 
 Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {

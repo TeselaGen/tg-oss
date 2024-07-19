@@ -1,9 +1,9 @@
 import { isEntityClean } from "./isEntityClean";
 import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 
-export const removeCleanRows = (reduxFormEntities, reduxFormCellValidation) => {
+export const removeCleanRows = (entities, cellValidation) => {
   const toFilterOut = {};
-  const entsToUse = (reduxFormEntities || []).filter(e => {
+  const entsToUse = (entities || []).filter(e => {
     if (!(e._isClean || isEntityClean(e))) return true;
     else {
       toFilterOut[getIdOrCodeOrIndex(e)] = true;
@@ -12,7 +12,7 @@ export const removeCleanRows = (reduxFormEntities, reduxFormCellValidation) => {
   });
 
   const validationToUse = {};
-  Object.entries(reduxFormCellValidation || {}).forEach(([k, v]) => {
+  Object.entries(cellValidation || {}).forEach(([k, v]) => {
     const [rowId] = k.split(":");
     if (!toFilterOut[rowId]) {
       validationToUse[k] = v;

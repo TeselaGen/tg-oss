@@ -261,12 +261,6 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
     description:
       "If checked, will require that either the name or id or the description or sequence or both be provided"
   });
-  // const [allowEitherNameOrId, allowEitherNameOrIdComp] = useToggle({
-  //   type: "allowEitherNameOrId"
-  // });
-  // const [allowZip, allowZipComp] = useToggle({
-  //   type: "allowZip"
-  // });
   const [multipleExamples, multipleExamplesComp] = useToggle({
     type: "multipleExamples",
     description: "If checked, will add multiple examples for each column"
@@ -345,7 +339,6 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
       {allowMultipleFilesComp}
       {multipleExamplesComp}
       {getValuesForDropdownExampleComp}
-      {/* {allowZipComp} */}
       <br />
       <br />
       <br />

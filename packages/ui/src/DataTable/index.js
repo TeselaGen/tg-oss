@@ -462,6 +462,8 @@ const DataTable = ({
     withDisplayOptions
   ]);
 
+  // This shouldn't depend on the entities, we should look into a
+  // way to separate this into smaller chunks.
   const { schema } = useMemo(() => {
     const schema = convertSchema(_schema);
     if (isViewable) {
@@ -542,7 +544,8 @@ const DataTable = ({
           })
           .concat(fieldsWithoutOrder);
         // We shouldn't need to update the columnOrderings here, this could lead
-        // to unnecessary updates
+        // to unnecessary updates. TableConfig and schema have circular
+        // dependencies, which is bad at the moment of updating.
         if (
           !isEqual(
             schema.fields.map(f => f.path),
@@ -557,10 +560,11 @@ const DataTable = ({
       }
     }
     return { schema };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     _schema,
     cellRenderer,
-    entities,
+    // entities
     isInfinite,
     isOpenable,
     isSimple,
@@ -1482,11 +1486,11 @@ const DataTable = ({
   useEffect(() => {
     setColumns(
       schema.fields
-        ? schema.fields.reduce(function (columns, field, i) {
+        ? schema.fields.reduce((col, field, i) => {
             if (field.isHidden) {
-              return columns;
+              return col;
             }
-            return columns.concat({
+            return col.concat({
               ...field,
               columnIndex: i
             });
@@ -2401,7 +2405,6 @@ const DataTable = ({
           {...(isCellEditable && {
             tabIndex: -1,
             onKeyDown: e => {
-              e.stopPropagation();
               const isTabKey = e.key === "Tab";
               const isArrowKey = e.key.startsWith("Arrow");
               if (
@@ -2509,6 +2512,7 @@ const DataTable = ({
                 return;
               }
               if (rowDisabled) return;
+              e.stopPropagation();
               startCellEdit(primarySelectedCellId, {
                 pressedKey: e.key
               });

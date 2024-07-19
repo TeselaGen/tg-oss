@@ -109,9 +109,7 @@ function FormComponentsDemo({ handleSubmit }) {
             <Button>Hey there</Button>
             &nbsp;
             <Uploader
-              threeDotMenuItems={
-                <MenuItem text="Download Example File"></MenuItem>
-              }
+              threeDotMenuItems={<MenuItem text="Download Example File" />}
               secondaryLabel="<Uploader/> I'm a secondaryLabel"
               accept=".json"
               action={"docs.google.com/upload"}
@@ -128,9 +126,7 @@ function FormComponentsDemo({ handleSubmit }) {
           </div>
           <h6>FileUploadField with minimal=true</h6>
           <FileUploadField
-            threeDotMenuItems={
-              <MenuItem text="Download Example File"></MenuItem>
-            }
+            threeDotMenuItems={<MenuItem text="Download Example File" />}
             className={"minimal-file-upload-field"}
             secondaryLabel="I'm a secondaryLabel"
             innerText="Upload"
@@ -203,9 +199,7 @@ function FormComponentsDemo({ handleSubmit }) {
           </div>
           {disableFileUploadFieldComp}
           <FileUploadField
-            threeDotMenuItems={
-              <MenuItem text="Download Example File"></MenuItem>
-            }
+            threeDotMenuItems={<MenuItem text="Download Example File" />}
             disabled={disableFileUploadField}
             className={"fileUploadZoink"}
             label="<FileUploadField/> Upload component 123"

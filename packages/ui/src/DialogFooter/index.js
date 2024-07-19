@@ -27,11 +27,11 @@ function DialogFooter({
   containerClassname,
   noCancel
 }) {
-  const r = useRef();
+  const divRef = useRef();
   return (
     <div
       style={style}
-      ref={r}
+      ref={divRef}
       className={classNames(Classes.DIALOG_FOOTER, containerClassname)}
     >
       <div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -57,7 +57,7 @@ function DialogFooter({
               hideModal ||
               function () {
                 try {
-                  r.current
+                  divRef.current
                     .closest(".bp3-dialog")
                     .querySelector(".bp3-dialog-close-button")
                     .click();
