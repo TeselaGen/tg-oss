@@ -365,7 +365,13 @@ function getSubFilter(
           if (!fieldVal?.toString) return false;
           return (
             arrayFilterValue
-              .map(val => val && val.toLowerCase())
+              .map(val => {
+                if (val) {
+                  if (val.toString) return val.toString().toLowerCase();
+                  return val.toLowerCase();
+                }
+                return undefined;
+              })
               .indexOf(fieldVal.toString().toLowerCase()) > -1
           );
         };
@@ -377,7 +383,13 @@ function getSubFilter(
           if (!fieldVal?.toString) return false;
           return (
             arrayFilterValue
-              .map(val => val && val.toLowerCase())
+              .map(val => {
+                if (val) {
+                  if (val.toString) return val.toString().toLowerCase();
+                  return val.toLowerCase();
+                }
+                return undefined;
+              })
               .indexOf(fieldVal.toString().toLowerCase()) === -1
           );
         };

@@ -17,7 +17,7 @@ import { some } from "lodash-es";
 import { times } from "lodash-es";
 import DialogFooter from "./DialogFooter";
 import DataTable from "./DataTable";
-import { removeCleanRows } from "./DataTable/utils";
+import { removeCleanRows, useDeepEqualMemo } from "./DataTable/utils";
 import wrapDialog from "./wrapDialog";
 import { omit } from "lodash-es";
 import { useDispatch, useSelector } from "react-redux";
@@ -179,15 +179,19 @@ export const SimpleInsertDataDialog = compose(
   validateAgainstSchema
 }) => {
   const dispatch = useDispatch();
-  const reduxFormEntities = useSelector(
+  const _reduxFormEntities = useSelector(
     state => state.form?.[dataTableForm]?.values.reduxFormEntities
   );
+  const reduxFormEntities = useDeepEqualMemo(_reduxFormEntities);
   useEffect(() => {
     return () => dispatch(destroy(dataTableForm));
   }, [dataTableForm, dispatch]);
-  const reduxFormCellValidation = useSelector(
+
+  const _reduxFormCellValidation = useSelector(
     state => state.form?.[dataTableForm]?.values.reduxFormCellValidation
   );
+  const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
+
   const { entsToUse, validationToUse } = useMemo(
     () => removeCleanRows(reduxFormEntities, reduxFormCellValidation),
     [reduxFormEntities, reduxFormCellValidation]
@@ -268,13 +272,19 @@ const UploadCsvWizardDialogInner = reduxForm()(({
   const [hasSubmitted, setSubmitted] = useState(!csvValidationIssue);
   const [steps, setSteps] = useState(getInitialSteps(csvValidationIssue));
 
-  const { reduxFormEntities, reduxFormCellValidation } = useSelector(state =>
+  const {
+    reduxFormEntities: _reduxFormEntities,
+    reduxFormCellValidation: _reduxFormCellValidation
+  } = useSelector(state =>
     formValueSelector(datatableFormName)(
       state,
       "reduxFormEntities",
       "reduxFormCellValidation"
     )
   );
+
+  const reduxFormEntities = useDeepEqualMemo(_reduxFormEntities);
+  const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
 
   let inner;
   if (hasSubmitted) {
@@ -390,6 +400,220 @@ const UploadCsvWizardDialogInner = reduxForm()(({
   );
 });
 
+// // usefull
+// const useTraceUpdate = props => {
+//   const prev = useRef(props);
+//   useEffect(() => {
+//     const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+//       if (prev.current[k] !== v) {
+//         ps[k] = [prev.current[k], v];
+//       }
+//       return ps;
+//     }, {});
+//     if (Object.keys(changedProps).length > 0) {
+//       console.log("Changed props:", changedProps);
+//     }
+//     prev.current = props;
+//   });
+// };
+
+const MultipleFileDialog = ({
+  focusedTab,
+  setFocusedTab,
+  filesWIssues,
+  finishedFiles,
+  doAllFilesHaveSameHeaders,
+  setSubmittedOuter,
+  setSteps,
+  reduxFormEntitiesArray,
+  validateAgainstSchema,
+  changeForm,
+  onUploadWizardFinish,
+  setFilesWIssues,
+  csvValidationIssue,
+  ignoredHeadersMsg,
+  searchResults,
+  matchedHeaders,
+  userSchema,
+  flippedMatchedHeaders,
+  steps,
+  hasSubmittedOuter
+}) => {
+  const tabs = (
+    <>
+      <Callout style={{ marginBottom: 10, flexGrow: 0 }} intent="warning">
+        <div>
+          Please look over each of the following files and correct any issues.
+        </div>
+      </Callout>
+      <Tabs
+        // renderActiveTabPanelOnly
+        selectedTabId={focusedTab}
+        onChange={i => {
+          setFocusedTab(i);
+        }}
+        vertical
+      >
+        {filesWIssues.map((f, i) => {
+          const isGood = finishedFiles[i];
+          const isThisTheLastBadFile = finishedFiles.every((ff, j) => {
+            if (i === j) {
+              return true;
+            } else {
+              return !!ff;
+            }
+          });
+          return (
+            <Tab
+              key={i}
+              id={i}
+              title={
+                <div>
+                  <Icon
+                    intent={isGood ? "success" : "warning"}
+                    icon={isGood ? "tick-circle" : "warning-sign"}
+                  />{" "}
+                  {f.file.name}
+                </div>
+              }
+              panel={
+                <UploadCsvWizardDialogInner
+                  isThisTheLastBadFile={isThisTheLastBadFile}
+                  onBackClick={
+                    doAllFilesHaveSameHeaders &&
+                    (() => {
+                      setSubmittedOuter(false);
+                      setSteps(getInitialSteps(true));
+                    })
+                  }
+                  onMultiFileUploadSubmit={async () => {
+                    let nextUnfinishedFile;
+                    //find the next unfinished file
+                    for (
+                      let j = (i + 1) % finishedFiles.length;
+                      j < finishedFiles.length;
+                      j++
+                    ) {
+                      if (j === i) {
+                        break;
+                      } else if (!finishedFiles[j]) {
+                        nextUnfinishedFile = j;
+                        break;
+                      } else if (j === finishedFiles.length - 1) {
+                        j = -1;
+                      }
+                    }
+                    if (nextUnfinishedFile !== undefined) {
+                      //do async validation here if needed
+                      const currentEnts = reduxFormEntitiesArray[focusedTab];
+                      if (
+                        await asyncValidateHelper(
+                          validateAgainstSchema,
+                          currentEnts,
+                          changeForm,
+                          `editableCellTable-${focusedTab}`
+                        )
+                      )
+                        return;
+                      setFocusedTab(nextUnfinishedFile);
+                    } else {
+                      //do async validation here if needed
+                      for (const [i, ents] of finishedFiles.entries()) {
+                        if (
+                          await asyncValidateHelper(
+                            validateAgainstSchema,
+                            ents,
+                            changeForm,
+                            `editableCellTable-${i}`
+                          )
+                        )
+                          return;
+                      }
+                      //we are done
+                      onUploadWizardFinish({
+                        res: finishedFiles.map(ents => {
+                          return maybeStripIdFromEntities(
+                            ents,
+                            f.validateAgainstSchema
+                          );
+                        })
+                      });
+                    }
+                  }}
+                  validateAgainstSchema={validateAgainstSchema}
+                  reduxFormEntitiesArray={reduxFormEntitiesArray}
+                  filesWIssues={filesWIssues}
+                  finishedFiles={finishedFiles}
+                  onUploadWizardFinish={onUploadWizardFinish}
+                  doAllFilesHaveSameHeaders={doAllFilesHaveSameHeaders}
+                  setFilesWIssues={setFilesWIssues}
+                  csvValidationIssue={csvValidationIssue}
+                  ignoredHeadersMsg={ignoredHeadersMsg}
+                  searchResults={searchResults}
+                  matchedHeader={matchedHeaders}
+                  userSchema={userSchema}
+                  flippedMatchedHeaders={flippedMatchedHeaders}
+                  changeForm={changeForm}
+                  fileIndex={i}
+                  form={`correctCSVHeadersForm-${i}`}
+                  datatableFormName={`editableCellTable-${i}`}
+                  {...f}
+                  {...(doAllFilesHaveSameHeaders && {
+                    csvValidationIssue: false
+                  })}
+                />
+              }
+            />
+          );
+        })}
+      </Tabs>
+    </>
+  );
+  let comp = tabs;
+
+  if (doAllFilesHaveSameHeaders) {
+    comp = (
+      <>
+        {doAllFilesHaveSameHeaders && (
+          <SimpleStepViz style={{ marginTop: 8 }} steps={steps} />
+        )}
+
+        {!hasSubmittedOuter && (
+          <MatchHeaders
+            doAllFilesHaveSameHeaders={doAllFilesHaveSameHeaders}
+            datatableFormNames={filesWIssues.map((f, i) => {
+              return `editableCellTable-${i}`;
+            })}
+            reduxFormEntitiesArray={reduxFormEntitiesArray}
+            csvValidationIssue={csvValidationIssue}
+            ignoredHeadersMsg={ignoredHeadersMsg}
+            searchResults={searchResults}
+            matchedHeaders={matchedHeaders}
+            userSchema={userSchema}
+            flippedMatchedHeaders={flippedMatchedHeaders}
+            setFilesWIssues={setFilesWIssues}
+            filesWIssues={filesWIssues}
+            fileIndex={0}
+            {...filesWIssues[0]}
+          />
+        )}
+        {hasSubmittedOuter && tabs}
+        {!hasSubmittedOuter && (
+          <DialogFooter
+            style={{ marginTop: 20 }}
+            onClick={() => {
+              setSubmittedOuter(true);
+              setSteps(getInitialSteps(false));
+            }}
+            text="Review and Edit Data"
+          />
+        )}
+      </>
+    );
+  }
+  return <div style={{ padding: 10 }}>{comp}</div>;
+};
+
 const UploadCsvWizardDialog = compose(
   wrapDialog({
     canEscapeKeyClose: false,
@@ -427,7 +651,7 @@ const UploadCsvWizardDialog = compose(
     };
   }, [_filesWIssues.length, dispatch]);
 
-  const { reduxFormEntitiesArray, finishedFiles } = useSelector(state => {
+  const { _reduxFormEntitiesArray, _finishedFiles } = useSelector(state => {
     if (_filesWIssues.length > 0) {
       const reduxFormEntitiesArray = [];
       const finishedFiles = _filesWIssues.map((f, i) => {
@@ -455,6 +679,8 @@ const UploadCsvWizardDialog = compose(
       };
     }
   });
+  const reduxFormEntitiesArray = useDeepEqualMemo(_reduxFormEntitiesArray);
+  const finishedFiles = useDeepEqualMemo(_finishedFiles);
 
   const [hasSubmittedOuter, setSubmittedOuter] = useState();
   const [steps, setSteps] = useState(getInitialSteps(true));
@@ -463,180 +689,32 @@ const UploadCsvWizardDialog = compose(
   const [filesWIssues, setFilesWIssues] = useState(
     _filesWIssues.map(cloneDeep) //do this little trick to stop immer from preventing the file from being modified
   );
+
   if (filesWIssues.length > 1) {
-    const tabs = (
-      <>
-        <Callout style={{ marginBottom: 10, flexGrow: 0 }} intent="warning">
-          <div>
-            Please look over each of the following files and correct any issues.
-          </div>
-        </Callout>
-        <Tabs
-          // renderActiveTabPanelOnly
-          selectedTabId={focusedTab}
-          onChange={i => {
-            setFocusedTab(i);
-          }}
-          vertical
-        >
-          {filesWIssues.map((f, i) => {
-            const isGood = finishedFiles[i];
-            const isThisTheLastBadFile = finishedFiles.every((ff, j) => {
-              if (i === j) {
-                return true;
-              } else {
-                return !!ff;
-              }
-            });
-            return (
-              <Tab
-                key={i}
-                id={i}
-                title={
-                  <div>
-                    <Icon
-                      intent={isGood ? "success" : "warning"}
-                      icon={isGood ? "tick-circle" : "warning-sign"}
-                    />{" "}
-                    {f.file.name}
-                  </div>
-                }
-                panel={
-                  <UploadCsvWizardDialogInner
-                    isThisTheLastBadFile={isThisTheLastBadFile}
-                    onBackClick={
-                      doAllFilesHaveSameHeaders &&
-                      (() => {
-                        setSubmittedOuter(false);
-                        setSteps(getInitialSteps(true));
-                      })
-                    }
-                    onMultiFileUploadSubmit={async () => {
-                      let nextUnfinishedFile;
-                      //find the next unfinished file
-                      for (
-                        let j = (i + 1) % finishedFiles.length;
-                        j < finishedFiles.length;
-                        j++
-                      ) {
-                        if (j === i) {
-                          break;
-                        } else if (!finishedFiles[j]) {
-                          nextUnfinishedFile = j;
-                          break;
-                        } else if (j === finishedFiles.length - 1) {
-                          j = -1;
-                        }
-                      }
-                      if (nextUnfinishedFile !== undefined) {
-                        //do async validation here if needed
-                        const currentEnts = reduxFormEntitiesArray[focusedTab];
-                        if (
-                          await asyncValidateHelper(
-                            validateAgainstSchema,
-                            currentEnts,
-                            changeForm,
-                            `editableCellTable-${focusedTab}`
-                          )
-                        )
-                          return;
-                        setFocusedTab(nextUnfinishedFile);
-                      } else {
-                        //do async validation here if needed
-                        for (const [i, ents] of finishedFiles.entries()) {
-                          if (
-                            await asyncValidateHelper(
-                              validateAgainstSchema,
-                              ents,
-                              changeForm,
-                              `editableCellTable-${i}`
-                            )
-                          )
-                            return;
-                        }
-                        //we are done
-                        onUploadWizardFinish({
-                          res: finishedFiles.map(ents => {
-                            return maybeStripIdFromEntities(
-                              ents,
-                              f.validateAgainstSchema
-                            );
-                          })
-                        });
-                      }
-                    }}
-                    validateAgainstSchema={validateAgainstSchema}
-                    reduxFormEntitiesArray={reduxFormEntitiesArray}
-                    filesWIssues={filesWIssues}
-                    finishedFiles={finishedFiles}
-                    onUploadWizardFinish={onUploadWizardFinish}
-                    doAllFilesHaveSameHeaders={doAllFilesHaveSameHeaders}
-                    setFilesWIssues={setFilesWIssues}
-                    csvValidationIssue={csvValidationIssue}
-                    ignoredHeadersMsg={ignoredHeadersMsg}
-                    searchResults={searchResults}
-                    matchedHeader={matchedHeaders}
-                    userSchema={userSchema}
-                    flippedMatchedHeaders={flippedMatchedHeaders}
-                    changeForm={changeForm}
-                    fileIndex={i}
-                    form={`correctCSVHeadersForm-${i}`}
-                    datatableFormName={`editableCellTable-${i}`}
-                    {...f}
-                    {...(doAllFilesHaveSameHeaders && {
-                      csvValidationIssue: false
-                    })}
-                  />
-                }
-              />
-            );
-          })}
-        </Tabs>
-      </>
+    return (
+      <MultipleFileDialog
+        focusedTab={focusedTab}
+        setFocusedTab={setFocusedTab}
+        filesWIssues={filesWIssues}
+        finishedFiles={finishedFiles}
+        doAllFilesHaveSameHeaders={doAllFilesHaveSameHeaders}
+        setSubmittedOuter={setSubmittedOuter}
+        setSteps={setSteps}
+        reduxFormEntitiesArray={reduxFormEntitiesArray}
+        validateAgainstSchema={validateAgainstSchema}
+        changeForm={changeForm}
+        onUploadWizardFinish={onUploadWizardFinish}
+        setFilesWIssues={setFilesWIssues}
+        csvValidationIssue={csvValidationIssue}
+        ignoredHeadersMsg={ignoredHeadersMsg}
+        searchResults={searchResults}
+        matchedHeaders={matchedHeaders}
+        userSchema={userSchema}
+        flippedMatchedHeaders={flippedMatchedHeaders}
+        steps={steps}
+        hasSubmittedOuter={hasSubmittedOuter}
+      />
     );
-    let comp = tabs;
-
-    if (doAllFilesHaveSameHeaders) {
-      comp = (
-        <>
-          {doAllFilesHaveSameHeaders && (
-            <SimpleStepViz style={{ marginTop: 8 }} steps={steps} />
-          )}
-
-          {!hasSubmittedOuter && (
-            <MatchHeaders
-              doAllFilesHaveSameHeaders={doAllFilesHaveSameHeaders}
-              datatableFormNames={filesWIssues.map((f, i) => {
-                return `editableCellTable-${i}`;
-              })}
-              reduxFormEntitiesArray={reduxFormEntitiesArray}
-              csvValidationIssue={csvValidationIssue}
-              ignoredHeadersMsg={ignoredHeadersMsg}
-              searchResults={searchResults}
-              matchedHeaders={matchedHeaders}
-              userSchema={userSchema}
-              flippedMatchedHeaders={flippedMatchedHeaders}
-              setFilesWIssues={setFilesWIssues}
-              filesWIssues={filesWIssues}
-              fileIndex={0}
-              {...filesWIssues[0]}
-            />
-          )}
-          {hasSubmittedOuter && tabs}
-          {!hasSubmittedOuter && (
-            <DialogFooter
-              style={{ marginTop: 20 }}
-              onClick={() => {
-                setSubmittedOuter(true);
-                setSteps(getInitialSteps(false));
-              }}
-              text="Review and Edit Data"
-            />
-          )}
-        </>
-      );
-    }
-    return <div style={{ padding: 10 }}>{comp}</div>;
   } else {
     return (
       <UploadCsvWizardDialogInner

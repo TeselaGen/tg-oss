@@ -529,8 +529,7 @@ const DataTableDemo = () => {
                 expandAllByDefault={expandAllByDefault}
                 extraCompact={extraCompact}
                 {...(getRowClassName && {
-                  getRowClassName: rowInfo => {
-                    console.info(`rowInfo:`, rowInfo);
+                  getRowClassName: () => {
                     return {
                       "custom-getRowClassName": true
                     };

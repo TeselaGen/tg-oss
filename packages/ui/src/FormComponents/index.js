@@ -490,6 +490,7 @@ export const renderFileUpload = ({ input, onFieldSubmit, ...rest }) => (
     fileList={input.value}
     onFieldSubmit={onFieldSubmit}
     {...rest}
+    name={input.name}
     onChange={input.onChange}
   />
 );

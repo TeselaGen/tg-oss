@@ -211,37 +211,37 @@ const InnerDropZone = ({
 
 const Uploader = ({
   accept: __accept,
+  action,
+  autoUnzip,
+  beforeUpload,
+  callout: _callout,
+  className = "",
   contentOverride: maybeContentOverride,
+  disabled: _disabled,
+  dropzoneProps = {},
+  fileLimit,
+  fileList, //list of files with options: {name, loading, error, url, originalName, downloadName}
   innerIcon,
   innerText,
-  action,
-  className = "",
+  meta: { form: formName } = {},
   minimal,
-  validateAgainstSchema: _validateAgainstSchema,
-  callout: _callout,
-  fileLimit,
-  readBeforeUpload, //read the file using the browser's FileReader before passing it to onChange and/or uploading it
-  showUploadList = true,
-  beforeUpload,
-  fileList, //list of files with options: {name, loading, error, url, originalName, downloadName}
+  name,
+  noBuildCsvOption,
+  noRedux = true,
+  onChange: _onChange = noop, //this is almost always getting passed by redux-form, no need to pass this handler manually
+  onFieldSubmit = noop, //called when all files have successfully uploaded
+  onFileClick, // called when a file link in the filelist is clicked
   onFileSuccess = async () => {
     return;
   }, //called each time a file is finished and before the file.loading gets set to false, needs to return a promise!
-  onFieldSubmit = noop, //called when all files have successfully uploaded
-  // fileFinished = noop,
-  onRemove = noop, //called when a file has been selected to be removed
-  onChange: _onChange = noop, //this is almost always getting passed by redux-form, no need to pass this handler manually
-  onFileClick, // called when a file link in the filelist is clicked
-  dropzoneProps = {},
-  overflowList,
-  autoUnzip,
-  disabled: _disabled,
-  noBuildCsvOption,
-  showFilesCount,
-  threeDotMenuItems,
   onPreviewClick,
-  noRedux = true,
-  meta: { form: formName } = {}
+  onRemove = noop, //called when a file has been selected to be removed
+  overflowList,
+  readBeforeUpload, //read the file using the browser's FileReader before passing it to onChange and/or uploading it
+  showFilesCount,
+  showUploadList = true,
+  threeDotMenuItems,
+  validateAgainstSchema: _validateAgainstSchema
 }) => {
   const dispatch = useDispatch();
   const [acceptLoading, setAcceptLoading] = useState();
@@ -254,7 +254,7 @@ const Uploader = ({
     if (noRedux) {
       return _onChange(val);
     }
-    return dispatch(change(formName, "exampleFile", val));
+    return dispatch(change(formName, name, val));
   };
 
   const handleSecondHalfOfUpload = async ({

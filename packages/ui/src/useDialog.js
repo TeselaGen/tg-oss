@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 /*
 
   const {toggleDialog, comp} = useDialog({
     ModalComponent: SimpleInsertData,
-    validateAgainstSchema,
   });
 
   return <div>
@@ -13,32 +12,36 @@ import React, { useState } from "react";
   </div>
 
 */
-export const useDialog = ({ ModalComponent, ...rest }) => {
+/*
+  This useDialog is producing many rerenders for unknown reasons with cypress
+*/
+export const useDialog = ({ ModalComponent }) => {
   const [isOpen, setOpen] = useState(false);
   const [additionalProps, setAdditionalProps] = useState(false);
-  const comp = (
-    <ModalComponent
-      hideModal={() => {
-        setOpen(false);
-      }}
-      hideDialog={() => {
-        setOpen(false);
-      }}
-      {...rest}
-      {...additionalProps}
-      dialogProps={{
-        isOpen,
-        ...rest?.dialogProps,
-        ...additionalProps?.dialogProps
-      }}
-    />
+  const comp = useMemo(
+    () => (
+      <ModalComponent
+        hideModal={() => {
+          setOpen(false);
+        }}
+        hideDialog={() => {
+          setOpen(false);
+        }}
+        {...additionalProps}
+        dialogProps={{
+          isOpen,
+          ...additionalProps?.dialogProps
+        }}
+      />
+    ),
+    [ModalComponent, additionalProps, isOpen]
   );
 
   const toggleDialog = () => {
-    setOpen(!isOpen);
+    setOpen(prev => !prev);
   };
 
-  const showDialogPromise = async (handlerName, moreProps = {}) => {
+  const showDialogPromise = useCallback(async (handlerName, moreProps = {}) => {
     return new Promise(resolve => {
       //return a promise that can be awaited
       setAdditionalProps({
@@ -61,7 +64,7 @@ export const useDialog = ({ ModalComponent, ...rest }) => {
       });
       setOpen(true); //open the dialog
     });
-  };
+  }, []);
 
   return { comp, showDialogPromise, toggleDialog, setAdditionalProps };
 };

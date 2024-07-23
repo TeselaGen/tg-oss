@@ -45,50 +45,30 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
   const mapStateToProps = (state, ownProps) => {
     const mergedOpts = getMergedOpts(topLevelOptions, ownProps);
     const {
-      history,
-      urlConnected,
-      withSelectedEntities,
-      formName,
-      formNameFromWithTPCall,
-      syncDisplayOptionsToDb,
-      defaults,
-      isInfinite,
-      isSimple,
-      withPaging,
-      doNotCoercePageSize,
-      initialValues,
       additionalFilter = {},
       additionalOrFilter = {},
-      noOrderError,
-      withDisplayOptions,
       cellRenderer,
-      model,
+      defaults,
+      doNotCoercePageSize,
+      formName,
+      history,
+      initialValues,
       isCodeModel,
-      noForm
+      isInfinite,
+      isSimple,
+      model,
+      noForm,
+      noOrderError,
+      syncDisplayOptionsToDb,
+      urlConnected,
+      withDisplayOptions,
+      withPaging,
+      withSelectedEntities
     } = mergedOpts;
 
     const schema = getSchema(mergedOpts);
     const convertedSchema = convertSchema(schema);
-    if (ownProps.isTableParamsConnected) {
-      if (
-        formName &&
-        formNameFromWithTPCall &&
-        formName !== formNameFromWithTPCall
-      ) {
-        console.error(
-          `You passed a formName prop, ${formName} to a <DataTable/> component that is already withTableParams() connected, formNameFromWithTableParamsCall: ${formNameFromWithTPCall}`
-        );
-      }
-      if (ownProps.tableParams && !ownProps.tableParams.entities) {
-        console.error(
-          `No entities array detected in tableParams object (<DataTable {...tableParams}/>). You need to call withQuery() after withTableParams() like: compose(withTableParams(), withQuery(something)). formNameFromWithTableParamsCall: ${formNameFromWithTPCall}`
-        );
-      }
-      //short circuit because we've already run this logic
-      return {};
-    }
 
-    let formNameFromWithTableParamsCall;
     if (isLocalCall) {
       if (!noForm && (!formName || formName === "tgDataTable")) {
         console.error(
@@ -110,8 +90,6 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
           "Please pass a unique 'formName' prop to the withTableParams() with schema: ",
           schema
         );
-      } else {
-        formNameFromWithTableParamsCall = formName;
       }
     }
 
@@ -178,7 +156,6 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
         isCodeModel,
         ownProps: mergedOpts
       }),
-      formNameFromWithTPCall: formNameFromWithTableParamsCall,
       currentParams,
       selectedEntities,
       ...(withSelectedEntities &&

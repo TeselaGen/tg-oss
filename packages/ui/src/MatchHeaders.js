@@ -111,7 +111,7 @@ export const MatchHeaders = ({
           return rb - ra;
         });
         return (
-          <Card style={{ padding: 2 }} key={i}>
+          <Card style={{ padding: 2 }} key={`field-${i}`}>
             <table>
               <tbody>
                 <tr
@@ -213,7 +213,7 @@ export const MatchHeaders = ({
                               textOverflow: "ellipsis",
                               whiteSpace: "nowrap"
                             }}
-                            key={i}
+                            key={`userMatchedHeader-${i}`}
                           >
                             {row?.[userMatchedHeader] || ""}
                           </div>

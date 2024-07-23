@@ -29,31 +29,31 @@ export const ColumnFilterMenu = ({
         hide: { enabled: false },
         flip: { enabled: false }
       }}
+      content={
+        <FilterMenu
+          addFilters={addFilters}
+          compact={compact}
+          currentFilter={currentFilter}
+          currentParams={currentParams}
+          dataType={dataType}
+          filterOn={filterOn}
+          removeSingleFilter={removeSingleFilter}
+          schemaForField={schemaForField}
+          setNewParams={setNewParams}
+          togglePopover={() => {
+            setColumnFilterMenuOpen(false);
+          }}
+        />
+      }
     >
       <Icon
         style={{ marginLeft: 5 }}
         icon="filter"
         iconSize={extraCompact ? 14 : undefined}
-        onClick={() => {
-          setColumnFilterMenuOpen(!columnFilterMenuOpen);
-        }}
+        onClick={() => setColumnFilterMenuOpen(prev => !prev)}
         className={classNames("tg-filter-menu-button", {
           "tg-active-filter": !!filterActiveForColumn
         })}
-      />
-      <FilterMenu
-        addFilters={addFilters}
-        compact={compact}
-        currentFilter={currentFilter}
-        currentParams={currentParams}
-        dataType={dataType}
-        filterOn={filterOn}
-        removeSingleFilter={removeSingleFilter}
-        schemaForField={schemaForField}
-        setNewParams={setNewParams}
-        togglePopover={() => {
-          setColumnFilterMenuOpen(false);
-        }}
       />
     </Popover>
   );

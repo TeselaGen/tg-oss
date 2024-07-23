@@ -44,7 +44,7 @@ import scrollIntoView from "dom-scroll-into-view";
 import ReactTable from "@teselagen/react-table";
 import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ThComponent } from "./ThComponent";
 
 import {
@@ -65,7 +65,8 @@ import {
   handleCopyRows,
   handleCopyTable,
   isEntityClean,
-  PRIMARY_SELECTED_VAL
+  PRIMARY_SELECTED_VAL,
+  useDeepEqualMemo
 } from "./utils";
 import rowClick, { finalizeSelection } from "./utils/rowClick";
 import PagingTool from "./PagingTool";
@@ -92,7 +93,7 @@ import {
   makeDataTableHandlers,
   setCurrentParamsOnUrl
 } from "./utils/queryParams";
-import { renderColumns } from "./Columns";
+import { RenderColumns } from "./Columns";
 import { formValueSelector } from "redux-form";
 
 enablePatches();
@@ -115,16 +116,16 @@ const DataTable = ({
   orderByFirstColumn,
   schema: __schema,
   showEmptyColumnsByDefault,
-  tableParams,
+  tableParams: _tableParams,
+  anyTouched,
+  blur,
   ...ownProps
 }) => {
-  if (isTableParamsConnected && tableParams && !tableParams.entities) {
+  if (isTableParamsConnected && _tableParams && !_tableParams.entities) {
     throw new Error(
       `No entities array detected in tableParams object (<DataTable {...tableParams}/>). You need to call withQuery() after withTableParams() like: compose(withTableParams(), withQuery(something)).`
     );
   }
-
-  const dispatch = useDispatch();
   const tableRef = useRef();
   const alreadySelected = useRef(false);
   const [editableCellValue, setEditableCellValue] = useState("");
@@ -154,11 +155,11 @@ const DataTable = ({
   });
 
   const {
-    reduxFormCellValidation,
-    reduxFormEntities,
-    reduxFormQueryParams = {},
-    reduxFormSearchInput = "",
-    reduxFormSelectedEntityIdMap = {}
+    reduxFormCellValidation: _reduxFormCellValidation,
+    reduxFormEntities: _reduxFormEntities,
+    reduxFormQueryParams: _reduxFormQueryParams = {},
+    reduxFormSearchInput: _reduxFormSearchInput = "",
+    reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
   } = useSelector(state =>
     formValueSelector(formName)(
       state,
@@ -170,12 +171,22 @@ const DataTable = ({
     )
   );
 
+  // We want to make sure we don't rerender everything unnecessary
+  // with redux-forms we tend to do unnecessary renders
+  const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
+  const reduxFormEntities = useDeepEqualMemo(_reduxFormEntities);
+  const reduxFormQueryParams = useDeepEqualMemo(_reduxFormQueryParams);
+  const reduxFormSearchInput = useDeepEqualMemo(_reduxFormSearchInput);
+  const reduxFormSelectedEntityIdMap = useDeepEqualMemo(
+    _reduxFormSelectedEntityIdMap
+  );
+
   let props = ownProps;
   if (!isTableParamsConnected) {
     //this is the case where we're hooking up to withTableParams locally, so we need to take the tableParams off the props
     props = {
       ...ownProps,
-      ...tableParams
+      ..._tableParams
     };
   }
 
@@ -247,28 +258,30 @@ const DataTable = ({
       })
   };
 
-  const currentParams = urlConnected
-    ? getCurrentParamsFromUrl(history.location) //important to use history location and not ownProps.location because for some reason the location path lags one render behind!!
-    : reduxFormQueryParams;
+  const currentParams = useMemo(() => {
+    const tmp =
+      (urlConnected
+        ? getCurrentParamsFromUrl(history.location) //important to use history location and not ownProps.location because for some reason the location path lags one render behind!!
+        : reduxFormQueryParams) || {};
+
+    tmp.searchTerm = reduxFormSearchInput;
+    return tmp;
+  }, [
+    history.location,
+    reduxFormQueryParams,
+    reduxFormSearchInput,
+    urlConnected
+  ]);
 
   if (!isTableParamsConnected) {
     const updateSearch = val => {
-      setTimeout(() => {
-        dispatch(change(formName, "reduxFormSearchInput", val || ""));
-      });
+      change("reduxFormSearchInput", val || "");
     };
 
-    let setNewParams;
-    if (urlConnected) {
-      setNewParams = newParams => {
-        setCurrentParamsOnUrl(newParams, history.replace);
-        dispatch(change(formName, "reduxFormQueryParams", newParams)); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
-      };
-    } else {
-      setNewParams = function (newParams) {
-        dispatch(change(formName, "reduxFormQueryParams", newParams));
-      };
-    }
+    const setNewParams = newParams => {
+      urlConnected && setCurrentParamsOnUrl(newParams, history.replace);
+      change("reduxFormQueryParams", newParams); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
+    };
 
     const bindThese = makeDataTableHandlers({
       setNewParams,
@@ -286,12 +299,12 @@ const DataTable = ({
       };
     });
 
-    const changeFormValue = (...args) => dispatch(change(formName, ...args));
+    const changeFormValue = (...args) => change(...args);
 
     props.tableParams = {
       changeFormValue,
       selectedEntities,
-      ...tableParams,
+      ..._tableParams,
       ...props,
       ...boundDispatchProps,
       isTableParamsConnected: true //let the table know not to do local sorting/filtering etc.
@@ -303,19 +316,17 @@ const DataTable = ({
     ...props.tableParams
   };
 
-  const additionalFilterToUse =
-    typeof props.additionalFilter === "function"
-      ? props.additionalFilter.bind(this, ownProps)
-      : () => props.additionalFilter;
-
-  const additionalOrFilterToUse =
-    typeof props.additionalOrFilter === "function"
-      ? props.additionalOrFilter.bind(this, ownProps)
-      : () => props.additionalOrFilter;
-
-  currentParams.searchTerm = reduxFormSearchInput;
-
   if (!isTableParamsConnected) {
+    const additionalFilterToUse =
+      typeof props.additionalFilter === "function"
+        ? props.additionalFilter.bind(this, ownProps)
+        : () => props.additionalFilter;
+
+    const additionalOrFilterToUse =
+      typeof props.additionalOrFilter === "function"
+        ? props.additionalOrFilter.bind(this, ownProps)
+        : () => props.additionalOrFilter;
+
     props = {
       ...props,
       ...getQueryParams({
@@ -360,6 +371,7 @@ const DataTable = ({
     disableSetPageSize,
     doNotShowEmptyRows,
     doNotValidateUntouchedRows,
+    editingCellSelectAll,
     entities: _origEntities = [],
     entitiesAcrossPages,
     entityCount,
@@ -369,6 +381,7 @@ const DataTable = ({
     extraCompact: _extraCompact,
     filters = [],
     fragment,
+    getCellHoverText,
     getRowClassName,
     hideColumnHeader,
     hideDisplayOptionsIcon,
@@ -396,6 +409,7 @@ const DataTable = ({
     noPadding = isSimple,
     noRowsFoundMessage,
     noSelect = false,
+    noUserSelect,
     onDeselect = noop,
     onDoubleClick,
     onMultiRowSelect = noop,
@@ -403,14 +417,18 @@ const DataTable = ({
     onRowClick = noop,
     onRowSelect = noop,
     onSingleRowSelect = noop,
+    order,
     page = 1,
     pageSize: _pageSize = 10,
     pagingDisabled,
+    removeSingleFilter,
     ReactTableProps = {},
     safeQuery,
     searchMenuButton,
     searchTerm,
     selectAllByDefault,
+    setNewParams,
+    setOrder,
     setPage = noop,
     setPageSize = noop,
     setSearchTerm = noop,
@@ -427,16 +445,19 @@ const DataTable = ({
     variables,
     withCheckboxes = false,
     withDisplayOptions,
+    withExpandAndCollapseAllButton,
+    withFilter,
     withPaging = !isSimple,
     withSearch = !isSimple,
     withSelectAll,
+    withSort,
     withTitle = !isSimple
   } = props;
 
   // We need to memoize the entities so that we don't rerender the table
-  const entities = reduxFormEntities?.length
-    ? reduxFormEntities
-    : _origEntities;
+  const entities = useDeepEqualMemo(
+    (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || []
+  );
 
   const [tableConfig, setTableConfig] = useState({ fieldOptions: [] });
 
@@ -462,9 +483,7 @@ const DataTable = ({
     withDisplayOptions
   ]);
 
-  // This shouldn't depend on the entities, we should look into a
-  // way to separate this into smaller chunks.
-  const { schema } = useMemo(() => {
+  const schema = useMemo(() => {
     const schema = convertSchema(_schema);
     if (isViewable) {
       schema.fields = [viewColumn, ...schema.fields];
@@ -502,7 +521,7 @@ const DataTable = ({
             const val = get(e, field.path);
             return field.render
               ? !field.render(val, e)
-              : cellRenderer[field.path]
+              : cellRenderer?.[field.path]
                 ? !cellRenderer[field.path](val, e)
                 : !val;
           });
@@ -559,18 +578,18 @@ const DataTable = ({
         }
       }
     }
-    return { schema };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return schema;
   }, [
     _schema,
     cellRenderer,
-    // entities
+    entities,
     isInfinite,
     isOpenable,
     isSimple,
     isViewable,
     showForcedHiddenColumns,
-    tableConfig,
+    tableConfig.columnOrderings,
+    tableConfig.fieldOptions,
     withDisplayOptions
   ]);
 
@@ -693,7 +712,10 @@ const DataTable = ({
     extraCompact = tableConfig.density === "extraCompact";
   }
 
-  const resized = tableConfig.resized || [];
+  const resized = useMemo(
+    () => tableConfig.resized || [],
+    [tableConfig?.resized]
+  );
 
   const pageSize = controlled_pageSize || _pageSize;
 
@@ -716,7 +738,8 @@ const DataTable = ({
       });
       change("reduxFormCellValidation", tableWideErr);
     },
-    [change, schema]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [schema]
   );
 
   const updateEntitiesHelper = useCallback(
@@ -737,7 +760,8 @@ const DataTable = ({
         }
       }));
     },
-    [change]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const formatAndValidateEntities = useCallback(
@@ -1297,8 +1321,14 @@ const DataTable = ({
       });
     };
     isCellEditable && formatAndValidateTableInitial();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCellEditable]);
+  }, [
+    change,
+    entities,
+    formatAndValidateEntities,
+    isCellEditable,
+    reduxFormCellValidation,
+    updateValidation
+  ]);
 
   const handlePaste = useCallback(
     e => {
@@ -1582,36 +1612,40 @@ const DataTable = ({
     }
   }, [initialSelectedIds, setSelectedIds]);
 
-  const moveColumn = ({ oldIndex, newIndex }) => {
-    let oldStateColumnIndex, newStateColumnIndex;
-    columns.forEach((column, i) => {
-      if (oldIndex === column.columnIndex) oldStateColumnIndex = i;
-      if (newIndex === column.columnIndex) newStateColumnIndex = i;
-    });
-    // because it is all handled in state we need
-    // to perform the move and update the columnIndices
-    // because they are used for the sortable columns
-    const newColumns = arrayMove(
-      columns,
-      oldStateColumnIndex,
-      newStateColumnIndex
-    ).map((column, i) => {
-      return {
-        ...column,
-        columnIndex: i
+  const TheadComponent = useCallback(
+    ({ className, style, children }) => {
+      const moveColumn = ({ oldIndex, newIndex }) => {
+        let oldStateColumnIndex, newStateColumnIndex;
+        columns.forEach((column, i) => {
+          if (oldIndex === column.columnIndex) oldStateColumnIndex = i;
+          if (newIndex === column.columnIndex) newStateColumnIndex = i;
+        });
+        // because it is all handled in state we need
+        // to perform the move and update the columnIndices
+        // because they are used for the sortable columns
+        const newColumns = arrayMove(
+          columns,
+          oldStateColumnIndex,
+          newStateColumnIndex
+        ).map((column, i) => {
+          return {
+            ...column,
+            columnIndex: i
+          };
+        });
+        setColumns(newColumns);
       };
-    });
-    setColumns(newColumns);
-  };
-
-  const TheadComponent = ({ className, style, children }) => (
-    <SortableColumns
-      className={className}
-      style={style}
-      moveColumn={moveColumnPersist || moveColumn}
-    >
-      {children}
-    </SortableColumns>
+      return (
+        <SortableColumns
+          className={className}
+          style={style}
+          moveColumn={moveColumnPersist || moveColumn}
+        >
+          {children}
+        </SortableColumns>
+      );
+    },
+    [columns, moveColumnPersist]
   );
 
   const addEntitiesToSelection = entities => {
@@ -1644,7 +1678,7 @@ const DataTable = ({
     table?.focus();
   };
 
-  const isSelectionARectangle = () => {
+  const isSelectionARectangle = useCallback(() => {
     if (selectedCells && Object.keys(selectedCells).length > 1) {
       const pathToIndex = getFieldPathToIndex(schema);
       const entityMap = getEntityIdToEntity(entities);
@@ -1712,480 +1746,561 @@ const DataTable = ({
       }
     }
     return {};
-  };
+  }, [entities, schema, selectedCells]);
 
-  const handleCellClick = ({ event, cellId }) => {
-    if (!cellId) return;
-    const [rowId, cellPath] = cellId.split(":");
-    const entityMap = getEntityIdToEntity(entities);
-    const { e: entity, i: rowIndex } = entityMap[rowId];
-    const pathToIndex = getFieldPathToIndex(schema);
-    const columnIndex = pathToIndex[cellPath];
-    const rowDisabled = isEntityDisabled(entity);
+  const handleCellClick = useCallback(
+    ({ event, cellId }) => {
+      if (!cellId) return;
+      const [rowId, cellPath] = cellId.split(":");
+      const entityMap = getEntityIdToEntity(entities);
+      const { e: entity, i: rowIndex } = entityMap[rowId];
+      const pathToIndex = getFieldPathToIndex(schema);
+      const columnIndex = pathToIndex[cellPath];
+      const rowDisabled = isEntityDisabled(entity);
 
-    if (rowDisabled) return;
-    let newSelectedCells = {
-      ...selectedCells
-    };
-    if (newSelectedCells[cellId] && !event.shiftKey) {
-      // don't deselect if editing
-      if (editingCell === cellId) return;
-      if (event.metaKey) {
-        delete newSelectedCells[cellId];
-      } else {
-        newSelectedCells = {};
-        newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
-      }
-    } else {
-      if (event.metaKey) {
-        if (isEmpty(newSelectedCells)) {
-          newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
-        } else {
-          newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
-          if (primarySelectedCellId)
-            newSelectedCells[primarySelectedCellId] = true;
-        }
-      } else if (event.shiftKey) {
-        if (primarySelectedCellId) {
-          const [rowId, colPath] = primarySelectedCellId.split(":");
-          const primaryRowIndex = entities.findIndex((e, i) => {
-            return getIdOrCodeOrIndex(e, i) === rowId;
-          });
-          const fieldToIndex = getFieldPathToIndex(schema);
-          const primaryColIndex = fieldToIndex[colPath];
-
-          if (primaryRowIndex === -1 || primaryColIndex === -1) {
-            newSelectedCells = {};
-            newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
-          } else {
-            const minRowIndex = min([primaryRowIndex, rowIndex]);
-            const minColIndex = min([primaryColIndex, columnIndex]);
-            const maxRowIndex = max([primaryRowIndex, rowIndex]);
-            const maxColIndex = max([primaryColIndex, columnIndex]);
-            const entitiesBetweenRows = entities.slice(
-              minRowIndex,
-              maxRowIndex + 1
-            );
-            const fieldsBetweenCols = schema.fields.slice(
-              minColIndex,
-              maxColIndex + 1
-            );
-            newSelectedCells = {
-              [primarySelectedCellId]: PRIMARY_SELECTED_VAL
-            };
-            entitiesBetweenRows.forEach(e => {
-              const rowId = getIdOrCodeOrIndex(e, entities.indexOf(e));
-              fieldsBetweenCols.forEach(f => {
-                const cellId = `${rowId}:${f.path}`;
-                if (!newSelectedCells[cellId]) newSelectedCells[cellId] = true;
-              });
-            });
-            // newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
-            // newSelectedCells[primarySelectedCellId] = true;
-          }
+      if (rowDisabled) return;
+      let newSelectedCells = {
+        ...selectedCells
+      };
+      if (newSelectedCells[cellId] && !event.shiftKey) {
+        // don't deselect if editing
+        if (editingCell === cellId) return;
+        if (event.metaKey) {
+          delete newSelectedCells[cellId];
         } else {
           newSelectedCells = {};
           newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
         }
       } else {
-        newSelectedCells = {};
-        newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
-      }
-    }
+        if (event.metaKey) {
+          if (isEmpty(newSelectedCells)) {
+            newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
+          } else {
+            newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
+            if (primarySelectedCellId)
+              newSelectedCells[primarySelectedCellId] = true;
+          }
+        } else if (event.shiftKey) {
+          if (primarySelectedCellId) {
+            const [rowId, colPath] = primarySelectedCellId.split(":");
+            const primaryRowIndex = entities.findIndex((e, i) => {
+              return getIdOrCodeOrIndex(e, i) === rowId;
+            });
+            const fieldToIndex = getFieldPathToIndex(schema);
+            const primaryColIndex = fieldToIndex[colPath];
 
-    setSelectedCells(newSelectedCells);
-  };
-
-  const insertRows = ({ above, numRows = 1, appendToBottom } = {}) => {
-    const [rowId] = primarySelectedCellId?.split(":") || [];
-    updateEntitiesHelper(entities, entities => {
-      const newEntities = times(numRows).map(() => ({ id: nanoid() }));
-
-      const indexToInsert = entities.findIndex((e, i) => {
-        return getIdOrCodeOrIndex(e, i) === rowId;
-      });
-      const insertIndex = above ? indexToInsert : indexToInsert + 1;
-      const insertIndexToUse = appendToBottom ? entities.length : insertIndex;
-      let { newEnts, validationErrors } = formatAndValidateEntities(
-        newEntities,
-        {
-          useDefaultValues: true,
-          indexToStartAt: insertIndexToUse
-        }
-      );
-
-      newEnts = newEnts.map(e => ({
-        ...e,
-        _isClean: true
-      }));
-      updateValidation(entities, {
-        ...reduxFormCellValidation,
-        ...validationErrors
-      });
-
-      entities.splice(insertIndexToUse, 0, ...newEnts);
-    });
-    refocusTable();
-  };
-
-  const showContextMenu = (e, { idMap, selectedCells } = {}) => {
-    let selectedRecords;
-    if (isCellEditable) {
-      const rowIds = {};
-      Object.keys(selectedCells).forEach(cellKey => {
-        const [rowId] = cellKey.split(":");
-        rowIds[rowId] = true;
-      });
-      selectedRecords = entities.filter(ent => rowIds[getIdOrCodeOrIndex(ent)]);
-    } else {
-      selectedRecords = getRecordsFromIdMap(idMap);
-    }
-
-    const itemsToRender = contextMenu({
-      selectedRecords,
-      history
-    });
-    if (!itemsToRender && !isCopyable) return null;
-    const copyMenuItems = [];
-
-    e.persist();
-    if (isCopyable) {
-      //compute the cellWrapper here so we don't lose access to it
-      const cellWrapper =
-        e.target.querySelector(".tg-cell-wrapper") ||
-        e.target.closest(".tg-cell-wrapper");
-      if (cellWrapper) {
-        copyMenuItems.push(
-          <MenuItem
-            key="copyCell"
-            onClick={() => {
-              //TODOCOPY: we need to make sure that the cell copy is being used by the row copy.. right now we have 2 different things going on
-              //do we need to be able to copy hidden cells? It seems like it should just copy what's on the page..?
-              const specificColumn = cellWrapper.getAttribute("data-test");
-              handleCopyRows([cellWrapper.closest(".rt-tr")], {
-                specificColumn,
-                onFinishMsg: "Cell copied"
+            if (primaryRowIndex === -1 || primaryColIndex === -1) {
+              newSelectedCells = {};
+              newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
+            } else {
+              const minRowIndex = min([primaryRowIndex, rowIndex]);
+              const minColIndex = min([primaryColIndex, columnIndex]);
+              const maxRowIndex = max([primaryRowIndex, rowIndex]);
+              const maxColIndex = max([primaryColIndex, columnIndex]);
+              const entitiesBetweenRows = entities.slice(
+                minRowIndex,
+                maxRowIndex + 1
+              );
+              const fieldsBetweenCols = schema.fields.slice(
+                minColIndex,
+                maxColIndex + 1
+              );
+              newSelectedCells = {
+                [primarySelectedCellId]: PRIMARY_SELECTED_VAL
+              };
+              entitiesBetweenRows.forEach(e => {
+                const rowId = getIdOrCodeOrIndex(e, entities.indexOf(e));
+                fieldsBetweenCols.forEach(f => {
+                  const cellId = `${rowId}:${f.path}`;
+                  if (!newSelectedCells[cellId])
+                    newSelectedCells[cellId] = true;
+                });
               });
-              const [text, jsonText] = getCellCopyText(cellWrapper);
-              handleCopyHelper(text, jsonText);
-            }}
-            text="Cell"
-          />
+              // newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
+              // newSelectedCells[primarySelectedCellId] = true;
+            }
+          } else {
+            newSelectedCells = {};
+            newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
+          }
+        } else {
+          newSelectedCells = {};
+          newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
+        }
+      }
+
+      setSelectedCells(newSelectedCells);
+    },
+    [
+      editingCell,
+      entities,
+      isEntityDisabled,
+      primarySelectedCellId,
+      schema,
+      selectedCells
+    ]
+  );
+
+  const insertRows = useCallback(
+    ({ above, numRows = 1, appendToBottom } = {}) => {
+      const [rowId] = primarySelectedCellId?.split(":") || [];
+      updateEntitiesHelper(entities, entities => {
+        const newEntities = times(numRows).map(() => ({ id: nanoid() }));
+
+        const indexToInsert = entities.findIndex((e, i) => {
+          return getIdOrCodeOrIndex(e, i) === rowId;
+        });
+        const insertIndex = above ? indexToInsert : indexToInsert + 1;
+        const insertIndexToUse = appendToBottom ? entities.length : insertIndex;
+        let { newEnts, validationErrors } = formatAndValidateEntities(
+          newEntities,
+          {
+            useDefaultValues: true,
+            indexToStartAt: insertIndexToUse
+          }
         );
 
-        copyMenuItems.push(
-          <MenuItem
-            key="copyColumn"
-            onClick={() => {
-              handleCopyColumn(e, cellWrapper);
-            }}
-            text="Column"
-          />
+        newEnts = newEnts.map(e => ({
+          ...e,
+          _isClean: true
+        }));
+        updateValidation(entities, {
+          ...reduxFormCellValidation,
+          ...validationErrors
+        });
+
+        entities.splice(insertIndexToUse, 0, ...newEnts);
+      });
+      refocusTable();
+    },
+    [
+      entities,
+      formatAndValidateEntities,
+      primarySelectedCellId,
+      reduxFormCellValidation,
+      updateEntitiesHelper,
+      updateValidation
+    ]
+  );
+
+  const showContextMenu = useCallback(
+    (e, { idMap, selectedCells } = {}) => {
+      let selectedRecords;
+      if (isCellEditable) {
+        const rowIds = {};
+        Object.keys(selectedCells).forEach(cellKey => {
+          const [rowId] = cellKey.split(":");
+          rowIds[rowId] = true;
+        });
+        selectedRecords = entities.filter(
+          ent => rowIds[getIdOrCodeOrIndex(ent)]
         );
-        if (selectedRecords.length > 1) {
+      } else {
+        selectedRecords = getRecordsFromIdMap(idMap);
+      }
+
+      const itemsToRender = contextMenu({
+        selectedRecords,
+        history
+      });
+      if (!itemsToRender && !isCopyable) return null;
+      const copyMenuItems = [];
+
+      e.persist();
+      if (isCopyable) {
+        //compute the cellWrapper here so we don't lose access to it
+        const cellWrapper =
+          e.target.querySelector(".tg-cell-wrapper") ||
+          e.target.closest(".tg-cell-wrapper");
+        if (cellWrapper) {
           copyMenuItems.push(
             <MenuItem
-              key="copyColumnSelected"
+              key="copyCell"
               onClick={() => {
-                handleCopyColumn(e, cellWrapper, selectedRecords);
+                //TODOCOPY: we need to make sure that the cell copy is being used by the row copy.. right now we have 2 different things going on
+                //do we need to be able to copy hidden cells? It seems like it should just copy what's on the page..?
+                const specificColumn = cellWrapper.getAttribute("data-test");
+                handleCopyRows([cellWrapper.closest(".rt-tr")], {
+                  specificColumn,
+                  onFinishMsg: "Cell copied"
+                });
+                const [text, jsonText] = getCellCopyText(cellWrapper);
+                handleCopyHelper(text, jsonText);
               }}
-              text="Column (Selected)"
+              text="Cell"
+            />
+          );
+
+          copyMenuItems.push(
+            <MenuItem
+              key="copyColumn"
+              onClick={() => {
+                handleCopyColumn(e, cellWrapper);
+              }}
+              text="Column"
+            />
+          );
+          if (selectedRecords.length > 1) {
+            copyMenuItems.push(
+              <MenuItem
+                key="copyColumnSelected"
+                onClick={() => {
+                  handleCopyColumn(e, cellWrapper, selectedRecords);
+                }}
+                text="Column (Selected)"
+              />
+            );
+          }
+        }
+        if (selectedRecords.length === 0 || selectedRecords.length === 1) {
+          //compute the row here so we don't lose access to it
+          const cell =
+            e.target.querySelector(".tg-cell-wrapper") ||
+            e.target.closest(".tg-cell-wrapper") ||
+            e.target.closest(".rt-td");
+          const row = cell.closest(".rt-tr");
+          copyMenuItems.push(
+            <MenuItem
+              key="copySelectedRows"
+              onClick={() => {
+                handleCopyRows([row]);
+                // loop through each cell in the row
+              }}
+              text="Row"
+            />
+          );
+        } else if (selectedRecords.length > 1) {
+          copyMenuItems.push(
+            <MenuItem
+              key="copySelectedRows"
+              onClick={() => {
+                handleCopySelectedRows(selectedRecords, e);
+                // loop through each cell in the row
+              }}
+              text="Rows"
             />
           );
         }
-      }
-      if (selectedRecords.length === 0 || selectedRecords.length === 1) {
-        //compute the row here so we don't lose access to it
-        const cell =
-          e.target.querySelector(".tg-cell-wrapper") ||
-          e.target.closest(".tg-cell-wrapper") ||
-          e.target.closest(".rt-td");
-        const row = cell.closest(".rt-tr");
         copyMenuItems.push(
           <MenuItem
-            key="copySelectedRows"
+            key="copyFullTableRows"
             onClick={() => {
-              handleCopyRows([row]);
+              handleCopyTable(e);
               // loop through each cell in the row
             }}
-            text="Row"
-          />
-        );
-      } else if (selectedRecords.length > 1) {
-        copyMenuItems.push(
-          <MenuItem
-            key="copySelectedRows"
-            onClick={() => {
-              handleCopySelectedRows(selectedRecords, e);
-              // loop through each cell in the row
-            }}
-            text="Rows"
+            text="Table"
           />
         );
       }
-      copyMenuItems.push(
-        <MenuItem
-          key="copyFullTableRows"
-          onClick={() => {
-            handleCopyTable(e);
-            // loop through each cell in the row
-          }}
-          text="Table"
-        />
+      const selectedRowIds = Object.keys(selectedCells).map(cellId => {
+        const [rowId] = cellId.split(":");
+        return rowId;
+      });
+
+      const menu = (
+        <Menu>
+          {itemsToRender}
+          {copyMenuItems.length && (
+            <MenuItem icon="clipboard" key="copyOpts" text="Copy">
+              {copyMenuItems}
+            </MenuItem>
+          )}
+          {isCellEditable && (
+            <>
+              <MenuItem
+                icon="add-row-top"
+                text="Add Row Above"
+                key="addRowAbove"
+                onClick={() => {
+                  insertRows({ above: true });
+                }}
+              />
+              <MenuItem
+                icon="add-row-top"
+                text="Add Row Below"
+                key="addRowBelow"
+                onClick={() => {
+                  insertRows({});
+                }}
+              />
+              <MenuItem
+                icon="remove"
+                text={`Remove Row${selectedRowIds.length > 1 ? "s" : ""}`}
+                key="removeRow"
+                onClick={() => {
+                  const selectedRowIds = Object.keys(selectedCells).map(
+                    cellId => {
+                      const [rowId] = cellId.split(":");
+                      return rowId;
+                    }
+                  );
+                  updateEntitiesHelper(entities, entities => {
+                    const ents = entities.filter(
+                      (e, i) =>
+                        !selectedRowIds.includes(getIdOrCodeOrIndex(e, i))
+                    );
+                    updateValidation(
+                      ents,
+                      omitBy(reduxFormCellValidation, (v, cellId) =>
+                        selectedRowIds.includes(cellId.split(":")[0])
+                      )
+                    );
+                    return ents;
+                  });
+                  refocusTable();
+                }}
+              />
+            </>
+          )}
+        </Menu>
       );
-    }
-    const selectedRowIds = Object.keys(selectedCells).map(cellId => {
-      const [rowId] = cellId.split(":");
-      return rowId;
-    });
-
-    const menu = (
-      <Menu>
-        {itemsToRender}
-        {copyMenuItems.length && (
-          <MenuItem icon="clipboard" key="copyOpts" text="Copy">
-            {copyMenuItems}
-          </MenuItem>
-        )}
-        {isCellEditable && (
-          <>
-            <MenuItem
-              icon="add-row-top"
-              text="Add Row Above"
-              key="addRowAbove"
-              onClick={() => {
-                insertRows({ above: true });
-              }}
-            />
-            <MenuItem
-              icon="add-row-top"
-              text="Add Row Below"
-              key="addRowBelow"
-              onClick={() => {
-                insertRows({});
-              }}
-            />
-            <MenuItem
-              icon="remove"
-              text={`Remove Row${selectedRowIds.length > 1 ? "s" : ""}`}
-              key="removeRow"
-              onClick={() => {
-                const selectedRowIds = Object.keys(selectedCells).map(
-                  cellId => {
-                    const [rowId] = cellId.split(":");
-                    return rowId;
-                  }
-                );
-                updateEntitiesHelper(entities, entities => {
-                  const ents = entities.filter(
-                    (e, i) => !selectedRowIds.includes(getIdOrCodeOrIndex(e, i))
-                  );
-                  updateValidation(
-                    ents,
-                    omitBy(reduxFormCellValidation, (v, cellId) =>
-                      selectedRowIds.includes(cellId.split(":")[0])
-                    )
-                  );
-                  return ents;
-                });
-                refocusTable();
-              }}
-            />
-          </>
-        )}
-      </Menu>
-    );
-    ContextMenu.show(menu, { left: e.clientX, top: e.clientY });
-  };
-
-  const getTableRowProps = (state, rowInfo) => {
-    if (!rowInfo) {
-      return {
-        className: "no-row-data"
-      };
-    }
-    const entity = rowInfo.original;
-    const rowId = getIdOrCodeOrIndex(entity, rowInfo.index);
-    const rowSelected = reduxFormSelectedEntityIdMap[rowId];
-    const isExpanded = expandedEntityIdMap[rowId];
-    const rowDisabled = isEntityDisabled(entity);
-    const dataId = entity.id || entity.code;
-    return {
-      onClick: e => {
-        if (isCellEditable) return;
-        // if checkboxes are activated or row expander is clicked don't select row
-        if (e.target.matches(".tg-expander, .tg-expander *")) {
-          setExpandedEntityIdMap(prev => ({ ...prev, [rowId]: !isExpanded }));
-          return;
-        } else if (
-          e.target.closest(".tg-react-table-checkbox-cell-container")
-        ) {
-          return;
-        } else if (mustClickCheckboxToSelect) {
-          return;
-        }
-        if (e.detail > 1) {
-          return; //cancel multiple quick clicks
-        }
-        rowClick(e, rowInfo, entities, {
-          reduxFormSelectedEntityIdMap,
-          isSingleSelect,
-          noSelect,
-          onRowClick,
-          isEntityDisabled,
-          withCheckboxes,
-          onDeselect,
-          onSingleRowSelect,
-          onMultiRowSelect,
-          noDeselectAll,
-          onRowSelect,
-          change
-        });
-      },
-      //row right click
-      onContextMenu: e => {
-        e.preventDefault();
-        if (rowId === undefined || rowDisabled || isCellEditable) return;
-        const oldIdMap = cloneDeep(reduxFormSelectedEntityIdMap) || {};
-        let newIdMap;
-        if (withCheckboxes) {
-          newIdMap = oldIdMap;
-        } else {
-          // if we are not using checkboxes we need to make sure
-          // that the id of the record gets added to the id map
-          newIdMap = oldIdMap[rowId] ? oldIdMap : { [rowId]: { entity } };
-
-          // tgreen: this will refresh the selection with fresh data. The entities in redux might not be up to date
-          const keyedEntities = keyBy(entities, getIdOrCodeOrIndex);
-          forEach(newIdMap, (val, key) => {
-            const freshEntity = keyedEntities[key];
-            if (freshEntity) {
-              newIdMap[key] = { ...newIdMap[key], entity: freshEntity };
-            }
-          });
-          finalizeSelection({
-            idMap: newIdMap,
-            entities,
-            props: {
-              onDeselect,
-              onSingleRowSelect,
-              onMultiRowSelect,
-              noDeselectAll,
-              onRowSelect,
-              noSelect,
-              change
-            }
-          });
-        }
-        showContextMenu(e, { idMap: newIdMap, selectedCells });
-      },
-      className: classNames(
-        "with-row-data",
-        getRowClassName && getRowClassName(rowInfo, state, props),
-        {
-          disabled: rowDisabled,
-          selected: rowSelected && !withCheckboxes,
-          "rt-tr-last-row": rowInfo.index === entities.length - 1
-        }
-      ),
-      "data-test-id": dataId === undefined ? rowInfo.index : dataId,
-      "data-index": rowInfo.index,
-      onDoubleClick: e => {
-        if (rowDisabled) return;
-        onDoubleClick &&
-          onDoubleClick(rowInfo.original, rowInfo.index, history, e);
-      }
-    };
-  };
-
-  const getTableCellProps = (state, rowInfo, column) => {
-    if (!isCellEditable) return {}; //only allow cell selection to do stuff here
-    if (!rowInfo) return {};
-    if (!reduxFormCellValidation) return {};
-    const entity = rowInfo.original;
-    const rowIndex = rowInfo.index;
-    const rowId = getIdOrCodeOrIndex(entity, rowIndex);
-    const {
-      cellId,
-      cellIdAbove,
-      cellIdToRight,
-      cellIdBelow,
-      cellIdToLeft,
-      rowDisabled,
-      columnIndex
-    } = getCellInfo({
-      columnIndex: column.index,
-      columnPath: column.path,
-      rowId,
-      schema,
+      ContextMenu.show(menu, { left: e.clientX, top: e.clientY });
+    },
+    [
+      contextMenu,
       entities,
-      rowIndex,
-      isEntityDisabled,
-      entity
-    });
+      handleCopySelectedRows,
+      history,
+      insertRows,
+      isCellEditable,
+      isCopyable,
+      reduxFormCellValidation,
+      updateEntitiesHelper,
+      updateValidation
+    ]
+  );
 
-    const _isClean =
-      (entity._isClean && doNotValidateUntouchedRows) || isEntityClean(entity);
-
-    const err = !_isClean && reduxFormCellValidation[cellId];
-    let selectedTopBorder,
-      selectedRightBorder,
-      selectedBottomBorder,
-      selectedLeftBorder;
-    if (selectedCells[cellId]) {
-      selectedTopBorder = !selectedCells[cellIdAbove];
-      selectedRightBorder = !selectedCells[cellIdToRight];
-      selectedBottomBorder = !selectedCells[cellIdBelow];
-      selectedLeftBorder = !selectedCells[cellIdToLeft];
-    }
-    const isPrimarySelected = selectedCells[cellId] === PRIMARY_SELECTED_VAL;
-    const className = classNames({
-      isSelectedCell: selectedCells[cellId],
-      isPrimarySelected,
-      isSecondarySelected: selectedCells[cellId] === true,
-      noSelectedTopBorder: !selectedTopBorder,
-      isCleanRow: _isClean,
-      noSelectedRightBorder: !selectedRightBorder,
-      noSelectedBottomBorder: !selectedBottomBorder,
-      noSelectedLeftBorder: !selectedLeftBorder,
-      isDropdownCell: column.type === "dropdown",
-      isEditingCell: editingCell === cellId,
-      hasCellError: !!err,
-      "no-data-tip": selectedCells[cellId]
-    });
-    return {
-      onDoubleClick: () => {
-        // cell double click
-        if (rowDisabled) return;
-        startCellEdit(cellId);
-      },
-      ...(err && {
-        "data-tip": err?.message || err,
-        "data-no-child-data-tip": true
-      }),
-      onContextMenu: e => {
-        const newSelectedCells = { ...selectedCells };
-        if (!isPrimarySelected) {
-          if (primarySelectedCellId) {
-            newSelectedCells[primarySelectedCellId] = true;
+  const getTableRowProps = useCallback(
+    (state, rowInfo) => {
+      if (!rowInfo) {
+        return {
+          className: "no-row-data"
+        };
+      }
+      const entity = rowInfo.original;
+      const rowId = getIdOrCodeOrIndex(entity, rowInfo.index);
+      const rowSelected = reduxFormSelectedEntityIdMap[rowId];
+      const isExpanded = expandedEntityIdMap[rowId];
+      const rowDisabled = isEntityDisabled(entity);
+      const dataId = entity.id || entity.code;
+      return {
+        onClick: e => {
+          if (isCellEditable) return;
+          // if checkboxes are activated or row expander is clicked don't select row
+          if (e.target.matches(".tg-expander, .tg-expander *")) {
+            setExpandedEntityIdMap(prev => ({ ...prev, [rowId]: !isExpanded }));
+            return;
+          } else if (
+            e.target.closest(".tg-react-table-checkbox-cell-container")
+          ) {
+            return;
+          } else if (mustClickCheckboxToSelect) {
+            return;
           }
-          newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
-          setSelectedCells(newSelectedCells);
+          if (e.detail > 1) {
+            return; //cancel multiple quick clicks
+          }
+          rowClick(e, rowInfo, entities, {
+            reduxFormSelectedEntityIdMap,
+            isSingleSelect,
+            noSelect,
+            onRowClick,
+            isEntityDisabled,
+            withCheckboxes,
+            onDeselect,
+            onSingleRowSelect,
+            onMultiRowSelect,
+            noDeselectAll,
+            onRowSelect,
+            change
+          });
+        },
+        //row right click
+        onContextMenu: e => {
+          e.preventDefault();
+          if (rowId === undefined || rowDisabled || isCellEditable) return;
+          const oldIdMap = cloneDeep(reduxFormSelectedEntityIdMap) || {};
+          let newIdMap;
+          if (withCheckboxes) {
+            newIdMap = oldIdMap;
+          } else {
+            // if we are not using checkboxes we need to make sure
+            // that the id of the record gets added to the id map
+            newIdMap = oldIdMap[rowId] ? oldIdMap : { [rowId]: { entity } };
+
+            // tgreen: this will refresh the selection with fresh data. The entities in redux might not be up to date
+            const keyedEntities = keyBy(entities, getIdOrCodeOrIndex);
+            forEach(newIdMap, (val, key) => {
+              const freshEntity = keyedEntities[key];
+              if (freshEntity) {
+                newIdMap[key] = { ...newIdMap[key], entity: freshEntity };
+              }
+            });
+            finalizeSelection({
+              idMap: newIdMap,
+              entities,
+              props: {
+                onDeselect,
+                onSingleRowSelect,
+                onMultiRowSelect,
+                noDeselectAll,
+                onRowSelect,
+                noSelect,
+                change
+              }
+            });
+          }
+          showContextMenu(e, { idMap: newIdMap, selectedCells });
+        },
+        className: classNames(
+          "with-row-data",
+          getRowClassName && getRowClassName(rowInfo, state, props),
+          {
+            disabled: rowDisabled,
+            selected: rowSelected && !withCheckboxes,
+            "rt-tr-last-row": rowInfo.index === entities.length - 1
+          }
+        ),
+        "data-test-id": dataId === undefined ? rowInfo.index : dataId,
+        "data-index": rowInfo.index,
+        onDoubleClick: e => {
+          if (rowDisabled) return;
+          onDoubleClick &&
+            onDoubleClick(rowInfo.original, rowInfo.index, history, e);
         }
-        showContextMenu(e, { selectedCells: newSelectedCells });
-      },
-      onClick: event => {
-        handleCellClick({
-          event,
-          cellId,
-          rowDisabled,
-          rowIndex,
-          columnIndex
-        });
-      },
-      className
-    };
-  };
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      entities,
+      expandedEntityIdMap,
+      getRowClassName,
+      history,
+      isCellEditable,
+      isEntityDisabled,
+      isSingleSelect,
+      mustClickCheckboxToSelect,
+      noDeselectAll,
+      noSelect,
+      onDeselect,
+      onDoubleClick,
+      onMultiRowSelect,
+      onRowClick,
+      onRowSelect,
+      onSingleRowSelect,
+      props,
+      reduxFormSelectedEntityIdMap,
+      selectedCells,
+      showContextMenu,
+      withCheckboxes
+    ]
+  );
+
+  const getTableCellProps = useCallback(
+    (state, rowInfo, column) => {
+      if (!isCellEditable) return {}; //only allow cell selection to do stuff here
+      if (!rowInfo) return {};
+      if (!reduxFormCellValidation) return {};
+      const entity = rowInfo.original;
+      const rowIndex = rowInfo.index;
+      const rowId = getIdOrCodeOrIndex(entity, rowIndex);
+      const {
+        cellId,
+        cellIdAbove,
+        cellIdToRight,
+        cellIdBelow,
+        cellIdToLeft,
+        rowDisabled,
+        columnIndex
+      } = getCellInfo({
+        columnIndex: column.index,
+        columnPath: column.path,
+        rowId,
+        schema,
+        entities,
+        rowIndex,
+        isEntityDisabled,
+        entity
+      });
+
+      const _isClean =
+        (entity._isClean && doNotValidateUntouchedRows) ||
+        isEntityClean(entity);
+
+      const err = !_isClean && reduxFormCellValidation[cellId];
+      let selectedTopBorder,
+        selectedRightBorder,
+        selectedBottomBorder,
+        selectedLeftBorder;
+      if (selectedCells[cellId]) {
+        selectedTopBorder = !selectedCells[cellIdAbove];
+        selectedRightBorder = !selectedCells[cellIdToRight];
+        selectedBottomBorder = !selectedCells[cellIdBelow];
+        selectedLeftBorder = !selectedCells[cellIdToLeft];
+      }
+      const isPrimarySelected = selectedCells[cellId] === PRIMARY_SELECTED_VAL;
+      const className = classNames({
+        isSelectedCell: selectedCells[cellId],
+        isPrimarySelected,
+        isSecondarySelected: selectedCells[cellId] === true,
+        noSelectedTopBorder: !selectedTopBorder,
+        isCleanRow: _isClean,
+        noSelectedRightBorder: !selectedRightBorder,
+        noSelectedBottomBorder: !selectedBottomBorder,
+        noSelectedLeftBorder: !selectedLeftBorder,
+        isDropdownCell: column.type === "dropdown",
+        isEditingCell: editingCell === cellId,
+        hasCellError: !!err,
+        "no-data-tip": selectedCells[cellId]
+      });
+      return {
+        onDoubleClick: () => {
+          // cell double click
+          if (rowDisabled) return;
+          startCellEdit(cellId);
+        },
+        ...(err && {
+          "data-tip": err?.message || err,
+          "data-no-child-data-tip": true
+        }),
+        onContextMenu: e => {
+          const newSelectedCells = { ...selectedCells };
+          if (!isPrimarySelected) {
+            if (primarySelectedCellId) {
+              newSelectedCells[primarySelectedCellId] = true;
+            }
+            newSelectedCells[cellId] = PRIMARY_SELECTED_VAL;
+            setSelectedCells(newSelectedCells);
+          }
+          showContextMenu(e, { selectedCells: newSelectedCells });
+        },
+        onClick: event => {
+          handleCellClick({
+            event,
+            cellId,
+            rowDisabled,
+            rowIndex,
+            columnIndex
+          });
+        },
+        className
+      };
+    },
+    [
+      doNotValidateUntouchedRows,
+      editingCell,
+      entities,
+      handleCellClick,
+      isCellEditable,
+      isEntityDisabled,
+      primarySelectedCellId,
+      reduxFormCellValidation,
+      schema,
+      selectedCells,
+      showContextMenu,
+      startCellEdit
+    ]
+  );
 
   if (withSelectAll && !safeQuery) {
     throw new Error("safeQuery is needed for selecting all table records");
@@ -2381,6 +2496,201 @@ const DataTable = ({
       return rowToErrorMap[e.id];
     });
   }
+
+  // We are nnot rerendering when props and change are changed,
+  // we need to figure out how to manage them correctly
+  const renderColumns = useMemo(
+    () =>
+      RenderColumns({
+        ...props,
+        addFilters,
+        cellRenderer,
+        change,
+        columns,
+        currentParams,
+        compact,
+        editableCellValue,
+        editingCell,
+        editingCellSelectAll,
+        entities,
+        expandedEntityIdMap,
+        extraCompact,
+        filters,
+        getCellHoverText,
+        isCellEditable,
+        isEntityDisabled,
+        isLocalCall,
+        isSimple,
+        isSingleSelect,
+        isSelectionARectangle,
+        noDeselectAll,
+        noSelect,
+        noUserSelect,
+        onDeselect,
+        onMultiRowSelect,
+        onRowClick,
+        onRowSelect,
+        onSingleRowSelect,
+        order,
+        primarySelectedCellId,
+        reduxFormCellValidation,
+        reduxFormSelectedEntityIdMap,
+        refocusTable,
+        removeSingleFilter,
+        schema,
+        selectedCells,
+        setEditableCellValue,
+        setEditingCell,
+        setExpandedEntityIdMap,
+        setNewParams,
+        setOrder,
+        setSelectedCells,
+        shouldShowSubComponent,
+        startCellEdit,
+        SubComponent,
+        tableRef,
+        updateEntitiesHelper,
+        updateValidation,
+        withCheckboxes,
+        withExpandAndCollapseAllButton,
+        withFilter,
+        withSort
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      SubComponent,
+      addFilters,
+      cellRenderer,
+      columns,
+      compact,
+      currentParams,
+      editableCellValue,
+      editingCell,
+      editingCellSelectAll,
+      entities,
+      expandedEntityIdMap,
+      extraCompact,
+      filters,
+      getCellHoverText,
+      isCellEditable,
+      isEntityDisabled,
+      isLocalCall,
+      isSelectionARectangle,
+      isSimple,
+      isSingleSelect,
+      noDeselectAll,
+      noSelect,
+      noUserSelect,
+      onDeselect,
+      onMultiRowSelect,
+      onRowClick,
+      onRowSelect,
+      onSingleRowSelect,
+      order,
+      primarySelectedCellId,
+      reduxFormCellValidation,
+      reduxFormSelectedEntityIdMap,
+      removeSingleFilter,
+      schema,
+      selectedCells,
+      setNewParams,
+      setOrder,
+      shouldShowSubComponent,
+      startCellEdit,
+      updateEntitiesHelper,
+      updateValidation,
+      withCheckboxes,
+      withExpandAndCollapseAllButton,
+      withFilter,
+      withSort
+    ]
+  );
+
+  const reactTable = useMemo(
+    () => (
+      <ReactTable
+        data={filteredEnts}
+        ref={tableRef}
+        className={classNames({
+          isCellEditable,
+          "tg-table-loading": isLoading,
+          "tg-table-disabled": disabled
+        })}
+        itemSizeEstimator={
+          extraCompact
+            ? itemSizeEstimators.compact
+            : compact
+              ? itemSizeEstimators.normal
+              : itemSizeEstimators.comfortable
+        }
+        TfootComponent={() => {
+          return <button>hasdfasdf</button>;
+        }}
+        // We should try to not give all the props to the render column
+        columns={renderColumns}
+        pageSize={rowsToShow}
+        expanded={expandedRows}
+        showPagination={false}
+        sortable={false}
+        loading={isLoading || disabled}
+        defaultResized={resized}
+        onResizedChange={(newResized = []) => {
+          const resizedToUse = newResized.map(column => {
+            // have a min width of 50 so that columns don't disappear
+            if (column.value < 50) {
+              return {
+                ...column,
+                value: 50
+              };
+            } else {
+              return column;
+            }
+          });
+          resizePersist(resizedToUse);
+        }}
+        TheadComponent={TheadComponent}
+        ThComponent={ThComponent}
+        getTrGroupProps={getTableRowProps}
+        getTdProps={getTableCellProps}
+        NoDataComponent={({ children }) =>
+          isLoading ? null : (
+            <div className="rt-noData">{noRowsFoundMessage || children}</div>
+          )
+        }
+        LoadingComponent={props => (
+          <DisabledLoadingComponent {...props} disabled={disabled} />
+        )}
+        style={{
+          maxHeight,
+          minHeight: 150,
+          ...style
+        }}
+        SubComponent={SubComponentToUse}
+        {...ReactTableProps}
+      />
+    ),
+    [
+      ReactTableProps,
+      SubComponentToUse,
+      TheadComponent,
+      compact,
+      disabled,
+      expandedRows,
+      extraCompact,
+      filteredEnts,
+      getTableCellProps,
+      getTableRowProps,
+      isCellEditable,
+      isLoading,
+      maxHeight,
+      noRowsFoundMessage,
+      renderColumns,
+      resizePersist,
+      resized,
+      rowsToShow,
+      style
+    ]
+  );
 
   return (
     <div tabIndex="1" onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
@@ -2659,110 +2969,7 @@ const DataTable = ({
               />
             </div>
           )}
-          <ReactTable
-            data={filteredEnts}
-            ref={tableRef}
-            className={classNames({
-              isCellEditable,
-              "tg-table-loading": isLoading,
-              "tg-table-disabled": disabled
-            })}
-            itemSizeEstimator={
-              extraCompact
-                ? itemSizeEstimators.compact
-                : compact
-                  ? itemSizeEstimators.normal
-                  : itemSizeEstimators.comfortable
-            }
-            TfootComponent={() => {
-              return <button>hasdfasdf</button>;
-            }}
-            columns={renderColumns({
-              ...props,
-              addFilters,
-              cellRenderer,
-              change,
-              columns,
-              currentParams,
-              compact,
-              editableCellValue,
-              editingCell,
-              entities,
-              expandedEntityIdMap,
-              extraCompact,
-              filters,
-              isCellEditable,
-              isEntityDisabled,
-              isLocalCall,
-              isSingleSelect,
-              isSelectionARectangle,
-              noDeselectAll,
-              noSelect,
-              onDeselect,
-              onMultiRowSelect,
-              onRowClick,
-              onRowSelect,
-              onSingleRowSelect,
-              primarySelectedCellId,
-              reduxFormCellValidation,
-              reduxFormSelectedEntityIdMap,
-              refocusTable,
-              schema,
-              selectedCells,
-              setEditableCellValue,
-              setEditingCell,
-              setExpandedEntityIdMap,
-              setSelectedCells,
-              shouldShowSubComponent,
-              startCellEdit,
-              SubComponent,
-              tableRef,
-              updateEntitiesHelper,
-              updateValidation,
-              withCheckboxes
-            })}
-            pageSize={rowsToShow}
-            expanded={expandedRows}
-            showPagination={false}
-            sortable={false}
-            loading={isLoading || disabled}
-            defaultResized={resized}
-            onResizedChange={(newResized = []) => {
-              const resizedToUse = newResized.map(column => {
-                // have a min width of 50 so that columns don't disappear
-                if (column.value < 50) {
-                  return {
-                    ...column,
-                    value: 50
-                  };
-                } else {
-                  return column;
-                }
-              });
-              resizePersist(resizedToUse);
-            }}
-            TheadComponent={TheadComponent}
-            ThComponent={ThComponent}
-            getTrGroupProps={getTableRowProps}
-            getTdProps={getTableCellProps}
-            NoDataComponent={({ children }) =>
-              isLoading ? null : (
-                <div className="rt-noData">
-                  {noRowsFoundMessage || children}
-                </div>
-              )
-            }
-            LoadingComponent={props => (
-              <DisabledLoadingComponent {...props} disabled={disabled} />
-            )}
-            style={{
-              maxHeight,
-              minHeight: 150,
-              ...style
-            }}
-            SubComponent={SubComponentToUse}
-            {...ReactTableProps}
-          />
+          {reactTable}
           {isCellEditable && (
             <div style={{ display: "flex" }}>
               <div

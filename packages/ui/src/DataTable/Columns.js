@@ -42,7 +42,7 @@ import { getCCDisplayName } from "./utils/queryParams";
 
 dayjs.extend(localizedFormat);
 
-const renderColumnHeader = ({
+const RenderColumnHeader = ({
   addFilters,
   column,
   compact,
@@ -114,54 +114,8 @@ const renderColumnHeader = ({
 
   const sortDown = ordering && ordering === "asc";
   const sortUp = ordering && !sortDown;
-  const sortComponent =
-    withSort && !disableSorting ? (
-      <div className="tg-sort-arrow-container">
-        <Icon
-          data-tip="Sort Z-A (Hold shift to sort multiple columns)"
-          icon="chevron-up"
-          className={classNames({
-            active: sortUp
-          })}
-          color={sortUp ? "#106ba3" : undefined}
-          iconSize={extraCompact ? 10 : 12}
-          onClick={e => {
-            setOrder("-" + ccDisplayName, sortUp, e.shiftKey);
-          }}
-        />
-        <Icon
-          data-tip="Sort A-Z (Hold shift to sort multiple columns)"
-          icon="chevron-down"
-          className={classNames({
-            active: sortDown
-          })}
-          color={sortDown ? "#106ba3" : undefined}
-          iconSize={extraCompact ? 10 : 12}
-          onClick={e => {
-            setOrder(ccDisplayName, sortDown, e.shiftKey);
-          }}
-        />
-      </div>
-    ) : null;
   const FilterMenu = column.FilterMenu || FilterAndSortMenu;
 
-  const filterMenu =
-    withFilter && !disableFiltering ? (
-      <ColumnFilterMenu
-        FilterMenu={FilterMenu}
-        filterActiveForColumn={filterActiveForColumn}
-        addFilters={addFilters}
-        removeSingleFilter={removeSingleFilter}
-        currentFilter={currentFilter}
-        filterOn={ccDisplayName}
-        dataType={columnDataType}
-        schemaForField={column}
-        currentParams={currentParams}
-        setNewParams={setNewParams}
-        compact={compact}
-        extraCompact={extraCompact}
-      />
-    ) : null;
   let maybeCheckbox;
   if (isCellEditable && !isNotEditable && type === "boolean") {
     let isIndeterminate = false;
@@ -239,8 +193,50 @@ const renderColumnHeader = ({
       <div
         style={{ display: "flex", marginLeft: "auto", alignItems: "center" }}
       >
-        {sortComponent}
-        {filterMenu}
+        {withSort && !disableSorting && (
+          <div className="tg-sort-arrow-container">
+            <Icon
+              data-tip="Sort Z-A (Hold shift to sort multiple columns)"
+              icon="chevron-up"
+              className={classNames({
+                active: sortUp
+              })}
+              color={sortUp ? "#106ba3" : undefined}
+              iconSize={extraCompact ? 10 : 12}
+              onClick={e => {
+                setOrder("-" + ccDisplayName, sortUp, e.shiftKey);
+              }}
+            />
+            <Icon
+              data-tip="Sort A-Z (Hold shift to sort multiple columns)"
+              icon="chevron-down"
+              className={classNames({
+                active: sortDown
+              })}
+              color={sortDown ? "#106ba3" : undefined}
+              iconSize={extraCompact ? 10 : 12}
+              onClick={e => {
+                setOrder(ccDisplayName, sortDown, e.shiftKey);
+              }}
+            />
+          </div>
+        )}
+        {withFilter && !disableFiltering && (
+          <ColumnFilterMenu
+            FilterMenu={FilterMenu}
+            filterActiveForColumn={filterActiveForColumn}
+            addFilters={addFilters}
+            removeSingleFilter={removeSingleFilter}
+            currentFilter={currentFilter}
+            filterOn={ccDisplayName}
+            dataType={columnDataType}
+            schemaForField={column}
+            currentParams={currentParams}
+            setNewParams={setNewParams}
+            compact={compact}
+            extraCompact={extraCompact}
+          />
+        )}
       </div>
     </div>
   );
@@ -487,7 +483,7 @@ const RenderCell = ({
   );
 };
 
-export const renderColumns = props => {
+export const RenderColumns = props => {
   const {
     addFilters,
     cellRenderer,
@@ -506,6 +502,7 @@ export const renderColumns = props => {
     isCellEditable,
     isEntityDisabled,
     isLocalCall,
+    isSimple,
     isSingleSelect,
     isSelectionARectangle,
     noDeselectAll,
@@ -538,9 +535,11 @@ export const renderColumns = props => {
     updateValidation,
     withCheckboxes,
     withExpandAndCollapseAllButton,
-    withFilter = !props.isSimple,
+    withFilter: _withFilter,
     withSort = true
   } = props;
+
+  const withFilter = _withFilter === undefined ? !isSimple : _withFilter;
 
   const onDragEnd = cellsToSelect => {
     const [primaryRowId, primaryCellPath] = primarySelectedCellId.split(":");
@@ -742,6 +741,8 @@ export const renderColumns = props => {
     // TODOCOPY we need a way to potentially omit certain columns from being added as a \t element (talk to taoh about this)
     let text = typeof val !== "string" ? row.value : val;
 
+    // We should try to take out the props from here, it produces
+    // unnecessary rerenders
     const record = row.original;
     if (column.getClipboardData) {
       text = column.getClipboardData(row.value, record, row, props);
@@ -787,6 +788,7 @@ export const renderColumns = props => {
   if (!columns.length) {
     return columns;
   }
+
   const columnsToRender = [];
   if (SubComponent) {
     columnsToRender.push({
@@ -948,7 +950,7 @@ export const renderColumns = props => {
   columns.forEach(column => {
     const tableColumn = {
       ...column,
-      Header: renderColumnHeader({
+      Header: RenderColumnHeader({
         column,
         isLocalCall,
         filters,
@@ -994,17 +996,17 @@ export const renderColumns = props => {
         return val;
       };
     } else if (column.type === "timestamp") {
-      tableColumn.Cell = props => {
-        return props.value ? dayjs(props.value).format("lll") : "";
+      tableColumn.Cell = ({ value }) => {
+        return value ? dayjs(value).format("lll") : "";
       };
     } else if (column.type === "color") {
-      tableColumn.Cell = props => {
-        return props.value ? (
+      tableColumn.Cell = ({ value }) => {
+        return value ? (
           <div
             style={{
               height: 20,
               width: 40,
-              background: props.value,
+              background: value,
               border: "1px solid #182026",
               borderRadius: 5
             }}
@@ -1015,23 +1017,23 @@ export const renderColumns = props => {
       };
     } else if (column.type === "boolean") {
       if (isCellEditable) {
-        tableColumn.Cell = props => (props.value ? "True" : "False");
+        tableColumn.Cell = ({ value }) => (value ? "True" : "False");
       } else {
-        tableColumn.Cell = props => (
+        tableColumn.Cell = ({ value }) => (
           <Icon
             className={classNames({
-              [Classes.TEXT_MUTED]: !props.value
+              [Classes.TEXT_MUTED]: !value
             })}
-            icon={props.value ? "tick" : "cross"}
+            icon={value ? "tick" : "cross"}
           />
         );
       }
     } else if (column.type === "markdown") {
-      tableColumn.Cell = props => (
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{props.value}</ReactMarkdown>
+      tableColumn.Cell = ({ value }) => (
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{value}</ReactMarkdown>
       );
     } else {
-      tableColumn.Cell = props => props.value;
+      tableColumn.Cell = ({ value }) => value;
     }
     const oldFunc = tableColumn.Cell;
 

@@ -14,6 +14,7 @@ describe("field filters", () => {
         cy.get(".bp3-popover input").type(firstAge);
         cy.get(".bp3-popover").contains("Filter").click();
         cy.get(".rt-tr-group.with-row-data").should("have.length.at.least", 1);
+        cy.get(".rt-tr-group.with-row-data").should("have.length.at.most", 10);
       });
   });
 
