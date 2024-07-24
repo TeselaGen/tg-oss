@@ -18,6 +18,14 @@ export default function getReverseComplementAnnotation(
     start: sequenceLength - (annotation.end + 1),
     end: sequenceLength - (annotation.start + 1),
     forward: !annotation.forward,
-    strand: annotation.strand === 1 ? -1 : 1
+    strand: annotation.strand === 1 ? -1 : 1,
+    ...(annotation.locations && {
+      locations: annotation.locations.map(location => {
+        return {
+          start: sequenceLength - (location.end + 1),
+          end: sequenceLength - (location.start + 1)
+        };
+      })
+    })
   });
 }
