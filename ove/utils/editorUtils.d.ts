@@ -30,7 +30,8 @@ export function getClientX(event: any): any;
 export function getClientY(event: any): any;
 export function hideAnnByLengthFilter(hideOpts: any, ann: any, seqLen: any): any;
 export function getSelFromWrappedAddon(selectionLayer: any, sequenceLength: any): any;
-export function getStripedPattern({ color }: {
+export function getStripedPattern({ color, id }: {
     color: any;
+    id: any;
 }): import("react/jsx-runtime").JSX.Element;
 export function getEnzymeAliases(enzyme: any): any[];
