@@ -96,6 +96,26 @@ export default ({ demos, isOpen, setIsOpen }) => {
         })}
       <br></br>
       <br></br>
+      <a
+        href="https://teselagen.github.io/tg-oss/ui/"
+        style={{ fontSize: 16 }}
+        rel="noreferrer"
+        target="_blank"
+      >
+        tg-oss/ui demo page
+      </a>
+      <br></br>
+
+      <a
+        href="https://teselagen.github.io/tg-oss/ove/"
+        style={{ fontSize: 16 }}
+        rel="noreferrer"
+        target="_blank"
+      >
+        tg-oss/ove demo page
+      </a>
+
+      <br></br>
       <br></br>
       <br></br>
     </div>
