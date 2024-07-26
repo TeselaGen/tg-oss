@@ -14,6 +14,12 @@ const getSchema = data => ({
     return { path, type: "string" };
   }),
   userData: data
+  // userData: data.map((d) => {
+  //   if (!d.id) {
+  //     d.id = nanoid();
+  //   }
+  //   return d
+  // })
 });
 export default async function tryToMatchSchemas({
   incomingData,

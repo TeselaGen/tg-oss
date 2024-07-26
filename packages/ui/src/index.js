@@ -18,11 +18,11 @@ export {
 } from "./DataTable/utils/withSelectedEntities";
 export {
   default as DataTable,
-  ConnectedPagingTool as PagingTool
+  ConnectedPagingTool as PagingTool,
+  removeCleanRows
 } from "./DataTable";
-export { removeCleanRows } from "./DataTable/utils";
 
-export { getIdOrCodeOrIndex } from "./DataTable/utils";
+export { default as getIdOrCodeOrIndex } from "./DataTable/utils/getIdOrCodeOrIndex";
 export { default as convertSchema } from "./DataTable/utils/convertSchema";
 export { default as Loading } from "./Loading";
 export { throwFormError } from "./throwFormError";

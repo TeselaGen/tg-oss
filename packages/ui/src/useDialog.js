@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-/*
+/* 
 
   const {toggleDialog, comp} = useDialog({
     ModalComponent: SimpleInsertData,
@@ -31,14 +31,12 @@ export const useDialog = ({ ModalComponent, ...rest }) => {
         ...rest?.dialogProps,
         ...additionalProps?.dialogProps
       }}
-    />
+    ></ModalComponent>
   );
-
   const toggleDialog = () => {
     setOpen(!isOpen);
   };
-
-  const showDialogPromise = async (handlerName, moreProps = {}) => {
+  async function showDialogPromise(handlerName, moreProps = {}) {
     return new Promise(resolve => {
       //return a promise that can be awaited
       setAdditionalProps({
@@ -61,7 +59,6 @@ export const useDialog = ({ ModalComponent, ...rest }) => {
       });
       setOpen(true); //open the dialog
     });
-  };
-
+  }
   return { comp, showDialogPromise, toggleDialog, setAdditionalProps };
 };
