@@ -1096,14 +1096,50 @@ function VectorInteractionHOC(Component /* options */) {
       "translationRightClicked"
     );
 
-    featureDoubleClicked = ({ annotation }) => {
-      showAddOrEditAnnotationDialog({ type: "feature", annotation });
+    featureDoubleClicked = ({ event, annotation }) => {
+      const { doubleClickOverrides = {} } = this.props;
+      let preventDefault;
+      if (doubleClickOverrides["featureDoubleClicked"]) {
+        preventDefault = doubleClickOverrides["featureDoubleClicked"]({
+          annotation,
+          event
+        });
+      }
+      if (!preventDefault) {
+        event.preventDefault();
+        event.stopPropagation();
+        showAddOrEditAnnotationDialog({ type: "feature", annotation });
+      }
     };
-    partDoubleClicked = ({ annotation }) => {
-      showAddOrEditAnnotationDialog({ type: "part", annotation });
+    partDoubleClicked = ({ event, annotation }) => {
+      const { doubleClickOverrides = {} } = this.props;
+      let preventDefault;
+      if (doubleClickOverrides["partDoubleClicked"]) {
+        preventDefault = doubleClickOverrides["partDoubleClicked"]({
+          annotation,
+          event
+        });
+      }
+      if (!preventDefault) {
+        event.preventDefault();
+        event.stopPropagation();
+        showAddOrEditAnnotationDialog({ type: "part", annotation });
+      }
     };
-    primerDoubleClicked = ({ annotation }) => {
-      showAddOrEditAnnotationDialog({ type: "primer", annotation });
+    primerDoubleClicked = ({ event, annotation }) => {
+      const { doubleClickOverrides = {} } = this.props;
+      let preventDefault;
+      if (doubleClickOverrides["primerDoubleClicked"]) {
+        preventDefault = doubleClickOverrides["primerDoubleClicked"]({
+          annotation,
+          event
+        });
+      }
+      if (!preventDefault) {
+        event.preventDefault();
+        event.stopPropagation();
+        showAddOrEditAnnotationDialog({ type: "primer", annotation });
+      }
     };
     cutsiteDoubleClicked = ({ annotation }) => {
       showDialog({

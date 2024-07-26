@@ -70,6 +70,7 @@ const defaultState = {
   overrideRightClickExample: false,
   overrideAddEditFeatureDialog: false,
   clickOverridesExample: false,
+  doubleClickOverridesExample: false,
   showAvailability: true,
   showCicularViewInternalLabels: true,
   showDemoOptions: !isMobile(),
@@ -185,6 +186,21 @@ export default class EditorDemo extends React.Component {
       partClicked: () => {
         window.toastr.success("Part Click Override Hit!");
         //by default (aka returning falsy) the usual click action occurs
+      }
+    }
+  };
+  doubleClickOverridesExample = {
+    doubleClickOverrides: {
+      featureDoubleClicked: ({ event, annotation }) => {
+        window.toastr.success("Feature Double Click Override Hit!");
+        if (annotation.type === "CDS") {
+          event.stopPropagation();
+          return true; //returning truthy stops the regular double click action from occurring
+        }
+      },
+      partDoubleClicked: () => {
+        window.toastr.success("Part Double Click Override Hit!");
+        //by default (aka returning falsy) the usual double click action occurs
       }
     }
   };
@@ -1904,6 +1920,29 @@ clickOverrides: {
 \`\`\`
 `
               })}
+
+              {renderToggle({
+                that: this,
+                type: "doubleClickOverridesExample",
+                info: `
+you can pass doubleClickOverrides to the <Editor> like so:
+\`\`\`
+doubleClickOverrides: {
+  featureDoubleClicked: ({ event }) => {
+    //do whatever
+    window.toastr.success("Feature Double Click Override Hit!");
+    event.stopPropagation();
+    return true; //returning truthy stops the regular double click action from occurring
+  },
+  partDoubleClicked: () => {
+    window.toastr.success("Part Double Click Override Hit!");
+    //by default (aka returning falsy) the usual double click action occurs
+  }
+}
+\`\`\`
+`
+              })}
+
               {renderToggle({
                 that: this,
                 type: "showCircularity",
@@ -2661,6 +2700,8 @@ clickOverrides: {
               this.overrideAddEditFeatureDialogExample)}
             {...(this.state.clickOverridesExample &&
               this.clickOverridesExample)}
+            {...(this.state.doubleClickOverridesExample &&
+              this.doubleClickOverridesExample)}
             {...(this.state.propertiesOverridesExample &&
               this.propertiesOverridesExample)}
             {...(this.state.overrideToolbarOptions &&
