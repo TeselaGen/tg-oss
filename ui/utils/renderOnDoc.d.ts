@@ -1,2 +1,2 @@
-export function renderOnDoc(fn: any): void;
+export function renderOnDoc(fn: any): Element;
 export function renderOnDocSimple(el: any): () => void;

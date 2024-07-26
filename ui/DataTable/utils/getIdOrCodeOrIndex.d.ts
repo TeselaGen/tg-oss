@@ -1,1 +1,2 @@
-export function getIdOrCodeOrIndex(record: any, rowIndex: any): any;
+declare function _default(record: any, rowIndex: any): any;
+export default _default;

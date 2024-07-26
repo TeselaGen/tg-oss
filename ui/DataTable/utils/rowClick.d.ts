@@ -4,16 +4,8 @@ export function changeSelectedEntities({ idMap, entities, change }: {
     entities?: any[] | undefined;
     change: any;
 }): void;
-export function finalizeSelection({ idMap, entities, props: { onDeselect, onSingleRowSelect, onMultiRowSelect, noDeselectAll, onRowSelect, noSelect, change } }: {
+export function finalizeSelection({ idMap, entities, props }: {
     idMap: any;
     entities: any;
-    props: {
-        onDeselect: any;
-        onSingleRowSelect: any;
-        onMultiRowSelect: any;
-        noDeselectAll: any;
-        onRowSelect: any;
-        noSelect: any;
-        change: any;
-    };
+    props: any;
 }): void;
