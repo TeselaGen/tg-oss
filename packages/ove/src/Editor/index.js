@@ -381,7 +381,8 @@ export class Editor extends React.Component {
       withRotateCircularView = true,
       withZoomCircularView = true,
       withZoomLinearView = true,
-      withPreviewMode
+      withPreviewMode,
+      doubleClickOverrides
     } = this.props;
     if (
       !this.props.noVersionHistory &&
@@ -589,6 +590,7 @@ export class Editor extends React.Component {
           fontHeightMultiplier={this.props.fontHeightMultiplier}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
+          doubleClickOverrides={doubleClickOverrides}
           {...panelPropsToSpread}
           editorName={editorName}
           isProtein={sequenceData.isProtein}

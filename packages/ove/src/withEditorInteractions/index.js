@@ -33,7 +33,8 @@ import Keyboard from "./Keyboard";
 import {
   handleCaretMoved,
   editorClicked,
-  updateSelectionOrCaret
+  updateSelectionOrCaret,
+  handleDoubleClick
 } from "./clickAndDragUtils";
 import getBpsPerRow from "./getBpsPerRow";
 import {
@@ -77,7 +78,7 @@ function VectorInteractionHOC(Component /* options */) {
       super(props);
       annotationClickHandlers.forEach(handler => {
         this[handler] = (...args) => {
-          const { clickOverrides = {} } = this.props;
+          const { clickOverrides = {}, doubleClickOverrides = {} } = this.props;
           let preventDefault;
           const defaultHandler = this[handler + "_localOverride"]
             ? this[handler + "_localOverride"]
@@ -1173,6 +1174,12 @@ function VectorInteractionHOC(Component /* options */) {
             editorClicked({
               ...p,
               updateSelectionOrCaret: this.updateSelectionOrCaret
+            });
+          },
+          handleDoubleClick: p => {
+            handleDoubleClick({
+              ...p,
+              doubleClickOverrides: this.props.doubleClickOverrides
             });
           }
         };

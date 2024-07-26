@@ -574,3 +574,14 @@ function getMinRangeLength(start, end, sequenceLength, doNotWrapOrigin) {
   }
   return range1 < range2 ? range1 : range2;
 }
+
+export function handleDoubleClick({
+  event,
+  annotation,
+  doubleClickOverrides = {}
+}) {
+  const handler = doubleClickOverrides[annotation.type + "DoubleClicked"];
+  if (handler) {
+    handler({ event, annotation });
+  }
+}
