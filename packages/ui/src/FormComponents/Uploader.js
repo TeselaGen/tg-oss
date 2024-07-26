@@ -478,8 +478,8 @@ const UploaderInner = ({
           const data = new FormData();
           data.append("file", fileToUpload);
           try {
-            const res = await (window.api
-              ? window.api.post(action, data)
+            const res = await (window.serverApi
+              ? window.serverApi.post(action, data)
               : fetch(action, {
                   method: "POST",
                   body: data
