@@ -1,4 +1,4 @@
-import { getIdOrCodeOrIndex } from "./utils";
+import getIdOrCodeOrIndex from "./utils/getIdOrCodeOrIndex";
 import { getCellVal } from "./getCellVal";
 import { forEach, isArray } from "lodash-es";
 import { startCase } from "lodash-es";

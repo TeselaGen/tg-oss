@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Callout,
@@ -16,6 +16,7 @@ import classnames from "classnames";
 import { nanoid } from "nanoid";
 import papaparse, { unparse } from "papaparse";
 import downloadjs from "downloadjs";
+import { configure, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import UploadCsvWizardDialog, {
   SimpleInsertDataDialog
@@ -29,7 +30,7 @@ import {
   removeExt
 } from "@teselagen/file-utils";
 import tryToMatchSchemas from "./tryToMatchSchemas";
-import { isArray, isFunction, isPlainObject, noop } from "lodash-es";
+import { forEach, isArray, isFunction, isPlainObject, noop } from "lodash-es";
 import { flatMap } from "lodash-es";
 import urljoin from "url-join";
 import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
@@ -37,12 +38,14 @@ import writeXlsxFile from "write-excel-file";
 import { startCase } from "lodash-es";
 import { getNewName } from "./getNewName";
 import { isObject } from "lodash-es";
-import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import classNames from "classnames";
+import { compose } from "recompose";
 import convertSchema from "../DataTable/utils/convertSchema";
 import { LoadingDots } from "./LoadingDots";
 
+configure({ isolateGlobalState: true });
 const helperText = [
   `How to Use This Template to Upload New Data`,
   `1. Go to the first tab and delete the example data.`,
@@ -61,106 +64,58 @@ const helperSchema = [
   }
 ];
 
-const setValidateAgainstSchema = newValidateAgainstSchema => {
-  if (!newValidateAgainstSchema) return { fields: [] };
-  const schema = convertSchema(newValidateAgainstSchema);
-  if (
-    schema.fields.some(f => {
-      if (f.path === "id") {
-        return true;
-      }
-      return false;
-    })
-  ) {
-    throw new Error(
-      `Uploader was passed a validateAgainstSchema with a fields array that contains a field with a path of "id". This is not allowed.`
-    );
+class ValidateAgainstSchema {
+  fields = [];
+
+  constructor() {
+    makeObservable(this, {
+      fields: observable.shallow
+    });
   }
-  return schema;
-};
 
-const InnerDropZone = ({
-  getRootProps,
-  getInputProps,
-  isDragAccept,
-  isDragReject,
-  isDragActive,
-  className,
-  minimal,
-  dropzoneDisabled,
-  contentOverride,
-  simpleAccept,
-  innerIcon,
-  innerText,
-  validateAgainstSchema,
-  handleManuallyEnterData,
-  noBuildCsvOption,
-  showFilesCount,
-  fileList
-  // isDragActive
-  // isDragReject
-  // isDragAccept
-}) => (
-  <section>
-    <div
-      {...getRootProps()}
-      className={classnames("tg-dropzone", className, {
-        "tg-dropzone-minimal": minimal,
-        "tg-dropzone-active": isDragActive,
-        "tg-dropzone-reject": isDragReject, // tnr: the acceptClassName/rejectClassName doesn't work with file extensions (only mimetypes are supported when dragging). Thus we'll just always turn the drop area blue when dragging and let the filtering occur on drop. See https://github.com/react-dropzone/react-dropzone/issues/888#issuecomment-773938074
-        "tg-dropzone-accept": isDragAccept,
-        "tg-dropzone-disabled": dropzoneDisabled,
-        "bp3-disabled": dropzoneDisabled
-      })}
-    >
-      <input {...getInputProps()} />
-      {contentOverride || (
-        <div
-          title={
-            simpleAccept
-              ? "Accepts only the following file types: " + simpleAccept
-              : "Accepts any file input"
-          }
-          className="tg-upload-inner"
-        >
-          {innerIcon || <Icon icon="upload" iconSize={minimal ? 15 : 30} />}
-          {innerText || (minimal ? "Upload" : "Click or drag to upload")}
-          {validateAgainstSchema && !noBuildCsvOption && (
-            <div
-              style={{
-                textAlign: "center",
-                // fontSize: 18,
-                marginTop: 7,
-                marginBottom: 5
-              }}
-              onClick={handleManuallyEnterData}
-              className="link-button"
-            >
-              ...or {manualEnterMessage}
-              {/* <div
-                style={{
-                  fontSize: 11,
-                  color: Colors.GRAY3,
-                  fontStyle: "italic"
-                }}
-              >
-                {manualEnterSubMessage}
-              </div> */}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+  setValidateAgainstSchema(newValidateAgainstSchema) {
+    if (!newValidateAgainstSchema) {
+      this.fields = [];
+      return;
+    }
+    const schema = convertSchema(newValidateAgainstSchema);
+    if (
+      schema.fields.some(f => {
+        if (f.path === "id") {
+          return true;
+        }
+        return false;
+      })
+    ) {
+      throw new Error(
+        `Uploader was passed a validateAgainstSchema with a fields array that contains a field with a path of "id". This is not allowed.`
+      );
+    }
+    forEach(schema, (v, k) => {
+      this[k] = v;
+    });
+  }
+}
 
-    {showFilesCount ? (
-      <div className="tg-upload-file-list-counter">
-        Files: {fileList ? fileList.length : 0}
-      </div>
-    ) : null}
-  </section>
-);
+// autorun(() => {
+//   console.log(
+//     `validateAgainstSchemaStore?.fields:`,
+//     JSON.stringify(validateAgainstSchemaStore?.fields, null, 4)
+//   );
+// });
+// validateAgainstSchemaStore.fields = ["hahah"];
+// validateAgainstSchemaStore.fields.push("yaa");
 
-const UploaderInner = ({
+// const validateAgainstSchema = observable.shallow({
+//   fields: []
+// })
+
+// validateAgainstSchema.fields = ["hahah"];
+
+// wink wink
+const emptyPromise = Promise.resolve.bind(Promise);
+
+function UploaderInner({
   accept: __accept,
   contentOverride: maybeContentOverride,
   innerIcon,
@@ -175,9 +130,7 @@ const UploaderInner = ({
   showUploadList = true,
   beforeUpload,
   fileList, //list of files with options: {name, loading, error, url, originalName, downloadName}
-  onFileSuccess = async () => {
-    return;
-  }, //called each time a file is finished and before the file.loading gets set to false, needs to return a promise!
+  onFileSuccess = emptyPromise, //called each time a file is finished and before the file.loading gets set to false, needs to return a promise!
   onFieldSubmit = noop, //called when all files have successfully uploaded
   // fileFinished = noop,
   onRemove = noop, //called when a file has been selected to be removed
@@ -188,27 +141,22 @@ const UploaderInner = ({
   autoUnzip,
   disabled: _disabled,
   noBuildCsvOption,
+  initializeForm,
   showFilesCount,
   threeDotMenuItems,
   onPreviewClick
-}) => {
-  const dispatch = useDispatch();
+}) {
   let dropzoneDisabled = _disabled;
   let _accept = __accept;
+  const validateAgainstSchemaStore = useRef(new ValidateAgainstSchema());
   const [acceptLoading, setAcceptLoading] = useState();
   const [resolvedAccept, setResolvedAccept] = useState();
-
   if (resolvedAccept) {
     _accept = resolvedAccept;
   }
-
-  const isAcceptPromise = useMemo(
-    () =>
-      __accept?.then ||
-      (Array.isArray(__accept) ? __accept.some(a => a?.then) : false),
-    [__accept]
-  );
-
+  const isAcceptPromise =
+    __accept?.then ||
+    (Array.isArray(__accept) ? __accept.some(a => a?.then) : false);
   useEffect(() => {
     if (isAcceptPromise) {
       setAcceptLoading(true);
@@ -221,36 +169,35 @@ const UploaderInner = ({
       );
     }
   }, [__accept, isAcceptPromise]);
-
   if (isAcceptPromise && !resolvedAccept) {
     _accept = [];
   }
-
   if (acceptLoading) dropzoneDisabled = true;
-  const accept = useMemo(
-    () =>
-      !_accept
-        ? undefined
-        : isAcceptPromise && !resolvedAccept
-          ? []
-          : isPlainObject(_accept)
-            ? [_accept]
-            : isArray(_accept)
-              ? _accept
-              : _accept.split(",").map(a => ({ type: a })),
-    [_accept, isAcceptPromise, resolvedAccept]
-  );
-
+  const accept = !_accept
+    ? undefined
+    : isAcceptPromise && !resolvedAccept
+      ? []
+      : isPlainObject(_accept)
+        ? [_accept]
+        : isArray(_accept)
+          ? _accept
+          : _accept.split(",").map(a => ({ type: a }));
   const callout = _callout || accept?.find?.(a => a?.callout)?.callout;
 
-  const validateAgainstSchema = useMemo(
-    () =>
-      setValidateAgainstSchema(
-        _validateAgainstSchema ||
-          accept?.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema
-      ),
-    [_validateAgainstSchema, accept]
-  );
+  const validateAgainstSchemaToUse =
+    _validateAgainstSchema ||
+    accept?.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema;
+
+  useEffect(() => {
+    // validateAgainstSchema
+    validateAgainstSchemaStore.current.setValidateAgainstSchema(
+      validateAgainstSchemaToUse
+    );
+  }, [validateAgainstSchemaToUse]);
+  let validateAgainstSchema;
+  if (validateAgainstSchemaToUse) {
+    validateAgainstSchema = validateAgainstSchemaStore.current;
+  }
 
   if (
     (validateAgainstSchema || autoUnzip) &&
@@ -268,7 +215,6 @@ const UploaderInner = ({
   const { showDialogPromise: showUploadCsvWizardDialog, comp } = useDialog({
     ModalComponent: UploadCsvWizardDialog
   });
-
   const { showDialogPromise: showSimpleInsertDataDialog, comp: comp2 } =
     useDialog({
       ModalComponent: SimpleInsertDataDialog
@@ -607,7 +553,7 @@ const UploaderInner = ({
                                         }
                                         {...getFileDownloadAttr(exampleFile)}
                                         key={i}
-                                      />
+                                      ></MenuItem>
                                     );
                                   }
                                 )}
@@ -673,7 +619,7 @@ const UploaderInner = ({
                                 }}
                                 size={10}
                                 icon="download"
-                              />
+                              ></Icon>
                             )}
                           </CustomTag>
                         </PopOrTooltip>
@@ -685,8 +631,7 @@ const UploaderInner = ({
                 // make the dots below "load"
 
                 <>
-                  Accept Loading
-                  <LoadingDots />
+                  Accept Loading<LoadingDots></LoadingDots>
                 </>
               ) : (
                 <>Accepts {simpleAccept}</>
@@ -705,135 +650,135 @@ const UploaderInner = ({
                     .join(", ")
                 : undefined
             }
-            onDrop={async (_acceptedFiles, rejectedFiles) => {
-              let acceptedFiles = [];
-              for (const file of _acceptedFiles) {
-                if ((validateAgainstSchema || autoUnzip) && isZipFile(file)) {
-                  const files = await filterFilesInZip(
-                    file,
-                    simpleAccept
-                      ?.split(", ")
-                      ?.map(a => (a.startsWith(".") ? a : "." + a)) || []
-                  );
-                  acceptedFiles.push(...files.map(f => f.originFileObj));
-                } else {
-                  acceptedFiles.push(file);
+            {...{
+              onDrop: async (_acceptedFiles, rejectedFiles) => {
+                let acceptedFiles = [];
+                for (const file of _acceptedFiles) {
+                  if ((validateAgainstSchema || autoUnzip) && isZipFile(file)) {
+                    const files = await filterFilesInZip(
+                      file,
+                      simpleAccept
+                        ?.split(", ")
+                        ?.map(a => (a.startsWith(".") ? a : "." + a)) || []
+                    );
+                    acceptedFiles.push(...files.map(f => f.originFileObj));
+                  } else {
+                    acceptedFiles.push(file);
+                  }
                 }
-              }
-              cleanupFiles();
-              if (rejectedFiles.length) {
-                let msg = "";
-                rejectedFiles.forEach(file => {
-                  if (msg) msg += "\n";
-                  msg +=
-                    `${file.file.name}: ` +
-                    file.errors.map(err => err.message).join(", ");
+                cleanupFiles();
+                if (rejectedFiles.length) {
+                  let msg = "";
+                  rejectedFiles.forEach(file => {
+                    if (msg) msg += "\n";
+                    msg +=
+                      `${file.file.name}: ` +
+                      file.errors.map(err => err.message).join(", ");
+                  });
+                  window.toastr &&
+                    window.toastr.warning(
+                      <div className="preserve-newline">{msg}</div>
+                    );
+                }
+                if (!acceptedFiles.length) return;
+                setLoading(true);
+                acceptedFiles = trimFiles(acceptedFiles, fileLimit);
+
+                acceptedFiles.forEach(file => {
+                  file.preview = URL.createObjectURL(file);
+                  file.loading = true;
+                  if (!file.id) {
+                    file.id = nanoid();
+                  }
+                  filesToClean.current.push(file);
                 });
-                window.toastr &&
-                  window.toastr.warning(
-                    <div className="preserve-newline">{msg}</div>
-                  );
-              }
-              if (!acceptedFiles.length) return;
-              setLoading(true);
-              acceptedFiles = trimFiles(acceptedFiles, fileLimit);
 
-              acceptedFiles.forEach(file => {
-                file.preview = URL.createObjectURL(file);
-                file.loading = true;
-                if (!file.id) {
-                  file.id = nanoid();
-                }
-                filesToClean.current.push(file);
-              });
-
-              if (readBeforeUpload) {
-                acceptedFiles = await Promise.all(
-                  acceptedFiles.map(file => {
-                    return new Promise((resolve, reject) => {
-                      const reader = new FileReader();
-                      reader.readAsText(file, "UTF-8");
-                      reader.onload = evt => {
-                        file.parsedString = evt.target.result;
-                        resolve(file);
-                      };
-                      reader.onerror = err => {
-                        console.error("err:", err);
-                        reject(err);
-                      };
-                    });
-                  })
-                );
-              }
-              const cleanedAccepted = acceptedFiles.map(file => {
-                return {
-                  originFileObj: file,
-                  originalFileObj: file,
-                  id: file.id,
-                  lastModified: file.lastModified,
-                  lastModifiedDate: file.lastModifiedDate,
-                  loading: file.loading,
-                  name: file.name,
-                  preview: file.preview,
-                  size: file.size,
-                  type: file.type,
-                  ...(file.parsedString
-                    ? { parsedString: file.parsedString }
-                    : {})
-                };
-              });
-
-              const toKeep = [];
-              if (validateAgainstSchema) {
-                const filesWIssues = [];
-                const filesWOIssues = [];
-                for (const [i, file] of cleanedAccepted.entries()) {
-                  if (isCsvOrExcelFile(file)) {
-                    let parsedF;
-                    try {
-                      parsedF = await parseCsvOrExcelFile(file, {
-                        csvParserOptions: isFunction(
-                          validateAgainstSchema.csvParserOptions
-                        )
-                          ? validateAgainstSchema.csvParserOptions({
-                              validateAgainstSchema
-                            })
-                          : validateAgainstSchema.csvParserOptions
+                if (readBeforeUpload) {
+                  acceptedFiles = await Promise.all(
+                    acceptedFiles.map(file => {
+                      return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsText(file, "UTF-8");
+                        reader.onload = evt => {
+                          file.parsedString = evt.target.result;
+                          resolve(file);
+                        };
+                        reader.onerror = err => {
+                          console.error("err:", err);
+                          reject(err);
+                        };
                       });
-                    } catch (error) {
-                      console.error("error:", error);
-                      window.toastr &&
-                        window.toastr.error(
-                          `There was an error parsing your file. Please try again. ${
-                            error.message || error
-                          }`
-                        );
-                      return;
-                    }
+                    })
+                  );
+                }
+                const cleanedAccepted = acceptedFiles.map(file => {
+                  return {
+                    originFileObj: file,
+                    originalFileObj: file,
+                    id: file.id,
+                    lastModified: file.lastModified,
+                    lastModifiedDate: file.lastModifiedDate,
+                    loading: file.loading,
+                    name: file.name,
+                    preview: file.preview,
+                    size: file.size,
+                    type: file.type,
+                    ...(file.parsedString
+                      ? { parsedString: file.parsedString }
+                      : {})
+                  };
+                });
 
-                    const {
-                      csvValidationIssue: _csvValidationIssue,
-                      matchedHeaders,
-                      userSchema,
-                      searchResults,
-                      ignoredHeadersMsg
-                    } = await tryToMatchSchemas({
-                      incomingData: parsedF.data,
-                      validateAgainstSchema
-                    });
-                    if (userSchema?.userData?.length === 0) {
-                      console.error(
-                        `userSchema, parsedF.data:`,
+                const toKeep = [];
+                if (validateAgainstSchema) {
+                  const filesWIssues = [];
+                  const filesWOIssues = [];
+                  for (const [i, file] of cleanedAccepted.entries()) {
+                    if (isCsvOrExcelFile(file)) {
+                      let parsedF;
+                      try {
+                        parsedF = await parseCsvOrExcelFile(file, {
+                          csvParserOptions: isFunction(
+                            validateAgainstSchema.csvParserOptions
+                          )
+                            ? validateAgainstSchema.csvParserOptions({
+                                validateAgainstSchema
+                              })
+                            : validateAgainstSchema.csvParserOptions
+                        });
+                      } catch (error) {
+                        console.error("error:", error);
+                        window.toastr &&
+                          window.toastr.error(
+                            `There was an error parsing your file. Please try again. ${
+                              error.message || error
+                            }`
+                          );
+                        return;
+                      }
+
+                      const {
+                        csvValidationIssue: _csvValidationIssue,
+                        matchedHeaders,
                         userSchema,
-                        parsedF.data
-                      );
-                    } else {
-                      toKeep.push(file);
-                      let csvValidationIssue = _csvValidationIssue;
-                      if (csvValidationIssue) {
-                        if (isObject(csvValidationIssue)) {
-                          dispatch(
-                            initialize(
+                        searchResults,
+                        ignoredHeadersMsg
+                      } = await tryToMatchSchemas({
+                        incomingData: parsedF.data,
+                        validateAgainstSchema
+                      });
+                      if (userSchema?.userData?.length === 0) {
+                        console.error(
+                          `userSchema, parsedF.data:`,
+                          userSchema,
+                          parsedF.data
+                        );
+                      } else {
+                        toKeep.push(file);
+                        let csvValidationIssue = _csvValidationIssue;
+                        if (csvValidationIssue) {
+                          if (isObject(csvValidationIssue)) {
+                            initializeForm(
                               `editableCellTable${
                                 cleanedAccepted.length > 1 ? `-${i}` : ""
                               }`,
@@ -845,142 +790,149 @@ const UploaderInner = ({
                                 keepValues: true,
                                 updateUnregisteredFields: true
                               }
-                            )
-                          );
-                          const err = Object.values(csvValidationIssue)[0];
-                          // csvValidationIssue = `It looks like there was an error with your data - \n\n${
-                          //   err && err.message ? err.message : err
-                          // }.\n\nPlease review your headers and then correct any errors on the next page.`; //pass just the first error as a string
-                          const errMsg = err && err.message ? err.message : err;
-                          if (isPlainObject(errMsg)) {
-                            throw new Error(
-                              `errMsg is an object ${JSON.stringify(
-                                errMsg,
-                                null,
-                                4
-                              )}`
+                            );
+                            const err = Object.values(csvValidationIssue)[0];
+                            // csvValidationIssue = `It looks like there was an error with your data - \n\n${
+                            //   err && err.message ? err.message : err
+                            // }.\n\nPlease review your headers and then correct any errors on the next page.`; //pass just the first error as a string
+                            const errMsg =
+                              err && err.message ? err.message : err;
+                            if (isPlainObject(errMsg)) {
+                              throw new Error(
+                                `errMsg is an object ${JSON.stringify(
+                                  errMsg,
+                                  null,
+                                  4
+                                )}`
+                              );
+                            }
+                            csvValidationIssue = (
+                              <div>
+                                <div>
+                                  It looks like there was an error with your
+                                  data (Correct on the Review Data page):
+                                </div>
+                                <div style={{ color: "red" }}>{errMsg}</div>
+                                <div>
+                                  Please review your headers and then correct
+                                  any errors on the next page.
+                                </div>
+                              </div>
                             );
                           }
-                          csvValidationIssue = (
-                            <div>
-                              <div>
-                                It looks like there was an error with your data
-                                (Correct on the Review Data page):
-                              </div>
-                              <div style={{ color: "red" }}>{errMsg}</div>
-                              <div>
-                                Please review your headers and then correct any
-                                errors on the next page.
-                              </div>
-                            </div>
-                          );
-                        }
-                        filesWIssues.push({
-                          file,
-                          csvValidationIssue,
-                          ignoredHeadersMsg,
-                          matchedHeaders,
-                          userSchema,
-                          searchResults
-                        });
-                      } else {
-                        filesWOIssues.push({
-                          file,
-                          csvValidationIssue,
-                          ignoredHeadersMsg,
-                          matchedHeaders,
-                          userSchema,
-                          searchResults
-                        });
-                        const newFileName = removeExt(file.name) + `.csv`;
+                          filesWIssues.push({
+                            file,
+                            csvValidationIssue,
+                            ignoredHeadersMsg,
+                            matchedHeaders,
+                            userSchema,
+                            searchResults
+                          });
+                        } else {
+                          filesWOIssues.push({
+                            file,
+                            csvValidationIssue,
+                            ignoredHeadersMsg,
+                            matchedHeaders,
+                            userSchema,
+                            searchResults
+                          });
+                          const newFileName = removeExt(file.name) + `.csv`;
 
+                          const { newFile, cleanedEntities } = getNewCsvFile(
+                            userSchema.userData,
+                            newFileName
+                          );
+
+                          file.meta = parsedF.meta;
+                          file.hasEditClick = true;
+                          file.parsedData = cleanedEntities;
+                          file.name = newFileName;
+                          file.originFileObj = newFile;
+                          file.originalFileObj = newFile;
+                        }
+                      }
+                    } else {
+                      toKeep.push(file);
+                    }
+                  }
+                  if (filesWIssues.length) {
+                    const { file } = filesWIssues[0];
+                    const allFiles = [...filesWIssues, ...filesWOIssues];
+                    const doAllFilesHaveSameHeaders = allFiles.every(f => {
+                      if (f.userSchema.fields && f.userSchema.fields.length) {
+                        return f.userSchema.fields.every((h, i) => {
+                          return (
+                            h.path === allFiles[0].userSchema.fields[i].path
+                          );
+                        });
+                      }
+                      return false;
+                    });
+                    const multipleFiles = allFiles.length > 1;
+                    const { res } = await showUploadCsvWizardDialog(
+                      "onUploadWizardFinish",
+                      {
+                        dialogProps: {
+                          title: `Fix Up File${multipleFiles ? "s" : ""} ${
+                            multipleFiles
+                              ? ""
+                              : file.name
+                                ? `"${file.name}"`
+                                : ""
+                          }`
+                        },
+                        doAllFilesHaveSameHeaders,
+                        filesWIssues: allFiles,
+                        validateAgainstSchema
+                      }
+                    );
+
+                    if (!res) {
+                      window.toastr.warning(`File Upload Aborted`);
+                      return;
+                    } else {
+                      allFiles.forEach(({ file }, i) => {
+                        const newEntities = res[i];
+                        // const newFileName = removeExt(file.name) + `_updated.csv`;
+                        //swap out file with a new csv file
                         const { newFile, cleanedEntities } = getNewCsvFile(
-                          userSchema.userData,
-                          newFileName
+                          newEntities,
+                          file.name
                         );
 
-                        file.meta = parsedF.meta;
                         file.hasEditClick = true;
                         file.parsedData = cleanedEntities;
-                        file.name = newFileName;
+                        // file.name = newFileName;
                         file.originFileObj = newFile;
                         file.originalFileObj = newFile;
-                      }
-                    }
-                  } else {
-                    toKeep.push(file);
-                  }
-                }
-                if (filesWIssues.length) {
-                  const { file } = filesWIssues[0];
-                  const allFiles = [...filesWIssues, ...filesWOIssues];
-                  const doAllFilesHaveSameHeaders = allFiles.every(f => {
-                    if (f.userSchema.fields && f.userSchema.fields.length) {
-                      return f.userSchema.fields.every((h, i) => {
-                        return h.path === allFiles[0].userSchema.fields[i].path;
                       });
+                      setTimeout(() => {
+                        //inside a timeout for cypress purposes
+                        window.toastr.success(
+                          `Added Fixed Up File${
+                            allFiles.length > 1 ? "s" : ""
+                          } ${allFiles.map(({ file }) => file.name).join(", ")}`
+                        );
+                      }, 200);
                     }
-                    return false;
-                  });
-                  const multipleFiles = allFiles.length > 1;
-                  const { res } = await showUploadCsvWizardDialog(
-                    "onUploadWizardFinish",
-                    {
-                      dialogProps: {
-                        title: `Fix Up File${multipleFiles ? "s" : ""} ${
-                          multipleFiles ? "" : file.name ? `"${file.name}"` : ""
-                        }`
-                      },
-                      doAllFilesHaveSameHeaders,
-                      filesWIssues: allFiles,
-                      validateAgainstSchema
-                    }
-                  );
-
-                  if (!res) {
-                    window.toastr.warning(`File Upload Aborted`);
-                    return;
-                  } else {
-                    allFiles.forEach(({ file }, i) => {
-                      const newEntities = res[i];
-                      // const newFileName = removeExt(file.name) + `_updated.csv`;
-                      //swap out file with a new csv file
-                      const { newFile, cleanedEntities } = getNewCsvFile(
-                        newEntities,
-                        file.name
-                      );
-
-                      file.hasEditClick = true;
-                      file.parsedData = cleanedEntities;
-                      // file.name = newFileName;
-                      file.originFileObj = newFile;
-                      file.originalFileObj = newFile;
-                    });
-                    setTimeout(() => {
-                      //inside a timeout for cypress purposes
-                      window.toastr.success(
-                        `Added Fixed Up File${
-                          allFiles.length > 1 ? "s" : ""
-                        } ${allFiles.map(({ file }) => file.name).join(", ")}`
-                      );
-                    }, 200);
                   }
+                } else {
+                  toKeep.push(...cleanedAccepted);
                 }
-              } else {
-                toKeep.push(...cleanedAccepted);
-              }
 
-              if (toKeep.length === 0) {
-                window.toastr &&
-                  window.toastr.error(
-                    `It looks like there wasn't any data in your file. Please add some data and try again`
-                  );
+                if (toKeep.length === 0) {
+                  window.toastr &&
+                    window.toastr.error(
+                      `It looks like there wasn't any data in your file. Please add some data and try again`
+                    );
+                }
+                const cleanedFileList = trimFiles(
+                  [...toKeep, ...fileListToUse],
+                  fileLimit
+                );
+                handleSecondHalfOfUpload({ acceptedFiles, cleanedFileList });
               }
-              const cleanedFileList = trimFiles(
-                [...toKeep, ...fileListToUse],
-                fileLimit
-              );
-              handleSecondHalfOfUpload({ acceptedFiles, cleanedFileList });
             }}
             {...dropzoneProps}
           >
@@ -990,26 +942,71 @@ const UploaderInner = ({
               isDragAccept,
               isDragReject,
               isDragActive
+              // isDragActive
+              // isDragReject
+              // isDragAccept
             }) => (
-              <InnerDropZone
-                getRootProps={getRootProps}
-                getInputProps={getInputProps}
-                isDragAccept={isDragAccept}
-                isDragReject={isDragReject}
-                isDragActive={isDragActive}
-                className={className}
-                minimal={minimal}
-                dropzoneDisabled={dropzoneDisabled}
-                contentOverride={contentOverride}
-                simpleAccept={simpleAccept}
-                innerIcon={innerIcon}
-                innerText={innerText}
-                validateAgainstSchema={validateAgainstSchema}
-                handleManuallyEnterData={handleManuallyEnterData}
-                noBuildCsvOption={noBuildCsvOption}
-                showFilesCount={showFilesCount}
-                fileList={fileList}
-              />
+              <section>
+                <div
+                  {...getRootProps()}
+                  className={classnames("tg-dropzone", className, {
+                    "tg-dropzone-minimal": minimal,
+                    "tg-dropzone-active": isDragActive,
+                    "tg-dropzone-reject": isDragReject, // tnr: the acceptClassName/rejectClassName doesn't work with file extensions (only mimetypes are supported when dragging). Thus we'll just always turn the drop area blue when dragging and let the filtering occur on drop. See https://github.com/react-dropzone/react-dropzone/issues/888#issuecomment-773938074
+                    "tg-dropzone-accept": isDragAccept,
+                    "tg-dropzone-disabled": dropzoneDisabled,
+                    "bp3-disabled": dropzoneDisabled
+                  })}
+                >
+                  <input {...getInputProps()} />
+                  {contentOverride || (
+                    <div
+                      title={
+                        simpleAccept
+                          ? "Accepts only the following file types: " +
+                            simpleAccept
+                          : "Accepts any file input"
+                      }
+                      className="tg-upload-inner"
+                    >
+                      {innerIcon || (
+                        <Icon icon="upload" iconSize={minimal ? 15 : 30} />
+                      )}
+                      {innerText ||
+                        (minimal ? "Upload" : "Click or drag to upload")}
+                      {validateAgainstSchema && !noBuildCsvOption && (
+                        <div
+                          style={{
+                            textAlign: "center",
+                            // fontSize: 18,
+                            marginTop: 7,
+                            marginBottom: 5
+                          }}
+                          onClick={handleManuallyEnterData}
+                          className="link-button"
+                        >
+                          ...or {manualEnterMessage}
+                          {/* <div
+                            style={{
+                              fontSize: 11,
+                              color: Colors.GRAY3,
+                              fontStyle: "italic"
+                            }}
+                          >
+                            {manualEnterSubMessage}
+                          </div> */}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {showFilesCount ? (
+                  <div className="tg-upload-file-list-counter">
+                    Files: {fileList ? fileList.length : 0}
+                  </div>
+                ) : null}
+              </section>
             )}
           </Dropzone>
           {/* {validateAgainstSchema && <CsvWizardHelper bindToggle={{}} validateAgainstSchema={validateAgainstSchema}></CsvWizardHelper>} */}
@@ -1191,9 +1188,12 @@ const UploaderInner = ({
       </div>
     </>
   );
-};
+}
 
-const Uploader = observer(UploaderInner);
+const Uploader = compose(
+  connect(undefined, { initializeForm: initialize }),
+  observer
+)(UploaderInner);
 
 export default Uploader;
 

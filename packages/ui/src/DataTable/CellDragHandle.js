@@ -1,20 +1,21 @@
 import { flatMap } from "lodash-es";
 import { forEach } from "lodash-es";
 import React, { useRef } from "react";
+import ReactDOM from "react-dom";
 
-export const CellDragHandle = ({
+export function CellDragHandle({
   thisTable,
   onDragEnd,
   cellId,
   isSelectionARectangle
-}) => {
+}) {
   const xStart = useRef(0);
   const timeoutkey = useRef();
   const rowsToSelect = useRef();
   const rectangleCellPaths = useRef();
 
   const handleDrag = useRef(e => {
-    const table = thisTable.querySelector(".rt-table");
+    const table = ReactDOM.findDOMNode(thisTable).querySelector(".rt-table");
     const trs = table.querySelectorAll(`.rt-tr-group.with-row-data`);
     const [rowId, path] = cellId.split(":");
     const selectedTr = table.querySelector(
@@ -82,7 +83,7 @@ export const CellDragHandle = ({
 
   const mouseup = useRef(() => {
     clearTimeout(timeoutkey.current);
-    const table = thisTable;
+    const table = ReactDOM.findDOMNode(thisTable);
     const trs = table.querySelectorAll(`.rt-tr-group.with-row-data`);
     const [, path] = cellId.split(":");
     //remove the dashed borders
@@ -125,6 +126,6 @@ export const CellDragHandle = ({
         document.addEventListener("mouseup", mouseup.current, false);
       }}
       className="cellDragHandle"
-    />
+    ></div>
   );
-};
+}

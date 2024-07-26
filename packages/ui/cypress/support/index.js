@@ -46,7 +46,9 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   getOrWrap(dragSelector)
     .trigger("mousedown")
     .trigger("mousemove", 10, 10, { force: true });
-  getOrWrap(dropSelector).trigger("mousemove").trigger("mouseup");
+  getOrWrap(dropSelector)
+    .trigger("mousemove", { force: true })
+    .trigger("mouseup", { force: true });
 });
 
 Cypress.Commands.add(

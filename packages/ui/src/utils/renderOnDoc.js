@@ -1,32 +1,29 @@
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 
 export function renderOnDoc(fn) {
   const elemDiv = document.createElement("div");
   elemDiv.style.cssText =
     "position:absolute;width:100%;height:100%;top:0px;opacity:0.3;z-index:0;";
   document.body.appendChild(elemDiv);
-  const root = createRoot(elemDiv);
   const handleClose = () => {
     setTimeout(() => {
-      root.unmount(elemDiv);
+      ReactDOM.unmountComponentAtNode(elemDiv);
       document.body.removeChild(elemDiv);
     });
   };
-  root.render(fn(handleClose));
+  return ReactDOM.render(fn(handleClose), elemDiv);
 }
-
 export function renderOnDocSimple(el) {
   const elemDiv = document.createElement("div");
   elemDiv.style.cssText =
     "position:absolute;width:100%;height:100%;top:0px;opacity:1;z-index:10000;";
   document.body.appendChild(elemDiv);
-  const root = createRoot(elemDiv);
-  root.render(el);
   const handleClose = () => {
     setTimeout(() => {
-      root.unmount();
+      ReactDOM.unmountComponentAtNode(elemDiv);
       document.body.removeChild(elemDiv);
     });
   };
+  ReactDOM.render(el, elemDiv);
   return handleClose;
 }

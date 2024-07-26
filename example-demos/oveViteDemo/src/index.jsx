@@ -1,6 +1,6 @@
 import "./shimGlobal";
 import React from "react";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Loading } from "@teselagen/ui";
 
@@ -10,16 +10,14 @@ import App from "./App";
 
 import * as serviceWorker from "./serviceWorker";
 
-const domNode = document.getElementById("root");
-const root = createRoot(domNode);
-
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Loading />
       <App />
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

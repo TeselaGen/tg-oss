@@ -21,6 +21,10 @@ export default function UploaderDemo() {
   const [autoUnzip, autoUnzipToggleComp] = useToggle({
     type: "autoUnzip"
   });
+  // const [advancedAccept, advancedAcceptToggleComp] = useToggle({
+  //   type: "accept",
+  //   label: "Toggle Advance Accept"
+  // });
   return (
     <div>
       <OptionsSection>
