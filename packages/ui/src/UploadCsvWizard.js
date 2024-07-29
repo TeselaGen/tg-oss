@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  useMemo,
-  useCallback
-} from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { reduxForm, change, formValueSelector, destroy } from "redux-form";
 import { Callout, Icon, Intent, Tab, Tabs } from "@blueprintjs/core";
 import immer from "immer";
@@ -75,8 +69,6 @@ export const PreviewCsvData = props => {
     userSchema = exampleData,
     entities
   } = props;
-  const rerenderKey = useRef(0);
-  rerenderKey.current = rerenderKey.current + 1;
   const data =
     userSchema.userData &&
     userSchema.userData.length &&
@@ -145,7 +137,6 @@ export const PreviewCsvData = props => {
       <DataTable
         maxWidth={800}
         maxHeight={500}
-        rerenderKey={rerenderKey.current} //pass this since to force rerenders since validateAgainstSchema changing doesn't always trigger a rerender
         destroyOnUnmount={false}
         doNotValidateUntouchedRows
         formName={datatableFormName}
@@ -569,48 +560,47 @@ const MultipleFileDialog = ({
       </Tabs>
     </>
   );
-  let comp = tabs;
+  const comp = doAllFilesHaveSameHeaders ? (
+    <>
+      {doAllFilesHaveSameHeaders && (
+        <SimpleStepViz style={{ marginTop: 8 }} steps={steps} />
+      )}
 
-  if (doAllFilesHaveSameHeaders) {
-    comp = (
-      <>
-        {doAllFilesHaveSameHeaders && (
-          <SimpleStepViz style={{ marginTop: 8 }} steps={steps} />
-        )}
+      {!hasSubmittedOuter && (
+        <MatchHeaders
+          doAllFilesHaveSameHeaders={doAllFilesHaveSameHeaders}
+          datatableFormNames={filesWIssues.map((f, i) => {
+            return `editableCellTable-${i}`;
+          })}
+          reduxFormEntitiesArray={reduxFormEntitiesArray}
+          csvValidationIssue={csvValidationIssue}
+          ignoredHeadersMsg={ignoredHeadersMsg}
+          searchResults={searchResults}
+          matchedHeaders={matchedHeaders}
+          userSchema={userSchema}
+          flippedMatchedHeaders={flippedMatchedHeaders}
+          setFilesWIssues={setFilesWIssues}
+          filesWIssues={filesWIssues}
+          fileIndex={0}
+          {...filesWIssues[0]}
+        />
+      )}
+      {hasSubmittedOuter && tabs}
+      {!hasSubmittedOuter && (
+        <DialogFooter
+          style={{ marginTop: 20 }}
+          onClick={() => {
+            setSubmittedOuter(true);
+            setSteps(getInitialSteps(false));
+          }}
+          text="Review and Edit Data"
+        />
+      )}
+    </>
+  ) : (
+    tabs
+  );
 
-        {!hasSubmittedOuter && (
-          <MatchHeaders
-            doAllFilesHaveSameHeaders={doAllFilesHaveSameHeaders}
-            datatableFormNames={filesWIssues.map((f, i) => {
-              return `editableCellTable-${i}`;
-            })}
-            reduxFormEntitiesArray={reduxFormEntitiesArray}
-            csvValidationIssue={csvValidationIssue}
-            ignoredHeadersMsg={ignoredHeadersMsg}
-            searchResults={searchResults}
-            matchedHeaders={matchedHeaders}
-            userSchema={userSchema}
-            flippedMatchedHeaders={flippedMatchedHeaders}
-            setFilesWIssues={setFilesWIssues}
-            filesWIssues={filesWIssues}
-            fileIndex={0}
-            {...filesWIssues[0]}
-          />
-        )}
-        {hasSubmittedOuter && tabs}
-        {!hasSubmittedOuter && (
-          <DialogFooter
-            style={{ marginTop: 20 }}
-            onClick={() => {
-              setSubmittedOuter(true);
-              setSteps(getInitialSteps(false));
-            }}
-            text="Review and Edit Data"
-          />
-        )}
-      </>
-    );
-  }
   return <div style={{ padding: 10 }}>{comp}</div>;
 };
 

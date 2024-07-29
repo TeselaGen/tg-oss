@@ -59,6 +59,7 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
       model,
       noForm,
       noOrderError,
+      showEmptyColumnsByDefault,
       syncDisplayOptionsToDb,
       urlConnected,
       withDisplayOptions,
@@ -165,7 +166,8 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
       initialValues: {
         ...initialValues,
         reduxFormSearchInput: currentParams.searchTerm
-      }
+      },
+      showEmptyColumnsByDefault
     };
     return mapStateProps;
     // return { ...mergedOpts, ...mapStateProps };

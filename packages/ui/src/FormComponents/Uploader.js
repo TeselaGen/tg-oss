@@ -396,11 +396,11 @@ const Uploader = ({
     });
   }
 
-  const { showDialogPromise: showUploadCsvWizardDialog, comp } = useDialog({
+  const { showDialogPromise: showUploadCsvWizardDialog, Comp } = useDialog({
     ModalComponent: UploadCsvWizardDialog
   });
 
-  const { showDialogPromise: showSimpleInsertDataDialog, comp: comp2 } =
+  const { showDialogPromise: showSimpleInsertDataDialog, Comp: Comp2 } =
     useDialog({
       ModalComponent: SimpleInsertDataDialog
     });
@@ -606,8 +606,8 @@ const Uploader = ({
           height: "fit-content"
         }}
       >
-        {comp}
-        {comp2}
+        <Comp />
+        <Comp2 />
         <div
           className="tg-uploader-inner"
           style={{ width: "100%", height: "fit-content", minWidth: 0 }}

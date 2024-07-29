@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 /*
 
@@ -12,13 +12,10 @@ import React, { useCallback, useMemo, useState } from "react";
   </div>
 
 */
-/*
-  This useDialog is producing many rerenders for unknown reasons with cypress
-*/
 export const useDialog = ({ ModalComponent }) => {
   const [isOpen, setOpen] = useState(false);
   const [additionalProps, setAdditionalProps] = useState(false);
-  const comp = useMemo(
+  const Comp = useCallback(
     () => (
       <ModalComponent
         hideModal={() => {
@@ -36,10 +33,6 @@ export const useDialog = ({ ModalComponent }) => {
     ),
     [ModalComponent, additionalProps, isOpen]
   );
-
-  const toggleDialog = () => {
-    setOpen(prev => !prev);
-  };
 
   const showDialogPromise = useCallback(async (handlerName, moreProps = {}) => {
     return new Promise(resolve => {
@@ -66,5 +59,5 @@ export const useDialog = ({ ModalComponent }) => {
     });
   }, []);
 
-  return { comp, showDialogPromise, toggleDialog, setAdditionalProps };
+  return { Comp, showDialogPromise };
 };
