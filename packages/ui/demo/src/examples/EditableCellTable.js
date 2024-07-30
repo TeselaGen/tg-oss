@@ -34,29 +34,29 @@ function getEnts(num) {
   });
 }
 
-export default function SimpleTable(p) {
+export default function EditableCellTable(p) {
   const key = useRef(0);
+
+  const [entities, setEnts] = useState([]);
   const [, numComp] = useToggle({
     type: "num",
     label: "Number of Entities",
     isSelect: true,
     defaultValue: 50,
-    hook: v => {
+    controlledValue: p.entities?.length,
+    setControlledValue: v => {
       key.current++;
       setEnts(getEnts(toNumber(v)));
     },
     options: [20, 50, 100]
   });
+
   const [defaultValAsFunc, defaultValAsFuncComp] = useToggle({
     type: "defaultValAsFunc"
   });
-  // const [tagValuesAsObjects, tagValuesAsObjectsComp] = useToggle({
-  //   type: "tagValuesAsObjects"
-  // });
-  const [entities, setEnts] = useState([]);
 
-  const schema = useMemo(() => {
-    return {
+  const schema = useMemo(
+    () => ({
       fields: [
         {
           path: "name",
@@ -108,30 +108,26 @@ export default function SimpleTable(p) {
           defaultValue: true
         }
       ]
-    };
-  }, [defaultValAsFunc]);
+    }),
+    [defaultValAsFunc]
+  );
+
   return (
     <div>
       <OptionsSection>
         {numComp}
         {defaultValAsFuncComp}
-        {/* {tagValuesAsObjectsComp} */}
       </OptionsSection>
       <DemoWrapper>
         <DataTable
+          {...p}
           key={key.current}
           formName="editableCellTable"
           isSimple
           isCellEditable
           entities={entities}
           schema={schema}
-          // isEntityDisabled={
-          //   isEntityDisabled
-          //     ? ent => ent.name === "chris" || ent.name === "sam"
-          //     : undefined
-          // }
-          {...p}
-        ></DataTable>
+        />
       </DemoWrapper>
     </div>
   );

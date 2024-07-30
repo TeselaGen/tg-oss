@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { withProps, withHandlers, compose } from "recompose";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import classNames from "classnames";
 import { noop, get, toInteger } from "lodash-es";
 import { Button, Classes } from "@blueprintjs/core";
 import { onEnterOrBlurHelper } from "../utils/handlerHelpers";
 import { defaultPageSizes } from "./utils/queryParams";
-import getIdOrCodeOrIndex from "./utils/getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "./utils";
 
 function PagingInput({ disabled, onBlur, defaultPage }) {
   const [page, setPage] = useState(defaultPage);
@@ -20,6 +19,7 @@ function PagingInput({ disabled, onBlur, defaultPage }) {
 
   return (
     <input
+      name="page"
       style={{
         marginLeft: 5,
         width: page > 999 ? 65 : page > 99 ? 45 : 35,
@@ -38,18 +38,44 @@ function PagingInput({ disabled, onBlur, defaultPage }) {
 
 // Define the functional component and its props
 const PagingTool = ({
-  onPageChange = noop,
-  onRefresh,
-  setPage,
-  setPageSize,
-  persistPageSize = noop,
-  paging: { pageSize, page, total },
-  hideTotalPages,
-  disabled,
   controlled_hasNextPage,
+  controlled_onRefresh,
+  controlled_page,
+  controlled_setPage,
+  controlled_setPageSize,
+  controlled_total,
+  disabled: _disabled,
   disableSetPageSize,
-  hideSetPageSize
+  entities,
+  entityCount,
+  hideSetPageSize,
+  hideTotalPages,
+  keepSelectionOnPageChange,
+  onRefresh: _onRefresh,
+  page: _page,
+  pageSize,
+  pagingDisabled,
+  persistPageSize = noop,
+  setPage: _setPage,
+  setPageSize: _setPageSize,
+  setSelectedEntityIdMap
 }) => {
+  const page = controlled_page || _page;
+  const total = controlled_total || entityCount;
+  const disabled = _disabled || pagingDisabled;
+  const onRefresh = controlled_onRefresh || _onRefresh;
+  const setPage = controlled_setPage || _setPage;
+  const setPageSize = controlled_setPageSize || _setPageSize;
+
+  const onPageChange = useCallback(() => {
+    const record = get(entities, "[0]");
+    if (
+      !keepSelectionOnPageChange &&
+      (!record || !getIdOrCodeOrIndex(record))
+    ) {
+      setSelectedEntityIdMap({});
+    }
+  }, [entities, keepSelectionOnPageChange, setSelectedEntityIdMap]);
   // Define local state
   const [refetching, setRefetching] = useState(false);
 
@@ -128,6 +154,7 @@ const PagingTool = ({
           className={classNames(Classes.SELECT, Classes.MINIMAL)}
         >
           <select
+            name="page-size"
             className="paging-page-size"
             onChange={setPageSizeHandler}
             disabled={disabled || disableSetPageSize}
@@ -188,47 +215,4 @@ const PagingTool = ({
   );
 };
 
-export default compose(
-  withProps(props => {
-    const {
-      entityCount,
-      page,
-      pageSize,
-      disabled,
-      pagingDisabled,
-      onRefresh,
-      controlled_setPage,
-      controlled_setPageSize,
-      controlled_page,
-
-      controlled_total,
-      controlled_onRefresh,
-      setPage,
-      setPageSize
-    } = props;
-    return {
-      paging: {
-        total: controlled_total || entityCount,
-        page: controlled_page || page,
-        pageSize
-      },
-      disabled: disabled || pagingDisabled,
-      onRefresh: controlled_onRefresh || onRefresh,
-      setPage: controlled_setPage || setPage,
-      setPageSize: controlled_setPageSize || setPageSize
-    };
-  }),
-  withHandlers({
-    onPageChange:
-      ({ entities, keepSelectionOnPageChange, change }) =>
-      () => {
-        const record = get(entities, "[0]");
-        if (
-          !keepSelectionOnPageChange &&
-          (!record || !getIdOrCodeOrIndex(record))
-        ) {
-          change("reduxFormSelectedEntityIdMap", {});
-        }
-      }
-  })
-)(PagingTool);
+export default PagingTool;

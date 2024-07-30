@@ -11,8 +11,8 @@ export const withCommand =
         mappings[k] === "execute"
           ? event => cmd.execute({ event })
           : typeof mappings[k] === "function"
-          ? mappings[k](cmd, props)
-          : cmd[mappings[k]];
+            ? mappings[k](cmd, props)
+            : cmd[mappings[k]];
     });
 
     let out = <WrappedComponent {...mappedProps} {...props} />;
