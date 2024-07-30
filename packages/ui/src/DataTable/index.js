@@ -232,10 +232,11 @@ const DataTable = ({
     }
   }
 
+  const { withPaging = !isSimple } = props;
   const {
     change,
     doNotCoercePageSize,
-    isInfinite = isSimple || !props.withPaging,
+    isInfinite = isSimple || !withPaging,
     syncDisplayOptionsToDb,
     urlConnected,
     withSelectedEntities
@@ -385,7 +386,7 @@ const DataTable = ({
     getRowClassName,
     hideColumnHeader,
     hideDisplayOptionsIcon,
-    hidePageSizeWhenPossible = isSimple ? !props.withPaging : false,
+    hidePageSizeWhenPossible = isSimple ? !withPaging : false,
     hideSelectedCount = isSimple,
     hideSetPageSize,
     hideTotalPages,
@@ -403,7 +404,7 @@ const DataTable = ({
     minimalStyle,
     mustClickCheckboxToSelect,
     noDeselectAll,
-    noFooter = isSimple ? props.withPaging : false,
+    noFooter = isSimple ? withPaging : false,
     noFullscreenButton = isSimple,
     noHeader = false,
     noPadding = isSimple,
@@ -447,7 +448,6 @@ const DataTable = ({
     withDisplayOptions,
     withExpandAndCollapseAllButton,
     withFilter,
-    withPaging = !isSimple,
     withSearch = !isSimple,
     withSelectAll,
     withSort,
@@ -1592,25 +1592,19 @@ const DataTable = ({
     ]
   );
 
+  // We need to make sure this only runs at the beggining
   useEffect(() => {
-    if (alreadySelected.current) return;
-    alreadySelected.current = true;
     if (initialSelectedIds) {
+      if (alreadySelected.current) return;
       setSelectedIds(initialSelectedIds);
-      return;
+      alreadySelected.current = true;
     }
     if (selectAllByDefault && entities && entities.length) {
+      if (alreadySelected.current) return;
       setSelectedIds(entities.map(getIdOrCodeOrIndex));
+      alreadySelected.current = true;
     }
   }, [entities, initialSelectedIds, selectAllByDefault, setSelectedIds]);
-
-  useEffect(() => {
-    if (!alreadySelected.current) return;
-    if (initialSelectedIds) {
-      setSelectedIds(initialSelectedIds);
-      return;
-    }
-  }, [initialSelectedIds, setSelectedIds]);
 
   const TheadComponent = useCallback(
     ({ className, style, children }) => {
@@ -2945,7 +2939,7 @@ const DataTable = ({
                 alignItems: "center"
               }}
             >
-              All {showClearAll} items are selected.{" "}
+              All {showClearAll} items are selected.
               <Button
                 small
                 minimal

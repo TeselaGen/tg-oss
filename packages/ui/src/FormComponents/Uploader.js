@@ -66,7 +66,7 @@ const helperSchema = [
 ];
 
 const setValidateAgainstSchema = newValidateAgainstSchema => {
-  if (!newValidateAgainstSchema) return { fields: [] };
+  if (!newValidateAgainstSchema) return;
   const schema = convertSchema(newValidateAgainstSchema);
   if (
     schema.fields.some(f => {
@@ -331,7 +331,7 @@ const Uploader = ({
   const isAcceptPromise = useMemo(
     () =>
       __accept?.then ||
-      (Array.isArray(__accept) ? __accept.some(accept => accept?.then) : false),
+      (Array.isArray(__accept) ? __accept.some(acc => acc?.then) : false),
     [__accept]
   );
 
@@ -370,7 +370,7 @@ const Uploader = ({
             ? [_accept]
             : isArray(_accept)
               ? _accept
-              : _accept.split(",").map(accept => ({ type: accept })),
+              : _accept.split(",").map(acc => ({ type: acc })),
     [_accept, isAcceptPromise, resolvedAccept]
   );
 
@@ -621,17 +621,14 @@ const Uploader = ({
                 <div>
                   Accepts &nbsp;
                   <span>
-                    {advancedAccept.map((accept, i) => {
+                    {advancedAccept.map((acc, i) => {
                       const disabled = !(
-                        accept.description ||
-                        accept.exampleFile ||
-                        accept.exampleFiles
+                        acc.description ||
+                        acc.exampleFile ||
+                        acc.exampleFiles
                       );
-                      const PopOrTooltip = accept.exampleFiles
-                        ? Popover
-                        : Tooltip;
-                      const hasDownload =
-                        accept.exampleFile || accept.exampleFiles;
+                      const PopOrTooltip = acc.exampleFiles ? Popover : Tooltip;
+                      const hasDownload = acc.exampleFile || acc.exampleFiles;
                       const CustomTag = !hasDownload ? "span" : "a";
                       return (
                         <PopOrTooltip
@@ -640,9 +637,9 @@ const Uploader = ({
                           disabled={disabled}
                           modifiers={popoverOverflowModifiers}
                           content={
-                            accept.exampleFiles ? (
+                            acc.exampleFiles ? (
                               <Menu>
-                                {accept.exampleFiles.map(
+                                {acc.exampleFiles.map(
                                   (
                                     { description, subtext, exampleFile, icon },
                                     i
@@ -681,20 +678,20 @@ const Uploader = ({
                                   wordBreak: "break-word"
                                 }}
                               >
-                                {accept.description ? (
+                                {acc.description ? (
                                   <div
                                     style={{
                                       marginBottom: 4,
                                       fontStyle: "italic"
                                     }}
                                   >
-                                    {accept.description}
+                                    {acc.description}
                                   </div>
                                 ) : (
                                   ""
                                 )}
-                                {accept.exampleFile &&
-                                  (accept.isTemplate
+                                {acc.exampleFile &&
+                                  (acc.isTemplate
                                     ? "Download Example Template"
                                     : "Download Example File")}
                               </div>
@@ -704,20 +701,20 @@ const Uploader = ({
                           <CustomTag
                             className="tgFileTypeDescriptor"
                             style={{ marginRight: 10, cursor: "pointer" }}
-                            {...getFileDownloadAttr(accept.exampleFile)}
+                            {...getFileDownloadAttr(acc.exampleFile)}
                           >
-                            {(accept.type
-                              ? isArray(accept.type)
-                                ? accept.type
-                                : [accept.type]
-                              : [accept]
+                            {(acc.type
+                              ? isArray(acc.type)
+                                ? acc.type
+                                : [acc.type]
+                              : [acc]
                             )
                               .map(t => {
                                 if (!t.startsWith) {
-                                  console.error(`Missing type here:`, accept);
+                                  console.error(`Missing type here:`, acc);
                                   throw new Error(
                                     `Missing "type" here: ${JSON.stringify(
-                                      accept,
+                                      acc,
                                       null,
                                       4
                                     )}`
@@ -763,9 +760,7 @@ const Uploader = ({
               simpleAccept
                 ? simpleAccept
                     .split(", ")
-                    .map(accept =>
-                      accept.startsWith(".") ? accept : "." + accept
-                    )
+                    .map(acc => (acc.startsWith(".") ? acc : "." + acc))
                     .join(", ")
                 : undefined
             }
@@ -777,9 +772,8 @@ const Uploader = ({
                     file,
                     simpleAccept
                       ?.split(", ")
-                      ?.map(accept =>
-                        accept.startsWith(".") ? accept : "." + accept
-                      ) || []
+                      ?.map(acc => (acc.startsWith(".") ? acc : "." + acc)) ||
+                      []
                   );
                   acceptedFiles.push(...files.map(f => f.originFileObj));
                 } else {
