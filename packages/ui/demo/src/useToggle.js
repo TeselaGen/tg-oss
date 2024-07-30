@@ -18,7 +18,7 @@ import {
 } from "../../src";
 import { startCase } from "lodash-es";
 
-function HandleHotkeys({ combo, onKeyDown }) {
+const HandleHotkeys = ({ combo, onKeyDown }) => {
   const hotkeys = useMemo(
     () => [
       {
@@ -31,12 +31,12 @@ function HandleHotkeys({ combo, onKeyDown }) {
   );
   useHotkeys(hotkeys);
   return null;
-}
+};
 
-function ShowInfo({ description, info, type }) {
+const ShowInfo = ({ description, info, type }) => {
   const [isOpen, setOpen] = useState(false);
   return (
-    <React.Fragment>
+    <>
       <Dialog
         onClose={() => {
           setOpen(false);
@@ -63,16 +63,16 @@ function ShowInfo({ description, info, type }) {
             }}
             minimal
             icon="info-sign"
-          ></Button>
+          />
         </div>
       ) : (
-        <div style={{ minWidth: 30, width: 30, height: 30 }}></div>
+        <div style={{ minWidth: 30, width: 30, height: 30 }} />
       )}
-    </React.Fragment>
+    </>
   );
-}
+};
 
-export function useToggle({
+const useToggle = ({
   type,
   isButton,
   label,
@@ -88,22 +88,28 @@ export function useToggle({
   alwaysShow,
   hotkey,
   searchInput,
+  controlledValue,
+  setControlledValue,
   ...rest
-}) {
+}) => {
   const defaultValue = _defaultValue || options?.[0]?.value || options?.[0];
+  const [val, _setVal] = useState();
+
   useEffect(() => {
     const demoState = getDemoState();
     const toSet = demoState[type] || defaultValue;
+    setControlledValue?.(toSet);
     _setVal(toSet);
-    hook?.(toSet);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [val, _setVal] = useState();
+  const value = useMemo(() => controlledValue || val, [controlledValue, val]);
+
   const setVal = newVal => {
     const demoState = getDemoState();
     demoState[type] = newVal;
     setCurrentParamsOnUrl({ [type]: newVal }, undefined, true);
+    if (setControlledValue) setControlledValue(newVal);
     _setVal(newVal);
   };
   let comp;
@@ -130,46 +136,36 @@ export function useToggle({
     }
   }
   if (isButton) {
-    toggleOrButton = (
-      <Button
-        {...{
-          ...sharedProps,
-          onClick: onClick || hook
-        }}
-      />
-    );
+    toggleOrButton = <Button {...sharedProps} onClick={onClick || hook} />;
   } else if (isSelect) {
     const { style, label, ...rest } = sharedProps;
     toggleOrButton = (
       <div key={type + "iwuhwp"} style={sharedProps.style}>
         {label && <span>{label} &nbsp;</span>}
         <HTMLSelect
-          {...{
-            options,
-            ...rest,
-            value: val,
-            disabled: disabled,
-            onChange: newType => {
-              hook && hook(newType.target.value);
-              setVal(newType.target.value);
-            }
+          options={options}
+          {...rest}
+          value={value}
+          disabled={disabled}
+          onChange={newType => {
+            hook && hook(newType.target.value);
+            setVal(newType.target.value);
           }}
         />
       </div>
     );
   } else {
     switchOnChange = () => {
-      hook && hook(!val);
-      setVal(!val);
+      hook && hook(!value);
+      setVal(!value);
     };
     toggleOrButton = (
       <Switch
-        {...{
-          ...sharedProps,
-          checked: val,
-          disabled: disabled,
-          onChange: switchOnChange
-        }}
+        {...sharedProps}
+        name={type}
+        checked={value}
+        disabled={disabled}
+        onChange={switchOnChange}
       />
     );
   }
@@ -179,33 +175,29 @@ export function useToggle({
       style={{ display: "flex", alignItems: "center", margin: "5px 5px" }}
       className="toggle-button-holder"
     >
-      <ShowInfo {...{ description, info, type }}></ShowInfo>
+      <ShowInfo description={description} info={info} type={type} />
       {toggleOrButton}
       {switchOnChange && hotkey && (
-        <React.Fragment>
-          <HandleHotkeys
-            onKeyDown={switchOnChange}
-            combo={hotkey}
-          ></HandleHotkeys>
+        <>
+          <HandleHotkeys onKeyDown={switchOnChange} combo={hotkey} />
           <div
             style={{
               marginLeft: 5,
               transform: "scale(0.8)"
             }}
           >
-            <KeyCombo minimal combo={hotkey}></KeyCombo>
+            <KeyCombo minimal combo={hotkey} />
           </div>
-        </React.Fragment>
+        </>
       )}
     </div>
   );
 
-  return [val, comp];
-}
+  return [value, comp];
+};
 
 function getDemoState() {
   const editorDemoState = getCurrentParamsFromUrl({}, true);
-  // localStorage.editorDemoState = props.history.location.search;
   const massagedEditorDemoState = Object.keys(editorDemoState).reduce(
     (acc, key) => {
       if (editorDemoState[key] === "false") {
@@ -221,3 +213,5 @@ function getDemoState() {
   );
   return massagedEditorDemoState;
 }
+
+export { useToggle };
