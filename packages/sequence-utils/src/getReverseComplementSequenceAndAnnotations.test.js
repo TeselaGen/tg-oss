@@ -89,6 +89,55 @@ describe("getReverseComplementSequenceAndAnnotations", () => {
       ]
     });
   });
+  it("handles reverse complementing a feature with locations correctly", () => {
+    const newSeq = getReverseComplementSequenceAndAnnotations({
+      sequence: "aaatttcccgttttttt",
+      //         01234567890123456
+      //          fffffff
+      //          lll  ll
+      // after:
+      //         65432109876543210
+      //                  fffffff
+      //                  ll  lll
+      circular: true,
+      features: [
+        {
+          start: 1,
+          end: 7,
+          locations: [
+            {
+              start: 1,
+              end: 3
+            },
+            {
+              start: 6,
+              end: 7
+            }
+          ]
+        }
+      ]
+    });
+    newSeq.should.containSubset({
+      // sequence: "tttaaacggg",
+      features: [
+        {
+          start: 9,
+          end: 15,
+          forward: true,
+          locations: [
+            {
+              start: 9,
+              end: 10
+            },
+            {
+              start: 13,
+              end: 15
+            }
+          ]
+        }
+      ]
+    });
+  });
   it("handles a range option correctly and reverse complements a subset of the sequence across the origin ", () => {
     const newSeq = getReverseComplementSequenceAndAnnotations(
       {

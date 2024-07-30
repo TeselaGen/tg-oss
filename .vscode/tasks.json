@@ -20,6 +20,15 @@
       "flags": [],
       "problemMatcher": [],
       "label": "nx: nx run ui:publish"
+    },
+    {
+      "type": "nx",
+      "project": "",
+      "command": "run",
+      "positional": "ove:launch-e2e",
+      "flags": [],
+      "problemMatcher": [],
+      "label": "nx: nx run ove:launch-e2e"
     }
   ]
 }

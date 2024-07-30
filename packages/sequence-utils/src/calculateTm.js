@@ -27,7 +27,7 @@ const calcTmMethods = {
     _sequence,
     { type, A, R, primerConc, monovalentCationConc } = {}
   ) {
-    const sequence = _sequence.toLowerCase();
+    const sequence = (_sequence || "").toLowerCase();
     if (typeof type === "undefined") {
       // type = this.TABLE_SUGIMOTO  ;
       // type = this.TABLE_UNIFIED;

@@ -34,22 +34,6 @@ export default {
       end: 300,
       type: "primer_bind",
       forward: true
-    },
-    {
-      name: "Blue primer",
-      start: 1,
-      end: 20,
-      type: "primer_bind",
-      forward: true,
-      color: "blue"
-    },
-    {
-      name: "Red primer",
-      start: 21,
-      end: 30,
-      type: "primer_bind",
-      forward: true,
-      color: "red"
     }
   ],
   afeatures: [
