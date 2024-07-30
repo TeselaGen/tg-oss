@@ -1,4 +1,5 @@
 import path from "path";
+import os from "os";
 
 describe("EditableCellTable.spec", () => {
   it(`cell checkboxes and the header checkbox should work`, () => {
@@ -176,7 +177,7 @@ describe("EditableCellTable.spec", () => {
   // });
   it(`arrow keys should work together with shift and dragging should work`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
-    cy.get(`[data-test="tgCell_howMany"]`).eq(3).click({ force: true });
+    cy.get(`[data-test="tgCell_howMany"]`).eq(3).click();
     cy.focused().type(`{leftArrow}`);
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_weather"]`
@@ -247,8 +248,7 @@ describe("EditableCellTable.spec", () => {
     );
   });
   it(`undo/redo should work`, () => {
-    const IS_LINUX =
-      window.navigator.platform.toLowerCase().search("linux") > -1;
+    const IS_LINUX = os.platform().toLowerCase().search("linux") > -1;
     const undoCmd = IS_LINUX ? `{alt}z` : "{meta}z";
     const redoCmd = IS_LINUX ? `{alt}{shift}z` : "{meta}{shift}z";
     cy.visit("#/DataTable%20-%20EditableCellTable");

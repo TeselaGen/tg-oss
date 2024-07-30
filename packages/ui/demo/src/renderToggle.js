@@ -67,34 +67,25 @@ export default function renderToggle({
     }
   }
   if (isButton) {
-    toggleOrButton = (
-      <Button
-        {...{
-          ...sharedProps,
-          onClick: onClick || hook
-        }}
-      />
-    );
+    toggleOrButton = <Button {...sharedProps} onClick={onClick || hook} />;
   } else if (isSelect) {
     const { style, label, ...rest } = sharedProps;
     toggleOrButton = (
       <div key={type + "iwuhwp"} style={sharedProps.style}>
         {label && <span>{label} &nbsp;</span>}
         <EnhancedSelect
-          {...{
-            options,
-            ...rest,
-            didMount: () => {
-              hook && hook((that.state || {})[type], true);
-            },
-            value: (that.state || {})[type],
-            disabled: disabled,
-            onChange: newType => {
-              hook && hook(newType.target.value);
-              that.setState({
-                [type]: newType.target.value
-              });
-            }
+          options={options}
+          {...rest}
+          didMount={() => {
+            hook && hook((that.state || {})[type], true);
+          }}
+          value={(that.state || {})[type]}
+          disabled={disabled}
+          onChange={newType => {
+            hook && hook(newType.target.value);
+            that.setState({
+              [type]: newType.target.value
+            });
           }}
         />
       </div>
@@ -108,15 +99,13 @@ export default function renderToggle({
     };
     toggleOrButton = (
       <EnhancedSwitch
-        {...{
-          ...sharedProps,
-          didMount: () => {
-            hook && hook(!!(that.state || {})[type]);
-          },
-          checked: (that.state || {})[type],
-          disabled: disabled,
-          onChange: switchOnChange
+        {...sharedProps}
+        didMount={() => {
+          hook && hook(!!(that.state || {})[type]);
         }}
+        checked={(that.state || {})[type]}
+        disabled={disabled}
+        onChange={switchOnChange}
       />
     );
   }
@@ -126,27 +115,25 @@ export default function renderToggle({
       style={{ display: "flex", alignItems: "center", margin: "5px 5px" }}
       className="toggle-button-holder"
     >
-      <ShowInfo {...{ description, info, type }}></ShowInfo>
+      <ShowInfo description={description} info={info} type={type} />
       {toggleOrButton}
       {switchOnChange && hotkey && (
-        <React.Fragment>
-          <HandleHotkeys
-            onKeyDown={switchOnChange}
-            combo={hotkey}
-          ></HandleHotkeys>
+        <>
+          <HandleHotkeys onKeyDown={switchOnChange} combo={hotkey} />
           <div
             style={{
               marginLeft: 5,
               transform: "scale(0.8)"
             }}
           >
-            <KeyCombo minimal combo={hotkey}></KeyCombo>
+            <KeyCombo minimal combo={hotkey} />
           </div>
-        </React.Fragment>
+        </>
       )}
     </div>
   );
 }
+
 function HandleHotkeys({ combo, onKeyDown }) {
   const hotkeys = useMemo(
     () => [
@@ -165,7 +152,7 @@ function HandleHotkeys({ combo, onKeyDown }) {
 function ShowInfo({ description, info, type }) {
   const [isOpen, setOpen] = useState(false);
   return (
-    <React.Fragment>
+    <>
       <Dialog
         onClose={() => {
           setOpen(false);
@@ -192,11 +179,11 @@ function ShowInfo({ description, info, type }) {
             }}
             minimal
             icon="info-sign"
-          ></Button>
+          />
         </div>
       ) : (
-        <div style={{ minWidth: 30, width: 30, height: 30 }}></div>
+        <div style={{ minWidth: 30, width: 30, height: 30 }} />
       )}
-    </React.Fragment>
+    </>
   );
 }

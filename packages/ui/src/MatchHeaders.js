@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Callout, Card, Intent } from "@blueprintjs/core";
 import immer, { setAutoFreeze } from "immer";
 import { flatMap, forEach } from "lodash-es";
@@ -7,30 +7,35 @@ import showConfirmationDialog from "./showConfirmationDialog";
 import { startCase } from "lodash-es";
 import { typeToCommonType } from "./typeToCommonType";
 import { camelCase } from "lodash-es";
+import { change } from "redux-form";
+import { useDispatch } from "react-redux";
 
 setAutoFreeze(false);
-export function MatchHeaders({
-  onMultiFileUploadSubmit,
-  doAllFilesHaveSameHeaders,
+export const MatchHeaders = ({
   csvValidationIssue,
-  ignoredHeadersMsg,
-  searchResults,
-  matchedHeaders,
-  userSchema,
-  reduxFormEntitiesArray,
-  changeForm,
   datatableFormName,
   datatableFormNames: _datatableFormNames,
-  setFilesWIssues,
+  doAllFilesHaveSameHeaders,
+  fileIndex,
   filesWIssues,
-  fileIndex
-}) {
+  ignoredHeadersMsg,
+  matchedHeaders,
+  onMultiFileUploadSubmit,
+  reduxFormEntitiesArray,
+  searchResults,
+  setFilesWIssues,
+  userSchema
+}) => {
   const datatableFormNames = _datatableFormNames || [datatableFormName];
-  const flippedMatchedHeaders = {};
+  const dispatch = useDispatch();
+  const flippedMatchedHeaders = useMemo(() => {
+    const _flippedMatchedHeaders = {};
+    forEach(matchedHeaders, (v, k) => {
+      if (v) _flippedMatchedHeaders[v] = k;
+    });
+    return _flippedMatchedHeaders;
+  }, [matchedHeaders]);
 
-  forEach(matchedHeaders, (v, k) => {
-    if (v) flippedMatchedHeaders[v] = k;
-  });
   return (
     <div style={{ maxWidth: 500 }}>
       {!onMultiFileUploadSubmit && (
@@ -43,7 +48,7 @@ export function MatchHeaders({
           {ignoredHeadersMsg}
         </Callout>
       )}
-      <br></br>
+      <br />
       <tr
         style={{
           display: "flex",
@@ -106,7 +111,7 @@ export function MatchHeaders({
           return rb - ra;
         });
         return (
-          <Card style={{ padding: 2 }} key={i}>
+          <Card style={{ padding: 2 }} key={`field-${i}`}>
             <table>
               <tbody>
                 <tr
@@ -146,7 +151,7 @@ export function MatchHeaders({
                       beforeOnChange={async () => {
                         const clearEntities = () => {
                           datatableFormNames.forEach(name => {
-                            changeForm(name, "reduxFormEntities", null);
+                            dispatch(change(name, "reduxFormEntities", null));
                           });
                         };
                         if (reduxFormEntitiesArray.some(r => r?.isDirty)) {
@@ -184,7 +189,7 @@ export function MatchHeaders({
                       // isRequired={!allowEmpty && defaultValue === undefined}
                       defaultValue={userMatchedHeader}
                       options={opts}
-                    ></ReactSelectField>
+                    />
                   </td>
                   <td
                     style={{
@@ -208,7 +213,7 @@ export function MatchHeaders({
                               textOverflow: "ellipsis",
                               whiteSpace: "nowrap"
                             }}
-                            key={i}
+                            key={`userMatchedHeader-${i}`}
                           >
                             {row?.[userMatchedHeader] || ""}
                           </div>
@@ -226,4 +231,4 @@ export function MatchHeaders({
       })}
     </div>
   );
-}
+};

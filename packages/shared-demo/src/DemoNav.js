@@ -39,10 +39,11 @@ export default ({ demos, isOpen, setIsOpen }) => {
           text={"Hide Sidebar"}
           intent="primary"
           icon="chevron-left"
-        ></Button>
+        />
       </div>
 
       <InputGroup
+        name="Filter"
         rightElement={
           search && (
             <Button
@@ -52,7 +53,7 @@ export default ({ demos, isOpen, setIsOpen }) => {
               onClick={() => {
                 setSearch("");
               }}
-            ></Button>
+            />
           )
         }
         onChange={e => {
