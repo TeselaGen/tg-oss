@@ -36,8 +36,6 @@ import writeXlsxFile from "write-excel-file";
 import { startCase } from "lodash-es";
 import { getNewName } from "./getNewName";
 import { isObject } from "lodash-es";
-// Check if importing and using them directly might generate problems
-// it shouldn't be a problem, but it's better to be safe than sorry
 import { change, initialize } from "redux-form";
 import classNames from "classnames";
 import convertSchema from "../DataTable/utils/convertSchema";
@@ -1175,11 +1173,11 @@ const Uploader = ({
                                   parsedData: cleanedEntities
                                 });
                                 tmpFile.name = newFile.name;
-                                fileList = [...fileList];
-                                fileList[index] = tmpFile;
+                                const tmpFileList = [...fileList];
+                                tmpFileList[index] = tmpFile;
                                 handleSecondHalfOfUpload({
-                                  acceptedFiles: fileList,
-                                  cleanedFileList: fileList
+                                  acceptedFiles: tmpFileList,
+                                  cleanedFileList: tmpFileList
                                 });
                                 window.toastr.success(`File Updated`);
                               }

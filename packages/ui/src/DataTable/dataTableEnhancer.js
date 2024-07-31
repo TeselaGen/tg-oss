@@ -35,8 +35,8 @@ export default compose(
   // in the params
   branch(props => !props.alwaysRerender, pureNoFunc),
   // form prop is needed for redux-form, but we are giving this prop as
-  // formName, so we need to rename it. Previously it was done in the withTableParams,
-  // but now we took it out by default.
+  // formName, so we need to rename it. Previously it was done in the withTableParams, but now
+  // it doesn't have it by default.
   withProps(({ formName }) => ({ form: formName })),
   // the formName is passed via withTableParams and is often user overridden
   branch(props => !props.noForm, reduxForm({})),

@@ -23,7 +23,7 @@ import { pick } from "lodash-es";
 const MAX_DIGEST_CUTSITES = 50;
 const MAX_PARTIAL_DIGEST_CUTSITES = 10;
 
-const DigestTool = props => {
+export const DigestTool = props => {
   const [selectedTab, setSelectedTab] = useState("virtualDigest");
   const {
     editorName,

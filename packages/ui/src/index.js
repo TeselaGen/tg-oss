@@ -22,7 +22,7 @@ export {
 } from "./DataTable";
 export { removeCleanRows } from "./DataTable/utils";
 
-export { getIdOrCodeOrIndex } from "./DataTable/utils";
+export { getIdOrCodeOrIndex, useDeepEqualMemo } from "./DataTable/utils";
 export { default as convertSchema } from "./DataTable/utils/convertSchema";
 export { default as Loading } from "./Loading";
 export { throwFormError } from "./throwFormError";
@@ -70,6 +70,7 @@ export * from "./utils/menuUtils";
 export * from "./utils/browserUtils";
 export * from "./utils/commandUtils";
 export * from "./utils/commandControls";
+export * from "./utils/useTraceUpdate";
 export { default as AsyncValidateFieldSpinner } from "./AsyncValidateFieldSpinner";
 export { default as showProgressToast } from "./utils/showProgressToast";
 export { default as getTextFromEl } from "./utils/getTextFromEl";

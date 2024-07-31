@@ -169,7 +169,7 @@ const FilterAndSortMenu = ({
         secondaryText="Clear"
         secondaryIntent={Intent.DANGER}
         secondaryAction={() => {
-          currentFilter && removeSingleFilter(currentFilter.filterOn);
+          if (currentFilter) removeSingleFilter(currentFilter.filterOn);
         }}
       />
     </Menu>

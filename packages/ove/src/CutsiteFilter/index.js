@@ -152,48 +152,46 @@ export function CutsiteFilter(props) {
     filteredRestrictionEnzymes.length > 1;
   const [queryTracker, setQueryTracker] = useState("");
 
-  const renderOptions = ({ label, value, canBeHidden }, props) => {
-    const { filteredRestrictionEnzymes, filteredRestrictionEnzymesUpdate } =
-      props;
+  const renderOptions = (
+    { label, value, canBeHidden },
+    { filteredRestrictionEnzymes, filteredRestrictionEnzymesUpdate }
+  ) => (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        width: "100%"
+      }}
+    >
+      {label}{" "}
+      {canBeHidden && (
+        <Icon
+          onClick={e => {
+            e.stopPropagation();
 
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%"
-        }}
-      >
-        {label}{" "}
-        {canBeHidden && (
-          <Icon
-            onClick={e => {
-              e.stopPropagation();
-
-              filteredRestrictionEnzymesUpdate(
-                flatMap(filteredRestrictionEnzymes, e => {
-                  if (e.value === value) return [];
-                  return e;
-                }).concat({
-                  label,
-                  className: "veHiddenEnzyme",
-                  value,
-                  // hiddenEnzyme: true,
-                  isHidden: true,
-                  canBeHidden
-                })
-              );
-            }}
-            htmlTitle="Hide this enzyme"
-            className="veHideEnzymeBtn"
-            style={{ paddingTop: 5 }}
-            iconSize={14}
-            icon="eye-off"
-          ></Icon>
-        )}
-      </div>
-    );
-  };
+            filteredRestrictionEnzymesUpdate(
+              flatMap(filteredRestrictionEnzymes, e => {
+                if (e.value === value) return [];
+                return e;
+              }).concat({
+                label,
+                className: "veHiddenEnzyme",
+                value,
+                // hiddenEnzyme: true,
+                isHidden: true,
+                canBeHidden
+              })
+            );
+          }}
+          htmlTitle="Hide this enzyme"
+          className="veHideEnzymeBtn"
+          style={{ paddingTop: 5 }}
+          iconSize={14}
+          icon="eye-off"
+        />
+      )}
+    </div>
+  );
   const filteredRestrictionEnzymesUpdate = enzymes => {
     _filteredRestrictionEnzymesUpdate(enzymes);
     if (sequenceData?.id) {
@@ -285,7 +283,7 @@ export function CutsiteFilter(props) {
           data-tip="Manage Enzymes"
           onClick={onManageClick}
           icon="cog"
-        ></Button>
+        />
       )}
       <div
         style={{
@@ -345,19 +343,17 @@ export function CutsiteFilter(props) {
           wrapperStyle={{ zIndex: 11 }}
           noResultsText={
             <NoResults
-              {...{
-                inputSequenceToTestAgainst: sequenceData.sequence,
-                manageEnzymesLink,
-                closeDropDown,
-                onHiddenEnzymeAdd,
-                queryString: queryTracker,
-                additionalEnzymes,
-                enzymeGroupsOverride,
-                cutsitesByNameActive: filteredCutsites.cutsitesByName,
-                cutsitesByName: allCutsites.cutsitesByName,
-                editorName
-              }}
-            ></NoResults>
+              inputSequenceToTestAgainst={sequenceData.sequence}
+              manageEnzymesLink={manageEnzymesLink}
+              closeDropDown={closeDropDown}
+              onHiddenEnzymeAdd={onHiddenEnzymeAdd}
+              queryString={queryTracker}
+              additionalEnzymes={additionalEnzymes}
+              enzymeGroupsOverride={enzymeGroupsOverride}
+              cutsitesByNameActive={filteredCutsites.cutsitesByName}
+              cutsitesByName={allCutsites.cutsitesByName}
+              editorName={editorName}
+            />
           }
           onInputChange={queryTracker => {
             setQueryTracker(queryTracker);
