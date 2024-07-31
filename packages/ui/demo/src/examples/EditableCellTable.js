@@ -9,32 +9,29 @@ import OptionsSection from "../OptionsSection";
 import { toNumber } from "lodash-es";
 
 const chance = new Chance();
-function getEnts(num) {
-  return times(num).map(i => {
-    return {
-      name:
-        i < 20
-          ? "Tom" + (88 + i) + (i % 5 !== 0 ? " a" : "")
-          : i < 25
-            ? "Nancy" + (88 + i)
-            : chance.name(),
-      id: nanoid(),
-      type:
-        i === 0
-          ? "fail"
-          : i === 1 || i === 22
-            ? "too old"
-            : chance.pickone(["new", "old"]),
-      howMany:
-        i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
-      isProtein: true,
-      weather:
-        i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
-    };
-  });
-}
+const getEnts = num =>
+  times(num).map(i => ({
+    name:
+      i < 20
+        ? "Tom" + (88 + i) + (i % 5 !== 0 ? " a" : "")
+        : i < 25
+          ? "Nancy" + (88 + i)
+          : chance.name(),
+    id: nanoid(),
+    type:
+      i === 0
+        ? "fail"
+        : i === 1 || i === 22
+          ? "too old"
+          : chance.pickone(["new", "old"]),
+    howMany:
+      i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
+    isProtein: true,
+    weather:
+      i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
+  }));
 
-export default function EditableCellTable(p) {
+export default function EditableCellTable(props) {
   const key = useRef(0);
 
   const [entities, setEnts] = useState([]);
@@ -43,7 +40,7 @@ export default function EditableCellTable(p) {
     label: "Number of Entities",
     isSelect: true,
     defaultValue: 50,
-    controlledValue: p.entities?.length,
+    controlledValue: props.entities?.length,
     setControlledValue: v => {
       key.current++;
       setEnts(getEnts(toNumber(v)));
@@ -120,7 +117,7 @@ export default function EditableCellTable(p) {
       </OptionsSection>
       <DemoWrapper>
         <DataTable
-          {...p}
+          {...props}
           key={key.current}
           formName="editableCellTable"
           isSimple

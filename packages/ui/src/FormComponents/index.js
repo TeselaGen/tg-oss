@@ -39,6 +39,7 @@ import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
 import Uploader from "./Uploader";
 import sortify from "./sortify";
 import { fieldRequired } from "./utils";
+import { useDispatch } from "react-redux";
 
 export { fieldRequired };
 
@@ -55,8 +56,14 @@ function getIntent({
   }
 }
 
-function getIntentClass(...args) {
-  const intent = getIntent(...args);
+function getIntentClass({
+  showErrorIfUntouched,
+  meta: { touched, error, warning }
+}) {
+  const intent = getIntent({
+    showErrorIfUntouched,
+    meta: { touched, error, warning }
+  });
   if (intent === Intent.DANGER) {
     return Classes.INTENT_DANGER;
   } else if (intent === Intent.WARNING) {
@@ -113,60 +120,50 @@ const LabelWithTooltipInfo = ({ label, tooltipInfo, labelStyle }) =>
   );
 
 const AbstractInput = ({
+  assignDefaultButton,
+  asyncValidating,
+  className,
+  children,
+  containerStyle,
   defaultValue,
-  enableReinitialize,
-  input: { value, name },
-  meta: { dispatch, form },
+  disabled,
+  fileLimit,
+  inlineLabel,
+  input: { name },
+  intent,
+  isLabelTooltip,
+  isLoadingDefaultValue,
+  isRequired,
+  label,
+  labelStyle,
+  leftEl,
+  meta: { form, touched, error, warning },
+  noFillField,
+  noMarginBottom,
+  noOuterLabel,
   onDefaultValChanged,
   onFieldSubmit,
-  children,
-  tooltipProps,
-  tooltipError,
-  disabled,
-  intent,
-  tooltipInfo,
-  label,
-  inlineLabel,
-  isLabelTooltip,
-  secondaryLabel,
-  className,
-  showErrorIfUntouched,
-  asyncValidating,
-  meta,
-  containerStyle,
-  leftEl,
   rightEl,
-  labelStyle,
-  noOuterLabel,
-  fileLimit,
-  noMarginBottom,
-  assignDefaultButton,
-  showGenerateDefaultDot,
+  secondaryLabel,
   setAssignDefaultsMode,
+  showErrorIfUntouched,
+  showGenerateDefaultDot,
   startAssigningDefault,
-  input,
-  noFillField,
-  isRequired,
-  isLoadingDefaultValue
+  tooltipError,
+  tooltipInfo,
+  tooltipProps
 }) => {
-  const updateDefaultValue = () => {
-    dispatch(change(form, name, defaultValue));
-    onDefaultValChanged && onDefaultValChanged(defaultValue, name, form);
-    onFieldSubmit && onFieldSubmit(defaultValue);
-  };
+  const dispatch = useDispatch();
 
   // This only takes care that the default Value is changed when it is changed in the parent component
   useEffect(() => {
-    if (
-      ((value !== false && !value) || enableReinitialize) &&
-      defaultValue !== undefined
-    ) {
-      updateDefaultValue();
+    if (defaultValue !== undefined) {
+      dispatch(change(form, name, defaultValue));
+      onDefaultValChanged && onDefaultValChanged(defaultValue, name, form);
+      onFieldSubmit && onFieldSubmit(defaultValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
-
-  const { touched, error, warning } = meta;
 
   // if our custom field level validation is happening then we don't want to show the error visually
   const showError =
@@ -187,7 +184,7 @@ const AbstractInput = ({
     ) : (
       children
     );
-  const testClassName = "tg-test-" + kebabCase(input.name);
+  const testClassName = "tg-test-" + kebabCase(name);
   if (noFillField) {
     componentToWrap = <div className="tg-no-fill-field">{componentToWrap}</div>;
   }
@@ -1022,6 +1019,12 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
       ...rest
     } = props;
 
+    const {
+      showErrorIfUntouched: _showErrorIfUntouched,
+      meta: { touched, error, warning }
+    } = props;
+    const showErrorIfUntouched =
+      opts.showErrorIfUntouched || _showErrorIfUntouched;
     //get is assign defaults mode
     //if assign default value mode then add on to the component
     const [defaultValCount, setDefaultValCount] = useState(0);
@@ -1133,8 +1136,14 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
       defaultValue: defaultValueFromBackend || defaultValueFromProps,
       disabled: props.disabled || allowUserOverride === false,
       readOnly: props.readOnly || isLoadingDefaultValue,
-      intent: getIntent(props),
-      intentClass: getIntentClass(props)
+      intent: getIntent({
+        showErrorIfUntouched,
+        meta: { touched, error, warning }
+      }),
+      intentClass: getIntentClass({
+        showErrorIfUntouched,
+        meta: { touched, error, warning }
+      })
     };
 
     // don't show intent while async validating
@@ -1190,7 +1199,9 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
 };
 
 export const InputField = generateField(RenderBlueprintInput);
-export const FileUploadField = generateField(renderFileUpload);
+export const FileUploadField = generateField(renderFileUpload, {
+  showErrorIfUntouched: true
+});
 export const DateInputField = generateField(renderBlueprintDateInput);
 export const DateRangeInputField = generateField(renderBlueprintDateRangeInput);
 export const CheckboxField = generateField(renderBlueprintCheckbox, {

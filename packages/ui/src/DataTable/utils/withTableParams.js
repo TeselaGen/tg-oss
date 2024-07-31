@@ -41,7 +41,7 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
     topLevelOptions = pTopLevelOpts;
     Component = compOrOpts;
   }
-  const { isLocalCall } = topLevelOptions;
+  const { isLocalCall = false } = topLevelOptions;
   const mapStateToProps = (state, ownProps) => {
     const mergedOpts = getMergedOpts(topLevelOptions, ownProps);
     const {

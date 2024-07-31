@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { MultiSelect, getCreateNewItem } from "@blueprintjs/select";
 import { Keys, Button, MenuItem, Tag } from "@blueprintjs/core";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { filter, isEqual } from "lodash-es";
 import classNames from "classnames";
 import "./style.css";
@@ -12,45 +12,34 @@ import { getTagColorStyle, getTagProps } from "../utils/tagUtils";
 import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
 import { compose } from "redux";
 
-const TgSelect = props => {
-  const {
-    autoOpen = false,
-    handleOpenChange,
-    onChange = () => {},
-    options = [],
-    unfilteredOptions = [],
-    value,
-    isTagSelect,
-    optionRenderer,
-    multi,
-    isSimpleSearch,
-    intent,
-    closeOnSelect,
-    onInputChange = () => {},
-    openOnKeyDown,
-    creatable
-  } = props;
-  const inputRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(autoOpen);
-  const [activeItem, setActiveItem] = useState(null);
-  const [query, setQuery] = useState("");
+class TgSelect extends React.Component {
+  constructor(props) {
+    super(props);
+    const { autoOpen = false } = this.props;
 
-  const setOpenState = isOpen => {
+    this.state = {
+      isOpen: autoOpen,
+      activeItem: null,
+      query: ""
+    };
+  }
+  setOpenState = isOpen => {
+    const { handleOpenChange } = this.props;
     if (handleOpenChange) {
       handleOpenChange(isOpen);
     }
-    setIsOpen(isOpen);
+    this.setState({ isOpen });
   };
 
-  const getOptionRenderer = () => {
-    if (isTagSelect && multi) {
-      return tagOptionRender;
-    }
-    return optionRenderer;
+  static defaultProps = {
+    onChange: () => {},
+    options: [],
+    unfilteredOptions: [],
+    value: undefined
   };
 
-  const itemRenderer = (i, { index, handleClick, modifiers }) => {
-    const optionRenderer = getOptionRenderer();
+  itemRenderer = (i, { index, handleClick, modifiers }) => {
+    const optionRenderer = this.getOptionRenderer();
     const onClick = i.onClick || handleClick;
     return (
       <div //we specifically don't use a BP MenuItem component here because the menu item is too slow when 100s are loaded and will cause the component to lag
@@ -64,28 +53,28 @@ const TgSelect = props => {
           }
         )}
       >
-        {optionRenderer ? optionRenderer(i, props) : i.label}
+        {optionRenderer ? optionRenderer(i, this.props) : i.label}
       </div>
     );
   };
-
-  const tagRenderer = i => {
-    if (!i || (!multi && query)) {
+  tagRenderer = i => {
+    if (!i || (!this.props.multi && this.state.query)) {
       return null;
     }
     // return i
     return i.label;
   };
 
-  const handleItemSelect = (item, e) => {
+  handleItemSelect = (item, e) => {
     e.stopPropagation();
-    setActiveItem(null);
+    const { onChange, value, multi, closeOnSelect, isTagSelect } = this.props;
+    this.setState({ activeItem: null });
     if (multi) {
       let valArray = getValueArray(value);
 
       if (closeOnSelect || item.closeOnSelect) {
-        setOpenState(false);
-        inputRef.current && inputRef.current.blur();
+        this.setOpenState(false);
+        this.input && this.input.blur();
       }
       if (
         isTagSelect &&
@@ -106,30 +95,33 @@ const TgSelect = props => {
       }
       return onChange([...valArray, item]);
     } else {
-      setOpenState(false);
-      inputRef.current && inputRef.current.blur();
+      this.setOpenState(false);
+      this.input && this.input.blur();
       return onChange(item);
     }
   };
 
-  const handleTagRemove = (e, tagProps) => {
+  handleTagRemove = (e, tagProps) => {
+    const { onChange, value } = this.props;
     const filteredVals = filter(
       value,
       (obj, i) => !isEqual(i, tagProps["data-tag-index"])
     );
     e.stopPropagation();
     onChange(filteredVals);
-    setOpenState(false);
-    inputRef.current.focus();
+    this.setOpenState(false);
+    this.input.focus();
   };
-
-  const handleTagInputRemove = (val, index) => {
+  handleTagInputRemove = (val, index) => {
+    const { onChange, value } = this.props;
     const filteredVals = filter(value, (obj, i) => !isEqual(i, index));
     // e.stopPropagation();
     return onChange(filteredVals);
   };
 
-  const handleClear = e => {
+  handleClear = e => {
+    const { multi, value } = this.props;
+
     e.stopPropagation();
     e.preventDefault();
     let newValue = null;
@@ -138,50 +130,60 @@ const TgSelect = props => {
     } else if (value && value.disabled) {
       newValue = value;
     }
-    setQuery("");
+    const { onChange } = this.props;
+    this.setState({ query: "" });
     onChange(newValue);
-    setOpenState(false);
-    inputRef.current.focus();
+    this.setOpenState(false);
+    this.input.focus();
   };
 
-  // this will hide an option if it returns false
-  // each item is an individual option item
-  const _itemListPredicate = (queryString, item) =>
-    itemListPredicate(queryString, item, isSimpleSearch);
+  itemListPredicate = (queryString, item) => {
+    // this will hide an option if it returns false
+    // each item is an individual option item
+    const { isSimpleSearch } = this.props;
 
-  const onQueryChange = query => {
-    setQuery(query);
+    return itemListPredicate(queryString, item, isSimpleSearch);
+  };
+
+  onQueryChange = query => {
+    const { onInputChange = () => {} } = this.props;
+    this.setState({
+      query
+    });
     onInputChange(query);
   };
-
-  const handleActiveItemChange = (item, isCreateNewItem) => {
-    setActiveItem(
-      item ||
+  handleActiveItemChange = (item, isCreateNewItem) => {
+    this.setState({
+      activeItem:
+        item ||
         //if there's no item and we're in creatable mode, auto-select the create-new option
-        (isCreateNewItem || creatable ? getCreateNewItem() : null)
-    );
+        (isCreateNewItem || this.props.creatable ? getCreateNewItem() : null)
+    });
   };
-
-  const onInteraction = () => {
-    if (
-      inputRef.current != null &&
-      inputRef.current !== document.activeElement
-    ) {
+  onInteraction = () => {
+    if (this.input != null && this.input !== document.activeElement) {
       // the input is no longer focused so we can close the popover
-      setOpenState(false);
-      setQuery("");
-    } else if (!openOnKeyDown) {
+      this.setOpenState(false);
+      this.setState({
+        query: ""
+      });
+    } else if (!this.props.openOnKeyDown) {
       // open the popover when focusing the tag input
-      setOpenState(true);
+      this.setOpenState(true);
     }
   };
 
-  //we don't want to show the creatable if the thing being created already exactly matches the label
-  const queryHasExactOptionMatch = () =>
-    [...(options || []), ...(Array.isArray(value) ? value : [value])].filter(
-      o => {
+  queryHasExactOptionMatch = () => {
+    //we don't want to show the creatable if the thing being created already exactly matches the label
+    return (
+      [
+        ...(this.props.options || []),
+        ...(Array.isArray(this.props.value)
+          ? this.props.value
+          : [this.props.value])
+      ].filter(o => {
         const { label, value } = o || {};
-        const lowerQuery = (query || "").toLowerCase();
+        const lowerQuery = (this.state.query || "").toLowerCase();
         const lowerLabelOrVal =
           label && label.toLowerCase
             ? label.toLowerCase()
@@ -189,11 +191,13 @@ const TgSelect = props => {
         const textFromEl = getTextFromEl(label);
 
         return lowerQuery === lowerLabelOrVal || lowerQuery === textFromEl;
-      }
-    ).length > 0;
+      }).length > 0
+    );
+  };
 
-  const _getTagProps = label => {
-    const val = Array.isArray(value || []) ? value : [value];
+  getTagProps = label => {
+    const { multi, value = [], disabled: _disabled } = this.props;
+    const val = Array.isArray(value) ? value : [value];
     const matchingVal = val.find(op => op?.label === label);
     const disabled = _disabled || (matchingVal && matchingVal.disabled);
     const className = matchingVal && matchingVal.className;
@@ -205,207 +209,231 @@ const TgSelect = props => {
       className: classNames(className, "tg-select-value", {
         disabled
       }),
-      onRemove: multi && !disabled ? handleTagRemove : null
+      onRemove: multi && !disabled ? this.handleTagRemove : null
     };
   };
 
-  let {
-    asTag,
-    tagInputProps,
-    autoFocus,
-    mustHaveQueryToOpen,
-    noResultsText,
-    noResults: _noResults,
-    inputProps,
-    backgroundColor,
-    doNotFillWidth,
-    noToggle,
-    small,
-    placeholder,
-    isLoading,
-    disallowClear,
-    onBlur,
-    disabled: _disabled,
-    popoverProps,
-    additionalRightEl,
-    resetOnSelect = true,
-    renderCreateNewOption: _renderCreateNewOption = renderCreateNewOption,
-    ...rest
-  } = props;
+  getOptionRenderer = () => {
+    const { isTagSelect, optionRenderer, multi } = this.props;
 
-  if (asTag) {
-    small = true;
-    placeholder = " ";
-    backgroundColor = "red";
-    disallowClear = true;
-    doNotFillWidth = true;
-    noToggle = true;
-  }
-  let noResults = _noResults;
+    if (isTagSelect && multi) {
+      return tagOptionRender;
+    }
+    return optionRenderer;
+  };
 
-  // Null is also a valid value for a React Component, noResultsDefault should only be appplied when noResults is undefined
-  if (noResults === undefined) noResults = noResultsDefault;
-  const hasQuery = query?.length > 0;
-  const hasValue = Array.isArray(value)
-    ? value.length > 0
-    : !!value || value === 0;
+  render() {
+    let {
+      multi,
+      asTag,
+      options,
+      unfilteredOptions,
+      value,
+      creatable,
+      optionRenderer, //pull this one out here so it doesn't get passsed along
+      tagInputProps,
+      autoFocus,
+      autoOpen,
+      mustHaveQueryToOpen,
+      noResultsText,
+      noResults: _noResults,
+      inputProps,
+      backgroundColor,
+      doNotFillWidth,
+      noToggle,
+      small,
+      placeholder,
+      isLoading,
+      disallowClear,
+      onBlur,
+      disabled,
+      popoverProps,
+      additionalRightEl,
+      resetOnSelect = true,
+      renderCreateNewOption: _renderCreateNewOption = renderCreateNewOption,
+      ...rest
+    } = this.props;
+    if (asTag) {
+      small = true;
+      placeholder = " ";
+      backgroundColor = "red";
+      disallowClear = true;
+      doNotFillWidth = true;
+      noToggle = true;
+    }
+    let noResults = _noResults;
 
-  const rightElement = isLoading ? (
-    <Button loading minimal />
-  ) : (
-    <span>
-      {additionalRightEl}
-      {hasValue && !disallowClear && !_disabled && (
-        <Button
-          className="tg-select-clear-all"
-          icon="cross"
-          minimal
-          onClick={handleClear}
-        />
-      )}
-      {noResults !== null && !noToggle && (
-        <Button
-          onClick={e => {
-            if (isOpen) {
-              e.stopPropagation();
-              setOpenState(false);
-            }
-          }}
-          disabled={_disabled}
-          className="tg-select-toggle"
-          minimal
-          icon={isOpen ? "caret-up" : "caret-down"}
-        />
-      )}
-    </span>
-  );
+    // Null is also a valid value for a React Component, noResultsDefault should only be appplied when noResults is undefined
+    if (noResults === undefined) noResults = noResultsDefault;
+    const hasQuery = this.state.query?.length > 0;
+    const hasValue = Array.isArray(value)
+      ? value.length > 0
+      : !!value || value === 0;
 
-  const maybeCreateNewItemFromQuery = creatable ? createNewOption : undefined;
-  const maybeCreateNewItemRenderer =
-    creatable && !queryHasExactOptionMatch() ? _renderCreateNewOption : null;
-  const selectedItems = getValueArray(value).map(value => {
-    if (value && value.label) return value; //if the value has a label, just use that
-    //if not, look for an existing option to use that value
-    // unfilteredOptions will have every option included selected ones
-    return unfilteredOptions.find(
-      opt => opt && opt.value === ((value && value.value) || value)
+    const rightElement = isLoading ? (
+      <Button loading minimal />
+    ) : (
+      <span>
+        {additionalRightEl}
+        {hasValue && !disallowClear && !disabled && (
+          <Button
+            className="tg-select-clear-all"
+            icon="cross"
+            minimal
+            onClick={this.handleClear}
+          />
+        )}
+        {noResults !== null && !noToggle && (
+          <Button
+            onClick={e => {
+              if (this.state.isOpen) {
+                e.stopPropagation();
+
+                this.setOpenState(false);
+              }
+            }}
+            disabled={disabled}
+            className="tg-select-toggle"
+            minimal
+            icon={this.state.isOpen ? "caret-up" : "caret-down"}
+          />
+        )}
+      </span>
     );
-  });
+
+    const maybeCreateNewItemFromQuery = creatable ? createNewOption : undefined;
+    const maybeCreateNewItemRenderer =
+      creatable && !this.queryHasExactOptionMatch()
+        ? _renderCreateNewOption
+        : null;
+    const selectedItems = getValueArray(value).map(value => {
+      if (value && value.label) return value; //if the value has a label, just use that
+      //if not, look for an existing option to use that value
+      // unfilteredOptions will have every option included selected ones
+      return unfilteredOptions.find(
+        opt => opt && opt.value === ((value && value.value) || value)
+      );
+    });
+    const toRet = (
+      <MultiSelect
+        onActiveItemChange={this.handleActiveItemChange}
+        closeOnSelect={!multi}
+        resetOnSelect={resetOnSelect}
+        items={options || []}
+        activeItem={
+          this.state.activeItem ||
+          (options && options.filter(opt => !selectedItems.includes(opt))[0]) ||
+          null //it's important we pass null here instead of undefined if no active item is found
+        }
+        itemDisabled={itemDisabled}
+        query={this.state.query}
+        popoverProps={{
+          captureDismiss: true,
+          minimal: true,
+          className: classNames("tg-select", "tg-stop-dialog-form-enter", {
+            "tg-single-select": !multi,
+            "tg-select-as-tag": asTag,
+            "do-not-fill-width": doNotFillWidth,
+            "tg-small": small
+          }),
+          wrapperTagName: "div",
+          canEscapeKeyClose: true,
+          onInteraction: this.onInteraction,
+          isOpen: mustHaveQueryToOpen
+            ? hasQuery && this.state.isOpen
+            : this.state.isOpen,
+          modifiers: popoverOverflowModifiers,
+          ...popoverProps
+        }}
+        onItemSelect={this.handleItemSelect}
+        createNewItemFromQuery={maybeCreateNewItemFromQuery}
+        createNewItemRenderer={maybeCreateNewItemRenderer}
+        noResults={noResultsText || noResults}
+        onQueryChange={this.onQueryChange}
+        itemRenderer={this.itemRenderer}
+        itemListPredicate={this.itemListPredicate}
+        {...{
+          selectedItems,
+          tagRenderer: this.tagRenderer,
+          tagInputProps: {
+            inputRef: n => {
+              if (n) this.input = n;
+            },
+            placeholder:
+              placeholder || (creatable ? "Select/Create..." : "Select..."),
+            tagProps: this.getTagProps,
+            onRemove: multi ? this.handleTagInputRemove : null,
+            rightElement: rightElement,
+            disabled: disabled, // tg: adding isLoading will cause the input to be blurred when using generic select asReactSelect (don't do it),
+            ...tagInputProps, //spread additional tag input props here
+            intent: this.props.intent,
+            onKeyDown: e => {
+              const { which } = e;
+              e.persist();
+              if (which === Keys.ENTER) {
+                e.preventDefault();
+                // e.stopPropagation();
+              }
+              if (which === Keys.ESCAPE || which === Keys.TAB) {
+                // By default the escape key will not trigger a blur on the
+                // input element. It must be done explicitly.
+                if (this.input != null) {
+                  this.input.blur();
+                }
+                this.setOpenState(false);
+                e.preventDefault();
+                e.stopPropagation(); //this prevents dialog's it is in from closing
+              } else if (
+                !(
+                  which === Keys.BACKSPACE ||
+                  which === Keys.ARROW_LEFT ||
+                  which === Keys.ARROW_RIGHT
+                )
+              ) {
+                this.setOpenState(true);
+              }
+            },
+            inputProps: {
+              autoFocus: autoFocus || autoOpen,
+              onBlur,
+              ...(tagInputProps && tagInputProps.inputProps)
+            }
+          }
+        }}
+        {...rest}
+      />
+    );
+    return toRet;
+  }
+}
+
+const withAsyncOptions = Component => props => {
+  const { loadOptions, options, ...rest } = props;
+  const [asyncOptions, setAsyncOptions] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  useEffect(() => {
+    if (loadOptions) {
+      setLoading(true);
+      loadOptions().then(options => {
+        setAsyncOptions(options);
+        setLoading(false);
+      });
+    }
+  }, [loadOptions]);
 
   return (
-    <MultiSelect
-      onActiveItemChange={handleActiveItemChange}
-      closeOnSelect={!multi}
-      resetOnSelect={resetOnSelect}
-      items={options || []}
-      activeItem={
-        activeItem ||
-        (options && options.filter(opt => !selectedItems.includes(opt))[0]) ||
-        null //it's important we pass null here instead of undefined if no active item is found
-      }
-      itemDisabled={itemDisabled}
-      query={query}
-      popoverProps={{
-        captureDismiss: true,
-        minimal: true,
-        className: classNames("tg-select", "tg-stop-dialog-form-enter", {
-          "tg-single-select": !multi,
-          "tg-select-as-tag": asTag,
-          "do-not-fill-width": doNotFillWidth,
-          "tg-small": small
-        }),
-        wrapperTagName: "div",
-        canEscapeKeyClose: true,
-        onInteraction: onInteraction,
-        isOpen: mustHaveQueryToOpen ? hasQuery && isOpen : isOpen,
-        modifiers: popoverOverflowModifiers,
-        ...popoverProps
-      }}
-      onItemSelect={handleItemSelect}
-      createNewItemFromQuery={maybeCreateNewItemFromQuery}
-      createNewItemRenderer={maybeCreateNewItemRenderer}
-      noResults={noResultsText || noResults}
-      onQueryChange={onQueryChange}
-      itemRenderer={itemRenderer}
-      itemListPredicate={_itemListPredicate}
-      selectedItems={selectedItems}
-      tagRenderer={tagRenderer}
-      tagInputProps={{
-        inputRef: n => {
-          if (n) inputRef.current = n;
-        },
-        placeholder:
-          placeholder || (creatable ? "Select/Create..." : "Select..."),
-        tagProps: _getTagProps,
-        onRemove: multi ? handleTagInputRemove : null,
-        rightElement: rightElement,
-        disabled: _disabled, // tg: adding isLoading will cause the input to be blurred when using generic select asReactSelect (don't do it),
-        ...tagInputProps, //spread additional tag input props here
-        intent: intent,
-        onKeyDown: e => {
-          const { which } = e;
-          e.persist();
-          if (which === Keys.ENTER) {
-            e.preventDefault();
-            // e.stopPropagation();
-          }
-          if (which === Keys.ESCAPE || which === Keys.TAB) {
-            // By default the escape key will not trigger a blur on the
-            // input element. It must be done explicitly.
-            if (inputRef.current != null) {
-              inputRef.current.blur();
-            }
-            setOpenState(false);
-            e.preventDefault();
-            e.stopPropagation(); //this prevents dialog's it is in from closing
-          } else if (
-            !(
-              which === Keys.BACKSPACE ||
-              which === Keys.ARROW_LEFT ||
-              which === Keys.ARROW_RIGHT
-            )
-          ) {
-            setOpenState(true);
-          }
-        },
-        inputProps: {
-          autoFocus: autoFocus || autoOpen,
-          onBlur,
-          ...(tagInputProps && tagInputProps.inputProps)
-        }
-      }}
+    <Component
       {...rest}
+      isLoading={isLoading || rest.isLoading}
+      options={loadOptions ? asyncOptions : options}
     />
   );
 };
 
-const withAsyncOptions =
-  Component =>
-  ({ loadOptions, options, ...rest }) => {
-    const [asyncOptions, setAsyncOptions] = useState([]);
-    const [isLoading, setLoading] = useState(false);
-    useEffect(() => {
-      if (loadOptions) {
-        setLoading(true);
-        loadOptions().then(options => {
-          setAsyncOptions(options);
-          setLoading(false);
-        });
-      }
-    }, [loadOptions]);
-
-    return (
-      <Component
-        {...rest}
-        isLoading={isLoading || rest.isLoading}
-        options={loadOptions ? asyncOptions : options}
-      />
-    );
-  };
-
 export default compose(
   withAsyncOptions,
-  withProps(({ multi, value, options = [] }) => {
+  withProps(props => {
+    const { multi, value, options = [] } = props;
     let optionsToRet = options;
     // based on incoming value hide those selected options from the option list
     if (multi && value) {
@@ -484,10 +512,9 @@ export const itemListPredicate = (_queryString = "", items, isSimpleSearch) => {
 export function simplesearch(needle, haystack) {
   return (haystack || "").indexOf(needle) !== -1;
 }
-
-function tagOptionRender({ color, label, name, noTagStyle }) {
-  if (noTagStyle) return label;
-  return <Tag {...getTagProps({ color, label, name })} />;
+function tagOptionRender(vals) {
+  if (vals.noTagStyle) return vals.label;
+  return <Tag {...getTagProps(vals)}></Tag>;
 }
 
 function getSort(text, queryString) {

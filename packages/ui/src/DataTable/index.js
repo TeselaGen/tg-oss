@@ -25,7 +25,9 @@ import {
   times,
   toArray,
   isFunction,
-  isEqual
+  isEqual,
+  every,
+  some
 } from "lodash-es";
 import {
   Button,
@@ -66,6 +68,7 @@ import {
   handleCopyTable,
   isEntityClean,
   PRIMARY_SELECTED_VAL,
+  removeCleanRows,
   useDeepEqualMemo
 } from "./utils";
 import rowClick, { finalizeSelection } from "./utils/rowClick";
@@ -95,6 +98,7 @@ import {
 } from "./utils/queryParams";
 import { RenderColumns } from "./Columns";
 import { formValueSelector } from "redux-form";
+import { throwFormError } from "../throwFormError";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -190,7 +194,7 @@ const DataTable = ({
     };
   }
 
-  props.defaults = {
+  props.defaults = useDeepEqualMemo({
     pageSize: controlled_pageSize || 25,
     order: [], // ["-name", "statusCode"] //an array of camelCase display names with - sign to denote reverse
     searchTerm: "",
@@ -204,7 +208,7 @@ const DataTable = ({
       // }
     ],
     ...(props.defaults || {})
-  };
+  });
 
   let _schema;
   if (isFunction(__schema)) _schema = __schema(props);
@@ -236,7 +240,7 @@ const DataTable = ({
   const {
     change,
     doNotCoercePageSize,
-    isInfinite = isSimple || !withPaging,
+    isInfinite = isSimple && !withPaging,
     syncDisplayOptionsToDb,
     urlConnected,
     withSelectedEntities
@@ -373,7 +377,7 @@ const DataTable = ({
     doNotShowEmptyRows,
     doNotValidateUntouchedRows,
     editingCellSelectAll,
-    entities: _origEntities = [],
+    entities: __origEntities = [],
     entitiesAcrossPages,
     entityCount,
     errorParsingUrlString,
@@ -384,6 +388,7 @@ const DataTable = ({
     fragment,
     getCellHoverText,
     getRowClassName,
+    helperProp,
     hideColumnHeader,
     hideDisplayOptionsIcon,
     hidePageSizeWhenPossible = isSimple ? !withPaging : false,
@@ -404,7 +409,7 @@ const DataTable = ({
     minimalStyle,
     mustClickCheckboxToSelect,
     noDeselectAll,
-    noFooter = isSimple ? withPaging : false,
+    noFooter = isSimple ? !withPaging : false,
     noFullscreenButton = isSimple,
     noHeader = false,
     noPadding = isSimple,
@@ -455,6 +460,7 @@ const DataTable = ({
   } = props;
 
   // We need to memoize the entities so that we don't rerender the table
+  const _origEntities = useDeepEqualMemo(__origEntities);
   const entities = useDeepEqualMemo(
     (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || []
   );
@@ -802,6 +808,93 @@ const DataTable = ({
     },
     [schema.fields]
   );
+
+  const updateValidationHelper = useCallback(() => {
+    updateValidation(entities, reduxFormCellValidation);
+  }, [entities, reduxFormCellValidation, updateValidation]);
+
+  const addEditableTableEntities = useCallback(
+    incomingEnts => {
+      updateEntitiesHelper(entities, entities => {
+        const newEntities = incomingEnts.map(e => ({
+          ...e,
+          id: e.id || nanoid(),
+          _isClean: false
+        }));
+
+        const { newEnts, validationErrors } = formatAndValidateEntities(
+          newEntities,
+          {
+            useDefaultValues: true,
+            indexToStartAt: entities.length
+          }
+        );
+        if (every(entities, "_isClean")) {
+          forEach(newEnts, (e, i) => {
+            entities[i] = e;
+          });
+        } else {
+          entities.splice(entities.length, 0, ...newEnts);
+        }
+
+        updateValidation(entities, {
+          ...reduxFormCellValidation,
+          ...validationErrors
+        });
+      });
+    },
+    [
+      entities,
+      formatAndValidateEntities,
+      reduxFormCellValidation,
+      updateEntitiesHelper,
+      updateValidation
+    ]
+  );
+
+  const getEditableTableInfoAndThrowFormError = useCallback(() => {
+    const { entsToUse, validationToUse } = removeCleanRows(
+      reduxFormEntities,
+      reduxFormCellValidation
+    );
+    const validationWTableErrs = validateTableWideErrors({
+      entities: entsToUse,
+      schema,
+      newCellValidate: validationToUse
+    });
+
+    if (!entsToUse?.length) {
+      throwFormError(
+        "Please add at least one row to the table before submitting."
+      );
+    }
+    const invalid =
+      isEmpty(validationWTableErrs) || !some(validationWTableErrs, v => v)
+        ? undefined
+        : validationWTableErrs;
+
+    if (invalid) {
+      throwFormError("Please fix the errors in the table before submitting.");
+    }
+
+    return entsToUse;
+  }, [reduxFormCellValidation, reduxFormEntities, schema]);
+
+  useEffect(() => {
+    // This  is bad practice, we shouldn't be assigning value to an
+    // external variable
+    if (helperProp) {
+      helperProp.updateValidationHelper = updateValidationHelper;
+      helperProp.addEditableTableEntities = addEditableTableEntities;
+      helperProp.getEditableTableInfoAndThrowFormError =
+        getEditableTableInfoAndThrowFormError;
+    }
+  }, [
+    addEditableTableEntities,
+    getEditableTableInfoAndThrowFormError,
+    helperProp,
+    updateValidationHelper
+  ]);
 
   const handleRowMove = useCallback(
     (type, shiftHeld) => e => {
@@ -1300,13 +1393,14 @@ const DataTable = ({
   const [fullscreen, setFullscreen] = useState(false);
   const [selectingAll, setSelectingAll] = useState(false);
 
-  // We need to fix the useSelector not to make everything rerender everytime.
-  // Also we need to make sure formatAndValidateEntities gives a constant output
-  // from the same input.
-  // change variable also makes a rerender everytime when using it inside a Dialog.
+  // format in the schema shouldn't be something that changes the value
+  // everytime, it produces weird behavior since it keeps rerendering,
+  // we should make enforce the user set the format as something that
+  // "formats", not "changes".
   useEffect(() => {
     const formatAndValidateTableInitial = () => {
-      const { newEnts, validationErrors } = formatAndValidateEntities(entities);
+      const { newEnts, validationErrors } =
+        formatAndValidateEntities(_origEntities);
       const toKeep = {};
       //on the initial load we want to keep any async table wide errors
       forEach(reduxFormCellValidation, (v, k) => {
@@ -1321,14 +1415,8 @@ const DataTable = ({
       });
     };
     isCellEditable && formatAndValidateTableInitial();
-  }, [
-    change,
-    entities,
-    formatAndValidateEntities,
-    isCellEditable,
-    reduxFormCellValidation,
-    updateValidation
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_origEntities, isCellEditable]);
 
   const handlePaste = useCallback(
     e => {
@@ -2600,6 +2688,12 @@ const DataTable = ({
     ]
   );
 
+  const scrollToTop = useCallback(
+    () =>
+      tableRef.current?.tableRef?.children?.[0]?.children?.[0]?.scrollIntoView(),
+    []
+  );
+
   const reactTable = useMemo(
     () => (
       <ReactTable
@@ -3049,6 +3143,7 @@ const DataTable = ({
                     setSelectedEntityIdMap={newIdMap => {
                       change("reduxFormSelectedEntityIdMap", newIdMap);
                     }}
+                    scrollToTop={scrollToTop}
                   />
                 )}
               </div>

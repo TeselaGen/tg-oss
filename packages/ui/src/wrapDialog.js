@@ -1,11 +1,9 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-
 import React, { useMemo, useRef } from "react";
 import { Dialog, useHotkeys } from "@blueprintjs/core";
 import { noop, isFunction } from "lodash-es";
 import { ResizableDraggableDialog } from ".";
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default (topLevelDialogProps = {}) =>
   Component =>
   props => {

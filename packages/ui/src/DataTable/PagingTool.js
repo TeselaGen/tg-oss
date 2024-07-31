@@ -56,6 +56,7 @@ const PagingTool = ({
   pageSize,
   pagingDisabled,
   persistPageSize = noop,
+  scrollToTop,
   setPage: _setPage,
   setPageSize: _setPageSize,
   setSelectedEntityIdMap
@@ -75,7 +76,13 @@ const PagingTool = ({
     ) {
       setSelectedEntityIdMap({});
     }
-  }, [entities, keepSelectionOnPageChange, setSelectedEntityIdMap]);
+    scrollToTop();
+  }, [
+    entities,
+    keepSelectionOnPageChange,
+    scrollToTop,
+    setSelectedEntityIdMap
+  ]);
   // Define local state
   const [refetching, setRefetching] = useState(false);
 
