@@ -589,6 +589,7 @@ export class Editor extends React.Component {
           fontHeightMultiplier={this.props.fontHeightMultiplier}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
+          doubleClickOverrides={this.props.doubleClickOverrides}
           {...panelPropsToSpread}
           editorName={editorName}
           isProtein={sequenceData.isProtein}

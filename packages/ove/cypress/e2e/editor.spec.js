@@ -229,6 +229,23 @@ describe("editor", function () {
     //clicking the feature SHOULD NOT change the selection because in this demo the default feature click is overridden
     cy.contains("div", "Selecting 21 bps from 11 to 31").should("be.visible");
   });
+  it(`should handle doubleClickOverrides correctly if they are passed`, function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
+    cy.tgToggle("doubleClickOverridesExample");
+
+    cy.contains(".veLabelText", "Part 0").dblclick();
+
+    cy.contains("Part Double Click Override Hit!").should("be.visible");
+    cy.contains("Edit Part").should("be.visible");
+    cy.closeDialog();
+    cy.contains("div", "Selecting 21 bps from 11 to 31").should("be.visible");
+
+    cy.contains(".veLabelText", "araC").dblclick();
+
+    cy.contains("Feature Double Click Override Hit!").should("be.visible");
+
+    cy.contains("div", "Selecting 879 bps from 7 to 885").should("be.visible");
+  });
   it(`should handle propertiesListOverrides correctly if they are passed`, function () {
     cy.tgToggle("propertiesOverridesExample");
 
