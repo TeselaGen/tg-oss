@@ -90,7 +90,6 @@ class Sequence extends React.Component {
 
     let inner;
     const shared = {
-      ...(isSafari ? { letterSpacing: "3px" } : {}),
       y: height - height / 4,
       className:
         "ve-monospace-font " + (isReverse ? " ve-sequence-reverse" : "")
@@ -108,12 +107,13 @@ class Sequence extends React.Component {
         const textLength = charWidth * seqChunk.length;
         const x = i * chunkWidth;
         if (x > visibleEnd || x + textLength < visibleStart) return null;
+        const tlToUse = Math.max(0, textLength - fudge - fudge2);
         return (
           <text
             key={i}
             {...{
               ...shared,
-              textLength: Math.max(0, textLength - fudge - fudge2),
+              textLength: tlToUse,
               x: x + fudge / 2,
               lengthAdjust: "spacing"
             }}
@@ -123,18 +123,24 @@ class Sequence extends React.Component {
         );
       });
     } else {
+      const tlToUse = Math.max(
+        0,
+        (alignmentData ? seqReadWidth : width) - fudge - fudge2
+      );
       inner = (
         <text
           {...{
             ...shared,
             x: 0 + fudge / 2,
-            textLength: Math.max(
-              0,
-              (alignmentData ? seqReadWidth : width) - fudge - fudge2
-            )
+            textLength: tlToUse
           }}
         >
-          {getBoldRegion({ sequence, overlapToBold, rowStart, sequenceLength })}
+          {getBoldRegion({
+            sequence,
+            overlapToBold,
+            rowStart,
+            sequenceLength
+          })}
         </text>
       );
     }
@@ -257,6 +263,10 @@ class ColoredSequence extends React.Component {
 }
 
 function getBoldRegion({ sequence, overlapToBold, rowStart, sequenceLength }) {
+  if (isSafari) {
+    // safari doesn't support text length with tspans so we can't bold the sequence - https://github.com/TeselaGen/tg-oss/issues/80
+    return sequence;
+  }
   const toRet = [];
   const [a, b] = overlapToBold || [];
   for (let index = rowStart; index < sequence.length + rowStart; index++) {
