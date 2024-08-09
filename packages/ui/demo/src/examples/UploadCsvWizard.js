@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { Button } from "@blueprintjs/core";
 import store from "../store";
@@ -6,7 +6,7 @@ import { FileUploadField } from "../../../src";
 import DemoWrapper from "../DemoWrapper";
 import { reduxForm } from "redux-form";
 import { useToggle } from "../useToggle";
-import getIdOrCodeOrIndex from "../../../src/DataTable/utils/getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "../../../src/DataTable/utils";
 
 const simpleValidateAgainst = {
   fields: [{ path: "name" }, { path: "description" }, { path: "sequence" }]
@@ -201,7 +201,7 @@ export default function UploadCsvWizardDemo() {
   return (
     <Provider store={store}>
       <div className="form-components">
-        <Inner></Inner>
+        <Inner />
       </div>
     </Provider>
   );
@@ -261,12 +261,6 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
     description:
       "If checked, will require that either the name or id or the description or sequence or both be provided"
   });
-  // const [allowEitherNameOrId, allowEitherNameOrIdComp] = useToggle({
-  //   type: "allowEitherNameOrId"
-  // });
-  // const [allowZip, allowZipComp] = useToggle({
-  //   type: "allowZip"
-  // });
   const [multipleExamples, multipleExamplesComp] = useToggle({
     type: "multipleExamples",
     description: "If checked, will add multiple examples for each column"
@@ -281,7 +275,7 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
       label: "use async getValues For Dropdown (WIP)"
     });
 
-  const [accept, setAccept] = React.useState([]);
+  const [accept, setAccept] = useState([]);
   useEffect(() => {
     const __accept = [
       {
@@ -345,32 +339,27 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
       {allowMultipleFilesComp}
       {multipleExamplesComp}
       {getValuesForDropdownExampleComp}
-      {/* {allowZipComp} */}
-      <br></br>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
+      <br />
       <FileUploadField
         label="CSV upload with wizard"
-        onFieldSubmit={function (fileList) {
+        onFieldSubmit={fileList => {
           console.info("do something with the finished file list:", fileList);
         }}
         isRequired
-        className={"fileUploadLimitAndType"}
+        className="fileUploadLimitAndType"
         accept={accept}
-        name={"exampleFile"}
+        name="exampleFile"
         fileLimit={allowMultipleFiles ? undefined : 1}
       />
       <Button
         intent="success"
         text="Finish Upload"
-        onClick={handleSubmit(async function (values) {
+        onClick={handleSubmit(async values => {
           window.parsedData = values.exampleFile[0].parsedData;
           window.exampleFile = values.exampleFile;
           window.toastr.success("Upload Successful");
-          console.info(
-            `values.exampleFile.parsedData:`,
-            values.exampleFile[0].parsedData
-          );
         })}
       />
     </DemoWrapper>

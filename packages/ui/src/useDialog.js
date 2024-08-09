@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
-/* 
+/*
 
   const {toggleDialog, comp} = useDialog({
     ModalComponent: SimpleInsertData,
-    validateAgainstSchema,
   });
 
   return <div>
@@ -13,30 +12,29 @@ import React, { useState } from "react";
   </div>
 
 */
-export const useDialog = ({ ModalComponent, ...rest }) => {
+export const useDialog = ({ ModalComponent }) => {
   const [isOpen, setOpen] = useState(false);
   const [additionalProps, setAdditionalProps] = useState(false);
-  const comp = (
-    <ModalComponent
-      hideModal={() => {
-        setOpen(false);
-      }}
-      hideDialog={() => {
-        setOpen(false);
-      }}
-      {...rest}
-      {...additionalProps}
-      dialogProps={{
-        isOpen,
-        ...rest?.dialogProps,
-        ...additionalProps?.dialogProps
-      }}
-    ></ModalComponent>
+  const Comp = useCallback(
+    () => (
+      <ModalComponent
+        hideModal={() => {
+          setOpen(false);
+        }}
+        hideDialog={() => {
+          setOpen(false);
+        }}
+        {...additionalProps}
+        dialogProps={{
+          isOpen,
+          ...additionalProps?.dialogProps
+        }}
+      />
+    ),
+    [ModalComponent, additionalProps, isOpen]
   );
-  const toggleDialog = () => {
-    setOpen(!isOpen);
-  };
-  async function showDialogPromise(handlerName, moreProps = {}) {
+
+  const showDialogPromise = useCallback(async (handlerName, moreProps = {}) => {
     return new Promise(resolve => {
       //return a promise that can be awaited
       setAdditionalProps({
@@ -59,6 +57,7 @@ export const useDialog = ({ ModalComponent, ...rest }) => {
       });
       setOpen(true); //open the dialog
     });
-  }
-  return { comp, showDialogPromise, toggleDialog, setAdditionalProps };
+  }, []);
+
+  return { Comp, showDialogPromise };
 };
