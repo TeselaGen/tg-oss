@@ -69,46 +69,50 @@ export const PreviewCsvData = props => {
     userSchema = exampleData,
     entities
   } = props;
-  const data =
-    userSchema.userData &&
-    userSchema.userData.length &&
-    userSchema.userData.map((row, i) => {
-      const toRet = {
-        _isClean: row._isClean
-      };
-      validateAgainstSchema.fields.forEach(({ path, defaultValue }) => {
-        const matchingKey = matchedHeaders?.[path];
-        if (!matchingKey) {
-          toRet[path] = defaultValue === undefined ? defaultValue : "";
-        } else {
-          toRet[path] = row[matchingKey];
-        }
-        if (toRet[path] === undefined || toRet[path] === "") {
-          if (defaultValue) {
-            if (isFunction(defaultValue)) {
-              toRet[path] = defaultValue(i, row);
-            } else toRet[path] = defaultValue;
-          } else {
-            // const exampleToUse = isArray(example) //this means that the row was not added by a user
-            //   ? example[i1]
-            //   : i1 === 0 && example;
-            toRet[path] = "";
-            // if (useExampleData && exampleToUse) {
-            //   toRet[path] = exampleToUse;
-            //   delete toRet._isClean;
-            // } else {
-            // }
-          }
-        }
-      });
 
-      if (row.id === undefined) {
-        toRet.id = nanoid();
-      } else {
-        toRet.id = row.id;
-      }
-      return toRet;
-    });
+  const data = useMemo(() => {
+    return (
+      userSchema.userData &&
+      userSchema.userData.length &&
+      userSchema.userData.map((row, i) => {
+        const toRet = {
+          _isClean: row._isClean
+        };
+        validateAgainstSchema.fields.forEach(({ path, defaultValue }) => {
+          const matchingKey = matchedHeaders?.[path];
+          if (!matchingKey) {
+            toRet[path] = defaultValue === undefined ? defaultValue : "";
+          } else {
+            toRet[path] = row[matchingKey];
+          }
+          if (toRet[path] === undefined || toRet[path] === "") {
+            if (defaultValue) {
+              if (isFunction(defaultValue)) {
+                toRet[path] = defaultValue(i, row);
+              } else toRet[path] = defaultValue;
+            } else {
+              // const exampleToUse = isArray(example) //this means that the row was not added by a user
+              //   ? example[i1]
+              //   : i1 === 0 && example;
+              toRet[path] = "";
+              // if (useExampleData && exampleToUse) {
+              //   toRet[path] = exampleToUse;
+              //   delete toRet._isClean;
+              // } else {
+              // }
+            }
+          }
+        });
+
+        if (row.id === undefined) {
+          toRet.id = nanoid();
+        } else {
+          toRet.id = row.id;
+        }
+        return toRet;
+      })
+    );
+  }, [matchedHeaders, userSchema, validateAgainstSchema.fields]);
 
   return (
     <div style={{ minWidth: 400 }}>
