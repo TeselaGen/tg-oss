@@ -1103,11 +1103,11 @@ thomas,,g,false,dna,misc_feature`,
           },
           {
             name: "taoh",
-            description: "",
+            description: undefined,
             sequence: "tom",
             isRegex: false,
-            matchType: "",
-            type: ""
+            matchType: undefined,
+            type: undefined
           }
         ]);
       });

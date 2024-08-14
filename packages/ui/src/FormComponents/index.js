@@ -1199,9 +1199,7 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
 };
 
 export const InputField = generateField(RenderBlueprintInput);
-export const FileUploadField = generateField(renderFileUpload, {
-  showErrorIfUntouched: true
-});
+export const FileUploadField = generateField(renderFileUpload);
 export const DateInputField = generateField(renderBlueprintDateInput);
 export const DateRangeInputField = generateField(renderBlueprintDateRangeInput);
 export const CheckboxField = generateField(renderBlueprintCheckbox, {

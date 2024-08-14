@@ -171,7 +171,8 @@ export const SimpleInsertDataDialog = compose(
   showDoesDataLookCorrectMsg,
   submitting,
   userSchema,
-  validateAgainstSchema
+  validateAgainstSchema,
+  initialValues
 }) => {
   const dispatch = useDispatch();
   const _reduxFormEntities = useSelector(
@@ -201,7 +202,7 @@ export const SimpleInsertDataDialog = compose(
           }
           inlineLabel
           label="File Name:"
-          defaultValue={"manual_data_entry"}
+          defaultValue={initialValues?.fileName ?? "manual_data_entry"}
           name="fileName"
         />
         <PreviewCsvData
@@ -651,12 +652,13 @@ const UploadCsvWizardDialog = compose(
         );
       });
       return {
-        reduxFormEntitiesArray,
-        finishedFiles
+        _reduxFormEntitiesArray: reduxFormEntitiesArray,
+        _finishedFiles: finishedFiles
       };
     }
   });
   const reduxFormEntitiesArray = useDeepEqualMemo(_reduxFormEntitiesArray);
+  console.log({ _finishedFiles });
   const finishedFiles = useDeepEqualMemo(_finishedFiles);
 
   const [hasSubmittedOuter, setSubmittedOuter] = useState();
