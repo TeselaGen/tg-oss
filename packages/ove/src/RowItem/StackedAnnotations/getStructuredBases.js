@@ -71,8 +71,8 @@ export function getStructuredBases({
     const isMatch = seqForBase.toLowerCase() === b.toLowerCase();
     const isAmbiguousMatch =
       !isMatch &&
-      ambiguous_dna_values[b.toUpperCase()].length > 1 &&
-      ambiguous_dna_values[b.toUpperCase()].includes(seqForBase.toUpperCase());
+      ambiguous_dna_values[b.toUpperCase()]?.length > 1 &&
+      ambiguous_dna_values[b.toUpperCase()]?.includes(seqForBase.toUpperCase());
     return {
       b,
       isMatch,
