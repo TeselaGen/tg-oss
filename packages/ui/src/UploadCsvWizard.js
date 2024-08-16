@@ -658,7 +658,6 @@ const UploadCsvWizardDialog = compose(
     }
   });
   const reduxFormEntitiesArray = useDeepEqualMemo(_reduxFormEntitiesArray);
-  console.log({ _finishedFiles });
   const finishedFiles = useDeepEqualMemo(_finishedFiles);
 
   const [hasSubmittedOuter, setSubmittedOuter] = useState();

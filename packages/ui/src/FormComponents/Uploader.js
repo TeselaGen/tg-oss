@@ -36,7 +36,7 @@ import writeXlsxFile from "write-excel-file";
 import { startCase } from "lodash-es";
 import { getNewName } from "./getNewName";
 import { isObject } from "lodash-es";
-import { change, initialize } from "redux-form";
+import { change, touch, initialize } from "redux-form";
 import classNames from "classnames";
 import convertSchema from "../DataTable/utils/convertSchema";
 import { LoadingDots } from "./LoadingDots";
@@ -252,6 +252,7 @@ const Uploader = ({
     if (noRedux) {
       return _onChange(val);
     }
+    dispatch(touch(formName, name));
     return dispatch(change(formName, name, val));
   };
 
