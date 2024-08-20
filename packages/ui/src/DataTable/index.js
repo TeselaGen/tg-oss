@@ -278,63 +278,74 @@ const DataTable = ({
     urlConnected
   ]);
 
-  if (!isTableParamsConnected) {
-    const updateSearch = val => {
-      change("reduxFormSearchInput", val || "");
-    };
-
-    const setNewParams = newParams => {
-      urlConnected && setCurrentParamsOnUrl(newParams, history.replace);
-      change("reduxFormQueryParams", newParams); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
-    };
-
-    const bindThese = makeDataTableHandlers({
-      setNewParams,
-      updateSearch,
-      defaults: props.defaults,
-      onlyOneFilter: props.onlyOneFilter
-    });
-
-    const boundDispatchProps = {};
-    //bind currentParams to actions
-    Object.keys(bindThese).forEach(function (key) {
-      const action = bindThese[key];
-      boundDispatchProps[key] = function (...args) {
-        action(...args, currentParams);
+  const tableParams = useMemo(() => {
+    if (!isTableParamsConnected) {
+      const updateSearch = val => {
+        change("reduxFormSearchInput", val || "");
       };
-    });
 
-    const changeFormValue = (...args) => change(...args);
+      const setNewParams = newParams => {
+        urlConnected && setCurrentParamsOnUrl(newParams, history.replace);
+        change("reduxFormQueryParams", newParams); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
+      };
 
-    props.tableParams = {
-      changeFormValue,
-      selectedEntities,
-      ..._tableParams,
-      ...props,
-      ...boundDispatchProps,
-      isTableParamsConnected: true //let the table know not to do local sorting/filtering etc.
-    };
-  }
+      const bindThese = makeDataTableHandlers({
+        setNewParams,
+        updateSearch,
+        defaults: props.defaults,
+        onlyOneFilter: props.onlyOneFilter
+      });
+
+      const boundDispatchProps = {};
+      //bind currentParams to actions
+      Object.keys(bindThese).forEach(function (key) {
+        const action = bindThese[key];
+        boundDispatchProps[key] = function (...args) {
+          action(...args, currentParams);
+        };
+      });
+
+      const changeFormValue = (...args) => change(...args);
+
+      return {
+        changeFormValue,
+        selectedEntities,
+        ..._tableParams,
+        ...props,
+        ...boundDispatchProps,
+        isTableParamsConnected: true //let the table know not to do local sorting/filtering etc.
+      };
+    }
+    return _tableParams;
+  }, [
+    _tableParams,
+    change,
+    currentParams,
+    history.replace,
+    isTableParamsConnected,
+    props,
+    selectedEntities,
+    urlConnected
+  ]);
 
   props = {
     ...props,
-    ...props.tableParams
+    ...tableParams
   };
 
-  if (!isTableParamsConnected) {
-    const additionalFilterToUse =
-      typeof props.additionalFilter === "function"
-        ? props.additionalFilter.bind(this, ownProps)
-        : () => props.additionalFilter;
+  const queryParams = useMemo(() => {
+    if (!isTableParamsConnected) {
+      const additionalFilterToUse =
+        typeof props.additionalFilter === "function"
+          ? props.additionalFilter.bind(this, ownProps)
+          : () => props.additionalFilter;
 
-    const additionalOrFilterToUse =
-      typeof props.additionalOrFilter === "function"
-        ? props.additionalOrFilter.bind(this, ownProps)
-        : () => props.additionalOrFilter;
+      const additionalOrFilterToUse =
+        typeof props.additionalOrFilter === "function"
+          ? props.additionalOrFilter.bind(this, ownProps)
+          : () => props.additionalOrFilter;
 
-    props = {
-      ...props,
-      ...getQueryParams({
+      return getQueryParams({
         doNotCoercePageSize,
         currentParams,
         entities: props.entities, // for local table
@@ -348,9 +359,24 @@ const DataTable = ({
         noOrderError: props.noOrderError,
         isCodeModel: props.isCodeModel,
         ownProps: props
-      })
-    };
-  }
+      });
+    }
+    return {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    convertedSchema,
+    currentParams,
+    doNotCoercePageSize,
+    isInfinite,
+    isLocalCall,
+    isTableParamsConnected,
+    urlConnected
+  ]);
+
+  props = {
+    ...props,
+    ...queryParams
+  };
 
   const {
     addFilters = noop,
