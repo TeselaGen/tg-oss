@@ -182,22 +182,13 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
       mergedOpts;
 
     function updateSearch(val) {
-      setTimeout(function () {
-        dispatch(change(formName, "reduxFormSearchInput", val || ""));
-      });
+      dispatch(change(formName, "reduxFormSearchInput", val || ""));
     }
 
-    let setNewParams;
-    if (urlConnected) {
-      setNewParams = function (newParams) {
-        setCurrentParamsOnUrl(newParams, history.replace);
-        dispatch(change(formName, "reduxFormQueryParams", newParams)); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
-      };
-    } else {
-      setNewParams = function (newParams) {
-        dispatch(change(formName, "reduxFormQueryParams", newParams));
-      };
-    }
+    const setNewParams = newParams => {
+      urlConnected && setCurrentParamsOnUrl(newParams, history.replace);
+      dispatch(change(formName, "reduxFormQueryParams", newParams)); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
+    };
     return {
       bindThese: makeDataTableHandlers({
         setNewParams,
