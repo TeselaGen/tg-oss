@@ -49,7 +49,7 @@ export const ColumnFilterMenu = ({
       <Icon
         style={{ marginLeft: 5 }}
         icon="filter"
-        iconSize={extraCompact ? 14 : undefined}
+        size={extraCompact ? 14 : undefined}
         onClick={() => setColumnFilterMenuOpen(prev => !prev)}
         className={classNames("tg-filter-menu-button", {
           "tg-active-filter": !!filterActiveForColumn

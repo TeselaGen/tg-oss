@@ -41,6 +41,7 @@ import classNames from "classnames";
 import convertSchema from "../DataTable/utils/convertSchema";
 import { LoadingDots } from "./LoadingDots";
 import { useDispatch } from "react-redux";
+import { flushSync } from "react-dom";
 
 const manualEnterMessage = "Build CSV File";
 const manualEnterSubMessage = "Paste or type data to build a CSV file";
@@ -249,11 +250,13 @@ const Uploader = ({
   // onChange received from redux-form is not working anymore,
   // so we need to overwrite it for redux to works.
   const onChange = val => {
-    if (noRedux) {
-      return _onChange(val);
-    }
-    dispatch(touch(formName, name));
-    return dispatch(change(formName, name, val));
+    flushSync(() => {
+      if (noRedux) {
+        return _onChange(val);
+      }
+      dispatch(touch(formName, name));
+      dispatch(change(formName, name, val));
+    });
   };
 
   const handleSecondHalfOfUpload = async ({
