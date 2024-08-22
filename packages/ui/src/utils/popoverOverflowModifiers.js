@@ -1,6 +1,6 @@
 // will help tooltip to not get smushed
 const popoverOverflowModifiers = {
-  preventOverflow: { enabled: false },
+  preventOverflow: { boundariesElement: "viewport" },
   hide: {
     enabled: false
   },
