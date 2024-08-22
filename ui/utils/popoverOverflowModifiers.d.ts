@@ -1,13 +1,13 @@
 export default popoverOverflowModifiers;
 declare namespace popoverOverflowModifiers {
     namespace preventOverflow {
-        let enabled: boolean;
+        let boundariesElement: string;
     }
     namespace hide {
-        let enabled_1: boolean;
-        export { enabled_1 as enabled };
+        let enabled: boolean;
     }
     namespace flip {
-        let boundariesElement: string;
+        let boundariesElement_1: string;
+        export { boundariesElement_1 as boundariesElement };
     }
 }
