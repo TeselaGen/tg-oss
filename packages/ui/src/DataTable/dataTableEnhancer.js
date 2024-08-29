@@ -6,7 +6,6 @@
  */
 import { reduxForm } from "redux-form";
 import { branch, compose, withProps } from "recompose";
-import pureNoFunc from "../utils/pureNoFunc";
 import { withRouter } from "react-router-dom";
 
 /*
@@ -31,9 +30,6 @@ import { withRouter } from "react-router-dom";
   understanding if it's possible.
 */
 export default compose(
-  // Function to make sure we don't rerender unless there are changes
-  // in the params
-  branch(props => !props.alwaysRerender, pureNoFunc),
   // form prop is needed for redux-form, but we are giving this prop as
   // formName, so we need to rename it. Previously it was done in the withTableParams, but now
   // it doesn't have it by default.
