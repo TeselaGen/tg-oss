@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Button,
   Callout,
@@ -255,89 +249,86 @@ const Uploader = ({
   const filesToClean = useRef([]);
   // onChange received from redux-form is not working anymore,
   // so we need to overwrite it for redux to works.
-  const onChange = useCallback(
-    val => {
-      flushSync(() => {
-        if (noRedux) {
-          return _onChange(val);
-        }
-        dispatch(touch(formName, name));
-        dispatch(change(formName, name, val));
-      });
-    },
-    [_onChange, dispatch, formName, name, noRedux]
-  );
+  const onChange = val => {
+    flushSync(() => {
+      if (noRedux) {
+        return _onChange(val);
+      }
+      dispatch(touch(formName, name));
+      dispatch(change(formName, name, val));
+    });
+  };
 
-  const handleSecondHalfOfUpload = useCallback(
-    async ({ acceptedFiles, cleanedFileList }) => {
-      // This onChange is not changing things, we need to check whether the error is here or later
-      onChange(cleanedFileList); //tnw: this line is necessary, if you want to clear the file list in the beforeUpload, call onChange([])
-      // beforeUpload is called, otherwise beforeUpload will not be able to truly cancel the upload
-      const keepGoing = beforeUpload
-        ? await beforeUpload(cleanedFileList, onChange)
-        : true;
-      if (!keepGoing) return;
+  const handleSecondHalfOfUpload = async ({
+    acceptedFiles,
+    cleanedFileList
+  }) => {
+    // This onChange is not changing things, we need to check whether the error is here or later
+    onChange(cleanedFileList); //tnw: this line is necessary, if you want to clear the file list in the beforeUpload, call onChange([])
+    // beforeUpload is called, otherwise beforeUpload will not be able to truly cancel the upload
+    const keepGoing = beforeUpload
+      ? await beforeUpload(cleanedFileList, onChange)
+      : true;
+    if (!keepGoing) return;
 
-      if (action) {
-        const responses = [];
-        await Promise.all(
-          acceptedFiles.map(async fileToUpload => {
-            const data = new FormData();
-            data.append("file", fileToUpload);
-            try {
-              const res = await (window.api
-                ? window.api.post(action, data)
-                : fetch(action, {
-                    method: "POST",
-                    body: data
-                  }));
-              responses.push(res.data && res.data[0]);
-              onFileSuccess(res.data[0]).then(() => {
-                cleanedFileList = cleanedFileList.map(file => {
-                  const fileToReturn = {
-                    ...file,
-                    ...res.data[0]
-                  };
-                  if (fileToReturn.id === fileToUpload.id) {
-                    fileToReturn.loading = false;
-                  }
-                  return fileToReturn;
-                });
-                onChange(cleanedFileList);
-              });
-            } catch (err) {
-              console.error("Error uploading file:", err);
-              responses.push({
-                ...fileToUpload,
-                error: err && err.msg ? err.msg : err
-              });
+    if (action) {
+      const responses = [];
+      await Promise.all(
+        acceptedFiles.map(async fileToUpload => {
+          const data = new FormData();
+          data.append("file", fileToUpload);
+          try {
+            const res = await (window.serverApi
+              ? window.serverApi.post(action, data)
+              : fetch(action, {
+                  method: "POST",
+                  body: data
+                }));
+            responses.push(res.data && res.data[0]);
+            onFileSuccess(res.data[0]).then(() => {
               cleanedFileList = cleanedFileList.map(file => {
-                const fileToReturn = { ...file };
+                const fileToReturn = {
+                  ...file,
+                  ...res.data[0]
+                };
                 if (fileToReturn.id === fileToUpload.id) {
                   fileToReturn.loading = false;
-                  fileToReturn.error = true;
                 }
                 return fileToReturn;
               });
               onChange(cleanedFileList);
-            }
-          })
-        );
-        onFieldSubmit(responses);
-      } else {
-        onChange(
-          cleanedFileList.map(function (file) {
-            return {
-              ...file,
-              loading: false
-            };
-          })
-        );
-      }
-      setLoading(false);
-    },
-    [action, beforeUpload, onChange, onFieldSubmit, onFileSuccess]
-  );
+            });
+          } catch (err) {
+            console.error("Error uploading file:", err);
+            responses.push({
+              ...fileToUpload,
+              error: err && err.msg ? err.msg : err
+            });
+            cleanedFileList = cleanedFileList.map(file => {
+              const fileToReturn = { ...file };
+              if (fileToReturn.id === fileToUpload.id) {
+                fileToReturn.loading = false;
+                fileToReturn.error = true;
+              }
+              return fileToReturn;
+            });
+            onChange(cleanedFileList);
+          }
+        })
+      );
+      onFieldSubmit(responses);
+    } else {
+      onChange(
+        cleanedFileList.map(function (file) {
+          return {
+            ...file,
+            loading: false
+          };
+        })
+      );
+    }
+    setLoading(false);
+  };
 
   const isAcceptPromise = useMemo(
     () =>
@@ -345,6 +336,13 @@ const Uploader = ({
       (Array.isArray(__accept) ? __accept.some(acc => acc?.then) : false),
     [__accept]
   );
+
+  let dropzoneDisabled = _disabled;
+  let _accept = __accept;
+
+  if (resolvedAccept) {
+    _accept = resolvedAccept;
+  }
 
   useEffect(() => {
     if (isAcceptPromise) {
@@ -359,54 +357,46 @@ const Uploader = ({
     }
   }, [__accept, isAcceptPromise]);
 
-  const dropzoneDisabled = _disabled || acceptLoading;
+  if (isAcceptPromise && !resolvedAccept) {
+    _accept = [];
+  }
 
-  const { accept, validateAgainstSchema } = useMemo(() => {
-    let _accept = __accept;
-    if (resolvedAccept) {
-      _accept = resolvedAccept;
-    }
-    if (isAcceptPromise && !resolvedAccept) {
-      _accept = [];
-    }
-    const newAccept = !_accept
-      ? undefined
-      : isAcceptPromise && !resolvedAccept
-        ? []
-        : isPlainObject(_accept)
-          ? [_accept]
-          : isArray(_accept)
-            ? _accept
-            : _accept.split(",").map(acc => ({ type: acc }));
-
-    const validateAgainstSchema = setValidateAgainstSchema(
-      _validateAgainstSchema ||
-        newAccept?.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema
-    );
-
-    if (
-      (validateAgainstSchema || autoUnzip) &&
-      newAccept &&
-      !newAccept.some(a => a.type === "zip")
-    ) {
-      newAccept?.unshift({
-        type: "zip",
-        description: "Any of the following types, just compressed"
-      });
-    }
-    return { accept: newAccept, validateAgainstSchema };
-  }, [
-    __accept,
-    _validateAgainstSchema,
-    autoUnzip,
-    isAcceptPromise,
-    resolvedAccept
-  ]);
-
-  const callout = useMemo(
-    () => _callout || accept?.find?.(a => a?.callout)?.callout,
-    [_callout, accept]
+  if (acceptLoading) dropzoneDisabled = true;
+  const accept = useMemo(
+    () =>
+      !_accept
+        ? undefined
+        : isAcceptPromise && !resolvedAccept
+          ? []
+          : isPlainObject(_accept)
+            ? [_accept]
+            : isArray(_accept)
+              ? _accept
+              : _accept.split(",").map(acc => ({ type: acc })),
+    [_accept, isAcceptPromise, resolvedAccept]
   );
+
+  const callout = _callout || accept?.find?.(a => a?.callout)?.callout;
+
+  const validateAgainstSchema = useMemo(
+    () =>
+      setValidateAgainstSchema(
+        _validateAgainstSchema ||
+          accept?.find?.(a => a?.validateAgainstSchema)?.validateAgainstSchema
+      ),
+    [_validateAgainstSchema, accept]
+  );
+
+  if (
+    (validateAgainstSchema || autoUnzip) &&
+    accept &&
+    !accept.some(a => a.type === "zip")
+  ) {
+    accept?.unshift({
+      type: "zip",
+      description: "Any of the following types, just compressed"
+    });
+  }
 
   const { showDialogPromise: showUploadCsvWizardDialog, Comp } = useDialog({
     ModalComponent: UploadCsvWizardDialog
@@ -417,214 +407,191 @@ const Uploader = ({
       ModalComponent: SimpleInsertDataDialog
     });
 
-  const cleanupFiles = useCallback(() => {
+  function cleanupFiles() {
     filesToClean.current.forEach(file => URL.revokeObjectURL(file.preview));
-  }, []);
-
+  }
   useEffect(() => {
     return () => {
       cleanupFiles();
     };
-  }, [cleanupFiles]);
+  }, []);
 
-  const contentOverride = useMemo(() => {
-    let _contentOverride = maybeContentOverride;
-    if (_contentOverride && typeof _contentOverride === "function") {
-      _contentOverride = _contentOverride({ loading });
-    }
-    return _contentOverride;
-  }, [loading, maybeContentOverride]);
+  let contentOverride = maybeContentOverride;
+  if (contentOverride && typeof contentOverride === "function") {
+    contentOverride = contentOverride({ loading });
+  }
+  let simpleAccept;
+  let handleManuallyEnterData;
+  let advancedAccept;
 
-  const fileListToUse = useMemo(() => (fileList ? fileList : []), [fileList]);
-
-  const { simpleAccept, handleManuallyEnterData, advancedAccept } =
-    useMemo(() => {
-      let simpleAccept;
-      let handleManuallyEnterData;
-      let advancedAccept;
-
-      if (Array.isArray(accept)) {
-        if (accept.some(acc => isPlainObject(acc))) {
-          //advanced accept
-          advancedAccept = accept;
-          simpleAccept = flatMap(accept, acc => {
-            if (acc.validateAgainstSchema) {
-              if (!acc.type) {
-                acc.type = [".csv", ".xlsx"];
+  if (Array.isArray(accept)) {
+    if (accept.some(acc => isPlainObject(acc))) {
+      //advanced accept
+      advancedAccept = accept;
+      simpleAccept = flatMap(accept, acc => {
+        if (acc.validateAgainstSchema) {
+          if (!acc.type) {
+            acc.type = [".csv", ".xlsx"];
+          }
+          handleManuallyEnterData = async e => {
+            e.stopPropagation();
+            const { newEntities, fileName } = await showSimpleInsertDataDialog(
+              "onSimpleInsertDialogFinish",
+              {
+                validateAgainstSchema
               }
-              handleManuallyEnterData = async e => {
-                e.stopPropagation();
-                const { newEntities, fileName } =
-                  await showSimpleInsertDataDialog(
-                    "onSimpleInsertDialogFinish",
-                    {
-                      validateAgainstSchema
-                    }
-                  );
-                if (!newEntities) return;
-                //check existing files to make sure the new file name gets incremented if necessary
-                // fileList
-                const newFileName = getNewName(fileListToUse, fileName);
-                const { newFile, cleanedEntities } = getNewCsvFile(
-                  newEntities,
-                  newFileName
-                );
+            );
+            if (!newEntities) return;
+            //check existing files to make sure the new file name gets incremented if necessary
+            // fileList
+            const newFileName = getNewName(fileListToUse, fileName);
+            const { newFile, cleanedEntities } = getNewCsvFile(
+              newEntities,
+              newFileName
+            );
 
-                const file = {
-                  ...newFile,
-                  parsedData: cleanedEntities,
-                  meta: {
-                    fields: validateAgainstSchema.fields.map(({ path }) => path)
-                  },
-                  name: newFileName,
-                  originFileObj: newFile,
-                  originalFileObj: newFile,
-                  id: nanoid(),
-                  hasEditClick: true
-                };
+            const file = {
+              ...newFile,
+              parsedData: cleanedEntities,
+              meta: {
+                fields: validateAgainstSchema.fields.map(({ path }) => path)
+              },
+              name: newFileName,
+              originFileObj: newFile,
+              originalFileObj: newFile,
+              id: nanoid(),
+              hasEditClick: true
+            };
 
-                const cleanedFileList = [file, ...fileListToUse].slice(
-                  0,
-                  fileLimit ? fileLimit : undefined
-                );
-                handleSecondHalfOfUpload({
-                  acceptedFiles: cleanedFileList,
-                  cleanedFileList
-                });
+            const cleanedFileList = [file, ...fileListToUse].slice(
+              0,
+              fileLimit ? fileLimit : undefined
+            );
+            handleSecondHalfOfUpload({
+              acceptedFiles: cleanedFileList,
+              cleanedFileList
+            });
 
-                window.toastr.success(`File Added`);
+            window.toastr.success(`File Added`);
+          };
+
+          const nameToUse =
+            startCase(
+              removeExt(
+                validateAgainstSchema.fileName || validateAgainstSchema.name
+              )
+            ) || "Example";
+
+          const handleDownloadXlsxFile = async () => {
+            const dataDictionarySchema = [
+              { value: f => f.displayName || f.path, column: `Column Name` },
+              // {
+              //   value: f => f.isUnique ? "Unique" : "",
+              //   column: `Unique?`
+              // },
+              {
+                value: f => (f.isRequired ? "Required" : "Optional"),
+                column: `Required?`
+              },
+              {
+                value: f => (f.type === "dropdown" ? "text" : f.type || "text"),
+                column: `Data Type`
+              },
+              {
+                value: f => f.description,
+                column: `Notes`
+              },
+              {
+                value: f => f.example || f.defaultValue || "",
+                column: `Example Data`
+              }
+            ];
+
+            const mainExampleData = {};
+            const fieldsToUse = [
+              ...validateAgainstSchema.fields,
+              ...(validateAgainstSchema.exampleDownloadFields ?? [])
+            ];
+            const mainSchema = fieldsToUse.map(f => {
+              mainExampleData[f.displayName || f.path] =
+                f.example || f.defaultValue;
+              return {
+                column: f.displayName || f.path,
+                value: v => {
+                  return v[f.displayName || f.path];
+                }
               };
-
-              const nameToUse =
-                startCase(
-                  removeExt(
-                    validateAgainstSchema.fileName || validateAgainstSchema.name
-                  )
-                ) || "Example";
-
-              const handleDownloadXlsxFile = async () => {
-                const dataDictionarySchema = [
-                  {
-                    value: f => f.displayName || f.path,
-                    column: `Column Name`
-                  },
-                  // {
-                  //   value: f => f.isUnique ? "Unique" : "",
-                  //   column: `Unique?`
-                  // },
-                  {
-                    value: f => (f.isRequired ? "Required" : "Optional"),
-                    column: `Required?`
-                  },
-                  {
-                    value: f =>
-                      f.type === "dropdown" ? "text" : f.type || "text",
-                    column: `Data Type`
-                  },
-                  {
-                    value: f => f.description,
-                    column: `Notes`
-                  },
-                  {
-                    value: f => f.example || f.defaultValue || "",
-                    column: `Example Data`
-                  }
+            });
+            const blobFile = await writeXlsxFile(
+              [[mainExampleData], fieldsToUse, helperText],
+              {
+                headerStyle: {
+                  fontWeight: "bold"
+                },
+                schema: [mainSchema, dataDictionarySchema, helperSchema],
+                sheets: [nameToUse, "Column Info", "Upload Instructions"],
+                filePath: "file.xlsx"
+              }
+            );
+            downloadjs(blobFile, `${nameToUse}.xlsx`, "xlsx");
+          };
+          // handleDownloadXlsxFile()
+          acc.exampleFiles = [
+            // ...(a.exampleFile ? [a.exampleFile] : []),
+            {
+              description: "Download Example CSV File",
+              exampleFile: () => {
+                const rows = [];
+                const schemaToUse = [
+                  ...acc.validateAgainstSchema.fields,
+                  ...(acc.validateAgainstSchema.exampleDownloadFields ?? [])
                 ];
-
-                const mainExampleData = {};
-                const fieldsToUse = [
-                  ...validateAgainstSchema.fields,
-                  ...(validateAgainstSchema.exampleDownloadFields ?? [])
-                ];
-                const mainSchema = fieldsToUse.map(f => {
-                  mainExampleData[f.displayName || f.path] =
-                    f.example || f.defaultValue;
-                  return {
-                    column: f.displayName || f.path,
-                    value: v => {
-                      return v[f.displayName || f.path];
-                    }
-                  };
-                });
-                const blobFile = await writeXlsxFile(
-                  [[mainExampleData], fieldsToUse, helperText],
-                  {
-                    headerStyle: {
-                      fontWeight: "bold"
-                    },
-                    schema: [mainSchema, dataDictionarySchema, helperSchema],
-                    sheets: [nameToUse, "Column Info", "Upload Instructions"],
-                    filePath: "file.xlsx"
-                  }
+                rows.push(
+                  schemaToUse.map(f => {
+                    return `${f.displayName || f.path}`;
+                  })
                 );
-                downloadjs(blobFile, `${nameToUse}.xlsx`, "xlsx");
-              };
-              // handleDownloadXlsxFile()
-              acc.exampleFiles = [
-                // ...(a.exampleFile ? [a.exampleFile] : []),
-                {
-                  description: "Download Example CSV File",
-                  exampleFile: () => {
-                    const rows = [];
-                    const schemaToUse = [
-                      ...acc.validateAgainstSchema.fields,
-                      ...(acc.validateAgainstSchema.exampleDownloadFields ?? [])
-                    ];
-                    rows.push(
-                      schemaToUse.map(f => {
-                        return `${f.displayName || f.path}`;
-                      })
-                    );
-                    rows.push(
-                      schemaToUse.map(f => {
-                        return `${f.example || f.defaultValue || ""}`;
-                      })
-                    );
-                    const csv = unparse(rows);
+                rows.push(
+                  schemaToUse.map(f => {
+                    return `${f.example || f.defaultValue || ""}`;
+                  })
+                );
+                const csv = unparse(rows);
 
-                    const downloadFn =
-                      window.Cypress?.downloadTest || downloadjs;
-                    downloadFn(csv, `${nameToUse}.csv`, "csv");
+                const downloadFn = window.Cypress?.downloadTest || downloadjs;
+                downloadFn(csv, `${nameToUse}.csv`, "csv");
+              }
+            },
+            {
+              description: "Download Example XLSX File",
+              subtext: "Includes Upload Instructions and Column Info",
+              exampleFile: handleDownloadXlsxFile
+            },
+            ...(noBuildCsvOption
+              ? []
+              : [
+                  {
+                    description: manualEnterMessage,
+                    subtext: manualEnterSubMessage,
+                    icon: "manually-entered-data",
+                    exampleFile: handleManuallyEnterData
                   }
-                },
-                {
-                  description: "Download Example XLSX File",
-                  subtext: "Includes Upload Instructions and Column Info",
-                  exampleFile: handleDownloadXlsxFile
-                },
-                ...(noBuildCsvOption
-                  ? []
-                  : [
-                      {
-                        description: manualEnterMessage,
-                        subtext: manualEnterSubMessage,
-                        icon: "manually-entered-data",
-                        exampleFile: handleManuallyEnterData
-                      }
-                    ])
-              ];
-              delete acc.exampleFile;
-            }
-            if (acc.type) return acc.type;
-            return acc;
-          });
-          simpleAccept = simpleAccept.join(", ");
-        } else {
-          simpleAccept = accept.join(", ");
+                ])
+          ];
+          delete acc.exampleFile;
         }
-      } else {
-        simpleAccept = accept;
-      }
-      return { simpleAccept, handleManuallyEnterData, advancedAccept };
-    }, [
-      accept,
-      fileLimit,
-      fileListToUse,
-      handleSecondHalfOfUpload,
-      noBuildCsvOption,
-      showSimpleInsertDataDialog,
-      validateAgainstSchema
-    ]);
+        if (acc.type) return acc.type;
+        return acc;
+      });
+      simpleAccept = simpleAccept.join(", ");
+    } else {
+      simpleAccept = accept.join(", ");
+    }
+  } else {
+    simpleAccept = accept;
+  }
+
+  const fileListToUse = fileList ? fileList : [];
 
   return (
     <>
