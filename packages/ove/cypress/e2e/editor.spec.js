@@ -246,6 +246,16 @@ describe("editor", function () {
 
     cy.contains("div", "Selecting 879 bps from 7 to 885").should("be.visible");
   });
+
+  it(`should handle onPanelTab close handler correctly if it is passed`, function () {
+    cy.tgToggle("customizeTabs");
+    cy.tgToggle("onPanelTabClose");
+    cy.get(".veTabNewDigest").get(".bp3-icon-small-cross").first().click();
+    cy.contains(
+      "onPanelClose callback triggered for panelId: alignmentTool"
+    ).should("be.visible");
+  });
+
   it(`should handle propertiesListOverrides correctly if they are passed`, function () {
     cy.tgToggle("propertiesOverridesExample");
 
