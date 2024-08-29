@@ -479,6 +479,50 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
       renderToggle({
         that: this,
         type: "onPanelTabClose",
+        hook: shouldUpdate => {
+          shouldUpdate &&
+            updateEditor(store, "DemoEditor", {
+              panelsShown: [
+                [
+                  {
+                    id: "rail",
+                    name: "Linear Map",
+                    active: true
+                  },
+                  {
+                    id: "myCustomTab",
+                    name: "My Custom Tab"
+                  }
+                ],
+                [
+                  {
+                    id: "sequence",
+                    name: "Sequence Map"
+                  },
+                  {
+                    id: "alignmentTool",
+                    name: "New Alignment",
+                    canClose: true
+                  },
+                  {
+                    id: "digestTool",
+                    name: "New Digest",
+                    canClose: true
+                  },
+                  {
+                    // fullScreen: true,
+                    active: true,
+                    id: "circular",
+                    name: "Circular Map"
+                  },
+                  {
+                    id: "properties",
+                    name: "Properties"
+                  }
+                ]
+              ]
+            });
+        },
         info: `
         This feature can be used to execute some functionality before closing a panel.  If the function returns true, the panel closes, otherwise it stays open.
         

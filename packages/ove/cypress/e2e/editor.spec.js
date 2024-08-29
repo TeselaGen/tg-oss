@@ -248,7 +248,6 @@ describe("editor", function () {
   });
 
   it(`should handle onPanelTab close handler correctly if it is passed`, function () {
-    cy.tgToggle("customizeTabs");
     cy.tgToggle("onPanelTabClose");
     cy.get(".veTabNewDigest").get(".bp3-icon-small-cross").first().click();
     cy.contains(
