@@ -757,6 +757,11 @@ export class Editor extends React.Component {
                                   <Icon
                                     icon="small-cross"
                                     onClick={() => {
+                                      if (
+                                        this.props.onPanelTabClose &&
+                                        !this.props.onPanelTabClose(id)
+                                      )
+                                        return;
                                       closePanel(id);
                                     }}
                                     style={{ paddingLeft: 5 }}
