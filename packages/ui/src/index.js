@@ -20,7 +20,7 @@ export {
   default as DataTable,
   ConnectedPagingTool as PagingTool
 } from "./DataTable";
-export { removeCleanRows } from "./DataTable/utils";
+export { removeCleanRows, useTableEntities } from "./DataTable/utils";
 
 export { getIdOrCodeOrIndex, useDeepEqualMemo } from "./DataTable/utils";
 export { default as convertSchema } from "./DataTable/utils/convertSchema";

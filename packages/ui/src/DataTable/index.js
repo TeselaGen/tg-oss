@@ -71,7 +71,10 @@ import {
   removeCleanRows,
   useDeepEqualMemo
 } from "./utils";
-import rowClick, { finalizeSelection } from "./utils/rowClick";
+import rowClick, {
+  changeSelectedEntities,
+  finalizeSelection
+} from "./utils/rowClick";
 import PagingTool from "./PagingTool";
 import SearchBar from "./SearchBar";
 import DisplayOptions from "./DisplayOptions";
@@ -404,7 +407,7 @@ const DataTable = ({
     doNotValidateUntouchedRows,
     editingCellSelectAll,
     entities: __origEntities = [],
-    entitiesAcrossPages,
+    entitiesAcrossPages: _entitiesAcrossPages,
     entityCount,
     errorParsingUrlString,
     expandAllByDefault,
@@ -490,6 +493,20 @@ const DataTable = ({
   const entities = useDeepEqualMemo(
     (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || []
   );
+  const entitiesAcrossPages = useDeepEqualMemo(_entitiesAcrossPages);
+
+  // This is because we need to maintain the reduxFormSelectedEntityIdMap and
+  // allOrderedEntities updated
+  useEffect(() => {
+    change("allOrderedEntities", entitiesAcrossPages);
+    if (entities.length === 0 || isEmpty(reduxFormSelectedEntityIdMap)) return;
+    changeSelectedEntities({
+      idMap: reduxFormSelectedEntityIdMap,
+      entities,
+      change
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entitiesAcrossPages, reduxFormSelectedEntityIdMap]);
 
   const [tableConfig, setTableConfig] = useState({ fieldOptions: [] });
 
@@ -2436,24 +2453,31 @@ const DataTable = ({
     return acc;
   }, []);
 
-  const filtersOnNonDisplayedFields = [];
-  if (filters && filters.length) {
-    schema.fields.forEach(field => {
-      const ccDisplayName = getCCDisplayName(field);
-      if (field.isHidden) {
-        filters.forEach(filter => {
-          if (filter.filterOn === ccDisplayName) {
-            filtersOnNonDisplayedFields.push({
-              ...filter,
-              displayName: field.displayName
-            });
-          }
-        });
-      }
-    });
-  }
+  const filtersOnNonDisplayedFields = useMemo(() => {
+    const _filtersOnNonDisplayedFields = [];
+    if (filters && filters.length) {
+      schema.fields.forEach(field => {
+        const ccDisplayName = getCCDisplayName(field);
+        if (field.isHidden) {
+          filters.forEach(filter => {
+            if (filter.filterOn === ccDisplayName) {
+              _filtersOnNonDisplayedFields.push({
+                ...filter,
+                displayName: field.displayName
+              });
+            }
+          });
+        }
+      });
+    }
+    return _filtersOnNonDisplayedFields;
+  }, [filters, schema.fields]);
+
   const numRows = isInfinite ? entities.length : pageSize;
-  const idMap = reduxFormSelectedEntityIdMap || {};
+  const idMap = useMemo(
+    () => reduxFormSelectedEntityIdMap || {},
+    [reduxFormSelectedEntityIdMap]
+  );
   const selectedRowCount = Object.keys(idMap).filter(key => idMap[key]).length;
 
   let rowsToShow = doNotShowEmptyRows
@@ -2481,131 +2505,158 @@ const DataTable = ({
     />
   );
 
-  let showSelectAll = false;
-  let showClearAll = false;
-  // we want to show select all if every row on the current page is selected
-  // and not every row across all pages are already selected.
-  if (!isInfinite) {
-    const canShowSelectAll =
-      withSelectAll ||
-      (entitiesAcrossPages && numRows < entitiesAcrossPages.length);
-    if (canShowSelectAll) {
-      // could all be disabled
-      let atLeastOneRowOnCurrentPageSelected = false;
-      const allRowsOnCurrentPageSelected = entities.every(e => {
-        const rowId = getIdOrCodeOrIndex(e);
-        const selected = idMap[rowId] || isEntityDisabled(e);
-        if (selected) atLeastOneRowOnCurrentPageSelected = true;
-        return selected;
-      });
-      if (atLeastOneRowOnCurrentPageSelected && allRowsOnCurrentPageSelected) {
-        let everyEntitySelected;
-        if (isLocalCall) {
-          everyEntitySelected = entitiesAcrossPages.every(e => {
-            const rowId = getIdOrCodeOrIndex(e);
-            return idMap[rowId] || isEntityDisabled(e);
-          });
-        } else {
-          everyEntitySelected = entityCount <= selectedRowCount;
+  const { showSelectAll, showClearAll } = useMemo(() => {
+    let _showSelectAll = false;
+    let _showClearAll = false;
+    // we want to show select all if every row on the current page is selected
+    // and not every row across all pages are already selected.
+    if (!isInfinite) {
+      const canShowSelectAll =
+        withSelectAll ||
+        (entitiesAcrossPages && numRows < entitiesAcrossPages.length);
+      if (canShowSelectAll) {
+        // could all be disabled
+        let atLeastOneRowOnCurrentPageSelected = false;
+        const allRowsOnCurrentPageSelected = entities.every(e => {
+          const rowId = getIdOrCodeOrIndex(e);
+          const selected = idMap[rowId] || isEntityDisabled(e);
+          if (selected) atLeastOneRowOnCurrentPageSelected = true;
+          return selected;
+        });
+        if (
+          atLeastOneRowOnCurrentPageSelected &&
+          allRowsOnCurrentPageSelected
+        ) {
+          let everyEntitySelected;
+          if (isLocalCall) {
+            everyEntitySelected = entitiesAcrossPages.every(e => {
+              const rowId = getIdOrCodeOrIndex(e);
+              return idMap[rowId] || isEntityDisabled(e);
+            });
+          } else {
+            everyEntitySelected = entityCount <= selectedRowCount;
+          }
+          if (everyEntitySelected) {
+            _showClearAll = selectedRowCount;
+          }
+          // only show if not all selected
+          _showSelectAll = !everyEntitySelected;
         }
-        if (everyEntitySelected) {
-          showClearAll = selectedRowCount;
-        }
-        // only show if not all selected
-        showSelectAll = !everyEntitySelected;
       }
     }
-  }
+    return { showSelectAll: _showSelectAll, showClearAll: _showClearAll };
+  }, [
+    entities,
+    entitiesAcrossPages,
+    entityCount,
+    idMap,
+    isEntityDisabled,
+    isInfinite,
+    isLocalCall,
+    numRows,
+    selectedRowCount,
+    withSelectAll
+  ]);
 
   const showNumSelected = !noSelect && !isSingleSelect && !hideSelectedCount;
-  let selectedAndTotalMessage = "";
-  if (showNumSelected) {
-    selectedAndTotalMessage += `${selectedRowCount} Selected `;
-  }
-  if (showCount && showNumSelected) {
-    selectedAndTotalMessage += `/ `;
-  }
-  if (showCount) {
-    selectedAndTotalMessage += `${entityCount || 0} Total`;
-  }
-  if (selectedAndTotalMessage) {
-    selectedAndTotalMessage = <div>{selectedAndTotalMessage}</div>;
-  }
+  const selectedAndTotalMessage = useMemo(() => {
+    let _selectedAndTotalMessage = "";
+    if (showNumSelected) {
+      _selectedAndTotalMessage += `${selectedRowCount} Selected `;
+    }
+    if (showCount && showNumSelected) {
+      _selectedAndTotalMessage += `/ `;
+    }
+    if (showCount) {
+      _selectedAndTotalMessage += `${entityCount || 0} Total`;
+    }
+    if (_selectedAndTotalMessage) {
+      _selectedAndTotalMessage = <div>{_selectedAndTotalMessage}</div>;
+    }
+    return _selectedAndTotalMessage;
+  }, [entityCount, selectedRowCount, showCount, showNumSelected]);
 
   const shouldShowPaging =
     !isInfinite &&
     withPaging &&
     (hidePageSizeWhenPossible ? entityCount > pageSize : true);
 
-  let SubComponentToUse;
-  if (SubComponent) {
-    SubComponentToUse = row => {
-      let shouldShow = true;
-      if (shouldShowSubComponent) {
-        shouldShow = shouldShowSubComponent(row.original);
-      }
-      if (shouldShow) {
-        return SubComponent(row);
-      }
-    };
-  }
-  let nonDisplayedFilterComp;
-  if (filtersOnNonDisplayedFields.length) {
-    const content = filtersOnNonDisplayedFields.map(
-      ({ displayName, path, selectedFilter, filterValue }) => {
-        let filterValToDisplay = filterValue;
-        if (selectedFilter === "inList") {
-          filterValToDisplay = Array.isArray(filterValToDisplay)
-            ? filterValToDisplay
-            : filterValToDisplay && filterValToDisplay.split(";");
+  const SubComponentToUse = useMemo(() => {
+    if (SubComponent) {
+      return row => {
+        let shouldShow = true;
+        if (shouldShowSubComponent) {
+          shouldShow = shouldShowSubComponent(row.original);
         }
-        if (Array.isArray(filterValToDisplay)) {
-          filterValToDisplay = filterValToDisplay.join(", ");
+        if (shouldShow) {
+          return SubComponent(row);
         }
-        return (
-          <div
-            key={displayName || startCase(camelCase(path))}
-            className="tg-filter-on-non-displayed-field"
-          >
-            {displayName || startCase(camelCase(path))}{" "}
-            {lowerCase(selectedFilter)} {filterValToDisplay}
-          </div>
-        );
-      }
-    );
-    nonDisplayedFilterComp = (
-      <div style={{ marginRight: 5, marginLeft: "auto" }}>
-        <Tooltip
-          content={
-            <div>
-              Active filters on hidden columns:
-              <br />
-              <br />
-              {content}
-            </div>
+      };
+    }
+    return;
+  }, [SubComponent, shouldShowSubComponent]);
+
+  const nonDisplayedFilterComp = useMemo(() => {
+    if (filtersOnNonDisplayedFields.length) {
+      const content = filtersOnNonDisplayedFields.map(
+        ({ displayName, path, selectedFilter, filterValue }) => {
+          let filterValToDisplay = filterValue;
+          if (selectedFilter === "inList") {
+            filterValToDisplay = Array.isArray(filterValToDisplay)
+              ? filterValToDisplay
+              : filterValToDisplay && filterValToDisplay.split(";");
           }
-        >
-          <Icon icon="filter-list" />
-        </Tooltip>
-      </div>
-    );
-  }
-  let filteredEnts = entities;
+          if (Array.isArray(filterValToDisplay)) {
+            filterValToDisplay = filterValToDisplay.join(", ");
+          }
+          return (
+            <div
+              key={displayName || startCase(camelCase(path))}
+              className="tg-filter-on-non-displayed-field"
+            >
+              {displayName || startCase(camelCase(path))}{" "}
+              {lowerCase(selectedFilter)} {filterValToDisplay}
+            </div>
+          );
+        }
+      );
+      return (
+        <div style={{ marginRight: 5, marginLeft: "auto" }}>
+          <Tooltip
+            content={
+              <div>
+                Active filters on hidden columns:
+                <br />
+                <br />
+                {content}
+              </div>
+            }
+          >
+            <Icon icon="filter-list" />
+          </Tooltip>
+        </div>
+      );
+    }
+    return null;
+  }, [filtersOnNonDisplayedFields]);
 
-  if (onlyShowRowsWErrors) {
-    const rowToErrorMap = {};
-    forEach(reduxFormCellValidation, (err, cellId) => {
-      if (err) {
-        const [rowId] = cellId.split(":");
-        rowToErrorMap[rowId] = true;
-      }
-    });
-    filteredEnts = entities.filter(e => {
-      return rowToErrorMap[e.id];
-    });
-  }
+  const filteredEnts = useMemo(() => {
+    if (onlyShowRowsWErrors) {
+      const rowToErrorMap = {};
+      forEach(reduxFormCellValidation, (err, cellId) => {
+        if (err) {
+          const [rowId] = cellId.split(":");
+          rowToErrorMap[rowId] = true;
+        }
+      });
+      return entities.filter(e => {
+        return rowToErrorMap[e.id];
+      });
+    }
+    return entities;
+  }, [entities, onlyShowRowsWErrors, reduxFormCellValidation]);
 
-  // We are nnot rerendering when props and change are changed,
+  // We are not rerendering when props and change are changed,
   // we need to figure out how to manage them correctly
   const renderColumns = useMemo(
     () =>
