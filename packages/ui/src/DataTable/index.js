@@ -2496,11 +2496,10 @@ const DataTable = ({
   }, {});
 
   const children = useMemo(() => {
-    let _children = maybeChildren;
-    if (_children && typeof _children === "function") {
-      _children = children(props);
+    if (maybeChildren && typeof maybeChildren === "function") {
+      return maybeChildren(props);
     }
-    return _children;
+    return maybeChildren;
   }, [maybeChildren, props]);
 
   const showHeader = (withTitle || withSearch || children) && !noHeader;
