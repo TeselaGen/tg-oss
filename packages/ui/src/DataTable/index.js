@@ -498,13 +498,16 @@ const DataTable = ({
   // This is because we need to maintain the reduxFormSelectedEntityIdMap and
   // allOrderedEntities updated
   useEffect(() => {
-    change("allOrderedEntities", entitiesAcrossPages);
-    if (entities.length === 0 || isEmpty(reduxFormSelectedEntityIdMap)) return;
-    changeSelectedEntities({
-      idMap: reduxFormSelectedEntityIdMap,
-      entities,
-      change
-    });
+    if (change) {
+      change("allOrderedEntities", entitiesAcrossPages);
+      if (entities.length === 0 || isEmpty(reduxFormSelectedEntityIdMap))
+        return;
+      changeSelectedEntities({
+        idMap: reduxFormSelectedEntityIdMap,
+        entities,
+        change
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entitiesAcrossPages, reduxFormSelectedEntityIdMap]);
 
