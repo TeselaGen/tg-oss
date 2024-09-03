@@ -28,11 +28,10 @@ export const EditableCell = ({
       {...dataTest}
       autoFocus
       onKeyDown={e => {
+        e.stopPropagation();
         if (e.key === "Enter") {
           e.target.blur();
-          e.stopPropagation();
         } else if (e.key === "Escape") {
-          e.stopPropagation();
           cancelEdit();
         }
       }}

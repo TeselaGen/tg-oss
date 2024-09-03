@@ -1051,7 +1051,7 @@ const DataTable = ({
       //check if the cell is already selected and editing and if so, don't change it
       if (editingCell === cellId) return;
       if (pressedKey) {
-        setEditableCellValue(pressedKey);
+        setEditableCellValue("");
       } else {
         const [rowId, path] = cellId.split(":");
         const entityIdToEntity = getEntityIdToEntity(entities);
@@ -2494,10 +2494,15 @@ const DataTable = ({
     acc[index] = expandedEntityIdMap[rowId];
     return acc;
   }, {});
-  let children = maybeChildren;
-  if (children && typeof children === "function") {
-    children = children(props);
-  }
+
+  const children = useMemo(() => {
+    let _children = maybeChildren;
+    if (_children && typeof _children === "function") {
+      _children = children(props);
+    }
+    return _children;
+  }, [maybeChildren, props]);
+
   const showHeader = (withTitle || withSearch || children) && !noHeader;
   const toggleFullscreenButton = (
     <Button
