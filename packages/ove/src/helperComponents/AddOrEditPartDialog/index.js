@@ -9,12 +9,12 @@ import {
 import { getFeatureTypes } from "@teselagen/sequence-utils";
 import { get } from "lodash-es";
 
-const renderTypes = ({ readOnly }) => (
+const RenderTypes = ({ readOnly, type }) => (
   <ReactSelectField
     inlineLabel
     tooltipError
     disabled={readOnly}
-    defaultValue="misc_feature"
+    defaultValue={type ?? "misc_feature"}
     options={getFeatureTypes().map(type => {
       return {
         label: type,
@@ -88,7 +88,7 @@ export default AddOrEditAnnotationDialog({
     advancedOptions: props.allowPartsToOverlapSelf
       ? renderAdvancedOptions({ readOnly: props.readOnly })
       : undefined,
-    renderTypes: renderTypes({ readOnly: props.readOnly }),
+    RenderTypes,
     renderTags:
       props.allPartTags &&
       getRenderTags({

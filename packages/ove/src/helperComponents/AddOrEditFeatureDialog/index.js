@@ -7,13 +7,13 @@ import {
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
 import { ReactSelectField } from "@teselagen/ui";
 
-const renderTypes = ({ readOnly }) => (
+const RenderTypes = ({ readOnly, type }) => (
   <ReactSelectField
     inlineLabel
     tooltipError
     disabled={readOnly}
-    defaultValue="misc_feature"
-    options={getFeatureTypes().map(type => {
+    defaultValue={type ?? "misc_feature"}
+    options={getFeatureTypes().map(featureType => {
       return {
         label: (
           <div
@@ -25,16 +25,18 @@ const renderTypes = ({ readOnly }) => (
           >
             <div
               style={{
-                background: getFeatureToColorMap({ includeHidden: true })[type],
+                background: getFeatureToColorMap({ includeHidden: true })[
+                  featureType
+                ],
                 height: 15,
                 width: 15,
                 marginRight: 5
               }}
             />
-            {type}
+            {featureType}
           </div>
         ),
-        value: type
+        value: featureType
       };
     })}
     name="type"
@@ -52,7 +54,7 @@ export default AddOrEditAnnotationDialog({
     upsertAnnotation: props.upsertFeature,
     // renderLocations: true, //tnw enable this eventually for proteins
     renderLocations: !props.sequenceData.isProtein,
-    renderTypes: renderTypes({ readOnly: props.readOnly }),
+    RenderTypes,
     annotationTypePlural: "features"
   })
 });

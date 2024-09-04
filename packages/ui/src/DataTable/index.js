@@ -274,12 +274,7 @@ const DataTable = ({
 
     tmp.searchTerm = reduxFormSearchInput;
     return tmp;
-  }, [
-    history.location,
-    reduxFormQueryParams,
-    reduxFormSearchInput,
-    urlConnected
-  ]);
+  }, [history, reduxFormQueryParams, reduxFormSearchInput, urlConnected]);
 
   const tableParams = useMemo(() => {
     if (!isTableParamsConnected) {
@@ -324,7 +319,7 @@ const DataTable = ({
     _tableParams,
     change,
     currentParams,
-    history.replace,
+    history,
     isTableParamsConnected,
     props,
     selectedEntities,
