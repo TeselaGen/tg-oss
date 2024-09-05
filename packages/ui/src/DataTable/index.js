@@ -538,7 +538,10 @@ const DataTable = ({
       schema.fields = [viewColumn, ...schema.fields];
     }
     if (isOpenable) {
-      schema.fields = [openColumn, ...schema.fields];
+      schema.fields = [
+        openColumn({ onDoubleClick, history }),
+        ...schema.fields
+      ];
     }
     // this must come before handling orderings.
     schema.fields = schema.fields.map(field => {
@@ -632,10 +635,12 @@ const DataTable = ({
     cellRenderer,
     convertedSchema,
     entities,
+    history,
     isInfinite,
     isOpenable,
     isSimple,
     isViewable,
+    onDoubleClick,
     showForcedHiddenColumns,
     tableConfig.columnOrderings,
     tableConfig.fieldOptions,

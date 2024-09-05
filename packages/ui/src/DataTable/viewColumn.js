@@ -11,20 +11,16 @@ export const viewColumn = {
     return <Icon className="dt-eyeIcon" icon="eye-open" />;
   }
 };
-export const openColumn = {
+export const openColumn = ({ onDoubleClick, history }) => ({
   ...viewColumn,
-  render: (val, record, rowInfo, props) => {
+  render: (val, record, rowInfo) => {
     return (
       <Tooltip content="Open">
         <Button
           onClick={e => {
             e.stopPropagation();
-            props.onDoubleClick &&
-              props.onDoubleClick(
-                rowInfo.original,
-                rowInfo.index,
-                props.history
-              );
+            onDoubleClick &&
+              onDoubleClick(rowInfo.original, rowInfo.index, history);
           }}
           minimal
           small
@@ -34,4 +30,4 @@ export const openColumn = {
       </Tooltip>
     );
   }
-};
+});
