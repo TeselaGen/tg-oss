@@ -20,9 +20,7 @@ export const ColumnFilterMenu = ({
   return (
     <Popover
       position="bottom"
-      onClose={() => {
-        setColumnFilterMenuOpen(false);
-      }}
+      onClose={() => setColumnFilterMenuOpen(false)}
       isOpen={columnFilterMenuOpen}
       modifiers={{
         preventOverflow: { enabled: true },

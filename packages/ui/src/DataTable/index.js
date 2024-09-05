@@ -213,10 +213,12 @@ const DataTable = ({
     ...(props.defaults || {})
   });
 
-  let _schema;
-  if (isFunction(__schema)) _schema = __schema(props);
-  else _schema = __schema;
-  const convertedSchema = convertSchema(_schema);
+  const _schema = useMemo(() => {
+    if (isFunction(__schema)) return __schema(props);
+    else return __schema;
+  }, [__schema, props]);
+
+  const convertedSchema = useMemo(() => convertSchema(_schema), [_schema]);
 
   if (isLocalCall) {
     if (!noForm && (!formName || formName === "tgDataTable")) {
@@ -531,7 +533,7 @@ const DataTable = ({
   ]);
 
   const schema = useMemo(() => {
-    const schema = convertSchema(_schema);
+    const schema = convertedSchema;
     if (isViewable) {
       schema.fields = [viewColumn, ...schema.fields];
     }
@@ -627,8 +629,8 @@ const DataTable = ({
     }
     return schema;
   }, [
-    _schema,
     cellRenderer,
+    convertedSchema,
     entities,
     isInfinite,
     isOpenable,
@@ -2663,7 +2665,6 @@ const DataTable = ({
   const renderColumns = useMemo(
     () =>
       RenderColumns({
-        ...props,
         addFilters,
         cellRenderer,
         change,

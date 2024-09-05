@@ -483,62 +483,60 @@ const RenderCell = ({
   );
 };
 
-export const RenderColumns = props => {
-  const {
-    addFilters,
-    cellRenderer,
-    change,
-    columns,
-    currentParams,
-    compact,
-    editableCellValue,
-    editingCell,
-    editingCellSelectAll,
-    entities,
-    expandedEntityIdMap,
-    extraCompact,
-    filters,
-    getCellHoverText,
-    isCellEditable,
-    isEntityDisabled,
-    isLocalCall,
-    isSimple,
-    isSingleSelect,
-    isSelectionARectangle,
-    noDeselectAll,
-    noSelect,
-    noUserSelect,
-    onDeselect,
-    onMultiRowSelect,
-    onRowClick,
-    onRowSelect,
-    onSingleRowSelect,
-    order,
-    primarySelectedCellId,
-    reduxFormCellValidation,
-    reduxFormSelectedEntityIdMap,
-    refocusTable,
-    removeSingleFilter = noop,
-    schema,
-    selectedCells,
-    setEditableCellValue,
-    setEditingCell,
-    setExpandedEntityIdMap,
-    setNewParams,
-    setOrder = noop,
-    setSelectedCells,
-    shouldShowSubComponent,
-    startCellEdit,
-    SubComponent,
-    tableRef,
-    updateEntitiesHelper,
-    updateValidation,
-    withCheckboxes,
-    withExpandAndCollapseAllButton,
-    withFilter: _withFilter,
-    withSort = true
-  } = props;
-
+export const RenderColumns = ({
+  addFilters,
+  cellRenderer,
+  change,
+  columns,
+  currentParams,
+  compact,
+  editableCellValue,
+  editingCell,
+  editingCellSelectAll,
+  entities,
+  expandedEntityIdMap,
+  extraCompact,
+  filters,
+  getCellHoverText,
+  isCellEditable,
+  isEntityDisabled,
+  isLocalCall,
+  isSimple,
+  isSingleSelect,
+  isSelectionARectangle,
+  noDeselectAll,
+  noSelect,
+  noUserSelect,
+  onDeselect,
+  onMultiRowSelect,
+  onRowClick,
+  onRowSelect,
+  onSingleRowSelect,
+  order,
+  primarySelectedCellId,
+  reduxFormCellValidation,
+  reduxFormSelectedEntityIdMap,
+  refocusTable,
+  removeSingleFilter = noop,
+  schema,
+  selectedCells,
+  setEditableCellValue,
+  setEditingCell,
+  setExpandedEntityIdMap,
+  setNewParams,
+  setOrder = noop,
+  setSelectedCells,
+  shouldShowSubComponent,
+  startCellEdit,
+  SubComponent,
+  tableRef,
+  updateEntitiesHelper,
+  updateValidation,
+  withCheckboxes,
+  withExpandAndCollapseAllButton,
+  withFilter: _withFilter,
+  withSort = true
+}) => {
   const withFilter = _withFilter === undefined ? !isSimple : _withFilter;
 
   const onDragEnd = cellsToSelect => {
@@ -745,13 +743,16 @@ export const RenderColumns = props => {
     // unnecessary rerenders
     const record = row.original;
     if (column.getClipboardData) {
-      text = column.getClipboardData(row.value, record, row, props);
+      text = column.getClipboardData(row.value, record, row);
     } else if (column.getValueToFilterOn) {
-      text = column.getValueToFilterOn(record, props);
+      text = column.getValueToFilterOn(record);
     } else if (column.render) {
-      text = column.render(row.value, record, row, props);
+      text = column.render(row.value, record, row, {
+        currentParams,
+        setNewParams
+      });
     } else if (cellRenderer && cellRenderer[column.path]) {
-      text = cellRenderer[column.path](row.value, row.original, row, props);
+      text = cellRenderer[column.path](row.value, row.original, row);
     } else if (text) {
       text = isValidElement(text) ? text : String(text);
     }
@@ -982,17 +983,12 @@ export const RenderColumns = props => {
     }
     if (cellRenderer && cellRenderer[column.path]) {
       tableColumn.Cell = row => {
-        const val = cellRenderer[column.path](
-          row.value,
-          row.original,
-          row,
-          props
-        );
+        const val = cellRenderer[column.path](row.value, row.original, row);
         return val;
       };
     } else if (column.render) {
       tableColumn.Cell = row => {
-        const val = column.render(row.value, row.original, row, props);
+        const val = column.render(row.value, row.original, row);
         return val;
       };
     } else if (column.type === "timestamp") {
