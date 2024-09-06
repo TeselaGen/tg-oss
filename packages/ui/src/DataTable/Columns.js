@@ -988,7 +988,10 @@ export const RenderColumns = ({
       };
     } else if (column.render) {
       tableColumn.Cell = row => {
-        const val = column.render(row.value, row.original, row);
+        const val = column.render(row.value, row.original, row, {
+          currentParams,
+          setNewParams
+        });
         return val;
       };
     } else if (column.type === "timestamp") {
