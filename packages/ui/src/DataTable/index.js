@@ -364,6 +364,9 @@ const DataTable = ({
     return {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    props.entities,
+    props.noOrderError,
+    props.isCodeModel,
     convertedSchema,
     currentParams,
     doNotCoercePageSize,
@@ -403,7 +406,7 @@ const DataTable = ({
     doNotShowEmptyRows,
     doNotValidateUntouchedRows,
     editingCellSelectAll,
-    entities: __origEntities = [],
+    entities: _origEntities = [],
     entitiesAcrossPages: _entitiesAcrossPages,
     entityCount,
     errorParsingUrlString,
@@ -485,11 +488,13 @@ const DataTable = ({
     withTitle = !isSimple
   } = props;
 
-  // We need to memoize the entities so that we don't rerender the table
-  const _origEntities = useDeepEqualMemo(__origEntities);
-  const entities = useDeepEqualMemo(
-    (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || []
+  const _entities = useMemo(
+    () => (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || [],
+    [_origEntities, reduxFormEntities]
   );
+
+  const entities = useDeepEqualMemo(_entities);
+
   const entitiesAcrossPages = useDeepEqualMemo(_entitiesAcrossPages);
 
   // This is because we need to maintain the reduxFormSelectedEntityIdMap and
