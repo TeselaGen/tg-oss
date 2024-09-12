@@ -752,7 +752,10 @@ export const RenderColumns = ({
         setNewParams
       });
     } else if (cellRenderer && cellRenderer[column.path]) {
-      text = cellRenderer[column.path](row.value, row.original, row);
+      text = cellRenderer[column.path](row.value, row.original, row, {
+        currentParams,
+        setNewParams
+      });
     } else if (text) {
       text = isValidElement(text) ? text : String(text);
     }
@@ -983,7 +986,10 @@ export const RenderColumns = ({
     }
     if (cellRenderer && cellRenderer[column.path]) {
       tableColumn.Cell = row => {
-        const val = cellRenderer[column.path](row.value, row.original, row);
+        const val = cellRenderer[column.path](row.value, row.original, row, {
+          currentParams,
+          setNewParams
+        });
         return val;
       };
     } else if (column.render) {
