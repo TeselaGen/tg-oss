@@ -102,6 +102,7 @@ import {
 import { RenderColumns } from "./Columns";
 import { formValueSelector } from "redux-form";
 import { throwFormError } from "../throwFormError";
+import { useTraceUpdate } from "../utils/useTraceUpdate";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -378,6 +379,8 @@ const DataTable = ({
     urlConnected
   ]);
 
+  useTraceUpdate({ ...queryParams });
+
   props = {
     ...props,
     ...queryParams
@@ -644,8 +647,8 @@ const DataTable = ({
       }
     }
     return schema;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    cellRenderer,
     convertedSchema,
     currentParams,
     entities,
@@ -655,7 +658,7 @@ const DataTable = ({
     isSimple,
     isViewable,
     onDoubleClick,
-    setNewParams,
+    // setNewParams,
     showForcedHiddenColumns,
     tableConfig.columnOrderings,
     tableConfig.fieldOptions,
@@ -1662,7 +1665,8 @@ const DataTable = ({
 
   useEffect(() => {
     addFilters(additionalFilters);
-  }, [addFilters, additionalFilters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [additionalFilters]);
 
   useEffect(() => {
     setColumns(
@@ -1816,12 +1820,12 @@ const DataTable = ({
     });
   };
 
-  const refocusTable = () => {
+  const refocusTable = useCallback(() => {
     const table = tableRef.current?.tableRef?.closest(
       ".data-table-container>div"
     );
     table?.focus();
-  };
+  }, []);
 
   const isSelectionARectangle = useCallback(() => {
     if (selectedCells && Object.keys(selectedCells).length > 1) {
@@ -2023,6 +2027,7 @@ const DataTable = ({
       formatAndValidateEntities,
       primarySelectedCellId,
       reduxFormCellValidation,
+      refocusTable,
       updateEntitiesHelper,
       updateValidation
     ]
@@ -2210,6 +2215,7 @@ const DataTable = ({
       isCellEditable,
       isCopyable,
       reduxFormCellValidation,
+      refocusTable,
       updateEntitiesHelper,
       updateValidation
     ]
@@ -2741,8 +2747,6 @@ const DataTable = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       SubComponent,
-      addFilters,
-      cellRenderer,
       columns,
       compact,
       currentParams,
@@ -2775,7 +2779,6 @@ const DataTable = ({
       removeSingleFilter,
       schema,
       selectedCells,
-      setNewParams,
       setOrder,
       shouldShowSubComponent,
       startCellEdit,

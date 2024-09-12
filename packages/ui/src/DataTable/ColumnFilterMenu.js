@@ -38,9 +38,7 @@ export const ColumnFilterMenu = ({
           removeSingleFilter={removeSingleFilter}
           schemaForField={schemaForField}
           setNewParams={setNewParams}
-          togglePopover={() => {
-            setColumnFilterMenuOpen(false);
-          }}
+          togglePopover={() => setColumnFilterMenuOpen(false)}
         />
       }
     >
@@ -48,7 +46,11 @@ export const ColumnFilterMenu = ({
         style={{ marginLeft: 5 }}
         icon="filter"
         size={extraCompact ? 14 : undefined}
-        onClick={() => setColumnFilterMenuOpen(prev => !prev)}
+        onClick={e => {
+          e.preventDefault();
+          e.stopPropagation();
+          setColumnFilterMenuOpen(prev => !prev);
+        }}
         className={classNames("tg-filter-menu-button", {
           "tg-active-filter": !!filterActiveForColumn
         })}
