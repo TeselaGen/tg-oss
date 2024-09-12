@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { isFunction, set } from "lodash-es";
 import { withRouter } from "react-router-dom";
 import { branch, compose } from "recompose";
-
-import pureNoFunc from "../../utils/pureNoFunc";
 import convertSchema from "./convertSchema";
 import { getRecordsFromReduxForm } from "./withSelectedEntities";
 import {
@@ -16,6 +14,17 @@ import {
   getCCDisplayName
 } from "./queryParams";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
+
+/**
+ * Given the options, get the schema. This enables the user to provide
+ * a function instead of an object for the schema.
+ * @param {Object} options Merged options
+ */
+const getSchema = options => {
+  const { schema } = options;
+  if (isFunction(schema)) return schema(options);
+  else return schema;
+};
 
 /**
  *  Note all these options can be passed at Design Time or at Runtime (like reduxForm())
@@ -32,15 +41,7 @@ import getTableConfigFromStorage from "./getTableConfigFromStorage";
  * @property {object} defaults - tableParam defaults such as pageSize, filter, etc
  * @property {boolean} noOrderError - won't console an error if an order is not found on schema
  */
-export default function withTableParams(compOrOpts, pTopLevelOpts) {
-  let topLevelOptions;
-  let Component;
-  if (!pTopLevelOpts) {
-    topLevelOptions = compOrOpts;
-  } else {
-    topLevelOptions = pTopLevelOpts;
-    Component = compOrOpts;
-  }
+export default function withTableParams(topLevelOptions) {
   const { isLocalCall = false } = topLevelOptions;
   const mapStateToProps = (state, ownProps) => {
     const mergedOpts = getMergedOpts(topLevelOptions, ownProps);
@@ -169,6 +170,7 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
       },
       showEmptyColumnsByDefault
     };
+
     return mapStateProps;
     // return { ...mergedOpts, ...mapStateProps };
   };
@@ -253,22 +255,7 @@ export default function withTableParams(compOrOpts, pTopLevelOpts) {
     }),
     //don't use withRouter if noRouter is passed!
     branch(props => !props.noRouter, withRouter),
-    connect(mapStateToProps, mapDispatchToProps, mergeProps),
-    pureNoFunc
+    connect(mapStateToProps, mapDispatchToProps, mergeProps)
   );
-  if (Component) {
-    return toReturn(Component);
-  }
   return toReturn;
-}
-
-/**
- * Given the options, get the schema. This enables the user to provide
- * a function instead of an object for the schema.
- * @param {Object} options Merged options
- */
-function getSchema(options) {
-  const { schema } = options;
-  if (isFunction(schema)) return schema(options);
-  else return schema;
 }
