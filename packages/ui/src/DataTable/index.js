@@ -268,7 +268,7 @@ const DataTable = ({
       })
   };
 
-  const currentParams = useMemo(() => {
+  const _currentParams = useMemo(() => {
     const tmp =
       (urlConnected
         ? getCurrentParamsFromUrl(history.location) //important to use history location and not ownProps.location because for some reason the location path lags one render behind!!
@@ -277,6 +277,8 @@ const DataTable = ({
     tmp.searchTerm = reduxFormSearchInput;
     return tmp;
   }, [history, reduxFormQueryParams, reduxFormSearchInput, urlConnected]);
+
+  const currentParams = useDeepEqualMemo(_currentParams);
 
   const tableParams = useMemo(() => {
     if (!isTableParamsConnected) {
@@ -577,9 +579,15 @@ const DataTable = ({
           noValsForField = entities.every(e => {
             const val = get(e, field.path);
             return field.render
-              ? !field.render(val, e)
+              ? !field.render(val, e, undefined, {
+                  currentParams,
+                  setNewParams
+                })
               : cellRenderer?.[field.path]
-                ? !cellRenderer[field.path](val, e)
+                ? !cellRenderer[field.path](val, e, undefined, {
+                    currentParams,
+                    setNewParams
+                  })
                 : !val;
           });
         }
@@ -639,6 +647,7 @@ const DataTable = ({
   }, [
     cellRenderer,
     convertedSchema,
+    currentParams,
     entities,
     history,
     isInfinite,
@@ -646,6 +655,7 @@ const DataTable = ({
     isSimple,
     isViewable,
     onDoubleClick,
+    setNewParams,
     showForcedHiddenColumns,
     tableConfig.columnOrderings,
     tableConfig.fieldOptions,
