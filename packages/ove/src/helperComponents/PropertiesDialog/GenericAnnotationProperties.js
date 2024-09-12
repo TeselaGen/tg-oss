@@ -44,116 +44,6 @@ const genericAnnotationProperties = ({
     constructor(props) {
       super(props);
       this.commands = commands(this);
-      this.schema = {
-        fields: [
-          {
-            path: "name",
-            type: "string",
-
-            render: (name, ann, row, props) => {
-              const checked =
-                !props.annotationVisibility[
-                  `${annotationType}IndividualToHide`
-                ][ann.id];
-
-              return (
-                <>
-                  <Icon
-                    data-tip="Hide/Show"
-                    onClick={e => {
-                      e.stopPropagation();
-                      const upperType = startCase(annotationType);
-                      if (checked) {
-                        props[`hide${upperType}Individual`]([ann.id]);
-                      } else {
-                        props[`show${upperType}Individual`]([ann.id]);
-                      }
-                    }}
-                    style={{
-                      cursor: "pointer",
-                      marginRight: 4,
-                      marginTop: 3,
-                      color: "darkgray"
-                    }}
-                    icon={`eye-${checked ? "open" : "off"}`}
-                  ></Icon>
-                  {name}
-                </>
-              );
-            }
-          },
-
-          ...(!withBases
-            ? []
-            : [
-                {
-                  path: "bases",
-                  type: "string",
-                  render: (bases, primer, row, props) => {
-                    let bps = bases;
-                    if (!bases) {
-                      bps = getSequenceWithinRange(primer, props.sequence);
-                      if (!primer.forward) {
-                        bps = getReverseComplementSequenceString(bps);
-                      }
-                    }
-                    return bps;
-                  }
-                }
-              ]),
-          ...(noType
-            ? []
-            : [
-                typeField,
-                {
-                  path: "color",
-                  type: "string",
-                  width: 50,
-                  render: color => {
-                    return (
-                      <div
-                        style={{ height: 20, width: 20, background: color }}
-                      />
-                      // <ColorPickerPopover>
-                      //   <div style={{ height: 20, width: 20, background: color }} />
-                      // </ColorPickerPopover>
-                    );
-                  }
-                }
-              ]),
-          sizeSchema,
-          ...(withTags && this.props.allPartTags
-            ? [
-                {
-                  path: "tags",
-                  type: "string",
-                  getValueToFilterOn: (o, { keyedPartTags }) => {
-                    const toRet = (o.tags || [])
-                      .map(tagId => {
-                        const tag = keyedPartTags[tagId];
-                        if (!tag) return "";
-                        return tag.label;
-                      })
-                      .join(" ");
-                    return toRet;
-                  },
-                  render: (tags, b, c, { keyedPartTags = {} }) => {
-                    return (
-                      <div style={{ display: "flex" }}>
-                        {(tags || []).map((tagId, i) => {
-                          const tag = keyedPartTags[tagId];
-                          if (!tag) return null;
-                          return <Tag key={i} {...getTagProps(tag)}></Tag>;
-                        })}
-                      </div>
-                    );
-                  }
-                }
-              ]
-            : []),
-          { path: "strand", type: "number" }
-        ]
-      };
     }
     onRowSelect = ([record]) => {
       if (!record) return;
@@ -194,6 +84,119 @@ const genericAnnotationProperties = ({
           size: getRangeLength(annotation, sequenceLength)
         };
       });
+
+      const keyedPartTags = getKeyedTagsAndTagOptions(allPartTags) ?? {};
+
+      this.schema = {
+        fields: [
+          {
+            path: "name",
+            type: "string",
+
+            render: (name, ann) => {
+              const checked =
+                !this.props.annotationVisibility[
+                  `${annotationType}IndividualToHide`
+                ][ann.id];
+
+              return (
+                <>
+                  <Icon
+                    data-tip="Hide/Show"
+                    onClick={e => {
+                      e.stopPropagation();
+                      const upperType = startCase(annotationType);
+                      if (checked) {
+                        this.props[`hide${upperType}Individual`]([ann.id]);
+                      } else {
+                        this.props[`show${upperType}Individual`]([ann.id]);
+                      }
+                    }}
+                    style={{
+                      cursor: "pointer",
+                      marginRight: 4,
+                      marginTop: 3,
+                      color: "darkgray"
+                    }}
+                    icon={`eye-${checked ? "open" : "off"}`}
+                  ></Icon>
+                  {name}
+                </>
+              );
+            }
+          },
+
+          ...(!withBases
+            ? []
+            : [
+                {
+                  path: "bases",
+                  type: "string",
+                  render: (bases, primer) => {
+                    let bps = bases;
+                    if (!bases) {
+                      bps = getSequenceWithinRange(primer, this.props.sequence);
+                      if (!primer.forward) {
+                        bps = getReverseComplementSequenceString(bps);
+                      }
+                    }
+                    return bps;
+                  }
+                }
+              ]),
+          ...(noType
+            ? []
+            : [
+                typeField,
+                {
+                  path: "color",
+                  type: "string",
+                  width: 50,
+                  render: color => {
+                    return (
+                      <div
+                        style={{ height: 20, width: 20, background: color }}
+                      />
+                      // <ColorPickerPopover>
+                      //   <div style={{ height: 20, width: 20, background: color }} />
+                      // </ColorPickerPopover>
+                    );
+                  }
+                }
+              ]),
+          sizeSchema(this.props.isProtein),
+          ...(withTags && this.props.allPartTags
+            ? [
+                {
+                  path: "tags",
+                  type: "string",
+                  getValueToFilterOn: o => {
+                    const toRet = (o.tags || [])
+                      .map(tagId => {
+                        const tag = keyedPartTags[tagId];
+                        if (!tag) return "";
+                        return tag.label;
+                      })
+                      .join(" ");
+                    return toRet;
+                  },
+                  render: tags => {
+                    return (
+                      <div style={{ display: "flex" }}>
+                        {(tags || []).map((tagId, i) => {
+                          const tag = keyedPartTags[tagId];
+                          if (!tag) return null;
+                          return <Tag key={i} {...getTagProps(tag)}></Tag>;
+                        })}
+                      </div>
+                    );
+                  }
+                }
+              ]
+            : []),
+          { path: "strand", type: "number" }
+        ]
+      };
 
       return (
         <DataTable
@@ -337,7 +340,6 @@ const genericAnnotationProperties = ({
           formName="annotationProperties"
           noRouter
           isProtein={isProtein}
-          keyedPartTags={getKeyedTagsAndTagOptions(allPartTags)}
           compact
           isInfinite
           schema={this.schema}

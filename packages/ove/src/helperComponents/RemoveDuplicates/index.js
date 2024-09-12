@@ -17,30 +17,6 @@ import { forEach, camelCase, startCase } from "lodash-es";
 import { sizeSchema } from "../PropertiesDialog/utils";
 import { getRangeLength } from "@teselagen/range-utils";
 
-const schema = {
-  fields: [
-    // ...(noColor
-    //   ? []
-    //   : [
-    //       {
-    //         path: "color",
-    //         type: "string",
-    //         render: color => {
-    //           return (
-    //             <ColorPickerPopover>
-    //               <div style={{ height: 20, width: 20, background: color }} />
-    //             </ColorPickerPopover>
-    //           );
-    //         }
-    //       }
-    //     ]),
-    { path: "name", type: "string" },
-    // ...(noType ? [] : [{ path: "type", type: "string" }]),
-    sizeSchema,
-    { path: "strand", type: "string" }
-  ]
-};
-
 class RemoveDuplicatesDialog extends React.Component {
   state = {
     dups: []
@@ -89,6 +65,30 @@ class RemoveDuplicatesDialog extends React.Component {
     const { duplicatesToRemoveSelectedEntities, hideModal, type } = this.props;
 
     const selectedIds = this.state.dups.map(d => d.id);
+
+    const schema = {
+      fields: [
+        // ...(noColor
+        //   ? []
+        //   : [
+        //       {
+        //         path: "color",
+        //         type: "string",
+        //         render: color => {
+        //           return (
+        //             <ColorPickerPopover>
+        //               <div style={{ height: 20, width: 20, background: color }} />
+        //             </ColorPickerPopover>
+        //           );
+        //         }
+        //       }
+        //     ]),
+        { path: "name", type: "string" },
+        // ...(noType ? [] : [{ path: "type", type: "string" }]),
+        sizeSchema(this.props.isProtein),
+        { path: "strand", type: "string" }
+      ]
+    };
     // const sequenceLength = sequenceData.sequence.length;
     // const isCirc = (this.state || {}).circular;
     return (

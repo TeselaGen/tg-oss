@@ -80,7 +80,7 @@ class OrfProperties extends React.Component {
                 displayName: "Size (aa)",
                 type: "number"
               },
-              sizeSchema,
+              sizeSchema(this.props.isProtein),
               { path: "frame", type: "number" },
               { path: "strand", type: "number" }
             ]
