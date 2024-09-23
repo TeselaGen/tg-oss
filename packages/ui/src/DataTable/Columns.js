@@ -1,4 +1,4 @@
-import React, { isValidElement } from "react";
+import React, { isValidElement, useCallback } from "react";
 import classNames from "classnames";
 import { Button, Classes, Checkbox, Icon } from "@blueprintjs/core";
 import {
@@ -39,6 +39,8 @@ import { getVals } from "./getVals";
 import { CellDragHandle } from "./CellDragHandle";
 import { getCellVal } from "./getCellVal";
 import { getCCDisplayName } from "./utils/queryParams";
+import { useDispatch, useSelector } from "react-redux";
+import { change as _change } from "redux-form";
 
 dayjs.extend(localizedFormat);
 
@@ -318,11 +320,9 @@ const RenderCell = ({
   isCellEditable,
   isEntityDisabled,
   finishCellEdit,
+  formName,
   noEllipsis,
-  editingCell,
   cancelCellEdit,
-  editableCellValue,
-  setEditableCellValue,
   getCellHoverText,
   selectedCells,
   isSelectionARectangle,
@@ -331,31 +331,22 @@ const RenderCell = ({
   onDragEnd,
   args
 }) => {
+  const editingCell = useSelector(
+    state => state.form?.[formName]?.values?.editingCell
+  );
   const [row] = args;
   const rowId = getIdOrCodeOrIndex(row.original, row.index);
   const cellId = `${rowId}:${row.column.path}`;
+  const isEditingCell = editingCell === cellId;
   let val = oldFunc(...args);
   const oldVal = val;
   const text = getCopyTextForCell(val, row, column);
-  const isBool = column.type === "boolean";
   const dataTest = {
     "data-test": "tgCell_" + column.path
   };
   const fullValue = row.original?.[row.column.path];
-  if (isCellEditable && isBool) {
-    val = (
-      <Checkbox
-        disabled={isEntityDisabled(row.original)}
-        className="tg-cell-edit-boolean-checkbox"
-        checked={oldVal === "True"}
-        onChange={e => {
-          const checked = e.target.checked;
-          finishCellEdit(cellId, checked);
-        }}
-      />
-    );
-    noEllipsis = true;
-  } else if (editingCell === cellId) {
+
+  if (isEditingCell) {
     if (column.type === "genericSelect") {
       const GenericSelectComp = column.GenericSelectComp;
 
@@ -389,8 +380,6 @@ const RenderCell = ({
     } else {
       return (
         <EditableCell
-          value={editableCellValue}
-          setValue={setEditableCellValue}
           dataTest={dataTest}
           cancelEdit={cancelCellEdit}
           isNumeric={column.type === "number"}
@@ -401,6 +390,22 @@ const RenderCell = ({
         />
       );
     }
+  }
+
+  const isBool = column.type === "boolean";
+  if (isCellEditable && isBool) {
+    val = (
+      <Checkbox
+        disabled={isEntityDisabled(row.original)}
+        className="tg-cell-edit-boolean-checkbox"
+        checked={oldVal === "True"}
+        onChange={e => {
+          const checked = e.target.checked;
+          finishCellEdit(cellId, checked);
+        }}
+      />
+    );
+    noEllipsis = true;
   }
 
   //wrap the original tableColumn.Cell function in another div in order to add a title attribute
@@ -483,20 +488,19 @@ const RenderCell = ({
   );
 };
 
-export const RenderColumns = ({
+export const useColumns = ({
   addFilters,
   cellRenderer,
-  change,
   columns,
   currentParams,
   compact,
-  editableCellValue,
   editingCell,
   editingCellSelectAll,
   entities,
   expandedEntityIdMap,
   extraCompact,
   filters,
+  formName,
   getCellHoverText,
   isCellEditable,
   isEntityDisabled,
@@ -520,7 +524,6 @@ export const RenderColumns = ({
   removeSingleFilter = noop,
   schema,
   selectedCells,
-  setEditableCellValue,
   setEditingCell,
   setExpandedEntityIdMap,
   setNewParams,
@@ -537,257 +540,373 @@ export const RenderColumns = ({
   withFilter: _withFilter,
   withSort = true
 }) => {
+  const dispatch = useDispatch();
+  const change = useCallback(
+    (...args) => dispatch(_change(formName, ...args)),
+    [dispatch, formName]
+  );
   const withFilter = _withFilter === undefined ? !isSimple : _withFilter;
 
-  const onDragEnd = cellsToSelect => {
-    const [primaryRowId, primaryCellPath] = primarySelectedCellId.split(":");
-    const pathToField = getFieldPathToField(schema);
-    const { selectedPaths, selectionGrid } = isSelectionARectangle();
-    let allSelectedPaths = selectedPaths;
-    if (!allSelectedPaths) {
-      allSelectedPaths = [primaryCellPath];
-    }
-
-    updateEntitiesHelper(entities, entities => {
-      let newSelectedCells;
-      if (selectedPaths) {
-        newSelectedCells = {
-          ...selectedCells
-        };
-      } else {
-        newSelectedCells = {
-          [primarySelectedCellId]: PRIMARY_SELECTED_VAL
-        };
+  const onDragEnd = useCallback(
+    cellsToSelect => {
+      const [primaryRowId, primaryCellPath] = primarySelectedCellId.split(":");
+      const pathToField = getFieldPathToField(schema);
+      const { selectedPaths, selectionGrid } = isSelectionARectangle();
+      let allSelectedPaths = selectedPaths;
+      if (!allSelectedPaths) {
+        allSelectedPaths = [primaryCellPath];
       }
 
-      const newCellValidate = {
-        ...reduxFormCellValidation
-      };
-      const entityMap = getEntityIdToEntity(entities);
-      const { e: selectedEnt } = entityMap[primaryRowId];
-      const firstCellToSelectRowIndex =
-        entityMap[cellsToSelect[0]?.split(":")[0]]?.i;
-      const pathToIndex = getFieldPathToIndex(schema);
-
-      allSelectedPaths.forEach(selectedPath => {
-        const column = pathToField[selectedPath];
-
-        const selectedCellVal = getCellVal(selectedEnt, selectedPath, column);
-        const cellIndexOfSelectedPath = pathToIndex[selectedPath];
-        let incrementStart;
-        let incrementPrefix;
-        let incrementPad = 0;
-        if (column.type === "string" || column.type === "number") {
-          const cellNumStr = getNumberStrAtEnd(selectedCellVal);
-          const cellNum = Number(cellNumStr);
-          const entityAbovePrimaryCell =
-            entities[entityMap[primaryRowId].i - 1];
-          if (cellNumStr !== null && !isNaN(cellNum)) {
-            if (
-              entityAbovePrimaryCell &&
-              (!selectionGrid || selectionGrid.length <= 1)
-            ) {
-              const cellAboveVal = get(
-                entityAbovePrimaryCell,
-                selectedPath,
-                ""
-              );
-              const cellAboveNumStr = getNumberStrAtEnd(cellAboveVal);
-              const cellAboveNum = Number(cellAboveNumStr);
-              if (!isNaN(cellAboveNum)) {
-                const isIncremental = cellNum - cellAboveNum === 1;
-                if (isIncremental) {
-                  const cellTextNoNum = stripNumberAtEnd(selectedCellVal);
-                  const sameText =
-                    stripNumberAtEnd(cellAboveVal) === cellTextNoNum;
-                  if (sameText) {
-                    incrementStart = cellNum + 1;
-                    incrementPrefix = cellTextNoNum || "";
-                    if (cellNumStr && cellNumStr.startsWith("0")) {
-                      incrementPad = cellNumStr.length;
-                    }
-                  }
-                }
-              }
-            }
-            if (incrementStart === undefined) {
-              const draggingDown =
-                firstCellToSelectRowIndex > selectionGrid?.[0][0].rowIndex;
-              if (selectedPaths && draggingDown) {
-                let checkIncrement;
-                let prefix;
-                let maybePad;
-                // determine if all the cells in this column of the selectionGrid are incrementing
-                const allAreIncrementing = selectionGrid.every(row => {
-                  // see if cell is selected
-                  const cellInfo = row[cellIndexOfSelectedPath];
-                  if (!cellInfo) return false;
-                  const { cellId } = cellInfo;
-                  const [rowId] = cellId.split(":");
-                  const cellVal = getCellVal(
-                    entityMap[rowId].e,
-                    selectedPath,
-                    pathToField[selectedPath]
-                  );
-                  const cellNumStr = getNumberStrAtEnd(cellVal);
-                  const cellNum = Number(cellNumStr);
-                  const cellTextNoNum = stripNumberAtEnd(cellVal);
-                  if (cellNumStr?.startsWith("0")) {
-                    maybePad = cellNumStr.length;
-                  }
-                  if (cellTextNoNum && !prefix) {
-                    prefix = cellTextNoNum;
-                  }
-                  if (cellTextNoNum && prefix !== cellTextNoNum) {
-                    return false;
-                  }
-                  if (!isNaN(cellNum)) {
-                    if (!checkIncrement) {
-                      checkIncrement = cellNum;
-                      return true;
-                    } else {
-                      return ++checkIncrement === cellNum;
-                    }
-                  } else {
-                    return false;
-                  }
-                });
-
-                if (allAreIncrementing) {
-                  incrementStart = checkIncrement + 1;
-                  incrementPrefix = prefix || "";
-                  incrementPad = maybePad;
-                }
-              }
-            }
-          }
+      updateEntitiesHelper(entities, entities => {
+        let newSelectedCells;
+        if (selectedPaths) {
+          newSelectedCells = {
+            ...selectedCells
+          };
+        } else {
+          newSelectedCells = {
+            [primarySelectedCellId]: PRIMARY_SELECTED_VAL
+          };
         }
 
-        let firstSelectedCellRowIndex;
-        if (selectionGrid) {
-          selectionGrid[0].some(cell => {
-            if (cell) {
-              firstSelectedCellRowIndex = cell.rowIndex;
-              return true;
-            }
-            return false;
-          });
-        }
+        const newCellValidate = {
+          ...reduxFormCellValidation
+        };
+        const entityMap = getEntityIdToEntity(entities);
+        const { e: selectedEnt } = entityMap[primaryRowId];
+        const firstCellToSelectRowIndex =
+          entityMap[cellsToSelect[0]?.split(":")[0]]?.i;
+        const pathToIndex = getFieldPathToIndex(schema);
 
-        cellsToSelect.forEach(cellId => {
-          const [rowId, cellPath] = cellId.split(":");
-          if (cellPath !== selectedPath) return;
-          newSelectedCells[cellId] = true;
-          const { e: entityToUpdate, i: rowIndex } = entityMap[rowId] || {};
-          if (entityToUpdate) {
-            delete entityToUpdate._isClean;
-            let newVal;
-            if (incrementStart !== undefined) {
-              const num = incrementStart++;
-              newVal = incrementPrefix + padStart(num, incrementPad, "0");
-            } else {
-              if (selectionGrid && selectionGrid.length > 1) {
-                // if there are multiple cells selected then we want to copy them repeating
-                // ex: if we have 1,2,3 selected and we drag for 5 more rows we want it to
-                // be 1,2,3,1,2 for the new row cells in this column
-                const draggingDown = rowIndex > firstSelectedCellRowIndex;
-                const cellIndex = pathToIndex[cellPath];
-                let cellIdToCopy;
-                if (draggingDown) {
-                  const { cellId } = selectionGrid[
-                    (rowIndex - firstSelectedCellRowIndex) %
-                      selectionGrid.length
-                  ].find(g => g && g.cellIndex === cellIndex);
-                  cellIdToCopy = cellId;
-                } else {
-                  const lastIndexInGrid =
-                    selectionGrid[selectionGrid.length - 1][0].rowIndex;
-                  const { cellId } = selectionGrid[
-                    (rowIndex + lastIndexInGrid + 1) % selectionGrid.length
-                  ].find(g => g.cellIndex === cellIndex);
-                  cellIdToCopy = cellId;
-                }
+        allSelectedPaths.forEach(selectedPath => {
+          const column = pathToField[selectedPath];
 
-                const [rowIdToCopy, cellPathToCopy] = cellIdToCopy.split(":");
-                newVal = getCellVal(
-                  entityMap[rowIdToCopy].e,
-                  cellPathToCopy,
-                  pathToField[cellPathToCopy]
+          const selectedCellVal = getCellVal(selectedEnt, selectedPath, column);
+          const cellIndexOfSelectedPath = pathToIndex[selectedPath];
+          let incrementStart;
+          let incrementPrefix;
+          let incrementPad = 0;
+          if (column.type === "string" || column.type === "number") {
+            const cellNumStr = getNumberStrAtEnd(selectedCellVal);
+            const cellNum = Number(cellNumStr);
+            const entityAbovePrimaryCell =
+              entities[entityMap[primaryRowId].i - 1];
+            if (cellNumStr !== null && !isNaN(cellNum)) {
+              if (
+                entityAbovePrimaryCell &&
+                (!selectionGrid || selectionGrid.length <= 1)
+              ) {
+                const cellAboveVal = get(
+                  entityAbovePrimaryCell,
+                  selectedPath,
+                  ""
                 );
-              } else {
-                newVal = selectedCellVal;
+                const cellAboveNumStr = getNumberStrAtEnd(cellAboveVal);
+                const cellAboveNum = Number(cellAboveNumStr);
+                if (!isNaN(cellAboveNum)) {
+                  const isIncremental = cellNum - cellAboveNum === 1;
+                  if (isIncremental) {
+                    const cellTextNoNum = stripNumberAtEnd(selectedCellVal);
+                    const sameText =
+                      stripNumberAtEnd(cellAboveVal) === cellTextNoNum;
+                    if (sameText) {
+                      incrementStart = cellNum + 1;
+                      incrementPrefix = cellTextNoNum || "";
+                      if (cellNumStr && cellNumStr.startsWith("0")) {
+                        incrementPad = cellNumStr.length;
+                      }
+                    }
+                  }
+                }
+              }
+              if (incrementStart === undefined) {
+                const draggingDown =
+                  firstCellToSelectRowIndex > selectionGrid?.[0][0].rowIndex;
+                if (selectedPaths && draggingDown) {
+                  let checkIncrement;
+                  let prefix;
+                  let maybePad;
+                  // determine if all the cells in this column of the selectionGrid are incrementing
+                  const allAreIncrementing = selectionGrid.every(row => {
+                    // see if cell is selected
+                    const cellInfo = row[cellIndexOfSelectedPath];
+                    if (!cellInfo) return false;
+                    const { cellId } = cellInfo;
+                    const [rowId] = cellId.split(":");
+                    const cellVal = getCellVal(
+                      entityMap[rowId].e,
+                      selectedPath,
+                      pathToField[selectedPath]
+                    );
+                    const cellNumStr = getNumberStrAtEnd(cellVal);
+                    const cellNum = Number(cellNumStr);
+                    const cellTextNoNum = stripNumberAtEnd(cellVal);
+                    if (cellNumStr?.startsWith("0")) {
+                      maybePad = cellNumStr.length;
+                    }
+                    if (cellTextNoNum && !prefix) {
+                      prefix = cellTextNoNum;
+                    }
+                    if (cellTextNoNum && prefix !== cellTextNoNum) {
+                      return false;
+                    }
+                    if (!isNaN(cellNum)) {
+                      if (!checkIncrement) {
+                        checkIncrement = cellNum;
+                        return true;
+                      } else {
+                        return ++checkIncrement === cellNum;
+                      }
+                    } else {
+                      return false;
+                    }
+                  });
+
+                  if (allAreIncrementing) {
+                    incrementStart = checkIncrement + 1;
+                    incrementPrefix = prefix || "";
+                    incrementPad = maybePad;
+                  }
+                }
               }
             }
-            const { error } = editCellHelper({
-              entity: entityToUpdate,
-              path: cellPath,
-              schema,
-              newVal
-            });
-            newCellValidate[cellId] = error;
           }
+
+          let firstSelectedCellRowIndex;
+          if (selectionGrid) {
+            selectionGrid[0].some(cell => {
+              if (cell) {
+                firstSelectedCellRowIndex = cell.rowIndex;
+                return true;
+              }
+              return false;
+            });
+          }
+
+          cellsToSelect.forEach(cellId => {
+            const [rowId, cellPath] = cellId.split(":");
+            if (cellPath !== selectedPath) return;
+            newSelectedCells[cellId] = true;
+            const { e: entityToUpdate, i: rowIndex } = entityMap[rowId] || {};
+            if (entityToUpdate) {
+              delete entityToUpdate._isClean;
+              let newVal;
+              if (incrementStart !== undefined) {
+                const num = incrementStart++;
+                newVal = incrementPrefix + padStart(num, incrementPad, "0");
+              } else {
+                if (selectionGrid && selectionGrid.length > 1) {
+                  // if there are multiple cells selected then we want to copy them repeating
+                  // ex: if we have 1,2,3 selected and we drag for 5 more rows we want it to
+                  // be 1,2,3,1,2 for the new row cells in this column
+                  const draggingDown = rowIndex > firstSelectedCellRowIndex;
+                  const cellIndex = pathToIndex[cellPath];
+                  let cellIdToCopy;
+                  if (draggingDown) {
+                    const { cellId } = selectionGrid[
+                      (rowIndex - firstSelectedCellRowIndex) %
+                        selectionGrid.length
+                    ].find(g => g && g.cellIndex === cellIndex);
+                    cellIdToCopy = cellId;
+                  } else {
+                    const lastIndexInGrid =
+                      selectionGrid[selectionGrid.length - 1][0].rowIndex;
+                    const { cellId } = selectionGrid[
+                      (rowIndex + lastIndexInGrid + 1) % selectionGrid.length
+                    ].find(g => g.cellIndex === cellIndex);
+                    cellIdToCopy = cellId;
+                  }
+
+                  const [rowIdToCopy, cellPathToCopy] = cellIdToCopy.split(":");
+                  newVal = getCellVal(
+                    entityMap[rowIdToCopy].e,
+                    cellPathToCopy,
+                    pathToField[cellPathToCopy]
+                  );
+                } else {
+                  newVal = selectedCellVal;
+                }
+              }
+              const { error } = editCellHelper({
+                entity: entityToUpdate,
+                path: cellPath,
+                schema,
+                newVal
+              });
+              newCellValidate[cellId] = error;
+            }
+          });
+        });
+
+        // select the new cells
+        updateValidation(entities, newCellValidate);
+        setSelectedCells(newSelectedCells);
+      });
+    },
+    [
+      entities,
+      isSelectionARectangle,
+      primarySelectedCellId,
+      reduxFormCellValidation,
+      schema,
+      selectedCells,
+      setSelectedCells,
+      updateEntitiesHelper,
+      updateValidation
+    ]
+  );
+
+  const getCopyTextForCell = useCallback(
+    (val, row = {}, column = {}) => {
+      // TODOCOPY we need a way to potentially omit certain columns from being added as a \t element (talk to taoh about this)
+      let text = typeof val !== "string" ? row.value : val;
+
+      // We should try to take out the props from here, it produces
+      // unnecessary rerenders
+      const record = row.original;
+      if (column.getClipboardData) {
+        text = column.getClipboardData(row.value, record, row);
+      } else if (column.getValueToFilterOn) {
+        text = column.getValueToFilterOn(record);
+      } else if (column.render) {
+        text = column.render(row.value, record, row, {
+          currentParams,
+          setNewParams
+        });
+      } else if (cellRenderer && cellRenderer[column.path]) {
+        text = cellRenderer[column.path](row.value, row.original, row, {
+          currentParams,
+          setNewParams
+        });
+      } else if (text) {
+        text = isValidElement(text) ? text : String(text);
+      }
+      const getTextFromElementOrLink = text => {
+        if (isValidElement(text)) {
+          if (text.props?.to) {
+            // this will convert Link elements to url strings
+            return joinUrl(
+              window.location.origin,
+              window.frontEndConfig?.clientBasePath || "",
+              text.props.to
+            );
+          } else {
+            return getTextFromEl(text);
+          }
+        } else {
+          return text;
+        }
+      };
+      text = getTextFromElementOrLink(text);
+
+      if (Array.isArray(text)) {
+        let arrText = text.map(getTextFromElementOrLink).join(", ");
+        // because we sometimes insert commas after links when mapping over an array of elements we will have double ,'s
+        arrText = arrText.replace(/, ,/g, ",");
+        text = arrText;
+      }
+
+      const stringText = toString(text);
+      if (stringText === "[object Object]") return "";
+      return stringText;
+    },
+    [cellRenderer, currentParams, setNewParams]
+  );
+
+  const renderCheckboxCell = useCallback(
+    row => {
+      const rowIndex = row.index;
+      const checkedRows = getSelectedRowsFromEntities(
+        entities,
+        reduxFormSelectedEntityIdMap
+      );
+
+      const isSelected = checkedRows.some(rowNum => {
+        return rowNum === rowIndex;
+      });
+      if (rowIndex >= entities.length) {
+        return <div />;
+      }
+      const entity = entities[rowIndex];
+      return (
+        <Checkbox
+          name={`${getIdOrCodeOrIndex(entity, rowIndex)}-checkbox`}
+          disabled={noSelect || noUserSelect || isEntityDisabled(entity)}
+          onClick={e => {
+            rowClick(e, row, entities, {
+              reduxFormSelectedEntityIdMap,
+              isSingleSelect,
+              noSelect,
+              onRowClick,
+              isEntityDisabled,
+              withCheckboxes,
+              onDeselect,
+              onSingleRowSelect,
+              onMultiRowSelect,
+              noDeselectAll,
+              onRowSelect,
+              change
+            });
+          }}
+          checked={isSelected}
+        />
+      );
+    },
+    [
+      change,
+      entities,
+      isEntityDisabled,
+      isSingleSelect,
+      noDeselectAll,
+      noSelect,
+      noUserSelect,
+      onDeselect,
+      onMultiRowSelect,
+      onRowClick,
+      onRowSelect,
+      onSingleRowSelect,
+      reduxFormSelectedEntityIdMap,
+      withCheckboxes
+    ]
+  );
+
+  const finishCellEdit = useCallback(
+    (cellId, newVal, doNotStopEditing) => {
+      const [rowId, path] = cellId.split(":");
+      !doNotStopEditing && setEditingCell(null);
+      updateEntitiesHelper(entities, entities => {
+        const entity = entities.find((e, i) => {
+          return getIdOrCodeOrIndex(e, i) === rowId;
+        });
+        delete entity._isClean;
+        const { error } = editCellHelper({
+          entity,
+          path,
+          schema,
+          newVal
+        });
+        updateValidation(entities, {
+          ...reduxFormCellValidation,
+          [cellId]: error
         });
       });
+      !doNotStopEditing && refocusTable();
+    },
+    [
+      entities,
+      reduxFormCellValidation,
+      refocusTable,
+      schema,
+      setEditingCell,
+      updateEntitiesHelper,
+      updateValidation
+    ]
+  );
 
-      // select the new cells
-      updateValidation(entities, newCellValidate);
-      setSelectedCells(newSelectedCells);
-    });
-  };
-
-  const getCopyTextForCell = (val, row = {}, column = {}) => {
-    // TODOCOPY we need a way to potentially omit certain columns from being added as a \t element (talk to taoh about this)
-    let text = typeof val !== "string" ? row.value : val;
-
-    // We should try to take out the props from here, it produces
-    // unnecessary rerenders
-    const record = row.original;
-    if (column.getClipboardData) {
-      text = column.getClipboardData(row.value, record, row);
-    } else if (column.getValueToFilterOn) {
-      text = column.getValueToFilterOn(record);
-    } else if (column.render) {
-      text = column.render(row.value, record, row, {
-        currentParams,
-        setNewParams
-      });
-    } else if (cellRenderer && cellRenderer[column.path]) {
-      text = cellRenderer[column.path](row.value, row.original, row, {
-        currentParams,
-        setNewParams
-      });
-    } else if (text) {
-      text = isValidElement(text) ? text : String(text);
-    }
-    const getTextFromElementOrLink = text => {
-      if (isValidElement(text)) {
-        if (text.props?.to) {
-          // this will convert Link elements to url strings
-          return joinUrl(
-            window.location.origin,
-            window.frontEndConfig?.clientBasePath || "",
-            text.props.to
-          );
-        } else {
-          return getTextFromEl(text);
-        }
-      } else {
-        return text;
-      }
-    };
-    text = getTextFromElementOrLink(text);
-
-    if (Array.isArray(text)) {
-      let arrText = text.map(getTextFromElementOrLink).join(", ");
-      // because we sometimes insert commas after links when mapping over an array of elements we will have double ,'s
-      arrText = arrText.replace(/, ,/g, ",");
-      text = arrText;
-    }
-
-    const stringText = toString(text);
-    if (stringText === "[object Object]") return "";
-    return stringText;
-  };
+  const cancelCellEdit = useCallback(() => {
+    setEditingCell(null);
+    refocusTable();
+  }, [refocusTable, setEditingCell]);
 
   if (!columns.length) {
     return columns;
@@ -852,72 +971,6 @@ export const RenderColumns = ({
     });
   }
 
-  const renderCheckboxCell = row => {
-    const rowIndex = row.index;
-    const checkedRows = getSelectedRowsFromEntities(
-      entities,
-      reduxFormSelectedEntityIdMap
-    );
-
-    const isSelected = checkedRows.some(rowNum => {
-      return rowNum === rowIndex;
-    });
-    if (rowIndex >= entities.length) {
-      return <div />;
-    }
-    const entity = entities[rowIndex];
-    return (
-      <Checkbox
-        name={`${getIdOrCodeOrIndex(entity, rowIndex)}-checkbox`}
-        disabled={noSelect || noUserSelect || isEntityDisabled(entity)}
-        onClick={e => {
-          rowClick(e, row, entities, {
-            reduxFormSelectedEntityIdMap,
-            isSingleSelect,
-            noSelect,
-            onRowClick,
-            isEntityDisabled,
-            withCheckboxes,
-            onDeselect,
-            onSingleRowSelect,
-            onMultiRowSelect,
-            noDeselectAll,
-            onRowSelect,
-            change
-          });
-        }}
-        checked={isSelected}
-      />
-    );
-  };
-
-  const finishCellEdit = (cellId, newVal, doNotStopEditing) => {
-    const [rowId, path] = cellId.split(":");
-    !doNotStopEditing && setEditingCell(null);
-    updateEntitiesHelper(entities, entities => {
-      const entity = entities.find((e, i) => {
-        return getIdOrCodeOrIndex(e, i) === rowId;
-      });
-      delete entity._isClean;
-      const { error } = editCellHelper({
-        entity,
-        path,
-        schema,
-        newVal
-      });
-      updateValidation(entities, {
-        ...reduxFormCellValidation,
-        [cellId]: error
-      });
-    });
-    !doNotStopEditing && refocusTable();
-  };
-
-  const cancelCellEdit = () => {
-    setEditingCell(null);
-    refocusTable();
-  };
-
   if (withCheckboxes) {
     columnsToRender.push({
       Header: renderCheckboxHeader({
@@ -951,7 +1004,7 @@ export const RenderColumns = ({
     });
   }
 
-  columns.forEach(column => {
+  const tableColumns = columns.map(column => {
     const tableColumn = {
       ...column,
       Header: RenderColumnHeader({
@@ -1053,8 +1106,6 @@ export const RenderColumns = ({
         noEllipsis={noEllipsis}
         editingCell={editingCell}
         cancelCellEdit={cancelCellEdit}
-        editableCellValue={editableCellValue}
-        setEditableCellValue={setEditableCellValue}
         editingCellSelectAll={editingCellSelectAll}
         getCellHoverText={getCellHoverText}
         selectedCells={selectedCells}
@@ -1065,7 +1116,8 @@ export const RenderColumns = ({
         args={args}
       />
     );
-    columnsToRender.push(tableColumn);
+    return tableColumn;
   });
-  return columnsToRender;
+
+  return columnsToRender.concat(tableColumns);
 };

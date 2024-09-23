@@ -46,9 +46,8 @@ import scrollIntoView from "dom-scroll-into-view";
 import ReactTable from "@teselagen/react-table";
 import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ThComponent } from "./ThComponent";
-
 import {
   defaultParsePaste,
   formatPasteData,
@@ -99,8 +98,8 @@ import {
   makeDataTableHandlers,
   setCurrentParamsOnUrl
 } from "./utils/queryParams";
-import { RenderColumns } from "./Columns";
-import { formValueSelector } from "redux-form";
+import { useColumns } from "./Columns";
+import { formValueSelector, change as _change } from "redux-form";
 import { throwFormError } from "../throwFormError";
 import { useTraceUpdate } from "../utils/useTraceUpdate";
 
@@ -134,10 +133,13 @@ const DataTable = ({
       `No entities array detected in tableParams object (<DataTable {...tableParams}/>). You need to call withQuery() after withTableParams() like: compose(withTableParams(), withQuery(something)).`
     );
   }
+  const dispatch = useDispatch();
+  const change = useCallback(
+    (...args) => dispatch(_change(formName, ...args)),
+    [dispatch, formName]
+  );
   const tableRef = useRef();
   const alreadySelected = useRef(false);
-  const [editableCellValue, setEditableCellValue] = useState("");
-  const [editingCell, setEditingCell] = useState(null);
   const [onlyShowRowsWErrors, setOnlyShowRowsWErrors] = useState(false);
   const [entitiesUndoRedoStack, setEntitiesUndoRedoStack] = useState({
     currentVersion: 0
@@ -164,6 +166,7 @@ const DataTable = ({
 
   const {
     reduxFormCellValidation: _reduxFormCellValidation,
+    reduxFormEditingCell,
     reduxFormEntities: _reduxFormEntities,
     reduxFormQueryParams: _reduxFormQueryParams = {},
     reduxFormSearchInput: _reduxFormSearchInput = "",
@@ -244,7 +247,6 @@ const DataTable = ({
 
   const { withPaging = !isSimple } = props;
   const {
-    change,
     doNotCoercePageSize,
     isInfinite = isSimple && !withPaging,
     syncDisplayOptionsToDb,
@@ -280,6 +282,7 @@ const DataTable = ({
   }, [history, reduxFormQueryParams, reduxFormSearchInput, urlConnected]);
 
   const currentParams = useDeepEqualMemo(_currentParams);
+  useTraceUpdate({ currentParams });
 
   const tableParams = useMemo(() => {
     if (!isTableParamsConnected) {
@@ -314,7 +317,6 @@ const DataTable = ({
         changeFormValue,
         selectedEntities,
         ..._tableParams,
-        ...props,
         ...boundDispatchProps,
         isTableParamsConnected: true //let the table know not to do local sorting/filtering etc.
       };
@@ -324,9 +326,10 @@ const DataTable = ({
     _tableParams,
     change,
     currentParams,
-    history,
+    history?.replace,
     isTableParamsConnected,
-    props,
+    props.defaults,
+    props.onlyOneFilter,
     selectedEntities,
     urlConnected
   ]);
@@ -378,8 +381,6 @@ const DataTable = ({
     isTableParamsConnected,
     urlConnected
   ]);
-
-  useTraceUpdate({ ...queryParams });
 
   props = {
     ...props,
@@ -516,7 +517,7 @@ const DataTable = ({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entitiesAcrossPages, reduxFormSelectedEntityIdMap]);
+  }, [entitiesAcrossPages, reduxFormSelectedEntityIdMap, change]);
 
   const [tableConfig, setTableConfig] = useState({ fieldOptions: [] });
 
@@ -647,8 +648,8 @@ const DataTable = ({
       }
     }
     return schema;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    cellRenderer,
     convertedSchema,
     currentParams,
     entities,
@@ -658,7 +659,7 @@ const DataTable = ({
     isSimple,
     isViewable,
     onDoubleClick,
-    // setNewParams,
+    setNewParams,
     showForcedHiddenColumns,
     tableConfig.columnOrderings,
     tableConfig.fieldOptions,
@@ -810,8 +811,7 @@ const DataTable = ({
       });
       change("reduxFormCellValidation", tableWideErr);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [schema]
+    [schema, change]
   );
 
   const updateEntitiesHelper = useCallback(
@@ -1067,24 +1067,20 @@ const DataTable = ({
   }, [selectedCells]);
 
   const startCellEdit = useCallback(
-    (cellId, { pressedKey } = {}) => {
-      //check if the cell is already selected and editing and if so, don't change it
-      if (editingCell === cellId) return;
-      if (pressedKey) {
-        setEditableCellValue("");
-      } else {
-        const [rowId, path] = cellId.split(":");
-        const entityIdToEntity = getEntityIdToEntity(entities);
-        const entity = entityIdToEntity[rowId].e;
-        // Not entirely sure entity[path] is the correct way to look for the value
-        // Should check later.
-        setEditableCellValue(entity[path]);
-      }
-      setSelectedCells(prev => ({ ...prev, [cellId]: PRIMARY_SELECTED_VAL }));
-      setEditingCell(cellId);
-      //we should select the text
+    cellId => {
+      change("reduxFormEditingCell", prev => {
+        //check if the cell is already selected and editing and if so, don't change it
+        if (prev === cellId) return cellId;
+        setSelectedCells(prev => {
+          if (prev[cellId] === PRIMARY_SELECTED_VAL) {
+            return prev;
+          }
+          return { ...prev, [cellId]: PRIMARY_SELECTED_VAL };
+        });
+        return cellId;
+      });
     },
-    [editingCell, entities]
+    [change]
   );
 
   const handleEnterStartCellEdit = useCallback(
@@ -1481,8 +1477,14 @@ const DataTable = ({
       });
     };
     isCellEditable && formatAndValidateTableInitial();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_origEntities, isCellEditable]);
+  }, [
+    _origEntities,
+    isCellEditable,
+    change,
+    formatAndValidateEntities,
+    reduxFormCellValidation,
+    updateValidation
+  ]);
 
   const handlePaste = useCallback(
     e => {
@@ -1651,17 +1653,6 @@ const DataTable = ({
       document.removeEventListener("paste", handlePaste);
     };
   }, [handlePaste]);
-
-  useEffect(() => {
-    if (!entities.length && !isLoading && !showForcedHiddenColumns) {
-      setShowForcedHidden(true);
-    }
-  }, [
-    entities.length,
-    isLoading,
-    setShowForcedHidden,
-    showForcedHiddenColumns
-  ]);
 
   useEffect(() => {
     addFilters(additionalFilters);
@@ -1913,7 +1904,7 @@ const DataTable = ({
       };
       if (newSelectedCells[cellId] && !event.shiftKey) {
         // don't deselect if editing
-        if (editingCell === cellId) return;
+        if (reduxFormEditingCell === cellId) return;
         if (event.metaKey) {
           delete newSelectedCells[cellId];
         } else {
@@ -1981,10 +1972,10 @@ const DataTable = ({
       setSelectedCells(newSelectedCells);
     },
     [
-      editingCell,
       entities,
       isEntityDisabled,
       primarySelectedCellId,
+      reduxFormEditingCell,
       schema,
       selectedCells
     ]
@@ -2321,8 +2312,8 @@ const DataTable = ({
         }
       };
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
+      change,
       entities,
       expandedEntityIdMap,
       getRowClassName,
@@ -2400,7 +2391,7 @@ const DataTable = ({
         noSelectedBottomBorder: !selectedBottomBorder,
         noSelectedLeftBorder: !selectedLeftBorder,
         isDropdownCell: column.type === "dropdown",
-        isEditingCell: editingCell === cellId,
+        isEditingCell: reduxFormEditingCell === cellId,
         hasCellError: !!err,
         "no-data-tip": selectedCells[cellId]
       });
@@ -2439,13 +2430,13 @@ const DataTable = ({
     },
     [
       doNotValidateUntouchedRows,
-      editingCell,
       entities,
       handleCellClick,
       isCellEditable,
       isEntityDisabled,
       primarySelectedCellId,
       reduxFormCellValidation,
+      reduxFormEditingCell,
       schema,
       selectedCells,
       showContextMenu,
@@ -2688,108 +2679,56 @@ const DataTable = ({
 
   // We are not rerendering when props and change are changed,
   // we need to figure out how to manage them correctly
-  const renderColumns = useMemo(
-    () =>
-      RenderColumns({
-        addFilters,
-        cellRenderer,
-        change,
-        columns,
-        currentParams,
-        compact,
-        editableCellValue,
-        editingCell,
-        editingCellSelectAll,
-        entities,
-        expandedEntityIdMap,
-        extraCompact,
-        filters,
-        getCellHoverText,
-        isCellEditable,
-        isEntityDisabled,
-        isLocalCall,
-        isSimple,
-        isSingleSelect,
-        isSelectionARectangle,
-        noDeselectAll,
-        noSelect,
-        noUserSelect,
-        onDeselect,
-        onMultiRowSelect,
-        onRowClick,
-        onRowSelect,
-        onSingleRowSelect,
-        order,
-        primarySelectedCellId,
-        reduxFormCellValidation,
-        reduxFormSelectedEntityIdMap,
-        refocusTable,
-        removeSingleFilter,
-        schema,
-        selectedCells,
-        setEditableCellValue,
-        setEditingCell,
-        setExpandedEntityIdMap,
-        setNewParams,
-        setOrder,
-        setSelectedCells,
-        shouldShowSubComponent,
-        startCellEdit,
-        SubComponent,
-        tableRef,
-        updateEntitiesHelper,
-        updateValidation,
-        withCheckboxes,
-        withExpandAndCollapseAllButton,
-        withFilter,
-        withSort
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      SubComponent,
-      columns,
-      compact,
-      currentParams,
-      editableCellValue,
-      editingCell,
-      editingCellSelectAll,
-      entities,
-      expandedEntityIdMap,
-      extraCompact,
-      filters,
-      getCellHoverText,
-      isCellEditable,
-      isEntityDisabled,
-      isLocalCall,
-      isSelectionARectangle,
-      isSimple,
-      isSingleSelect,
-      noDeselectAll,
-      noSelect,
-      noUserSelect,
-      onDeselect,
-      onMultiRowSelect,
-      onRowClick,
-      onRowSelect,
-      onSingleRowSelect,
-      order,
-      primarySelectedCellId,
-      reduxFormCellValidation,
-      reduxFormSelectedEntityIdMap,
-      removeSingleFilter,
-      schema,
-      selectedCells,
-      setOrder,
-      shouldShowSubComponent,
-      startCellEdit,
-      updateEntitiesHelper,
-      updateValidation,
-      withCheckboxes,
-      withExpandAndCollapseAllButton,
-      withFilter,
-      withSort
-    ]
-  );
+  const renderColumns = useColumns({
+    addFilters,
+    cellRenderer,
+    columns,
+    currentParams,
+    compact,
+    editingCellSelectAll,
+    entities,
+    expandedEntityIdMap,
+    extraCompact,
+    filters,
+    formName,
+    getCellHoverText,
+    isCellEditable,
+    isEntityDisabled,
+    isLocalCall,
+    isSimple,
+    isSingleSelect,
+    isSelectionARectangle,
+    noDeselectAll,
+    noSelect,
+    noUserSelect,
+    onDeselect,
+    onMultiRowSelect,
+    onRowClick,
+    onRowSelect,
+    onSingleRowSelect,
+    order,
+    primarySelectedCellId,
+    reduxFormCellValidation,
+    reduxFormSelectedEntityIdMap,
+    refocusTable,
+    removeSingleFilter,
+    schema,
+    selectedCells,
+    setExpandedEntityIdMap,
+    setNewParams,
+    setOrder,
+    setSelectedCells,
+    shouldShowSubComponent,
+    startCellEdit,
+    SubComponent,
+    tableRef,
+    updateEntitiesHelper,
+    updateValidation,
+    withCheckboxes,
+    withExpandAndCollapseAllButton,
+    withFilter,
+    withSort
+  });
 
   const scrollToTop = useCallback(
     () =>
@@ -3014,9 +2953,7 @@ const DataTable = ({
               }
               if (rowDisabled) return;
               e.stopPropagation();
-              startCellEdit(primarySelectedCellId, {
-                pressedKey: e.key
-              });
+              startCellEdit(primarySelectedCellId);
             }
           })}
         >

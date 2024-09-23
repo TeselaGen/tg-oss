@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export const EditableCell = ({
-  value,
-  setValue,
   cancelEdit,
   dataTest,
   finishEdit,
-  isNumeric
+  isNumeric,
+  initialValue
 }) => {
+  const [value, setValue] = useState(initialValue);
   const inputRef = useRef(null);
 
   useEffect(() => {
