@@ -705,6 +705,7 @@ export const useColumns = ({
           schema,
           newVal
         });
+
         updateValidation(entities, {
           ...reduxFormCellValidation,
           [cellId]: error

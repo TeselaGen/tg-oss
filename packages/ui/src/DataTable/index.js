@@ -166,7 +166,7 @@ const DataTable = ({
   const {
     reduxFormCellValidation: _reduxFormCellValidation,
     reduxFormEditingCell,
-    reduxFormEntities: _reduxFormEntities,
+    reduxFormEntities,
     reduxFormQueryParams: _reduxFormQueryParams = {},
     reduxFormSearchInput: _reduxFormSearchInput = "",
     reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
@@ -184,7 +184,6 @@ const DataTable = ({
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
   const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
-  const reduxFormEntities = useDeepEqualMemo(_reduxFormEntities);
   const reduxFormQueryParams = useDeepEqualMemo(_reduxFormQueryParams);
   const reduxFormSearchInput = useDeepEqualMemo(_reduxFormSearchInput);
   const reduxFormSelectedEntityIdMap = useDeepEqualMemo(
@@ -839,8 +838,7 @@ const DataTable = ({
         }
       }));
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [change]
   );
 
   const formatAndValidateEntities = useCallback(
@@ -1472,8 +1470,7 @@ const DataTable = ({
   // "formats", not "changes".
   useEffect(() => {
     const formatAndValidateTableInitial = () => {
-      const { newEnts, validationErrors } =
-        formatAndValidateEntities(_origEntities);
+      const { newEnts, validationErrors } = formatAndValidateEntities(entities);
       const toKeep = {};
       //on the initial load we want to keep any async table wide errors
       forEach(reduxFormCellValidation, (v, k) => {
@@ -1481,7 +1478,12 @@ const DataTable = ({
           toKeep[k] = v;
         }
       });
-      change("reduxFormEntities", newEnts);
+      change("reduxFormEntities", prev => {
+        if (!isEqual(prev, newEnts)) {
+          return newEnts;
+        }
+        return prev;
+      });
       updateValidation(newEnts, {
         ...toKeep,
         ...validationErrors
@@ -1489,10 +1491,10 @@ const DataTable = ({
     };
     isCellEditable && formatAndValidateTableInitial();
   }, [
-    _origEntities,
-    isCellEditable,
     change,
+    entities,
     formatAndValidateEntities,
+    isCellEditable,
     reduxFormCellValidation,
     updateValidation
   ]);
