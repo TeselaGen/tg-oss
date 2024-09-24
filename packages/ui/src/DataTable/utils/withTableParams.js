@@ -52,6 +52,7 @@ export const useTableParams = props => {
     syncDisplayOptionsToDb,
     tableParams: _tableParams,
     urlConnected,
+    withDisplayOptions,
     withPaging,
     withSelectedEntities
   } = props;
@@ -254,6 +255,7 @@ export const useTableParams = props => {
       isLocalCall,
       schema,
       currentParams,
+      withDisplayOptions,
       ...queryParams,
       ...boundDispatchProps,
       form: formName, //this will override the default redux form name
@@ -271,7 +273,8 @@ export const useTableParams = props => {
     queryParams,
     schema,
     selectedEntities,
-    urlConnected
+    urlConnected,
+    withDisplayOptions
   ]);
 
   return {

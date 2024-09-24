@@ -101,7 +101,6 @@ import {
 import { useColumns } from "./Columns";
 import { formValueSelector, change as _change } from "redux-form";
 import { throwFormError } from "../throwFormError";
-import { useTraceUpdate } from "../utils/useTraceUpdate";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -282,7 +281,6 @@ const DataTable = ({
   }, [history, reduxFormQueryParams, reduxFormSearchInput, urlConnected]);
 
   const currentParams = useDeepEqualMemo(_currentParams);
-  useTraceUpdate({ currentParams });
 
   const tableParams = useMemo(() => {
     if (!isTableParamsConnected) {
@@ -522,20 +520,29 @@ const DataTable = ({
   const [tableConfig, setTableConfig] = useState({ fieldOptions: [] });
 
   useEffect(() => {
-    let newTableConfig = {};
     if (withDisplayOptions) {
+      let newTableConfig = {};
       if (syncDisplayOptionsToDb) {
         newTableConfig = tableConfigurations && tableConfigurations[0];
       } else {
         newTableConfig = getTableConfigFromStorage(formName);
       }
-      if (!newTableConfig) {
-        newTableConfig = {
-          fieldOptions: []
-        };
-      }
+      // if the tableConfig is the same as the newTableConfig, don't update
+      setTableConfig(prev => {
+        if (!newTableConfig) {
+          newTableConfig = {
+            fieldOptions: []
+          };
+          if (isEqual(prev, newTableConfig)) {
+            return prev;
+          } else {
+            return newTableConfig;
+          }
+        } else {
+          return newTableConfig;
+        }
+      });
     }
-    setTableConfig(newTableConfig);
   }, [
     formName,
     syncDisplayOptionsToDb,
@@ -1067,7 +1074,11 @@ const DataTable = ({
   }, [selectedCells]);
 
   const startCellEdit = useCallback(
-    cellId => {
+    (cellId, initialValue) => {
+      // This initial value is not needed if the event is propagated accordingly.
+      // This is directly connected to the RenderCell component, which does set
+      // the initial value.
+      change("reduxFormInitialValue", initialValue);
       change("reduxFormEditingCell", prev => {
         //check if the cell is already selected and editing and if so, don't change it
         if (prev === cellId) return cellId;
@@ -2677,8 +2688,6 @@ const DataTable = ({
     return entities;
   }, [entities, onlyShowRowsWErrors, reduxFormCellValidation]);
 
-  // We are not rerendering when props and change are changed,
-  // we need to figure out how to manage them correctly
   const renderColumns = useColumns({
     addFilters,
     cellRenderer,
@@ -2847,11 +2856,7 @@ const DataTable = ({
             onKeyDown: e => {
               const isTabKey = e.key === "Tab";
               const isArrowKey = e.key.startsWith("Arrow");
-              if (
-                (isArrowKey && e.target?.tagName !== "INPUT") ||
-                isTabKey
-                // || (isEnter && e.target?.tagName === "INPUT")
-              ) {
+              if ((isArrowKey && e.target?.tagName !== "INPUT") || isTabKey) {
                 const left = e.key === "ArrowLeft";
                 const up = e.key === "ArrowUp";
                 const down = e.key === "ArrowDown" || e.key === "Enter";
@@ -2953,7 +2958,7 @@ const DataTable = ({
               }
               if (rowDisabled) return;
               e.stopPropagation();
-              startCellEdit(primarySelectedCellId);
+              startCellEdit(primarySelectedCellId, e.key);
             }
           })}
         >
