@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import { change as _change, formValueSelector } from "redux-form";
 import { useDispatch, useSelector } from "react-redux";
 import convertSchema from "./convertSchema";
@@ -10,7 +11,6 @@ import {
 } from "./queryParams";
 import { withRouter } from "react-router-dom";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
-import { useMemo } from "react";
 import { useDeepEqualMemo } from "./useDeepEqualMemo";
 import { branch, compose } from "recompose";
 
@@ -97,8 +97,6 @@ export const useTableParams = props => {
     }
   }
 
-  const _tableConfig = getTableConfigFromStorage(formName);
-
   const {
     reduxFormQueryParams: _reduxFormQueryParams = {},
     reduxFormSearchInput: _reduxFormSearchInput = "",
@@ -148,6 +146,7 @@ export const useTableParams = props => {
   const currentParams = useDeepEqualMemo(_currentParams);
 
   const defaultsToUse = useMemo(() => {
+    const _tableConfig = getTableConfigFromStorage(formName);
     const userSetPageSize =
       _tableConfig?.userSetPageSize &&
       parseInt(_tableConfig.userSetPageSize, 10);
@@ -158,7 +157,7 @@ export const useTableParams = props => {
     }
 
     return _defaultsToUse;
-  }, [_tableConfig?.userSetPageSize, defaults, syncDisplayOptionsToDb]);
+  }, [defaults, formName, syncDisplayOptionsToDb]);
 
   const passingProps = useMemo(
     () => ({
