@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { MouseSensor, useSensor, useSensors, DndContext } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -6,8 +6,16 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 
-function CustomTheadComponent(props) {
-  const headerColumns = props.children.props.children;
+const CustomTheadComponent = ({
+  children: _children,
+  className,
+  onSortEnd,
+  onSortStart,
+  style
+}) => {
+  // We need to do this because react table gives the children wrapped
+  // in another component
+  const children = _children.props.children;
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 10
@@ -15,7 +23,7 @@ function CustomTheadComponent(props) {
   });
 
   const sensors = useSensors(mouseSensor);
-  function handleDragEnd(event) {
+  const handleDragEnd = event => {
     const { active, over } = event;
 
     if (!over || !active) {
@@ -25,40 +33,36 @@ function CustomTheadComponent(props) {
     if (active.id === over.id) {
       return;
     }
-    props.onSortEnd({
+
+    onSortEnd({
       oldIndex: parseInt(active.id),
       newIndex: parseInt(over.id)
     });
-  }
+  };
 
   return (
     <DndContext
-      onDragStart={props.onSortStart}
+      onDragStart={onSortStart}
       onDragEnd={handleDragEnd}
       modifiers={[restrictToHorizontalAxis]}
       sensors={sensors}
     >
-      <SortableContext
-        items={headerColumns.map((_item, index) => `${index}`)}
-        strategy={horizontalListSortingStrategy}
-      >
-        <div className={"rt-thead " + props.className} style={props.style}>
-          <div className="rt-tr">
-            {headerColumns.map(column => {
-              // if a column is marked as immovable just return regular column
-              if (column.props.immovable === "true") return column;
-              // keeps track of hidden columns here so columnIndex might not equal i
-              return column;
-            })}
-          </div>
+      <div className={"rt-thead " + className} style={style}>
+        <div className="rt-tr">
+          <SortableContext
+            items={children.map((_, index) => `${index}`)}
+            strategy={horizontalListSortingStrategy}
+          >
+            {children}
+          </SortableContext>
         </div>
-      </SortableContext>
+      </div>
     </DndContext>
   );
-}
+};
 
-class SortableColumns extends Component {
-  shouldCancelStart = e => {
+const SortableColumns = ({ className, style, children, moveColumn }) => {
+  const shouldCancelStart = e => {
     const className = e.target.className;
     // if its an svg then it's a blueprint icon
     return (
@@ -66,30 +70,31 @@ class SortableColumns extends Component {
     );
   };
 
-  onSortEnd = (...args) => {
+  const onSortEnd = (...args) => {
     const { oldIndex, newIndex } = args[0];
     document.body.classList.remove("drag-active");
-    this.props.moveColumn({
+    moveColumn({
       oldIndex,
       newIndex
     });
   };
 
-  onSortStart = () => {
+  const onSortStart = () => {
     document.body.classList.add("drag-active");
   };
 
-  render() {
-    return (
-      <CustomTheadComponent
-        {...this.props}
-        onSortStart={this.onSortStart}
-        onSortEnd={this.onSortEnd}
-        helperClass="above-dialog"
-        shouldCancelStart={this.shouldCancelStart}
-      />
-    );
-  }
-}
+  return (
+    <CustomTheadComponent
+      className={className}
+      style={style}
+      onSortStart={onSortStart}
+      onSortEnd={onSortEnd}
+      helperClass="above-dialog"
+      shouldCancelStart={shouldCancelStart}
+    >
+      {children}
+    </CustomTheadComponent>
+  );
+};
 
 export default SortableColumns;

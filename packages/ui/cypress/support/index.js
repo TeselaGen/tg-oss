@@ -27,12 +27,9 @@
 const { isString } = require("lodash-es");
 
 Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
-  /* eslint-disable no-unexpected-multiline*/
-
   return cy
     .get(`[data-test="${type}"]`)
     [onOrOff ? "check" : "uncheck"]({ force: true });
-  /* eslint-enable no-unexpected-multiline*/
 });
 
 Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
@@ -43,13 +40,10 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
         })
       : cy.wrap(selector);
 
-  getOrWrap(dragSelector)
-    .trigger("mousedown")
-    .trigger("mousemove", 10, 10, { force: true });
-  getOrWrap(dropSelector)
-    .trigger("mousemove", { force: true })
-    .wait(100)
-    .trigger("mouseup", { force: true });
+  getOrWrap(dragSelector).trigger("mousedown");
+  getOrWrap(dragSelector).trigger("mousemove", 10, 10, { force: true });
+  getOrWrap(dropSelector).trigger("mousemove");
+  getOrWrap(dropSelector).trigger("mouseup");
 });
 
 Cypress.Commands.add(

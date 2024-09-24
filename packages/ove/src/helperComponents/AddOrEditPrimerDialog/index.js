@@ -33,9 +33,9 @@ const CustomContentEditable = generateField(function CustomContentEditable({
   start,
   end,
   primerBindsOn,
-  bases,
   forward
 }) {
+  const bases = input.value;
   const [hasTempError, setTempError] = useState(false);
   const inputRef = useRef(null);
   const [caretPosition, setCaretPosition] = useState({ start: 0, end: 0 });
@@ -194,7 +194,7 @@ const RenderBases = props => {
           label="Linked Oligo?"
           tooltipInfo={`Check this box to link this primer to an oligo in your Oligo Library. If the primer bases match exactly the bases of an existing oligo, it will be linked to that existing oligo. If the bases don't match, a new oligo will be created in the library.`}
           noMarginBottom
-          defaultValue={true}
+          defaultValue={useLinkedOligo ?? true}
           disabled={readOnly}
         ></CheckboxField>
         {useLinkedOligo && (
@@ -221,11 +221,7 @@ const RenderBases = props => {
             sequenceLength={sequenceLength}
             disabled={readOnly}
             {...props}
-            {...(defaultValue
-              ? {
-                  defaultValue
-                }
-              : {})}
+            defaultValue={bases ?? defaultValue}
             name="bases"
             label={
               <div className="tg-bases-label">

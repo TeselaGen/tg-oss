@@ -123,7 +123,10 @@ function PCRTool(props) {
         inlineLabel
         tooltipError
         options={forwardPrimers}
-        defaultValue={forwardPrimers[0] ? forwardPrimers[0].value : undefined}
+        defaultValue={
+          forwardPrimer ??
+          (forwardPrimers[0] ? forwardPrimers[0].value : undefined)
+        }
         name="forwardPrimer"
         label="Forward Primer:"
       />
@@ -132,7 +135,10 @@ function PCRTool(props) {
         inlineLabel
         tooltipError
         options={reversePrimers}
-        defaultValue={reversePrimers[0] ? reversePrimers[0].value : undefined}
+        defaultValue={
+          reversePrimer ??
+          (reversePrimers[0] ? reversePrimers[0].value : undefined)
+        }
         name="reversePrimer"
         label="Reverse Primer:"
       />
