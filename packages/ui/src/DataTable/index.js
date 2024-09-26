@@ -120,7 +120,7 @@ const DataTable = ({
   isTableParamsConnected,
   noForm,
   orderByFirstColumn,
-  schema: __schema,
+  schema: _schema,
   showEmptyColumnsByDefault,
   tableParams: _tableParams,
   anyTouched,
@@ -199,27 +199,6 @@ const DataTable = ({
     };
   }
 
-  props.defaults = useDeepEqualMemo({
-    pageSize: controlled_pageSize || 25,
-    order: [], // ["-name", "statusCode"] //an array of camelCase display names with - sign to denote reverse
-    searchTerm: "",
-    page: 1,
-    filters: [
-      // filters look like this:
-      // {
-      //   selectedFilter: 'textContains', //camel case
-      //   filterOn: ccDisplayName, //camel case display name
-      //   filterValue: 'thomas',
-      // }
-    ],
-    ...(props.defaults || {})
-  });
-
-  const _schema = useMemo(() => {
-    if (isFunction(__schema)) return __schema(props);
-    else return __schema;
-  }, [__schema, props]);
-
   const convertedSchema = useMemo(() => convertSchema(_schema), [_schema]);
 
   if (isLocalCall) {
@@ -228,10 +207,6 @@ const DataTable = ({
         "Please pass a unique 'formName' prop to the locally connected <DataTable/> component with schema: ",
         _schema
       );
-    }
-    if (orderByFirstColumn && !props.defaults?.order?.length) {
-      const r = [getCCDisplayName(convertedSchema.fields[0])];
-      props.defaults.order = r;
     }
   } else {
     //in user instantiated withTableParams() call
@@ -252,10 +227,41 @@ const DataTable = ({
     withSelectedEntities
   } = props;
 
-  if (!syncDisplayOptionsToDb && userSetPageSize) {
-    props.defaults = props.defaults || {};
-    props.defaults.pageSize = userSetPageSize;
-  }
+  const defaults = useMemo(() => {
+    const _defaults = {
+      pageSize: controlled_pageSize || 25,
+      order: [], // ["-name", "statusCode"] //an array of camelCase display names with - sign to denote reverse
+      searchTerm: "",
+      page: 1,
+      filters: [
+        // filters look like this:
+        // {
+        //   selectedFilter: 'textContains', //camel case
+        //   filterOn: ccDisplayName, //camel case display name
+        //   filterValue: 'thomas',
+        // }
+      ],
+      ...(props.defaults || {})
+    };
+    if (isLocalCall && orderByFirstColumn && !_defaults?.order?.length) {
+      const r = [getCCDisplayName(convertedSchema.fields[0])];
+      _defaults.order = r;
+    }
+
+    if (!syncDisplayOptionsToDb && userSetPageSize) {
+      _defaults.pageSize = userSetPageSize;
+    }
+
+    return _defaults;
+  }, [
+    controlled_pageSize,
+    convertedSchema.fields,
+    isLocalCall,
+    orderByFirstColumn,
+    props.defaults,
+    syncDisplayOptionsToDb,
+    userSetPageSize
+  ]);
 
   const selectedEntities = withSelectedEntities
     ? getRecordsFromIdMap(reduxFormSelectedEntityIdMap)
@@ -295,7 +301,7 @@ const DataTable = ({
       const bindThese = makeDataTableHandlers({
         setNewParams,
         updateSearch,
-        defaults: props.defaults,
+        defaults,
         onlyOneFilter: props.onlyOneFilter
       });
 
@@ -323,9 +329,9 @@ const DataTable = ({
     _tableParams,
     change,
     currentParams,
-    history?.replace,
+    defaults,
+    history.replace,
     isTableParamsConnected,
-    props.defaults,
     props.onlyOneFilter,
     selectedEntities,
     urlConnected
@@ -353,7 +359,7 @@ const DataTable = ({
         currentParams,
         entities: props.entities, // for local table
         urlConnected,
-        defaults: props.defaults,
+        defaults,
         schema: convertedSchema,
         isInfinite,
         isLocalCall,
@@ -550,7 +556,7 @@ const DataTable = ({
   ]);
 
   const schema = useMemo(() => {
-    const schema = convertedSchema;
+    const schema = { ...convertedSchema };
     if (isViewable) {
       schema.fields = [viewColumn, ...schema.fields];
     }
