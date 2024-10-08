@@ -2317,7 +2317,7 @@ const DataTable = ({
         },
         className: classNames(
           "with-row-data",
-          getRowClassName && getRowClassName(rowInfo, state, props),
+          getRowClassName && getRowClassName(rowInfo, state),
           {
             disabled: rowDisabled,
             selected: rowSelected && !withCheckboxes,
@@ -2351,7 +2351,6 @@ const DataTable = ({
       onRowClick,
       onRowSelect,
       onSingleRowSelect,
-      props,
       reduxFormSelectedEntityIdMap,
       selectedCells,
       showContextMenu,
@@ -2806,8 +2805,12 @@ const DataTable = ({
             <div className="rt-noData">{noRowsFoundMessage || children}</div>
           )
         }
-        LoadingComponent={props => (
-          <DisabledLoadingComponent {...props} disabled={disabled} />
+        LoadingComponent={({ loadingText, loading }) => (
+          <DisabledLoadingComponent
+            loading={loading}
+            loadingText={loadingText}
+            disabled={disabled}
+          />
         )}
         style={{
           maxHeight,
