@@ -499,7 +499,9 @@ const DataTable = ({
 
   const _entities = useMemo(
     () => (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || [],
-    [_origEntities, reduxFormEntities]
+    // Added isLoading to the dependencies because we need to update the entities when the data is loading, which sometimes is a proxy
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [_origEntities, reduxFormEntities, isLoading]
   );
 
   const entities = useDeepEqualMemo(_entities);
