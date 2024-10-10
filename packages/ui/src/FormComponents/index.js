@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { SketchPicker } from "react-color";
 import { isNumber, noop, kebabCase, isPlainObject, isEqual } from "lodash-es";
 import mathExpressionEvaluator from "math-expression-evaluator";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Field, change } from "redux-form";
 import "./style.css";
 import {
@@ -162,8 +162,7 @@ const AbstractInput = ({
       onDefaultValChanged && onDefaultValChanged(defaultValue, name, form);
       onFieldSubmit && onFieldSubmit(defaultValue);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultValue]);
+  }, [defaultValue, dispatch, form, name, onDefaultValChanged, onFieldSubmit]);
 
   // if our custom field level validation is happening then we don't want to show the error visually
   const showError =
@@ -975,34 +974,28 @@ export function generateField(component, opts) {
     // asyncValidate,
     ...rest
   }) => {
-    const component = compWithDefaultVal;
-
+    const input = useMemo(() => {
+      if (noRedux)
+        return {
+          input: {
+            onChange: rest.onChange || noop,
+            onBlur: rest.onBlur || noop,
+            value: rest.value,
+            name
+          }
+        };
+      return {};
+    }, [name, noRedux, rest.onBlur, rest.onChange, rest.value]);
     const props = {
       onFieldSubmit,
       name,
-      ...(noRedux && {
-        input: {
-          onChange: rest.onChange || noop,
-          onBlur: rest.onBlur || noop,
-          value: rest.value,
-          name
-        }
-      }),
-      component,
+      ...input,
+      component: compWithDefaultVal,
       ...(isRequired && { validate: fieldRequired }),
       isRequired,
       noRedux,
       ...rest
     };
-
-    // if (asyncValidate) {
-    //   props = {
-    //     ...props,
-    //     asyncValidate,
-    //     component: WrappedAddAsyncValidate,
-    //     passedComponent: component
-    //   };
-    // }
 
     return <Field {...props} />;
   };
@@ -1131,20 +1124,35 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
       triggerGetDefault();
     }, [generateDefaultValue || {}]);
     // const asyncValidating = props.asyncValidating;
-    const defaultProps = {
-      ...rest,
-      defaultValue: defaultValueFromBackend || defaultValueFromProps,
-      disabled: props.disabled || allowUserOverride === false,
-      readOnly: props.readOnly || isLoadingDefaultValue,
-      intent: getIntent({
-        showErrorIfUntouched,
-        meta: { touched, error, warning }
+    const defaultProps = useMemo(
+      () => ({
+        ...rest,
+        defaultValue: defaultValueFromBackend || defaultValueFromProps,
+        disabled: props.disabled || allowUserOverride === false,
+        readOnly: props.readOnly || isLoadingDefaultValue,
+        intent: getIntent({
+          showErrorIfUntouched,
+          meta: { touched, error, warning }
+        }),
+        intentClass: getIntentClass({
+          showErrorIfUntouched,
+          meta: { touched, error, warning }
+        })
       }),
-      intentClass: getIntentClass({
+      [
+        allowUserOverride,
+        defaultValueFromBackend,
+        defaultValueFromProps,
+        error,
+        isLoadingDefaultValue,
+        props.disabled,
+        props.readOnly,
+        rest,
         showErrorIfUntouched,
-        meta: { touched, error, warning }
-      })
-    };
+        touched,
+        warning
+      ]
+    );
 
     // don't show intent while async validating
     // if (asyncValidating) {
