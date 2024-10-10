@@ -101,6 +101,7 @@ import {
 import { useColumns } from "./Columns";
 import { formValueSelector, change as _change } from "redux-form";
 import { throwFormError } from "../throwFormError";
+import { isObservableArray, toJS } from "mobx";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -192,10 +193,15 @@ const DataTable = ({
 
   let props = ownProps;
   if (!isTableParamsConnected) {
+    // When using mobx values we need to transform it to a js array instead of a proxy so the next hooks get the right values
+    const normalizedEntities = isObservableArray(ownProps.entities)
+      ? toJS(ownProps.entities)
+      : ownProps.entities;
     //this is the case where we're hooking up to withTableParams locally, so we need to take the tableParams off the props
     props = {
       ...ownProps,
-      ..._tableParams
+      ..._tableParams,
+      entities: normalizedEntities
     };
   }
 
@@ -499,9 +505,7 @@ const DataTable = ({
 
   const _entities = useMemo(
     () => (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || [],
-    // Added isLoading to the dependencies because we need to update the entities when the data is loading, which sometimes is a proxy
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [_origEntities, reduxFormEntities, isLoading]
+    [_origEntities, reduxFormEntities]
   );
 
   const entities = useDeepEqualMemo(_entities);
