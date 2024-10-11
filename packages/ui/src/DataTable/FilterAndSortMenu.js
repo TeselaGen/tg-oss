@@ -63,9 +63,11 @@ const FilterAndSortMenu = ({
   currentFilter
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(
-    camelCase(getFilterMenuItems(dataType)[0])
+    currentFilter?.selectedFilter ?? camelCase(getFilterMenuItems(dataType)[0])
   );
-  const [filterValue, setFilterValue] = useState("");
+  const [filterValue, setFilterValue] = useState(
+    currentFilter?.filterValue ?? ""
+  );
 
   const handleFilterChange = selectedFilter => {
     if (
