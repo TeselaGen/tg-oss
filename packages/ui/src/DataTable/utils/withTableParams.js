@@ -290,7 +290,8 @@ export const useTableParams = props => {
       }),
     currentParams,
     selectedEntities,
-    tableParams
+    tableParams,
+    urlConnected
   };
 };
 
