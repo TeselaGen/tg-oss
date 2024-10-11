@@ -2,7 +2,13 @@ import classNames from "classnames";
 import { SketchPicker } from "react-color";
 import { isNumber, noop, kebabCase, isPlainObject, isEqual } from "lodash-es";
 import mathExpressionEvaluator from "math-expression-evaluator";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import { Field, change } from "redux-form";
 import "./style.css";
 import {
@@ -971,7 +977,6 @@ export function generateField(component, opts) {
     isRequired,
     onFieldSubmit = noop,
     noRedux = false,
-    // asyncValidate,
     ...rest
   }) => {
     const input = useMemo(() => {
@@ -1034,14 +1039,17 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
 
     const caresAboutToolContext = generateDefaultValue?.params?.toolName;
 
-    const customParamsToUse = {
-      ...(caresAboutToolContext
-        ? { ...workflowDefaultParamsObj, ...workflowParams }
-        : {}),
-      ...(generateDefaultValue ? generateDefaultValue.customParams : {})
-    };
+    const customParamsToUse = useMemo(
+      () => ({
+        ...(caresAboutToolContext
+          ? { ...workflowDefaultParamsObj, ...workflowParams }
+          : {}),
+        ...(generateDefaultValue ? generateDefaultValue.customParams : {})
+      }),
+      [caresAboutToolContext, generateDefaultValue, workflowParams]
+    );
 
-    async function triggerGetDefault() {
+    const triggerGetDefault = useCallback(async () => {
       if (!defaultValueByIdOverride) {
         //if defaultValueByIdOverride is passed, we can skip over getting the value from the backend straight to massaging the default value
         if (!window.__triggerGetDefaultValueRequest) return;
@@ -1116,13 +1124,22 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
         await fakeWait();
       }
       setLoadingDefaultValue(false);
-    }
+    }, [
+      caresAboutToolContext,
+      customParamsToUse,
+      defaultValCount,
+      defaultValueByIdOverride,
+      generateDefaultValue,
+      massageDefaultIdValue
+    ]);
+
     // if generateDefaultValue, hit the backend for that value
     useDeepCompareEffect(() => {
       // if the input already has a value we don't want to override with the default value request
       if (rest.input.value) return;
       triggerGetDefault();
     }, [generateDefaultValue || {}]);
+
     // const asyncValidating = props.asyncValidating;
     const defaultProps = useMemo(
       () => ({
@@ -1160,18 +1177,22 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
     //   delete defaultProps.intentClass;
     // }
 
-    const startAssigningDefault = () =>
-      window.__showAssignDefaultValueModal &&
-      window.__showAssignDefaultValueModal({
-        ...props,
-        generateDefaultValue: {
-          ...props.generateDefaultValue,
-          customParams: customParamsToUse
-        },
-        onFinish: () => {
-          triggerGetDefault();
-        }
-      });
+    const startAssigningDefault = useCallback(
+      () =>
+        window.__showAssignDefaultValueModal &&
+        window.__showAssignDefaultValueModal({
+          ...props,
+          generateDefaultValue: {
+            ...props.generateDefaultValue,
+            customParams: customParamsToUse
+          },
+          onFinish: () => {
+            triggerGetDefault();
+          }
+        }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [customParamsToUse, triggerGetDefault]
+    );
 
     return (
       <AbstractInput
