@@ -93,11 +93,11 @@ class TgSelect extends React.Component {
           return true;
         });
       }
-      return onChange([...valArray, item]);
+      return onChange([...valArray, item], e);
     } else {
       this.setOpenState(false);
       this.input && this.input.blur();
-      return onChange(item);
+      return onChange(item, e);
     }
   };
 

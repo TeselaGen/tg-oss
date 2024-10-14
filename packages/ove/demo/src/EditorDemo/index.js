@@ -105,6 +105,7 @@ const defaultState = {
   withPartTags: true,
   onCopy: true,
   onPaste: true,
+  onPanelTabClose: false,
   beforeReadOnlyChange: false
 };
 
@@ -474,6 +475,64 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
       renderToggle({
         that: this,
         type: "onPaste"
+      }),
+      renderToggle({
+        that: this,
+        type: "onPanelTabClose",
+        hook: shouldUpdate => {
+          shouldUpdate &&
+            updateEditor(store, "DemoEditor", {
+              panelsShown: [
+                [
+                  {
+                    id: "rail",
+                    name: "Linear Map",
+                    active: true
+                  },
+                  {
+                    id: "myCustomTab",
+                    name: "My Custom Tab"
+                  }
+                ],
+                [
+                  {
+                    id: "sequence",
+                    name: "Sequence Map"
+                  },
+                  {
+                    id: "alignmentTool",
+                    name: "New Alignment",
+                    canClose: true
+                  },
+                  {
+                    id: "digestTool",
+                    name: "New Digest",
+                    canClose: true
+                  },
+                  {
+                    // fullScreen: true,
+                    active: true,
+                    id: "circular",
+                    name: "Circular Map"
+                  },
+                  {
+                    id: "properties",
+                    name: "Properties"
+                  }
+                ]
+              ]
+            });
+        },
+        info: `
+        This feature can be used to execute some functionality before closing a panel.  If the function returns true, the panel closes, otherwise it stays open.
+        
+\`\`\`
+onPanelTabClose: (panelId) => {
+    window.toastr.success('onPanelClose callback triggered.');
+    return confirm("Close panel?")
+  }
+    
+`
       })
     ].filter(i => i);
     return (
@@ -1928,11 +1987,12 @@ clickOverrides: {
 you can pass doubleClickOverrides to the <Editor> like so:
 \`\`\`
 doubleClickOverrides: {
-  featureDoubleClicked: ({ event }) => {
-    //do whatever
+  featureDoubleClicked: ({ event, annotation }) => {
     window.toastr.success("Feature Double Click Override Hit!");
-    event.stopPropagation();
-    return true; //returning truthy stops the regular double click action from occurring
+    if (annotation.type === "CDS") {
+      event.stopPropagation();
+      return true; //returning truthy stops the regular double click action from occurring
+    }
   },
   partDoubleClicked: () => {
     window.toastr.success("Part Double Click Override Hit!");
@@ -2587,6 +2647,14 @@ doubleClickOverrides: {
                   sequence: clipboardData.getData("text/plain")
                 };
                 return sequenceData;
+              }
+            })}
+            {...(this.state.onPanelTabClose && {
+              onPanelTabClose: function (panelId) {
+                window.toastr.success(
+                  `onPanelClose callback triggered for panelId: ${panelId}`
+                );
+                return window.confirm("Close panel?");
               }
             })}
             handleFullscreenClose={
