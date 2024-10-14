@@ -7,7 +7,7 @@ import {
   PRIMARY_SELECTED_VAL
 } from "./utils";
 import { DropdownCell } from "./DropdownCell";
-import { EditableCell } from "./EditabelCell";
+import { EditableCell } from "./EditableCell";
 import { getVals } from "./getVals";
 import { CellDragHandle } from "./CellDragHandle";
 
