@@ -14,7 +14,8 @@ export const ColumnFilterMenu = ({
   filterOn,
   removeSingleFilter,
   schemaForField,
-  setNewParams
+  setNewParams,
+  formName
 }) => {
   const [columnFilterMenuOpen, setColumnFilterMenuOpen] = useState(false);
   return (
@@ -29,6 +30,7 @@ export const ColumnFilterMenu = ({
       }}
       content={
         <FilterMenu
+          formName={formName}
           addFilters={addFilters}
           compact={compact}
           currentFilter={currentFilter}

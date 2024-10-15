@@ -48,6 +48,7 @@ const RenderColumnHeader = ({
   entities,
   extraCompact,
   filters,
+  formName,
   isCellEditable,
   isLocalCall,
   order,
@@ -221,6 +222,7 @@ const RenderColumnHeader = ({
         )}
         {withFilter && !disableFiltering && (
           <ColumnFilterMenu
+            formName={formName}
             FilterMenu={FilterMenu}
             filterActiveForColumn={filterActiveForColumn}
             addFilters={addFilters}
@@ -836,6 +838,7 @@ export const useColumns = ({
         order,
         setOrder,
         withSort,
+        formName,
         extraCompact,
         withFilter,
         addFilters,
