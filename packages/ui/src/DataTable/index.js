@@ -291,23 +291,20 @@ const DataTable = ({
   const tableParams = useMemo(() => {
     if (!isTableParamsConnected) {
       const setNewParams = newParams => {
-        urlConnected && setCurrentParamsOnUrl(newParams, history.replace);
-        change("reduxFormQueryParams", newParams); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
+        // we always will update the redux params as a workaround for withRouter not always working
+        // if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
+        change("reduxFormQueryParams", prev => {
+          let tmp = newParams;
+          if (typeof tmp === "function") tmp = newParams(prev);
+          urlConnected && setCurrentParamsOnUrl(tmp, history?.replace);
+          return tmp;
+        });
       };
 
-      const bindThese = makeDataTableHandlers({
+      const dispatchProps = makeDataTableHandlers({
         setNewParams,
         defaults,
         onlyOneFilter: props.onlyOneFilter
-      });
-
-      const boundDispatchProps = {};
-      //bind currentParams to actions
-      Object.keys(bindThese).forEach(function (key) {
-        const action = bindThese[key];
-        boundDispatchProps[key] = function (...args) {
-          action(...args, currentParams);
-        };
       });
 
       const changeFormValue = (...args) => change(...args);
@@ -316,7 +313,7 @@ const DataTable = ({
         changeFormValue,
         selectedEntities,
         ..._tableParams,
-        ...boundDispatchProps,
+        ...dispatchProps,
         isTableParamsConnected: true //let the table know not to do local sorting/filtering etc.
       };
     }
@@ -324,9 +321,8 @@ const DataTable = ({
   }, [
     _tableParams,
     change,
-    currentParams,
     defaults,
-    history.replace,
+    history?.replace,
     isTableParamsConnected,
     props.onlyOneFilter,
     selectedEntities,
@@ -392,7 +388,7 @@ const DataTable = ({
     additionalFooterButtons,
     autoFocusSearch,
     cellRenderer,
-    children: maybeChildren,
+    children,
     className = "",
     clearFilters = noop,
     compact: _compact = true,
@@ -2522,13 +2518,6 @@ const DataTable = ({
     acc[index] = expandedEntityIdMap[rowId];
     return acc;
   }, {});
-
-  const children = useMemo(() => {
-    if (maybeChildren && typeof maybeChildren === "function") {
-      return maybeChildren(props);
-    }
-    return maybeChildren;
-  }, [maybeChildren, props]);
 
   const showHeader = (withTitle || withSearch || children) && !noHeader;
   const toggleFullscreenButton = (

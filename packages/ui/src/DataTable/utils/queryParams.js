@@ -607,42 +607,41 @@ export function makeDataTableHandlers({
   onlyOneFilter
 }) {
   //all of these actions have currentParams bound to them as their last arg in withTableParams
-  function setSearchTerm(searchTerm, currentParams) {
-    const newParams = {
-      ...currentParams,
+  const setSearchTerm = searchTerm => {
+    setNewParams(prev => ({
+      ...prev,
       page: undefined, //set page undefined to return the table to page 1
       searchTerm: searchTerm === defaults.searchTerm ? undefined : searchTerm
-    };
-    setNewParams(newParams);
+    }));
     onlyOneFilter && clearFilters();
-  }
-  function addFilters(newFilters, currentParams) {
-    if (!newFilters) return;
-    const filters = uniqBy(
-      [...newFilters, ...(onlyOneFilter ? [] : currentParams.filters || [])],
-      "filterOn"
-    );
+  };
 
-    const newParams = {
-      ...currentParams,
-      page: undefined, //set page undefined to return the table to page 1
-      filters
-    };
-    setNewParams(newParams);
-  }
-  function removeSingleFilter(filterOn, currentParams) {
-    const filters = currentParams.filters
-      ? currentParams.filters.filter(filter => {
-          return filter.filterOn !== filterOn;
-        })
-      : undefined;
-    const newParams = {
-      ...currentParams,
-      filters
-    };
-    setNewParams(newParams);
-  }
-  function clearFilters(additionalFilterKeys = []) {
+  const addFilters = newFilters => {
+    if (!newFilters) return;
+    setNewParams(prev => {
+      const filters = uniqBy(
+        [...newFilters, ...(onlyOneFilter ? [] : prev.filters || [])],
+        "filterOn"
+      );
+      return {
+        ...prev,
+        page: undefined, //set page undefined to return the table to page 1
+        filters
+      };
+    });
+  };
+
+  const removeSingleFilter = filterOn =>
+    setNewParams(prev => {
+      const filters = prev.filters
+        ? prev.filters.filter(filter => {
+            return filter.filterOn !== filterOn;
+          })
+        : undefined;
+      return { ...prev, filters };
+    });
+
+  const clearFilters = (additionalFilterKeys = []) => {
     const toClear = {
       filters: undefined,
       searchTerm: undefined,
@@ -652,48 +651,49 @@ export function makeDataTableHandlers({
       toClear[key] = undefined;
     });
     setNewParams(toClear);
-  }
-  function setPageSize(pageSize, currentParams) {
-    const newParams = {
-      ...currentParams,
+  };
+
+  const setPageSize = pageSize =>
+    setNewParams(prev => ({
+      ...prev,
       pageSize: pageSize === defaults.pageSize ? undefined : pageSize,
       page: undefined //set page undefined to return the table to page 1
-    };
-    setNewParams(newParams);
-  }
-  function setOrder(order, isRemove, shiftHeld, currentParams) {
-    let newOrder = [];
-    if (shiftHeld) {
-      //first remove the old order
-      newOrder = [...(currentParams.order || [])].filter(value => {
-        const shouldRemove =
-          value.replace(/^-/, "") === order.replace(/^-/, "");
-        return !shouldRemove;
-      });
-      //then, if we are adding, pop the order onto the array
-      if (!isRemove) {
-        newOrder.push(order);
-      }
-    } else {
-      if (isRemove) {
-        newOrder = [];
+    }));
+
+  const setOrder = (order, isRemove, shiftHeld) =>
+    setNewParams(prev => {
+      let newOrder = [];
+      if (shiftHeld) {
+        //first remove the old order
+        newOrder = [...(prev.order || [])].filter(value => {
+          const shouldRemove =
+            value.replace(/^-/, "") === order.replace(/^-/, "");
+          return !shouldRemove;
+        });
+        //then, if we are adding, pop the order onto the array
+        if (!isRemove) {
+          newOrder.push(order);
+        }
       } else {
-        newOrder = [order];
+        if (isRemove) {
+          newOrder = [];
+        } else {
+          newOrder = [order];
+        }
       }
-    }
-    const newParams = {
-      ...currentParams,
-      order: newOrder
-    };
-    setNewParams(newParams);
-  }
-  function setPage(page, currentParams) {
-    const newParams = {
-      ...currentParams,
+      return {
+        ...prev,
+        order: newOrder
+      };
+    });
+
+  const setPage = page => {
+    setNewParams(prev => ({
+      ...prev,
       page: page === defaults.page ? undefined : page
-    };
-    setNewParams(newParams);
-  }
+    }));
+  };
+
   return {
     setSearchTerm,
     addFilters,

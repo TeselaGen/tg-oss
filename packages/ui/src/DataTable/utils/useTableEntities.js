@@ -29,13 +29,10 @@ export const useTableEntities = tableFormName => {
     [dispatch, tableFormName]
   );
 
-  const { allOrderedEntities = [], selectedEntities = {} } = useSelector(
-    state => ({
-      allOrderedEntities:
-        state.form?.[tableFormName]?.values?.allOrderedEntities,
-      selectedEntities:
-        state.form?.[tableFormName]?.values?.reduxFormSelectedEntityIdMap
-    })
-  );
+  const { allOrderedEntities, selectedEntities } = useSelector(state => ({
+    allOrderedEntities: state.form?.[tableFormName]?.values?.allOrderedEntities,
+    selectedEntities:
+      state.form?.[tableFormName]?.values?.reduxFormSelectedEntityIdMap
+  }));
   return { selectTableEntities, allOrderedEntities, selectedEntities };
 };

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { change as _change, formValueSelector } from "redux-form";
 import { useDispatch, useSelector } from "react-redux";
 import convertSchema from "./convertSchema";
@@ -158,11 +158,11 @@ export const useTableParams = props => {
       ...props,
       pageSize: controlled_pageSize || pageSize,
       defaults: defaultsToUse,
-      location: history.location
+      location: history?.location
     }),
     // We don't want to rerender this every time a prop changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [controlled_pageSize, defaultsToUse, pageSize, history.location]
+    [controlled_pageSize, defaultsToUse, pageSize, history?.location]
   );
 
   const queryParams = useMemo(() => {
@@ -210,34 +210,38 @@ export const useTableParams = props => {
   ]);
 
   const dispatch = useDispatch();
+  const change = useCallback(
+    (...args) => dispatch(_change(formName, ...args)),
+    [dispatch, formName]
+  );
 
-  const tableParams = useMemo(() => {
-    const change = (...args) => dispatch(_change(formName, ...args));
+  const setNewParams = useCallback(
+    newParams => {
+      // we always will update the redux params as a workaround for withRouter not always working
+      // if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
+      change("reduxFormQueryParams", prev => {
+        let tmp = newParams;
+        if (typeof tmp === "function") tmp = newParams(prev);
+        urlConnected && setCurrentParamsOnUrl(tmp, history?.replace);
+        return tmp;
+      });
+    },
+    [change, history?.replace, urlConnected]
+  );
 
-    const setNewParams = newParams => {
-      urlConnected && setCurrentParamsOnUrl(newParams, history?.replace);
-      change("reduxFormQueryParams", newParams); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
-    };
+  const dispatchProps = useMemo(
+    () =>
+      makeDataTableHandlers({
+        setNewParams,
+        defaults,
+        onlyOneFilter
+      }),
+    [defaults, onlyOneFilter, setNewParams]
+  );
 
-    const bindThese = makeDataTableHandlers({
-      setNewParams,
-      defaults,
-      onlyOneFilter
-    });
-
-    const boundDispatchProps = {};
-    //bind currentParams to actions
-    Object.keys(bindThese).forEach(function (key) {
-      const action = bindThese[key];
-      boundDispatchProps[key] = function (...args) {
-        action(...args, currentParams);
-      };
-    });
-
-    const changeFormValue = (...args) => change(...args);
-
-    return {
-      changeFormValue,
+  const tableParams = useMemo(
+    () => ({
+      changeFormValue: (...args) => change(...args),
       selectedEntities,
       ..._tableParams,
       formName,
@@ -247,26 +251,24 @@ export const useTableParams = props => {
       currentParams,
       withDisplayOptions,
       ...queryParams,
-      ...boundDispatchProps,
+      ...dispatchProps,
       form: formName, //this will override the default redux form name
       isTableParamsConnected: true //let the table know not to do local sorting/filtering etc.
-    };
-  }, [
-    _tableParams,
-    currentParams,
-    defaults,
-    dispatch,
-    formName,
-    history?.replace,
-    initialValues,
-    isLocalCall,
-    onlyOneFilter,
-    queryParams,
-    schema,
-    selectedEntities,
-    urlConnected,
-    withDisplayOptions
-  ]);
+    }),
+    [
+      _tableParams,
+      change,
+      currentParams,
+      dispatchProps,
+      formName,
+      initialValues,
+      isLocalCall,
+      queryParams,
+      schema,
+      selectedEntities,
+      withDisplayOptions
+    ]
+  );
 
   return {
     isLocalCall,
