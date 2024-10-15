@@ -609,7 +609,7 @@ export function makeDataTableHandlers({
   //all of these actions have currentParams bound to them as their last arg in withTableParams
   const setSearchTerm = searchTerm => {
     setNewParams(prev => ({
-      ...prev,
+      ...(prev ?? {}),
       page: undefined, //set page undefined to return the table to page 1
       searchTerm: searchTerm === defaults.searchTerm ? undefined : searchTerm
     }));
@@ -620,11 +620,11 @@ export function makeDataTableHandlers({
     if (!newFilters) return;
     setNewParams(prev => {
       const filters = uniqBy(
-        [...newFilters, ...(onlyOneFilter ? [] : prev.filters || [])],
+        [...newFilters, ...(onlyOneFilter ? [] : prev?.filters || [])],
         "filterOn"
       );
       return {
-        ...prev,
+        ...(prev ?? {}),
         page: undefined, //set page undefined to return the table to page 1
         filters
       };
@@ -633,12 +633,12 @@ export function makeDataTableHandlers({
 
   const removeSingleFilter = filterOn =>
     setNewParams(prev => {
-      const filters = prev.filters
+      const filters = prev?.filters
         ? prev.filters.filter(filter => {
             return filter.filterOn !== filterOn;
           })
         : undefined;
-      return { ...prev, filters };
+      return { ...(prev ?? {}), filters };
     });
 
   const clearFilters = (additionalFilterKeys = []) => {
@@ -655,7 +655,7 @@ export function makeDataTableHandlers({
 
   const setPageSize = pageSize =>
     setNewParams(prev => ({
-      ...prev,
+      ...(prev ?? {}),
       pageSize: pageSize === defaults.pageSize ? undefined : pageSize,
       page: undefined //set page undefined to return the table to page 1
     }));
@@ -665,7 +665,7 @@ export function makeDataTableHandlers({
       let newOrder = [];
       if (shiftHeld) {
         //first remove the old order
-        newOrder = [...(prev.order || [])].filter(value => {
+        newOrder = [...(prev?.order || [])].filter(value => {
           const shouldRemove =
             value.replace(/^-/, "") === order.replace(/^-/, "");
           return !shouldRemove;
@@ -682,14 +682,14 @@ export function makeDataTableHandlers({
         }
       }
       return {
-        ...prev,
+        ...(prev ?? {}),
         order: newOrder
       };
     });
 
   const setPage = page => {
     setNewParams(prev => ({
-      ...prev,
+      ...(prev ?? {}),
       page: page === defaults.page ? undefined : page
     }));
   };
