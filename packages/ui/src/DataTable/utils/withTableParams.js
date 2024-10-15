@@ -101,13 +101,11 @@ export const useTableParams = props => {
 
   const {
     reduxFormQueryParams: _reduxFormQueryParams = {},
-    reduxFormSearchInput: _reduxFormSearchInput = "",
     reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
   } = useSelector(state =>
     formValueSelector(formName)(
       state,
       "reduxFormQueryParams",
-      "reduxFormSearchInput",
       "reduxFormSelectedEntityIdMap"
     )
   );
@@ -115,7 +113,6 @@ export const useTableParams = props => {
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
   const reduxFormQueryParams = useDeepEqualMemo(_reduxFormQueryParams);
-  const reduxFormSearchInput = useDeepEqualMemo(_reduxFormSearchInput);
   const reduxFormSelectedEntityIdMap = useDeepEqualMemo(
     _reduxFormSelectedEntityIdMap
   );
@@ -126,14 +123,8 @@ export const useTableParams = props => {
         ? getCurrentParamsFromUrl(history?.location) //important to use history location and not ownProps.location because for some reason the location path lags one render behind!!
         : reduxFormQueryParams) || {};
 
-    tmp.searchTerm = reduxFormSearchInput;
     return tmp;
-  }, [
-    history?.location,
-    reduxFormQueryParams,
-    reduxFormSearchInput,
-    urlConnected
-  ]);
+  }, [history?.location, reduxFormQueryParams, urlConnected]);
 
   const selectedEntities = useMemo(
     () =>
@@ -166,11 +157,12 @@ export const useTableParams = props => {
       formName: "tgDataTable",
       ...props,
       pageSize: controlled_pageSize || pageSize,
-      defaults: defaultsToUse
+      defaults: defaultsToUse,
+      location: history.location
     }),
     // We don't want to rerender this every time a prop changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [controlled_pageSize, defaultsToUse, pageSize]
+    [controlled_pageSize, defaultsToUse, pageSize, history.location]
   );
 
   const queryParams = useMemo(() => {
@@ -221,9 +213,6 @@ export const useTableParams = props => {
 
   const tableParams = useMemo(() => {
     const change = (...args) => dispatch(_change(formName, ...args));
-    const updateSearch = val => {
-      change("reduxFormSearchInput", val || "");
-    };
 
     const setNewParams = newParams => {
       urlConnected && setCurrentParamsOnUrl(newParams, history?.replace);
@@ -232,7 +221,6 @@ export const useTableParams = props => {
 
     const bindThese = makeDataTableHandlers({
       setNewParams,
-      updateSearch,
       defaults,
       onlyOneFilter
     });

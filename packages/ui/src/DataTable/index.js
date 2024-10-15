@@ -169,7 +169,6 @@ const DataTable = ({
     reduxFormEditingCell,
     reduxFormEntities,
     reduxFormQueryParams: _reduxFormQueryParams = {},
-    reduxFormSearchInput: _reduxFormSearchInput = "",
     reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
   } = useSelector(state =>
     formValueSelector(formName)(
@@ -177,7 +176,6 @@ const DataTable = ({
       "reduxFormCellValidation",
       "reduxFormEntities",
       "reduxFormQueryParams",
-      "reduxFormSearchInput",
       "reduxFormSelectedEntityIdMap"
     )
   );
@@ -186,7 +184,6 @@ const DataTable = ({
   // with redux-forms we tend to do unnecessary renders
   const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
   const reduxFormQueryParams = useDeepEqualMemo(_reduxFormQueryParams);
-  const reduxFormSearchInput = useDeepEqualMemo(_reduxFormSearchInput);
   const reduxFormSelectedEntityIdMap = useDeepEqualMemo(
     _reduxFormSelectedEntityIdMap
   );
@@ -286,19 +283,13 @@ const DataTable = ({
       (urlConnected
         ? getCurrentParamsFromUrl(history.location) //important to use history location and not ownProps.location because for some reason the location path lags one render behind!!
         : reduxFormQueryParams) || {};
-
-    tmp.searchTerm = reduxFormSearchInput;
     return tmp;
-  }, [history, reduxFormQueryParams, reduxFormSearchInput, urlConnected]);
+  }, [history, reduxFormQueryParams, urlConnected]);
 
   const currentParams = useDeepEqualMemo(_currentParams);
 
   const tableParams = useMemo(() => {
     if (!isTableParamsConnected) {
-      const updateSearch = val => {
-        change("reduxFormSearchInput", val || "");
-      };
-
       const setNewParams = newParams => {
         urlConnected && setCurrentParamsOnUrl(newParams, history.replace);
         change("reduxFormQueryParams", newParams); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
@@ -306,7 +297,6 @@ const DataTable = ({
 
       const bindThese = makeDataTableHandlers({
         setNewParams,
-        updateSearch,
         defaults,
         onlyOneFilter: props.onlyOneFilter
       });
@@ -3031,7 +3021,7 @@ const DataTable = ({
                     ""
                   )}
                   <SearchBar
-                    searchInput={reduxFormSearchInput}
+                    searchInput={currentParams.searchTerm}
                     setSearchTerm={setSearchTerm}
                     loading={isLoading}
                     searchMenuButton={searchMenuButton}

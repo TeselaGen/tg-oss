@@ -40,13 +40,13 @@ const SearchBar = ({
       disabled={disabled}
       loading={loading}
       type="search"
-      name="reduxFormSearchInput"
+      defaultValue={searchInput}
       className={classNames("datatable-search-input", Classes.ROUND)}
       placeholder="Search..."
       {...onEnterHelper(e => {
         e.preventDefault();
         e.stopPropagation();
-        setSearchTerm(searchInput);
+        setSearchTerm(e.target.value);
         e.nativeEvent.stopImmediatePropagation();
       })}
       rightElement={rightElement}

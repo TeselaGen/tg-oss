@@ -603,7 +603,6 @@ function buildRef(qb, reference, searchField, expression) {
 
 export function makeDataTableHandlers({
   setNewParams,
-  updateSearch,
   defaults,
   onlyOneFilter
 }) {
@@ -615,7 +614,6 @@ export function makeDataTableHandlers({
       searchTerm: searchTerm === defaults.searchTerm ? undefined : searchTerm
     };
     setNewParams(newParams);
-    updateSearch(searchTerm);
     onlyOneFilter && clearFilters();
   }
   function addFilters(newFilters, currentParams) {
@@ -631,7 +629,6 @@ export function makeDataTableHandlers({
       filters
     };
     setNewParams(newParams);
-    onlyOneFilter && updateSearch();
   }
   function removeSingleFilter(filterOn, currentParams) {
     const filters = currentParams.filters
@@ -655,7 +652,6 @@ export function makeDataTableHandlers({
       toClear[key] = undefined;
     });
     setNewParams(toClear);
-    updateSearch();
   }
   function setPageSize(pageSize, currentParams) {
     const newParams = {
