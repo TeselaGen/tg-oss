@@ -67,9 +67,9 @@ import {
   handleCopyTable,
   isEntityClean,
   PRIMARY_SELECTED_VAL,
-  removeCleanRows,
-  useDeepEqualMemo
+  removeCleanRows
 } from "./utils";
+import { useDeepEqualMemo } from "../utils/hooks";
 import rowClick, {
   changeSelectedEntities,
   finalizeSelection

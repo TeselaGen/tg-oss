@@ -24,7 +24,6 @@ import { handleCopyColumn } from "./handleCopyColumn";
 import { isBottomRightCornerOfRectangle } from "./isBottomRightCornerOfRectangle";
 import { handleCopyTable } from "./handleCopyTable";
 import { PRIMARY_SELECTED_VAL } from "./primarySelectedValue";
-import { useDeepEqualMemo } from "./useDeepEqualMemo";
 import { useTableEntities } from "./useTableEntities";
 
 export {
@@ -52,6 +51,5 @@ export {
   PRIMARY_SELECTED_VAL,
   removeCleanRows,
   stripNumberAtEnd,
-  useDeepEqualMemo,
   useTableEntities
 };

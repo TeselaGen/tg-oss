@@ -11,7 +11,7 @@ import {
 } from "./queryParams";
 import { withRouter } from "react-router-dom";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
-import { useDeepEqualMemo } from "./useDeepEqualMemo";
+import { useDeepEqualMemo } from "../../utils/hooks/useDeepEqualMemo";
 import { branch, compose } from "recompose";
 
 /**

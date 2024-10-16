@@ -46,6 +46,7 @@ import Uploader from "./Uploader";
 import sortify from "./sortify";
 import { fieldRequired } from "./utils";
 import { useDispatch } from "react-redux";
+import { useStableReference } from "../utils/hooks/useStableReference";
 
 export { fieldRequired };
 
@@ -147,8 +148,8 @@ const AbstractInput = ({
   noFillField,
   noMarginBottom,
   noOuterLabel,
-  onDefaultValChanged,
-  onFieldSubmit,
+  onDefaultValChanged: _onDefaultValChanged,
+  onFieldSubmit: _onFieldSubmit,
   rightEl,
   secondaryLabel,
   setAssignDefaultsMode,
@@ -160,13 +161,16 @@ const AbstractInput = ({
   tooltipProps
 }) => {
   const dispatch = useDispatch();
+  const onDefaultValChanged = useStableReference(_onDefaultValChanged);
+  const onFieldSubmit = useStableReference(_onFieldSubmit);
 
   // This only takes care that the default Value is changed when it is changed in the parent component
   useEffect(() => {
     if (defaultValue !== undefined) {
       dispatch(change(form, name, defaultValue));
-      onDefaultValChanged && onDefaultValChanged(defaultValue, name, form);
-      onFieldSubmit && onFieldSubmit(defaultValue);
+      onDefaultValChanged.current &&
+        onDefaultValChanged.current(defaultValue, name, form);
+      onFieldSubmit.current && onFieldSubmit.current(defaultValue);
     }
   }, [defaultValue, dispatch, form, name, onDefaultValChanged, onFieldSubmit]);
 
