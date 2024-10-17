@@ -190,7 +190,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       sequenceData = { sequence: "" },
       handleSubmit,
       beforeAnnotationCreate,
-      renderTypes,
+      RenderTypes,
       renderTags,
       RenderBases,
       allowMultipleFeatureDirections,
@@ -210,6 +210,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       overlapsSelf,
       start,
       end,
+      type,
       readOnly,
       getAdditionalEditAnnotationComps,
       advancedOptions,
@@ -370,7 +371,9 @@ class AddOrEditAnnotationDialog extends React.Component {
             />
           ))}
 
-        {renderTypes || null}
+        {RenderTypes && (
+          <RenderTypes readOnly={this.props.readOnly} type={type}></RenderTypes>
+        )}
         {renderTags || null}
 
         {/* {allowPrimerBasesToBeEdited && RenderBases ? null : !renderLocations || */}
@@ -387,7 +390,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               format={this.formatStart}
               parse={this.parseStart}
               tooltipError
-              defaultValue={1}
+              defaultValue={start ?? 1}
               min={1}
               max={sequenceLength || 1}
               name="start"
@@ -401,7 +404,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               parse={this.parseEnd}
               inlineLabel
               tooltipError
-              defaultValue={sequenceData.isProtein ? 3 : 1}
+              defaultValue={end ?? (sequenceData.isProtein ? 3 : 1)}
               min={1}
               max={sequenceLength || 1}
               name="end"
@@ -569,6 +572,7 @@ export default ({ formName, getProps, dialogProps }) => {
     tgFormValues(
       "start",
       "end",
+      "type",
       "overlapsSelf",
       "locations",
       "bases",

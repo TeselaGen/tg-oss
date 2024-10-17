@@ -126,7 +126,11 @@ export class AddOrEditFeatureDialog extends React.Component {
       sequenceData = { sequence: "" },
       handleSubmit,
       locations,
-      upsertFeature
+      upsertFeature,
+      start,
+      end,
+      forward,
+      type
     } = this.props;
     const sequenceLength = sequenceData.sequence.length;
     return (
@@ -158,12 +162,12 @@ export class AddOrEditFeatureDialog extends React.Component {
           // format={value => (value ? "true" : "false")}
           name="forward"
           label="Strand:"
-          defaultValue={true}
+          defaultValue={forward ?? true}
         />
         <ReactSelectField
           inlineLabel
           tooltipError
-          defaultValue="misc_feature"
+          defaultValue={type ?? "misc_feature"}
           options={getFeatureTypes().map(type => {
             return {
               label: (
@@ -198,7 +202,7 @@ export class AddOrEditFeatureDialog extends React.Component {
             <NumericInputField
               inlineLabel
               tooltipError
-              defaultValue={1}
+              defaultValue={start ?? 1}
               min={1}
               max={sequenceLength || 1}
               name="start"
@@ -207,7 +211,7 @@ export class AddOrEditFeatureDialog extends React.Component {
             <NumericInputField
               inlineLabel
               tooltipError
-              defaultValue={1}
+              defaultValue={end ?? 1}
               min={1}
               max={sequenceLength || 1}
               name="end"
@@ -372,5 +376,5 @@ export default compose(
       return errors;
     }
   }),
-  tgFormValues("start", "end", "locations")
+  tgFormValues("start", "end", "locations", "forward", "type")
 )(AddOrEditFeatureDialog);

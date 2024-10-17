@@ -126,7 +126,7 @@ class TgSelect extends React.Component {
     e.preventDefault();
     let newValue = null;
     if (multi) {
-      newValue = filter(value, obj => obj.disabled) || [];
+      newValue = filter(value, obj => obj?.disabled) || [];
     } else if (value && value.disabled) {
       newValue = value;
     }
