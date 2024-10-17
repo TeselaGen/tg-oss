@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import {
   Button,
   Callout,
@@ -42,6 +48,7 @@ import convertSchema from "../DataTable/utils/convertSchema";
 import { LoadingDots } from "./LoadingDots";
 import { useDispatch } from "react-redux";
 import { flushSync } from "react-dom";
+import { useStableReference } from "../utils/hooks/useStableReference";
 
 const manualEnterMessage = "Build CSV File";
 const manualEnterSubMessage = "Paste or type data to build a CSV file";
@@ -208,6 +215,10 @@ const InnerDropZone = ({
   </section>
 );
 
+const onFileSuccessDefault = async () => {
+  return;
+};
+
 const Uploader = ({
   accept: __accept,
   action,
@@ -216,7 +227,7 @@ const Uploader = ({
   callout: _callout,
   className = "",
   contentOverride: maybeContentOverride,
-  disabled: _disabled,
+  disabled,
   dropzoneProps = {},
   fileLimit,
   fileList, //list of files with options: {name, loading, error, url, originalName, downloadName}
@@ -230,9 +241,7 @@ const Uploader = ({
   onChange: _onChange = noop, //this is almost always getting passed by redux-form, no need to pass this handler manually
   onFieldSubmit = noop, //called when all files have successfully uploaded
   onFileClick, // called when a file link in the filelist is clicked
-  onFileSuccess = async () => {
-    return;
-  }, //called each time a file is finished and before the file.loading gets set to false, needs to return a promise!
+  onFileSuccess = onFileSuccessDefault, //called each time a file is finished and before the file.loading gets set to false, needs to return a promise!
   onPreviewClick,
   onRemove = noop, //called when a file has been selected to be removed
   overflowList,
@@ -247,88 +256,95 @@ const Uploader = ({
   const [resolvedAccept, setResolvedAccept] = useState();
   const [loading, setLoading] = useState(false);
   const filesToClean = useRef([]);
+
+  // We do this because we don't want functions influencing on the dependencies
+  const stableOnChange = useStableReference(_onChange);
+  const stableBeforeUpload = useStableReference(beforeUpload);
   // onChange received from redux-form is not working anymore,
   // so we need to overwrite it for redux to works.
-  const onChange = val => {
-    flushSync(() => {
-      if (noRedux) {
-        return _onChange(val);
-      }
-      dispatch(touch(formName, name));
-      dispatch(change(formName, name, val));
-    });
-  };
+  const onChange = useCallback(
+    val => {
+      flushSync(() => {
+        if (noRedux) {
+          return stableOnChange.current(val);
+        }
+        dispatch(touch(formName, name));
+        dispatch(change(formName, name, val));
+      });
+    },
+    [dispatch, formName, name, noRedux, stableOnChange]
+  );
 
-  const handleSecondHalfOfUpload = async ({
-    acceptedFiles,
-    cleanedFileList
-  }) => {
-    // This onChange is not changing things, we need to check whether the error is here or later
-    onChange(cleanedFileList); //tnw: this line is necessary, if you want to clear the file list in the beforeUpload, call onChange([])
-    // beforeUpload is called, otherwise beforeUpload will not be able to truly cancel the upload
-    const keepGoing = beforeUpload
-      ? await beforeUpload(cleanedFileList, onChange)
-      : true;
-    if (!keepGoing) return;
+  const handleSecondHalfOfUpload = useCallback(
+    async ({ acceptedFiles, cleanedFileList }) => {
+      // This onChange is not changing things, we need to check whether the error is here or later
+      onChange(cleanedFileList); //tnw: this line is necessary, if you want to clear the file list in the beforeUpload, call onChange([])
+      // beforeUpload is called, otherwise beforeUpload will not be able to truly cancel the upload
+      const keepGoing = stableBeforeUpload.current
+        ? await stableBeforeUpload.current(cleanedFileList, onChange)
+        : true;
+      if (!keepGoing) return;
 
-    if (action) {
-      const responses = [];
-      await Promise.all(
-        acceptedFiles.map(async fileToUpload => {
-          const data = new FormData();
-          data.append("file", fileToUpload);
-          try {
-            const res = await (window.serverApi
-              ? window.serverApi.post(action, data)
-              : fetch(action, {
-                  method: "POST",
-                  body: data
-                }));
-            responses.push(res.data && res.data[0]);
-            onFileSuccess(res.data[0]).then(() => {
+      if (action) {
+        const responses = [];
+        await Promise.all(
+          acceptedFiles.map(async fileToUpload => {
+            const data = new FormData();
+            data.append("file", fileToUpload);
+            try {
+              const res = await (window.serverApi
+                ? window.serverApi.post(action, data)
+                : fetch(action, {
+                    method: "POST",
+                    body: data
+                  }));
+              responses.push(res.data && res.data[0]);
+              onFileSuccess(res.data[0]).then(() => {
+                cleanedFileList = cleanedFileList.map(file => {
+                  const fileToReturn = {
+                    ...file,
+                    ...res.data[0]
+                  };
+                  if (fileToReturn.id === fileToUpload.id) {
+                    fileToReturn.loading = false;
+                  }
+                  return fileToReturn;
+                });
+                onChange(cleanedFileList);
+              });
+            } catch (err) {
+              console.error("Error uploading file:", err);
+              responses.push({
+                ...fileToUpload,
+                error: err && err.msg ? err.msg : err
+              });
               cleanedFileList = cleanedFileList.map(file => {
-                const fileToReturn = {
-                  ...file,
-                  ...res.data[0]
-                };
+                const fileToReturn = { ...file };
                 if (fileToReturn.id === fileToUpload.id) {
                   fileToReturn.loading = false;
+                  fileToReturn.error = true;
                 }
                 return fileToReturn;
               });
               onChange(cleanedFileList);
-            });
-          } catch (err) {
-            console.error("Error uploading file:", err);
-            responses.push({
-              ...fileToUpload,
-              error: err && err.msg ? err.msg : err
-            });
-            cleanedFileList = cleanedFileList.map(file => {
-              const fileToReturn = { ...file };
-              if (fileToReturn.id === fileToUpload.id) {
-                fileToReturn.loading = false;
-                fileToReturn.error = true;
-              }
-              return fileToReturn;
-            });
-            onChange(cleanedFileList);
-          }
-        })
-      );
-      onFieldSubmit(responses);
-    } else {
-      onChange(
-        cleanedFileList.map(function (file) {
-          return {
-            ...file,
-            loading: false
-          };
-        })
-      );
-    }
-    setLoading(false);
-  };
+            }
+          })
+        );
+        onFieldSubmit(responses);
+      } else {
+        onChange(
+          cleanedFileList.map(function (file) {
+            return {
+              ...file,
+              loading: false
+            };
+          })
+        );
+      }
+      setLoading(false);
+    },
+    [action, stableBeforeUpload, onChange, onFieldSubmit, onFileSuccess]
+  );
 
   const isAcceptPromise = useMemo(
     () =>
@@ -337,12 +353,15 @@ const Uploader = ({
     [__accept]
   );
 
-  let dropzoneDisabled = _disabled;
-  let _accept = __accept;
-
-  if (resolvedAccept) {
-    _accept = resolvedAccept;
-  }
+  const _accept = useMemo(() => {
+    if (resolvedAccept) {
+      return resolvedAccept;
+    }
+    if (isAcceptPromise && !resolvedAccept) {
+      return [];
+    }
+    return __accept;
+  }, [__accept, isAcceptPromise, resolvedAccept]);
 
   useEffect(() => {
     if (isAcceptPromise) {
@@ -357,11 +376,9 @@ const Uploader = ({
     }
   }, [__accept, isAcceptPromise]);
 
-  if (isAcceptPromise && !resolvedAccept) {
-    _accept = [];
-  }
-
+  let dropzoneDisabled = disabled;
   if (acceptLoading) dropzoneDisabled = true;
+
   const accept = useMemo(
     () =>
       !_accept
