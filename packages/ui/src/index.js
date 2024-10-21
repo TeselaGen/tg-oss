@@ -75,6 +75,7 @@ export * from "./utils/browserUtils";
 export * from "./utils/commandUtils";
 export * from "./utils/commandControls";
 export * from "./utils/useTraceUpdate";
+export * from "./utils/hooks/useStableReference";
 export { default as AsyncValidateFieldSpinner } from "./AsyncValidateFieldSpinner";
 export { default as showProgressToast } from "./utils/showProgressToast";
 export { default as getTextFromEl } from "./utils/getTextFromEl";
