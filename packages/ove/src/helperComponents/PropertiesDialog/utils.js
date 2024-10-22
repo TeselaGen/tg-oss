@@ -2,11 +2,11 @@ import React from "react";
 import { convertDnaCaretPositionOrRangeToAA } from "@teselagen/sequence-utils";
 import { convertRangeTo1Based } from "@teselagen/range-utils";
 
-export const sizeSchema = {
+export const sizeSchema = isProtein => ({
   path: "size",
   type: "number",
-  render: (val, _record, i, props) => {
-    const record = props.isProtein
+  render: (val, _record) => {
+    const record = isProtein
       ? convertDnaCaretPositionOrRangeToAA(_record)
       : _record;
     const base1Range = convertRangeTo1Based(record);
@@ -14,7 +14,7 @@ export const sizeSchema = {
 
     return (
       <span>
-        {props.isProtein ? Math.floor(val / 3) : val}{" "}
+        {isProtein ? Math.floor(val / 3) : val}{" "}
         <span style={{ fontSize: 10 }}>
           {hasJoinedLocations ? (
             record.locations.map((loc, i) => {
@@ -34,4 +34,4 @@ export const sizeSchema = {
       </span>
     );
   }
-};
+});

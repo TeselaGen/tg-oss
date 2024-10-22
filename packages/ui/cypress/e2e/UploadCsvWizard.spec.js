@@ -147,17 +147,6 @@ describe("UploadCsvWizard.spec", () => {
   });
   it(`messed up headers should trigger the wizard. editing the added file should work`, () => {
     cy.visit("#/UploadCsvWizard");
-    // cy.contains("Build CSV File").click();
-    // cy.get(`.rt-td [data-test="tgCell_description"]`)
-    //   .eq(1)
-    //   .click({ force: true });
-    // cy.focused().type("description{enter}");
-
-    // cy.get(
-    //   `.hasCellError[data-tip="Please enter a value here"] [data-test="tgCell_name"]:first`
-    // ).dblclick({ force: true });
-    // cy.focused().type("a{enter}");
-    // cy.contains(`.bp3-dialog button`, "Cancel").click();
     cy.uploadFile(
       ".tg-dropzone",
       "testUploadWizard_messedUpHeaders.csv",
@@ -177,19 +166,21 @@ describe("UploadCsvWizard.spec", () => {
     );
 
     cy.get(`.tg-test-is-regex`).click();
-    cy.contains(".tg-select-option", "typo").click({ force: true });
+    cy.contains(".tg-select-option", "typo").click();
     cy.contains(".bp3-dialog", `zonk`).should("exist"); //the data from the file should be previewed
 
     cy.contains("Review and Edit Data").click();
 
     cy.get(
       `.hasCellError[data-tip="Please enter a value here"] [data-test="tgCell_name"]:first`
-    ).dblclick({ force: true });
-    cy.focused().type("a{enter}");
+    )
+      .parent()
+      .type("a{enter}");
     cy.get(
       `.hasCellError[data-tip="Please enter a value here"] [data-test="tgCell_sequence"]:first`
-    ).dblclick({ force: true });
-    cy.focused().type("g{enter}");
+    )
+      .parent()
+      .type("g{enter}");
     cy.dragBetween(`.cellDragHandle`, `.rt-tr-last-row`);
     cy.contains("Add File").click();
     cy.contains(`testUploadWizard_messedUpHeaders.csv`);
@@ -197,7 +188,7 @@ describe("UploadCsvWizard.spec", () => {
     cy.get(`.tg-upload-file-list-item-edit`).click();
     cy.contains(`Edit your data here.`);
     cy.get(
-      `[data-index="4"] [data-test="tgCell_sequence"]:contains(g)`
+      `[data-index="4"] [data-test="tgCell_sequence"]:contains(g):last`
     ).click();
     cy.focused().type(`{backspace}`);
     cy.get(`.bp3-disabled:contains(Edit Data)`);
@@ -646,14 +637,7 @@ a,,desc,,false,dna,misc_feature
     cy.contains(".bp3-dialog", `DEscription`); //the matched headers should show up
     cy.contains(".bp3-dialog", `Description`); //the expected headers should show up
     cy.contains("Review and Edit Data").click();
-    cy.get(`[data-tip="Please enter a value here"]`);
-    cy.get(`.hasCellError:last [data-test="tgCell_name"]`);
-    cy.get(`button:contains(Next File).bp3-disabled`);
-    cy.get(`.hasCellError:last [data-test="tgCell_name"]`).click({
-      force: true
-    });
-    cy.focused().type("haha{enter}");
-    // cy.get(`.hasCellError:last [data-test="tgCell_name"]`).type("haha{enter}", {force: true});
+    cy.get(`.hasCellError`).type("haha{enter}");
     cy.get(`button:contains(Next File):first`).click();
     cy.get(
       `.bp3-dialog .bp3-tab[aria-selected="true"]:contains(testUploadWizard_messedUpHeaders.csv) .bp3-icon-warning-sign`
@@ -676,9 +660,7 @@ a,,desc,,false,dna,misc_feature
     cy.get(
       `.tg-upload-file-list-item:contains(testUploadWizard_invalidDataNonUnique.csv) .tg-upload-file-list-item-edit`
     ).click();
-    cy.get(`[data-index="0"] [data-test="tgCell_sequence"]`).click({
-      force: true
-    });
+    cy.get(`[data-index="0"] [data-test="tgCell_sequence"]:last`).click();
     cy.focused().type(`tom{enter}`);
     cy.get(`.bp3-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
@@ -687,9 +669,7 @@ a,,desc,,false,dna,misc_feature
     cy.get(
       `.tg-upload-file-list-item:contains(testUploadWizard_invalidData.csv) .tg-upload-file-list-item-edit`
     ).click();
-    cy.get(`[data-index="0"] [data-test="tgCell_sequence"]`).click({
-      force: true
-    });
+    cy.get(`[data-index="0"] [data-test="tgCell_sequence"]`).click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.focused().type(`robbin{enter}`, { delay: 100 });
@@ -701,53 +681,53 @@ a,,desc,,false,dna,misc_feature
       cy.window().then(win => {
         expect(win.exampleFile[0].parsedData).to.deep.equal([
           {
-            name: "a",
             description: "",
+            isRegex: false,
+            matchType: "dna",
+            name: "a",
             sequence: "tom",
-            isRegex: false,
-            matchType: "dna",
             type: "misc_feature"
           },
           {
+            description: "",
+            isRegex: false,
+            matchType: "dna",
             name: "a",
-            description: "",
             sequence: "g",
-            isRegex: false,
-            matchType: "dna",
             type: "misc_feature"
           },
           {
+            description: "",
+            isRegex: false,
+            matchType: "dna",
             name: "a",
-            description: "",
             sequence: "g",
-            isRegex: false,
-            matchType: "dna",
             type: "misc_feature"
           },
           {
-            name: "b",
             description: "",
-            sequence: "g",
             isRegex: false,
             matchType: "dna",
+            name: "b",
+            sequence: "g",
             type: "misc_feature"
           },
           {
-            name: "b",
             description: "",
-            sequence: "g",
             isRegex: false,
             matchType: "dna",
+            name: "b",
+            sequence: "g",
             type: "misc_feature"
           }
         ]);
         expect(win.exampleFile[1].parsedData).to.deep.equal([
           {
-            name: "a",
             description: "",
-            sequence: "robbin",
             isRegex: false,
             matchType: "dna",
+            name: "a",
+            sequence: "robbin",
             type: "misc_feature"
           },
           {
@@ -1065,14 +1045,14 @@ thomas,,g,false,dna,misc_feature`,
     cy.visit("#/UploadCsvWizard");
     cy.tgToggle("allowMultipleFiles");
     cy.contains("Build CSV File").click();
-    cy.get(`[data-test="tgCell_name"]:first`).click({ force: true });
+    cy.get(`.rt-tbody [role="gridcell"]:first`).click();
     cy.focused().paste(`Thomas	Wee	agagag	False	dna	misc_feature`);
     cy.contains(".bp3-button", "Add File").click();
     cy.contains("manual_data_entry.csv");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.contains("Build CSV File").click();
-    cy.get(`[data-test="tgCell_name"]:first`).click({ force: true });
+    cy.get(`.rt-tbody [role="gridcell"]:first`).click();
     cy.focused().paste(`Thomas	Wee	agagag	False	dna	misc_feature`);
     cy.contains(".bp3-button", "Add File").click();
     cy.contains("manual_data_entry(1).csv");
@@ -1081,13 +1061,11 @@ thomas,,g,false,dna,misc_feature`,
     ).click();
     cy.contains(`Edit your data here.`);
     cy.contains(`Add 10 Rows`).click();
-    cy.get(`[data-index="4"] [data-test="tgCell_sequence"]`).click({
-      force: true
-    });
+    cy.get(`[data-index="4"] [role="gridcell"]`).eq(2).click();
     cy.focused().type(`{backspace}`);
     cy.get(`.bp3-disabled:contains(Edit Data)`).should("not.exist");
     cy.focused().type(`tom{enter}`);
-    cy.get(`[data-index="4"] [data-test="tgCell_name"]`).click({ force: true });
+    cy.get(`[data-index="4"] [role="gridcell"]:first`).click();
     cy.focused().type(`taoh{enter}`);
     cy.get(`.bp3-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
@@ -1096,9 +1074,7 @@ thomas,,g,false,dna,misc_feature`,
     cy.get(
       `.tg-upload-file-list-item:contains(manual_data_entry(1).csv) .tg-upload-file-list-item-edit`
     ).click();
-    cy.get(`[data-index="0"] [data-test="tgCell_sequence"]`).click({
-      force: true
-    });
+    cy.get(`[data-index="0"] [role="gridcell"]`).eq(2).click();
     cy.focused().type(`tom{enter}`);
     cy.get(`.bp3-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
@@ -1127,11 +1103,11 @@ thomas,,g,false,dna,misc_feature`,
           },
           {
             name: "taoh",
-            description: "",
+            description: undefined,
             sequence: "tom",
             isRegex: false,
-            matchType: "",
-            type: ""
+            matchType: undefined,
+            type: undefined
           }
         ]);
       });
@@ -1213,23 +1189,14 @@ thomas,,g,false,dna,misc_feature`,
     cy.contains(
       `Input your data here. Hover table headers for additional instructions`
     );
-    cy.get(`.rt-td [data-test="tgCell_description"]`)
-      .eq(1)
-      .click({ force: true });
-    cy.focused().type("description{enter}");
+    cy.get(".rt-td").eq(1).type("description{enter}");
 
     //there should be a checkbox in the isRegex boolean column
     cy.get(`[data-test="Is Regex"] .bp3-checkbox`);
 
     //should be able to edit and then drag to continue that edit further down
-    cy.get(
-      `.hasCellError[data-tip="Please enter a value here"] [data-test="tgCell_name"]:first`
-    ).dblclick({ force: true });
-    cy.focused().type("a{enter}");
-    cy.get(
-      `.hasCellError[data-tip="Please enter a value here"] [data-test="tgCell_sequence"]:first`
-    ).dblclick({ force: true });
-    cy.focused().type("g{enter}");
+    cy.get(".rt-td").eq(0).type("a{enter}");
+    cy.get(".rt-td").eq(2).type("g{enter}");
 
     cy.contains(".bp3-button", "Add File").click();
     cy.contains("File Added");

@@ -1,17 +1,27 @@
 import { isEmpty, forEach, range } from "lodash-es";
 import { getSelectedRowsFromEntities } from "./selection";
-import getIdOrCodeOrIndex from "./getIdOrCodeOrIndex";
+import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 import { getRecordsFromIdMap } from "./withSelectedEntities";
 
-export default function rowClick(e, rowInfo, entities, props) {
-  const {
+export default function rowClick(
+  e,
+  rowInfo,
+  entities,
+  {
     reduxFormSelectedEntityIdMap,
     isSingleSelect,
     noSelect,
     onRowClick,
     isEntityDisabled,
-    withCheckboxes
-  } = props;
+    withCheckboxes,
+    onDeselect,
+    onSingleRowSelect,
+    onMultiRowSelect,
+    noDeselectAll,
+    onRowSelect,
+    change
+  }
+) {
   const entity = rowInfo.original;
   onRowClick(e, entity, rowInfo);
   if (noSelect || isEntityDisabled(entity)) return;
@@ -101,7 +111,19 @@ export default function rowClick(e, rowInfo, entities, props) {
     }
   }
 
-  finalizeSelection({ idMap: newIdMap, entities, props });
+  finalizeSelection({
+    idMap: newIdMap,
+    entities,
+    props: {
+      onDeselect,
+      onSingleRowSelect,
+      onMultiRowSelect,
+      noDeselectAll,
+      onRowSelect,
+      noSelect,
+      change
+    }
+  });
 }
 
 export function changeSelectedEntities({ idMap, entities = [], change }) {
@@ -124,8 +146,10 @@ export function changeSelectedEntities({ idMap, entities = [], change }) {
   change("reduxFormSelectedEntityIdMap", newIdMap);
 }
 
-export function finalizeSelection({ idMap, entities, props }) {
-  const {
+export function finalizeSelection({
+  idMap,
+  entities,
+  props: {
     onDeselect,
     onSingleRowSelect,
     onMultiRowSelect,
@@ -133,7 +157,8 @@ export function finalizeSelection({ idMap, entities, props }) {
     onRowSelect,
     noSelect,
     change
-  } = props;
+  }
+}) {
   if (noSelect) return;
   if (
     noDeselectAll &&

@@ -39,7 +39,7 @@ export function getMergedOpts(topLevel = {}, instanceLevel = {}) {
         //filters look like this:
         // {
         //   selectedFilter: 'textContains', //camel case
-        //   filterOn: ccDisplayName, //camel case display name
+        //   filterOn: ccDisplayName, //camel case display name if available and string, otherwise path
         //   filterValue: 'thomas',
         // }
       ],
@@ -63,9 +63,27 @@ function safeParse(val) {
     return val;
   }
 }
+
+/**
+ *
+ * @param {object} field
+ * @returns the camelCase display name of the field, to be used for filters, sorting, etc
+ */
+export function getCCDisplayName(field) {
+  return camelCase(
+    typeof field.displayName === "string" ? field.displayName : field.path
+  );
+}
+
+/**
+ * Takes a schema and returns an object with the fields mapped by their camelCased display name.
+ * If the displayName is not set or is a jsx element, the path is used instead.
+ * The same conversion must be done when using the result of this method
+ */
 function getFieldsMappedByCCDisplayName(schema) {
   return schema.fields.reduce((acc, field) => {
-    acc[camelCase(field.displayName || field.path)] = field;
+    const ccDisplayName = getCCDisplayName(field);
+    acc[ccDisplayName] = field;
     return acc;
   }, {});
 }
@@ -75,14 +93,14 @@ function orderEntitiesLocal(orderArray, entities, schema, ownProps) {
     const orderFuncs = [];
     const ascOrDescArray = [];
     orderArray.forEach(order => {
-      const ccDisplayName = order.replace(/^-/gi, "");
+      const ccDisplayName = order.replace(/^-/gi, ""); // "-updatedAt" => "updatedAt"
       const ccFields = getFieldsMappedByCCDisplayName(schema);
       const field = ccFields[ccDisplayName];
       if (!field) {
         throw new Error(
           "Ruh roh, there should have been a column to sort on for " +
             order +
-            "but none was found in " +
+            " but none was found in " +
             schema.fields
         );
       }
@@ -234,14 +252,14 @@ function getFiltersFromSearchTerm(searchTerm, schema) {
       isSearchTermFilter: true
     };
     schema.fields.forEach(field => {
-      const { type, displayName, path, searchDisabled } = field;
+      const { type, searchDisabled } = field;
       if (searchDisabled || field.filterDisabled || type === "color") return;
-      const nameToUse = camelCase(displayName || path);
+      const ccDisplayName = getCCDisplayName(field);
       const filterValue = cleanFilterValue(searchTerm, type);
       if (type === "string" || type === "lookup") {
         searchTermFilters.push({
           ...sharedFields,
-          filterOn: nameToUse,
+          filterOn: ccDisplayName,
           filterValue: searchTerm,
           selectedFilter: "contains"
         });
@@ -256,14 +274,14 @@ function getFiltersFromSearchTerm(searchTerm, schema) {
           if ("true".replace(regex, "") !== "true") {
             searchTermFilters.push({
               ...sharedFields,
-              filterOn: nameToUse,
+              filterOn: ccDisplayName,
               filterValue: true,
               selectedFilter: "true"
             });
           } else if ("false".replace(regex, "") !== "false") {
             searchTermFilters.push({
               ...sharedFields,
-              filterOn: nameToUse,
+              filterOn: ccDisplayName,
               filterValue: false,
               selectedFilter: "false"
             });
@@ -278,7 +296,7 @@ function getFiltersFromSearchTerm(searchTerm, schema) {
         }
         searchTermFilters.push({
           ...sharedFields,
-          filterOn: nameToUse,
+          filterOn: ccDisplayName,
           filterValue: filterValue,
           selectedFilter: "equalTo"
         });
@@ -347,7 +365,13 @@ function getSubFilter(
           if (!fieldVal?.toString) return false;
           return (
             arrayFilterValue
-              .map(val => val && val.toLowerCase())
+              .map(val => {
+                if (val) {
+                  if (val.toString) return val.toString().toLowerCase();
+                  return val.toLowerCase();
+                }
+                return undefined;
+              })
               .indexOf(fieldVal.toString().toLowerCase()) > -1
           );
         };
@@ -359,7 +383,13 @@ function getSubFilter(
           if (!fieldVal?.toString) return false;
           return (
             arrayFilterValue
-              .map(val => val && val.toLowerCase())
+              .map(val => {
+                if (val) {
+                  if (val.toString) return val.toString().toLowerCase();
+                  return val.toLowerCase();
+                }
+                return undefined;
+              })
               .indexOf(fieldVal.toString().toLowerCase()) === -1
           );
         };
@@ -573,49 +603,45 @@ function buildRef(qb, reference, searchField, expression) {
 
 export function makeDataTableHandlers({
   setNewParams,
-  updateSearch,
   defaults,
   onlyOneFilter
 }) {
   //all of these actions have currentParams bound to them as their last arg in withTableParams
-  function setSearchTerm(searchTerm, currentParams) {
-    const newParams = {
-      ...currentParams,
+  const setSearchTerm = searchTerm => {
+    setNewParams(prev => ({
+      ...(prev ?? {}),
       page: undefined, //set page undefined to return the table to page 1
       searchTerm: searchTerm === defaults.searchTerm ? undefined : searchTerm
-    };
-    setNewParams(newParams);
-    updateSearch(searchTerm);
+    }));
     onlyOneFilter && clearFilters();
-  }
-  function addFilters(newFilters, currentParams) {
-    if (!newFilters) return;
-    const filters = uniqBy(
-      [...newFilters, ...(onlyOneFilter ? [] : currentParams.filters || [])],
-      "filterOn"
-    );
+  };
 
-    const newParams = {
-      ...currentParams,
-      page: undefined, //set page undefined to return the table to page 1
-      filters
-    };
-    setNewParams(newParams);
-    onlyOneFilter && updateSearch();
-  }
-  function removeSingleFilter(filterOn, currentParams) {
-    const filters = currentParams.filters
-      ? currentParams.filters.filter(filter => {
-          return filter.filterOn !== filterOn;
-        })
-      : undefined;
-    const newParams = {
-      ...currentParams,
-      filters
-    };
-    setNewParams(newParams);
-  }
-  function clearFilters(additionalFilterKeys = []) {
+  const addFilters = newFilters => {
+    if (!newFilters) return;
+    setNewParams(prev => {
+      const filters = uniqBy(
+        [...newFilters, ...(onlyOneFilter ? [] : prev?.filters || [])],
+        "filterOn"
+      );
+      return {
+        ...(prev ?? {}),
+        page: undefined, //set page undefined to return the table to page 1
+        filters
+      };
+    });
+  };
+
+  const removeSingleFilter = filterOn =>
+    setNewParams(prev => {
+      const filters = prev?.filters
+        ? prev.filters.filter(filter => {
+            return filter.filterOn !== filterOn;
+          })
+        : undefined;
+      return { ...(prev ?? {}), filters };
+    });
+
+  const clearFilters = (additionalFilterKeys = []) => {
     const toClear = {
       filters: undefined,
       searchTerm: undefined,
@@ -625,49 +651,49 @@ export function makeDataTableHandlers({
       toClear[key] = undefined;
     });
     setNewParams(toClear);
-    updateSearch();
-  }
-  function setPageSize(pageSize, currentParams) {
-    const newParams = {
-      ...currentParams,
+  };
+
+  const setPageSize = pageSize =>
+    setNewParams(prev => ({
+      ...(prev ?? {}),
       pageSize: pageSize === defaults.pageSize ? undefined : pageSize,
       page: undefined //set page undefined to return the table to page 1
-    };
-    setNewParams(newParams);
-  }
-  function setOrder(order, isRemove, shiftHeld, currentParams) {
-    let newOrder = [];
-    if (shiftHeld) {
-      //first remove the old order
-      newOrder = [...(currentParams.order || [])].filter(value => {
-        const shouldRemove =
-          value.replace(/^-/, "") === order.replace(/^-/, "");
-        return !shouldRemove;
-      });
-      //then, if we are adding, pop the order onto the array
-      if (!isRemove) {
-        newOrder.push(order);
-      }
-    } else {
-      if (isRemove) {
-        newOrder = [];
+    }));
+
+  const setOrder = (order, isRemove, shiftHeld) =>
+    setNewParams(prev => {
+      let newOrder = [];
+      if (shiftHeld) {
+        //first remove the old order
+        newOrder = [...(prev?.order || [])].filter(value => {
+          const shouldRemove =
+            value.replace(/^-/, "") === order.replace(/^-/, "");
+          return !shouldRemove;
+        });
+        //then, if we are adding, pop the order onto the array
+        if (!isRemove) {
+          newOrder.push(order);
+        }
       } else {
-        newOrder = [order];
+        if (isRemove) {
+          newOrder = [];
+        } else {
+          newOrder = [order];
+        }
       }
-    }
-    const newParams = {
-      ...currentParams,
-      order: newOrder
-    };
-    setNewParams(newParams);
-  }
-  function setPage(page, currentParams) {
-    const newParams = {
-      ...currentParams,
+      return {
+        ...(prev ?? {}),
+        order: newOrder
+      };
+    });
+
+  const setPage = page => {
+    setNewParams(prev => ({
+      ...(prev ?? {}),
       page: page === defaults.page ? undefined : page
-    };
-    setNewParams(newParams);
-  }
+    }));
+  };
+
   return {
     setSearchTerm,
     addFilters,
@@ -859,7 +885,6 @@ export function getQueryParams({
           }));
         });
       };
-
       const orFiltersObject = getQueries(orFilters, qb, ccFields);
       let allOrFilters = flattenFilters(orFiltersObject);
 

@@ -1,4 +1,5 @@
 import path from "path";
+import os from "os";
 
 describe("EditableCellTable.spec", () => {
   it(`cell checkboxes and the header checkbox should work`, () => {
@@ -29,8 +30,6 @@ describe("EditableCellTable.spec", () => {
     cy.get(".cellDragHandle");
     cy.get(`[data-test="tgCell_name"]:first`).dblclick();
     cy.get(".cellDragHandle").should("not.exist");
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
     cy.focused().type("_zonk{enter}");
     cy.get(
       `[data-tip="Must include the letter 'a'"] [data-test="tgCell_name"]:first`
@@ -39,8 +38,6 @@ describe("EditableCellTable.spec", () => {
   });
   it(`typing a letter should start edit`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
     cy.get(`[data-test="tgCell_name"]:first`).type("zonk{enter}");
     cy.get(`[data-test="tgCell_name"]:first`).should("contain", "zonk");
   });
@@ -126,8 +123,6 @@ describe("EditableCellTable.spec", () => {
       `[data-tip="Must be a number"] [data-test="tgCell_howMany"]:first`
     ).should("contain", "NaN"); //should lowercase "Tom"
     cy.get(`[data-test="tgCell_howMany"]:first`).dblclick();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
     cy.focused().type("11{enter}");
     cy.get(`[data-test="tgCell_howMany"]:first`).should("contain", "12"); //should have 12 post format
     cy.get(
@@ -176,7 +171,7 @@ describe("EditableCellTable.spec", () => {
   // });
   it(`arrow keys should work together with shift and dragging should work`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
-    cy.get(`[data-test="tgCell_howMany"]`).eq(3).click({ force: true });
+    cy.get(`[data-test="tgCell_howMany"]`).eq(3).click();
     cy.focused().type(`{leftArrow}`);
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_weather"]`
@@ -231,9 +226,7 @@ describe("EditableCellTable.spec", () => {
     cy.get(
       `[data-index="1"] .rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_type"]`
     );
-    cy.get(`[data-index="49"] [data-test="tgCell_isProtein"]`).click({
-      force: true
-    });
+    cy.get(`[data-index="49"] [data-test="tgCell_isProtein"]`).click();
     cy.get(
       `[data-index="49"] .rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_isProtein"]`
     );
@@ -247,18 +240,13 @@ describe("EditableCellTable.spec", () => {
     );
   });
   it(`undo/redo should work`, () => {
-    const IS_LINUX =
-      window.navigator.platform.toLowerCase().search("linux") > -1;
+    const IS_LINUX = os.platform().toLowerCase().search("linux") > -1;
     const undoCmd = IS_LINUX ? `{alt}z` : "{meta}z";
     const redoCmd = IS_LINUX ? `{alt}{shift}z` : "{meta}{shift}z";
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`.rt-td:contains(tom88)`).dblclick();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
     cy.focused().type("{selectall}tasty55{enter}");
     cy.get(`.rt-td:contains(tasty55)`).dblclick();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(0);
     cy.focused().type("{selectall}delishhh{enter}");
     cy.get(`.rt-td:contains(delishhh)`);
     cy.focused().type(undoCmd);

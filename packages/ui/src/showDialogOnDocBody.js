@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import React from "react";
 // import withDialog from "./enhancers/withDialog";
 import { Dialog } from "@blueprintjs/core";
@@ -19,19 +19,15 @@ export default function showDialogOnDocBody(DialogComp, options = {}) {
     DialogCompToUse = props => {
       return (
         <Dialog usePortal={false} title="pass a {title} prop" isOpen {...props}>
-          <DialogComp
-            {...props}
-            hideModal={onClose}
-            onClose={onClose}
-          ></DialogComp>
+          <DialogComp {...props} hideModal={onClose} onClose={onClose} />
         </Dialog>
       );
     };
   } else {
     DialogCompToUse = DialogComp;
   }
-  ReactDOM.render(
-    <DialogCompToUse hideModal={onClose} onClose={onClose} {...options} />,
-    dialogHolder
+  const root = createRoot(dialogHolder);
+  root.render(
+    <DialogCompToUse hideModal={onClose} onClose={onClose} {...options} />
   );
 }
