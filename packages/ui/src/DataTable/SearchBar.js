@@ -10,8 +10,15 @@ const SearchBar = ({
   loading,
   searchMenuButton,
   disabled,
-  autoFocusSearch
+  autoFocusSearch,
+  noForm
 }) => {
+  if (noForm) {
+    console.error(
+      "The search bar requires the component to be wrapped in a form"
+    );
+    return;
+  }
   let rightElement;
   // need to always render searchMenuButton so it doesn't close
   if (searchMenuButton) {

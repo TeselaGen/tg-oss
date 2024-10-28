@@ -3010,6 +3010,7 @@ const DataTable = ({
                     ""
                   )}
                   <SearchBar
+                    noForm={noForm}
                     searchInput={currentParams.searchTerm}
                     setSearchTerm={setSearchTerm}
                     loading={isLoading}

@@ -976,33 +976,13 @@ export const RenderReactColorPicker = ({ input, onFieldSubmit, ...rest }) => (
 
 export function generateField(component, opts) {
   const compWithDefaultVal = withAbstractWrapper(component, opts);
-  return ({
-    name,
-    isRequired,
-    onFieldSubmit = noop,
-    noRedux = false,
-    ...rest
-  }) => {
-    const input = useMemo(() => {
-      if (noRedux)
-        return {
-          input: {
-            onChange: rest.onChange || noop,
-            onBlur: rest.onBlur || noop,
-            value: rest.value,
-            name
-          }
-        };
-      return {};
-    }, [name, noRedux, rest.onBlur, rest.onChange, rest.value]);
+  return ({ name, isRequired, onFieldSubmit = noop, ...rest }) => {
     const props = {
       onFieldSubmit,
       name,
-      ...input,
       component: compWithDefaultVal,
       ...(isRequired && { validate: fieldRequired }),
       isRequired,
-      noRedux,
       ...rest
     };
 
