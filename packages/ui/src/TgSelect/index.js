@@ -469,6 +469,7 @@ export const renderCreateNewOption = (query, active, handleClick) => (
 );
 
 export function createNewOption(newValString) {
+  if (!newValString) return;
   return {
     userCreated: true,
     label: newValString,
