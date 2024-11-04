@@ -221,6 +221,25 @@ class TgSelect extends React.Component {
     }
     return optionRenderer;
   };
+  renderCreateNewOption = (query, active, handleClick) => {
+    if (this.props.renderCreateNewOption) {
+      return this.props.renderCreateNewOption(query, active, handleClick);
+    }
+    return (
+      <MenuItem
+        icon="add"
+        text={`Create "${query}"`}
+        active={active}
+        onClick={(...args) => {
+          const shouldStopEarly = this.props.onCreateNewOption(query);
+          if (!shouldStopEarly) {
+            handleClick(...args);
+          }
+        }}
+        shouldDismissPopover={false}
+      />
+    );
+  };
 
   render() {
     let {
@@ -250,7 +269,6 @@ class TgSelect extends React.Component {
       popoverProps,
       additionalRightEl,
       resetOnSelect = true,
-      renderCreateNewOption: _renderCreateNewOption = renderCreateNewOption,
       ...rest
     } = this.props;
     if (asTag) {
@@ -304,7 +322,7 @@ class TgSelect extends React.Component {
     const maybeCreateNewItemFromQuery = creatable ? createNewOption : undefined;
     const maybeCreateNewItemRenderer =
       creatable && !this.queryHasExactOptionMatch()
-        ? _renderCreateNewOption
+        ? this.renderCreateNewOption
         : null;
     const selectedItems = getValueArray(value).map(value => {
       if (value && value.label) return value; //if the value has a label, just use that
@@ -457,16 +475,6 @@ export default compose(
 
 const itemDisabled = i => i.disabled;
 const noResultsDefault = <div>No Results...</div>;
-
-export const renderCreateNewOption = (query, active, handleClick) => (
-  <MenuItem
-    icon="add"
-    text={`Create "${query}"`}
-    active={active}
-    onClick={handleClick}
-    shouldDismissPopover={false}
-  />
-);
 
 export function createNewOption(newValString) {
   if (!newValString) return;

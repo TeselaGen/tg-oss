@@ -59,4 +59,12 @@ describe("tgSelect", () => {
     cy.contains(".tg-select-option", "option 1").should("not.exist");
     cy.contains(".tg-select-option", "option 2").should("not.exist");
   });
+  it(`onCreateNewOption should trigger and create a new option`, () => {
+    cy.tgToggle("onCreateNewOption");
+    cy.tgToggle("creatable");
+    cy.get(".tg-select input").type("weeeeee");
+    cy.contains(".bp3-menu-item", `Create "weeeeee"`).click();
+    cy.contains(".bp3-toast", "New option weeeeee created").should("exist");
+    cy.contains(".tg-select-value", "new option").should("not.exist");
+  });
 });
