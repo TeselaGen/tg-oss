@@ -232,7 +232,9 @@ class TgSelect extends React.Component {
         active={active}
         onClick={(...args) => {
           const shouldStopEarly = this.props.onCreateNewOption(query);
-          if (!shouldStopEarly) {
+          if (shouldStopEarly) {
+            this.setOpenState(false);
+          } else {
             handleClick(...args);
           }
         }}
