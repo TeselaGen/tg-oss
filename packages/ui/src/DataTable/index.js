@@ -541,6 +541,7 @@ const DataTable = ({
       });
     }
   }, [
+    convertedSchema, // If the schema changes we want to take into account the synced tableConfig again
     formName,
     syncDisplayOptionsToDb,
     tableConfigurations,
