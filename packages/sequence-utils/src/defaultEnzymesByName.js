@@ -31,6 +31,7 @@ const defaultEnzymes = [
   "banii",
   "bari",
   "baui",
+  "bbsi",
   "bbvbi",
   "bcni",
   "bcoki",
