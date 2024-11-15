@@ -31,6 +31,7 @@ export default class TgSelectDemo extends React.Component {
     const {
       multi,
       isTagSelect,
+      onCreateNewOption,
       val,
       noToggle,
       small,
@@ -79,23 +80,23 @@ export default class TgSelectDemo extends React.Component {
           {renderToggle({
             that: this,
             type: "hasError"
-            // type: "reactSelectFieldcreatable"
           })}
           {renderToggle({
             that: this,
             type: "creatable"
-            // type: "reactSelectFieldcreatable"
+          })}
+          {renderToggle({
+            that: this,
+            type: "onCreateNewOption"
           })}
           {renderToggle({
             that: this,
             type: "withStaticOptions"
-            // type: "reactSelectFieldcreatable"
           })}
           {renderToggle({
             that: this,
             type: "isTagSelect",
             label: "isTagSelect   *Note: isTagSelect requires multi to be true"
-            // type: "reactSelectFieldcreatable"
           })}
         </OptionsSection>
         <DemoWrapper style={{ maxWidth: 300 }}>
@@ -104,6 +105,14 @@ export default class TgSelectDemo extends React.Component {
               this.setState({ val });
             }}
             isTagSelect={isTagSelect}
+            onCreateNewOption={
+              onCreateNewOption
+                ? qs => {
+                    window.toastr.success(`New option ${qs} created`);
+                    return true;
+                  }
+                : undefined
+            }
             multi={multi || isTagSelect}
             intent={hasError ? "danger" : ""}
             creatable={creatable}

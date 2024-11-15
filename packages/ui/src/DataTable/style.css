@@ -70,7 +70,7 @@
 .data-table-container.fullscreen {
   background: white;
   position: fixed;
-  z-index: 50;
+  z-index: 5000;
   padding: 20px !important;
   left: 0;
   top: 0;
