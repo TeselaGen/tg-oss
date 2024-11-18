@@ -1,16 +1,15 @@
-export function MatchHeaders({ onMultiFileUploadSubmit, doAllFilesHaveSameHeaders, csvValidationIssue, ignoredHeadersMsg, searchResults, matchedHeaders, userSchema, reduxFormEntitiesArray, changeForm, datatableFormName, datatableFormNames: _datatableFormNames, setFilesWIssues, filesWIssues, fileIndex }: {
-    onMultiFileUploadSubmit: any;
-    doAllFilesHaveSameHeaders: any;
+export function MatchHeaders({ csvValidationIssue, datatableFormName, datatableFormNames: _datatableFormNames, doAllFilesHaveSameHeaders, fileIndex, filesWIssues, ignoredHeadersMsg, matchedHeaders, onMultiFileUploadSubmit, reduxFormEntitiesArray, searchResults, setFilesWIssues, userSchema }: {
     csvValidationIssue: any;
-    ignoredHeadersMsg: any;
-    searchResults: any;
-    matchedHeaders: any;
-    userSchema: any;
-    reduxFormEntitiesArray: any;
-    changeForm: any;
     datatableFormName: any;
     datatableFormNames: any;
-    setFilesWIssues: any;
-    filesWIssues: any;
+    doAllFilesHaveSameHeaders: any;
     fileIndex: any;
+    filesWIssues: any;
+    ignoredHeadersMsg: any;
+    matchedHeaders: any;
+    onMultiFileUploadSubmit: any;
+    reduxFormEntitiesArray: any;
+    searchResults: any;
+    setFilesWIssues: any;
+    userSchema: any;
 }): import("react/jsx-runtime").JSX.Element;

@@ -1337,20 +1337,6 @@ minimatch@^5.1.0:
   dependencies:
     brace-expansion "^2.0.1"
 
-mobx-react-lite@^4.0.4:
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-4.0.6.tgz#a7f128914e3d67dac80819068b749ffdd4a18705"
-  integrity sha512-0rOE0KDMwV9CzsstYC86ZxxrUpKLGBN0/T3WpKZibLnJcukdb9HVL8VKHoDxaBPbInLZ5azPKUod4mXTsi+u+A==
-  dependencies:
-    use-sync-external-store "^1.2.0"
-
-mobx-react@^9.0.1:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-9.1.0.tgz#5e54919ca27ffad5f2c0d835148a1f681cebdbc1"
-  integrity sha512-DeDRTYw4AlgHw8xEXtiZdKKEnp+c5/jeUgTbTQXEqnAzfkrgYRWP3p3Nv3Whc2CEcM/mDycbDWGjxKokQdlffg==
-  dependencies:
-    mobx-react-lite "^4.0.4"
-
 mobx@^6.10.2:
   version "6.12.0"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.12.0.tgz#72b2685ca5af031aaa49e77a4d76ed67fcbf9135"
@@ -1496,7 +1482,7 @@ react-day-picker@7.4.9:
   dependencies:
     prop-types "^15.6.2"
 
-react-dom@^18.2.0:
+react-dom@^18.3.1:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.3.1.tgz#c2265d79511b57d479b3dd3fdfa51536494c5cb4"
   integrity sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==
@@ -1591,7 +1577,7 @@ react-rnd@^10.2.4:
     react-draggable "4.4.5"
     tslib "2.3.1"
 
-react-router-dom@^4.3.1:
+react-router-dom@4:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.3.1.tgz#4c2619fc24c4fa87c9fd18f4fb4a43fe63fbd5c6"
   integrity sha512-c/MlywfxDdCp7EnB7YfPMOfMD3tOtIjrQlj/CKfNMBxdmpJP8xcz5P/UAFn3JbnQCNUxsHyVVqllF9LhgVyFCA==
@@ -1626,7 +1612,7 @@ react-transition-group@^2.4.0, react-transition-group@^2.9.0:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^18.2.0:
+react@^18.3.1:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react/-/react-18.3.1.tgz#49ab892009c53933625bd16b2533fc754cab2891"
   integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==
@@ -2006,7 +1992,7 @@ use-deep-compare-effect@^1.6.1:
     "@babel/runtime" "^7.12.5"
     dequal "^2.0.2"
 
-use-sync-external-store@^1.0.0, use-sync-external-store@^1.2.0:
+use-sync-external-store@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==

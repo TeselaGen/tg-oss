@@ -1,14 +1,14 @@
-import { default as React } from '../../../../node_modules/react';
-export default class DisplayOptions extends React.Component<any, any, any> {
-    constructor(props: any);
-    constructor(props: any, context: any);
-    state: {
-        isOpen: boolean;
-        searchTerms: {};
-    };
-    openPopover: () => void;
-    closePopover: () => void;
-    changeTableDensity: (e: any) => void;
-    toggleForcedHidden: (e: any) => any;
-    render(): import("react/jsx-runtime").JSX.Element | null;
-}
+export default DisplayOptions;
+declare function DisplayOptions({ compact, extraCompact, disabled, hideDisplayOptionsIcon, resetDefaultVisibility, updateColumnVisibility, updateTableDisplayDensity, showForcedHiddenColumns, setShowForcedHidden, hasOptionForForcedHidden, schema }: {
+    compact: any;
+    extraCompact: any;
+    disabled: any;
+    hideDisplayOptionsIcon: any;
+    resetDefaultVisibility?: ((...args: any[]) => void) | undefined;
+    updateColumnVisibility?: ((...args: any[]) => void) | undefined;
+    updateTableDisplayDensity: any;
+    showForcedHiddenColumns: any;
+    setShowForcedHidden: any;
+    hasOptionForForcedHidden: any;
+    schema: any;
+}): import("react/jsx-runtime").JSX.Element | null;

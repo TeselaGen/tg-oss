@@ -1,9 +1,10 @@
 export default SearchBar;
-declare function SearchBar({ reduxFormSearchInput, setSearchTerm, loading, searchMenuButton, disabled, autoFocusSearch }: {
-    reduxFormSearchInput: any;
+declare function SearchBar({ searchInput, setSearchTerm, loading, searchMenuButton, disabled, autoFocusSearch, noForm }: {
+    searchInput: any;
     setSearchTerm: any;
     loading: any;
     searchMenuButton: any;
     disabled: any;
     autoFocusSearch: any;
-}): import("react/jsx-runtime").JSX.Element;
+    noForm: any;
+}): import("react/jsx-runtime").JSX.Element | undefined;

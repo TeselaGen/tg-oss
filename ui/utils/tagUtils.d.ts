@@ -8,7 +8,11 @@ export function getTagColorStyle(color: any): {
 } | {
     style?: undefined;
 };
-export function getTagProps(vals: any): {
+export function getTagProps({ color, label, name }: {
+    color: any;
+    label: any;
+    name: any;
+}): {
     children: any;
     style: {
         backgroundColor: any;
