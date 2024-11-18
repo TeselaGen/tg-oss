@@ -1,4 +1,5 @@
 import { omit } from "lodash-es";
+
 export default function tg_modalState(
   state = {},
   { type, name, uniqueName, props = {} }

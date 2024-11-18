@@ -1,7 +1,9 @@
+import { version } from "../../package.json";
+
 describe("dataTable.spec", () => {
   it("can click the first row of a table that has a scroll bar (aka cypress should not incorrectly scroll the top row under the header)", () => {
     cy.visit("#/DataTable?pageSize=100");
-    cy.get(`.rt-tr-group[data-test-id="1"] .rt-tr .rt-td`).first().click();
+    cy.get(`.rt-tr-group .rt-tr .rt-td`).first().click();
   });
   it("can add a custom class name to a row in the table", () => {
     cy.visit("#/DataTable");
@@ -9,19 +11,23 @@ describe("dataTable.spec", () => {
     cy.tgToggle("getRowClassName");
     cy.get(".rt-tr-group.custom-getRowClassName").should("exist");
   });
-  //TODO THIS IS BREAKING!
-  it.skip(`it can select entities across pages`, () => {
+  it(`it can select entities across pages`, () => {
     cy.visit("#/DataTable");
     cy.contains("0 Selected");
     //select first entity
-    cy.get(`[data-test="tgCell_type.special"]`).first().click();
+    cy.get(`.rt-tr-group .rt-tr .rt-td`).first().click();
     cy.contains("1 Selected");
 
     //go to next page
     cy.get(".data-table-footer .paging-arrow-right").click();
+    cy.contains("1 Selected");
     //select another entity
-    cy.get(`[data-test="tgCell_type.special"]`).first().click();
+    cy.get(`.rt-tr-group .rt-tr .rt-td`).first().click();
     cy.contains("2 Selected");
+    // go to previous page and deselect the first entity
+    cy.get(".data-table-footer .paging-arrow-left").click();
+    cy.get(`.rt-tr-group .rt-tr .rt-td`).first().click();
+    cy.contains("1 Selected");
   });
   it('should be "normal" (normal===tg-compact-table) by default and have 3 modes, compact===tg-extra-compact-table, normal=tg-compact-table, comfortable=NOTHING_HERE ', () => {
     cy.visit("#/DataTable");
@@ -43,8 +49,8 @@ describe("dataTable.spec", () => {
     //  - copying a single row (selected or not)
     cy.get(`[data-test="tgCell_type.special"]`).first().click();
     //tnr: typing both so that the hotkey is triggered even when running on tests on linux in CI (maybe it will be solved some day https://github.com/cypress-io/cypress/issues/8961)
-    cy.get(".data-table-container").type("{meta}c");
-    cy.get(".data-table-container").type("{ctrl}c");
+    cy.get(".data-table-container").type("{meta+c}");
+    cy.get(".data-table-container").type("{ctrl+c}");
     cy.contains("Selected rows copied");
   });
   it(`it can copy a single row, selected rows, or cells to the clipboard`, () => {
@@ -92,7 +98,8 @@ describe("dataTable.spec", () => {
     cy.visit("#/DataTable");
     cy.get(`[data-test="Hunger Level"]`)
       .find(".tg-filter-menu-button")
-      .click({ force: true });
+      .invoke("show")
+      .click();
     cy.get(".bp3-popover input").type("989");
     cy.get(".bp3-popover").contains("Filter").click();
     //the clear filter button should show up and we can click it
@@ -158,11 +165,12 @@ describe("dataTable.spec", () => {
         });
     };
     checkIndices("lessThan");
+    cy.contains(version);
     cy.dragBetween(".rt-th:contains(Name)", ".rt-th:contains(Weather)");
     checkIndices("greaterThan");
   });
 
-  it.skip("page size will persist on reload", () => {
+  it("page size will persist on reload", () => {
     cy.visit("#/DataTable");
     cy.get(".data-table-container .paging-page-size").should("have.value", "5");
     cy.get(".data-table-container .paging-page-size").select("50");
@@ -179,21 +187,19 @@ describe("dataTable.spec", () => {
     );
   });
 
+  // jgespinosa10: This test is tricky, when pressing {shift} the {downArrow} is also
+  // pressed before so it doesn't work as expected, this is a Cypress error.
   it("can use the keyboard to move up/down and select rows", () => {
     cy.visit("#/DataTable?pageSize=10");
-    cy.contains("label", "withCheckboxes").click();
-    cy.contains(".rt-td", "row 3").click();
+    cy.contains("label", "With Checkboxes").click();
+    cy.contains(".rt-td", "row 1").click();
     cy.get(".rt-tr-group.selected").should("have.length", 1);
-    cy.get(".data-table-container").type("{shift}{downArrow}");
-    cy.get(".rt-tr-group.selected").should("have.length", 2);
-    cy.get(".data-table-container").type("{shift}{downArrow}");
+    cy.get(".data-table-container").type("{shift}{downArrow}{downArrow}");
     cy.get(".rt-tr-group.selected").should("have.length", 3);
-    cy.contains(".rt-td", "row 2").click();
+    cy.contains(".rt-td", "row 1").click();
     cy.get(".rt-tr-group.selected").should("have.length", 1);
-    cy.contains("label", "isSingleSelect").click();
+    cy.contains("label", "Is Single Select").click();
     cy.get(".data-table-container").type("{shift}{downArrow}");
     cy.get(".rt-tr-group.selected").should("have.length", 1);
-    cy.get(".rt-tr-group:contains(row 2)").should("not.have.class", "selected");
-    cy.get(".rt-tr-group:contains(row 3)").should("not.have.class", "selected");
   });
 });

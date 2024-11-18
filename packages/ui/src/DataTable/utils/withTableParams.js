@@ -1,22 +1,18 @@
-import React, { useContext, useEffect } from "react";
-import { change, formValueSelector } from "redux-form";
-import { connect } from "react-redux";
-import { camelCase, isFunction, set } from "lodash-es";
-import { withRouter } from "react-router-dom";
-import { branch, compose } from "recompose";
-
-import pureNoFunc from "../../utils/pureNoFunc";
-import TableFormTrackerContext from "../TableFormTrackerContext";
+import React, { useCallback, useMemo } from "react";
+import { change as _change, formValueSelector } from "redux-form";
+import { useDispatch, useSelector } from "react-redux";
 import convertSchema from "./convertSchema";
-import { getRecordsFromReduxForm } from "./withSelectedEntities";
 import {
   makeDataTableHandlers,
   getQueryParams,
   setCurrentParamsOnUrl,
-  getMergedOpts,
-  getCurrentParamsFromUrl
+  getCurrentParamsFromUrl,
+  getCCDisplayName
 } from "./queryParams";
+import { withRouter } from "react-router-dom";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
+import { useDeepEqualMemo } from "../../utils/hooks/useDeepEqualMemo";
+import { branch, compose } from "recompose";
 
 /**
  *  Note all these options can be passed at Design Time or at Runtime (like reduxForm())
@@ -33,299 +29,273 @@ import getTableConfigFromStorage from "./getTableConfigFromStorage";
  * @property {object} defaults - tableParam defaults such as pageSize, filter, etc
  * @property {boolean} noOrderError - won't console an error if an order is not found on schema
  */
-export default function withTableParams(compOrOpts, pTopLevelOpts) {
-  let topLevelOptions;
-  let Component;
-  if (!pTopLevelOpts) {
-    topLevelOptions = compOrOpts;
+export const useTableParams = props => {
+  const {
+    additionalFilter,
+    additionalOrFilter,
+    controlled_pageSize,
+    defaults: _defaults,
+    doNotCoercePageSize,
+    entities,
+    formName = "tgDataTable",
+    history,
+    initialValues,
+    isCodeModel,
+    isInfinite,
+    isLocalCall = false,
+    isSimple,
+    noForm,
+    noOrderError,
+    onlyOneFilter,
+    orderByFirstColumn,
+    pageSize,
+    schema,
+    syncDisplayOptionsToDb,
+    tableParams: _tableParams,
+    urlConnected,
+    withDisplayOptions,
+    withPaging,
+    withSelectedEntities
+  } = props;
+
+  const defaults = useMemo(
+    () => ({
+      pageSize: controlled_pageSize || 25,
+      order: [], //[-name, statusCode] //an array of camelCase display names with - sign to denote reverse
+      searchTerm: "",
+      page: 1,
+      filters: [
+        //filters look like this:
+        // {
+        //   selectedFilter: 'textContains', //camel case
+        //   filterOn: ccDisplayName, //camel case display name if available and string, otherwise path
+        //   filterValue: 'thomas',
+        // }
+      ],
+      ..._defaults
+    }),
+    [_defaults, controlled_pageSize]
+  );
+
+  const convertedSchema = useMemo(() => convertSchema(schema), [schema]);
+
+  if (isLocalCall) {
+    if (!noForm && (!formName || formName === "tgDataTable")) {
+      console.error(
+        "Please pass a unique 'formName' prop to the locally connected <DataTable/> component with schema: ",
+        schema
+      );
+    }
+    if (orderByFirstColumn && !defaults?.order?.length) {
+      defaults.order = [getCCDisplayName(convertedSchema.fields[0])];
+    }
   } else {
-    topLevelOptions = pTopLevelOpts;
-    Component = compOrOpts;
+    //in user instantiated withTableParams() call
+    if (!formName || formName === "tgDataTable") {
+      console.error(
+        "Please pass a unique 'formName' prop to the withTableParams() with schema: ",
+        schema
+      );
+    }
   }
-  const { isLocalCall } = topLevelOptions;
-  const mapStateToProps = (state, ownProps) => {
-    const mergedOpts = getMergedOpts(topLevelOptions, ownProps);
-    const {
-      history,
-      urlConnected,
-      withSelectedEntities,
-      formName,
-      formNameFromWithTPCall,
-      syncDisplayOptionsToDb,
-      defaults,
-      isInfinite,
-      isSimple,
-      withPaging,
-      doNotCoercePageSize,
-      initialValues,
-      additionalFilter = {},
-      additionalOrFilter = {},
-      noOrderError,
-      withDisplayOptions,
-      cellRenderer,
-      model,
-      isCodeModel,
-      noForm
-    } = mergedOpts;
 
-    const schema = getSchema(mergedOpts);
-    const convertedSchema = convertSchema(schema);
-    if (ownProps.isTableParamsConnected) {
-      if (
-        formName &&
-        formNameFromWithTPCall &&
-        formName !== formNameFromWithTPCall
-      ) {
-        console.error(
-          `You passed a formName prop, ${formName} to a <DataTable/> component that is already withTableParams() connected, formNameFromWithTableParamsCall: ${formNameFromWithTPCall}`
-        );
-      }
-      if (ownProps.tableParams && !ownProps.tableParams.entities) {
-        console.error(
-          `No entities array detected in tableParams object (<DataTable {...tableParams}/>). You need to call withQuery() after withTableParams() like: compose(withTableParams(), withQuery(something)). formNameFromWithTableParamsCall: ${formNameFromWithTPCall}`
-        );
-      }
-      //short circuit because we've already run this logic
-      return {};
-    }
+  const {
+    reduxFormQueryParams: _reduxFormQueryParams = {},
+    reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
+  } = useSelector(state =>
+    formValueSelector(formName)(
+      state,
+      "reduxFormQueryParams",
+      "reduxFormSelectedEntityIdMap"
+    )
+  );
 
-    let formNameFromWithTableParamsCall;
-    if (isLocalCall) {
-      if (!noForm && (!formName || formName === "tgDataTable")) {
-        console.error(
-          "Please pass a unique 'formName' prop to the locally connected <DataTable/> component with schema: ",
-          schema
-        );
-      }
-      if (
-        mergedOpts.orderByFirstColumn &&
-        !mergedOpts.defaults?.order?.length
-      ) {
-        const r = [
-          camelCase(
-            convertedSchema.fields[0].displayName ||
-              convertedSchema.fields[0].path
-          )
-        ];
-        set(mergedOpts, "defaults.order", r);
-      }
-    } else {
-      //in user instantiated withTableParams() call
-      if (!formName || formName === "tgDataTable") {
-        console.error(
-          "Please pass a unique 'formName' prop to the withTableParams() with schema: ",
-          schema
-        );
-      } else {
-        formNameFromWithTableParamsCall = formName;
-      }
-    }
+  // We want to make sure we don't rerender everything unnecessary
+  // with redux-forms we tend to do unnecessary renders
+  const reduxFormQueryParams = useDeepEqualMemo(_reduxFormQueryParams);
+  const reduxFormSelectedEntityIdMap = useDeepEqualMemo(
+    _reduxFormSelectedEntityIdMap
+  );
 
-    const tableConfig = getTableConfigFromStorage(formName);
-    const formSelector = formValueSelector(formName);
-    const currentParams =
+  const _currentParams = useMemo(() => {
+    const tmp =
       (urlConnected
-        ? getCurrentParamsFromUrl(history.location) //important to use history location and not ownProps.location because for some reason the location path lags one render behind!!
-        : formSelector(state, "reduxFormQueryParams")) || {};
+        ? getCurrentParamsFromUrl(history?.location) //important to use history location and not ownProps.location because for some reason the location path lags one render behind!!
+        : reduxFormQueryParams) || {};
 
-    const selectedEntities = withSelectedEntities
-      ? getRecordsFromReduxForm(state, formName)
-      : undefined;
+    return tmp;
+  }, [history?.location, reduxFormQueryParams, urlConnected]);
 
+  const selectedEntities = useMemo(
+    () =>
+      withSelectedEntities
+        ? Object.values(reduxFormSelectedEntityIdMap)
+            .sort((a, b) => a.rowIndex - b.rowIndex)
+            .map(item => item.entity)
+        : undefined,
+    [reduxFormSelectedEntityIdMap, withSelectedEntities]
+  );
+
+  const currentParams = useDeepEqualMemo(_currentParams);
+
+  const defaultsToUse = useMemo(() => {
+    const _tableConfig = getTableConfigFromStorage(formName);
+    const userSetPageSize =
+      _tableConfig?.userSetPageSize &&
+      parseInt(_tableConfig.userSetPageSize, 10);
+    let _defaultsToUse = defaults;
+    if (!syncDisplayOptionsToDb && userSetPageSize) {
+      _defaultsToUse = _defaultsToUse || {};
+      _defaultsToUse.pageSize = userSetPageSize;
+    }
+
+    return _defaultsToUse;
+  }, [defaults, formName, syncDisplayOptionsToDb]);
+
+  const passingProps = useMemo(
+    () => ({
+      formName: "tgDataTable",
+      ...props,
+      pageSize: controlled_pageSize || pageSize,
+      defaults: defaultsToUse,
+      location: history?.location
+    }),
+    // We don't want to rerender this every time a prop changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [controlled_pageSize, defaultsToUse, pageSize, history?.location]
+  );
+
+  const queryParams = useMemo(() => {
     const additionalFilterToUse =
       typeof additionalFilter === "function"
-        ? additionalFilter.bind(this, ownProps)
+        ? additionalFilter.bind(this, passingProps)
         : () => additionalFilter;
+
     const additionalOrFilterToUse =
       typeof additionalOrFilter === "function"
-        ? additionalOrFilter.bind(this, ownProps)
+        ? additionalOrFilter.bind(this, passingProps)
         : () => additionalOrFilter;
 
-    let defaultsToUse = defaults;
-
-    // make user set page size persist
-    const userSetPageSize =
-      tableConfig?.userSetPageSize && parseInt(tableConfig.userSetPageSize, 10);
-    if (!syncDisplayOptionsToDb && userSetPageSize) {
-      defaultsToUse = defaultsToUse || {};
-      defaultsToUse.pageSize = userSetPageSize;
-    }
-    const mapStateProps = {
-      history,
-      urlConnected,
-      withSelectedEntities,
-      formName,
-      defaults: defaultsToUse,
-      isInfinite,
-      isSimple,
-      withPaging,
+    return getQueryParams({
       doNotCoercePageSize,
-      additionalFilter,
-      additionalOrFilter,
-      noOrderError,
-      withDisplayOptions,
-      cellRenderer,
-      isLocalCall,
-      model,
-      schema,
-      mergedOpts,
-      ...getQueryParams({
-        doNotCoercePageSize,
-        currentParams,
-        entities: mergedOpts.entities, // for local table
-        urlConnected,
-        defaults: defaultsToUse,
-        schema: convertedSchema,
-        isInfinite: isInfinite || (isSimple && !withPaging),
-        isLocalCall,
-        additionalFilter: additionalFilterToUse,
-        additionalOrFilter: additionalOrFilterToUse,
-        noOrderError,
-        isCodeModel,
-        ownProps: mergedOpts
-      }),
-      formNameFromWithTPCall: formNameFromWithTableParamsCall,
-      randomVarToForceLocalStorageUpdate: formSelector(
-        state,
-        "localStorageForceUpdate"
-      ),
       currentParams,
-      selectedEntities,
-      ...(withSelectedEntities &&
-        typeof withSelectedEntities === "string" && {
-          [withSelectedEntities]: selectedEntities
-        }),
-      initialValues: {
-        ...initialValues,
-        reduxFormSearchInput: currentParams.searchTerm
-      }
-    };
-    return mapStateProps;
-    // return { ...mergedOpts, ...mapStateProps };
-  };
+      entities, // for local table
+      urlConnected,
+      defaults: defaultsToUse,
+      schema: convertedSchema,
+      isInfinite: isInfinite || (isSimple && !withPaging),
+      isLocalCall,
+      additionalFilter: additionalFilterToUse,
+      additionalOrFilter: additionalOrFilterToUse,
+      noOrderError,
+      isCodeModel,
+      ownProps: passingProps
+    });
+  }, [
+    additionalFilter,
+    passingProps,
+    additionalOrFilter,
+    doNotCoercePageSize,
+    currentParams,
+    entities,
+    urlConnected,
+    defaultsToUse,
+    convertedSchema,
+    isInfinite,
+    isSimple,
+    withPaging,
+    isLocalCall,
+    noOrderError,
+    isCodeModel
+  ]);
 
-  const mapDispatchToProps = (dispatch, ownProps) => {
-    if (ownProps.isTableParamsConnected) {
-      return {};
-    }
-    const mergedOpts = getMergedOpts(topLevelOptions, ownProps);
-    const { formName, urlConnected, history, defaults, onlyOneFilter } =
-      mergedOpts;
+  const dispatch = useDispatch();
+  const change = useCallback(
+    (...args) => dispatch(_change(formName, ...args)),
+    [dispatch, formName]
+  );
 
-    function updateSearch(val) {
-      setTimeout(function () {
-        dispatch(change(formName, "reduxFormSearchInput", val || ""));
+  const setNewParams = useCallback(
+    newParams => {
+      // we always will update the redux params as a workaround for withRouter not always working
+      // if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
+      change("reduxFormQueryParams", prev => {
+        let tmp = newParams;
+        if (typeof tmp === "function") tmp = newParams(prev);
+        urlConnected && setCurrentParamsOnUrl(tmp, history?.replace);
+        return tmp;
       });
-    }
+    },
+    [change, history?.replace, urlConnected]
+  );
 
-    let setNewParams;
-    if (urlConnected) {
-      setNewParams = function (newParams) {
-        setCurrentParamsOnUrl(newParams, history.replace);
-        dispatch(change(formName, "reduxFormQueryParams", newParams)); //we always will update the redux params as a workaround for withRouter not always working if inside a redux-connected container https://github.com/ReactTraining/react-router/issues/5037
-      };
-    } else {
-      setNewParams = function (newParams) {
-        dispatch(change(formName, "reduxFormQueryParams", newParams));
-      };
-    }
-    return {
-      bindThese: makeDataTableHandlers({
+  const dispatchProps = useMemo(
+    () =>
+      makeDataTableHandlers({
         setNewParams,
-        updateSearch,
         defaults,
         onlyOneFilter
       }),
-      dispatch
-    };
-  };
+    [defaults, onlyOneFilter, setNewParams]
+  );
 
-  function mergeProps(stateProps, dispatchProps, ownProps) {
-    if (ownProps.isTableParamsConnected) {
-      return ownProps;
-    }
-    const { currentParams, formName } = stateProps;
-    const boundDispatchProps = {};
-    //bind currentParams to actions
-    Object.keys(dispatchProps.bindThese).forEach(function (key) {
-      const action = dispatchProps.bindThese[key];
-      boundDispatchProps[key] = function (...args) {
-        action(...args, currentParams);
-      };
-    });
-    const { variables, selectedEntities, mergedOpts, ...restStateProps } =
-      stateProps;
-
-    const changeFormValue = (...args) =>
-      dispatchProps.dispatch(change(formName, ...args));
-
-    const tableParams = {
-      changeFormValue,
+  const tableParams = useMemo(
+    () => ({
+      changeFormValue: (...args) => change(...args),
       selectedEntities,
-      ...ownProps.tableParams,
-      ...restStateProps,
-      ...boundDispatchProps,
+      ..._tableParams,
+      formName,
+      initialValues,
+      isLocalCall,
+      schema,
+      currentParams,
+      withDisplayOptions,
+      ...queryParams,
+      ...dispatchProps,
       form: formName, //this will override the default redux form name
       isTableParamsConnected: true //let the table know not to do local sorting/filtering etc.
-    };
-
-    const allMergedProps = {
-      ...ownProps,
-      ...mergedOpts,
-      variables: stateProps.variables,
-      selectedEntities: stateProps.selectedEntities,
-      tableParams
-    };
-
-    return allMergedProps;
-  }
-
-  function addFormTracking(Component) {
-    return props => {
-      const formTracker = useContext(TableFormTrackerContext);
-      const { formName } = props;
-      useEffect(() => {
-        if (formTracker.isActive && !formTracker.formNames.includes(formName)) {
-          formTracker.pushFormName(formName);
-        }
-      }, [formTracker, formName]);
-
-      return <Component {...props} />;
-    };
-  }
-
-  const toReturn = compose(
-    connect((state, ownProps) => {
-      if (ownProps.isTableParamsConnected) {
-        return {};
-      }
-      const { formName } = getMergedOpts(topLevelOptions, ownProps);
-      return {
-        unusedProp:
-          formValueSelector(formName)(state, "reduxFormQueryParams") || {} //tnr: we need this to trigger withRouter and force it to update if it is nested in a redux-connected container.. very ugly but necessary
-      };
     }),
-    branch(props => {
-      //don't use withRouter if noRouter is passed!
-      return !props.noRouter;
-    }, withRouter),
-    connect(mapStateToProps, mapDispatchToProps, mergeProps),
-    pureNoFunc,
-    addFormTracking
+    [
+      _tableParams,
+      change,
+      currentParams,
+      dispatchProps,
+      formName,
+      initialValues,
+      isLocalCall,
+      queryParams,
+      schema,
+      selectedEntities,
+      withDisplayOptions
+    ]
   );
-  if (Component) {
-    return toReturn(Component);
-  }
-  return toReturn;
-}
 
-/**
- * Given the options, get the schema. This enables the user to provide
- * a function instead of an object for the schema.
- * @param {Object} options Merged options
- */
-function getSchema(options) {
-  const { schema } = options;
-  if (isFunction(schema)) return schema(options);
-  else return schema;
-}
+  return {
+    isLocalCall,
+    schema,
+    ...queryParams,
+    ...(withSelectedEntities &&
+      typeof withSelectedEntities === "string" && {
+        [withSelectedEntities]: selectedEntities
+      }),
+    currentParams,
+    selectedEntities,
+    tableParams,
+    urlConnected
+  };
+};
+
+const withTableParams = topLevelOptions =>
+  compose(
+    //don't use withRouter if noRouter is passed!
+    branch(({ noRouter }) => !noRouter, withRouter),
+    Comp => props => {
+      const tableParams = useTableParams({
+        ...topLevelOptions,
+        ...props
+      });
+      return <Comp {...props} {...tableParams} />;
+    }
+  );
+
+export default withTableParams;

@@ -18,11 +18,12 @@ export {
 } from "./DataTable/utils/withSelectedEntities";
 export {
   default as DataTable,
-  ConnectedPagingTool as PagingTool,
-  removeCleanRows
+  ConnectedPagingTool as PagingTool
 } from "./DataTable";
+export { removeCleanRows, useTableEntities } from "./DataTable/utils";
 
-export { default as getIdOrCodeOrIndex } from "./DataTable/utils/getIdOrCodeOrIndex";
+export { useDeepEqualMemo } from "./utils/hooks";
+export { getIdOrCodeOrIndex } from "./DataTable/utils";
 export { default as convertSchema } from "./DataTable/utils/convertSchema";
 export { default as Loading } from "./Loading";
 export { throwFormError } from "./throwFormError";
@@ -39,7 +40,10 @@ export { default as popoverOverflowModifiers } from "./utils/popoverOverflowModi
 export * from "./utils/tgFormValues";
 export { default as tgFormValues } from "./utils/tgFormValues";
 export { default as withStore } from "./utils/withStore";
-export { default as withTableParams } from "./DataTable/utils/withTableParams";
+export {
+  default as withTableParams,
+  useTableParams
+} from "./DataTable/utils/withTableParams";
 export { default as InfoHelper } from "./InfoHelper";
 export { default as showConfirmationDialog } from "./showConfirmationDialog";
 export { default as showAppSpinner } from "./showAppSpinner";
@@ -70,6 +74,8 @@ export * from "./utils/menuUtils";
 export * from "./utils/browserUtils";
 export * from "./utils/commandUtils";
 export * from "./utils/commandControls";
+export * from "./utils/useTraceUpdate";
+export * from "./utils/hooks/useStableReference";
 export { default as AsyncValidateFieldSpinner } from "./AsyncValidateFieldSpinner";
 export { default as showProgressToast } from "./utils/showProgressToast";
 export { default as getTextFromEl } from "./utils/getTextFromEl";

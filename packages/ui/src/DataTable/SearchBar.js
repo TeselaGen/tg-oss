@@ -5,13 +5,20 @@ import { onEnterHelper } from "../utils/handlerHelpers";
 import { InputField } from "../FormComponents";
 
 const SearchBar = ({
-  reduxFormSearchInput,
+  searchInput,
   setSearchTerm,
   loading,
   searchMenuButton,
   disabled,
-  autoFocusSearch
+  autoFocusSearch,
+  noForm
 }) => {
+  if (noForm) {
+    console.error(
+      "The search bar requires the component to be wrapped in a form"
+    );
+    return;
+  }
   let rightElement;
   // need to always render searchMenuButton so it doesn't close
   if (searchMenuButton) {
@@ -29,7 +36,7 @@ const SearchBar = ({
         minimal
         icon="search"
         onClick={() => {
-          setSearchTerm(reduxFormSearchInput);
+          setSearchTerm(searchInput);
         }}
       />
     );
@@ -40,13 +47,13 @@ const SearchBar = ({
       disabled={disabled}
       loading={loading}
       type="search"
-      name="reduxFormSearchInput"
+      defaultValue={searchInput}
       className={classNames("datatable-search-input", Classes.ROUND)}
       placeholder="Search..."
       {...onEnterHelper(e => {
         e.preventDefault();
         e.stopPropagation();
-        setSearchTerm(reduxFormSearchInput);
+        setSearchTerm(e.target.value);
         e.nativeEvent.stopImmediatePropagation();
       })}
       rightElement={rightElement}

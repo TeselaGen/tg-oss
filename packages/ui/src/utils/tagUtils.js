@@ -37,9 +37,9 @@ export function getTagColorStyle(color) {
       }
     : {};
 }
-export function getTagProps(vals) {
+export function getTagProps({ color, label, name }) {
   return {
-    ...getTagColorStyle(vals.color),
-    children: vals.label || vals.name
+    ...getTagColorStyle(color),
+    children: label || name
   };
 }

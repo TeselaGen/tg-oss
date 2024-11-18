@@ -34,9 +34,9 @@ describe("WrapDialog", () => {
   it(`wrapDialog will block enter by default in the datatable search bar`, () => {
     //tnr: we should probably change this to the top most dialog will always trigger?
     cy.contains("Show a datatable").click();
-    cy.get(`[data-test-id="2"]`); //row 2 should exist
+    cy.get(`div[data-test-id="2"]`); //row 2 should exist
     cy.get(".datatable-search-input input").type("thomas{enter}"); //
-    cy.get(`[data-test-id="2"]`).should("not.exist"); //row 2 should be hidden after the search
+    cy.get(`div[data-test-id="2"]`).should("not.exist"); //row 2 should be hidden after the search
     cy.contains("Form Has Submitted").should("not.exist"); //the form should not have submitted
   });
 });

@@ -2,9 +2,14 @@ import classNames from "classnames";
 import { SketchPicker } from "react-color";
 import { isNumber, noop, kebabCase, isPlainObject, isEqual } from "lodash-es";
 import mathExpressionEvaluator from "math-expression-evaluator";
-import React, { useContext, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import { Field, change } from "redux-form";
-
 import "./style.css";
 import {
   InputGroup,
@@ -22,7 +27,6 @@ import {
   TextArea,
   Popover
 } from "@blueprintjs/core";
-
 import { DateInput, DateRangeInput } from "@blueprintjs/datetime";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import { difference } from "lodash-es";
@@ -41,6 +45,8 @@ import popoverOverflowModifiers from "../utils/popoverOverflowModifiers";
 import Uploader from "./Uploader";
 import sortify from "./sortify";
 import { fieldRequired } from "./utils";
+import { useDispatch } from "react-redux";
+import { useStableReference } from "../utils/hooks/useStableReference";
 
 export { fieldRequired };
 
@@ -57,8 +63,14 @@ function getIntent({
   }
 }
 
-function getIntentClass(...args) {
-  const intent = getIntent(...args);
+function getIntentClass({
+  showErrorIfUntouched,
+  meta: { touched, error, warning }
+}) {
+  const intent = getIntent({
+    showErrorIfUntouched,
+    meta: { touched, error, warning }
+  });
   if (intent === Intent.DANGER) {
     return Classes.INTENT_DANGER;
   } else if (intent === Intent.WARNING) {
@@ -100,8 +112,8 @@ function removeUnwantedProps(props) {
   return cleanedProps;
 }
 
-function LabelWithTooltipInfo({ label, tooltipInfo, labelStyle }) {
-  return tooltipInfo ? (
+const LabelWithTooltipInfo = ({ label, tooltipInfo, labelStyle }) =>
+  tooltipInfo ? (
     <div style={{ display: "flex", alignItems: "center", ...labelStyle }}>
       {label}{" "}
       <InfoHelper
@@ -113,253 +125,214 @@ function LabelWithTooltipInfo({ label, tooltipInfo, labelStyle }) {
   ) : (
     label || null
   );
-}
 
-class AbstractInput extends React.Component {
-  componentDidMount() {
-    const {
-      defaultValue,
-      enableReinitialize,
-      input: { value }
-    } = this.props;
-    if (
-      ((value !== false && !value) || enableReinitialize) &&
-      defaultValue !== undefined
-    ) {
-      this.updateDefaultValue();
+const AbstractInput = ({
+  assignDefaultButton,
+  asyncValidating,
+  className,
+  children,
+  containerStyle,
+  defaultValue,
+  disabled,
+  fileLimit,
+  inlineLabel,
+  input: { name },
+  intent,
+  isLabelTooltip,
+  isLoadingDefaultValue,
+  isRequired,
+  label,
+  labelStyle,
+  leftEl,
+  meta: { form, touched, error, warning },
+  noFillField,
+  noMarginBottom,
+  noOuterLabel,
+  onDefaultValChanged: _onDefaultValChanged,
+  onFieldSubmit: _onFieldSubmit,
+  rightEl,
+  secondaryLabel,
+  setAssignDefaultsMode,
+  showErrorIfUntouched,
+  showGenerateDefaultDot,
+  startAssigningDefault,
+  tooltipError,
+  tooltipInfo,
+  tooltipProps
+}) => {
+  const dispatch = useDispatch();
+  const onDefaultValChanged = useStableReference(_onDefaultValChanged);
+  const onFieldSubmit = useStableReference(_onFieldSubmit);
+
+  // This only takes care that the default Value is changed when it is changed in the parent component
+  useEffect(() => {
+    if (defaultValue !== undefined) {
+      dispatch(change(form, name, defaultValue));
+      onDefaultValChanged.current &&
+        onDefaultValChanged.current(defaultValue, name, form);
+      onFieldSubmit.current && onFieldSubmit.current(defaultValue);
     }
-  }
+  }, [defaultValue, dispatch, form, name, onDefaultValChanged, onFieldSubmit]);
 
-  componentDidUpdate(oldProps) {
-    const {
-      defaultValue: oldDefaultValue,
-      defaultValCount: oldDefaultValCount
-    } = oldProps;
-    const {
-      defaultValue,
-      defaultValCount,
-      enableReinitialize,
-      input: { value }
-    } = this.props;
-
-    if (
-      ((value !== false && !value) ||
-        enableReinitialize ||
-        defaultValCount !== oldDefaultValCount) &&
-      !isEqual(defaultValue, oldDefaultValue)
-    ) {
-      this.updateDefaultValue();
-    }
-  }
-
-  updateDefaultValue = () => {
-    const {
-      defaultValue,
-      input: { name },
-      meta: { dispatch, form },
-      onDefaultValChanged,
-      onFieldSubmit
-    } = this.props;
-    dispatch(change(form, name, defaultValue));
-    onDefaultValChanged &&
-      onDefaultValChanged(defaultValue, name, form, this.props);
-    onFieldSubmit && onFieldSubmit(defaultValue);
-  };
-
-  render() {
-    const {
-      children,
-      tooltipProps,
-      tooltipError,
-      disabled,
-      intent,
-      tooltipInfo,
-      label,
-      inlineLabel,
-      isLabelTooltip,
-      secondaryLabel,
-      className,
-      showErrorIfUntouched,
-      asyncValidating,
-      meta,
-      containerStyle,
-      leftEl,
-      rightEl,
-      labelStyle,
-      noOuterLabel,
-      fileLimit,
-      noMarginBottom,
-      assignDefaultButton,
-      showGenerateDefaultDot,
-      setAssignDefaultsMode,
-      startAssigningDefault,
-      input,
-      noFillField,
-      isRequired,
-      isLoadingDefaultValue
-    } = this.props;
-    const { touched, error, warning } = meta;
-
-    // if our custom field level validation is happening then we don't want to show the error visually
-    const showError =
-      (touched || showErrorIfUntouched) && error && !asyncValidating;
-    const showWarning = (touched || showErrorIfUntouched) && warning;
-    let componentToWrap =
-      isLabelTooltip || tooltipError ? (
-        <Tooltip
-          disabled={isLabelTooltip ? false : !showError}
-          intent={isLabelTooltip ? "none" : error ? "danger" : "warning"}
-          content={isLabelTooltip ? label : error || warning}
-          position={Position.TOP}
-          modifiers={popoverOverflowModifiers}
-          {...tooltipProps}
-        >
-          {children}
-        </Tooltip>
-      ) : (
-        children
-      );
-    const testClassName = "tg-test-" + kebabCase(input.name);
-    if (noFillField) {
-      componentToWrap = (
-        <div className="tg-no-fill-field">{componentToWrap}</div>
-      );
-    }
-
-    let helperText;
-    if (!tooltipError) {
-      if (showError) {
-        helperText = error;
-      } else if (showWarning) {
-        helperText = warning;
-      }
-    }
-
-    // if in a cypress test show message so that inputs will not be interactable
-    if (window.Cypress && isLoadingDefaultValue) {
-      return "Loading default value...";
-    }
-
-    let labelInfo = secondaryLabel;
-
-    const hasOuterLabel = !noOuterLabel && !isLabelTooltip;
-    function getFileLimitInfo() {
-      if (!fileLimit) return "";
-      return `max ${fileLimit} file${fileLimit === 1 ? "" : "s"}`;
-    }
-
-    if (isRequired && hasOuterLabel && label && !labelInfo) {
-      labelInfo = `(required${fileLimit ? `, ${getFileLimitInfo()}` : ""})`;
-    } else if (!labelInfo && fileLimit) {
-      labelInfo = `(${getFileLimitInfo()})`;
-    }
-
-    return (
-      <FormGroup
-        className={classNames(className, testClassName, {
-          "tg-flex-form-content": leftEl || rightEl,
-          "tg-tooltipError": tooltipError,
-          "tg-has-error": showError && error
-        })}
-        disabled={disabled}
-        helperText={helperText}
-        intent={intent}
-        label={
-          hasOuterLabel && (
-            <LabelWithTooltipInfo
-              labelStyle={labelStyle}
-              label={label}
-              tooltipInfo={tooltipInfo}
-            />
-          )
-        }
-        inline={inlineLabel}
-        labelInfo={labelInfo}
-        style={{
-          ...(noMarginBottom && { marginBottom: 0 }),
-          ...containerStyle
-        }}
+  // if our custom field level validation is happening then we don't want to show the error visually
+  const showError =
+    (touched || showErrorIfUntouched) && error && !asyncValidating;
+  const showWarning = (touched || showErrorIfUntouched) && warning;
+  let componentToWrap =
+    isLabelTooltip || tooltipError ? (
+      <Tooltip
+        disabled={isLabelTooltip ? false : !showError}
+        intent={isLabelTooltip ? "none" : error ? "danger" : "warning"}
+        content={isLabelTooltip ? label : error || warning}
+        position={Position.TOP}
+        modifiers={popoverOverflowModifiers}
+        {...tooltipProps}
       >
-        {showGenerateDefaultDot && (
-          <div
-            style={{ zIndex: 10, position: "relative", height: 0, width: 0 }}
-          >
-            <div style={{ position: "absolute", left: "0px", top: "0px" }}>
-              <Tooltip
-                modifiers={popoverOverflowModifiers}
-                content="Allows a Default to be Set. Click to Enter Set Default Mode (or press Shift+D when outside the input field)"
-              >
-                <div
-                  onClick={() => {
-                    setAssignDefaultsMode(true);
-                    startAssigningDefault();
-                  }}
-                  className="generateDefaultDot"
-                ></div>
-              </Tooltip>
-            </div>
-          </div>
-        )}
-        {assignDefaultButton}
-        {leftEl} {componentToWrap} {rightEl}
-      </FormGroup>
+        {children}
+      </Tooltip>
+    ) : (
+      children
     );
+  const testClassName = "tg-test-" + kebabCase(name);
+  if (noFillField) {
+    componentToWrap = <div className="tg-no-fill-field">{componentToWrap}</div>;
   }
-}
 
-export const renderBlueprintDateInput = props => {
-  const { input, intent, onFieldSubmit, inputProps, ...rest } = props;
+  let helperText;
+  if (!tooltipError) {
+    if (showError) {
+      helperText = error;
+    } else if (showWarning) {
+      helperText = warning;
+    }
+  }
+
+  // if in a cypress test show message so that inputs will not be interactable
+  if (window.Cypress && isLoadingDefaultValue) {
+    return "Loading default value...";
+  }
+
+  let labelInfo = secondaryLabel;
+
+  const hasOuterLabel = !noOuterLabel && !isLabelTooltip;
+  function getFileLimitInfo() {
+    if (!fileLimit) return "";
+    return `max ${fileLimit} file${fileLimit === 1 ? "" : "s"}`;
+  }
+
+  if (isRequired && hasOuterLabel && label && !labelInfo) {
+    labelInfo = `(required${fileLimit ? `, ${getFileLimitInfo()}` : ""})`;
+  } else if (!labelInfo && fileLimit) {
+    labelInfo = `(${getFileLimitInfo()})`;
+  }
+
   return (
-    <DateInput
-      {...getDayjsFormatter("L")}
-      {...removeUnwantedProps(rest)}
+    <FormGroup
+      className={classNames(className, testClassName, {
+        "tg-flex-form-content": leftEl || rightEl,
+        "tg-tooltipError": tooltipError,
+        "tg-has-error": showError && error
+      })}
+      disabled={disabled}
+      helperText={helperText}
       intent={intent}
-      inputProps={inputProps}
-      {...input}
-      value={input.value ? new Date(input.value) : undefined}
-      onChange={function (selectedDate) {
-        input.onChange(selectedDate);
-        onFieldSubmit(selectedDate);
-      }}
-    />
-  );
-};
-
-export const renderBlueprintDateRangeInput = props => {
-  const { input, intent, onFieldSubmit, inputProps, ...rest } = props;
-
-  return (
-    <DateRangeInput
-      {...getDayjsFormatter("L")}
-      {...removeUnwantedProps(rest)}
-      intent={intent}
-      inputProps={inputProps}
-      {...input}
-      value={
-        input.value
-          ? [new Date(input.value[0]), new Date(input.value[1])]
-          : undefined
+      label={
+        hasOuterLabel && (
+          <LabelWithTooltipInfo
+            labelStyle={labelStyle}
+            label={label}
+            tooltipInfo={tooltipInfo}
+          />
+        )
       }
-      onChange={function (selectedDate) {
-        input.onChange(selectedDate);
-        onFieldSubmit(selectedDate);
+      inline={inlineLabel}
+      labelInfo={labelInfo}
+      style={{
+        ...(noMarginBottom && { marginBottom: 0 }),
+        ...containerStyle
       }}
-    />
+    >
+      {showGenerateDefaultDot && (
+        <div style={{ zIndex: 10, position: "relative", height: 0, width: 0 }}>
+          <div style={{ position: "absolute", left: "0px", top: "0px" }}>
+            <Tooltip
+              modifiers={popoverOverflowModifiers}
+              content="Allows a Default to be Set. Click to Enter Set Default Mode (or press Shift+D when outside the input field)"
+            >
+              <div
+                onClick={() => {
+                  setAssignDefaultsMode(true);
+                  startAssigningDefault();
+                }}
+                className="generateDefaultDot"
+              />
+            </Tooltip>
+          </div>
+        </div>
+      )}
+      {assignDefaultButton}
+      {leftEl} {componentToWrap} {rightEl}
+    </FormGroup>
   );
 };
 
-export const RenderBlueprintInput = props => {
-  const {
-    input,
-    // meta = {},
-    intent,
-    onFieldSubmit,
-    onKeyDown = noop,
-    asyncValidating,
-    rightElement,
-    clickToEdit,
-    ...rest
-  } = props;
+export const renderBlueprintDateInput = ({
+  input,
+  intent,
+  onFieldSubmit,
+  inputProps,
+  ...rest
+}) => (
+  <DateInput
+    {...getDayjsFormatter("L")}
+    {...removeUnwantedProps(rest)}
+    intent={intent}
+    inputProps={inputProps}
+    {...input}
+    value={input.value ? new Date(input.value) : undefined}
+    onChange={function (selectedDate) {
+      input.onChange(selectedDate);
+      onFieldSubmit(selectedDate);
+    }}
+  />
+);
+
+export const renderBlueprintDateRangeInput = ({
+  input,
+  intent,
+  onFieldSubmit,
+  inputProps,
+  ...rest
+}) => (
+  <DateRangeInput
+    {...getDayjsFormatter("L")}
+    {...removeUnwantedProps(rest)}
+    intent={intent}
+    inputProps={inputProps}
+    {...input}
+    value={
+      input.value
+        ? [new Date(input.value[0]), new Date(input.value[1])]
+        : undefined
+    }
+    onChange={function (selectedDate) {
+      input.onChange(selectedDate);
+      onFieldSubmit(selectedDate);
+    }}
+  />
+);
+
+export const RenderBlueprintInput = ({
+  input,
+  // meta = {},
+  intent,
+  onFieldSubmit,
+  onKeyDown = noop,
+  asyncValidating,
+  rightElement,
+  clickToEdit,
+  ...rest
+}) => {
   const [isOpen, setOpen] = useState(false);
   const [value, setVal] = useState(null);
   const toSpread = {};
@@ -433,11 +406,7 @@ export const RenderBlueprintInput = props => {
         {clickToEdit &&
           (isOpen ? (
             <>
-              <Button
-                icon="small-cross"
-                onClick={stopEdit}
-                intent="danger"
-              ></Button>
+              <Button icon="small-cross" onClick={stopEdit} intent="danger" />
               <Button
                 icon="small-tick"
                 onClick={() => {
@@ -448,7 +417,7 @@ export const RenderBlueprintInput = props => {
                   stopEdit();
                 }}
                 intent="success"
-              ></Button>{" "}
+              />{" "}
             </>
           ) : (
             <Button
@@ -457,30 +426,33 @@ export const RenderBlueprintInput = props => {
                 setOpen(true);
               }}
               icon="edit"
-            ></Button>
+            />
           ))}
       </div>
     );
   return inner;
 };
 
-export const renderBlueprintCheckbox = props => {
-  const { input, label, tooltipInfo, beforeOnChange, onFieldSubmit, ...rest } =
-    props;
-  return (
-    <Checkbox
-      {...removeUnwantedProps(rest)}
-      {...input}
-      checked={input.value}
-      label={<LabelWithTooltipInfo label={label} tooltipInfo={tooltipInfo} />}
-      onChange={getCheckboxOrSwitchOnChange({
-        beforeOnChange,
-        input,
-        onFieldSubmit
-      })}
-    />
-  );
-};
+export const renderBlueprintCheckbox = ({
+  input,
+  label,
+  tooltipInfo,
+  beforeOnChange,
+  onFieldSubmit,
+  ...rest
+}) => (
+  <Checkbox
+    {...removeUnwantedProps(rest)}
+    {...input}
+    checked={input.value}
+    label={<LabelWithTooltipInfo label={label} tooltipInfo={tooltipInfo} />}
+    onChange={getCheckboxOrSwitchOnChange({
+      beforeOnChange,
+      input,
+      onFieldSubmit
+    })}
+  />
+);
 
 const getCheckboxOrSwitchOnChange = ({
   beforeOnChange,
@@ -498,154 +470,136 @@ const getCheckboxOrSwitchOnChange = ({
     onFieldSubmit(v);
   };
 
-export const renderBlueprintSwitch = props => {
-  const { input, label, tooltipInfo, onFieldSubmit, beforeOnChange, ...rest } =
-    props;
+export const renderBlueprintSwitch = ({
+  input,
+  label,
+  tooltipInfo,
+  onFieldSubmit,
+  beforeOnChange,
+  ...rest
+}) => (
+  <Switch
+    {...removeUnwantedProps(rest)}
+    {...input}
+    checked={input.value}
+    label={<LabelWithTooltipInfo label={label} tooltipInfo={tooltipInfo} />}
+    onChange={getCheckboxOrSwitchOnChange({
+      beforeOnChange,
+      input,
+      onFieldSubmit
+    })}
+  />
+);
 
-  return (
-    <Switch
-      {...removeUnwantedProps(rest)}
-      {...input}
-      checked={input.value}
-      label={<LabelWithTooltipInfo label={label} tooltipInfo={tooltipInfo} />}
-      onChange={getCheckboxOrSwitchOnChange({
-        beforeOnChange,
-        input,
-        onFieldSubmit
-      })}
-    />
-  );
-};
+export const renderFileUpload = ({ input, onFieldSubmit, ...rest }) => (
+  <Uploader
+    fileList={input.value}
+    onFieldSubmit={onFieldSubmit}
+    {...rest}
+    name={input.name}
+    onChange={input.onChange}
+  />
+);
 
-export const renderFileUpload = props => {
-  const { input, onFieldSubmit, ...rest } = props;
-  return (
-    <Uploader
-      fileList={input.value}
-      onFieldSubmit={onFieldSubmit}
-      {...rest}
-      onChange={input.onChange}
-    />
-  );
-};
+export const RenderBlueprintTextarea = ({
+  input,
+  onFieldSubmit,
+  onKeyDown,
+  intentClass,
+  inputClassName,
+  clickToEdit,
+  disabled,
+  ...rest
+}) => {
+  const [value, setValue] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-export class renderBlueprintTextarea extends React.Component {
-  state = {
-    value: null,
-    isOpen: false
+  const stopEdit = () => {
+    setIsOpen(false);
+    setValue(null);
   };
-  allowEdit = () => {
-    this.setState({ isOpen: true });
+
+  const handleValSubmit = () => {
+    input.onChange(value === null ? input.value : value);
+    onFieldSubmit(value === null ? input.value : value, {
+      cmdEnter: true
+    });
+    stopEdit();
   };
-  stopEdit = () => {
-    this.setState({ isOpen: false });
-    this.setState({ value: null });
-  };
-  updateVal = e => {
-    this.setState({ value: e.target.value });
-  };
-  handleValSubmit = () => {
-    this.props.input.onChange(
-      this.state.value === null ? this.props.input.value : this.state.value
-    );
-    this.props.onFieldSubmit(
-      this.state.value === null ? this.props.input.value : this.state.value,
-      { cmdEnter: true }
-    );
-    this.stopEdit();
-  };
-  onKeyDown = (...args) => {
+
+  const handleOnKeyDown = (...args) => {
     const e = args[0];
-    (this.props.onKeyDown || noop)(...args);
+    (onKeyDown || noop)(...args);
     if (e.keyCode === 13 && (e.metaKey || e.ctrlKey)) {
-      this.props.onFieldSubmit(e.target.value, { cmdEnter: true }, e);
-      this.props.input.onChange(e);
-      this.stopEdit();
+      onFieldSubmit(e.target.value, { cmdEnter: true }, e);
+      input.onChange(e);
+      stopEdit();
     }
   };
-  render() {
-    const {
-      input,
-      intentClass,
-      inputClassName,
-      onFieldSubmit,
-      clickToEdit,
-      onKeyDown,
-      disabled,
-      ...rest
-    } = this.props;
-    if (clickToEdit) {
-      const isDisabled = clickToEdit && !this.state.isOpen;
 
-      return (
-        <React.Fragment>
-          <TextArea
-            {...removeUnwantedProps(rest)}
-            disabled={rest.disabled || isDisabled}
-            className={classNames(
-              intentClass,
-              inputClassName,
-              Classes.INPUT,
-              Classes.FILL
-            )}
-            value={this.state.value === null ? input.value : this.state.value}
-            onChange={this.updateVal}
-            onKeyDown={this.onKeyDown}
-          />
-          {clickToEdit &&
-            !disabled &&
-            (this.state.isOpen ? (
-              //show okay/cancel buttons
-              <div>
-                <Button onClick={this.stopEdit} intent="danger">
-                  Cancel
-                </Button>
-                <Button onClick={this.handleValSubmit} intent="success">
-                  Ok
-                </Button>
-              </div>
-            ) : (
-              //show click to edit button
-              <Button onClick={this.allowEdit}>Edit</Button>
-            ))}
-        </React.Fragment>
-      );
-    } else {
-      return (
+  if (clickToEdit) {
+    const isDisabled = clickToEdit && !isOpen;
+    return (
+      <>
         <TextArea
           {...removeUnwantedProps(rest)}
-          disabled={disabled}
+          disabled={rest.disabled || isDisabled}
           className={classNames(
             intentClass,
             inputClassName,
             Classes.INPUT,
             Classes.FILL
           )}
-          {...input}
-          onBlur={function (e, val) {
-            if (rest.readOnly) return;
-            input.onBlur(e, val);
-            onFieldSubmit(e.target ? e.target.value : val, { blur: true }, e);
-          }}
-          onKeyDown={(...args) => {
-            const e = args[0];
-            (onKeyDown || noop)(...args);
-            if (e.keyCode === 13 && (e.metaKey || e.ctrlKey)) {
-              onFieldSubmit(e.target.value, { cmdEnter: true }, e);
-            }
-          }}
+          value={value === null ? input.value : value}
+          onChange={e => setValue(e.target.value)}
+          onKeyDown={handleOnKeyDown}
         />
-      );
-    }
+        {clickToEdit &&
+          !disabled &&
+          (isOpen ? (
+            //show okay/cancel buttons
+            <div>
+              <Button onClick={stopEdit} intent="danger">
+                Cancel
+              </Button>
+              <Button onClick={handleValSubmit} intent="success">
+                Ok
+              </Button>
+            </div>
+          ) : (
+            //show click to edit button
+            <Button onClick={() => setIsOpen(true)}>Edit</Button>
+          ))}
+      </>
+    );
+  } else {
+    return (
+      <TextArea
+        {...removeUnwantedProps(rest)}
+        disabled={disabled}
+        className={classNames(
+          intentClass,
+          inputClassName,
+          Classes.INPUT,
+          Classes.FILL
+        )}
+        {...input}
+        onBlur={function (e, val) {
+          if (rest.readOnly) return;
+          input.onBlur(e, val);
+          onFieldSubmit(e.target ? e.target.value : val, { blur: true }, e);
+        }}
+        onKeyDown={(...args) => {
+          const e = args[0];
+          (onKeyDown || noop)(...args);
+          if (e.keyCode === 13 && (e.metaKey || e.ctrlKey)) {
+            onFieldSubmit(e.target.value, { cmdEnter: true }, e);
+          }
+        }}
+      />
+    );
   }
-}
-
-// class ClickToEditWrapper extends React.Component {
-//   state = { isEditing: false };
-//   render() {
-//     return <div />;
-//   }
-// }
+};
 
 export const renderBlueprintEditableText = props => {
   const { input, onFieldSubmit, ...rest } = props;
@@ -767,17 +721,15 @@ export const renderSuggest_old = props => {
   return renderReactSelect({ ...props, asSuggest: true });
 };
 
-export const renderSuggest = props => {
-  const {
-    async,
-    input: { value, onChange },
-    hideValue,
-    intent,
-    options,
-    onFieldSubmit,
-    ...rest
-  } = props;
-
+export const renderSuggest = ({
+  async,
+  input: { value, onChange },
+  hideValue,
+  intent,
+  options,
+  onFieldSubmit,
+  ...rest
+}) => {
   const propsToUse = {
     ...removeUnwantedProps(rest),
     intent,
@@ -793,27 +745,25 @@ export const renderSuggest = props => {
       }
     }
   };
-  return <TgSuggest {...propsToUse}></TgSuggest>;
+  return <TgSuggest {...propsToUse} />;
 };
 
 export const BPSelect = ({ value, onChange, ...rest }) => {
   return renderSelect({ ...rest, input: { onChange, value } });
 };
 
-export const renderSelect = props => {
-  // spreading input not working, grab the values needed instead
-  const {
-    input: { value, onChange },
-    hideValue,
-    className,
-    placeholder,
-    onFieldSubmit,
-    options,
-    hidePlaceHolder,
-    minimal,
-    disabled,
-    ...rest
-  } = props;
+export const renderSelect = ({
+  input: { value, onChange },
+  hideValue,
+  className,
+  placeholder,
+  onFieldSubmit,
+  options,
+  hidePlaceHolder,
+  minimal,
+  disabled,
+  ...rest
+}) => {
   return (
     <div
       className={
@@ -892,16 +842,15 @@ export const renderSelect = props => {
   );
 };
 
-export const renderBlueprintNumericInput = props => {
-  const {
-    input,
-    hideValue,
-    intent,
-    inputClassName,
-    onFieldSubmit,
-    onAnyNumberChange,
-    ...rest
-  } = props;
+export const renderBlueprintNumericInput = ({
+  input,
+  hideValue,
+  intent,
+  inputClassName,
+  onFieldSubmit,
+  onAnyNumberChange,
+  ...rest
+}) => {
   function handleBlurOrButtonClick(stringVal) {
     if (rest.readOnly) return;
     try {
@@ -984,200 +933,58 @@ export const renderBlueprintRadioGroup = ({
   );
 };
 
-export class RenderReactColorPicker extends React.Component {
-  handleChange = color => {
-    const { input, onFieldSubmit } = this.props;
-
-    input.onChange(color.hex);
-    onFieldSubmit(color.hex);
-  };
-
-  render() {
-    const { input, onFieldSubmit, ...rest } = this.props;
-    return (
-      <Popover
-        position="bottom-right"
-        minimal
-        modifiers={popoverOverflowModifiers}
-        content={
-          <SketchPicker
-            className="tg-color-picker-selector"
-            color={input.value}
-            onChangeComplete={this.handleChange}
-            {...removeUnwantedProps(rest)}
-          />
-        }
-      >
-        <div
-          style={{
-            padding: "7px",
-            margin: "1px",
-            background: "#fff",
-            borderRadius: "1px",
-            boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
-            display: "inline-block",
-            cursor: "pointer"
-          }}
-        >
-          <div
-            className="tg-color-picker-selected-color"
-            style={{
-              width: "36px",
-              height: "14px",
-              borderRadius: "2px",
-              background: `${input.value}`
-            }}
-          />
-        </div>
-      </Popover>
-    );
-  }
-}
-
-// tgreen: This doesn't work because the async validate function will not be automatically rerun onSubmit
-// class AddAsyncValidate extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       asyncValidating: false
-//     };
-//     this.runAsyncValidationDebounced = debounce(this.runAsyncValidation, 500);
-//   }
-
-//   componentDidUpdate(oldProps) {
-//     const {
-//       validateOnChange,
-//       input: { name, value },
-//       meta: { touched, form, dispatch }
-//     } = this.props;
-//     const newValue = value;
-//     const oldValue = oldProps.input.value;
-//     const valueHasChanged = newValue !== oldValue;
-//     if (validateOnChange && valueHasChanged) {
-//       this.runAsyncValidationDebounced(newValue);
-//     }
-//     // mark the input as touched after changing value
-//     if (valueHasChanged && !touched) {
-//       dispatch(touch(form, name));
-//     }
-//   }
-
-//   triggerAsyncValidation(error) {
-//     const {
-//       input: { name },
-//       meta: { dispatch, form },
-//       formAsyncErrors
-//     } = this.props;
-//     // this needs to get a fresh prop for formAsyncErrors otherwise it will get out of sync.
-//     // the test will catch this.
-//     dispatch(
-//       stopAsyncValidation(form, {
-//         ...formAsyncErrors,
-//         [name]: error
-//       })
-//     );
-//   }
-
-//   runAsyncValidation = async val => {
-//     const {
-//       input: { name },
-//       meta: { dispatch, form },
-//       asyncValidate
-//     } = this.props;
-
-//     this.setState({
-//       asyncValidating: true
-//     });
-//     // mark this field as invalid so that the user can not submit this form while async validating
-//     this.triggerAsyncValidation("asyncValidating");
-//     dispatch(startAsyncValidation(form));
-//     const error = await asyncValidate(val);
-//     this.triggerAsyncValidation(error);
-//     // if there is no error then clear it from redux
-//     if (!error) {
-//       dispatch(clearAsyncError(form, name));
-//     }
-
-//     this.setState({
-//       asyncValidating: false
-//     });
-
-//     return error;
-//   };
-
-//   onBlur = (...args) => {
-//     const { input } = this.props;
-//     // always run this on input blur so that the user cannot submit a form with a field that has not finished validating
-//     this.runAsyncValidation(input.value);
-//     input.onBlur(...args);
-//   };
-
-//   render() {
-//     const { asyncValidating } = this.state;
-//     const {
-//       passedComponent: Component,
-//       input,
-//       formAsyncErrors, // don't pass through
-//       dispatch, // don't pass through
-//       ...rest
-//     } = this.props;
-
-//     return (
-//       <Component
-//         {...rest}
-//         input={{
-//           ...input,
-//           onBlur: this.onBlur
-//         }}
-//         asyncValidating={asyncValidating}
-//       />
-//     );
-//   }
-// }
-
-// const WrappedAddAsyncValidate = connect((state, { meta }) => {
-//   return {
-//     formAsyncErrors: getFormAsyncErrors(meta.form)(state)
-//   };
-// })(AddAsyncValidate);
+export const RenderReactColorPicker = ({ input, onFieldSubmit, ...rest }) => (
+  <Popover
+    position="bottom-right"
+    minimal
+    modifiers={popoverOverflowModifiers}
+    content={
+      <SketchPicker
+        className="tg-color-picker-selector"
+        color={input.value}
+        onChangeComplete={color => {
+          input.onChange(color.hex);
+          onFieldSubmit(color.hex);
+        }}
+        {...removeUnwantedProps(rest)}
+      />
+    }
+  >
+    <div
+      style={{
+        padding: "7px",
+        margin: "1px",
+        background: "#fff",
+        borderRadius: "1px",
+        boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
+        display: "inline-block",
+        cursor: "pointer"
+      }}
+    >
+      <div
+        className="tg-color-picker-selected-color"
+        style={{
+          width: "36px",
+          height: "14px",
+          borderRadius: "2px",
+          background: `${input.value}`
+        }}
+      />
+    </div>
+  </Popover>
+);
 
 export function generateField(component, opts) {
   const compWithDefaultVal = withAbstractWrapper(component, opts);
-  return function FieldMaker({
-    name,
-    isRequired,
-    onFieldSubmit = noop,
-    noRedux,
-    // asyncValidate,
-    ...rest
-  }) {
-    const component = compWithDefaultVal;
-
+  return ({ name, isRequired, onFieldSubmit = noop, ...rest }) => {
     const props = {
       onFieldSubmit,
       name,
-      ...(noRedux && {
-        input: {
-          onChange: rest.onChange || noop,
-          onBlur: rest.onBlur || noop,
-          value: rest.value,
-          name
-        }
-      }),
-      component,
+      component: compWithDefaultVal,
       ...(isRequired && { validate: fieldRequired }),
       isRequired,
       ...rest
     };
-
-    // if (asyncValidate) {
-    //   props = {
-    //     ...props,
-    //     asyncValidate,
-    //     component: WrappedAddAsyncValidate,
-    //     passedComponent: component
-    //   };
-    // }
 
     return <Field {...props} />;
   };
@@ -1194,9 +1001,15 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
       ...rest
     } = props;
 
+    const {
+      showErrorIfUntouched: _showErrorIfUntouched,
+      meta: { touched, error, warning }
+    } = props;
+    const showErrorIfUntouched =
+      opts.showErrorIfUntouched || _showErrorIfUntouched;
     //get is assign defaults mode
     //if assign default value mode then add on to the component
-    const [defaultValCount, setDefaultValCount] = React.useState(0);
+    const [defaultValCount, setDefaultValCount] = useState(0);
     const [defaultValueFromBackend, setDefault] = useState();
     const [allowUserOverride, setUserOverride] = useState(true);
     const [isLoadingDefaultValue, setLoadingDefaultValue] = useState(false);
@@ -1210,14 +1023,17 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
 
     const caresAboutToolContext = generateDefaultValue?.params?.toolName;
 
-    const customParamsToUse = {
-      ...(caresAboutToolContext
-        ? { ...workflowDefaultParamsObj, ...workflowParams }
-        : {}),
-      ...(generateDefaultValue ? generateDefaultValue.customParams : {})
-    };
+    const customParamsToUse = useMemo(
+      () => ({
+        ...(caresAboutToolContext
+          ? { ...workflowDefaultParamsObj, ...workflowParams }
+          : {}),
+        ...(generateDefaultValue ? generateDefaultValue.customParams : {})
+      }),
+      [caresAboutToolContext, generateDefaultValue, workflowParams]
+    );
 
-    async function triggerGetDefault() {
+    const triggerGetDefault = useCallback(async () => {
       if (!defaultValueByIdOverride) {
         //if defaultValueByIdOverride is passed, we can skip over getting the value from the backend straight to massaging the default value
         if (!window.__triggerGetDefaultValueRequest) return;
@@ -1292,22 +1108,52 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
         await fakeWait();
       }
       setLoadingDefaultValue(false);
-    }
+    }, [
+      caresAboutToolContext,
+      customParamsToUse,
+      defaultValCount,
+      defaultValueByIdOverride,
+      generateDefaultValue,
+      massageDefaultIdValue
+    ]);
+
     // if generateDefaultValue, hit the backend for that value
     useDeepCompareEffect(() => {
       // if the input already has a value we don't want to override with the default value request
       if (rest.input.value) return;
       triggerGetDefault();
     }, [generateDefaultValue || {}]);
+
     // const asyncValidating = props.asyncValidating;
-    const defaultProps = {
-      ...rest,
-      defaultValue: defaultValueFromBackend || defaultValueFromProps,
-      disabled: props.disabled || allowUserOverride === false,
-      readOnly: props.readOnly || isLoadingDefaultValue,
-      intent: getIntent(props),
-      intentClass: getIntentClass(props)
-    };
+    const defaultProps = useMemo(
+      () => ({
+        ...rest,
+        defaultValue: defaultValueFromBackend || defaultValueFromProps,
+        disabled: props.disabled || allowUserOverride === false,
+        readOnly: props.readOnly || isLoadingDefaultValue,
+        intent: getIntent({
+          showErrorIfUntouched,
+          meta: { touched, error, warning }
+        }),
+        intentClass: getIntentClass({
+          showErrorIfUntouched,
+          meta: { touched, error, warning }
+        })
+      }),
+      [
+        allowUserOverride,
+        defaultValueFromBackend,
+        defaultValueFromProps,
+        error,
+        isLoadingDefaultValue,
+        props.disabled,
+        props.readOnly,
+        rest,
+        showErrorIfUntouched,
+        touched,
+        warning
+      ]
+    );
 
     // don't show intent while async validating
     // if (asyncValidating) {
@@ -1315,35 +1161,40 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
     //   delete defaultProps.intentClass;
     // }
 
-    const startAssigningDefault = () =>
-      window.__showAssignDefaultValueModal &&
-      window.__showAssignDefaultValueModal({
-        ...props,
-        generateDefaultValue: {
-          ...props.generateDefaultValue,
-          customParams: customParamsToUse
-        },
-        onFinish: () => {
-          triggerGetDefault();
-        }
-      });
+    const startAssigningDefault = useCallback(
+      () =>
+        window.__showAssignDefaultValueModal &&
+        window.__showAssignDefaultValueModal({
+          ...props,
+          generateDefaultValue: {
+            ...props.generateDefaultValue,
+            customParams: customParamsToUse
+          },
+          onFinish: () => {
+            triggerGetDefault();
+          }
+        }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [customParamsToUse, triggerGetDefault]
+    );
 
     return (
       <AbstractInput
-        {...{
-          ...opts,
-          defaultValCount,
-          isRequired,
-          ...defaultProps,
-          isLoadingDefaultValue,
-          showGenerateDefaultDot:
-            !inAssignDefaultsMode &&
-            window.__showGenerateDefaultDot &&
-            window.__showGenerateDefaultDot() &&
-            !!generateDefaultValue,
-          setAssignDefaultsMode,
-          startAssigningDefault,
-          assignDefaultButton: inAssignDefaultsMode && generateDefaultValue && (
+        {...opts}
+        defaultValCount={defaultValCount}
+        isRequired={isRequired}
+        {...defaultProps}
+        isLoadingDefaultValue={isLoadingDefaultValue}
+        showGenerateDefaultDot={
+          !inAssignDefaultsMode &&
+          window.__showGenerateDefaultDot?.() &&
+          !!generateDefaultValue
+        }
+        setAssignDefaultsMode={setAssignDefaultsMode}
+        startAssigningDefault={startAssigningDefault}
+        assignDefaultButton={
+          inAssignDefaultsMode &&
+          generateDefaultValue && (
             <Button
               onClick={startAssigningDefault}
               small
@@ -1352,7 +1203,7 @@ export const withAbstractWrapper = (ComponentToWrap, opts = {}) => {
               Assign Default
             </Button>
           )
-        }}
+        }
       >
         <ComponentToWrap {...defaultProps} />
       </AbstractInput>
@@ -1372,7 +1223,7 @@ export const SwitchField = generateField(renderBlueprintSwitch, {
   noOuterLabel: true,
   noFillField: true
 });
-export const TextareaField = generateField(renderBlueprintTextarea);
+export const TextareaField = generateField(RenderBlueprintTextarea);
 export const SuggestField = generateField(renderSuggest);
 export const EditableTextField = generateField(renderBlueprintEditableText);
 export const NumericInputField = generateField(renderBlueprintNumericInput);

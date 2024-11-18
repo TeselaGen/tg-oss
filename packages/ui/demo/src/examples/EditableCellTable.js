@@ -9,54 +9,51 @@ import OptionsSection from "../OptionsSection";
 import { toNumber } from "lodash-es";
 
 const chance = new Chance();
-function getEnts(num) {
-  return times(num).map(i => {
-    return {
-      name:
-        i < 20
-          ? "Tom" + (88 + i) + (i % 5 !== 0 ? " a" : "")
-          : i < 25
-            ? "Nancy" + (88 + i)
-            : chance.name(),
-      id: nanoid(),
-      type:
-        i === 0
-          ? "fail"
-          : i === 1 || i === 22
-            ? "too old"
-            : chance.pickone(["new", "old"]),
-      howMany:
-        i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
-      isProtein: true,
-      weather:
-        i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
-    };
-  });
-}
+const getEnts = num =>
+  times(num).map(i => ({
+    name:
+      i < 20
+        ? "Tom" + (88 + i) + (i % 5 !== 0 ? " a" : "")
+        : i < 25
+          ? "Nancy" + (88 + i)
+          : chance.name(),
+    id: nanoid(),
+    type:
+      i === 0
+        ? "fail"
+        : i === 1 || i === 22
+          ? "too old"
+          : chance.pickone(["new", "old"]),
+    howMany:
+      i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
+    isProtein: true,
+    weather:
+      i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
+  }));
 
-export default function SimpleTable(p) {
+export default function EditableCellTable(props) {
   const key = useRef(0);
+
+  const [entities, setEnts] = useState([]);
   const [, numComp] = useToggle({
     type: "num",
     label: "Number of Entities",
     isSelect: true,
     defaultValue: 50,
-    hook: v => {
+    controlledValue: props.entities?.length,
+    setControlledValue: v => {
       key.current++;
       setEnts(getEnts(toNumber(v)));
     },
     options: [20, 50, 100]
   });
+
   const [defaultValAsFunc, defaultValAsFuncComp] = useToggle({
     type: "defaultValAsFunc"
   });
-  // const [tagValuesAsObjects, tagValuesAsObjectsComp] = useToggle({
-  //   type: "tagValuesAsObjects"
-  // });
-  const [entities, setEnts] = useState([]);
 
-  const schema = useMemo(() => {
-    return {
+  const schema = useMemo(
+    () => ({
       fields: [
         {
           path: "name",
@@ -108,30 +105,26 @@ export default function SimpleTable(p) {
           defaultValue: true
         }
       ]
-    };
-  }, [defaultValAsFunc]);
+    }),
+    [defaultValAsFunc]
+  );
+
   return (
     <div>
       <OptionsSection>
         {numComp}
         {defaultValAsFuncComp}
-        {/* {tagValuesAsObjectsComp} */}
       </OptionsSection>
       <DemoWrapper>
         <DataTable
+          {...props}
           key={key.current}
           formName="editableCellTable"
           isSimple
           isCellEditable
           entities={entities}
           schema={schema}
-          // isEntityDisabled={
-          //   isEntityDisabled
-          //     ? ent => ent.name === "chris" || ent.name === "sam"
-          //     : undefined
-          // }
-          {...p}
-        ></DataTable>
+        />
       </DemoWrapper>
     </div>
   );
