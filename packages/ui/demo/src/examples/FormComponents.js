@@ -40,6 +40,110 @@ import DemoWrapper from "../DemoWrapper";
 //   }, 500);
 // };
 
+const gbUploaderFileList = [
+  {
+    uid: 1, //you must set a unique id for this to work properly
+    name: "yarn_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf.lock",
+    status: "error"
+  }
+];
+
+const jsonUploaderFileList = [
+  {
+    uid: 1, //you must set a unique id for this to work properly
+    name: "yarn.lock",
+    status: "error"
+  }
+];
+
+const suggestFieldOptions = [
+  "Rodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf woaiefjawoie",
+  "Ximena Morales",
+  "Kyle Craft",
+  "Sam Denicola",
+  "Tom Ogasawara Og Og Og"
+];
+
+const reactSelectFieldOptions = [
+  {
+    label: (
+      <div style={{ display: "flex" }}>
+        Rodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf
+        woaiefjawoieRodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf
+        woaiefjawoieRodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf
+        woaiefjawoieRodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf
+        woaiefjawoieRodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf
+        woaiefjawoieRodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf
+        woaiefjawoie <div>I'm a reallllly long label.. doh</div>
+      </div>
+    ),
+    value: { name: "Rodrigo Pavez", id: "123" }
+  },
+  { label: "Ximena Morales", value: "Ximena Morales" },
+  { label: "Kyle Craft", value: "Kyle Craft" },
+  { label: "Sam Denicola", value: "Sam Denicola" },
+  { label: "Tom Ogasawara Og Og Og", value: "Tom Ogasawara" }
+];
+
+const reactSelectFieldCustomLabelOptions = ["hah", "yah", "nope", "yep"].map(
+  (type, i) => ({
+    value: type,
+    label: (
+      <div
+        key={i}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginRight: 10
+        }}
+      >
+        <Icon icon="chat" />
+        <div
+          style={{
+            // background: featureColors[type], add back in if we want colors. import from vesequtils
+            height: 15,
+            width: 15,
+            marginRight: 5
+          }}
+        />
+        {type}
+      </div>
+    )
+  })
+);
+
+const reactSelectFieldMultiOptions = [
+  {
+    label: "Rodrigo Pavez",
+    value: { name: "Rodrigo Pavez", id: "123" }
+  },
+  {
+    label: "Ximena Morales",
+    value: "Ximena Morales",
+    disabled: true
+  },
+  { label: "Kyle Craft", value: "Kyle Craft" },
+  { label: "Sam Denicola", value: "Sam Denicola" },
+  { label: "Tom Ogasawara", value: "Tom Ogasawara" }
+];
+
+const reactSelectFieldMultiDefaultValues = ["Ximena Morales", "Sam Denicola"];
+
+const reactSelectFieldDisabledDefaultValues = ["Ximena Morales"];
+const reactSelectFieldDisabledOptions = [
+  {
+    label: "Rodrigo Pavez",
+    value: { name: "Rodrigo Pavez", id: "123" }
+  },
+  {
+    label: "Ximena Morales",
+    value: "Ximena Morales"
+  },
+  { label: "Kyle Craft", value: "Kyle Craft" },
+  { label: "Sam Denicola", value: "Sam Denicola" },
+  { label: "Tom Ogasawara", value: "Tom Ogasawara" }
+];
+
 function FormComponentsDemo({ handleSubmit }) {
   const [disableFileUploadField, disableFileUploadFieldComp] = useToggle({
     type: "disableFileUploadField"
@@ -89,20 +193,14 @@ function FormComponentsDemo({ handleSubmit }) {
                 text={
                   <div style={{ display: "flex", alignContent: "center" }}>
                     Download Example File &nbsp;&nbsp;
-                    <InfoHelper content="I'm some helper text"></InfoHelper>
+                    <InfoHelper content="I'm some helper text" />
                   </div>
                 }
-              ></MenuItem>
+              />
             }
             action={"docs.google.com/upload"}
             accept=".gb"
-            fileList={[
-              {
-                uid: 1, //you must set a unique id for this to work properly
-                name: "yarn_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf_asfwiefoaegnasgnasfiahusdf.lock",
-                status: "error"
-              }
-            ]}
+            fileList={gbUploaderFileList}
           />
           <h6>Importer with minimal=true</h6>
           <div style={{ display: "flex" }}>
@@ -116,13 +214,7 @@ function FormComponentsDemo({ handleSubmit }) {
               accept=".json"
               action={"docs.google.com/upload"}
               minimal
-              fileList={[
-                {
-                  uid: 1, //you must set a unique id for this to work properly
-                  name: "yarn.lock",
-                  status: "error"
-                }
-              ]}
+              fileList={jsonUploaderFileList}
             />
             &nbsp;
           </div>
@@ -135,13 +227,7 @@ function FormComponentsDemo({ handleSubmit }) {
             secondaryLabel="I'm a secondaryLabel"
             innerText="Upload"
             minimal
-            fileList={[
-              {
-                uid: 1, //you must set a unique id for this to work properly
-                name: "yarn.lock",
-                status: "error"
-              }
-            ]}
+            fileList={jsonUploaderFileList}
             label="Upload component"
             tooltipInfo="hello hello I'm tooltipInfo"
             onFieldSubmit={function (fileList) {
@@ -311,7 +397,7 @@ function FormComponentsDemo({ handleSubmit }) {
             disabled
             label="<SelectField/> with defaultValue"
           />
-          <br></br>
+          <br />
           {giveDefaultSelectValueComp}
           <SelectField
             onFieldSubmit={onFieldSubmit}
@@ -463,13 +549,7 @@ function FormComponentsDemo({ handleSubmit }) {
             name="suggestField"
             inlineLabel={inlineLabels}
             label="SuggestField Collaborators"
-            options={[
-              "Rodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf woaiefjawoie",
-              "Ximena Morales",
-              "Kyle Craft",
-              "Sam Denicola",
-              "Tom Ogasawara Og Og Og"
-            ]}
+            options={suggestFieldOptions}
           />
 
           <ReactSelectField
@@ -482,29 +562,7 @@ function FormComponentsDemo({ handleSubmit }) {
             onFieldSubmit={onFieldSubmit}
             noResultsText="I'm custom not found text!"
             creatable={reactSelectFieldcreatable}
-            options={[
-              {
-                label: (
-                  <div style={{ display: "flex" }}>
-                    Rodrigo Pavez aoiwjefoiawjfiojawe faowijefoiajwefoijawf
-                    woaiefjawoieRodrigo Pavez aoiwjefoiawjfiojawe
-                    faowijefoiajwefoijawf woaiefjawoieRodrigo Pavez
-                    aoiwjefoiawjfiojawe faowijefoiajwefoijawf
-                    woaiefjawoieRodrigo Pavez aoiwjefoiawjfiojawe
-                    faowijefoiajwefoijawf woaiefjawoieRodrigo Pavez
-                    aoiwjefoiawjfiojawe faowijefoiajwefoijawf
-                    woaiefjawoieRodrigo Pavez aoiwjefoiawjfiojawe
-                    faowijefoiajwefoijawf woaiefjawoie{" "}
-                    <div>I'm a reallllly long label.. doh</div>
-                  </div>
-                ),
-                value: { name: "Rodrigo Pavez", id: "123" }
-              },
-              { label: "Ximena Morales", value: "Ximena Morales" },
-              { label: "Kyle Craft", value: "Kyle Craft" },
-              { label: "Sam Denicola", value: "Sam Denicola" },
-              { label: "Tom Ogasawara Og Og Og", value: "Tom Ogasawara" }
-            ]}
+            options={reactSelectFieldOptions}
           />
           <ReactSelectField
             name="reactSelectFieldCustomLabel"
@@ -512,32 +570,7 @@ function FormComponentsDemo({ handleSubmit }) {
             label="ReactSelectField Custom Label"
             onFieldSubmit={onFieldSubmit}
             creatable={reactSelectFieldcreatable}
-            options={["hah", "yah", "nope", "yep"].map((type, i) => {
-              return {
-                value: type,
-                label: (
-                  <div
-                    key={i}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginRight: 10
-                    }}
-                  >
-                    <Icon icon="chat" />
-                    <div
-                      style={{
-                        // background: featureColors[type], add back in if we want colors. import from vesequtils
-                        height: 15,
-                        width: 15,
-                        marginRight: 5
-                      }}
-                    />
-                    {type}
-                  </div>
-                )
-              };
-            })}
+            options={reactSelectFieldCustomLabelOptions}
           />
           <ReactSelectField
             name="reactSelectFieldMulti"
@@ -547,21 +580,8 @@ function FormComponentsDemo({ handleSubmit }) {
             resetOnSelect
             creatable={reactSelectFieldcreatable}
             multi
-            defaultValue={["Ximena Morales", "Sam Denicola"]}
-            options={[
-              {
-                label: "Rodrigo Pavez",
-                value: { name: "Rodrigo Pavez", id: "123" }
-              },
-              {
-                label: "Ximena Morales",
-                value: "Ximena Morales",
-                disabled: true
-              },
-              { label: "Kyle Craft", value: "Kyle Craft" },
-              { label: "Sam Denicola", value: "Sam Denicola" },
-              { label: "Tom Ogasawara", value: "Tom Ogasawara" }
-            ]}
+            defaultValue={reactSelectFieldMultiDefaultValues}
+            options={reactSelectFieldMultiOptions}
           />
           <ReactSelectField
             name="reactSelectFieldDisabled"
@@ -570,20 +590,8 @@ function FormComponentsDemo({ handleSubmit }) {
             onFieldSubmit={onFieldSubmit}
             multi
             disabled
-            defaultValue={["Ximena Morales"]}
-            options={[
-              {
-                label: "Rodrigo Pavez",
-                value: { name: "Rodrigo Pavez", id: "123" }
-              },
-              {
-                label: "Ximena Morales",
-                value: "Ximena Morales"
-              },
-              { label: "Kyle Craft", value: "Kyle Craft" },
-              { label: "Sam Denicola", value: "Sam Denicola" },
-              { label: "Tom Ogasawara", value: "Tom Ogasawara" }
-            ]}
+            defaultValue={reactSelectFieldDisabledDefaultValues}
+            options={reactSelectFieldDisabledOptions}
           />
           <ReactColorField
             name="reactColorField"
