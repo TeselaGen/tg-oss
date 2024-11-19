@@ -302,10 +302,10 @@ describe("EditableCellTable.spec", () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`[data-test="tgCell_name"]:last`).click();
     cy.get(`[data-index="52"]`).should("not.exist");
-    cy.focused().paste(`hettie mclaughlin	new	cloudy	6	True
-laura stevens	new	HOT	6	Yes
-lucas jensen	old	rainy	4	false
-todd ross	old	snowy	4	no`);
+    cy.focused().paste(`william warren	new		HOT	5	True
+verna francis	old		cloudy	2	True
+nora morris	new		HOT	2	True
+miguel fitzgerald	old		snowy	2	False`);
     cy.get(`[data-test="tgCell_isProtein"]:last[data-copy-text="False"]`);
     cy.get(`[data-test="tgCell_weather"]:last`).closest(`.hasCellError`);
 
