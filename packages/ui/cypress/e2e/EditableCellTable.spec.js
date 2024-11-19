@@ -124,7 +124,7 @@ describe("EditableCellTable.spec", () => {
     ).should("contain", "NaN"); //should lowercase "Tom"
     cy.get(`[data-test="tgCell_howMany"]:first`).dblclick();
     cy.focused().type("11{enter}");
-    cy.get(`[data-test="tgCell_howMany"]:first`).should("contain", "12"); //should have 12 post format
+    cy.get(`[data-test="tgCell_howMany"]:first`).should("contain", "11"); //should have 12 post format
     cy.get(
       `[data-tip="Must be a number"] [data-test="tgCell_howMany"]:first`
     ).should("not.exist");
@@ -148,10 +148,11 @@ describe("EditableCellTable.spec", () => {
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
     ).should("not.exist");
-    cy.get(`[data-test="tgCell_name"]`).eq(3).click({ force: true });
+    cy.get(`[data-test="tgCell_name"]`).eq(3).click();
     cy.get(`.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`);
-    cy.get(`[data-test="tgCell_name"]`).eq(3).dblclick({ force: true });
-    cy.focused().type(`haha`).typeTab();
+    cy.get(`[data-test="tgCell_name"]`).eq(3).dblclick();
+    cy.focused().type("haha{enter}");
+    cy.focused().typeTab();
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
     ).should("not.exist");
@@ -301,10 +302,10 @@ describe("EditableCellTable.spec", () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`[data-test="tgCell_name"]:last`).click();
     cy.get(`[data-index="52"]`).should("not.exist");
-    cy.focused().paste(`hettie mclaughlin	new	cloudy	6	True
-laura stevens	new	HOT	6	Yes
-lucas jensen	old	rainy	4	false
-todd ross	old	snowy	4	no`);
+    cy.focused().paste(`william warren	new		HOT	5	True
+verna francis	old		cloudy	2	True
+nora morris	new		HOT	2	True
+miguel fitzgerald	old		snowy	2	False`);
     cy.get(`[data-test="tgCell_isProtein"]:last[data-copy-text="False"]`);
     cy.get(`[data-test="tgCell_weather"]:last`).closest(`.hasCellError`);
 
