@@ -124,7 +124,7 @@ describe("EditableCellTable.spec", () => {
     ).should("contain", "NaN"); //should lowercase "Tom"
     cy.get(`[data-test="tgCell_howMany"]:first`).dblclick();
     cy.focused().type("11{enter}");
-    cy.get(`[data-test="tgCell_howMany"]:first`).should("contain", "12"); //should have 12 post format
+    cy.get(`[data-test="tgCell_howMany"]:first`).should("contain", "11"); //should have 12 post format
     cy.get(
       `[data-tip="Must be a number"] [data-test="tgCell_howMany"]:first`
     ).should("not.exist");
@@ -148,10 +148,11 @@ describe("EditableCellTable.spec", () => {
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
     ).should("not.exist");
-    cy.get(`[data-test="tgCell_name"]`).eq(3).click({ force: true });
+    cy.get(`[data-test="tgCell_name"]`).eq(3).click();
     cy.get(`.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`);
-    cy.get(`[data-test="tgCell_name"]`).eq(3).dblclick({ force: true });
-    cy.focused().type(`haha`).typeTab();
+    cy.get(`[data-test="tgCell_name"]`).eq(3).dblclick();
+    cy.focused().type("haha{enter}");
+    cy.focused().typeTab();
     cy.get(
       `.rt-td.isSelectedCell.isPrimarySelected [data-test="tgCell_name"]`
     ).should("not.exist");

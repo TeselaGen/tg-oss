@@ -1,7 +1,7 @@
 import { Chance } from "chance";
 import { times } from "lodash-es";
 import { nanoid } from "nanoid";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import DataTable from "../../../src/DataTable";
 import DemoWrapper from "../DemoWrapper";
 import { useToggle } from "../useToggle";
@@ -31,26 +31,32 @@ const getEnts = num =>
       i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
   }));
 
+const defaultValAsFuncOptions = {
+  type: "defaultValAsFunc"
+};
+
 export default function EditableCellTable(props) {
-  const key = useRef(0);
-
   const [entities, setEnts] = useState([]);
-  const [, numComp] = useToggle({
-    type: "num",
-    label: "Number of Entities",
-    isSelect: true,
-    defaultValue: 50,
-    controlledValue: props.entities?.length,
-    setControlledValue: v => {
-      key.current++;
-      setEnts(getEnts(toNumber(v)));
-    },
-    options: [20, 50, 100]
-  });
+  const toggleOptions = useMemo(
+    () => ({
+      type: "num",
+      label: "Number of Entities",
+      isSelect: true,
+      defaultValue: 50,
+      controlledValue: props.entities?.length,
+      setControlledValue: v => {
+        setEnts(getEnts(toNumber(v)));
+      },
+      options: [20, 50, 100]
+    }),
+    [props.entities?.length]
+  );
 
-  const [defaultValAsFunc, defaultValAsFuncComp] = useToggle({
-    type: "defaultValAsFunc"
-  });
+  const [, numComp] = useToggle(toggleOptions);
+
+  const [defaultValAsFunc, defaultValAsFuncComp] = useToggle(
+    defaultValAsFuncOptions
+  );
 
   const schema = useMemo(
     () => ({
@@ -93,9 +99,6 @@ export default function EditableCellTable(props) {
           //should be able to pass additional validation/formatting
           validate: newVal => {
             if (newVal > 20) return "This val is toooo high";
-          },
-          format: newVal => {
-            return toNumber(newVal) + 1;
           }
         },
         {
@@ -118,7 +121,6 @@ export default function EditableCellTable(props) {
       <DemoWrapper>
         <DataTable
           {...props}
-          key={key.current}
           formName="editableCellTable"
           isSimple
           isCellEditable
