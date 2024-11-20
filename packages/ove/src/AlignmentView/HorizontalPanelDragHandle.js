@@ -1,23 +1,27 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 export function HorizontalPanelDragHandle({ onDrag }) {
   const xStart = useRef(0);
 
-  const resize = useRef(e => {
-    const dx = xStart.current - e.clientX;
-    onDrag({ dx });
-    xStart.current = e.clientX;
-  });
-  const mouseup = useRef(() => {
-    document.removeEventListener("mousemove", resize.current, false);
-    document.removeEventListener("mousemove", mouseup.current, false);
-  });
+  const resize = useCallback(
+    e => {
+      const dx = xStart.current - e.clientX;
+      onDrag({ dx });
+      xStart.current = e.clientX;
+    },
+    [onDrag]
+  );
+
+  const mouseup = useCallback(() => {
+    document.removeEventListener("mousemove", resize, false);
+    document.removeEventListener("mousemove", mouseup, false);
+  }, [resize]);
 
   return (
     <div
       onMouseDown={e => {
         xStart.current = e.clientX;
-        document.addEventListener("mousemove", resize.current, false);
-        document.addEventListener("mouseup", mouseup.current, false);
+        document.addEventListener("mousemove", resize, false);
+        document.addEventListener("mouseup", mouseup, false);
       }}
       style={{
         position: "absolute",
@@ -30,6 +34,6 @@ export function HorizontalPanelDragHandle({ onDrag }) {
         opacity: 0,
         background: "blue"
       }}
-    ></div>
+    />
   );
 }

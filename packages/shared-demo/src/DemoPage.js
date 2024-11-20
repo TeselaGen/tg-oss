@@ -68,7 +68,7 @@ const DemoPage = ({ moduleName, demos, showComponentList }) => {
                     minimal
                     intent="primary"
                     icon="chevron-right"
-                  ></Button>
+                  />
                 )
               }
               packageName={`${moduleName}`}

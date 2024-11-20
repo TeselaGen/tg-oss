@@ -41,7 +41,7 @@ export function ZoomLinearView({
         initialValue={0}
         max={10}
         min={0}
-      ></UncontrolledSliderWithPlusMinusBtns>
+      />
     </div>
   );
 }

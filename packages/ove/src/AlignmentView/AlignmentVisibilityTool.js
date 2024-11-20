@@ -9,10 +9,8 @@ import {
 } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash-es";
-import pureNoFunc from "../utils/pureNoFunc";
-// import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 
-export default pureNoFunc(function AlignmentVisibilityTool(props) {
+export default function AlignmentVisibilityTool(props) {
   return (
     <Popover
       minimal
@@ -32,14 +30,11 @@ export default pureNoFunc(function AlignmentVisibilityTool(props) {
       }
     />
   );
-});
+}
 
 function VisibilityOptions({
-  // alignmentAnnotationVisibility = {},
   alignmentAnnotationVisibilityToggle,
   togglableAlignmentAnnotationSettings = {},
-  // alignmentAnnotationLabelVisibility = {},
-  // alignmentAnnotationLabelVisibilityToggle
   annotationsWithCounts,
   currentPairwiseAlignmentIndex
 }) {
@@ -92,14 +87,9 @@ function VisibilityOptions({
               </>
             }
             key={annotationName}
-          ></MenuItem>
+          />
         );
       })}
-      {/* <MenuItem icon="" text={fullSequenceTranslationMenu.text}>
-        {fullSequenceTranslationMenu.submenu.map(({ text, cmd }) => {
-          return <MenuItem key={cmd} text={text}></MenuItem>;
-        })}
-      </MenuItem> */}
     </Menu>
   );
 }
