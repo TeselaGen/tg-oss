@@ -168,12 +168,12 @@ export const useTableParams = props => {
   const queryParams = useMemo(() => {
     const additionalFilterToUse =
       typeof additionalFilter === "function"
-        ? additionalFilter.bind(this, passingProps)
+        ? additionalFilter
         : () => additionalFilter;
 
     const additionalOrFilterToUse =
       typeof additionalOrFilter === "function"
-        ? additionalOrFilter.bind(this, passingProps)
+        ? additionalOrFilter
         : () => additionalOrFilter;
 
     return getQueryParams({
