@@ -338,12 +338,12 @@ const DataTable = ({
     if (!isTableParamsConnected) {
       const additionalFilterToUse =
         typeof props.additionalFilter === "function"
-          ? props.additionalFilter.bind(this, ownProps)
+          ? props.additionalFilter
           : () => props.additionalFilter;
 
       const additionalOrFilterToUse =
         typeof props.additionalOrFilter === "function"
-          ? props.additionalOrFilter.bind(this, ownProps)
+          ? props.additionalOrFilter
           : () => props.additionalOrFilter;
 
       return getQueryParams({
