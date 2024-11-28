@@ -43,6 +43,7 @@ export function hideDialog() {
   delete dialogHolder.CustomModalComponent;
   delete dialogHolder.props;
   delete dialogHolder.overrideName;
+  delete dialogHolder.editorName;
   dialogHolder.setUniqKeyToForceRerender();
 }
 
