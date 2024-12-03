@@ -1,5 +1,6 @@
 import { mapAnnotationsToRows } from "@teselagen/sequence-utils";
 import { annotationTypes } from "@teselagen/sequence-utils";
+
 export default function prepareRowData(sequenceData, bpsPerRow) {
   const sequenceLength = sequenceData.noSequence
     ? sequenceData.size

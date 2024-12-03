@@ -27,19 +27,19 @@ export const CutsiteSelectionLayers = connectToEditor(
           <SelectionLayer
             hideTitle
             {...annotationCommonProps}
-            {...{
-              id: cutsite.id,
-              key: "restrictionSiteRange" + index,
-              height: showReverseSequence ? sequenceHeight * 2 : sequenceHeight,
-              regions: [layer],
-              row: alignmentData
+            id={cutsite.id}
+            key={"restrictionSiteRange" + index}
+            height={showReverseSequence ? sequenceHeight * 2 : sequenceHeight}
+            regions={[layer]}
+            row={
+              alignmentData
                 ? { start: 0, end: alignmentData.sequence.length - 1 }
-                : row,
-              className: classNames("cutsiteLabelSelectionLayer", {
-                cutsiteLabelSelectionLayerHovered: isHovered
-              }),
-              hideCarets: true
-            }}
+                : row
+            }
+            className={classNames("cutsiteLabelSelectionLayer", {
+              cutsiteLabelSelectionLayerHovered: isHovered
+            })}
+            hideCarets
           />
         )
       );

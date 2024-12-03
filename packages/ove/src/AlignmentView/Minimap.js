@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import Draggable from "react-draggable";
 import ReactList from "@teselagen/react-list";
 import Axis from "../RowItem/Axis";
@@ -13,87 +13,66 @@ import {
 } from "@teselagen/range-utils";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
-export default class Minimap extends React.Component {
-  shouldComponentUpdate(newProps) {
-    const { props } = this;
-    if (
-      [
-        "alignmentTracks",
-        "numBpsShownInLinearView",
-        "scrollAlignmentView",
-        "laneHeight",
-        "laneSpacing"
-      ].some(key => props[key] !== newProps[key])
-    )
-      return true;
-    return false;
-  }
-  handleMinimapClick = e => {
-    if (
-      this.isDragging ||
-      (e.target && e.target.classList.contains("minimapCaret"))
-    ) {
-      e.stopPropagation();
-      return;
-    }
-    const {
-      onMinimapScrollX,
-      dimensions: { width = 200 }
-    } = this.props;
-    const scrollHandleWidth = this.getScrollHandleWidth();
-    const percent =
-      (this.getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
-      (width - scrollHandleWidth);
-    onMinimapScrollX(percent);
-    this.scrollMinimapVertical({ e, force: true });
-  };
-  getSeqLen = () => {
-    const { alignmentTracks = [] } = this.props;
-    const [template] = alignmentTracks;
-    const seqLength = template.alignmentData.sequence.length;
-    return seqLength;
-  };
+
+export default ({
+  alignmentTracks,
+  dimensions,
+  easyStore,
+  laneHeight,
+  laneSpacing = 1,
+  minSliderSize,
+  numBpsShownInLinearView,
+  onMinimapScrollX,
+  onSizeAdjust,
+  scrollYToTrack,
+  selectionLayerComp
+}) => {
+  const isDragging = useRef(false);
+  const minimap = useRef(null);
+  const lastYPosition = useRef();
+  const minimapTracks = useRef(null);
+  const initialDragXOffsetFromCenter = useRef();
+  const initialDragYOffsetFromCenter = useRef();
+
   /**
    * @returns current nucleotide char
    * width, nucelotide char width scales with zooming
    */
-  getCharWidth = () => {
-    const {
-      dimensions: { width = 200 }
-    } = this.props;
-    const seqLength = this.getSeqLen();
-    const charWidth = Math.min(16, width / seqLength);
+  const charWidth = useMemo(() => {
+    const [template] = alignmentTracks || [];
+    const seqLength = template.alignmentData.sequence.length;
+    const charWidth = Math.min(16, (dimensions?.width || 200) / seqLength);
     return charWidth || 12;
-  };
+  }, [alignmentTracks, dimensions?.width]);
+
   /**
    * @returns the width of the highlighted region of the minimap
    */
-  getScrollHandleWidth = () => {
-    const { numBpsShownInLinearView, dimensions } = this.props;
-    const charWidth = this.getCharWidth();
+  const scrollHandleWidth = useMemo(() => {
     const { width } = getXStartAndWidthFromNonCircularRange(
       { start: 0, end: Math.max(numBpsShownInLinearView - 1, 0) },
       charWidth
     );
     return Math.min(width, dimensions.width);
-  };
-  getXPositionOfClickInMinimap = e => {
-    const leftStart = this.minimap.getBoundingClientRect().left;
+  }, [charWidth, dimensions.width, numBpsShownInLinearView]);
+
+  const getXPositionOfClickInMinimap = e => {
+    const leftStart = minimap.current.getBoundingClientRect().left;
     return Math.max(getClientX(e) - leftStart, 0);
   };
-  getYPositionOfClickInMinimap = e => {
-    const topStart = this.minimap.getBoundingClientRect().top;
-    return Math.max(getClientY(e) + this.minimapTracks.scrollTop - topStart, 0);
-  };
 
-  scrollMinimapVertical = ({ e, force, initialDragYOffsetFromCenter }) => {
+  const scrollMinimapVertical = ({
+    e,
+    force,
+    initialDragYOffsetFromCenter
+  }) => {
     const clientY = getClientY(e) - (initialDragYOffsetFromCenter || 0);
     try {
       if (
         !force &&
         isPositionWithinRange(clientY, {
-          start: this.lastYPosition - 5,
-          end: this.lastYPosition + 5
+          start: lastYPosition.current - 5,
+          end: lastYPosition.current + 5
         })
       ) {
         // this.lastYPosition = clientY
@@ -110,20 +89,36 @@ export default class Minimap extends React.Component {
           } else if (laneI === lanes.length - 2) {
             scrollToLane = laneI - 2;
           }
-          this.props.scrollYToTrack(Math.max(scrollToLane, 0));
+          scrollYToTrack(Math.max(scrollToLane, 0));
           return true;
         }
         return false;
       });
-      this.lastYPosition = clientY;
+      lastYPosition.current = clientY;
     } catch (error) {
       console.error(`error in scrollMinimapVertical:`, error);
     }
   };
-  handleDragStop = () => {
+
+  const handleMinimapClick = e => {
+    if (
+      isDragging.current ||
+      (e.target && e.target.classList.contains("minimapCaret"))
+    ) {
+      e.stopPropagation();
+      return;
+    }
+    const percent =
+      (getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
+      ((dimensions?.width || 200) - scrollHandleWidth);
+    onMinimapScrollX(percent);
+    scrollMinimapVertical({ e, force: true });
+  };
+
+  const handleDragStop = () => {
     // this.hasSetDirection = false;
     setTimeout(() => {
-      this.isDragging = false;
+      isDragging.current = false;
     }, 150);
   };
   /**
@@ -131,380 +126,342 @@ export default class Minimap extends React.Component {
    * Sets this.initialDragXOffsetFromCenter and Y for dragging
    * @param {*} e - event
    */
-  handleDragStart = e => {
+  const handleDragStart = e => {
     const eventX = e.pageX;
     const handleEl = window.document.querySelector(".verticalScrollDisplay");
     if (!handleEl) return;
     const { x, width } = handleEl.getBoundingClientRect();
     const yellowScrollHandleXCenter = x + width / 2;
-    this.initialDragXOffsetFromCenter = eventX - yellowScrollHandleXCenter;
+    initialDragXOffsetFromCenter.current = eventX - yellowScrollHandleXCenter;
     const eventY = e.pageY;
 
     if (!handleEl) return;
     const { y, height } = handleEl.getBoundingClientRect();
     const yellowScrollHandleYCenter = y + height / 2;
-    this.initialDragYOffsetFromCenter = eventY - yellowScrollHandleYCenter;
+    initialDragYOffsetFromCenter.current = eventY - yellowScrollHandleYCenter;
   };
+
   /**
    * Moves the highlighted region as we drag
    * @param {*} e - event
    */
-  handleDrag = e => {
-    const {
-      onMinimapScrollX,
-      dimensions: { width = 200 }
-    } = this.props;
-    this.isDragging = true; //needed to block erroneous click events from being triggered!
-
-    const scrollHandleWidth = this.getScrollHandleWidth();
+  const handleDrag = e => {
+    isDragging.current = true; //needed to block erroneous click events from being triggered!
     const percent =
-      (this.getXPositionOfClickInMinimap(e) -
-        (this.initialDragXOffsetFromCenter || 0) -
+      (getXPositionOfClickInMinimap(e) -
+        (initialDragXOffsetFromCenter.current || 0) -
         scrollHandleWidth / 2) /
-      (width - scrollHandleWidth);
+      ((dimensions?.width || 200) - scrollHandleWidth);
     onMinimapScrollX(percent);
-    this.scrollMinimapVertical({
+    scrollMinimapVertical({
       e,
-      initialDragYOffsetFromCenter: this.initialDragYOffsetFromCenter
+      initialDragYOffsetFromCenter: initialDragYOffsetFromCenter.current
     });
   };
-  /**
-   * @returns this.props.laneheight
-   */
-  itemSizeGetter = () => {
-    return this.props.laneHeight;
-  };
+
+  const itemSizeGetter = useCallback(() => {
+    return laneHeight;
+  }, [laneHeight]);
+
   /**
    * Renders a lane (one by one for each call)
    * @param {*} i - lane info
    */
-  renderItem = i => {
-    const {
-      alignmentTracks = [],
-      dimensions: { width = 200 },
-      laneHeight,
-      laneSpacing = 1
-    } = this.props;
-    const charWidth = this.getCharWidth();
+  const renderItem = useCallback(
+    i => {
+      const {
+        matchHighlightRanges: _matchHighlightRanges,
+        alignmentData: { trimmedRange } = {}
+      } = (alignmentTracks || [])[i];
+      const matchHighlightRanges = !trimmedRange
+        ? _matchHighlightRanges
+        : flatMap(_matchHighlightRanges, r => {
+            const overlap = getOverlapOfNonCircularRanges(r, trimmedRange);
+            if (!overlap) return [];
+            return { ...r, ...overlap };
+          });
 
-    const {
-      matchHighlightRanges: _matchHighlightRanges,
-      alignmentData: { trimmedRange } = {}
-    } = alignmentTracks[i];
-    const matchHighlightRanges = !trimmedRange
-      ? _matchHighlightRanges
-      : flatMap(_matchHighlightRanges, r => {
-          const overlap = getOverlapOfNonCircularRanges(r, trimmedRange);
-          if (!overlap) return [];
-          return { ...r, ...overlap };
-        });
-
-    //need to get the chunks that can be rendered
-    let redPath = ""; //draw these as just 1 path instead of a bunch of rectangles to improve browser performance
-    let bluePath = "";
-    // draw one grey rectangle then draw red/mismatching regions on top of it
-    const height = laneHeight - laneSpacing;
-    const y = 0;
-    const firstRange = getXStartAndWidthFromNonCircularRange(
-      matchHighlightRanges[0],
-      charWidth
-    );
-    const lastRange = getXStartAndWidthFromNonCircularRange(
-      matchHighlightRanges[matchHighlightRanges.length - 1],
-      charWidth
-    );
-    bluePath += `M${firstRange.xStart},${y} L${
-      lastRange.xStart + lastRange.width
-    },${y} L${lastRange.xStart + lastRange.width},${y + height} L${
-      firstRange.xStart
-    },${y + height}`;
-    matchHighlightRanges.forEach(range => {
-      const { xStart, width } = getXStartAndWidthFromNonCircularRange(
-        range,
+      //need to get the chunks that can be rendered
+      let redPath = ""; //draw these as just 1 path instead of a bunch of rectangles to improve browser performance
+      let bluePath = "";
+      // draw one grey rectangle then draw red/mismatching regions on top of it
+      const height = laneHeight - laneSpacing;
+      const y = 0;
+      const firstRange = getXStartAndWidthFromNonCircularRange(
+        matchHighlightRanges[0],
         charWidth
       );
-      const toAdd = `M${xStart},${y} L${xStart + width},${y} L${
-        xStart + width
-      },${y + height} L${xStart},${y + height}`;
-      if (!range.isMatch) {
-        redPath += toAdd;
-      }
-    });
-    return (
-      <div
-        key={i + "-lane"}
-        className="minimapLane"
-        data-lane-index={i}
-        style={{ height: laneHeight, maxHeight: laneHeight }}
-      >
-        <svg
-          height={laneHeight}
-          width={width}
-          shapeRendering="geometricPrecision"
-        >
-          <path className="miniBluePath" d={bluePath} fill="#9abeff" />
-          <path className="miniRedPath" d={redPath} fill="red" />
-        </svg>
-      </div>
-    );
-  };
-  /**
-   * @returns minimap compoent
-   */
-  render() {
-    const {
-      alignmentTracks = [],
-      dimensions: { width = 200 },
-      laneHeight,
-      onSizeAdjust,
-      minSliderSize,
-      onMinimapScrollX,
-      easyStore,
-      selectionLayerComp
-    } = this.props;
-
-    const [template /* ...nonTemplates */] = alignmentTracks;
-    const seqLength = template.alignmentData.sequence.length;
-    const charWidth = this.getCharWidth();
-    const scrollHandleWidth = this.getScrollHandleWidth();
-    const minimapTracksPartialHeight = laneHeight * alignmentTracks.length;
-
-    return (
-      <div
-        ref={ref => (this.minimap = ref)}
-        className="alignmentMinimap"
-        style={{
-          position: "relative",
-          width,
-          display: "flex",
-          flexDirection: "column",
-          overflowX: "visible"
-        }}
-        onClick={this.handleMinimapClick}
-      >
-        {selectionLayerComp}
+      const lastRange = getXStartAndWidthFromNonCircularRange(
+        matchHighlightRanges[matchHighlightRanges.length - 1],
+        charWidth
+      );
+      bluePath += `M${firstRange.xStart},${y} L${
+        lastRange.xStart + lastRange.width
+      },${y} L${lastRange.xStart + lastRange.width},${y + height} L${
+        firstRange.xStart
+      },${y + height}`;
+      matchHighlightRanges.forEach(range => {
+        const { xStart, width } = getXStartAndWidthFromNonCircularRange(
+          range,
+          charWidth
+        );
+        const toAdd = `M${xStart},${y} L${xStart + width},${y} L${
+          xStart + width
+        },${y + height} L${xStart},${y + height}`;
+        if (!range.isMatch) {
+          redPath += toAdd;
+        }
+      });
+      return (
         <div
-          ref={ref => {
-            if (ref) {
-              this.minimapTracks = ref;
-            }
-          }}
-          style={{
-            overflowY: minimapTracksPartialHeight > 190 ? "auto" : "hidden",
-            overflowX: "hidden",
-            position: "relative"
-          }}
-          className="alignmentMinimapTracks"
+          key={i + "-lane"}
+          className="minimapLane"
+          data-lane-index={i}
+          style={{ height: laneHeight, maxHeight: laneHeight }}
         >
-          <YellowScrollHandle
-            width={width}
-            handleDragStart={this.handleDragStart}
-            handleDrag={this.handleDrag}
-            handleDragStop={this.handleDragStop}
-            onMinimapScrollX={onMinimapScrollX}
-            minSliderSize={minSliderSize}
-            onSizeAdjust={onSizeAdjust}
-            easyStore={easyStore} //we use react-easy-state here to prevent costly setStates from being called
-            scrollHandleWidth={scrollHandleWidth}
-            alignmentTracks={alignmentTracks}
-            laneHeight={laneHeight}
-            minimapTracksPartialHeight={minimapTracksPartialHeight}
-          />
-
-          <ReactList
-            itemsRenderer={(items, ref) => (
-              <div
-                style={{
-                  marginTop: -3
-                }}
-                ref={ref}
-              >
-                {items}
-              </div>
-            )}
-            type="uniform"
-            itemSizeGetter={this.itemSizeGetter}
-            itemRenderer={this.renderItem}
-            length={alignmentTracks.length}
-          />
+          <svg
+            height={laneHeight}
+            width={dimensions?.width || 200}
+            shapeRendering="geometricPrecision"
+          >
+            <path className="miniBluePath" d={bluePath} fill="#9abeff" />
+            <path className="miniRedPath" d={redPath} fill="red" />
+          </svg>
         </div>
+      );
+    },
+    [alignmentTracks, charWidth, dimensions?.width, laneHeight, laneSpacing]
+  );
 
-        <Axis
-          {...{
-            row: { start: 0, end: seqLength - 1 },
-            tickSpacing: massageTickSpacing(Math.floor(seqLength / 10)),
-            bpsPerRow: seqLength,
-            charWidth,
-            annotationHeight: 15,
-            sequenceLength: seqLength,
-            style: {
-              height: 17,
-              width: "100%"
-            }
-          }}
+  const template = alignmentTracks?.[0];
+  const seqLength = template?.alignmentData?.sequence?.length;
+  const minimapTracksPartialHeight =
+    laneHeight * (alignmentTracks?.length || 0);
+
+  return (
+    <div
+      ref={minimap}
+      className="alignmentMinimap"
+      style={{
+        position: "relative",
+        width: dimensions?.width || 200,
+        display: "flex",
+        flexDirection: "column",
+        overflowX: "visible"
+      }}
+      onClick={handleMinimapClick}
+    >
+      {selectionLayerComp}
+      <div
+        ref={minimapTracks}
+        style={{
+          overflowY: minimapTracksPartialHeight > 190 ? "auto" : "hidden",
+          overflowX: "hidden",
+          position: "relative"
+        }}
+        className="alignmentMinimapTracks"
+      >
+        <YellowScrollHandle
+          width={dimensions?.width || 200}
+          handleDragStart={handleDragStart}
+          handleDrag={handleDrag}
+          handleDragStop={handleDragStop}
+          onMinimapScrollX={onMinimapScrollX}
+          minSliderSize={minSliderSize}
+          onSizeAdjust={onSizeAdjust}
+          easyStore={easyStore} //we use react-easy-state here to prevent costly setStates from being called
+          scrollHandleWidth={scrollHandleWidth}
+          laneHeight={laneHeight}
+          minimapTracksPartialHeight={minimapTracksPartialHeight}
+        />
+
+        <ReactList
+          itemsRenderer={(items, ref) => (
+            <div
+              style={{
+                marginTop: -3
+              }}
+              ref={ref}
+            >
+              {items}
+            </div>
+          )}
+          type="uniform"
+          itemSizeGetter={itemSizeGetter}
+          itemRenderer={renderItem}
+          length={alignmentTracks?.length || 0}
         />
       </div>
-    );
-  }
-}
+
+      <Axis
+        row={{ start: 0, end: seqLength - 1 }}
+        tickSpacing={massageTickSpacing(Math.floor(seqLength / 10))}
+        bpsPerRow={seqLength}
+        charWidth={charWidth}
+        annotationHeight={15}
+        sequenceLength={seqLength}
+        style={{
+          height: 17,
+          width: "100%"
+        }}
+      />
+    </div>
+  );
+};
 /**
  * Yellow Scroll handle
  * Responsible for designating the current viewing area
  * Also supports zoom/resizing using handles
  */
 const YellowScrollHandle = view(
-  class YellowScrollHandleInner extends React.Component {
-    render() {
-      const {
-        scrollHandleWidth,
-        width,
-        easyStore,
-        handleDrag,
-        handleDragStop,
-        minSliderSize,
-        laneHeight,
-        onSizeAdjust,
-        handleDragStart,
-        minimapTracksPartialHeight
-      } = this.props;
-      const { verticalVisibleRange, percentScrolled } = easyStore;
-      const xScroll = percentScrolled * (width - scrollHandleWidth);
-      return (
-        <Draggable
-          bounds="parent"
-          zIndex={105}
-          handle=".handle"
-          position={{ x: xScroll, y: 0 }}
-          axis="x"
-          // onStart={this.onStart}
-          onStop={handleDragStop}
-          onDrag={handleDrag}
-          onStart={handleDragStart}
+  ({
+    easyStore,
+    handleDrag,
+    handleDragStart,
+    handleDragStop,
+    laneHeight,
+    minimapTracksPartialHeight,
+    minSliderSize,
+    onSizeAdjust,
+    scrollHandleWidth,
+    width
+  }) => {
+    const xPosition = useRef();
+    const { verticalVisibleRange, percentScrolled } = easyStore;
+    const xScroll = percentScrolled * (width - scrollHandleWidth);
+    return (
+      <Draggable
+        bounds="parent"
+        zIndex={105}
+        handle=".handle"
+        position={{ x: xScroll, y: 0 }}
+        axis="x"
+        // onStart={this.onStart}
+        onStop={handleDragStop}
+        onDrag={handleDrag}
+        onStart={handleDragStart}
+      >
+        <div
+          style={{
+            height: minimapTracksPartialHeight || 0,
+            // height: "100%",
+            border: "none",
+            top: "0px",
+            position: "absolute",
+            zIndex: "10"
+          }}
         >
-          <div
-            style={{
-              height: minimapTracksPartialHeight || 0,
-              // height: "100%",
-              border: "none",
-              top: "0px",
-              position: "absolute",
-              zIndex: "10"
+          {/* left hand side drag handle */}
+          <Draggable
+            bounds={{
+              left: -xScroll,
+              right: scrollHandleWidth - minSliderSize
+            }}
+            zIndex={105}
+            position={{ x: 0, y: 0 }}
+            axis="x"
+            onStart={(e, { x }) => {
+              xPosition.current = x;
+            }}
+            onStop={(e, { x }) => {
+              const deltaX = x - xPosition.current;
+
+              const newSliderSize = scrollHandleWidth - deltaX;
+              //user is resizing to the left so we need to update the scroll percentage so the slider does not jump
+              const newScrollPercent = Math.min(
+                1,
+                (xScroll + deltaX) / (width - newSliderSize)
+              );
+              onSizeAdjust(newSliderSize, newScrollPercent);
             }}
           >
-            {/* left hand side drag handle */}
-            <Draggable
-              bounds={{
-                left: -xScroll,
-                right: scrollHandleWidth - minSliderSize
-              }}
-              zIndex={105}
-              position={{ x: 0, y: 0 }}
-              axis="x"
-              onStart={(e, { x }) => {
-                this.x = x;
-              }}
-              onStop={(e, { x }) => {
-                const deltaX = x - this.x;
-
-                const newSliderSize = scrollHandleWidth - deltaX;
-                //user is resizing to the left so we need to update the scroll percentage so the slider does not jump
-                const newScrollPercent = Math.min(
-                  1,
-                  (xScroll + deltaX) / (width - newSliderSize)
-                );
-                onSizeAdjust(newSliderSize, newScrollPercent);
-              }}
-            >
-              {/* caret component */}
-              <div
-                style={{
-                  height: minimapTracksPartialHeight || 0,
-                  // height: "100%",
-                  border: "none",
-                  cursor: "ew-resize",
-                  opacity: "1",
-                  top: "0px",
-                  position: "absolute",
-                  zIndex: "10",
-                  width: 2,
-                  background: "black"
-                }}
-                className="minimapCaret"
-              />
-            </Draggable>
-            {/* the actual handle component */}
+            {/* caret component */}
             <div
-              className="handle alignmentMinimapScrollHandle"
-              dataname="scrollGroup"
               style={{
                 height: minimapTracksPartialHeight || 0,
+                // height: "100%",
                 border: "none",
-                cursor: "move",
-
+                cursor: "ew-resize",
+                opacity: "1",
+                top: "0px",
+                position: "absolute",
                 zIndex: "10",
-                width: scrollHandleWidth,
-                background: "transparent"
+                width: 2,
+                background: "black"
               }}
-            >
-              {/* this is the vertical scroll position display element */}
-              <div
-                className="verticalScrollDisplay"
-                style={{
-                  height:
-                    (verticalVisibleRange.end -
-                      verticalVisibleRange.start +
-                      1) *
-                    laneHeight,
-                  zIndex: "-10",
-                  background: "#fbfb2873",
-                  borderTop: "2px solid yellow",
-                  borderBottom: "2px solid yellow",
-                  position: "relative",
-                  top: verticalVisibleRange.start * laneHeight
-                }}
-              />
-            </div>
-            {/* right hand side drag handle */}
-            <Draggable
-              bounds={{
-                right: minSliderSize + width - xScroll,
-                left: minSliderSize
+              className="minimapCaret"
+            />
+          </Draggable>
+          {/* the actual handle component */}
+          <div
+            className="handle alignmentMinimapScrollHandle"
+            dataname="scrollGroup"
+            style={{
+              height: minimapTracksPartialHeight || 0,
+              border: "none",
+              cursor: "move",
+
+              zIndex: "10",
+              width: scrollHandleWidth,
+              background: "transparent"
+            }}
+          >
+            {/* this is the vertical scroll position display element */}
+            <div
+              className="verticalScrollDisplay"
+              style={{
+                height:
+                  (verticalVisibleRange.end - verticalVisibleRange.start + 1) *
+                  laneHeight,
+                zIndex: "-10",
+                background: "#fbfb2873",
+                borderTop: "2px solid yellow",
+                borderBottom: "2px solid yellow",
+                position: "relative",
+                top: verticalVisibleRange.start * laneHeight
               }}
-              zIndex={105}
-              position={{ x: scrollHandleWidth, y: 0 }}
-              axis="x"
-              onStart={(e, { x }) => {
-                this.x = x;
-              }}
-              onStop={(e, { x }) => {
-                const deltaX = this.x - x;
-                const newSliderSize = scrollHandleWidth - deltaX;
-                //user is resizing to the right so we need to update the scroll percentage so the slider does not jump
-                const newScrollPercent = xScroll / (width - newSliderSize);
-                onSizeAdjust(newSliderSize, newScrollPercent);
-              }}
-            >
-              <div
-                style={{
-                  height: minimapTracksPartialHeight || 0,
-                  // height: "100%",
-                  border: "none",
-                  cursor: "ew-resize",
-                  opacity: "1",
-                  top: "0px",
-                  // right: 0,
-                  position: "absolute",
-                  zIndex: "10",
-                  width: 2,
-                  background: "black"
-                }}
-                className="minimapCaret"
-              />
-            </Draggable>
+            />
           </div>
-        </Draggable>
-      );
-    }
+          {/* right hand side drag handle */}
+          <Draggable
+            bounds={{
+              right: minSliderSize + width - xScroll,
+              left: minSliderSize
+            }}
+            zIndex={105}
+            position={{ x: scrollHandleWidth, y: 0 }}
+            axis="x"
+            onStart={(e, { x }) => {
+              xPosition.current = x;
+            }}
+            onStop={(e, { x }) => {
+              const deltaX = xPosition.current - x;
+              const newSliderSize = scrollHandleWidth - deltaX;
+              //user is resizing to the right so we need to update the scroll percentage so the slider does not jump
+              const newScrollPercent = xScroll / (width - newSliderSize);
+              onSizeAdjust(newSliderSize, newScrollPercent);
+            }}
+          >
+            <div
+              style={{
+                height: minimapTracksPartialHeight || 0,
+                // height: "100%",
+                border: "none",
+                cursor: "ew-resize",
+                opacity: "1",
+                top: "0px",
+                // right: 0,
+                position: "absolute",
+                zIndex: "10",
+                width: 2,
+                background: "black"
+              }}
+              className="minimapCaret"
+            />
+          </Draggable>
+        </div>
+      </Draggable>
+    );
   }
 );
 

@@ -34,7 +34,6 @@ import {
 import { getSequenceDataBetweenRange } from "@teselagen/sequence-utils";
 import ReactList from "@teselagen/react-list";
 import ReactDOM from "react-dom";
-
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap, { getTrimmedRangesToDisplay } from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
@@ -43,7 +42,6 @@ import * as alignmentActions from "../redux/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
 import prepareRowData from "../utils/prepareRowData";
 import withEditorProps from "../withEditorProps";
-
 import "./style.css";
 import {
   editorDragged,
@@ -61,10 +59,8 @@ import { view } from "@risingstack/react-easy-state";
 import { noop } from "lodash-es";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
-
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
-
 import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
 import { showDialog } from "../GlobalDialogUtils";
 import { GlobalDialog } from "../GlobalDialog";
@@ -74,7 +70,6 @@ import { getTrackFromEvent } from "./getTrackFromEvent";
 import { PerformantSelectionLayer } from "./PerformantSelectionLayer";
 import { PairwiseAlignmentView } from "./PairwiseAlignmentView";
 import { updateTrackHelper } from "./updateTrackHelper";
-// import { getGaps } from "./getGaps";
 import { isTargetWithinEl } from "./isTargetWithinEl";
 import { EditTrackNameDialog } from "./EditTrackNameDialog";
 import { coerceInitialValue } from "./coerceInitialValue";
@@ -494,6 +489,7 @@ export class AlignmentView extends React.Component {
           this.alignmentHolderTop.clientWidth);
     }
   };
+
   scrollYToTrack = trackIndex => {
     this.InfiniteScroller.scrollTo(trackIndex);
   };
@@ -1313,7 +1309,7 @@ export class AlignmentView extends React.Component {
                     sequenceLength={sequenceLength}
                     charWidth={this.getCharWidthInLinearView()}
                     row={{ start: 0, end: sequenceLength - 1 }}
-                  ></PerformantSelectionLayer>
+                  />
                   <PerformantCaret
                     leftMargin={this.state.nameDivWidth}
                     className="veAlignmentSelectionLayer"
@@ -1670,7 +1666,7 @@ export class AlignmentView extends React.Component {
                 <Minimap
                   {...{
                     selectionLayerComp: (
-                      <React.Fragment>
+                      <>
                         <PerformantSelectionLayer
                           is
                           hideCarets
@@ -1679,7 +1675,7 @@ export class AlignmentView extends React.Component {
                           sequenceLength={sequenceLength}
                           charWidth={this.getMinCharWidth(true)}
                           row={{ start: 0, end: sequenceLength - 1 }}
-                        ></PerformantSelectionLayer>
+                        />
                         <PerformantCaret
                           style={{
                             opacity: 0.2
@@ -1690,7 +1686,7 @@ export class AlignmentView extends React.Component {
                           row={{ start: 0, end: sequenceLength - 1 }}
                           easyStore={this.easyStore}
                         />
-                      </React.Fragment>
+                      </>
                     ),
                     alignmentTracks,
                     dimensions: {

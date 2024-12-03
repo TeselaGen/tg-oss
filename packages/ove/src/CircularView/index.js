@@ -597,23 +597,22 @@ export function CircularView(props) {
         ) {
           return (
             <SelectionLayer
-              key={index}
-              {...{
-                index,
-                isDraggable: true,
-                isProtein,
-                key: "veCircularViewSelectionLayer" + index,
-                selectionLayer,
-                onRightClicked: selectionLayer.isSearchLayer
+              index={index}
+              isDraggable
+              isProtein={isProtein}
+              key={"veCircularViewSelectionLayer" + index}
+              selectionLayer={selectionLayer}
+              onRightClicked={
+                selectionLayer.isSearchLayer
                   ? searchLayerRightClicked
-                  : selectionLayerRightClicked,
-                onClick: selectionLayer.isSearchLayer
-                  ? searchLayerClicked
-                  : undefined,
-                sequenceLength,
-                radius,
-                innerRadius
-              }}
+                  : selectionLayerRightClicked
+              }
+              onClick={
+                selectionLayer.isSearchLayer ? searchLayerClicked : undefined
+              }
+              sequenceLength={sequenceLength}
+              radius={radius}
+              innerRadius={innerRadius}
             />
           );
         } else {

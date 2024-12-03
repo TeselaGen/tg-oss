@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 
 import store from "./store";
@@ -74,11 +74,9 @@ const demos = {
       return (
         <WrapSimpleDemo>
           <EnzymeViewer
-            {...{
-              sequence: enzyme.site,
-              reverseSnipPosition: enzyme.bottomSnipOffset,
-              forwardSnipPosition: enzyme.topSnipOffset
-            }}
+            sequence={enzyme.site}
+            reverseSnipPosition={enzyme.bottomSnipOffset}
+            forwardSnipPosition={enzyme.topSnipOffset}
           />
         </WrapSimpleDemo>
       );
@@ -116,13 +114,13 @@ const demos = {
 const Demo = () => {
   return (
     <Provider store={store}>
-      <DemoPage moduleName="ove" demos={demos}></DemoPage>
+      <DemoPage moduleName="ove" demos={demos} />
     </Provider>
   );
 };
 
 const WrapSimpleDemo = ({ children }) => {
-  useMemo(() => {
+  useEffect(() => {
     updateEditor(store, "DemoEditor", {
       readOnly: false,
       sequenceData: exampleSequenceData

@@ -105,15 +105,15 @@ describe("alignment", function () {
     cy.get("body").type("{shift}", { release: false });
     cy.scrollAlignmentToPercent(0.99);
     cy.contains(`[data-alignment-track-index="1"] text`, 3510).click();
-    cy.get(`[title="Selecting 3500 bps from 11 to 3510"]`);
+    cy.get(`[title="Selecting 3499 bps from 11 to 3509"]`);
   });
   it("the alignment should show axis numbers correctly", function () {
     cy.visit("#/Alignment?alignmentDataId=39");
     cy.get(".veAlignmentName");
     cy.scrollAlignmentToPercent(0.3);
-    cy.contains(`[data-alignment-track-index="5"] .veAxis`, "290");
-    cy.contains(`[data-alignment-track-index="5"] .veAxis`, "300");
-    cy.contains(`[data-alignment-track-index="5"] .veAxis`, "310");
+    cy.contains(`[data-alignment-track-index="5"] .veAxis`, "1060");
+    cy.contains(`[data-alignment-track-index="5"] .veAxis`, "1070");
+    cy.contains(`[data-alignment-track-index="5"] .veAxis`, "1080");
   });
   it("shift clicking in the alignment should only allow non-origin wrapping selections (with a selection already present)", function () {
     cy.visit("#/Alignment");
@@ -124,7 +124,7 @@ describe("alignment", function () {
     cy.get("body").type("{shift}", { release: false });
     cy.scrollAlignmentToPercent(0.99);
     cy.contains(`[data-alignment-track-index="1"] text`, 3510).click();
-    cy.get(`[title="Selecting 3455 bps from 56 to 3510"]`);
+    cy.get(`[title="Selecting 3454 bps from 56 to 3509"]`);
   });
   it("scrolls the yellow scroll handle correctly", function () {
     cy.visit("#/Alignment");
