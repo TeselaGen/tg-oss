@@ -23,7 +23,8 @@ import {
   ReactColorField,
   SuggestField,
   InfoHelper,
-  showConfirmationDialog
+  showConfirmationDialog,
+  FormSeparator
 } from "../../../src";
 import { useToggle } from "../useToggle";
 import OptionsSection from "../OptionsSection";
@@ -314,6 +315,7 @@ function FormComponentsDemo({ handleSubmit }) {
             onFieldSubmit={onFieldSubmit}
             containerStyle={{ background: "black", height: 200 }}
           />
+          <FormSeparator />
           <div style={{ display: "flex" }}>
             <InputField
               name={"inputFieldWithTooltipError"}

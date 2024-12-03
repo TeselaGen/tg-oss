@@ -4,6 +4,7 @@ import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "./style.css";
 import "./autoTooltip";
 export { LoadingDots } from "./FormComponents/LoadingDots";
+export { FormSeparator } from "./FormComponents/FormSeparator";
 export * from "./AssignDefaultsModeContext";
 export { default as Uploader } from "./FormComponents/Uploader";
 export { mergeSchemas } from "./DataTable/utils/convertSchema";

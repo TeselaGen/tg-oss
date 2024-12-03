@@ -249,3 +249,27 @@
 .bp3-dark .tg-color-picker-selector input {
   color: #222222;
 }
+
+.form-separator {
+  p {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  p::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #e1e4e8;
+    margin-right: 16px;
+  }
+  p::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #e1e4e8;
+    margin-left: 16px;
+  }
+}
