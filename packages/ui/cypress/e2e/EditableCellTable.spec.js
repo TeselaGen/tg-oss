@@ -1,5 +1,4 @@
 import path from "path";
-import os from "os";
 
 describe("EditableCellTable.spec", () => {
   it(`cell checkboxes and the header checkbox should work`, () => {
@@ -241,20 +240,19 @@ describe("EditableCellTable.spec", () => {
     );
   });
   it(`undo/redo should work`, () => {
-    const IS_LINUX = os.platform().toLowerCase().search("linux") > -1;
-    const undoCmd = IS_LINUX ? `{alt}z` : "{meta}z";
-    const redoCmd = IS_LINUX ? `{alt}{shift}z` : "{meta}{shift}z";
+    const undoCmd = [`Meta`, `z`];
+    const redoCmd = [`Meta`, `Shift`, `z`];
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`.rt-td:contains(tom88)`).dblclick();
     cy.focused().type("{selectall}tasty55{enter}");
     cy.get(`.rt-td:contains(tasty55)`).dblclick();
     cy.focused().type("{selectall}delishhh{enter}");
     cy.get(`.rt-td:contains(delishhh)`);
-    cy.focused().type(undoCmd);
-    cy.focused().type(undoCmd);
+    cy.realPress(undoCmd);
+    cy.realPress(undoCmd);
     cy.get(`.rt-td:contains(tom88)`);
-    cy.focused().type(redoCmd);
-    cy.focused().type(redoCmd);
+    cy.realPress(redoCmd);
+    cy.realPress(redoCmd);
     cy.get(`.rt-td:contains(delishhh)`);
   });
   it(`deleting should work, default val should get reapplied`, () => {

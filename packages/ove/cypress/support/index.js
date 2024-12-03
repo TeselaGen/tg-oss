@@ -1,3 +1,4 @@
+import "cypress-real-events";
 import { isString } from "lodash-es";
 import toRegexRange from "to-regex-range";
 import insertSequenceDataAtPositionOrRange from "@teselagen/sequence-utils/src/insertSequenceDataAtPositionOrRange";

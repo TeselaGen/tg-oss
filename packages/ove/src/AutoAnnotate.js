@@ -257,6 +257,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                     <div>
                       <DataTable
                         isInfinite
+                        formName={"customAnnsTable"}
                         schema={
                           annotationType === "feature"
                             ? customAnnsSchema
