@@ -33,6 +33,7 @@ import FormComponents from "./examples/FormComponents";
 import UploadCsvWizard from "./examples/UploadCsvWizard";
 import TagSelectDemo from "./examples/TagSelectDemo";
 import { createRoot } from "react-dom/client";
+import { FormSeparator } from "../../src/FormComponents/FormSeparator";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -146,6 +147,16 @@ const demos = {
         description:
           "Callback to run when the user attempts to close the dialog",
         type: "function"
+      }
+    ]
+  },
+  FormSeparator: {
+    demo: FormSeparator,
+    props: [
+      {
+        name: "label",
+        description: "The text to display in the separator",
+        type: "string"
       }
     ]
   },
