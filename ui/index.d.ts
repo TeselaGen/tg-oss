@@ -1,4 +1,5 @@
 export { LoadingDots } from './FormComponents/LoadingDots';
+export { FormSeparator } from './FormComponents/FormSeparator';
 export * from './AssignDefaultsModeContext';
 export * from './utils/tgFormValues';
 export * from './FormComponents';
