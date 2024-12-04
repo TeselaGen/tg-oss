@@ -597,12 +597,11 @@ export function CircularView(props) {
         ) {
           return (
             <SelectionLayer
-              key={index}
+              key={"veCircularViewSelectionLayer" + index}
               {...{
                 index,
                 isDraggable: true,
                 isProtein,
-                key: "veCircularViewSelectionLayer" + index,
                 selectionLayer,
                 onRightClicked: selectionLayer.isSearchLayer
                   ? searchLayerRightClicked
@@ -635,13 +634,13 @@ export function CircularView(props) {
       //only render if there is no selection layer
       return (
         <Caret
+          key="veCircularViewCaret"
           {...{
             caretPosition,
             sequenceLength,
             isProtein,
             innerRadius,
-            outerRadius: radius,
-            key: "veCircularViewCaret"
+            outerRadius: radius
           }}
         />
       );

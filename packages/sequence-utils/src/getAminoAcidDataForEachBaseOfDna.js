@@ -28,8 +28,7 @@ function getNextTriplet(index, sequenceString, exonRange) {
   // including introns.
   const codonPositions = [];
 
-  // A function to check if a base is within an exon, defined here
-  // to avoid function creation in the loop (linter error)
+  // A function to check if a base is within an exon
   const isBaseInExon = baseIndex =>
     exonRange.some(r =>
       isPositionWithinRange(baseIndex, r, sequenceString.length, true, false)
@@ -251,28 +250,31 @@ export default function getAminoAcidDataForEachBaseOfDna(
     let positionInCodon = 0;
     for (let i = 0; i < basesRead; i++) {
       const posInCds = i + index;
+      const sequenceIndex = codonPositionsInCDS.includes(posInCds)
+        ? absoluteCodonPositions[codonPositionsInCDS.indexOf(posInCds)]
+        : positionInCdsToPositionInMainSequence(
+            posInCds,
+            forward,
+            translationRange,
+            originalSequenceStringLength
+          );
       if (codonPositionsInCDS.includes(posInCds)) {
         aminoAcidDataForEachBaseOfDNA.push({
           aminoAcid,
           positionInCodon,
           aminoAcidIndex,
-          sequenceIndex: absoluteCodonPositions[i],
+          sequenceIndex,
           codonRange,
           fullCodon: codonPositionsInCDS.length === 3
         });
         positionInCodon++;
       } else {
-        // TODO: what should we insert here?
+        // push a null object for intron bases
         aminoAcidDataForEachBaseOfDNA.push({
           aminoAcid: null,
           positionInCodon: null,
           aminoAcidIndex: null,
-          sequenceIndex: positionInCdsToPositionInMainSequence(
-            posInCds,
-            forward,
-            translationRange,
-            originalSequenceStringLength
-          ),
+          sequenceIndex,
           codonRange: null,
           fullCodon: null
         });

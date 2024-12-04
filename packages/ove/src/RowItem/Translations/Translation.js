@@ -69,6 +69,7 @@ class Translation extends React.Component {
           nextAaSliver = aminoAcidsForSubrange[index + 2];
           return (
             <rect
+              key={annotation.id + aminoAcidSliver.sequenceIndex}
               x={index * charWidth}
               y={height / 2 - height / 16}
               width={charWidth}

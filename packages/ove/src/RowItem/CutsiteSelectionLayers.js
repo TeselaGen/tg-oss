@@ -26,10 +26,10 @@ export const CutsiteSelectionLayers = connectToEditor(
         layer.start > -1 && (
           <SelectionLayer
             hideTitle
+            key={"restrictionSiteRange" + index}
             {...annotationCommonProps}
             {...{
               id: cutsite.id,
-              key: "restrictionSiteRange" + index,
               height: showReverseSequence ? sequenceHeight * 2 : sequenceHeight,
               regions: [layer],
               row: alignmentData

@@ -244,7 +244,7 @@ export const DynamicMenuItem = ({
           ? item.submenu
               .filter(ident)
               .map((def, index) => (
-                <DynamicMenuItem {...{ def, enhancers, context }} key={index} />
+                <DynamicMenuItem key={index} {...{ def, enhancers, context }} />
               ))
           : undefined}
       </ItemComponent>
@@ -268,7 +268,7 @@ export const DynamicMenuItem = ({
 export const createDynamicMenu = (menuDef, enhancers, context) => {
   if (menuDef instanceof Array) {
     return menuDef.map((def, index) => (
-      <DynamicMenuItem {...{ def, enhancers, context }} key={index} />
+      <DynamicMenuItem key={index} {...{ def, enhancers, context }} />
     ));
   } else {
     return <DynamicMenuItem {...{ def: menuDef, enhancers, context }} />;
@@ -282,7 +282,7 @@ export const createDynamicBarMenu = (topMenuDef, enhancers, context) => {
     const def = { ...topLevelItem };
     if (def.submenu) {
       def.submenu = def.submenu.map((subdef, index) => (
-        <DynamicMenuItem def={subdef} {...{ enhancers, context }} key={index} />
+        <DynamicMenuItem key={index} def={subdef} {...{ enhancers, context }} />
       ));
     }
     return def;

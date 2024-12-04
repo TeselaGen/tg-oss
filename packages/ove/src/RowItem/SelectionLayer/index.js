@@ -105,6 +105,7 @@ function SelectionLayer(props) {
               caretSvgs = [
                 overlap.start === start && (
                   <Caret
+                    key={key + "caret1"}
                     {...{
                       leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
@@ -115,7 +116,6 @@ function SelectionLayer(props) {
                       getGaps,
                       isDraggable,
                       ignoreGaps,
-                      key: key + "caret1",
                       sequenceLength,
                       className:
                         classNameToPass +
@@ -127,6 +127,7 @@ function SelectionLayer(props) {
                 ),
                 overlap.end === end && (
                   <Caret
+                    key={key + "caret2"}
                     {...{
                       leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
@@ -137,7 +138,6 @@ function SelectionLayer(props) {
                       getGaps,
                       style: selectionLayer.style,
                       ignoreGaps,
-                      key: key + "caret2",
                       sequenceLength,
                       className:
                         classNameToPass +

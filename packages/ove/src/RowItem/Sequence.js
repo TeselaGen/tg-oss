@@ -175,7 +175,6 @@ class Sequence extends React.Component {
               width,
               position: "absolute"
             }}
-            ref="rowViewTextContainer"
             className="rowViewTextContainer"
             height={Math.max(0, Number(height))}
           >

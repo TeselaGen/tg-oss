@@ -416,23 +416,9 @@ function LabelLine(pointArray, options) {
   });
   return (
     <React.Fragment key="labelLine">
-      {/* <polyline
-        {...{
-          key: "polyline-short",
-          points,
-          stroke: "black",
-          fill: "none",
-          strokeWidth: 1,
-          // style: {
-          //   opacity: 0.2
-          // },
-          className: "veLabelLine",
-          ...options
-        }}
-      /> */}
       <polyline
+        key="polyline-long"
         {...{
-          key: "polyline-long",
           points,
           stroke: "black",
           fill: "none",

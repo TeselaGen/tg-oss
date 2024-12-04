@@ -561,7 +561,6 @@ export default function RowItem(props) {
                     height: sequenceHeight,
                     position: "absolute"
                   }}
-                  ref="rowViewTextContainer"
                   onClick={function (event) {
                     replacementLayerClicked({
                       annotation: replacementLayer,
