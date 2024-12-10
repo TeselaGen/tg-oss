@@ -429,7 +429,7 @@ export default compose(
           end: sequenceLength - 1
         });
     },
-    //handleNewPrimer handleNewFeature handleNewPart
+    //handleNewPrimer handleNewFeature handleNewPart newFeature newPart
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
       acc[`handleNew${key}`] = props => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
