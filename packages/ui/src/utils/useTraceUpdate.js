@@ -1,6 +1,10 @@
 import { useEffect, useRef } from "react";
 
 // useful for debugging rerender errors
+/* 
+  Usage:
+  useTraceUpdate(props);
+*/
 export const useTraceUpdate = props => {
   const prev = useRef(props);
   useEffect(() => {

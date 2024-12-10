@@ -102,6 +102,7 @@ import { useColumns } from "./Columns";
 import { formValueSelector, change as _change } from "redux-form";
 import { throwFormError } from "../throwFormError";
 import { isObservableArray, toJS } from "mobx";
+import { isBeingCalledExcessively } from "../utils/isBeingCalledExcessively";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -425,7 +426,7 @@ const DataTable = ({
     hideSelectedCount = isSimple,
     hideSetPageSize,
     hideTotalPages,
-    initialSelectedIds,
+    selectedIds,
     isCellEditable,
     isCopyable = true,
     isEntityDisabled = noop,
@@ -501,16 +502,14 @@ const DataTable = ({
   // This is because we need to maintain the reduxFormSelectedEntityIdMap and
   // allOrderedEntities updated
   useEffect(() => {
-    if (change) {
-      change("allOrderedEntities", entitiesAcrossPages);
-      if (entities.length === 0 || isEmpty(reduxFormSelectedEntityIdMap))
-        return;
-      changeSelectedEntities({
-        idMap: reduxFormSelectedEntityIdMap,
-        entities,
-        change
-      });
-    }
+    isBeingCalledExcessively({ uniqName: `dt_entities_${formName}` });
+    change("allOrderedEntities", entitiesAcrossPages);
+    if (entities.length === 0 || isEmpty(reduxFormSelectedEntityIdMap)) return;
+    changeSelectedEntities({
+      idMap: reduxFormSelectedEntityIdMap,
+      entities,
+      change
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entitiesAcrossPages, reduxFormSelectedEntityIdMap, change]);
 
@@ -1752,17 +1751,18 @@ const DataTable = ({
 
   // We need to make sure this only runs at the beggining
   useEffect(() => {
-    if (initialSelectedIds) {
-      if (alreadySelected.current) return;
-      setSelectedIds(initialSelectedIds);
-      alreadySelected.current = true;
+    if (selectedIds !== undefined) {
+      // if the alreadaySelect.current has the same ids in its array,
+      if (isEqual(alreadySelected.current, selectedIds)) return;
+      setSelectedIds(selectedIds);
+      alreadySelected.current = selectedIds;
     }
     if (selectAllByDefault && entities && entities.length) {
       if (alreadySelected.current) return;
       setSelectedIds(entities.map(getIdOrCodeOrIndex));
       alreadySelected.current = true;
     }
-  }, [entities, initialSelectedIds, selectAllByDefault, setSelectedIds]);
+  }, [entities, selectedIds, selectAllByDefault, setSelectedIds]);
 
   const TheadComponent = useCallback(
     ({ className, style, children }) => {

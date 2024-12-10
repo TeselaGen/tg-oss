@@ -1,9 +1,9 @@
-import { isEqual } from "lodash-es";
 import { useRef } from "react";
+import { isEqStrCompareFns } from "../isEqStrCompareFns";
 
 export const useDeepEqualMemo = value => {
   const ref = useRef();
-  if (!isEqual(value, ref.current)) {
+  if (!isEqStrCompareFns(value, ref.current)) {
     ref.current = value;
   }
   return ref.current;
