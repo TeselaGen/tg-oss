@@ -58,7 +58,7 @@ describe("editing", function () {
     cy.contains("Caret Between Bases 5293 and 1");
     cy.contains(".ve-row-item-sequence", "5'gtcttatga");
   });
-  it(`should be able to insert data around the origin correctly 
+  it(`should be able to insert data around the origin correctly
   - new sequence should be inserted after the origin`, () => {
     cy.selectRange(5297, 3);
     cy.replaceSelection("aaaaaa");
@@ -68,7 +68,7 @@ describe("editing", function () {
     cy.replaceSelection("tt");
     cy.contains("Selecting 2 bps from 3 to 4");
   });
-  it(`should be able to revComp, comp selections that wrap the origin correctly 
+  it(`should be able to revComp, comp selections that wrap the origin correctly
   - new sequence should be inserted after the origin`, () => {
     cy.selectRange(5297, 3);
     cy.contains("Jump to start").click();

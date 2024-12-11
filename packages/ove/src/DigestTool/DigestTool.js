@@ -1,13 +1,8 @@
-// import uniqid from "shortid";
-// import Ladder from "./Ladder";
-import { compose, withProps } from "recompose";
-// import selectionLayer from "../redux/selectionLayer";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { DataTable } from "@teselagen/ui";
 import { getCutsiteType, getVirtualDigest } from "@teselagen/sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
-// import getCutsiteType from "./getCutsiteType";
 import {
   Tabs,
   Tab,
@@ -27,18 +22,59 @@ export const DigestTool = props => {
   const [selectedTab, setSelectedTab] = useState("virtualDigest");
   const {
     editorName,
-    // height = 100,
     dimensions = {},
-    lanes,
     digestTool: { selectedFragment, computePartialDigest },
     onDigestSave,
-    computePartialDigestDisabled,
-    computeDigestDisabled,
     updateComputePartialDigest,
     boxHeight,
     digestLaneRightClicked,
-    ladders
+    ladders,
+    sequenceData,
+    sequenceLength,
+    selectionLayerUpdate,
+    updateSelectedFragment
   } = props;
+
+  const isCircular = sequenceData.circular;
+  const cutsites = sequenceData.cutsites;
+  const computePartialDigestDisabled =
+    cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
+  const computeDigestDisabled = cutsites.length > MAX_DIGEST_CUTSITES;
+
+  const lanes = useMemo(() => {
+    const { fragments } = getVirtualDigest({
+      cutsites,
+      sequenceLength,
+      isCircular,
+      computePartialDigest,
+      computePartialDigestDisabled,
+      computeDigestDisabled
+    });
+    const lanes = [
+      fragments.map(f => ({
+        ...f,
+        onFragmentSelect: () => {
+          selectionLayerUpdate({
+            start: f.start,
+            end: f.end,
+            name: f.name
+          });
+          updateSelectedFragment(f.Intentid);
+        }
+      }))
+    ];
+    return lanes;
+  }, [
+    computeDigestDisabled,
+    computePartialDigest,
+    computePartialDigestDisabled,
+    cutsites,
+    isCircular,
+    selectionLayerUpdate,
+    sequenceLength,
+    updateSelectedFragment
+  ]);
+
   return (
     <div
       style={{
@@ -178,48 +214,4 @@ const schema = {
   ]
 };
 
-export default compose(
-  withEditorInteractions,
-  withProps(
-    ({
-      sequenceData,
-      sequenceLength,
-      selectionLayerUpdate,
-      updateSelectedFragment,
-      digestTool: { computePartialDigest }
-    }) => {
-      const isCircular = sequenceData.circular;
-      const cutsites = sequenceData.cutsites;
-      const computePartialDigestDisabled =
-        cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
-      const computeDigestDisabled = cutsites.length > MAX_DIGEST_CUTSITES;
-
-      const { fragments, overlappingEnzymes } = getVirtualDigest({
-        cutsites,
-        sequenceLength,
-        isCircular,
-        computePartialDigest,
-        computePartialDigestDisabled,
-        computeDigestDisabled
-      });
-      return {
-        computePartialDigestDisabled,
-        computeDigestDisabled,
-        lanes: [
-          fragments.map(f => ({
-            ...f,
-            onFragmentSelect: () => {
-              selectionLayerUpdate({
-                start: f.start,
-                end: f.end,
-                name: f.name
-              });
-              updateSelectedFragment(f.Intentid);
-            }
-          }))
-        ],
-        overlappingEnzymes
-      };
-    }
-  )
-)(DigestTool);
+export default withEditorInteractions(DigestTool);
