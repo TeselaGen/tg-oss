@@ -272,7 +272,7 @@ describe("menuBar", function () {
 
     cy.selectRange(2, 5);
     cy.get(".tg-menu-bar").contains("Edit").trigger("mouseover");
-    cy.get(".tg-menu-bar-popover").contains("Cut").click();
+    cy.get(".tg-menu-bar-popover").contains("Cut").realClick();
 
     cy.get(".tg-menu-bar").contains("File").click();
     cy.get(`[cmd="saveSequence"]`).should("not.have.class", "bp3-disabled");
