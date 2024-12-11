@@ -154,7 +154,7 @@ describe("editor", function () {
     cy.tgToggle("shouldAutosave");
     cy.contains(".veRowViewPart", "Part 0").first().click();
     cy.get(".veRowViewSelectionLayer").first().trigger("contextmenu");
-    cy.get(".bp3-menu-item").contains("Cut").click();
+    cy.get(".bp3-menu-item").contains("Cut").realClick();
     cy.contains("onCopy callback triggered");
     cy.contains("onSave callback triggered");
     cy.contains("Selection Cut");
@@ -167,7 +167,7 @@ describe("editor", function () {
     cy.get(".veRowViewSelectionLayer").first().trigger("contextmenu");
     //tnrnote: cut in cypress only works on electron, not firefox or chrome
 
-    cy.get(".bp3-menu-item").contains("Cut").click();
+    cy.get(".bp3-menu-item").contains("Cut").realClick();
     cy.contains("Selection Cut");
     cy.get(".tg-menu-bar").contains("File").click();
     cy.get(".bp3-menu-item").contains("Save As").click();

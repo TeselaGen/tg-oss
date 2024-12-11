@@ -425,7 +425,7 @@ const DataTable = ({
     hideSelectedCount = isSimple,
     hideSetPageSize,
     hideTotalPages,
-    initialSelectedIds,
+    selectedIds,
     isCellEditable,
     isCopyable = true,
     isEntityDisabled = noop,
@@ -1752,17 +1752,15 @@ const DataTable = ({
 
   // We need to make sure this only runs at the beggining
   useEffect(() => {
-    if (initialSelectedIds) {
-      if (alreadySelected.current) return;
-      setSelectedIds(initialSelectedIds);
-      alreadySelected.current = true;
+    if (selectedIds) {
+      setSelectedIds(selectedIds);
     }
     if (selectAllByDefault && entities && entities.length) {
       if (alreadySelected.current) return;
       setSelectedIds(entities.map(getIdOrCodeOrIndex));
       alreadySelected.current = true;
     }
-  }, [entities, initialSelectedIds, selectAllByDefault, setSelectedIds]);
+  }, [entities, selectedIds, selectAllByDefault, setSelectedIds]);
 
   const TheadComponent = useCallback(
     ({ className, style, children }) => {

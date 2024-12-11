@@ -586,7 +586,7 @@ const DataTableDemo = () => {
                 onRefresh={onRefresh}
                 onSingleRowSelect={noop}
                 selectAllByDefault={selectAllByDefault}
-                initialSelectedIds={selectedIds}
+                selectedIds={selectedIds}
                 shouldShowSubComponent={r => r.id !== 1}
                 showCount={showCount}
                 SubComponent={withSubComponent ? SubComp : undefined}
