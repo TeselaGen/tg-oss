@@ -102,6 +102,7 @@ import { useColumns } from "./Columns";
 import { formValueSelector, change as _change } from "redux-form";
 import { throwFormError } from "../throwFormError";
 import { isObservableArray, toJS } from "mobx";
+import { isBeingCalledExcessively } from "../utils/isBeingCalledExcessively";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -501,6 +502,7 @@ const DataTable = ({
   // This is because we need to maintain the reduxFormSelectedEntityIdMap and
   // allOrderedEntities updated
   useEffect(() => {
+    isBeingCalledExcessively({ uniqName: `dt_entities_${formName}` });
     change("allOrderedEntities", entitiesAcrossPages);
     if (entities.length === 0 || isEmpty(reduxFormSelectedEntityIdMap)) return;
     changeSelectedEntities({
@@ -521,6 +523,7 @@ const DataTable = ({
       } else {
         newTableConfig = getTableConfigFromStorage(formName);
       }
+      isBeingCalledExcessively({ uniqName: `dt_setTableConfig_${formName}` });
       // if the tableConfig is the same as the newTableConfig, don't update
       setTableConfig(prev => {
         if (!newTableConfig) {
