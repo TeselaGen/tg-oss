@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { DataTable } from "@teselagen/ui";
+import { DataTable, useStableReference } from "@teselagen/ui";
 import { getCutsiteType, getVirtualDigest } from "@teselagen/sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
@@ -17,6 +17,9 @@ import { pick } from "lodash-es";
 
 const MAX_DIGEST_CUTSITES = 50;
 const MAX_PARTIAL_DIGEST_CUTSITES = 10;
+const onSingleSelectRow = ({ onFragmentSelect }) => {
+  onFragmentSelect();
+};
 
 export const DigestTool = props => {
   const [selectedTab, setSelectedTab] = useState("virtualDigest");
@@ -31,7 +34,7 @@ export const DigestTool = props => {
     ladders,
     sequenceData,
     sequenceLength,
-    selectionLayerUpdate,
+    selectionLayerUpdate: _selectionLayerUpdate,
     updateSelectedFragment
   } = props;
 
@@ -40,7 +43,12 @@ export const DigestTool = props => {
   const computePartialDigestDisabled =
     cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
   const computeDigestDisabled = cutsites.length > MAX_DIGEST_CUTSITES;
+  // The selection layer update function is memoized to prevent re-renders
+  // It changes triggered by the DataTables below
+  const selectionLayerUpdate = useStableReference(_selectionLayerUpdate);
 
+  // This useMemo might not be necessary once if we figure out
+  // why the DataTables below triggers a re-render outside of them.
   const lanes = useMemo(() => {
     const { fragments } = getVirtualDigest({
       cutsites,
@@ -50,11 +58,11 @@ export const DigestTool = props => {
       computePartialDigestDisabled,
       computeDigestDisabled
     });
-    const lanes = [
+    const _lanes = [
       fragments.map(f => ({
         ...f,
         onFragmentSelect: () => {
-          selectionLayerUpdate({
+          selectionLayerUpdate.current({
             start: f.start,
             end: f.end,
             name: f.name
@@ -63,7 +71,7 @@ export const DigestTool = props => {
         }
       }))
     ];
-    return lanes;
+    return _lanes;
   }, [
     computeDigestDisabled,
     computePartialDigest,
@@ -74,6 +82,25 @@ export const DigestTool = props => {
     sequenceLength,
     updateSelectedFragment
   ]);
+
+  // Same comment as above
+  const digestInfoLanes = useMemo(
+    () =>
+      lanes[0].map(({ id, cut1, cut2, start, end, size, ...rest }) => {
+        return {
+          ...rest,
+          id,
+          start,
+          end,
+          length: size,
+          leftCutter: cut1.restrictionEnzyme.name,
+          rightCutter: cut2.restrictionEnzyme.name,
+          leftOverhang: getCutsiteType(cut1.restrictionEnzyme),
+          rightOverhang: getCutsiteType(cut2.restrictionEnzyme)
+        };
+      }),
+    [lanes]
+  );
 
   return (
     <div
@@ -173,25 +200,9 @@ export const DigestTool = props => {
               maxHeight={400}
               // noFooter
               withSearch={false}
-              onSingleRowSelect={({ onFragmentSelect }) => {
-                onFragmentSelect();
-              }}
+              onSingleRowSelect={onSingleSelectRow}
               formName="digestInfoTable"
-              entities={lanes[0].map(
-                ({ id, cut1, cut2, start, end, size, ...rest }) => {
-                  return {
-                    ...rest,
-                    id,
-                    start,
-                    end,
-                    length: size,
-                    leftCutter: cut1.restrictionEnzyme.name,
-                    rightCutter: cut2.restrictionEnzyme.name,
-                    leftOverhang: getCutsiteType(cut1.restrictionEnzyme),
-                    rightOverhang: getCutsiteType(cut2.restrictionEnzyme)
-                  };
-                }
-              )}
+              entities={digestInfoLanes}
               schema={schema}
             />
           }
