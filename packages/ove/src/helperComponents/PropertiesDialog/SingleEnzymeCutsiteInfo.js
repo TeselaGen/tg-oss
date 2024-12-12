@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { DataTable } from "@teselagen/ui";
-
 import { CutsiteTag } from "../../CutsiteFilter/AdditionalCutsiteInfoDialog";
-
 import EnzymeViewer from "../../EnzymeViewer";
 import { getEnzymeAliases } from "../../utils/editorUtils";
+
+const schema = {
+  fields: [
+    { path: "topSnipPosition", displayName: "Top Snip", type: "string" },
+    { path: "position", type: "string" },
+    { path: "strand", type: "string" }
+  ]
+};
 
 export default function SingleEnzymeCutsiteInfo({
   cutsiteGroup,
@@ -16,40 +22,52 @@ export default function SingleEnzymeCutsiteInfo({
   allCutsites,
   filteredCutsites: { cutsitesByName: cutsitesByNameActive }
 }) {
-  const onRowSelect = ([record]) => {
-    if (!record) return;
+  const onRowSelect = useCallback(
+    ([record]) => {
+      if (!record) return;
 
-    dispatch({
-      type: "CARET_POSITION_UPDATE",
-      payload: record.topSnipPosition,
-      meta: {
-        editorName
-      }
-    });
-  };
-  const aliases = getEnzymeAliases(enzyme);
-  const entities = cutsiteGroup
-    .sort((a, b) => a.topSnipPosition - b.topSnipPosition)
-    .map(
-      ({
-        restrictionEnzyme: { forwardRegex, reverseRegex } = {},
-        forward,
-        id,
-        topSnipBeforeBottom,
-        topSnipPosition,
-        bottomSnipPosition
-      }) => {
-        return {
-          id,
-          topSnipPosition,
-          position: topSnipBeforeBottom
-            ? topSnipPosition + " - " + bottomSnipPosition
-            : bottomSnipPosition + " - " + topSnipPosition,
-          strand:
-            forwardRegex === reverseRegex ? "Palindromic" : forward ? "1" : "-1"
-        };
-      }
-    );
+      dispatch({
+        type: "CARET_POSITION_UPDATE",
+        payload: record.topSnipPosition,
+        meta: {
+          editorName
+        }
+      });
+    },
+    [dispatch, editorName]
+  );
+
+  const aliases = useMemo(() => getEnzymeAliases(enzyme), [enzyme]);
+  const entities = useMemo(
+    () =>
+      cutsiteGroup
+        .sort((a, b) => a.topSnipPosition - b.topSnipPosition)
+        .map(
+          ({
+            restrictionEnzyme: { forwardRegex, reverseRegex } = {},
+            forward,
+            id,
+            topSnipBeforeBottom,
+            topSnipPosition,
+            bottomSnipPosition
+          }) => {
+            return {
+              id,
+              topSnipPosition,
+              position: topSnipBeforeBottom
+                ? topSnipPosition + " - " + bottomSnipPosition
+                : bottomSnipPosition + " - " + topSnipPosition,
+              strand:
+                forwardRegex === reverseRegex
+                  ? "Palindromic"
+                  : forward
+                    ? "1"
+                    : "-1"
+            };
+          }
+        ),
+    [cutsiteGroup]
+  );
 
   return (
     <div>
@@ -61,14 +79,12 @@ export default function SingleEnzymeCutsiteInfo({
       >
         {enzyme && (
           <EnzymeViewer
-            {...{
-              sequence: enzyme.site,
-              reverseSnipPosition: enzyme.bottomSnipOffset,
-              forwardSnipPosition: enzyme.topSnipOffset
-            }}
+            sequence={enzyme.site}
+            reverseSnipPosition={enzyme.bottomSnipOffset}
+            forwardSnipPosition={enzyme.topSnipOffset}
           />
         )}
-        <br></br>
+        <br />
         {entities && !!entities.length && (
           <div>
             <DataTable
@@ -106,7 +122,7 @@ export default function SingleEnzymeCutsiteInfo({
                     key={i}
                     name={n}
                     doNotShowCuts
-                  ></CutsiteTag>
+                  />
                 );
               })}
             </div>
@@ -116,14 +132,6 @@ export default function SingleEnzymeCutsiteInfo({
     </div>
   );
 }
-
-const schema = {
-  fields: [
-    { path: "topSnipPosition", displayName: "Top Snip", type: "string" },
-    { path: "position", type: "string" },
-    { path: "strand", type: "string" }
-  ]
-};
 
 // export default compose(
 //   withEditorProps,
