@@ -9,16 +9,25 @@
           "name": "sequence-utils",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
             },
             "build": {
               "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ],
+              "outputs": [
+                "{options.outputPath}"
+              ],
               "options": {
                 "target": "es2015",
                 "outputPath": "dist/sequence-utils"
@@ -32,10 +41,14 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
+              "outputs": [
+                "{options.outputFile}"
+              ],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/sequence-utils/**/*.js"]
+                "lintFilePatterns": [
+                  "packages/sequence-utils/**/*.js"
+                ]
               },
               "configurations": {}
             },
@@ -60,7 +73,10 @@
               "configurations": {}
             },
             "publish": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs sequence-utils latest"
@@ -68,7 +84,10 @@
               "configurations": {}
             },
             "publish-beta": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs sequence-utils beta"
@@ -91,16 +110,25 @@
           "name": "bounce-loader",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
             },
             "build": {
               "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ],
+              "outputs": [
+                "{options.outputPath}"
+              ],
               "defaultConfiguration": "production",
               "options": {
                 "generatePackageJson": true,
@@ -119,7 +147,9 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
+              "outputs": [
+                "{options.outputFile}"
+              ],
               "options": {
                 "maxWarnings": 0,
                 "lintFilePatterns": [
@@ -143,7 +173,10 @@
             },
             "e2e-playwright": {
               "metadata": {},
-              "inputs": ["default", "^production"],
+              "inputs": [
+                "default",
+                "^production"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/bounce-loader && npx playwright test"
@@ -152,7 +185,10 @@
             },
             "launch-e2e": {
               "metadata": {},
-              "inputs": ["default", "^production"],
+              "inputs": [
+                "default",
+                "^production"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "cd packages/bounce-loader && npx playwright test --ui"
@@ -181,7 +217,10 @@
               "configurations": {}
             },
             "publish": {
-              "dependsOn": ["e2e", "build"],
+              "dependsOn": [
+                "e2e",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs bounce-loader latest"
@@ -189,7 +228,10 @@
               "configurations": {}
             },
             "publish-beta": {
-              "dependsOn": ["e2e", "build"],
+              "dependsOn": [
+                "e2e",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs bounce-loader beta"
@@ -212,16 +254,25 @@
           "name": "bio-parsers",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
             },
             "build": {
               "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ],
+              "outputs": [
+                "{options.outputPath}"
+              ],
               "options": {
                 "target": "es2015",
                 "outputPath": "dist/bio-parsers"
@@ -235,10 +286,14 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
+              "outputs": [
+                "{options.outputFile}"
+              ],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/bio-parsers/**/*.js"]
+                "lintFilePatterns": [
+                  "packages/bio-parsers/**/*.js"
+                ]
               },
               "configurations": {}
             },
@@ -263,7 +318,10 @@
               "configurations": {}
             },
             "publish": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs bio-parsers latest"
@@ -271,7 +329,10 @@
               "configurations": {}
             },
             "publish-beta": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs bio-parsers beta"
@@ -294,16 +355,25 @@
           "name": "range-utils",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
             },
             "build": {
               "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ],
+              "outputs": [
+                "{options.outputPath}"
+              ],
               "options": {
                 "target": "es2015",
                 "outputPath": "dist/range-utils"
@@ -317,10 +387,14 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
+              "outputs": [
+                "{options.outputFile}"
+              ],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/range-utils/**/*.js"]
+                "lintFilePatterns": [
+                  "packages/range-utils/**/*.js"
+                ]
               },
               "configurations": {}
             },
@@ -345,7 +419,10 @@
               "configurations": {}
             },
             "publish": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs range-utils latest"
@@ -353,7 +430,10 @@
               "configurations": {}
             },
             "publish-beta": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs range-utils beta"
@@ -375,7 +455,9 @@
           "root": "packages/shared-demo",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
@@ -396,16 +478,25 @@
           "name": "file-utils",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
             },
             "build": {
               "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ],
+              "outputs": [
+                "{options.outputPath}"
+              ],
               "options": {
                 "target": "es2015",
                 "outputPath": "dist/file-utils"
@@ -419,10 +510,14 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
+              "outputs": [
+                "{options.outputFile}"
+              ],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/file-utils/**/*.js"]
+                "lintFilePatterns": [
+                  "packages/file-utils/**/*.js"
+                ]
               },
               "configurations": {}
             },
@@ -447,7 +542,10 @@
               "configurations": {}
             },
             "publish": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs file-utils latest"
@@ -455,7 +553,10 @@
               "configurations": {}
             },
             "publish-beta": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs file-utils beta"
@@ -478,16 +579,25 @@
           "name": "uploader",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
             },
             "build": {
               "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ],
+              "outputs": [
+                "{options.outputPath}"
+              ],
               "options": {
                 "outputPath": "dist/uploader"
               },
@@ -500,10 +610,14 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
+              "outputs": [
+                "{options.outputFile}"
+              ],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/uploader/**/*.{ts,tsx,js,jsx}"]
+                "lintFilePatterns": [
+                  "packages/uploader/**/*.{ts,tsx,js,jsx}"
+                ]
               },
               "configurations": {}
             }
@@ -523,16 +637,25 @@
           "name": "ove",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
             },
             "build": {
               "executor": "@nx/vite:build",
-              "dependsOn": ["build_lib"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "dependsOn": [
+                "build_lib"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ],
+              "outputs": [
+                "{options.outputPath}"
+              ],
               "defaultConfiguration": "production",
               "options": {
                 "emptyOutDir": false,
@@ -560,10 +683,14 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
+              "outputs": [
+                "{options.outputFile}"
+              ],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/ove/**/*.{ts,tsx,js,jsx}"]
+                "lintFilePatterns": [
+                  "packages/ove/**/*.{ts,tsx,js,jsx}"
+                ]
               },
               "configurations": {}
             },
@@ -582,7 +709,10 @@
             },
             "e2e": {
               "executor": "@nx/cypress:cypress",
-              "inputs": ["default", "^production"],
+              "inputs": [
+                "default",
+                "^production"
+              ],
               "options": {
                 "parallel": true,
                 "key": "373658d4-4931-4ffd-9263-8eb78a838ab9",
@@ -599,7 +729,10 @@
             },
             "launch-e2e": {
               "executor": "@nx/cypress:cypress",
-              "inputs": ["default", "^production"],
+              "inputs": [
+                "default",
+                "^production"
+              ],
               "options": {
                 "watch": true,
                 "headed": true,
@@ -613,7 +746,9 @@
             "start": {
               "executor": "nx:run-commands",
               "options": {
-                "commands": ["cd packages/ove && yarn vite"]
+                "commands": [
+                  "cd packages/ove && yarn vite"
+                ]
               },
               "configurations": {
                 "ci": {
@@ -622,7 +757,11 @@
               }
             },
             "publish": {
-              "dependsOn": ["test", "build", "build_umd"],
+              "dependsOn": [
+                "test",
+                "build",
+                "build_umd"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs ove latest"
@@ -630,7 +769,11 @@
               "configurations": {}
             },
             "publish-beta": {
-              "dependsOn": ["test", "build", "build_umd"],
+              "dependsOn": [
+                "test",
+                "build",
+                "build_umd"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs ove beta"
@@ -685,16 +828,25 @@
           "name": "ui",
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
               "executor": "@nx/js:release-publish",
               "options": {},
               "configurations": {}
             },
             "build": {
               "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ],
+              "outputs": [
+                "{options.outputPath}"
+              ],
               "defaultConfiguration": "production",
               "options": {
                 "generatePackageJson": true,
@@ -718,10 +870,14 @@
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
+              "outputs": [
+                "{options.outputFile}"
+              ],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/ui/**/*.{ts,tsx,js,jsx}"]
+                "lintFilePatterns": [
+                  "packages/ui/**/*.{ts,tsx,js,jsx}"
+                ]
               },
               "configurations": {}
             },
@@ -740,7 +896,10 @@
             },
             "e2e": {
               "executor": "@nx/cypress:cypress",
-              "inputs": ["default", "^production"],
+              "inputs": [
+                "default",
+                "^production"
+              ],
               "options": {
                 "parallel": true,
                 "key": "1ced39be-1a3a-4fd8-b2d5-a88951d9b766",
@@ -757,7 +916,10 @@
             },
             "launch-e2e": {
               "executor": "@nx/cypress:cypress",
-              "inputs": ["default", "^production"],
+              "inputs": [
+                "default",
+                "^production"
+              ],
               "options": {
                 "watch": true,
                 "headed": true,
@@ -769,7 +931,10 @@
               "configurations": {}
             },
             "publish": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs ui latest"
@@ -777,7 +942,10 @@
               "configurations": {}
             },
             "publish-beta": {
-              "dependsOn": ["test", "build"],
+              "dependsOn": [
+                "test",
+                "build"
+              ],
               "executor": "nx:run-commands",
               "options": {
                 "command": "node tools/scripts/publish.mjs ui beta"
@@ -805,7 +973,9 @@
             "start": {
               "executor": "nx:run-commands",
               "options": {
-                "commands": ["cd packages/ui && yarn vite"]
+                "commands": [
+                  "cd packages/ui && yarn vite"
+                ]
               },
               "configurations": {
                 "ci": {
