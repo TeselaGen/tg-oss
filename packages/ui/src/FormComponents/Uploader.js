@@ -373,7 +373,7 @@ const Uploader = ({
           setTimeout(() => {
             // give the resolved accept a full JS cycle to update before allowing actionability on the dropzone
             setAcceptLoading(false);
-          }, 0);
+          }, 100);
         }
       );
     }
