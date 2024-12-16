@@ -602,8 +602,13 @@ function VectorInteractionHOC(Component /* options */) {
         return new Clipboard(`.${className}`, {
           action: () => action,
           text: () => {
-            const { selectionLayer, editorName, store } = this.props;
-            const { sequenceData, copyOptions } =
+            if (action === "copy") {
+              document.body.addEventListener("copy", this.handleCopy);
+            } else {
+              document.body.addEventListener("cut", this.handleCut);
+            }
+            const { editorName, store } = this.props;
+            const { sequenceData, copyOptions, selectionLayer } =
               store.getState().VectorEditor[editorName];
 
             const selectedSeqData = getSequenceDataBetweenRange(
@@ -628,11 +633,7 @@ function VectorInteractionHOC(Component /* options */) {
               sequenceData
             );
             this.sequenceDataToCopy = sequenceDataToCopy;
-            if (action === "copy") {
-              document.body.addEventListener("copy", this.handleCopy);
-            } else {
-              document.body.addEventListener("cut", this.handleCut);
-            }
+
             if (window.Cypress) {
               window.Cypress.textToCopy = sequenceDataToCopy.textToCopy;
               window.Cypress.seqDataToCopy = sequenceDataToCopy;

@@ -1,4 +1,5 @@
 import path from "path";
+import os from "os";
 
 describe("EditableCellTable.spec", () => {
   it(`cell checkboxes and the header checkbox should work`, () => {
@@ -240,8 +241,9 @@ describe("EditableCellTable.spec", () => {
     );
   });
   it(`undo/redo should work`, () => {
-    const undoCmd = [`Meta`, `z`];
-    const redoCmd = [`Meta`, `Shift`, `z`];
+    const IS_LINUX = os.platform().toLowerCase().search("linux") > -1;
+    const undoCmd = IS_LINUX ? [`Alt`, `z`] : [`Meta`, `z`];
+    const redoCmd = IS_LINUX ? [`Alt`, `Shift`, `z`] : [`Meta`, `Shift`, `z`];
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`.rt-td:contains(tom88)`).dblclick();
     cy.focused().type("{selectall}tasty55{enter}");
