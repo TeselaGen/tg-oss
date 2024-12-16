@@ -33,11 +33,12 @@ describe("properties", function () {
     cy.get(`.tgDeleteAnnsBtn`).should("not.have.class", "bp3-disabled").click();
 
     cy.get(`.tgDeleteAnnsBtn`).should("have.class", "bp3-disabled");
-
     cy.get(".tgNewAnnBtn").should("not.have.class", "bp3-disabled");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select All").click();
-    cy.get(".veSelectionLayer").first().trigger("contextmenu", { force: true });
+    cy.get(
+      ".veSelectionLayer:contains(Selecting 5299 bps from 1 to 5299)"
+    ).trigger("contextmenu", { force: true });
     cy.get(".bp3-menu-item").contains("Cut").realClick();
     cy.get(".tgNewAnnBtn").should("have.class", "bp3-disabled");
   });

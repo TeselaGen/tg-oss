@@ -17,7 +17,7 @@ describe("cutsiteInfoView", function () {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder input`).type("{selectAll}esp3i");
     cy.contains(`These Hidden enzymes match`);
-    cy.contains("Esp3I (2 cuts)").click();
+    cy.contains("Esp3I (2 cuts)").click({ force: true });
     cy.get(`.veToolbarCutsiteFilterHolder input`).should("not.exist"); //clicking the hidden enzyme should close the filter
     cy.contains("Esp3I (2 cuts) hidden");
     cy.get(
