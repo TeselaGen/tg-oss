@@ -49,7 +49,6 @@ import { LoadingDots } from "./LoadingDots";
 import { useDispatch } from "react-redux";
 import { flushSync } from "react-dom";
 import { useStableReference } from "../utils/hooks/useStableReference";
-import useDeepCompareEffect from "use-deep-compare-effect";
 import { useTraceUpdate } from "../utils/useTraceUpdate";
 
 const manualEnterMessage = "Build CSV File";
@@ -368,7 +367,7 @@ const Uploader = ({
     __accept,
     isAcceptPromise
   });
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     if (isAcceptPromise) {
       setAcceptLoading(true);
       Promise.allSettled(Array.isArray(__accept) ? __accept : [__accept]).then(
