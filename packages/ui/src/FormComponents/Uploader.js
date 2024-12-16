@@ -369,11 +369,8 @@ const Uploader = ({
       Promise.allSettled(Array.isArray(__accept) ? __accept : [__accept]).then(
         results => {
           const resolved = flatMap(results, r => r.value);
+          setAcceptLoading(false);
           setResolvedAccept(resolved);
-          setTimeout(() => {
-            // give the resolved accept a full JS cycle to update before allowing actionability on the dropzone
-            setAcceptLoading(false);
-          }, 100);
         }
       );
     }
