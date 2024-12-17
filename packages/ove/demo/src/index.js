@@ -116,7 +116,7 @@ const demos = {
 const Demo = () => {
   return (
     <Provider store={store}>
-      <DemoPage moduleName="ove" demos={demos}></DemoPage>
+      <DemoPage moduleName="ove" demos={demos} />
     </Provider>
   );
 };
