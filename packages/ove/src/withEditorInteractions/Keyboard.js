@@ -1,7 +1,7 @@
 import { noop } from "lodash-es";
 import React from "react";
 
-class Clipboard extends React.Component {
+class Keyboard extends React.Component {
   // static propTypes = {
   //   value: PropTypes.string.isRequired
   // };
@@ -82,4 +82,4 @@ class Clipboard extends React.Component {
   }
 }
 
-export default Clipboard;
+export default Keyboard;
