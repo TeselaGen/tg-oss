@@ -1,4 +1,5 @@
-import React, { createPortal } from "react";
+import React from "react";
+import createPortal from "react-dom";
 import { isFunction } from "lodash-es";
 import rerenderOnWindowResize from "./rerenderOnWindowResize";
 import "./FillWindow.css";
