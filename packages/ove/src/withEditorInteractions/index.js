@@ -4,7 +4,6 @@ import {
   getAminoAcidStringFromSequenceString
 } from "@teselagen/sequence-utils";
 import { getSequenceWithinRange } from "@teselagen/range-utils";
-import Clipboard from "clipboard";
 import { compose } from "redux";
 import {
   getReverseComplementSequenceAndAnnotations,
@@ -93,6 +92,7 @@ function VectorInteractionHOC(Component /* options */) {
         return <ConnectedMenu {...props} {...p} />;
       };
     }
+
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
     }
@@ -183,6 +183,7 @@ function VectorInteractionHOC(Component /* options */) {
         omitIcons: true
       });
     }
+
     updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
       const {
         selectionLayer,
@@ -257,7 +258,8 @@ function VectorInteractionHOC(Component /* options */) {
       e.preventDefault();
     };
 
-    handleCutOrCopy = isCut => e => {
+    handleCutOrCopy = isCut => async e => {
+      e.preventDefault();
       const {
         onCopy = noop,
         sequenceData,
@@ -303,7 +305,6 @@ function VectorInteractionHOC(Component /* options */) {
           }`
         );
 
-      const clipboardData = e.clipboardData;
       const textToCopy =
         (this.sequenceDataToCopy || {}).textToCopy !== undefined
           ? this.sequenceDataToCopy.textToCopy
@@ -312,9 +313,16 @@ function VectorInteractionHOC(Component /* options */) {
             : seqData.sequence;
 
       seqData.textToCopy = textToCopy;
-      clipboardData.setData("text/plain", textToCopy);
-      clipboardData.setData("application/json", JSON.stringify(seqData));
-      e.preventDefault();
+      await navigator.clipboard.writeText(textToCopy);
+      // application/json is not supported by clipboard api on browser
+      // await navigator.clipboard.write([
+      //   new ClipboardItem({
+      //     "application/json": new Blob([JSON.stringify(seqData)], {
+      //       type: "application/json"
+      //     }),
+      //     "text/plain": new Blob([textToCopy], { type: "text/plain" })
+      //   })
+      // ]);
 
       if (isCut && !(readOnly || disableBpEditing) && !disableBpEditing) {
         this.handleDnaDelete(false);
@@ -326,10 +334,8 @@ function VectorInteractionHOC(Component /* options */) {
           }),
           this.props
         );
-        document.body.removeEventListener("cut", this.handleCut);
       } else {
         onCopy(e, seqData, this.props);
-        document.body.removeEventListener("copy", this.handleCopy);
       }
       window.toastr.success(
         `Selection ${
@@ -340,6 +346,7 @@ function VectorInteractionHOC(Component /* options */) {
       );
       this.sequenceDataToCopy = undefined;
     };
+
     handleCut = this.handleCutOrCopy(true);
 
     handleCopy = this.handleCutOrCopy();
@@ -358,6 +365,7 @@ function VectorInteractionHOC(Component /* options */) {
         }
       };
     };
+
     createDisableBpEditingMsg = () => {
       window.toastr.warning(
         typeof this.props.disableBpEditing === "string"
@@ -366,6 +374,7 @@ function VectorInteractionHOC(Component /* options */) {
         this.getDuplicateAction()
       );
     };
+
     createReadOnlyMsg = () => {
       window.toastr.warning(
         this.props.readOnly === "string"
@@ -486,6 +495,7 @@ function VectorInteractionHOC(Component /* options */) {
       //we only call caretPositionUpdate if we're actually changing something
       this.props.caretPositionUpdate(position);
     };
+
     selectionLayerUpdate = newSelection => {
       const { selectionLayer = { start: -1, end: -1 }, ignoreGapsOnHighlight } =
         this.props;
@@ -582,6 +592,7 @@ function VectorInteractionHOC(Component /* options */) {
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
+
     insertHelper = {
       onClick: (e, ctxInfo) => {
         this.handleDnaInsert({
@@ -593,75 +604,55 @@ function VectorInteractionHOC(Component /* options */) {
       }
     };
 
-    // eslint-disable-next-line no-unused-vars
     getCopyOptions = annotation => {
       const { sequenceData, readOnly, disableBpEditing, selectionLayer } =
         this.props;
       const { isProtein } = sequenceData;
-      const makeTextCopyable = (transformFunc, className, action = "copy") => {
-        return new Clipboard(`.${className}`, {
-          action: () => action,
-          text: () => {
-            if (action === "copy") {
-              document.body.addEventListener("copy", this.handleCopy);
-            } else {
-              document.body.addEventListener("cut", this.handleCut);
-            }
-            const { editorName, store } = this.props;
-            const { sequenceData, copyOptions, selectionLayer } =
-              store.getState().VectorEditor[editorName];
+      const makeTextCopyable = transformFunc => {
+        return async () => {
+          const { editorName, store } = this.props;
+          const { sequenceData, copyOptions, selectionLayer } =
+            store.getState().VectorEditor[editorName];
 
-            const selectedSeqData = getSequenceDataBetweenRange(
-              sequenceData,
-              getSelFromWrappedAddon(
-                selectionLayer,
-                sequenceData.sequence.length
-              ),
-              {
-                excludePartial: {
-                  features: !copyOptions.partialFeatures,
-                  parts: !copyOptions.partialParts
-                },
-                exclude: {
-                  features: !copyOptions.features,
-                  parts: !copyOptions.parts
-                }
+          const selectedSeqData = getSequenceDataBetweenRange(
+            sequenceData,
+            getSelFromWrappedAddon(
+              selectionLayer,
+              sequenceData.sequence.length
+            ),
+            {
+              excludePartial: {
+                features: !copyOptions.partialFeatures,
+                parts: !copyOptions.partialParts
+              },
+              exclude: {
+                features: !copyOptions.features,
+                parts: !copyOptions.parts
               }
-            );
-            const sequenceDataToCopy = transformFunc(
-              selectedSeqData,
-              sequenceData
-            );
-            this.sequenceDataToCopy = sequenceDataToCopy;
-
-            if (window.Cypress) {
-              window.Cypress.textToCopy = sequenceDataToCopy.textToCopy;
-              window.Cypress.seqDataToCopy = sequenceDataToCopy;
             }
-            return sequenceDataToCopy.textToCopy || sequenceDataToCopy.sequence;
+          );
+          const sequenceDataToCopy = transformFunc(
+            selectedSeqData,
+            sequenceData
+          );
+          this.sequenceDataToCopy = sequenceDataToCopy;
+
+          if (window.Cypress) {
+            window.Cypress.textToCopy = sequenceDataToCopy.textToCopy;
+            window.Cypress.seqDataToCopy = sequenceDataToCopy;
           }
-        });
+        };
       };
       const aaCopy = {
         text: "Copy AA Sequence",
         className: "openVeCopyAA",
-        willUnmount: () => {
-          this.openVeCopyAA && this.openVeCopyAA.destroy();
-        },
-        didMount: ({ className }) => {
-          this.openVeCopyAA = makeTextCopyable(selectedSeqData => {
-            const textToCopy = isProtein
-              ? selectedSeqData.proteinSequence.toUpperCase()
-              : getAminoAcidStringFromSequenceString(selectedSeqData.sequence);
-            return {
-              ...selectedSeqData,
-              textToCopy
-            };
-          }, className);
-        }
+        onClick: makeTextCopyable(selectedSeqData => ({
+          ...selectedSeqData,
+          textToCopy: isProtein
+            ? selectedSeqData.proteinSequence.toUpperCase()
+            : getAminoAcidStringFromSequenceString(selectedSeqData.sequence)
+        }))
       };
-      // TODO: maybe stop using Clipboard.js and unify clipboard handling with
-      // a more versatile approach
       return [
         ...(readOnly || disableBpEditing
           ? []
@@ -673,20 +664,11 @@ function VectorInteractionHOC(Component /* options */) {
               {
                 text: "Cut",
                 className: "openVeCut",
-                willUnmount: () => {
-                  this.openVeCut && this.openVeCut.destroy();
-                },
-                didMount: ({ className }) => {
-                  // TODO: Maybe use a cut action instead
-                  this.openVeCut = makeTextCopyable(
-                    s => ({
-                      ...s,
-                      textToCopy: isProtein ? s.proteinSequence : s.sequence
-                    }),
-                    className,
-                    "cut"
-                  );
-                }
+                onClick: this.handleCut
+                // onClick: makeTextCopyable(s => ({
+                //   ...s,
+                //   textToCopy: isProtein ? s.proteinSequence : s.sequence
+                // }))
               }
             ]),
         {
@@ -699,80 +681,45 @@ function VectorInteractionHOC(Component /* options */) {
             {
               text: isProtein ? "Copy DNA Bps" : "Copy",
               className: "openVeCopy2",
-              willUnmount: () => {
-                this.openVeCopy2 && this.openVeCopy2.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopy2 = makeTextCopyable(
-                  s => ({ ...s, textToCopy: s.sequence }),
-                  className
-                );
-              }
+              onClick: makeTextCopyable(s => ({
+                ...s,
+                textToCopy: s.sequence
+              }))
             },
 
             {
               text: "Copy Genbank For Selection",
               className: "openVeCopyGenbankForSelection",
-              willUnmount: () => {
-                this.openVeCopyGenbankForSelection &&
-                  this.openVeCopyGenbankForSelection.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyGenbankForSelection = makeTextCopyable(
-                  getGenbankFromSelection,
-                  className
-                );
-              }
+              onClick: makeTextCopyable(getGenbankFromSelection)
             },
             {
               text: isProtein
                 ? "Copy Reverse Complement DNA Bps"
                 : "Copy Reverse Complement",
               className: "openVeCopyReverse",
-              willUnmount: () => {
-                this.openVeCopyReverse && this.openVeCopyReverse.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyReverse = makeTextCopyable(
-                  getReverseComplementSequenceAndAnnotations,
-                  className
-                );
-              }
+              onClick: makeTextCopyable(
+                getReverseComplementSequenceAndAnnotations
+              )
             },
             ...(isProtein ? [] : [aaCopy]),
             {
               text: "Copy Reverse Complement AA Sequence",
               className: "openVeCopyAAReverse",
-              willUnmount: () => {
-                this.openVeCopyAAReverse && this.openVeCopyAAReverse.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyAAReverse = makeTextCopyable(selectedSeqData => {
-                  const revSeqData =
-                    getReverseComplementSequenceAndAnnotations(selectedSeqData);
-                  const textToCopy = isProtein
+              onClick: makeTextCopyable(selectedSeqData => {
+                const revSeqData =
+                  getReverseComplementSequenceAndAnnotations(selectedSeqData);
+                return {
+                  ...revSeqData,
+                  textToCopy: isProtein
                     ? revSeqData.proteinSequence.toUpperCase()
-                    : getAminoAcidStringFromSequenceString(revSeqData.sequence);
-                  return {
-                    ...revSeqData,
-                    textToCopy
-                  };
-                }, className);
-              }
+                    : getAminoAcidStringFromSequenceString(revSeqData.sequence)
+                };
+              })
             },
             {
               text: isProtein ? "Copy Complement DNA Bps" : "Copy Complement",
               className: "openVeCopyComplement",
-              willUnmount: () => {
-                this.openVeCopyComplement &&
-                  this.openVeCopyComplement.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyComplement = makeTextCopyable(
-                  getComplementSequenceAndAnnotations,
-                  className
-                );
-              }
+              onClick: makeTextCopyable(getComplementSequenceAndAnnotations)
             },
             copyOptionsMenu
           ]
