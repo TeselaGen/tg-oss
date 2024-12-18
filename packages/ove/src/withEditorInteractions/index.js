@@ -665,10 +665,6 @@ function VectorInteractionHOC(Component /* options */) {
                 text: "Cut",
                 className: "openVeCut",
                 onClick: this.handleCut
-                // onClick: makeTextCopyable(s => ({
-                //   ...s,
-                //   textToCopy: isProtein ? s.proteinSequence : s.sequence
-                // }))
               }
             ]),
         {
