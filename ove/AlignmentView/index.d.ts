@@ -1,5 +1,4 @@
 import { default as React } from '../../../../node_modules/react';
-import { default as Clipboard } from 'clipboard';
 export class AlignmentView extends React.Component<any, any, any> {
     constructor(props: any);
     bindOutsideChangeHelper: {};
@@ -90,9 +89,6 @@ export class AlignmentView extends React.Component<any, any, any> {
     }) => void;
     render(): import("react/jsx-runtime").JSX.Element | "corrupted data!";
     veTracksAndAlignmentHolder: HTMLDivElement | null | undefined;
-    copyAllAlignmentsFastaClipboardHelper: Clipboard | undefined;
-    copySpecificAlignmentFastaClipboardHelper: Clipboard | undefined;
-    copySpecificAlignmentAsPlainClipboardHelper: Clipboard | undefined;
     InfiniteScroller: any;
     isZooming: boolean | undefined;
     getTrackTrimmingOptions({ e, allTracks, upsertAlignmentRun, currentPairwiseAlignmentIndex, alignmentId }: {
