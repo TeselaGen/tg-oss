@@ -1,0 +1,25 @@
+export default PagingTool;
+declare function PagingTool({ controlled_hasNextPage, controlled_onRefresh, controlled_page, controlled_setPage, controlled_setPageSize, controlled_total, disabled: _disabled, disableSetPageSize, entities, entityCount, hideSetPageSize, hideTotalPages, keepSelectionOnPageChange, onRefresh: _onRefresh, page: _page, pageSize, pagingDisabled, persistPageSize, scrollToTop, setPage: _setPage, setPageSize: _setPageSize, setSelectedEntityIdMap }: {
+    controlled_hasNextPage: any;
+    controlled_onRefresh: any;
+    controlled_page: any;
+    controlled_setPage: any;
+    controlled_setPageSize: any;
+    controlled_total: any;
+    disabled: any;
+    disableSetPageSize: any;
+    entities: any;
+    entityCount: any;
+    hideSetPageSize: any;
+    hideTotalPages: any;
+    keepSelectionOnPageChange: any;
+    onRefresh: any;
+    page: any;
+    pageSize: any;
+    pagingDisabled: any;
+    persistPageSize?: ((...args: any[]) => void) | undefined;
+    scrollToTop: any;
+    setPage: any;
+    setPageSize: any;
+    setSelectedEntityIdMap: any;
+}): import("react/jsx-runtime").JSX.Element;
