@@ -49,8 +49,6 @@ import { LoadingDots } from "./LoadingDots";
 import { useDispatch } from "react-redux";
 import { flushSync } from "react-dom";
 import { useStableReference } from "../utils/hooks/useStableReference";
-// import { useTraceUpdate } from "../utils/useTraceUpdate";
-// import { useDeepEqualEffect } from "../utils/hooks/useDeepEqualMemo";
 
 const manualEnterMessage = "Build CSV File";
 const manualEnterSubMessage = "Paste or type data to build a CSV file";
