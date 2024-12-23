@@ -18,11 +18,11 @@ import { pick } from "lodash-es";
 const PropertiesContainer = Comp => props => {
   const { additionalFooterEls, additionalHeaderEls, ...rest } = props;
   return (
-    <React.Fragment>
+    <>
       {additionalHeaderEls}
       <Comp {...rest} />
       {additionalFooterEls}
-    </React.Fragment>
+    </>
   );
 };
 const allTabs = {
@@ -35,129 +35,130 @@ const allTabs = {
   orfs: PropertiesContainer(OrfProperties),
   genbank: PropertiesContainer(GenbankView)
 };
-export class PropertiesDialog extends React.Component {
-  render() {
-    const {
-      propertiesTool = {},
-      propertiesViewTabUpdate,
-      dimensions = {},
-      height,
-      editorName,
-      onSave,
-      showReadOnly,
-      showAvailability,
-      isProtein,
-      annotationsToSupport = {},
-      disableSetReadOnly,
-      propertiesList = [
-        "general",
-        "features",
-        "parts",
-        "primers",
-        "translations",
-        "cutsites",
-        "orfs",
-        "genbank"
-      ],
-      closePanelButton
-    } = { ...this.props, ...this.props.PropertiesProps };
 
-    const { width, height: heightFromDim } = dimensions;
+export const PropertiesDialog = props => {
+  const {
+    propertiesTool = {},
+    propertiesViewTabUpdate,
+    dimensions = {},
+    height,
+    editorName,
+    onSave,
+    showReadOnly,
+    showAvailability,
+    isProtein,
+    annotationsToSupport = {},
+    disableSetReadOnly,
+    propertiesList = [
+      "general",
+      "features",
+      "parts",
+      "primers",
+      "translations",
+      "cutsites",
+      "orfs",
+      "genbank"
+    ],
+    closePanelButton
+  } = { ...props, ...props.PropertiesProps };
 
-    let { tabId, selectedAnnotationId } = propertiesTool;
-    if (
-      propertiesList
-        .map(nameOrOverride => nameOrOverride.name || nameOrOverride)
-        .indexOf(tabId) === -1
-    ) {
-      tabId = propertiesList[0].name || propertiesList[0];
+  const { width, height: heightFromDim } = dimensions;
+
+  let { tabId, selectedAnnotationId } = propertiesTool;
+  if (
+    propertiesList
+      .map(nameOrOverride => nameOrOverride.name || nameOrOverride)
+      .indexOf(tabId) === -1
+  ) {
+    tabId = propertiesList[0].name || propertiesList[0];
+  }
+
+  const propertiesTabs = flatMap(propertiesList, nameOrOverride => {
+    if (annotationsToSupport[nameOrOverride] === false) {
+      return [];
     }
-    const propertiesTabs = flatMap(propertiesList, nameOrOverride => {
-      if (annotationsToSupport[nameOrOverride] === false) {
-        return [];
-      }
 
-      const name = nameOrOverride.name || nameOrOverride;
-      const Comp = nameOrOverride.Comp || allTabs[name];
-      if (isProtein) {
-        if (
-          name === "translations" ||
-          name === "orfs" ||
-          name === "primers" ||
-          name === "cutsites"
-        ) {
-          return null;
-        }
+    const name = nameOrOverride.name || nameOrOverride;
+    const Comp = nameOrOverride.Comp || allTabs[name];
+    if (isProtein) {
+      if (
+        name === "translations" ||
+        name === "orfs" ||
+        name === "primers" ||
+        name === "cutsites"
+      ) {
+        return null;
       }
-      const title = (() => {
-        if (nameOrOverride.Comp) return name; //just use the user supplied name because this is a custom panel
-        if (name === "orfs") return "ORFs";
-        if (name === "cutsites") return "Cut Sites";
-        return startCase(name);
-      })();
-      return (
-        <Tab
-          key={name}
-          title={title}
-          id={name}
-          panel={
-            <Comp
-              {...{
-                ...pick(this.props, userDefinedHandlersAndOpts),
-                editorName,
-                onSave,
-                isProtein,
-                showReadOnly,
-                showAvailability,
-                disableSetReadOnly,
-                selectedAnnotationId,
-                ...(nameOrOverride.name && nameOrOverride)
-              }}
-            />
-          }
-        />
-      );
-    });
-    const heightToUse = Math.max(0, Number((heightFromDim || height) - 30));
+    }
+    const title = (() => {
+      if (nameOrOverride.Comp) return name; //just use the user supplied name because this is a custom panel
+      if (name === "orfs") return "ORFs";
+      if (name === "cutsites") return "Cut Sites";
+      return startCase(name);
+    })();
+
     return (
+      <Tab
+        key={name}
+        title={title}
+        id={name}
+        panel={
+          <Comp
+            {...{
+              ...pick(props, userDefinedHandlersAndOpts),
+              editorName,
+              onSave,
+              isProtein,
+              showReadOnly,
+              showAvailability,
+              disableSetReadOnly,
+              selectedAnnotationId,
+              ...(nameOrOverride.name && nameOrOverride)
+            }}
+          />
+        }
+      />
+    );
+  });
+  const heightToUse = Math.max(0, Number((heightFromDim || height) - 30));
+  return (
+    <div
+      style={{
+        position: "relative"
+      }}
+    >
+      {closePanelButton}
       <div
+        className="ve-propertiesPanel"
         style={{
-          position: "relative"
+          display: "flex",
+          width,
+          height: heightToUse || 300,
+          zIndex: 10,
+          padding: 10
+          // paddingBottom: '31px',
         }}
       >
-        {closePanelButton}
-        <div
-          className="ve-propertiesPanel"
-          style={{
-            display: "flex",
-            width,
-            height: heightToUse || 300,
-            zIndex: 10,
-            padding: 10
-            // paddingBottom: '31px',
-          }}
-        >
-          {propertiesTabs.length ? (
-            <Tabs
-              style={{ width }}
-              renderActiveTabPanelOnly
-              selectedTabId={tabId}
-              onChange={propertiesViewTabUpdate}
-            >
-              <Tabs.Expander />
-              {propertiesTabs}
-              <Tabs.Expander />
-            </Tabs>
-          ) : (
-            <div style={{ margin: 20, fontSize: 20 }}>
-              No Properties to display
-            </div>
-          )}
-        </div>
+        {propertiesTabs.length ? (
+          <Tabs
+            style={{ width }}
+            renderActiveTabPanelOnly
+            selectedTabId={tabId}
+            onChange={propertiesViewTabUpdate}
+          >
+            <Tabs.Expander />
+            {propertiesTabs}
+            <Tabs.Expander />
+          </Tabs>
+        ) : (
+          <div style={{ margin: 20, fontSize: 20 }}>
+            No Properties to display
+          </div>
+        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default compose(
   connectToEditor(({ propertiesTool, annotationsToSupport }) => {

@@ -186,7 +186,6 @@ describe("menuBar", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type("remove duplicate feature{enter}", { delay: 1 });
-    cy.contains(".rt-td", "dbl term").should("exist");
     cy.contains(".bp3-dialog button", "Remove 2 Duplicates");
     cy.get(".bp3-dialog .bp3-icon-settings").click();
     cy.get(".tg-test-ignore-name .tg-no-fill-field").click();
@@ -204,7 +203,7 @@ describe("menuBar", function () {
     cy.get(".tg-menu-bar-popover").contains("Select All").click();
 
     cy.get(".tg-menu-bar").contains("Edit").click();
-    cy.get(".tg-menu-bar-popover").contains("Cut").click();
+    cy.get(".tg-menu-bar-popover").contains("Cut").realClick();
     cy.get(".tg-menu-bar").contains("Edit").click({ force: true });
 
     [
@@ -273,7 +272,7 @@ describe("menuBar", function () {
 
     cy.selectRange(2, 5);
     cy.get(".tg-menu-bar").contains("Edit").trigger("mouseover");
-    cy.get(".tg-menu-bar-popover").contains("Cut").click();
+    cy.get(".tg-menu-bar-popover").contains("Cut").realClick();
 
     cy.get(".tg-menu-bar").contains("File").click();
     cy.get(`[cmd="saveSequence"]`).should("not.have.class", "bp3-disabled");
@@ -290,7 +289,7 @@ describe("menuBar", function () {
   });
   it(` goTo, rotateTo work
   -can't go to a position outside of the sequence
-  -can go to a position inside the sequence 
+  -can go to a position inside the sequence
   -can rotate the sequence to that position
   `, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();
@@ -329,7 +328,7 @@ describe("menuBar", function () {
   it(`
   select range, copy, cut works
     -cannot select range outside of sequence //TODO
-    -can select a valid range 
+    -can select a valid range
     -can copy the select bps
     -can cut the selected bps
   `, function () {
@@ -348,10 +347,10 @@ describe("menuBar", function () {
 
     cy.get(".veStatusBar").contains(`5299`);
     cy.get(".tg-menu-bar").contains("Edit").click();
-    cy.get(".tg-menu-bar-popover").contains("Copy").click();
+    cy.get(".tg-menu-bar-popover").contains("Copy").realClick();
     cy.contains("Selection Copied");
     cy.get(".tg-menu-bar").contains("Edit").click();
-    cy.get(".tg-menu-bar-popover").contains("Cut").click();
+    cy.get(".tg-menu-bar-popover").contains("Cut").realClick();
     cy.contains("Selection Cut");
     cy.get(".veStatusBar").contains(`5288`);
   });

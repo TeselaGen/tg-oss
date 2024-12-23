@@ -1,13 +1,8 @@
-// import uniqid from "shortid";
-// import Ladder from "./Ladder";
-import { compose, withProps } from "recompose";
-// import selectionLayer from "../redux/selectionLayer";
-import React, { useState } from "react";
-import { DataTable } from "@teselagen/ui";
+import React, { useMemo, useState } from "react";
+import { DataTable, useStableReference } from "@teselagen/ui";
 import { getCutsiteType, getVirtualDigest } from "@teselagen/sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
-// import getCutsiteType from "./getCutsiteType";
 import {
   Tabs,
   Tab,
@@ -22,23 +17,91 @@ import { pick } from "lodash-es";
 
 const MAX_DIGEST_CUTSITES = 50;
 const MAX_PARTIAL_DIGEST_CUTSITES = 10;
+const onSingleSelectRow = ({ onFragmentSelect }) => {
+  onFragmentSelect();
+};
 
 export const DigestTool = props => {
   const [selectedTab, setSelectedTab] = useState("virtualDigest");
   const {
     editorName,
-    // height = 100,
     dimensions = {},
-    lanes,
     digestTool: { selectedFragment, computePartialDigest },
     onDigestSave,
-    computePartialDigestDisabled,
-    computeDigestDisabled,
     updateComputePartialDigest,
     boxHeight,
     digestLaneRightClicked,
-    ladders
+    ladders,
+    sequenceData,
+    sequenceLength,
+    selectionLayerUpdate: _selectionLayerUpdate,
+    updateSelectedFragment
   } = props;
+
+  const isCircular = sequenceData.circular;
+  const cutsites = sequenceData.cutsites;
+  const computePartialDigestDisabled =
+    cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
+  const computeDigestDisabled = cutsites.length > MAX_DIGEST_CUTSITES;
+  // The selection layer update function is memoized to prevent re-renders
+  // It changes triggered by the DataTables below
+  const selectionLayerUpdate = useStableReference(_selectionLayerUpdate);
+
+  // This useMemo might not be necessary once if we figure out
+  // why the DataTables below triggers a re-render outside of them.
+  const lanes = useMemo(() => {
+    const { fragments } = getVirtualDigest({
+      cutsites,
+      sequenceLength,
+      isCircular,
+      computePartialDigest,
+      computePartialDigestDisabled,
+      computeDigestDisabled
+    });
+    const _lanes = [
+      fragments.map(f => ({
+        ...f,
+        onFragmentSelect: () => {
+          selectionLayerUpdate.current({
+            start: f.start,
+            end: f.end,
+            name: f.name
+          });
+          updateSelectedFragment(f.Intentid);
+        }
+      }))
+    ];
+    return _lanes;
+  }, [
+    computeDigestDisabled,
+    computePartialDigest,
+    computePartialDigestDisabled,
+    cutsites,
+    isCircular,
+    selectionLayerUpdate,
+    sequenceLength,
+    updateSelectedFragment
+  ]);
+
+  // Same comment as above
+  const digestInfoLanes = useMemo(
+    () =>
+      lanes[0].map(({ id, cut1, cut2, start, end, size, ...rest }) => {
+        return {
+          ...rest,
+          id,
+          start,
+          end,
+          length: size,
+          leftCutter: cut1.restrictionEnzyme.name,
+          rightCutter: cut2.restrictionEnzyme.name,
+          leftOverhang: getCutsiteType(cut1.restrictionEnzyme),
+          rightOverhang: getCutsiteType(cut2.restrictionEnzyme)
+        };
+      }),
+    [lanes]
+  );
+
   return (
     <div
       style={{
@@ -137,25 +200,9 @@ export const DigestTool = props => {
               maxHeight={400}
               // noFooter
               withSearch={false}
-              onSingleRowSelect={({ onFragmentSelect }) => {
-                onFragmentSelect();
-              }}
+              onSingleRowSelect={onSingleSelectRow}
               formName="digestInfoTable"
-              entities={lanes[0].map(
-                ({ id, cut1, cut2, start, end, size, ...rest }) => {
-                  return {
-                    ...rest,
-                    id,
-                    start,
-                    end,
-                    length: size,
-                    leftCutter: cut1.restrictionEnzyme.name,
-                    rightCutter: cut2.restrictionEnzyme.name,
-                    leftOverhang: getCutsiteType(cut1.restrictionEnzyme),
-                    rightOverhang: getCutsiteType(cut2.restrictionEnzyme)
-                  };
-                }
-              )}
+              entities={digestInfoLanes}
               schema={schema}
             />
           }
@@ -178,48 +225,4 @@ const schema = {
   ]
 };
 
-export default compose(
-  withEditorInteractions,
-  withProps(
-    ({
-      sequenceData,
-      sequenceLength,
-      selectionLayerUpdate,
-      updateSelectedFragment,
-      digestTool: { computePartialDigest }
-    }) => {
-      const isCircular = sequenceData.circular;
-      const cutsites = sequenceData.cutsites;
-      const computePartialDigestDisabled =
-        cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
-      const computeDigestDisabled = cutsites.length > MAX_DIGEST_CUTSITES;
-
-      const { fragments, overlappingEnzymes } = getVirtualDigest({
-        cutsites,
-        sequenceLength,
-        isCircular,
-        computePartialDigest,
-        computePartialDigestDisabled,
-        computeDigestDisabled
-      });
-      return {
-        computePartialDigestDisabled,
-        computeDigestDisabled,
-        lanes: [
-          fragments.map(f => ({
-            ...f,
-            onFragmentSelect: () => {
-              selectionLayerUpdate({
-                start: f.start,
-                end: f.end,
-                name: f.name
-              });
-              updateSelectedFragment(f.Intentid);
-            }
-          }))
-        ],
-        overlappingEnzymes
-      };
-    }
-  )
-)(DigestTool);
+export default withEditorInteractions(DigestTool);

@@ -15,7 +15,7 @@ describe("oligo mode editing in OVE", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type("gatccaauu{enter}");
-    cy.contains("Selecting 9 bps from 10 to 18"); //the t's should be filtered out
+    cy.contains("Selecting 9 bps from 10 to 18");
     cy.contains("gatccaauu");
     cy.get(".veTabProperties").click();
     cy.contains("Circular/Linear:").should("not.exist");

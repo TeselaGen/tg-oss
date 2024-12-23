@@ -21,7 +21,7 @@ describe("properties", function () {
     cy.contains("textarea", `primer_bind complement(10..20)`);
     cy.contains("textarea", `/label="fakeprimer"`);
   });
-  it(`should be able to delete a feature from the properties tab and not have the delete button still enabled; 
+  it(`should be able to delete a feature from the properties tab and not have the delete button still enabled;
    - have the number of features correctly displayed
    -not be able to create a new feature if sequenceLength === 0`, () => {
     cy.get(".veTabProperties").click();
@@ -33,12 +33,13 @@ describe("properties", function () {
     cy.get(`.tgDeleteAnnsBtn`).should("not.have.class", "bp3-disabled").click();
 
     cy.get(`.tgDeleteAnnsBtn`).should("have.class", "bp3-disabled");
-
     cy.get(".tgNewAnnBtn").should("not.have.class", "bp3-disabled");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select All").click();
-    cy.get(".veSelectionLayer").first().trigger("contextmenu", { force: true });
-    cy.get(".bp3-menu-item").contains("Cut").click();
+    cy.get(
+      ".veSelectionLayer:contains(Selecting 5299 bps from 1 to 5299)"
+    ).trigger("contextmenu", { force: true });
+    cy.get(".bp3-menu-item").contains("Cut").realClick();
     cy.get(".tgNewAnnBtn").should("have.class", "bp3-disabled");
   });
   it(`a custom properties tab should be able to be added`, () => {
@@ -53,7 +54,7 @@ describe("properties", function () {
     cy.get(".circularLinearSelect select").select("Linear");
     cy.contains(".bp3-dialog", "Truncate Annotations").should("be.visible");
   });
-  it(`we should be able to view and edit a description in general properties 
+  it(`we should be able to view and edit a description in general properties
   and have that visible within the genbank view as well we should be able to edit a description in general properties, not make any changes, hit ok, and have the description not clear (bug! https://github.com/TeselaGen/lims/issues/5492)
   // and have that visible within the genbank view as well`, () => {
     cy.get(".veTabProperties").click();

@@ -513,6 +513,7 @@ export function getCurrentParamsFromUrl(location, isSimple) {
 
   return parseFilters(queryString.parse(search, { ignoreQueryPrefix: true }));
 }
+
 export function setCurrentParamsOnUrl(newParams, replace, isSimple) {
   const stringifiedFilters = stringifyFilters(newParams);
   const search = `?${queryString.stringify(stringifiedFilters)}`;
