@@ -252,7 +252,7 @@ const Uploader = ({
   validateAgainstSchema: _validateAgainstSchema
 }) => {
   const dispatch = useDispatch();
-  const [acceptLoading, setAcceptLoading] = useState();
+  const [acceptLoading, setAcceptLoading] = useState(true); // set to true by default to prevent the dropzone from being actionable until the accept is resolved
   const [resolvedAccept, setResolvedAccept] = useState();
   const [loading, setLoading] = useState(false);
   const filesToClean = useRef([]);
@@ -362,17 +362,22 @@ const Uploader = ({
     }
     return __accept;
   }, [__accept, isAcceptPromise, resolvedAccept]);
-
   useEffect(() => {
     if (isAcceptPromise) {
       setAcceptLoading(true);
       Promise.allSettled(Array.isArray(__accept) ? __accept : [__accept]).then(
         results => {
           const resolved = flatMap(results, r => r.value);
-          setAcceptLoading(false);
           setResolvedAccept(resolved);
+          setTimeout(() => {
+            // give the resolved accept a full JS cycle to update before allowing actionability on the dropzone
+            setAcceptLoading(false);
+          }, 0);
         }
       );
+    } else {
+      // set this to false since it is defaulted to true
+      setAcceptLoading(false);
     }
   }, [__accept, isAcceptPromise]);
 
