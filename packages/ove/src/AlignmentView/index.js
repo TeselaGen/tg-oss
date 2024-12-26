@@ -253,7 +253,7 @@ export const AlignmentView = props => {
   }, [alignmentTracks]);
 
   const getSequenceLength = useCallback(() => {
-    return alignmentTracks?.template?.alignmentData?.sequence?.length || 1;
+    return alignmentTracks?.[0]?.alignmentData?.sequence?.length || 1;
   }, [alignmentTracks]);
 
   const getMinCharWidth = useCallback(
@@ -1202,17 +1202,6 @@ export const AlignmentView = props => {
                 className={classNames("veTracksAndAlignmentHolder", {
                   isTrackDragging
                 })}
-                // onContextMenu={
-                //tnrtodo add copy single track/all tracks logic here
-                // (event) => {
-                // getNearestCursorPositionToMouseEvent(
-                //   rowData,
-                //   event,
-                //   () => {
-                //   }
-                // );
-                // }
-                // }
                 onClick={
                   noClickDragHandlers
                     ? noop

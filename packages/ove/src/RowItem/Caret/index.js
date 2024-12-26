@@ -5,22 +5,20 @@ import "./style.css";
 import { getSelectionMessage } from "../../utils/editorUtils";
 // import draggableClassnames from "../../constants/draggableClassnames";
 
-function Caret(props) {
-  const {
-    charWidth,
-    row,
-    sequenceLength,
-    caretPosition,
-    isProtein,
-    onClick,
-    isDraggable,
-    leftMargin = 0,
-    onRightClick,
-    style,
-    selectionMessage,
-    className = ""
-  } = props;
-
+function Caret({
+  charWidth,
+  row,
+  sequenceLength,
+  caretPosition,
+  isProtein,
+  onClick,
+  isDraggable,
+  leftMargin = 0,
+  onRightClick,
+  style,
+  selectionMessage,
+  className = ""
+}) {
   if (
     (row.start <= caretPosition && row.end + 1 >= caretPosition) ||
     (row.end === sequenceLength - 1 && row.end < caretPosition)
