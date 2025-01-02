@@ -84,7 +84,7 @@
       }
     },
     "launch-e2e-playwright": {
-      "command": "cd packages/ove && npx playwright test --ui"
+      "command": "nx run ove:start:ci & cd packages/ove && npx playwright test --ui"
     },
     "e2e": {
       "executor": "@nx/cypress:cypress",

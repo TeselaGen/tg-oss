@@ -1,5 +1,5 @@
 import { isEqual } from "lodash-es";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export const useDeepEqualMemo = value => {
   const ref = useRef();
@@ -7,4 +7,9 @@ export const useDeepEqualMemo = value => {
     ref.current = value;
   }
   return ref.current;
+};
+
+export const useDeepEqualEffect = (effect, deps) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return useEffect(effect, useDeepEqualMemo(deps));
 };

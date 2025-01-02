@@ -30,7 +30,7 @@
       "command": "cd packages/bounce-loader && yarn vite"
     },
     "launch-e2e": {
-      "command": "cd packages/bounce-loader && npx playwright test --ui"
+      "command": "nx run bounce-loader:start & cd packages/bounce-loader && npx playwright test --ui"
     },
     "launch-e2e2": {
       "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
