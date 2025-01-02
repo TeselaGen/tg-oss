@@ -155,7 +155,7 @@
               "inputs": ["default", "^production"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/bounce-loader && npx playwright test --ui"
+                "command": "nx run bounce-loader:start & cd packages/bounce-loader && npx playwright test --ui"
               },
               "configurations": {}
             },
@@ -665,7 +665,7 @@
             "launch-e2e-playwright": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/ove && npx playwright test --ui"
+                "command": "nx run ove:start:ci & cd packages/ove && npx playwright test --ui"
               },
               "configurations": {}
             }
