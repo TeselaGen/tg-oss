@@ -8,6 +8,7 @@
       "import": "./index.es.js",
       "require": "./index.cjs.js"
     },
-    "./style.css": "./style.css"
+    "./style.css": "./style.css",
+    "./*": "./*"
   }
 }
