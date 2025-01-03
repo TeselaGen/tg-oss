@@ -51,7 +51,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
     - [Full Example:](#full-example)
   - [Code (Universal)](#code-universal)
     - [Accessing the editor state:](#accessing-the-editor-state)
-  - [Demo (Universal): http://teselagen.github.io/openVectorEditor/](#demo-universal-httpteselagengithubioopenvectoreditor)
+  - [Demo (Universal): https://teselagen.github.io/tg-oss/ove/](#demo-universal-httpsteselagengithubiotg-ossove)
 - [editorProps](#editorprops)
 - [editorState](#editorstate)
 - [Setting Local Storage Persisted Values](#setting-local-storage-persisted-values)
@@ -86,7 +86,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 This repo follows semantic versioning (major/minor/patche)
 
 The commit log can be seen here:
-https://github.com/TeselaGen/openVectorEditor/commits/master
+https://github.com/TeselaGen/tg-oss/commits/master/packages/ove
 
 Upgrade instructions for any major or minor change can be found here:
 [Upgrade instructions](UPGRADE_INSTRUCTIONS.md)
@@ -434,7 +434,7 @@ They look like this:
 # Protein Editor
 
 OVE can be set up to view and edit proteins (Amino Acid sequences) as first class citizens.
-The protein editor can be seen here: http://teselagen.github.io/openVectorEditor/#/Editor?moleculeType=Protein
+The protein editor can be seen here: https://teselagen.github.io/tg-oss/ove/#/Editor?moleculeType=Protein
 
 The editor supports Amino Acid sequences as well as DNA sequences!
 Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object:
@@ -675,7 +675,7 @@ window.createVectorEditor({
 
 ## Auto annotate addon:
 
-https://github.com/TeselaGen/openVectorEditor/tree/master/addons/AutoAnnotate
+https://github.com/TeselaGen/tg-oss/blob/master/packages/ove/src/AutoAnnotate.js
 
 # Implementing Autosave functionality
 
