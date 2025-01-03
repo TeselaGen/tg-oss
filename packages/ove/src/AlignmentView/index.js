@@ -517,7 +517,7 @@ export const AlignmentView = props => {
         oldAlignmentHolderScrollTop.current = alignmentHolder.current.scrollTop;
       }, 100);
     }
-    if (blockScroll) {
+    if (blockScroll.current) {
       //we have to block the scroll sometimes when adjusting the minimap so things aren't too jumpy
       return;
     }
