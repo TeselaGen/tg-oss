@@ -178,7 +178,7 @@ then add the links
 
 ```html
 <link rel="stylesheet" type="text/css" href="your-path-to-node-modules/@teselagen/ove/umd/style.css" />
-<script type="text/javascript" src="your-path-to-node-modules/@teselagen/ove/index.umd.js.js"></script>
+<script type="text/javascript" src="your-path-to-node-modules/@teselagen/ove/index.umd.js"></script>
 ```
 
 ### Or via CDN:
@@ -190,8 +190,8 @@ then add the links
 
 ### Full Example:
 
-A full example of how to set up the unpkg/UMD demo can be seen here: https://github.com/TeselaGen/openVectorEditor/blob/master/demo/public/UMDDemo.html
-Demo here http://teselagen.github.io/openVectorEditor/UMDDemo.html
+A full example of how to set up the unpkg/UMD demo can be seen here: https://github.com/TeselaGen/tg-oss/blob/master/packages/ove/public/UMDDemo.html
+Demo here https://teselagen.github.io/tg-oss/ove/UMDDemo.html
 
 ## Code (Universal)
 
@@ -210,7 +210,7 @@ const currentEditorState = editor.getState();
 console.info(currentEditorState.selectionLayer);
 ```
 
-## Demo (Universal): http://teselagen.github.io/openVectorEditor/
+## Demo (Universal): https://teselagen.github.io/tg-oss/ove/
 
 # editorProps
 
