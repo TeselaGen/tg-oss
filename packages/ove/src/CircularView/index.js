@@ -755,6 +755,7 @@ export function CircularView(props) {
           smallSlider={smallSlider}
           maxZoomLevel={maxZoomLevel}
           setRotationRadians={setRotationRadians}
+          editorName={editorName}
         ></RotateCircularViewSlider>
       )}
       {withZoomCircularView && hasZoomableLength && (

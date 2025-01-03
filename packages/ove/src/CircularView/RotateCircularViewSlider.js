@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { SLIDER_NORM_WIDTH, SLIDER_SMALL_WIDTH } from "../constants/constants";
 
@@ -9,15 +9,23 @@ export function RotateCircularViewSlider({
   zoomLevel,
   maxZoomLevel,
   bindOutsideChangeHelper,
-  smallSlider
+  smallSlider,
+  editorName
 }) {
   const target = React.useRef();
+  const svgEleRef = React.useRef();
+
+  useEffect(() => {
+    // use document.querySelector so that the code can still work after changing the parent node of this component
+    const svgEle = document
+      .querySelector(`.veEditor.${editorName}`)
+      ?.querySelector(".veCircularView .circularViewSvg");
+    svgEleRef.current = svgEle;
+  }, [editorName]);
+
   const showLabelsDebounced = useDebouncedCallback(
-    () => {
+    el => {
       try {
-        const el = target.current
-          .closest(`.veCircularView`)
-          .querySelector(`.circularViewSvg`);
         if (el) el.classList.remove("veHideLabels");
         else {
           console.error(`whoops we shouldn't be here`);
@@ -46,18 +54,19 @@ export function RotateCircularViewSlider({
         bindOutsideChangeHelper={bindOutsideChangeHelper}
         onChange={_val => {
           const val = 360 - _val;
-          const el = target.current
-            .closest(`.veCircularView`)
-            .querySelector(`.circularViewSvg`);
-          const innerEl = target.current
-            .closest(`.veCircularView`)
-            .querySelector(`.circularViewSvg g`);
+          if (!svgEleRef.current) {
+            svgEleRef.current = document
+              .querySelector(`.veEditor.${editorName}`)
+              ?.querySelector(".veCircularView .circularViewSvg");
+          }
+          const el = svgEleRef.current;
+          const innerEl = el?.querySelector("g");
           innerEl.style.transform = `rotate(${val}deg)`;
           setRotationRadians((val * Math.PI) / 180);
           if (zoomLevel <= 1) {
             el.classList.add("veHideLabels");
           }
-          showLabelsDebounced();
+          showLabelsDebounced(el);
         }}
         smallSlider
         passedRef={target}
@@ -76,7 +85,7 @@ export function RotateCircularViewSlider({
         // initialValue={initialRotation || 0}
         max={360}
         min={0}
-      ></UncontrolledSliderWithPlusMinusBtns>
+      />
     </div>
   );
 }
