@@ -1,0 +1,12 @@
+export const allowedCsvFileTypes: string[];
+export function isZipFile(file: any): boolean;
+export function getExt(file: any): any;
+export function isExcelFile(file: any): boolean;
+export function isCsvFile(file: any): boolean;
+export function isTextFile(file: any): boolean;
+export function parseCsvFile(csvFile: any, parserOptions?: {}): Promise<any>;
+export function parseCsvString(csvString: any, parserOptions?: {}): void;
+export function cleanCommaSeparatedCell(cellData: any): any;
+export function cleanCsvExport(rows: any): any;
+export function validateCSVRequiredHeaders(fields: any, requiredHeaders: any, filename: any): string | undefined;
+export function validateCSVRow(row: any, requiredHeaders: any, index: any): string | undefined;
