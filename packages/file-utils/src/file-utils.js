@@ -74,8 +74,7 @@ export const extractZipFiles = async allFiles => {
 
 const defaultCsvParserOptions = {
   header: true,
-  skipEmptyLines: "greedy",
-  trimHeaders: true
+  skipEmptyLines: "greedy"
 };
 export const setupCsvParserOptions = (parserOptions = {}) => {
   const {
@@ -122,6 +121,17 @@ export const setupCsvParserOptions = (parserOptions = {}) => {
 
       return transHeader;
     };
+  }
+  // tnw: the papaparse trimHeaders option was removed so we need to trim headers manually
+  const transformToAlwaysRun = header => header.trim();
+  if (parserOptions.transformHeader) {
+    const existingTransformHeader = parserOptions.transformHeader;
+    papaParseOpts.transformHeader = header => {
+      const trimmedHeader = transformToAlwaysRun(header);
+      return existingTransformHeader(trimmedHeader);
+    };
+  } else {
+    papaParseOpts.transformHeader = transformToAlwaysRun;
   }
 
   return papaParseOpts;

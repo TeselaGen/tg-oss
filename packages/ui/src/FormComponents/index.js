@@ -7,6 +7,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from "react";
 import { Field, change } from "redux-form";
@@ -136,7 +137,7 @@ const AbstractInput = ({
   disabled,
   fileLimit,
   inlineLabel,
-  input: { name },
+  input: { name, value },
   intent,
   isLabelTooltip,
   isLoadingDefaultValue,
@@ -161,18 +162,29 @@ const AbstractInput = ({
   tooltipProps
 }) => {
   const dispatch = useDispatch();
+  const initalValuePassed = useRef(value);
   const onDefaultValChanged = useStableReference(_onDefaultValChanged);
   const onFieldSubmit = useStableReference(_onFieldSubmit);
-
+  const doesNotHaveInitialValue =
+    !isLoadingDefaultValue && !initalValuePassed.current;
   // This only takes care that the default Value is changed when it is changed in the parent component
   useEffect(() => {
-    if (defaultValue !== undefined) {
+    //if the input already has an initial value being passed to it, we don't want to override it with the default value
+    if (defaultValue !== undefined && doesNotHaveInitialValue) {
       dispatch(change(form, name, defaultValue));
       onDefaultValChanged.current &&
         onDefaultValChanged.current(defaultValue, name, form);
       onFieldSubmit.current && onFieldSubmit.current(defaultValue);
     }
-  }, [defaultValue, dispatch, form, name, onDefaultValChanged, onFieldSubmit]);
+  }, [
+    defaultValue,
+    dispatch,
+    form,
+    name,
+    onDefaultValChanged,
+    onFieldSubmit,
+    doesNotHaveInitialValue
+  ]);
 
   // if our custom field level validation is happening then we don't want to show the error visually
   const showError =

@@ -12,7 +12,7 @@ import {
   parseCsvFile,
   validateCSVRequiredHeaders,
   validateCSVRow
-} from "./fileUtils";
+} from "@teselagen/file-utils";
 import downloadjs from "downloadjs";
 import {
   autoAnnotate,
