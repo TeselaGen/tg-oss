@@ -74,8 +74,7 @@ export const extractZipFiles = async allFiles => {
 
 const defaultCsvParserOptions = {
   header: true,
-  skipEmptyLines: "greedy",
-  trimHeaders: true
+  skipEmptyLines: "greedy"
 };
 export const setupCsvParserOptions = (parserOptions = {}) => {
   const {

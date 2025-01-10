@@ -36,10 +36,14 @@ describe("properties", function () {
     cy.get(".tgNewAnnBtn").should("not.have.class", "bp3-disabled");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select All").click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100);
     cy.get(
       ".veSelectionLayer:contains(Selecting 5299 bps from 1 to 5299)"
     ).trigger("contextmenu", { force: true });
-    cy.get(".bp3-menu-item").contains("Cut").realClick();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100);
+    cy.get(".bp3-menu-item:contains(Cut)").click();
     cy.get(".tgNewAnnBtn").should("have.class", "bp3-disabled");
   });
   it(`a custom properties tab should be able to be added`, () => {

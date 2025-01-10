@@ -144,7 +144,7 @@ const AbstractInput = ({
   label,
   labelStyle,
   leftEl,
-  meta: { form, touched, error, warning },
+  meta: { form, touched, error, warning, initial },
   noFillField,
   noMarginBottom,
   noOuterLabel,
@@ -163,16 +163,25 @@ const AbstractInput = ({
   const dispatch = useDispatch();
   const onDefaultValChanged = useStableReference(_onDefaultValChanged);
   const onFieldSubmit = useStableReference(_onFieldSubmit);
-
+  const doesNotHaveInitialValue = !initial;
   // This only takes care that the default Value is changed when it is changed in the parent component
   useEffect(() => {
-    if (defaultValue !== undefined) {
+    //if the input already has an initial value being passed to it, we don't want to override it with the default value
+    if (defaultValue !== undefined && doesNotHaveInitialValue) {
       dispatch(change(form, name, defaultValue));
       onDefaultValChanged.current &&
         onDefaultValChanged.current(defaultValue, name, form);
       onFieldSubmit.current && onFieldSubmit.current(defaultValue);
     }
-  }, [defaultValue, dispatch, form, name, onDefaultValChanged, onFieldSubmit]);
+  }, [
+    defaultValue,
+    dispatch,
+    form,
+    name,
+    onDefaultValChanged,
+    onFieldSubmit,
+    doesNotHaveInitialValue
+  ]);
 
   // if our custom field level validation is happening then we don't want to show the error visually
   const showError =

@@ -1,5 +1,4 @@
 import path from "path";
-import os from "os";
 
 describe("EditableCellTable.spec", () => {
   it(`cell checkboxes and the header checkbox should work`, () => {
@@ -241,20 +240,26 @@ describe("EditableCellTable.spec", () => {
     );
   });
   it(`undo/redo should work`, () => {
-    const IS_LINUX = os.platform().toLowerCase().search("linux") > -1;
-    const undoCmd = IS_LINUX ? [`Alt`, `z`] : [`Meta`, `z`];
-    const redoCmd = IS_LINUX ? [`Alt`, `Shift`, `z`] : [`Meta`, `Shift`, `z`];
+    const IS_LINUX =
+      window.navigator.platform.toLowerCase().search("linux") > -1;
+    const undoCmd = IS_LINUX ? `{alt}z` : "{meta}z";
+    const redoCmd = IS_LINUX ? `{alt}{shift}z` : "{meta}{shift}z";
+    cy.log(`IS_LINUX: ${IS_LINUX}`);
     cy.visit("#/DataTable%20-%20EditableCellTable");
     cy.get(`.rt-td:contains(tom88)`).dblclick();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("{selectall}tasty55{enter}");
     cy.get(`.rt-td:contains(tasty55)`).dblclick();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
     cy.focused().type("{selectall}delishhh{enter}");
     cy.get(`.rt-td:contains(delishhh)`);
-    cy.realPress(undoCmd);
-    cy.realPress(undoCmd);
+    cy.focused().type(undoCmd);
+    cy.focused().type(undoCmd);
     cy.get(`.rt-td:contains(tom88)`);
-    cy.realPress(redoCmd);
-    cy.realPress(redoCmd);
+    cy.focused().type(redoCmd);
+    cy.focused().type(redoCmd);
     cy.get(`.rt-td:contains(delishhh)`);
   });
   it(`deleting should work, default val should get reapplied`, () => {
