@@ -7,7 +7,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState
 } from "react";
 import { Field, change } from "redux-form";
@@ -137,7 +136,7 @@ const AbstractInput = ({
   disabled,
   fileLimit,
   inlineLabel,
-  input: { name, value },
+  input: { name },
   intent,
   isLabelTooltip,
   isLoadingDefaultValue,
@@ -145,7 +144,7 @@ const AbstractInput = ({
   label,
   labelStyle,
   leftEl,
-  meta: { form, touched, error, warning },
+  meta: { form, touched, error, warning, initial },
   noFillField,
   noMarginBottom,
   noOuterLabel,
@@ -162,11 +161,9 @@ const AbstractInput = ({
   tooltipProps
 }) => {
   const dispatch = useDispatch();
-  const initalValuePassed = useRef(value);
   const onDefaultValChanged = useStableReference(_onDefaultValChanged);
   const onFieldSubmit = useStableReference(_onFieldSubmit);
-  const doesNotHaveInitialValue =
-    !isLoadingDefaultValue && !initalValuePassed.current;
+  const doesNotHaveInitialValue = !initial;
   // This only takes care that the default Value is changed when it is changed in the parent component
   useEffect(() => {
     //if the input already has an initial value being passed to it, we don't want to override it with the default value
