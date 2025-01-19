@@ -609,7 +609,7 @@ function VectorInteractionHOC(Component /* options */) {
         this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = transformFunc => {
-        return async () => {
+        return async e => {
           const { editorName, store } = this.props;
           const { sequenceData, copyOptions, selectionLayer } =
             store.getState().VectorEditor[editorName];
@@ -641,6 +641,7 @@ function VectorInteractionHOC(Component /* options */) {
             window.Cypress.textToCopy = sequenceDataToCopy.textToCopy;
             window.Cypress.seqDataToCopy = sequenceDataToCopy;
           }
+          this.handleCopy(e);
         };
       };
       const aaCopy = {
