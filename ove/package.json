@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.7.13",
+  "version": "0.7.14",
   "main": "./src/index.js",
   "type": "module",
   "exports": {
@@ -8,7 +8,7 @@
       "import": "./index.es.js",
       "require": "./index.cjs.js"
     },
-    "./style.css": "./style.css"
+    "./*": "./*"
   },
   "dependencies": {
     "@blueprintjs/core": "3.54.0",
