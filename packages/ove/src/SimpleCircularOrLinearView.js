@@ -46,7 +46,8 @@ export default props => {
     withFullscreen,
     selectionLayer,
     selectionLayerUpdate,
-    caretPositionUpdate
+    caretPositionUpdate,
+    editorName = "tg-simple-dna-view"
   } = props;
   const [previewType, setPreviewType] = useState(
     _sequenceData.circular ? "circular" : "linear"
@@ -216,7 +217,7 @@ export default props => {
         <Component
           {...{
             showCicularViewInternalLabels: true,
-            className: "tg-simple-dna-view veEditor",
+            className: `${editorName} veEditor tg-simple-dna-view`,
             width: 300,
             height: 300,
             noWarnings,

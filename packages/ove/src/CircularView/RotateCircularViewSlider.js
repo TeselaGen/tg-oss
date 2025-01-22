@@ -12,16 +12,17 @@ export function RotateCircularViewSlider({
   smallSlider,
   editorName
 }) {
+  const mainSelector = editorName ? `.veEditor.${editorName}` : ".veEditor";
   const target = React.useRef();
   const svgEleRef = React.useRef();
 
   useEffect(() => {
     // use document.querySelector so that the code can still work after changing the parent node of this component
     const svgEle = document
-      .querySelector(`.veEditor.${editorName}`)
+      .querySelector(mainSelector)
       ?.querySelector(".veCircularView .circularViewSvg");
     svgEleRef.current = svgEle;
-  }, [editorName]);
+  }, [editorName, mainSelector]);
 
   const showLabelsDebounced = useDebouncedCallback(
     el => {
@@ -56,10 +57,11 @@ export function RotateCircularViewSlider({
           const val = 360 - _val;
           if (!svgEleRef.current) {
             svgEleRef.current = document
-              .querySelector(`.veEditor.${editorName}`)
+              .querySelector(mainSelector)
               ?.querySelector(".veCircularView .circularViewSvg");
           }
           const el = svgEleRef.current;
+          if (!el) return;
           const innerEl = el?.querySelector("g");
           innerEl.style.transform = `rotate(${val}deg)`;
           setRotationRadians((val * Math.PI) / 180);
