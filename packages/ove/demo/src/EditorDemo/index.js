@@ -2738,7 +2738,11 @@ doubleClickOverrides: {
             }}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
-            disableBpEditing={this.state.disableBpEditing}
+            disableBpEditing={
+              this.state.disableBpEditing
+                ? "Editing Base Pairs is Disabled Because I Said So"
+                : undefined
+            }
             withRotateCircularView={this.state.withRotateCircularView}
             withZoomCircularView={this.state.withZoomCircularView}
             showReadOnly={this.state.showReadOnly}

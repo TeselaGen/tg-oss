@@ -1,9 +1,13 @@
 import React from "react";
-import { InputField, BPSelect, TextareaField } from "@teselagen/ui";
+import { InputField, TextareaField } from "@teselagen/ui";
 import { reduxForm } from "redux-form";
 import withEditorProps from "../../withEditorProps";
 import { compose } from "recompose";
-import { handleReadOnlyChange } from "../../ToolBar/editTool";
+import {
+  EditAvailabilityItem,
+  EditCircularityItem,
+  EditReadOnlyItem
+} from "../../StatusBar";
 
 class GeneralProperties extends React.Component {
   updateSeqDesc = val => {
@@ -13,13 +17,14 @@ class GeneralProperties extends React.Component {
     const {
       readOnly,
       showReadOnly = true,
-      updateCircular,
       isProtein,
       disableSetReadOnly,
-      updateAvailability,
       sequenceData,
       onSave,
       showAvailability,
+      beforeReadOnlyChange,
+      editorName,
+      disableBpEditing,
       sequenceNameUpdate
     } = this.props;
     const {
@@ -28,9 +33,7 @@ class GeneralProperties extends React.Component {
       isOligo,
       isRna,
       sequence = "",
-      proteinSequence = "",
-      circular,
-      materiallyAvailable
+      proteinSequence = ""
     } = sequenceData || {};
     return (
       <React.Fragment>
@@ -48,22 +51,13 @@ class GeneralProperties extends React.Component {
             />{" "}
           </div>
         </div>
+
         {!isProtein && !isOligo && !isRna && (
           <div className="ve-flex-row circularLinearSelect">
             <div className="ve-column-left bp3-label">Circular/Linear</div>{" "}
             <div className="ve-column-right">
               {" "}
-              <BPSelect
-                disabled={readOnly}
-                onChange={val => {
-                  updateCircular(val === "circular");
-                }}
-                value={circular ? "circular" : "linear"}
-                options={[
-                  { label: "Circular", value: "circular" },
-                  { label: "Linear", value: "linear" }
-                ]}
-              />
+              <EditCircularityItem editorName={editorName} showCircularity />
             </div>
           </div>
         )}
@@ -75,17 +69,7 @@ class GeneralProperties extends React.Component {
             </div>{" "}
             <div className="ve-column-right">
               {" "}
-              <BPSelect
-                disabled={readOnly}
-                onChange={val => {
-                  updateAvailability(val === "available");
-                }}
-                value={materiallyAvailable ? "available" : "unavailable"}
-                options={[
-                  { label: "Available", value: "available" },
-                  { label: "Unavailable", value: "unavailable" }
-                ]}
-              />
+              <EditAvailabilityItem editorName={editorName} showAvailability />
             </div>
           </div>
         )}
@@ -101,17 +85,13 @@ class GeneralProperties extends React.Component {
             <div className="ve-column-left bp3-label">Is Editable</div>{" "}
             <div className="ve-column-right">
               {" "}
-              <BPSelect
-                className={"veReadOnlySelect"}
-                disabled={!onSave || disableSetReadOnly}
-                onChange={val =>
-                  handleReadOnlyChange(val === "readOnly", this.props)
-                }
-                value={readOnly ? "readOnly" : "editable"}
-                options={[
-                  { label: "Read Only", value: "readOnly" },
-                  { label: "Editable", value: "editable" }
-                ]}
+              <EditReadOnlyItem
+                beforeReadOnlyChange={beforeReadOnlyChange}
+                editorName={editorName}
+                onSave={onSave}
+                disableBpEditing={disableBpEditing}
+                disableSetReadOnly={disableSetReadOnly}
+                showReadOnly={showReadOnly}
               />
             </div>
           </div>

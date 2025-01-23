@@ -26,7 +26,7 @@ describe("editLocking", () => {
     cy.closeToasts();
     cy.contains("beforeReadOnlyChange callback triggered").should("not.exist");
     cy.get(`.veTabProperties`).click();
-    cy.get(`.veReadOnlySelect select`).select("editable");
+    cy.get(`.ve-propertiesPanel .veReadOnlySelect select`).select("editable");
     cy.contains("beforeReadOnlyChange callback triggered");
   });
 

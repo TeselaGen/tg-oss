@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
+import { Button, Classes } from "@blueprintjs/core";
 
 import {
   connectToEditor,
@@ -15,8 +15,9 @@ import useMeltingTemp from "../utils/useMeltingTemp";
 import MeltingTemp from "./MeltingTemp";
 import { getSequenceWithinRange } from "@teselagen/range-utils";
 import { handleReadOnlyChange } from "../ToolBar/editTool";
+import { TgHTMLSelect } from "@teselagen/ui";
 
-const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
+export const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
 }))(props => {
   const {
@@ -26,12 +27,15 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
     disableSetReadOnly,
     disableBpEditing
   } = props;
+  const disabled = disableSetReadOnly || !onSave; //the !onSave here is redundant
   return showReadOnly ? (
     <StatusBarItem dataTest="veStatusBar-readOnly">
       {onSave ? (
-        <HTMLSelect
+        <TgHTMLSelect
           data-tip={
-            !readOnly && disableBpEditing ? disableBpEditing : undefined
+            !readOnly && typeof disableBpEditing === "string"
+              ? disableBpEditing
+              : undefined
           }
           options={[
             {
@@ -43,8 +47,8 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
               value: "editable"
             }
           ]}
-          disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
-          className={Classes.MINIMAL}
+          disabled={disabled}
+          className={Classes.MINIMAL + " veReadOnlySelect"}
           value={readOnly ? "readOnly" : "editable"}
           onChange={({ target: { value } }) =>
             handleReadOnlyChange(value === "readOnly", props)
@@ -153,7 +157,7 @@ const ShowTypeItem = connectToEditor(({ sequenceData }) => ({
   return <StatusBarItem dataTest="veStatusBar-type">{type}</StatusBarItem>;
 });
 
-const EditCircularityItem = compose(
+export const EditCircularityItem = compose(
   connectToEditor(
     ({
       readOnly,
@@ -176,7 +180,7 @@ const EditCircularityItem = compose(
           "Linear"
         )
       ) : (
-        <HTMLSelect
+        <TgHTMLSelect
           onChange={({ target: { value } }) => {
             updateCircular(value === "circular");
           }}
@@ -191,7 +195,7 @@ const EditCircularityItem = compose(
     </StatusBarItem>
   ) : null;
 });
-const EditAvailabilityItem = connectToEditor(
+export const EditAvailabilityItem = connectToEditor(
   ({ readOnly, sequenceData: { materiallyAvailable } = {} }) => ({
     readOnly,
     materiallyAvailable
@@ -206,7 +210,7 @@ const EditAvailabilityItem = connectToEditor(
           "Unavailable"
         )
       ) : (
-        <HTMLSelect
+        <TgHTMLSelect
           onChange={({ target: { value } }) => {
             updateAvailability(value === "available");
           }}
