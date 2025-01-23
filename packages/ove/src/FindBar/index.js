@@ -5,14 +5,13 @@ import {
   Switch,
   Popover,
   Position,
-  HTMLSelect,
   TextArea,
   Tooltip
 } from "@blueprintjs/core";
 import withEditorProps from "../withEditorProps";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import "./style.css";
-import { InfoHelper } from "@teselagen/ui";
+import { InfoHelper, TgHTMLSelect } from "@teselagen/ui";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
 import { getFeatureToColorMap } from "@teselagen/sequence-utils";
@@ -83,7 +82,7 @@ export class FindBar extends React.Component {
       }
     };
     const findOptionsEls = [
-      <HTMLSelect
+      <TgHTMLSelect
         key="dnaoraa"
         options={opts}
         name="dnaOrAA"
@@ -93,7 +92,7 @@ export class FindBar extends React.Component {
         }}
       />,
       <div style={{ display: "flex" }} key="ambiguousorliteral">
-        <HTMLSelect
+        <TgHTMLSelect
           name="ambiguousOrLiteral"
           options={[
             { label: "Literal", value: "LITERAL" },

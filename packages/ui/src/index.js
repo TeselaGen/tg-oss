@@ -30,6 +30,7 @@ export { default as Loading } from "./Loading";
 export { throwFormError } from "./throwFormError";
 export { default as AdvancedOptions } from "./AdvancedOptions";
 export { default as TgSelect } from "./TgSelect";
+export { default as TgHTMLSelect } from "./TgHtmlSelect";
 export { default as wrapDialog } from "./wrapDialog";
 export { default as PromptUnsavedChanges } from "./PromptUnsavedChanges";
 export { default as BlueprintError } from "./BlueprintError";
