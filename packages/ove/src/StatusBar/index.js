@@ -48,7 +48,7 @@ export const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
             }
           ]}
           disabled={disabled}
-          className={Classes.MINIMAL}
+          className={Classes.MINIMAL + " veReadOnlySelect"}
           value={readOnly ? "readOnly" : "editable"}
           onChange={({ target: { value } }) =>
             handleReadOnlyChange(value === "readOnly", props)

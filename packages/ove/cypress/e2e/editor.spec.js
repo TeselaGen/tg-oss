@@ -114,7 +114,7 @@ describe("editor", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type("ttaaa{enter}");
-    cy.contains("Sorry the underlying sequence is locked");
+    cy.contains("Editing Base Pairs is Disabled Because I Said So");
   });
   it(`you should not be able to edit certain annotations when they have a .isEditLocked property`, () => {
     cy.tgToggle("addEditLockedPartToExample");
