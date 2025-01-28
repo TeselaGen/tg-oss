@@ -32,6 +32,15 @@ import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
 import { convertBasePosTraceToPerBpTrace } from "@teselagen/bio-parsers";
 import { defaultToolList } from "../../../src/ToolBar";
 const chromData = convertBasePosTraceToPerBpTrace(_chromData);
+const exampleProteinDataShort = {
+  name: "exampleProteinDataShort",
+  isProtein: true,
+  proteinSequence: "mmhlrlfcillaavs"
+};
+const exampleSequenceDataShort = {
+  name: "exampleSequenceDataShort",
+  sequence: "gtagagagagcc"
+};
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -100,6 +109,7 @@ const defaultState = {
   beforeSequenceInsertOrDelete: false,
   beforeSequenceInsertOrDeleteAsync: false,
   maintainOriginSplit: false,
+  shortSeq: false,
   maxAnnotationsToDisplayAdjustment: false,
   truncateLabelsThatDoNotFit: true,
   withPartTags: true,
@@ -470,6 +480,10 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
       }),
       renderToggle({
         that: this,
+        type: "shortSeq"
+      }),
+      renderToggle({
+        that: this,
         type: "onCopy"
       }),
       renderToggle({
@@ -700,9 +714,14 @@ certain dna specific tools and annotations are automatically disabled when isPro
                   if (val === "Protein") {
                     updateEditor(store, "DemoEditor", {
                       readOnly: false,
-                      sequenceData: tidyUpSequenceData(exampleProteinData, {
-                        convertAnnotationsFromAAIndices: true
-                      })
+                      sequenceData: tidyUpSequenceData(
+                        this.state.shortSeq
+                          ? exampleProteinDataShort
+                          : exampleProteinData,
+                        {
+                          convertAnnotationsFromAAIndices: true
+                        }
+                      )
                     });
                   } else if (val === "RNA") {
                     updateEditor(store, "DemoEditor", {
@@ -738,7 +757,9 @@ certain dna specific tools and annotations are automatically disabled when isPro
                     ) {
                       updateEditor(store, "DemoEditor", {
                         readOnly: false,
-                        sequenceData: exampleSequenceData
+                        sequenceData: this.state.shortSeq
+                          ? exampleSequenceDataShort
+                          : exampleSequenceData
                       });
                     }
                   }

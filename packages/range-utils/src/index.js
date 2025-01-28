@@ -49,3 +49,4 @@ export { default as trimRangeByAnotherRange } from "./trimRangeByAnotherRange";
 export { default as zeroSubrangeByContainerRange } from "./zeroSubrangeByContainerRange";
 export { default as adjustRangeToRotation } from "./adjustRangeToRotation";
 export { default as getZeroedRangeOverlaps } from "./getZeroedRangeOverlaps";
+export { default as trimAnnStartEndToFitSeqLength } from "./trimAnnStartEndToFitSeqLength";

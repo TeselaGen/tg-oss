@@ -1,15 +1,13 @@
 describe("proteinEditor", function () {
-  beforeEach(() => {
-    cy.visit("/#/Editor?moleculeType=Protein");
-    // cy.get(`[data-test="moleculeType"]`).select('Protein')
-  });
   it(`annotations shouldn't have a strand field to edit and all annotations be 'forward'`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.contains(".veRowViewPart", "Part 0").rightclick();
     cy.contains(".bp3-menu-item", "Edit Part").click();
     cy.contains(".bp3-dialog", "Add Note"); //dialog should exist, but strand shouldn't
     cy.contains(".bp3-dialog", "Strand").should("not.exist");
   });
   it(`should have non protein actions hidden from the menu search`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.get("body").type("{meta}/");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
@@ -17,11 +15,13 @@ describe("proteinEditor", function () {
     cy.contains(".bp3-menu-item", "Translations").should("not.exist");
   });
   it(`should be able to toggle between protein and dna mode after firing some actions`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.contains(".veLabelText", "Part 0").click();
     cy.get(`[data-test="moleculeType"]`).select("DNA");
     cy.contains("Length: 5299 bps").should("exist");
   });
   it(`feature/part add/edit should be AA indexed`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
@@ -57,6 +57,7 @@ describe("proteinEditor", function () {
     cy.get(`.tg-test-end [value="31"]`);
   });
   it(`should be able to insert AAs correctly via typing in the editor`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.contains("Part - pj5_00001 - Start: 1 End: 1384");
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
@@ -96,7 +97,25 @@ describe("proteinEditor", function () {
 
     cy.get(`[title="Selecting 2 AAs from 2 to 3"]`).should("exist");
   });
+  it.skip(`selection layer should be updated correctly if inserting at the end of an AA seq`, () => {
+    // TNWTODO
+    cy.visit("/#/Editor?shortSeq=true&moleculeType=Protein");
+    cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "V").click({
+      force: true
+    });
+
+    cy.get(".veRowViewCaret:first").trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Replace").click();
+    cy.contains("Press ENTER");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
+    cy.get(".sequenceInputBubble input").type("rggta{enter}");
+    //we don't want to see the insert successful message because no bps were entered
+    cy.contains("Sequence Inserted Successfully");
+    cy.contains("Selecting 5 AAs from 14 to 18");
+  });
   it(`should be able to delete correctly when backspace/del pressed`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
     });
@@ -105,6 +124,7 @@ describe("proteinEditor", function () {
     cy.contains("Length: 1383 AAs");
   });
   it(`should be able to cut /* todo: and paste */ correctly`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.get(".veRowViewPartsContainer")
       .contains("Part 0")
       .first()
@@ -134,7 +154,8 @@ describe("proteinEditor", function () {
   });
 
   it(`goTo, rotateTo work
-  -can't go to a position outside of the sequence
+  cy.visit("/#/Editor?moleculeType=Protein");
+    -can't go to a position outside of the sequence
   -can go to a position inside the sequence
   // -can rotate the sequence to that position
   `, () => {
@@ -157,6 +178,7 @@ describe("proteinEditor", function () {
   });
 
   it(`can move the caret around correctly`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
     });
@@ -164,7 +186,8 @@ describe("proteinEditor", function () {
     cy.contains("Caret Between AAs 3 and 4");
   });
   it(`
-  -can find AA's by default in the search bar
+  cy.visit("/#/Editor?moleculeType=Protein");
+    -can find AA's by default in the search bar
 
   `, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type("mmh");
@@ -183,7 +206,8 @@ describe("proteinEditor", function () {
     cy.contains("Selecting 5 AAs from 1 to 5");
   });
   it(`should
-  -has 1, 5, 10 AA's in the rowview axis
+  cy.visit("/#/Editor?moleculeType=Protein");
+    -has 1, 5, 10 AA's in the rowview axis
   -can click an AA and have the selecting message display correctly
   -not show circularity/cutsite/orf/translations tools or properties
   `, () => {
@@ -227,7 +251,8 @@ describe("proteinEditor", function () {
   });
 
   it(`should
-  -show the AA count
+  cy.visit("/#/Editor?moleculeType=Protein");
+    -show the AA count
   -the protein seq should be the primary sequence displayed
   -not show any dna sequence by default
   -should not show options to update restriction enzymes or simulate digestion
