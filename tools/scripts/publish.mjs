@@ -102,8 +102,9 @@ process.chdir(path.resolve(`../../dist/${name}`));
 json = JSON.parse(readFileSync(`package.json`).toString());
 try {
   json.version = version;
-  // json.type = "commonjs";
-  delete json.type;
+  // // json.type = "commonjs";
+  // delete json.type;
+  // json.type = "module";
   json.license = "MIT";
   json.dependencies = { ...deps, ...json.dependencies };
   writeFileSync(`package.json`, JSON.stringify(json, null, 2));
