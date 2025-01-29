@@ -277,6 +277,11 @@ const DataTableDemo = () => {
     type: "isViewable",
     description: "Make sure withCheckboxes is off when using this"
   });
+  const [isMultiViewable, isMultiViewableSwitch] = useToggle({
+    type: "isMultiViewable",
+    description: "This one works fine with withCheckboxes"
+  });
+
   const [keepSelectionOnPageChange, keepSelectionOnPageChangeSwitch] =
     useToggle({
       type: "keepSelectionOnPageChange"
@@ -369,7 +374,12 @@ const DataTableDemo = () => {
   const [entities, setEntities] = useState(
     generateFakeRows(defaultNumOfEntities)
   );
-
+  const [recordIdToIsVisibleMap, setRecordIdToIsVisibleMap] = useState(
+    entities.reduce((acc, val) => {
+      acc[val.id] = true;
+      return acc;
+    }, {})
+  );
   const changeNumEntities = numOfEntities => {
     setNumOfEntities(numOfEntities);
     setEntities(generateFakeRows(numOfEntities));
@@ -561,6 +571,10 @@ const DataTableDemo = () => {
                 isSimple={isSimple}
                 isSingleSelect={isSingleSelect}
                 isViewable={isViewable}
+                {...(isMultiViewable && {
+                  recordIdToIsVisibleMap,
+                  setRecordIdToIsVisibleMap
+                })}
                 keepSelectionOnPageChange={keepSelectionOnPageChange}
                 {...(maxHeight ? { maxHeight: "200px" } : {})}
                 minimalStyle={minimalStyle}
@@ -632,6 +646,7 @@ const DataTableDemo = () => {
       isSimple,
       isSingleSelect,
       isViewable,
+      isMultiViewable,
       keepSelectionOnPageChange,
       maxHeight,
       minimalStyle,
@@ -655,7 +670,8 @@ const DataTableDemo = () => {
       withSearch,
       withSort,
       withSubComponent,
-      withTitle
+      withTitle,
+      recordIdToIsVisibleMap
     ]
   );
 
@@ -741,6 +757,7 @@ withQuery(
           {hideTotalPagesSwitch}
           {forceNoNextPageSwitch}
           {isViewableSwitch}
+          {isMultiViewableSwitch}
           {onDoubleClickSwitch}
           {isOpenableSwitch}
           {minimalStyleSwitch}
