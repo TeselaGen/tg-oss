@@ -143,6 +143,7 @@ describe("proteinEditor", function () {
   });
 
   it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function () {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select").click();
     cy.get(`[label="From:"]`).clear().type("10", { noPrevValue: true });
@@ -154,11 +155,11 @@ describe("proteinEditor", function () {
   });
 
   it(`goTo, rotateTo work
-  cy.visit("/#/Editor?moleculeType=Protein");
     -can't go to a position outside of the sequence
   -can go to a position inside the sequence
   // -can rotate the sequence to that position
   `, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Go To").click();
     cy.focused().clear().type("0");
@@ -186,10 +187,8 @@ describe("proteinEditor", function () {
     cy.contains("Caret Between AAs 3 and 4");
   });
   it(`
-  cy.visit("/#/Editor?moleculeType=Protein");
-    -can find AA's by default in the search bar
-
-  `, () => {
+    -can find AA's by default in the search bar`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type("mmh");
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
 
@@ -206,11 +205,11 @@ describe("proteinEditor", function () {
     cy.contains("Selecting 5 AAs from 1 to 5");
   });
   it(`should
-  cy.visit("/#/Editor?moleculeType=Protein");
     -has 1, 5, 10 AA's in the rowview axis
-  -can click an AA and have the selecting message display correctly
-  -not show circularity/cutsite/orf/translations tools or properties
-  `, () => {
+    -can click an AA and have the selecting message display correctly
+    -not show circularity/cutsite/orf/translations tools or properties
+    `, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.log("-has 1, 5, 10 AA's in the rowview axis");
     cy.contains(".veRowViewAxis", "1");
     cy.contains(".veRowViewAxis", "5");
@@ -251,14 +250,14 @@ describe("proteinEditor", function () {
   });
 
   it(`should
-  cy.visit("/#/Editor?moleculeType=Protein");
     -show the AA count
-  -the protein seq should be the primary sequence displayed
-  -not show any dna sequence by default
-  -should not show options to update restriction enzymes or simulate digestion
-  -not show options to view cutsites, orfs, translations, full sequence translations
-  -be able to hide/show the underlying dna sequence
-  `, function () {
+    -the protein seq should be the primary sequence displayed
+    -not show any dna sequence by default
+    -should not show options to update restriction enzymes or simulate digestion
+    -not show options to view cutsites, orfs, translations, full sequence translations
+    -be able to hide/show the underlying dna sequence
+    `, function () {
+    cy.visit("/#/Editor?moleculeType=Protein");
     cy.log("show the AA count");
     cy.contains("1384 AAs");
 
