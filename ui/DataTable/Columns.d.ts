@@ -1,4 +1,4 @@
-export function useColumns({ addFilters, cellRenderer, columns, currentParams, compact, editingCell, editingCellSelectAll, entities, expandedEntityIdMap, extraCompact, filters, formName, getCellHoverText, isCellEditable, isEntityDisabled, isLocalCall, isSimple, isSingleSelect, isSelectionARectangle, noDeselectAll, noSelect, noUserSelect, onDeselect, onMultiRowSelect, onRowClick, onRowSelect, onSingleRowSelect, order, primarySelectedCellId, reduxFormCellValidation, reduxFormSelectedEntityIdMap, refocusTable, removeSingleFilter, schema, selectedCells, setExpandedEntityIdMap, setNewParams, setOrder, setSelectedCells, shouldShowSubComponent, startCellEdit, SubComponent, tableRef, updateEntitiesHelper, updateValidation, withCheckboxes, withExpandAndCollapseAllButton, withFilter: _withFilter, withSort }: {
+export function useColumns({ addFilters, cellRenderer, columns, currentParams, compact, editingCell, editingCellSelectAll, entities, expandedEntityIdMap, extraCompact, filters, formName, getCellHoverText, isCellEditable, isEntityDisabled, isLocalCall, isSimple, isSingleSelect, isSelectionARectangle, noDeselectAll, noSelect, noUserSelect, onDeselect, onMultiRowSelect, onRowClick, onRowSelect, onSingleRowSelect, order, primarySelectedCellId, reduxFormCellValidation, reduxFormSelectedEntityIdMap, refocusTable, removeSingleFilter, schema, selectedCells, setExpandedEntityIdMap, setNewParams, setOrder, setSelectedCells, shouldShowSubComponent, startCellEdit, SubComponent, tableRef, updateEntitiesHelper, updateValidation, withCheckboxes, withExpandAndCollapseAllButton, withFilter: _withFilter, withSort, recordIdToIsVisibleMap, setRecordIdToIsVisibleMap }: {
     addFilters: any;
     cellRenderer: any;
     columns: any;
@@ -48,4 +48,6 @@ export function useColumns({ addFilters, cellRenderer, columns, currentParams, c
     withExpandAndCollapseAllButton: any;
     withFilter: any;
     withSort?: boolean | undefined;
+    recordIdToIsVisibleMap: any;
+    setRecordIdToIsVisibleMap: any;
 }): any;

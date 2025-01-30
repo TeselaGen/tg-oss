@@ -17,3 +17,14 @@ export function openColumn({ onDoubleClick, history }: {
     immovable: boolean;
     type: string;
 };
+export namespace multiViewColumn {
+    export function columnHeader({ recordIdToIsVisibleMap, setRecordIdToIsVisibleMap }: {
+        recordIdToIsVisibleMap: any;
+        setRecordIdToIsVisibleMap: any;
+    }): import("react/jsx-runtime").JSX.Element;
+    export function render_1(val: any, record: any, row: any, { recordIdToIsVisibleMap, setRecordIdToIsVisibleMap }: {
+        recordIdToIsVisibleMap: any;
+        setRecordIdToIsVisibleMap: any;
+    }): import("react/jsx-runtime").JSX.Element | null;
+    export { render_1 as render };
+}
