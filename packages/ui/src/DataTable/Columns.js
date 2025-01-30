@@ -41,6 +41,8 @@ import { RenderCell } from "./RenderCell";
 dayjs.extend(localizedFormat);
 
 const RenderColumnHeader = ({
+  recordIdToIsVisibleMap,
+  setRecordIdToIsVisibleMap,
   addFilters,
   column,
   compact,
@@ -71,7 +73,8 @@ const RenderColumnHeader = ({
     noTitle,
     isNotEditable,
     type,
-    path
+    path,
+    columnHeader
   } = column;
   const columnDataType = column.type;
   const isActionColumn = columnDataType === "action";
@@ -171,6 +174,28 @@ const RenderColumnHeader = ({
         "sort-active": sortUp || sortDown
       })}
     >
+      {columnHeader &&
+        columnHeader({
+          recordIdToIsVisibleMap,
+          setRecordIdToIsVisibleMap,
+          addFilters,
+          column,
+          compact,
+          currentParams,
+          entities,
+          extraCompact,
+          filters,
+          formName,
+          isCellEditable,
+          isLocalCall,
+          order,
+          removeSingleFilter,
+          setNewParams,
+          setOrder,
+          updateEntitiesHelper,
+          withFilter,
+          withSort
+        })}
       {columnTitleTextified && !noTitle && (
         <>
           {maybeCheckbox}
@@ -360,7 +385,9 @@ export const useColumns = ({
   withCheckboxes,
   withExpandAndCollapseAllButton,
   withFilter: _withFilter,
-  withSort = true
+  withSort = true,
+  recordIdToIsVisibleMap,
+  setRecordIdToIsVisibleMap
 }) => {
   const dispatch = useDispatch();
   const change = useCallback(
@@ -831,6 +858,8 @@ export const useColumns = ({
     const tableColumn = {
       ...column,
       Header: RenderColumnHeader({
+        recordIdToIsVisibleMap,
+        setRecordIdToIsVisibleMap,
         column,
         isLocalCall,
         filters,
@@ -872,6 +901,8 @@ export const useColumns = ({
     } else if (column.render) {
       tableColumn.Cell = row => {
         const val = column.render(row.value, row.original, row, {
+          recordIdToIsVisibleMap,
+          setRecordIdToIsVisibleMap,
           currentParams,
           setNewParams
         });

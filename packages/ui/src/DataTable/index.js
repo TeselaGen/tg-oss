@@ -88,7 +88,7 @@ import { SwitchField } from "../FormComponents";
 import { validateTableWideErrors } from "./validateTableWideErrors";
 import { editCellHelper } from "./editCellHelper";
 import getTableConfigFromStorage from "./utils/getTableConfigFromStorage";
-import { viewColumn, openColumn } from "./viewColumn";
+import { viewColumn, openColumn, multiViewColumn } from "./viewColumn";
 import convertSchema from "./utils/convertSchema";
 import TableFormTrackerContext from "./TableFormTrackerContext";
 import {
@@ -434,6 +434,8 @@ const DataTable = ({
     isOpenable,
     isSingleSelect = false,
     isViewable,
+    recordIdToIsVisibleMap,
+    setRecordIdToIsVisibleMap,
     keepSelectionOnPageChange,
     leftOfSearchBarItems,
     maxHeight = 600,
@@ -553,6 +555,9 @@ const DataTable = ({
     if (isViewable) {
       schema.fields = [viewColumn, ...schema.fields];
     }
+    if (recordIdToIsVisibleMap) {
+      schema.fields = [multiViewColumn, ...schema.fields];
+    }
     if (isOpenable) {
       schema.fields = [
         openColumn({ onDoubleClick, history }),
@@ -668,7 +673,8 @@ const DataTable = ({
     showForcedHiddenColumns,
     tableConfig.columnOrderings,
     tableConfig.fieldOptions,
-    withDisplayOptions
+    withDisplayOptions,
+    recordIdToIsVisibleMap
   ]);
 
   const {
@@ -2727,7 +2733,9 @@ const DataTable = ({
     withCheckboxes,
     withExpandAndCollapseAllButton,
     withFilter,
-    withSort
+    withSort,
+    recordIdToIsVisibleMap,
+    setRecordIdToIsVisibleMap
   });
 
   const scrollToTop = useCallback(
