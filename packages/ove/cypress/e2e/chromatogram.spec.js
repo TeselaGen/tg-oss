@@ -47,6 +47,8 @@ describe("chromatogram", function () {
         'Chromatogram data is missing "baseTraces"'
       );
       return false;
+    }).then(() => {
+      delete window.Cypress.triggerMissingBaseTrace;
     });
   });
 
