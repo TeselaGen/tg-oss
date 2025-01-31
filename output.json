@@ -146,7 +146,7 @@
               "inputs": ["default", "^production"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/bounce-loader && npx playwright test"
+                "command": "cd packages/bounce-loader && yarn playwright test"
               },
               "configurations": {}
             },
@@ -155,7 +155,7 @@
               "inputs": ["default", "^production"],
               "executor": "nx:run-commands",
               "options": {
-                "command": "nx run bounce-loader:start & cd packages/bounce-loader && npx playwright test --ui"
+                "command": "nx run bounce-loader:start & cd packages/bounce-loader && yarn playwright test --ui"
               },
               "configurations": {}
             },
@@ -169,14 +169,14 @@
             "launch-e2e2": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "npx concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
+                "command": "yarn concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
               },
               "configurations": {}
             },
             "e2e2": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "npx concurrently --kill-others --kill-signal SIGKILL --success first \"npx wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
+                "command": "yarn concurrently --kill-others --kill-signal SIGKILL --success first \"yarn wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
               },
               "configurations": {}
             },
@@ -665,7 +665,7 @@
             "launch-e2e-playwright": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "nx run ove:start:ci & cd packages/ove && npx playwright test --ui"
+                "command": "nx run ove:start:ci & cd packages/ove && yarn playwright test --ui"
               },
               "configurations": {}
             }

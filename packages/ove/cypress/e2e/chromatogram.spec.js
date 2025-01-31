@@ -37,6 +37,19 @@ describe("chromatogram", function () {
           });
       });
   });
+
+  it("should throw an error if baseTraces are missing from chromatogram data", function () {
+    window.Cypress.triggerMissingBaseTrace = true;
+    cy.visit("#/Editor?chromatogramExample=true");
+
+    cy.on("uncaught:exception", err => {
+      expect(err.message).to.include(
+        'Chromatogram data is missing "baseTraces"'
+      );
+      return false;
+    });
+  });
+
   it("right clicking a chromatogram should give the option to hide quality scores", function () {
     cy.visit("#/Editor?chromatogramExample=true");
     cy.get(".chromatogram").first().rightclick();
