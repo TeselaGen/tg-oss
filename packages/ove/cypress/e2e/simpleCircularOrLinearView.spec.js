@@ -122,4 +122,28 @@ describe("simpleCircularOrLinearView", function () {
     cy.get(`.veLinearView`).invoke("outerHeight").should("equal", 500);
     cy.get(`.veLinearView`).invoke("outerWidth").should("equal", 500);
   });
+  it("featTableSelect should work", function () {
+    cy.visit("/#/SimpleCircularOrLinearView");
+    cy.get(".veLinearView");
+    cy.tgToggle("featTableSelect");
+    cy.get(`[data-id="feat1"]`);
+    cy.get(`[data-id="feat2"]`);
+    cy.get(`.showHideButton-visible-feat1`).click();
+    cy.get(`.showHideButton-visible-feat2`).click();
+    cy.get(`[data-id="feat1"]`).should("not.exist");
+    cy.get(`[data-id="feat2"]`).should("not.exist");
+
+    cy.get(`.showHideButton-hidden-feat1`).click();
+    cy.get(`.showHideButton-hidden-feat2`).click();
+    cy.get(`[data-id="feat1"]`);
+    cy.get(`[data-id="feat2"]`);
+    cy.get(`.showHideAllButton-visible`).click();
+    cy.get(`[data-id="feat1"]`).should("not.exist");
+    cy.get(`.showHideAllButton-hidden`).click();
+    cy.get(`[data-id="feat1"]`).should("exist");
+    cy.get(`.showHideButton-visible-feat1`).click();
+    cy.get(`[data-id="feat1"]`).should("not.exist");
+    cy.get(`.showHideAllButton-hidden`).click();
+    cy.get(`[data-id="feat1"]`).should("exist");
+  });
 });

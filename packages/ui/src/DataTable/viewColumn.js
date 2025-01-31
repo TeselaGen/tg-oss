@@ -45,6 +45,7 @@ export const multiViewColumn = {
     return (
       <Tooltip content={allVisible ? "Hide All" : "Show All"}>
         <Button
+          className={`showHideAllButton-${allVisible ? "visible" : "hidden"}`}
           minimal
           onClick={() => {
             setRecordIdToIsVisibleMap(
@@ -87,6 +88,7 @@ export const multiViewColumn = {
           }}
           minimal
           small
+          className={`showHideButton-${isVisible ? "visible" : "hidden"}-${record.id}`}
           icon={isVisible ? "eye-open" : "eye-off"}
         />
       </Tooltip>
