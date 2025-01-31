@@ -52,7 +52,11 @@ export default function Chromatogram(props) {
     canvasRef
   ]);
   const marginLeft = gapsBeforeRow * charWidth;
-
+  if (chromatogramData.basePos && !chromatogramData.baseTraces) {
+    throw new Error(
+      'Chromatogram data is missing "baseTraces". Be sure to call the convertBasePosTraceToPerBpTrace(_chromData) before passing it to the editor'
+    );
+  }
   return (
     <div
       className={classNames("chromatogram", {

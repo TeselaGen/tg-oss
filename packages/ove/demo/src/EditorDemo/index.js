@@ -1728,7 +1728,10 @@ additionalEnzymes: {
                         id: "1",
                         // chromatogramData: example1Ab1,
                         // sequence: example1Ab1.baseCalls.join(""),
-                        chromatogramData: chromData,
+                        chromatogramData: window.Cypress
+                          ?.triggerMissingBaseTrace
+                          ? _chromData
+                          : chromData,
                         sequence: chromData.baseCalls.join(""),
                         features: [
                           {
