@@ -459,7 +459,7 @@ export const AlignmentView = props => {
   useEffect(() => {
     const saveAlignment = async () => {
       //autosave if necessary!
-      if (shouldAutosave && stateTrackingId) {
+      if (shouldAutosave && stateTrackingId && handleAlignmentSave) {
         setSaveMessage("Alignment Saving..");
         setSaveMessageLoading(true);
 

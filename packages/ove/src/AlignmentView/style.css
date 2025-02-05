@@ -70,10 +70,10 @@
 .alignmentView .veSelectionLayer {
   top: 0;
 }
-
-.tg-reflex-element-inner .alignmentView {
+/* tnw - commenting this out to improve scrolling of alignment view inside editor - https://github.com/TeselaGen/tg-oss/issues/128 */
+/* .tg-reflex-element-inner .alignmentView {
   height: unset !important;
-}
+} */
 .veTracksAndAlignmentHolder {
   position: relative;
   width: fit-content;
