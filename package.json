@@ -108,6 +108,7 @@
     "@types/papaparse": "^5.3.11",
     "@types/react": "18.2.37",
     "@types/react-dom": "18.2.15",
+    "@types/react-router-dom": "^5",
     "@types/redux-form": "^8.3.9",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
