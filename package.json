@@ -61,7 +61,7 @@
     "react-measure": "^2.5.2",
     "react-redux": "^8.0.5",
     "react-rnd": "^10.2.4",
-    "react-router-dom": "4",
+    "react-router-dom": "5",
     "react-sizeme": "^2.6.12",
     "react-transition-group": "^2.4.0",
     "recompose": "npm:react-recompose@0.31.1",
