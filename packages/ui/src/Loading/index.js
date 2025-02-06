@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DNALoader from "../DNALoader";
 import "./style.css";
-import { BounceLoader } from "@teselagen/bounce-loader";
+import { BounceLoader } from "../BounceLoader";
 
 const Loading = ({
   loading,
