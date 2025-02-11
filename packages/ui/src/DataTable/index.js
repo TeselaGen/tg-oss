@@ -2321,6 +2321,7 @@ const DataTable = ({
         ),
         "data-test-id": dataId === undefined ? rowInfo.index : dataId,
         "data-index": rowInfo.index,
+        "data-tip": typeof rowDisabled === "string" ? rowDisabled : undefined,
         onDoubleClick: e => {
           if (rowDisabled) return;
           onDoubleClick &&

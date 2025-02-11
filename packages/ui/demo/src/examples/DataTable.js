@@ -244,6 +244,9 @@ const DataTableDemo = () => {
   const [isLoading, isLoadingSwitch] = useToggle({
     type: "isLoading"
   });
+  const [isEntityDisabled, isEntityDisabledSwitch] = useToggle({
+    type: "isEntityDisabled"
+  });
   const [isOpenable, isOpenableSwitch] = useToggle({
     type: "isOpenable"
   });
@@ -567,6 +570,14 @@ const DataTableDemo = () => {
                 isCopyable={isCopyable}
                 isInfinite={isInfinite}
                 isLoading={isLoading}
+                isEntityDisabled={
+                  isEntityDisabled
+                    ? r =>
+                        !r.isShared
+                          ? "This entity is disabled cause it isn't shared"
+                          : false
+                    : undefined
+                }
                 isOpenable={isOpenable}
                 isSimple={isSimple}
                 isSingleSelect={isSingleSelect}
@@ -671,7 +682,8 @@ const DataTableDemo = () => {
       withSort,
       withSubComponent,
       withTitle,
-      recordIdToIsVisibleMap
+      recordIdToIsVisibleMap,
+      isEntityDisabled
     ]
   );
 
@@ -778,6 +790,7 @@ withQuery(
           {noPaddingSwitch}
           {isInfiniteSwitch}
           {isLoadingSwitch}
+          {isEntityDisabledSwitch}
           {disabledSwitch}
           {hidePageSizeWhenPossibleSwitch}
           {doNotShowEmptyRowsSwitch}
