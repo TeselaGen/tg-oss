@@ -1,0 +1,23 @@
+import { defaultParsePaste, getEntityIdToEntity, getFieldPathToIndex, getNumberStrAtEnd, stripNumberAtEnd } from './utils';
+import { formatPasteData } from './formatPasteData';
+import { getAllRows } from './getAllRows';
+import { getCellCopyText } from './getCellCopyText';
+import { getCellInfo } from './getCellInfo';
+import { getFieldPathToField } from './getFieldPathToField';
+import { getIdOrCodeOrIndex } from './getIdOrCodeOrIndex';
+import { getLastSelectedEntity } from './getLastSelectedEntity';
+import { getNewEntToSelect } from './getNewEntToSelect';
+import { getRecordsFromIdMap } from './withSelectedEntities';
+import { getRowCopyText } from './getRowCopyText';
+import { getSelectedRowsFromEntities } from './selection';
+import { handleCopyColumn } from './handleCopyColumn';
+import { handleCopyHelper } from './handleCopyHelper';
+import { handleCopyRows } from './handleCopyRows';
+import { handleCopyTable } from './handleCopyTable';
+import { isBottomRightCornerOfRectangle } from './isBottomRightCornerOfRectangle';
+import { isEntityClean } from './isEntityClean';
+import { PRIMARY_SELECTED_VAL } from './primarySelectedValue';
+import { removeCleanRows } from './removeCleanRows';
+import { useTableEntities } from './useTableEntities';
+
+export { defaultParsePaste, formatPasteData, getAllRows, getCellCopyText, getCellInfo, getEntityIdToEntity, getFieldPathToIndex, getFieldPathToField, getIdOrCodeOrIndex, getLastSelectedEntity, getNewEntToSelect, getNumberStrAtEnd, getRecordsFromIdMap, getRowCopyText, getSelectedRowsFromEntities, handleCopyColumn, handleCopyHelper, handleCopyRows, handleCopyTable, isBottomRightCornerOfRectangle, isEntityClean, PRIMARY_SELECTED_VAL, removeCleanRows, stripNumberAtEnd, useTableEntities };
