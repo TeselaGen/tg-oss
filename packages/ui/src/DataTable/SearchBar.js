@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Classes, Spinner } from "@blueprintjs/core";
 import classNames from "classnames";
 import { onEnterHelper } from "../utils/handlerHelpers";
@@ -13,6 +13,7 @@ const SearchBar = ({
   autoFocusSearch,
   noForm
 }) => {
+  const [inputText, setInputText] = useState(searchInput);
   if (noForm) {
     console.error(
       "The search bar requires the component to be wrapped in a form"
@@ -36,7 +37,7 @@ const SearchBar = ({
         minimal
         icon="search"
         onClick={() => {
-          setSearchTerm(searchInput);
+          setSearchTerm(inputText);
         }}
       />
     );
@@ -48,6 +49,10 @@ const SearchBar = ({
       loading={loading}
       type="search"
       defaultValue={searchInput}
+      value={inputText}
+      onChange={e => {
+        setInputText(e.target.value);
+      }}
       className={classNames("datatable-search-input", Classes.ROUND)}
       placeholder="Search..."
       {...onEnterHelper(e => {

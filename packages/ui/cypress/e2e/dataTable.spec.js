@@ -202,4 +202,11 @@ describe("dataTable.spec", () => {
     cy.get(".data-table-container").type("{shift}{downArrow}");
     cy.get(".rt-tr-group.selected").should("have.length", 1);
   });
+
+  it("can search for a specific row using search button in the search bar", () => {
+    cy.visit("#/DataTable");
+    cy.get(".datatable-search-input input").type("row 3");
+    cy.get(".datatable-search-input .bp3-icon-search").click();
+    cy.get(".bp3-icon-filter-remove").should("exist");
+  });
 });
