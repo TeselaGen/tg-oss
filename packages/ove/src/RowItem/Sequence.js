@@ -154,6 +154,9 @@ class Sequence extends React.Component {
             className={`tg-${
               isReverse ? "left" : "right"
             }-prime-direction tg-prime-direction`}
+            style={
+              !isReverse ? { left: startOffset * charWidth + width } : undefined
+            }
           >
             3'
           </div>
@@ -163,6 +166,9 @@ class Sequence extends React.Component {
             className={`tg-${
               isReverse ? "right" : "left"
             }-prime-direction tg-prime-direction`}
+            style={
+              isReverse ? { left: startOffset * charWidth + width } : undefined
+            }
           >
             5'
           </div>
