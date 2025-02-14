@@ -274,6 +274,11 @@ const Inner = reduxForm({ form: "UploadCsvWizardDemo" })(({ handleSubmit }) => {
       type: "getValuesForDropdownExample",
       label: "use async getValues For Dropdown (WIP)"
     });
+  const [isColumnEditable, isColumnEditableComp] = useToggle({
+    type: "isColumnEditable",
+    label: "Column Editable",
+    description: "If checked, will allow the column to be editable"
+  });
 
   const [accept, setAccept] = useState([]);
   useEffect(() => {

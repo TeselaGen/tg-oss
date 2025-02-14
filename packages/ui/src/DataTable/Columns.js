@@ -47,6 +47,8 @@ const RenderColumnHeader = ({
   column,
   compact,
   currentParams,
+  editingHeader,
+  setSelectedCells,
   entities,
   extraCompact,
   filters,
@@ -57,6 +59,8 @@ const RenderColumnHeader = ({
   removeSingleFilter,
   setNewParams,
   setOrder,
+  setEditingHeader,
+  finishHeaderEdit,
   updateEntitiesHelper,
   withFilter,
   withSort
@@ -65,6 +69,7 @@ const RenderColumnHeader = ({
     displayName,
     description,
     isUnique,
+    editableHeader,
     sortDisabled,
     filterDisabled,
     columnFilterDisabled,
@@ -209,8 +214,37 @@ const RenderColumnHeader = ({
               ...(description && { fontStyle: "italic" }),
               display: "inline-block"
             }}
+            onDoubleClick={
+              editableHeader
+                ? () => {
+                    console.log(`path: ${path}`);
+                    setSelectedCells({});
+                    setEditingHeader(path);
+                  }
+                : null
+            }
+            data-test={editableHeader && `column-header-${path}`}
           >
-            {renderTitleInner ? renderTitleInner : columnTitle}{" "}
+            {editingHeader === path ? (
+              <input
+                type="text"
+                defaultValue={columnTitle}
+                onKeyDown={event => {
+                  event.key === "Enter" &&
+                    finishHeaderEdit(path, event.target.value);
+                  event.key === "Escape" && setEditingHeader(null);
+                }}
+                autoFocus
+                style={{
+                  backgroundColor: "#293742",
+                  border: "none"
+                }}
+              />
+            ) : renderTitleInner ? (
+              renderTitleInner
+            ) : (
+              columnTitle
+            )}{" "}
           </span>
         </>
       )}
@@ -344,6 +378,7 @@ export const useColumns = ({
   compact,
   editingCell,
   editingCellSelectAll,
+  editingHeader,
   entities,
   expandedEntityIdMap,
   extraCompact,
@@ -378,6 +413,7 @@ export const useColumns = ({
   setSelectedCells,
   shouldShowSubComponent,
   startCellEdit,
+  setEditingHeader,
   SubComponent,
   tableRef,
   updateEntitiesHelper,
@@ -753,6 +789,24 @@ export const useColumns = ({
     ]
   );
 
+  const finishHeaderEdit = useCallback(
+    (path, newVal) => {
+      console.log(`finishHeaderEdit: ${path}, ${newVal}`);
+      const valueToPath = camelCase(newVal);
+
+      schema.fields = schema.fields.map(column => {
+        if (column.path === path) {
+          column.path = valueToPath;
+          column.displayName = newVal;
+        }
+        return column;
+      });
+
+      setSelectedCells({});
+    },
+    [schema, setSelectedCells]
+  );
+
   const cancelCellEdit = useCallback(() => {
     change("reduxFormEditingCell", null);
     refocusTable();
@@ -862,6 +916,7 @@ export const useColumns = ({
         setRecordIdToIsVisibleMap,
         column,
         isLocalCall,
+        editingHeader,
         filters,
         currentParams,
         order,
@@ -871,12 +926,15 @@ export const useColumns = ({
         extraCompact,
         withFilter,
         addFilters,
+        setSelectedCells,
         removeSingleFilter,
         setNewParams,
         compact,
         isCellEditable,
         entities,
-        updateEntitiesHelper
+        updateEntitiesHelper,
+        setEditingHeader,
+        finishHeaderEdit
       }),
       accessor: column.path,
       getHeaderProps: () => ({

@@ -118,6 +118,7 @@ const DataTable = ({
   formName = "tgDataTable",
   history,
   isSimple,
+  isHeaderEditable,
   isLocalCall = true,
   isTableParamsConnected,
   noForm,
@@ -203,7 +204,12 @@ const DataTable = ({
     };
   }
 
-  const convertedSchema = useMemo(() => convertSchema(_schema), [_schema]);
+  const convertedSchema = useMemo(() => {
+    console.log(`_schema`, _schema);
+    const converted = convertSchema(_schema);
+    console.log(`converted`, converted);
+    return converted;
+  }, [_schema]);
 
   if (isLocalCall) {
     if (!noForm && (!formName || formName === "tgDataTable")) {
@@ -552,13 +558,17 @@ const DataTable = ({
 
   const schema = useMemo(() => {
     const schema = { ...convertedSchema };
+    console.log(`memoizing schema`, schema.fields.length);
     if (isViewable) {
+      console.log(`viewable`);
       schema.fields = [viewColumn, ...schema.fields];
     }
     if (recordIdToIsVisibleMap) {
+      console.log(`recordIdToIsVisibleMap`);
       schema.fields = [multiViewColumn, ...schema.fields];
     }
     if (isOpenable) {
+      console.log(`openable`);
       schema.fields = [
         openColumn({ onDoubleClick, history }),
         ...schema.fields
@@ -567,6 +577,7 @@ const DataTable = ({
     // this must come before handling orderings.
     schema.fields = schema.fields.map(field => {
       if (field.placementPath) {
+        console.log(`has path`);
         return {
           ...field,
           sortDisabled:
@@ -578,8 +589,10 @@ const DataTable = ({
         return field;
       }
     });
+    console.log(`updated fields`, schema.fields.length);
 
     if (withDisplayOptions) {
+      console.log(`display options`);
       const fieldOptsByPath = keyBy(tableConfig.fieldOptions, "path");
       schema.fields = schema.fields.map(field => {
         const fieldOpt = fieldOptsByPath[field.path];
@@ -877,6 +890,7 @@ const DataTable = ({
           });
         });
       });
+      console.log(`DEBUG:newEnts:`, newEnts);
       return {
         newEnts,
         validationErrors
@@ -1069,8 +1083,10 @@ const DataTable = ({
   );
 
   const primarySelectedCellId = useMemo(() => {
+    console.log(`memoizing primaryCell`);
     for (const k of Object.keys(selectedCells)) {
       if (selectedCells[k] === PRIMARY_SELECTED_VAL) {
+        console.log(`[memo] primarySelectedCellId`, k);
         return k;
       }
     }
@@ -1085,6 +1101,7 @@ const DataTable = ({
       change("reduxFormEditingCell", prev => {
         //check if the cell is already selected and editing and if so, don't change it
         if (prev === cellId) return cellId;
+        console.log(`[StartCellEdit] selectingCells`);
         setSelectedCells(prev => {
           if (prev[cellId] === PRIMARY_SELECTED_VAL) {
             return prev;
@@ -1468,6 +1485,7 @@ const DataTable = ({
   const [columns, setColumns] = useState([]);
   const [fullscreen, setFullscreen] = useState(false);
   const [selectingAll, setSelectingAll] = useState(false);
+  const [editingHeader, setEditingHeader] = useState(null);
 
   // format in the schema shouldn't be something that changes the value
   // everytime, it produces weird behavior since it keeps rerendering,
@@ -1678,6 +1696,7 @@ const DataTable = ({
   }, [additionalFilters]);
 
   useEffect(() => {
+    console.log(`[useEffect] schema.fields`, schema.fields);
     setColumns(
       schema.fields
         ? schema.fields.reduce((col, field, i) => {
@@ -1998,8 +2017,8 @@ const DataTable = ({
   );
 
   const insertRows = useCallback(
-    ({ above, numRows = 1, appendToBottom } = {}) => {
-      const [rowId] = primarySelectedCellId?.split(":") || [];
+    ({ above, numRows = 1, appendToBottom, rowId } = {}) => {
+      console.log(`inserting row ${above ? "avobe" : "below"} ${rowId}`);
       updateEntitiesHelper(entities, entities => {
         const newEntities = times(numRows).map(() => ({ id: nanoid() }));
 
@@ -2032,12 +2051,75 @@ const DataTable = ({
     [
       entities,
       formatAndValidateEntities,
-      primarySelectedCellId,
       reduxFormCellValidation,
       refocusTable,
       updateEntitiesHelper,
       updateValidation
     ]
+  );
+
+  // const insertColumn = useCallback(
+  //   ({ after, numColumns = 1, appendToEnd, colId }) => {
+  //     const columnId = colId?.split(":")[1];
+  //     console.log(`inserting column ${after ? "after" : "before"} ${columnId}`);
+  //     const columnIndex = columns.findIndex(col => col.path === columnId);
+  //     const isLast = columnIndex === columns.length;
+  //     const indexToInsert = columnIndex + (after && !isLast ? 1 : 0);
+  //     const indexToUse = appendToEnd ? columns.length : indexToInsert;
+  //     const columnsToInsert = times(numColumns, () => ({
+  //       path: `newColumn${indexToInsert}`,
+  //       displayName: "New Column",
+  //       editableHeader: true
+  //     }));
+
+  //     const newSchema = { ...schema };
+  //     newSchema.fields.splice(indexToUse, 0, ...columnsToInsert);
+  //     schema.fields = newSchema.fields;
+  //     setColumns(newSchema.fields);
+  //     refocusTable();
+  //   },
+  //   [schema, columns, refocusTable]
+  // );
+
+  const insertColumn = useCallback(
+    ({ after, numColumns = 1, appendToEnd, colId }) => {
+      const columnId = colId?.split(":")[1];
+      console.log(`Inserting column ${after ? "after" : "before"} ${columnId}`);
+
+      const columnIndex = columns.findIndex(col => col.path === columnId);
+
+      const isLast = columnIndex === columns.length - 1; // ✅ Fix index check
+      const indexToInsert = columnIndex + (after && !isLast ? 1 : 0);
+      const indexToUse = appendToEnd ? columns.length : indexToInsert;
+
+      const columnsToInsert = times(numColumns, i => ({
+        path: `newColumn${indexToInsert + i}`, // ✅ Ensure unique column paths
+        displayName: `New Column`,
+        editableHeader: true
+      }));
+
+      // ✅ Create a new schema object to ensure React detects changes
+      const newSchema = {
+        ...schema,
+        fields: [
+          ...schema.fields.slice(0, indexToUse),
+          ...columnsToInsert,
+          ...schema.fields.slice(indexToUse)
+        ]
+      };
+
+      console.log("Updated schema.fields:", newSchema.fields);
+
+      setColumns(
+        newSchema.fields.map((field, i) => ({
+          ...field,
+          columnIndex: i // ✅ Ensure column order is maintained
+        }))
+      );
+
+      refocusTable();
+    },
+    [schema, columns, refocusTable]
   );
 
   const showContextMenu = useCallback(
@@ -2153,7 +2235,13 @@ const DataTable = ({
         const [rowId] = cellId.split(":");
         return rowId;
       });
-
+      const selectedColumnIds = Object.keys(selectedCells).map(cellId => {
+        const [, columnId] = cellId.split(":");
+        return columnId;
+      });
+      const primarySelectedCellId = Object.keys(selectedCells).find(
+        cellId => selectedCells[cellId] === PRIMARY_SELECTED_VAL
+      );
       const menu = (
         <Menu>
           {itemsToRender}
@@ -2173,11 +2261,27 @@ const DataTable = ({
                 }}
               />
               <MenuItem
-                icon="add-row-top"
+                icon="add-row-bottom"
                 text="Add Row Below"
                 key="addRowBelow"
                 onClick={() => {
                   insertRows({});
+                }}
+              />
+              <MenuItem
+                icon="add-column-left"
+                text="Add Column Before"
+                key="addColumnBefore"
+                onClick={() => {
+                  insertColumn({ colId: primarySelectedCellId });
+                }}
+              />
+              <MenuItem
+                icon="add-column-right"
+                text="Add Column After"
+                key="addColumnAfter"
+                onClick={() => {
+                  insertColumn({ after: true, colId: primarySelectedCellId });
                 }}
               />
               <MenuItem
@@ -2207,6 +2311,24 @@ const DataTable = ({
                   refocusTable();
                 }}
               />
+              <MenuItem
+                icon="remove"
+                text={`Remove Column${selectedColumnIds.length > 1 ? "s" : ""}`}
+                key="removeColumn"
+                onClick={() => {
+                  const selectedColumnIds = new Set(
+                    Object.keys(selectedCells).map(cellId => {
+                      const [, colId] = cellId.split(":");
+                      return colId;
+                    })
+                  );
+                  console.log(`selectedColumnIds`, selectedColumnIds);
+                  schema.fields = schema.fields.filter(
+                    field => !selectedColumnIds.has(field.path)
+                  );
+                  refocusTable();
+                }}
+              />
             </>
           )}
         </Menu>
@@ -2219,10 +2341,12 @@ const DataTable = ({
       handleCopySelectedRows,
       history,
       insertRows,
+
       isCellEditable,
       isCopyable,
       reduxFormCellValidation,
       refocusTable,
+      schema,
       updateEntitiesHelper,
       updateValidation
     ]
@@ -2693,6 +2817,7 @@ const DataTable = ({
     currentParams,
     compact,
     editingCellSelectAll,
+    editingHeader,
     entities,
     expandedEntityIdMap,
     extraCompact,
@@ -2704,6 +2829,7 @@ const DataTable = ({
     isLocalCall,
     isSimple,
     isSingleSelect,
+    isHeaderEditable,
     isSelectionARectangle,
     noDeselectAll,
     noSelect,
@@ -2727,6 +2853,7 @@ const DataTable = ({
     setSelectedCells,
     shouldShowSubComponent,
     startCellEdit,
+    setEditingHeader,
     SubComponent,
     tableRef,
     updateEntitiesHelper,

@@ -57,6 +57,10 @@ export default function EditableCellTable(props) {
   const [defaultValAsFunc, defaultValAsFuncComp] = useToggle(
     defaultValAsFuncOptions
   );
+  const [isHeaderEditable, isHeaderEditableSwitch] = useToggle({
+    type: "isHeaderEditable",
+    defaultValue: true
+  });
 
   const schema = useMemo(
     () => ({
@@ -106,10 +110,14 @@ export default function EditableCellTable(props) {
           //should auto validate to coerce Yes -> true "true"->true, should auto format to try to coerce input values into accepted
           type: "boolean",
           defaultValue: true
+        },
+        {
+          path: "EditableColumn",
+          editableHeader: isHeaderEditable
         }
       ]
     }),
-    [defaultValAsFunc]
+    [defaultValAsFunc, isHeaderEditable]
   );
 
   return (
@@ -117,6 +125,7 @@ export default function EditableCellTable(props) {
       <OptionsSection>
         {numComp}
         {defaultValAsFuncComp}
+        {isHeaderEditableSwitch}
       </OptionsSection>
       <DemoWrapper>
         <DataTable
@@ -124,6 +133,7 @@ export default function EditableCellTable(props) {
           formName="editableCellTable"
           isSimple
           isCellEditable
+          isHeaderEditable={!!isHeaderEditable}
           entities={entities}
           schema={schema}
         />
