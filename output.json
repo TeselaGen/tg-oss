@@ -83,6 +83,127 @@
           "implicitDependencies": []
         }
       },
+      "bounce-loader": {
+        "name": "bounce-loader",
+        "type": "lib",
+        "data": {
+          "root": "packages/bounce-loader",
+          "name": "bounce-loader",
+          "targets": {
+            "nx-release-publish": {
+              "dependsOn": ["^nx-release-publish"],
+              "executor": "@nx/js:release-publish",
+              "options": {},
+              "configurations": {}
+            },
+            "build": {
+              "executor": "@nx/vite:build",
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "outputs": ["{options.outputPath}"],
+              "defaultConfiguration": "production",
+              "options": {
+                "generatePackageJson": true,
+                "outputPath": "dist/bounce-loader"
+              },
+              "configurations": {
+                "production": {
+                  "mode": "production"
+                }
+              }
+            },
+            "lint": {
+              "executor": "@nx/linter:eslint",
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore"
+              ],
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": [
+                  "packages/bounce-loader/**/*.{ts,tsx,js,jsx}"
+                ]
+              },
+              "configurations": {}
+            },
+            "test": {
+              "metadata": {},
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
+              },
+              "configurations": {}
+            },
+            "e2e-playwright": {
+              "metadata": {},
+              "inputs": ["default", "^production"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/bounce-loader && yarn playwright test"
+              },
+              "configurations": {}
+            },
+            "launch-e2e": {
+              "metadata": {},
+              "inputs": ["default", "^production"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "nx run bounce-loader:start & cd packages/bounce-loader && yarn playwright test --ui"
+              },
+              "configurations": {}
+            },
+            "start": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/bounce-loader && yarn vite"
+              },
+              "configurations": {}
+            },
+            "launch-e2e2": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "yarn concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
+              },
+              "configurations": {}
+            },
+            "e2e2": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "yarn concurrently --kill-others --kill-signal SIGKILL --success first \"yarn wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
+              },
+              "configurations": {}
+            },
+            "publish": {
+              "dependsOn": ["e2e", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs bounce-loader latest"
+              },
+              "configurations": {}
+            },
+            "publish-beta": {
+              "dependsOn": ["e2e", "build"],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node tools/scripts/publish.mjs bounce-loader beta"
+              },
+              "configurations": {}
+            }
+          },
+          "sourceRoot": "packages/bounce-loader/src",
+          "projectType": "library",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "tags": [],
+          "implicitDependencies": []
+        }
+      },
       "bio-parsers": {
         "name": "bio-parsers",
         "type": "lib",
@@ -709,6 +830,7 @@
           "type": "static"
         }
       ],
+      "bounce-loader": [],
       "bio-parsers": [
         {
           "source": "bio-parsers",
