@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.7.22",
+  "version": "0.7.23",
   "main": "./src/index.js",
   "type": "module",
   "exports": {
@@ -47,7 +47,7 @@
     "react-markdown": "9.0.1",
     "react-redux": "^8.0.5",
     "react-rnd": "^10.2.4",
-    "react-router-dom": "4",
+    "react-router-dom": "5",
     "react-transition-group": "^2.4.0",
     "recompose": "npm:react-recompose@0.31.1",
     "redux": "^4.1.2",
