@@ -80,6 +80,9 @@ function abConverter(inputArrayBuffer) {
     traceData.gTrace = this.getDataTag(tagDict.colorDataG);
     traceData.cTrace = this.getDataTag(tagDict.colorDataC);
     traceData.basePos = this.getDataTag(tagDict.peakLocations);
+    if (traceData.basePos === undefined) {
+      traceData.basePos = this.getDataTag(tagDict.peakLocationsUser);
+    }
     traceData.baseCalls = this.getDataTag(tagDict.baseCalls2);
     traceData.qualNums = this.getDataTag(tagDict.qualNums);
     if (traceData.qualNums) {
@@ -109,6 +112,7 @@ const tagDict = {
   baseCalls2: { tagName: "PBAS", tagNum: 2, typeToReturn: "getChar" },
   qualNums: { tagName: "PCON", tagNum: 2, typeToReturn: "getNumber" },
   peakLocations: { tagName: "PLOC", tagNum: 2, typeToReturn: "getShort" },
+  peakLocationsUser: { tagName: "PLOC", tagNum: 1, typeToReturn: "getShort" },
   peakDev: { tagName: "P1RL", tagNum: 1, typeToReturn: "getShort" },
   peakOneAmp: { tagName: "P1AM", tagNum: 1, typeToReturn: "getShort" },
   colorDataA: { tagName: "DATA", tagNum: 10, typeToReturn: "getShort" },
