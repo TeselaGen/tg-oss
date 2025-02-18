@@ -3,7 +3,7 @@ import React from "react";
 import classNames from "classnames";
 import "./style.css";
 
-export default function BounceLoader({ style, className }) {
+export function BounceLoader({ style, className }) {
   return (
     <div className={classNames("tg-bounce-loader", className)} style={style}>
       <div className="rect1" />
