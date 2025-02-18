@@ -1,0 +1,35 @@
+export default Uploader;
+declare function Uploader({ accept: __accept, action, autoUnzip, beforeUpload, callout: _callout, className, contentOverride: maybeContentOverride, disabled, dropzoneProps, fileLimit, fileList, innerIcon, innerText, meta: { form: formName }, minimal, name, noBuildCsvOption, noRedux, onChange: _onChange, onFieldSubmit, onFileClick, onFileSuccess, onPreviewClick, onRemove, overflowList, readBeforeUpload, showFilesCount, showUploadList, threeDotMenuItems, validateAgainstSchema: _validateAgainstSchema }: {
+    accept: any;
+    action: any;
+    autoUnzip: any;
+    beforeUpload: any;
+    callout: any;
+    className?: string | undefined;
+    contentOverride: any;
+    disabled: any;
+    dropzoneProps?: {} | undefined;
+    fileLimit: any;
+    fileList: any;
+    innerIcon: any;
+    innerText: any;
+    meta?: {
+        form: any;
+    } | undefined;
+    minimal: any;
+    name: any;
+    noBuildCsvOption: any;
+    noRedux?: boolean | undefined;
+    onChange?: ((...args: any[]) => void) | undefined;
+    onFieldSubmit?: ((...args: any[]) => void) | undefined;
+    onFileClick: any;
+    onFileSuccess?: (() => Promise<void>) | undefined;
+    onPreviewClick: any;
+    onRemove?: ((...args: any[]) => void) | undefined;
+    overflowList: any;
+    readBeforeUpload: any;
+    showFilesCount: any;
+    showUploadList?: boolean | undefined;
+    threeDotMenuItems: any;
+    validateAgainstSchema: any;
+}): import("react/jsx-runtime").JSX.Element;
