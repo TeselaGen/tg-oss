@@ -51,6 +51,15 @@ function fastqToJson(fileString, options = {}) {
         sequence: sequence,
         circular: false,
         description: ""
+      },
+      chromatogramData: {
+        aTrace: [],
+        tTrace: [],
+        gTrace: [],
+        cTrace: [],
+        basePos: [],
+        baseCalls: [],
+        qualNums: quality.split("").map(char => char.charCodeAt(0) - 33)
       }
     };
     resultArray.push(result);
