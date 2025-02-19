@@ -43,6 +43,16 @@ function fastqToJson(fileString, options = {}) {
 
     validateFastqSet(header, sequence, plusSign, quality);
 
+    // const newChromatogramData = convertBasePosTraceToPerBpTrace({
+    //   aTrace: [0],
+    //   tTrace: [0],
+    //   gTrace: [0],
+    //   cTrace: [0],
+    //   basePos: [1],
+    //   baseCalls: sequence.split(""),
+    //   qualNums: quality.split("").map(char => char.charCodeAt(0) - 33),
+    // });
+
     const result = {
       success: true,
       messages: [],
@@ -51,15 +61,7 @@ function fastqToJson(fileString, options = {}) {
         sequence: sequence,
         circular: false,
         description: ""
-      },
-      chromatogramData: {
-        aTrace: [],
-        tTrace: [],
-        gTrace: [],
-        cTrace: [],
-        basePos: [],
-        baseCalls: [],
-        qualNums: quality.split("").map(char => char.charCodeAt(0) - 33)
+        // chromatogramData: newChromatogramData,
       }
     };
     resultArray.push(result);
