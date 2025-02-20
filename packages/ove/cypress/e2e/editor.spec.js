@@ -190,7 +190,7 @@ describe("editor", function () {
 
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "New Sequence From Selected Range").click();
+    cy.contains(".bp3-menu-item", "New Sequence From Selection").click();
 
     cy.contains("onCreateNewFromSubsequence callback triggered").should(
       "be.visible"

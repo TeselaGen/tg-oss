@@ -265,8 +265,7 @@ const fileCommandDefs = {
       props.exportSequenceToFile(isProtein(props) ? "genpept" : "genbank")
   },
   exportDNASequenceAsFasta: {
-    name: props =>
-      `Download ${props.sequenceData.isProtein ? "DNA " : ""}FASTA File`,
+    name: props => `Download ${isProtein(props) ? "DNA " : ""}FASTA File`,
     isHidden: props => !props.sequenceData.sequence,
     handler: props =>
       props.exportSequenceToFile("fasta", {
@@ -418,7 +417,12 @@ const editCommandDefs = {
     hotkey: "mod+x"
   },
   createNewFromSubsequence: {
-    name: "New Sequence From Selected Range",
+    name: props =>
+      isProtein(props)
+        ? "Create New AA Sequence From Selection"
+        : isOligo(props)
+          ? "Create New Oligo From Selection"
+          : "Create New DNA Sequence From Selection",
     isDisabled: props =>
       props.sequenceLength === 0 || props.selectionLayer.start === -1,
     isHidden: props => !props.onCreateNewFromSubsequence,
@@ -1190,11 +1194,6 @@ const annotationToggleCommandDefs = {};
       );
     }
   },
-  // {
-  //   type: "aminoAcidNumbers",
-  //   isHidden: (p, c) =>
-  //     (c.isDnaMenu && p.isProtein) || (!c.isDnaMenu && !p.isProtein)
-  // },
   { type: "aminoAcidNumbers" },
   "axisNumbers",
   {
@@ -1288,7 +1287,7 @@ const additionalAnnotationCommandsDefs = {
   showAll: {
     handler: props => {
       annotationTypes.forEach(type => {
-        if (props.isProtein) {
+        if (isProtein(props)) {
           if (type === "translations" || type === "cutsites")
             return props.annotationVisibilityHide(type);
         }
@@ -1306,10 +1305,6 @@ const additionalAnnotationCommandsDefs = {
   showAllLabels: {
     handler: props => {
       annotationTypes.forEach(type => {
-        // if (props.isProtein) {
-        //   if (type === "translations" || type === "cutsites")
-        //     return props.annotationVisibilityHide(type);
-        // }
         props.annotationLabelVisibilityShow(type);
       });
     }

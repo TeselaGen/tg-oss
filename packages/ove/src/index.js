@@ -52,3 +52,4 @@ export { default as EnzymeViewer } from "./EnzymeViewer";
 export { default as AlignmentView } from "./AlignmentView";
 export { default as getOveHotkeyDefs } from "./commands/getOveHotkeyDefs";
 export { getStructuredBases } from "./RowItem/StackedAnnotations/getStructuredBases";
+export { divideBy3 } from "./utils/proteinUtils";
