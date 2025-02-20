@@ -17,6 +17,7 @@ export { default as EnzymeViewer } from './EnzymeViewer';
 export { default as AlignmentView } from './AlignmentView';
 export { default as getOveHotkeyDefs } from './commands/getOveHotkeyDefs';
 export { getStructuredBases } from './RowItem/StackedAnnotations/getStructuredBases';
+export { divideBy3 } from './utils/proteinUtils';
 export { default as withEditorProps, connectToEditor } from './withEditorProps';
 export { default as Editor, Editor as EditorUnconnected } from './Editor';
 export { default as CutsiteFilter, CutsiteFilter as CutsiteFilterUnconnected } from './CutsiteFilter';

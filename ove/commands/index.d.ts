@@ -273,7 +273,7 @@ export namespace commandDefs {
         export { hotkey_9 as hotkey };
     }
     namespace createNewFromSubsequence {
-        let name_10: string;
+        export function name_10(props: any): "Create New AA Sequence From Selection" | "Create New Oligo From Selection" | "Create New DNA Sequence From Selection";
         export { name_10 as name };
         export function isDisabled_8(props: any): boolean;
         export { isDisabled_8 as isDisabled };
