@@ -33,7 +33,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/bio-parsers/**/*.js"]
+        "lintFilePatterns": [
+          "packages/bio-parsers/**/*.js",
+          "packages/bio-parsers/package.json"
+        ]
       }
     }
   },

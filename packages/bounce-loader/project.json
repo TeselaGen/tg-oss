@@ -9,7 +9,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/bounce-loader/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/bounce-loader/**/*.{ts,tsx,js,jsx}",
+          "packages/bounce-loader/package.json"
+        ]
       }
     },
     "build": {
@@ -17,7 +20,6 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "generatePackageJson": true,
         "outputPath": "dist/bounce-loader"
       },
       "configurations": {

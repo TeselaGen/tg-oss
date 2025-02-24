@@ -106,7 +106,7 @@ try {
   // delete json.type;
   // json.type = "module";
   json.license = "MIT";
-  json.dependencies = { ...deps, ...json.dependencies };
+  json.dependencies = { ...json.dependencies, ...deps };
   writeFileSync(`package.json`, JSON.stringify(json, null, 2));
 } catch (e) {
   console.error(

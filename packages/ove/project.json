@@ -9,7 +9,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/ove/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/ove/**/*.{ts,tsx,js,jsx}",
+          "packages/ove/package.json"
+        ]
       }
     },
     "start": {
@@ -48,7 +51,6 @@
       "defaultConfiguration": "production",
       "options": {
         "emptyOutDir": false,
-        "generatePackageJson": true,
         "outputPath": "dist/ove"
       },
       "configurations": {
