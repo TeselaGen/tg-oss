@@ -33,7 +33,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/file-utils/**/*.js"]
+        "lintFilePatterns": [
+          "packages/file-utils/**/*.js",
+          "packages/file-utils/package.json"
+        ]
       }
     }
   },

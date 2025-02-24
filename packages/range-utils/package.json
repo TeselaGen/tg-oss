@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/range-utils",
-  "version": "0.3.10",
+  "version": "0.3.13",
   "type": "module",
   "dependencies": {
     "lodash-es": "^4.17.21"

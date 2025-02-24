@@ -35,7 +35,10 @@
               "outputs": ["{options.outputFile}"],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/sequence-utils/**/*.js"]
+                "lintFilePatterns": [
+                  "packages/sequence-utils/**/*.js",
+                  "packages/sequence-utils/package.json"
+                ]
               },
               "configurations": {}
             },
@@ -103,7 +106,6 @@
               "outputs": ["{options.outputPath}"],
               "defaultConfiguration": "production",
               "options": {
-                "generatePackageJson": true,
                 "outputPath": "dist/bounce-loader"
               },
               "configurations": {
@@ -123,7 +125,8 @@
               "options": {
                 "maxWarnings": 0,
                 "lintFilePatterns": [
-                  "packages/bounce-loader/**/*.{ts,tsx,js,jsx}"
+                  "packages/bounce-loader/**/*.{ts,tsx,js,jsx}",
+                  "packages/bounce-loader/package.json"
                 ]
               },
               "configurations": {}
@@ -238,7 +241,10 @@
               "outputs": ["{options.outputFile}"],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/bio-parsers/**/*.js"]
+                "lintFilePatterns": [
+                  "packages/bio-parsers/**/*.js",
+                  "packages/bio-parsers/package.json"
+                ]
               },
               "configurations": {}
             },
@@ -320,7 +326,10 @@
               "outputs": ["{options.outputFile}"],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/range-utils/**/*.js"]
+                "lintFilePatterns": [
+                  "packages/range-utils/**/*.js",
+                  "packages/range-utils/package.json"
+                ]
               },
               "configurations": {}
             },
@@ -422,7 +431,10 @@
               "outputs": ["{options.outputFile}"],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/file-utils/**/*.js"]
+                "lintFilePatterns": [
+                  "packages/file-utils/**/*.js",
+                  "packages/file-utils/package.json"
+                ]
               },
               "configurations": {}
             },
@@ -503,7 +515,10 @@
               "outputs": ["{options.outputFile}"],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/uploader/**/*.{ts,tsx,js,jsx}"]
+                "lintFilePatterns": [
+                  "packages/uploader/**/*.{ts,tsx,js,jsx}",
+                  "packages/uploader/package.json"
+                ]
               },
               "configurations": {}
             }
@@ -536,7 +551,6 @@
               "defaultConfiguration": "production",
               "options": {
                 "emptyOutDir": false,
-                "generatePackageJson": true,
                 "outputPath": "dist/ove"
               },
               "configurations": {
@@ -563,7 +577,10 @@
               "outputs": ["{options.outputFile}"],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/ove/**/*.{ts,tsx,js,jsx}"]
+                "lintFilePatterns": [
+                  "packages/ove/**/*.{ts,tsx,js,jsx}",
+                  "packages/ove/package.json"
+                ]
               },
               "configurations": {}
             },
@@ -697,7 +714,6 @@
               "outputs": ["{options.outputPath}"],
               "defaultConfiguration": "production",
               "options": {
-                "generatePackageJson": true,
                 "outputPath": "dist/ui"
               },
               "configurations": {
@@ -721,7 +737,10 @@
               "outputs": ["{options.outputFile}"],
               "options": {
                 "maxWarnings": 0,
-                "lintFilePatterns": ["packages/ui/**/*.{ts,tsx,js,jsx}"]
+                "lintFilePatterns": [
+                  "packages/ui/**/*.{ts,tsx,js,jsx}",
+                  "packages/ui/package.json"
+                ]
               },
               "configurations": {}
             },

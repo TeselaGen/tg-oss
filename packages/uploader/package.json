@@ -9,5 +9,6 @@
       "import": "./index.es.js",
       "require": "./index.cjs.js"
     }
-  }
+  },
+  "dependencies": {}
 }

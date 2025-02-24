@@ -9,7 +9,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/ui/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/ui/**/*.{ts,tsx,js,jsx}",
+          "packages/ui/package.json"
+        ]
       }
     },
     "publish": {
@@ -33,7 +36,6 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "generatePackageJson": true,
         "outputPath": "dist/ui"
       },
       "configurations": {

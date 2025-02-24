@@ -9,7 +9,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/uploader/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/uploader/**/*.{ts,tsx,js,jsx}",
+          "packages/uploader/package.json"
+        ]
       }
     },
     "build": {
