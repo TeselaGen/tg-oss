@@ -69,7 +69,7 @@ function CutsiteToolDropDown({
         onChangeHook={function () {
           annotationVisibilityShow("cutsites");
         }}
-        closeDropDown={toggleDropdown}
+        closeDropDown={() => toggleDropdown({ forceClose: true })}
       />
       {withDigestTool && (
         <Button
