@@ -7,7 +7,7 @@ export default function tryToMatchSchemas({ incomingData, validateAgainstSchema 
     matchedHeaders: {};
     userSchema: {
         fields: {
-            path: string;
+            path: never;
             type: string;
         }[];
         userData: any;
