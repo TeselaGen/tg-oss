@@ -30,7 +30,7 @@
       "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
