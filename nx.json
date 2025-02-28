@@ -59,6 +59,7 @@
       "options": {
         "parallel": true,
         "record": true,
+        "cypressConfig": "{projectRoot}/cypress.config.ts",
         "devServerTarget": "{projectName}:start:ci",
         "testingType": "e2e"
       }
