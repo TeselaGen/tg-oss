@@ -6,7 +6,7 @@ describe("miscellaneous tests that do not fit other categories", () => {
     cy.wait(200);
     cy.get(`.tg-menu-bar-help-search input`)
       .type(
-        "asdfasdf{selectall}{clear}yyyyy{leftarrow}{leftarrow}{leftarrow}xxxx"
+        "asdfasdf{selectall}{backspace}yyyyy{leftarrow}{leftarrow}{leftarrow}xxxx"
       )
       .should("have.value", "yyxxxxyyy");
   });
