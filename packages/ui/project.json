@@ -5,15 +5,8 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "publish": {
-      "command": "node tools/scripts/publish.mjs ui latest",
-      "dependsOn": ["test", "build"]
-    },
-    "lint": {},
-    "publish-beta": {
-      "command": "node tools/scripts/publish.mjs ui beta",
-      "dependsOn": ["test", "build"]
-    },
+    "publish": {},
+    "publish-beta": {},
     "build_simple": {
       "command": "cd packages/ui && vite build --mode={args.mode}",
       "configurations": {
@@ -23,12 +16,6 @@
       }
     },
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/ui"
-      },
       "configurations": {
         "demo": {
           "mode": "demo",
@@ -56,35 +43,10 @@
         }
       }
     },
-    "launch-e2e": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "watch": true,
-        "headed": true,
-        "browser": "chrome",
-        "cypressConfig": "packages/ui/cypress.config.ts",
-        "devServerTarget": "ui:start:ci",
-        "testingType": "e2e"
-      }
-    },
-    "e2e": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "parallel": true,
-        "key": "1ced39be-1a3a-4fd8-b2d5-a88951d9b766",
-        "record": true,
-        "cypressConfig": "packages/ui/cypress.config.ts",
-        "devServerTarget": "ui:start:ci",
-        "testingType": "e2e"
-      },
-      "configurations": {
-        "dev": {
-          "parallel": false
-        }
-      }
-    },
-    "test": {
-      "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts"
-    }
+    "launch-e2e": {},
+    "e2e": {},
+    "lint": {},
+    "test": {},
+    "version": {}
   }
 }

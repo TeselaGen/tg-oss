@@ -5,27 +5,11 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/bounce-loader"
-      },
-      "configurations": {
-        "production": {
-          "mode": "production"
-        }
-      }
-    },
-    "lint": {},
-
+    "build": {},
     "start": {
       "command": "cd packages/bounce-loader && yarn vite"
     },
-    "launch-e2e": {
-      "command": "nx run bounce-loader:start & cd packages/bounce-loader && yarn playwright test --ui"
-    },
+    "launch-e2e": {},
     "launch-e2e2": {
       "command": "yarn concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
     },
@@ -35,16 +19,10 @@
     "e2e2": {
       "command": "yarn concurrently --kill-others --kill-signal SIGKILL --success first \"yarn wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
     },
-    "test": {
-      "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
-    },
-    "publish": {
-      "command": "node tools/scripts/publish.mjs bounce-loader latest",
-      "dependsOn": ["e2e", "build"]
-    },
-    "publish-beta": {
-      "command": "node tools/scripts/publish.mjs bounce-loader beta",
-      "dependsOn": ["e2e", "build"]
-    }
+    "publish": {},
+    "publish-beta": {},
+    "lint": {},
+    "test": {},
+    "version": {}
   }
 }

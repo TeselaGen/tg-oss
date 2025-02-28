@@ -16,15 +16,8 @@
         }
       }
     },
-    "lint": {},
-    "publish": {
-      "command": "node tools/scripts/publish.mjs ove latest",
-      "dependsOn": ["test", "build", "build_umd"]
-    },
-    "publish-beta": {
-      "command": "node tools/scripts/publish.mjs ove beta",
-      "dependsOn": ["test", "build", "build_umd"]
-    },
+    "publish": {},
+    "publish-beta": {},
     "build_umd": {
       "command": "nx run ove:build --mode=umd"
     },
@@ -37,13 +30,6 @@
       }
     },
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "emptyOutDir": false,
-        "outputPath": "dist/ove"
-      },
       "configurations": {
         "umd": {
           "mode": "umd"
@@ -64,39 +50,13 @@
       // "dependsOn": ["build:demo"],
       "command": "yarn gh-pages -a -d demo-dist"
     },
-
-    "launch-e2e": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "watch": true,
-        "headed": true,
-        "browser": "chrome",
-        "cypressConfig": "packages/ove/cypress.config.ts",
-        "devServerTarget": "ove:start:ci",
-        "testingType": "e2e"
-      }
-    },
+    "launch-e2e": {},
     "launch-e2e-playwright": {
       "command": "nx run ove:start:ci & cd packages/ove && yarn playwright test --ui"
     },
-    "e2e": {
-      "executor": "@nx/cypress:cypress",
-      "options": {
-        "parallel": true,
-        "key": "373658d4-4931-4ffd-9263-8eb78a838ab9",
-        "record": true,
-        "cypressConfig": "packages/ove/cypress.config.ts",
-        "devServerTarget": "ove:start:ci",
-        "testingType": "e2e"
-      },
-      "configurations": {
-        "dev": {
-          "parallel": false
-        }
-      }
-    },
-    "test": {
-      "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts"
-    }
+    "e2e": {},
+    "lint": {},
+    "test": {},
+    "version": {}
   }
 }

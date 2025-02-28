@@ -17,7 +17,18 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production"],
+      "outputs": ["{options.outputPath}"],
+      "executor": "@nx/vite:build",
+      "options": {
+        "target": "es2015"
+      },
+      "defaultConfiguration": "production",
+      "configurations": {
+        "production": {
+          "mode": "production"
+        }
+      }
     },
     "lint": {
       "inputs": [
@@ -36,16 +47,56 @@
       }
     },
     "test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd {projectRoot} && yarn vitest run --changed --config vite.config.ts"
+      }
     },
     "e2e": {
-      "inputs": ["default", "^production"]
+      "inputs": ["default", "^production"],
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "parallel": true,
+        "record": true,
+        "devServerTarget": "{projectName}:start:ci",
+        "testingType": "e2e"
+      }
     },
     "e2e-playwright": {
       "inputs": ["default", "^production"]
     },
     "launch-e2e": {
-      "inputs": ["default", "^production"]
+      "inputs": ["default", "^production"],
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "watch": true,
+        "headed": true,
+        "browser": "chrome",
+        "cypressConfig": "{projectRoot}/cypress.config.ts",
+        "devServerTarget": "{projectName}:start:ci",
+        "testingType": "e2e"
+      }
+    },
+    "publish": {
+      "dependsOn": ["test", "build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs {projectName} latest"
+      }
+    },
+    "publish-beta": {
+      "dependsOn": ["test", "build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs {projectName} beta"
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
+      }
     }
   },
   "namedInputs": {
