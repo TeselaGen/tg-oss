@@ -51,6 +51,8 @@ describe("partTags", function () {
     cy.get(".veRowViewSelectionLayer").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Part").click({ force: true });
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(200);
     cy.focused().type("np");
     cy.get(".tg-test-tags").click();
     cy.contains(".bp3-menu-item", "status: ready").click();
