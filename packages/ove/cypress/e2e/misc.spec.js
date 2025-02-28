@@ -5,7 +5,9 @@ describe("miscellaneous tests that do not fit other categories", () => {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.get(`.tg-menu-bar-help-search input`)
-      .type("yyyyy{leftarrow}{leftarrow}{leftarrow}xxxx", { delay: 40 })
+      .type(
+        "asdfasdf{selectall}{clear}yyyyy{leftarrow}{leftarrow}{leftarrow}xxxx"
+      )
       .should("have.value", "yyxxxxyyy");
   });
 });
