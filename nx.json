@@ -20,14 +20,20 @@
       "inputs": ["production", "^production"]
     },
     "lint": {
-      "options": {
-        "maxWarnings": 0
-      },
       "inputs": [
         "default",
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore"
-      ]
+      ],
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "maxWarnings": 0,
+        "lintFilePatterns": [
+          "{projectRoot}/**/*.{ts,tsx,js,jsx}",
+          "{projectRoot}/package.json"
+        ]
+      }
     },
     "test": {
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]

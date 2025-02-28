@@ -26,18 +26,9 @@
       "command": "node tools/scripts/publish.mjs sequence-utils beta",
       "dependsOn": ["test", "build"]
     },
+    "lint": {},
     "test": {
       "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "packages/sequence-utils/**/*.js",
-          "packages/sequence-utils/package.json"
-        ]
-      }
     }
   },
   "tags": []

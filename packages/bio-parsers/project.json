@@ -29,16 +29,7 @@
     "test": {
       "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
     },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "packages/bio-parsers/**/*.js",
-          "packages/bio-parsers/package.json"
-        ]
-      }
-    }
+    "lint": {}
   },
   "tags": []
 }

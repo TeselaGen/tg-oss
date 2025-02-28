@@ -5,16 +5,7 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "packages/uploader/**/*.{ts,tsx,js,jsx}",
-          "packages/uploader/package.json"
-        ]
-      }
-    },
+    "lint": {},
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],

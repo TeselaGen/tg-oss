@@ -26,18 +26,9 @@
       "command": "node tools/scripts/publish.mjs file-utils beta",
       "dependsOn": ["test", "build"]
     },
+    "lint": {},
     "test": {
       "command": "cd packages/file-utils && yarn vitest run --changed --config vite.config.ts"
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "packages/file-utils/**/*.js",
-          "packages/file-utils/package.json"
-        ]
-      }
     }
   },
   "tags": []

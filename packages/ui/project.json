@@ -5,20 +5,11 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "packages/ui/**/*.{ts,tsx,js,jsx}",
-          "packages/ui/package.json"
-        ]
-      }
-    },
     "publish": {
       "command": "node tools/scripts/publish.mjs ui latest",
       "dependsOn": ["test", "build"]
     },
+    "lint": {},
     "publish-beta": {
       "command": "node tools/scripts/publish.mjs ui beta",
       "dependsOn": ["test", "build"]
