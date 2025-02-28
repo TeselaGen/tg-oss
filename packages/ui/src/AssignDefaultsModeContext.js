@@ -14,6 +14,7 @@ export const workflowDefaultParamsObj = {
   workflowRunId: undefined,
   toolName: undefined,
   workflowToolTitle: undefined,
+  workflowToolDefinitionId: undefined,
   workflowTaskCode: undefined
 };
 export const WorkflowDefaultParamsContext = React.createContext(
