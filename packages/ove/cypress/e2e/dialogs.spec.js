@@ -24,9 +24,7 @@ describe("dialogs", function () {
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Feature").click();
     cy.contains(".bp3-menu-item", "New Feature").should("not.exist");
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(200);
-    cy.focused().type("new feat");
+    cy.get(`[placeholder="Untitled Annotation"]`).type("new feat");
     cy.screenshot();
 
     cy.contains("Add Note").click();
