@@ -7,20 +7,10 @@
   "targets": {
     "publish": {},
     "publish-beta": {},
-    "build_simple": {
-      "command": "cd packages/ui && vite build --mode={args.mode}",
-      "configurations": {
-        "demo": {
-          "args": "--mode=demo"
-        }
-      }
-    },
     "build": {
       "configurations": {
         "demo": {
-          "mode": "demo",
-          "base": "./",
-          "outputPath": "demo-dist/ui"
+          "mode": "demo"
         },
         "production": {
           "mode": "production"

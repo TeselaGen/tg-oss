@@ -12,7 +12,6 @@ export {
   getCurrentParamsFromUrl,
   setCurrentParamsOnUrl
 } from "./DataTable/utils/queryParams";
-
 export {
   default as withSelectedEntities,
   getSelectedEntities

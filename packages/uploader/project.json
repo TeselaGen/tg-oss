@@ -6,12 +6,6 @@
   "tags": [],
   "targets": {
     "lint": {},
-    "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/uploader"
-      }
-    }
+    "build": {}
   }
 }

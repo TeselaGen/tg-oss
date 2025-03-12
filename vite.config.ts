@@ -40,6 +40,10 @@ const conf = ({
                 {
                   src: "./README.md",
                   dest: "."
+                },
+                {
+                  src: "./package.json",
+                  dest: "."
                 }
               ]
             })

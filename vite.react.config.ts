@@ -85,6 +85,10 @@ export default ({ name, dir }: { name: string; dir: string }) =>
                   {
                     src: "./README.md",
                     dest: "."
+                  },
+                  {
+                    src: "./package.json",
+                    dest: "."
                   }
                 ]
               })
@@ -107,17 +111,6 @@ export default ({ name, dir }: { name: string; dir: string }) =>
           }
         }
       },
-
-      // Uncomment this if you are using workers.
-      // worker: {
-      //  plugins: [
-      //    viteTsConfigPaths({
-      //      root: '../../',
-      //    }),
-      //  ],
-      // },
-      // Configuration for building your library.
-      // See: https://vitejs.dev/guide/build.html#library-mode
       build: {
         minify: false,
         target: "es2015",

@@ -489,7 +489,8 @@ const DataTable = ({
     withSearch = !isSimple,
     withSelectAll,
     withSort,
-    withTitle = !isSimple
+    withTitle = !isSimple,
+    noExcessiveCheck
   } = props;
 
   const _entities = useMemo(
@@ -504,7 +505,8 @@ const DataTable = ({
   // This is because we need to maintain the reduxFormSelectedEntityIdMap and
   // allOrderedEntities updated
   useEffect(() => {
-    isBeingCalledExcessively({ uniqName: `dt_entities_${formName}` });
+    !noExcessiveCheck &&
+      isBeingCalledExcessively({ uniqName: `dt_entities_${formName}` });
     change("allOrderedEntities", entitiesAcrossPages);
     if (entities.length === 0 || isEmpty(reduxFormSelectedEntityIdMap)) return;
     changeSelectedEntities({
@@ -513,7 +515,12 @@ const DataTable = ({
       change
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entitiesAcrossPages, reduxFormSelectedEntityIdMap, change]);
+  }, [
+    entitiesAcrossPages,
+    reduxFormSelectedEntityIdMap,
+    change,
+    noExcessiveCheck
+  ]);
 
   const [tableConfig, setTableConfig] = useState({ fieldOptions: [] });
 
@@ -525,7 +532,8 @@ const DataTable = ({
       } else {
         newTableConfig = getTableConfigFromStorage(formName);
       }
-      isBeingCalledExcessively({ uniqName: `dt_setTableConfig_${formName}` });
+      !noExcessiveCheck &&
+        isBeingCalledExcessively({ uniqName: `dt_setTableConfig_${formName}` });
       // if the tableConfig is the same as the newTableConfig, don't update
       setTableConfig(prev => {
         if (!newTableConfig) {
@@ -547,7 +555,8 @@ const DataTable = ({
     formName,
     syncDisplayOptionsToDb,
     tableConfigurations,
-    withDisplayOptions
+    withDisplayOptions,
+    noExcessiveCheck
   ]);
 
   const schema = useMemo(() => {

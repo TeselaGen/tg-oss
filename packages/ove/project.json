@@ -21,23 +21,13 @@
     "build_umd": {
       "command": "nx run ove:build --mode=umd"
     },
-    "build_simple": {
-      "command": "cd packages/ove && vite build --mode={args.mode}",
-      "configurations": {
-        "demo": {
-          "args": "--mode=demo"
-        }
-      }
-    },
     "build": {
       "configurations": {
         "umd": {
           "mode": "umd"
         },
         "demo": {
-          "mode": "demo",
-          "base": "./",
-          "outputPath": "demo-dist/ove"
+          "mode": "demo"
         },
         "production": {
           "mode": "production"

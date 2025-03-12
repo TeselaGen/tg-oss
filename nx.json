@@ -18,16 +18,10 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
-      "outputs": ["{options.outputPath}"],
-      "executor": "@nx/vite:build",
+      "outputs": ["{options.outDir}"],
+      "executor": "nx:run-commands",
       "options": {
-        "target": "es2015"
-      },
-      "defaultConfiguration": "production",
-      "configurations": {
-        "production": {
-          "mode": "production"
-        }
+        "command": "cd {projectRoot} && yarn vite build --config vite.config.ts"
       }
     },
     "lint": {

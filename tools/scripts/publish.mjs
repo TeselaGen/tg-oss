@@ -25,7 +25,7 @@ function invariant(condition, message) {
 // Executing publish script: node path/to/publish.mjs {name} --tag {tag}
 // tag by default is "next". Manually set to beta for beta versions or latest for stable versions.
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-let [, , name, tag = "next"] = process.argv;
+const [, , name, tag = "next"] = process.argv;
 
 execSync(`git pull`);
 execSync(`yarn auto-changelog -p`);
@@ -37,7 +37,7 @@ const simpleGraph = JSON.parse(r).graph;
 const deps = {};
 const getDeps = name => {
   simpleGraph.dependencies[name].forEach(({ target }) => {
-    console.log(`target:`, target);
+    console.info(`target:`, target);
     if (target === "shared-demo") return; //we don't actually need to rely on this since it is only used for the demo pages
     const key = `@teselagen/${target}`;
     if (!deps[key]) {
@@ -59,7 +59,6 @@ invariant(
   project,
   `Could not find project "${name}" in the workspace. Is the project.json configured correctly?`
 );
-// const outputPath = project.data?.targets?.build?.options?.outputPath;
 const packagePath = project.data?.root;
 
 process.chdir(packagePath);

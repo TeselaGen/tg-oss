@@ -6,83 +6,101 @@
         "type": "lib",
         "data": {
           "root": "packages/sequence-utils",
+          "sourceRoot": "packages/sequence-utils/src",
           "name": "sequence-utils",
+          "projectType": "library",
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@teselagen/sequence-utils",
+              "packageExports": {
+                ".": {
+                  "import": "./index.js",
+                  "require": "./index.cjs"
+                }
+              },
+              "isInPackageManagerWorkspaces": true
+            }
+          },
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
               "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
+            },
+            "version": {
+              "configurations": {},
+              "options": {
+                "preset": "conventional"
+              },
+              "parallelism": true,
+              "executor": "@jscutlery/semver:version"
             },
             "build": {
-              "executor": "@nx/vite:build",
+              "configurations": {},
+              "options": {
+                "command": "cd packages/sequence-utils && yarn vite build --config vite.config.ts"
+              },
+              "parallelism": true,
               "dependsOn": ["^build"],
               "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "outputs": ["{options.outDir}"],
+              "executor": "nx:run-commands"
+            },
+            "publish": {
+              "configurations": {},
               "options": {
-                "target": "es2015",
-                "outputPath": "dist/sequence-utils"
+                "command": "node tools/scripts/publish.mjs sequence-utils latest"
               },
-              "configurations": {}
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
+            },
+            "publish-beta": {
+              "configurations": {},
+              "options": {
+                "command": "node tools/scripts/publish.mjs sequence-utils beta"
+              },
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
             },
             "lint": {
-              "executor": "@nx/eslint:lint",
+              "configurations": {},
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": [
+                  "packages/sequence-utils/**/*.{ts,tsx,js,jsx}",
+                  "packages/sequence-utils/package.json"
+                ]
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": [
-                  "packages/sequence-utils/**/*.js",
-                  "packages/sequence-utils/package.json"
-                ]
-              },
-              "configurations": {}
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "metadata": {},
+              "configurations": {},
+              "options": {
+                "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {}
-            },
-            "version": {
-              "executor": "@jscutlery/semver:version",
-              "options": {
-                "preset": "conventional"
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs sequence-utils latest"
-              },
-              "configurations": {}
-            },
-            "publish-beta": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs sequence-utils beta"
-              },
-              "configurations": {}
+              "executor": "nx:run-commands"
             }
           },
-          "sourceRoot": "packages/sequence-utils/src",
-          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -91,37 +109,111 @@
         "type": "lib",
         "data": {
           "root": "packages/bounce-loader",
+          "sourceRoot": "packages/bounce-loader/src",
           "name": "bounce-loader",
+          "projectType": "library",
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@teselagen/bounce-loader",
+              "packageExports": {
+                ".": {
+                  "import": "./index.es.js",
+                  "require": "./index.cjs.js"
+                },
+                "./style.css": "./style.css"
+              },
+              "packageMain": "./src/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
               "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
             },
             "build": {
-              "executor": "@nx/vite:build",
+              "configurations": {},
+              "options": {
+                "command": "cd packages/bounce-loader && yarn vite build --config vite.config.ts"
+              },
+              "parallelism": true,
               "dependsOn": ["^build"],
               "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
-              "defaultConfiguration": "production",
+              "outputs": ["{options.outDir}"],
+              "executor": "nx:run-commands"
+            },
+            "start": {
+              "executor": "nx:run-commands",
               "options": {
-                "outputPath": "dist/bounce-loader"
+                "command": "cd packages/bounce-loader && yarn vite"
               },
-              "configurations": {
-                "production": {
-                  "mode": "production"
-                }
-              }
+              "configurations": {},
+              "parallelism": true
+            },
+            "launch-e2e": {
+              "configurations": {},
+              "options": {
+                "watch": true,
+                "headed": true,
+                "browser": "chrome",
+                "cypressConfig": "packages/bounce-loader/cypress.config.ts",
+                "devServerTarget": "bounce-loader:start:ci",
+                "testingType": "e2e"
+              },
+              "parallelism": true,
+              "inputs": ["default", "^production"],
+              "executor": "@nx/cypress:cypress"
+            },
+            "launch-e2e2": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "yarn concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "e2e-playwright": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd packages/bounce-loader && yarn playwright test"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": ["default", "^production"]
+            },
+            "e2e2": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "yarn concurrently --kill-others --kill-signal SIGKILL --success first \"yarn wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "publish": {
+              "configurations": {},
+              "options": {
+                "command": "node tools/scripts/publish.mjs bounce-loader latest"
+              },
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
+            },
+            "publish-beta": {
+              "configurations": {},
+              "options": {
+                "command": "node tools/scripts/publish.mjs bounce-loader beta"
+              },
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
             },
             "lint": {
-              "executor": "@nx/eslint:lint",
-              "inputs": [
-                "default",
-                "{workspaceRoot}/.eslintrc.json",
-                "{workspaceRoot}/.eslintignore"
-              ],
-              "outputs": ["{options.outputFile}"],
+              "configurations": {},
               "options": {
                 "maxWarnings": 0,
                 "lintFilePatterns": [
@@ -129,81 +221,38 @@
                   "packages/bounce-loader/package.json"
                 ]
               },
-              "configurations": {}
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore"
+              ],
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "metadata": {},
+              "configurations": {},
+              "options": {
+                "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {}
+              "executor": "nx:run-commands"
             },
-            "e2e-playwright": {
-              "metadata": {},
-              "inputs": ["default", "^production"],
-              "executor": "nx:run-commands",
+            "version": {
+              "configurations": {},
               "options": {
-                "command": "cd packages/bounce-loader && yarn playwright test"
+                "preset": "conventional"
               },
-              "configurations": {}
-            },
-            "launch-e2e": {
-              "metadata": {},
-              "inputs": ["default", "^production"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "nx run bounce-loader:start & cd packages/bounce-loader && yarn playwright test --ui"
-              },
-              "configurations": {}
-            },
-            "start": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/bounce-loader && yarn vite"
-              },
-              "configurations": {}
-            },
-            "launch-e2e2": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "yarn concurrently -k \"wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress open --e2e --browser chrome\" \"nx run bounce-loader:start\""
-              },
-              "configurations": {}
-            },
-            "e2e2": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "yarn concurrently --kill-others --kill-signal SIGKILL --success first \"yarn wait-on tcp:4200 && cd packages/bounce-loader && yarn cypress run --record --config --e2e\" \"nx run bounce-loader:start\" "
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "dependsOn": ["e2e", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs bounce-loader latest"
-              },
-              "configurations": {}
-            },
-            "publish-beta": {
-              "dependsOn": ["e2e", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs bounce-loader beta"
-              },
-              "configurations": {}
+              "parallelism": true,
+              "executor": "@jscutlery/semver:version"
             }
           },
-          "sourceRoot": "packages/bounce-loader/src",
-          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -212,83 +261,101 @@
         "type": "lib",
         "data": {
           "root": "packages/bio-parsers",
+          "sourceRoot": "packages/bio-parsers/src",
           "name": "bio-parsers",
+          "projectType": "library",
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@teselagen/bio-parsers",
+              "packageExports": {
+                ".": {
+                  "import": "./index.js",
+                  "require": "./index.cjs"
+                }
+              },
+              "isInPackageManagerWorkspaces": true
+            }
+          },
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
               "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
+            },
+            "version": {
+              "configurations": {},
+              "options": {
+                "preset": "conventional"
+              },
+              "parallelism": true,
+              "executor": "@jscutlery/semver:version"
             },
             "build": {
-              "executor": "@nx/vite:build",
+              "configurations": {},
+              "options": {
+                "command": "cd packages/bio-parsers && yarn vite build --config vite.config.ts"
+              },
+              "parallelism": true,
               "dependsOn": ["^build"],
               "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "outputs": ["{options.outDir}"],
+              "executor": "nx:run-commands"
+            },
+            "publish": {
+              "configurations": {},
               "options": {
-                "target": "es2015",
-                "outputPath": "dist/bio-parsers"
+                "command": "node tools/scripts/publish.mjs bio-parsers latest"
               },
-              "configurations": {}
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
+            },
+            "publish-beta": {
+              "configurations": {},
+              "options": {
+                "command": "node tools/scripts/publish.mjs bio-parsers beta"
+              },
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
             },
             "lint": {
-              "executor": "@nx/eslint:lint",
+              "configurations": {},
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": [
+                  "packages/bio-parsers/**/*.{ts,tsx,js,jsx}",
+                  "packages/bio-parsers/package.json"
+                ]
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": [
-                  "packages/bio-parsers/**/*.js",
-                  "packages/bio-parsers/package.json"
-                ]
-              },
-              "configurations": {}
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "metadata": {},
+              "configurations": {},
+              "options": {
+                "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {}
-            },
-            "version": {
-              "executor": "@jscutlery/semver:version",
-              "options": {
-                "preset": "conventional"
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs bio-parsers latest"
-              },
-              "configurations": {}
-            },
-            "publish-beta": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs bio-parsers beta"
-              },
-              "configurations": {}
+              "executor": "nx:run-commands"
             }
           },
-          "sourceRoot": "packages/bio-parsers/src",
-          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -297,83 +364,95 @@
         "type": "lib",
         "data": {
           "root": "packages/range-utils",
+          "sourceRoot": "packages/range-utils/src",
           "name": "range-utils",
+          "projectType": "library",
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@teselagen/range-utils",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
               "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
+            },
+            "version": {
+              "configurations": {},
+              "options": {
+                "preset": "conventional"
+              },
+              "parallelism": true,
+              "executor": "@jscutlery/semver:version"
             },
             "build": {
-              "executor": "@nx/vite:build",
+              "configurations": {},
+              "options": {
+                "command": "cd packages/range-utils && yarn vite build --config vite.config.ts"
+              },
+              "parallelism": true,
               "dependsOn": ["^build"],
               "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "outputs": ["{options.outDir}"],
+              "executor": "nx:run-commands"
+            },
+            "publish": {
+              "configurations": {},
               "options": {
-                "target": "es2015",
-                "outputPath": "dist/range-utils"
+                "command": "node tools/scripts/publish.mjs range-utils latest"
               },
-              "configurations": {}
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
+            },
+            "publish-beta": {
+              "configurations": {},
+              "options": {
+                "command": "node tools/scripts/publish.mjs range-utils beta"
+              },
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
             },
             "lint": {
-              "executor": "@nx/eslint:lint",
+              "configurations": {},
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": [
+                  "packages/range-utils/**/*.{ts,tsx,js,jsx}",
+                  "packages/range-utils/package.json"
+                ]
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": [
-                  "packages/range-utils/**/*.js",
-                  "packages/range-utils/package.json"
-                ]
-              },
-              "configurations": {}
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "metadata": {},
+              "configurations": {},
+              "options": {
+                "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts"
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {}
-            },
-            "version": {
-              "executor": "@jscutlery/semver:version",
-              "options": {
-                "preset": "conventional"
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs range-utils latest"
-              },
-              "configurations": {}
-            },
-            "publish-beta": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs range-utils beta"
-              },
-              "configurations": {}
+              "executor": "nx:run-commands"
             }
           },
-          "sourceRoot": "packages/range-utils/src",
-          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -382,19 +461,28 @@
         "type": "lib",
         "data": {
           "root": "packages/shared-demo",
-          "targets": {
-            "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
-              "executor": "@nx/js:release-publish",
-              "options": {},
-              "configurations": {}
-            }
-          },
           "sourceRoot": "packages/shared-demo",
           "name": "shared-demo",
           "projectType": "library",
-          "implicitDependencies": [],
-          "tags": []
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "shared-demo",
+              "packageMain": "./src/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
+          "targets": {
+            "nx-release-publish": {
+              "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "implicitDependencies": []
         }
       },
       "file-utils": {
@@ -402,83 +490,95 @@
         "type": "lib",
         "data": {
           "root": "packages/file-utils",
+          "sourceRoot": "packages/file-utils/src",
           "name": "file-utils",
+          "projectType": "library",
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@teselagen/file-utils",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
               "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
+            },
+            "version": {
+              "configurations": {},
+              "options": {
+                "preset": "conventional"
+              },
+              "parallelism": true,
+              "executor": "@jscutlery/semver:version"
             },
             "build": {
-              "executor": "@nx/vite:build",
+              "configurations": {},
+              "options": {
+                "command": "cd packages/file-utils && yarn vite build --config vite.config.ts"
+              },
+              "parallelism": true,
               "dependsOn": ["^build"],
               "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
+              "outputs": ["{options.outDir}"],
+              "executor": "nx:run-commands"
+            },
+            "publish": {
+              "configurations": {},
               "options": {
-                "target": "es2015",
-                "outputPath": "dist/file-utils"
+                "command": "node tools/scripts/publish.mjs file-utils latest"
               },
-              "configurations": {}
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
+            },
+            "publish-beta": {
+              "configurations": {},
+              "options": {
+                "command": "node tools/scripts/publish.mjs file-utils beta"
+              },
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
             },
             "lint": {
-              "executor": "@nx/eslint:lint",
+              "configurations": {},
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": [
+                  "packages/file-utils/**/*.{ts,tsx,js,jsx}",
+                  "packages/file-utils/package.json"
+                ]
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "{workspaceRoot}/.eslintrc.json",
                 "{workspaceRoot}/.eslintignore"
               ],
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": [
-                  "packages/file-utils/**/*.js",
-                  "packages/file-utils/package.json"
-                ]
-              },
-              "configurations": {}
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "metadata": {},
+              "configurations": {},
+              "options": {
+                "command": "cd packages/file-utils && yarn vitest run --changed --config vite.config.ts"
+              },
+              "parallelism": true,
               "inputs": [
                 "default",
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
               ],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/file-utils && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {}
-            },
-            "version": {
-              "executor": "@jscutlery/semver:version",
-              "options": {
-                "preset": "conventional"
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs file-utils latest"
-              },
-              "configurations": {}
-            },
-            "publish-beta": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs file-utils beta"
-              },
-              "configurations": {}
+              "executor": "nx:run-commands"
             }
           },
-          "sourceRoot": "packages/file-utils/src",
-          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -487,32 +587,34 @@
         "type": "lib",
         "data": {
           "root": "packages/uploader",
+          "sourceRoot": "packages/uploader/src",
           "name": "uploader",
+          "projectType": "library",
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@teselagen/uploader",
+              "packageExports": {
+                ".": {
+                  "import": "./index.es.js",
+                  "require": "./index.cjs.js"
+                }
+              },
+              "packageMain": "./src/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
               "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
-              "configurations": {}
-            },
-            "build": {
-              "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
-              "options": {
-                "outputPath": "dist/uploader"
-              },
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
             },
             "lint": {
-              "executor": "@nx/eslint:lint",
-              "inputs": [
-                "default",
-                "{workspaceRoot}/.eslintrc.json",
-                "{workspaceRoot}/.eslintignore"
-              ],
-              "outputs": ["{options.outputFile}"],
+              "configurations": {},
               "options": {
                 "maxWarnings": 0,
                 "lintFilePatterns": [
@@ -520,13 +622,28 @@
                   "packages/uploader/package.json"
                 ]
               },
-              "configurations": {}
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore"
+              ],
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"]
+            },
+            "build": {
+              "configurations": {},
+              "options": {
+                "command": "cd packages/uploader && yarn vite build --config vite.config.ts"
+              },
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "outputs": ["{options.outDir}"],
+              "executor": "nx:run-commands"
             }
           },
-          "sourceRoot": "packages/uploader/src",
-          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -535,97 +652,32 @@
         "type": "lib",
         "data": {
           "root": "packages/ove",
+          "sourceRoot": "packages/ove/src",
           "name": "ove",
+          "projectType": "library",
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@teselagen/ove",
+              "packageExports": {
+                ".": {
+                  "import": "./index.es.js",
+                  "require": "./index.cjs.js"
+                },
+                "./*": "./*"
+              },
+              "packageMain": "./src/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
               "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
-              "configurations": {}
-            },
-            "build": {
-              "executor": "@nx/vite:build",
-              "dependsOn": ["build_lib"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
-              "defaultConfiguration": "production",
-              "options": {
-                "emptyOutDir": false,
-                "outputPath": "dist/ove"
-              },
-              "configurations": {
-                "umd": {
-                  "mode": "umd"
-                },
-                "demo": {
-                  "mode": "demo",
-                  "base": "./",
-                  "outputPath": "demo-dist/ove"
-                },
-                "production": {
-                  "mode": "production"
-                }
-              }
-            },
-            "lint": {
-              "executor": "@nx/eslint:lint",
-              "inputs": [
-                "default",
-                "{workspaceRoot}/.eslintrc.json",
-                "{workspaceRoot}/.eslintignore"
-              ],
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": [
-                  "packages/ove/**/*.{ts,tsx,js,jsx}",
-                  "packages/ove/package.json"
-                ]
-              },
-              "configurations": {}
-            },
-            "test": {
-              "metadata": {},
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts"
-              },
-              "configurations": {}
-            },
-            "e2e": {
-              "executor": "@nx/cypress:cypress",
-              "inputs": ["default", "^production"],
-              "options": {
-                "parallel": true,
-                "key": "373658d4-4931-4ffd-9263-8eb78a838ab9",
-                "record": true,
-                "cypressConfig": "packages/ove/cypress.config.ts",
-                "devServerTarget": "ove:start:ci",
-                "testingType": "e2e"
-              },
-              "configurations": {
-                "dev": {
-                  "parallel": false
-                }
-              }
-            },
-            "launch-e2e": {
-              "executor": "@nx/cypress:cypress",
-              "inputs": ["default", "^production"],
-              "options": {
-                "watch": true,
-                "headed": true,
-                "browser": "chrome",
-                "cypressConfig": "packages/ove/cypress.config.ts",
-                "devServerTarget": "ove:start:ci",
-                "testingType": "e2e"
-              },
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
             },
             "start": {
               "executor": "nx:run-commands",
@@ -636,61 +688,140 @@
                 "ci": {
                   "readyWhen": "ready in"
                 }
-              }
+              },
+              "parallelism": true
             },
             "publish": {
-              "dependsOn": ["test", "build", "build_umd"],
-              "executor": "nx:run-commands",
+              "configurations": {},
               "options": {
                 "command": "node tools/scripts/publish.mjs ove latest"
               },
-              "configurations": {}
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
             },
             "publish-beta": {
-              "dependsOn": ["test", "build", "build_umd"],
-              "executor": "nx:run-commands",
+              "configurations": {},
               "options": {
                 "command": "node tools/scripts/publish.mjs ove beta"
               },
-              "configurations": {}
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
             },
             "build_umd": {
               "executor": "nx:run-commands",
               "options": {
                 "command": "nx run ove:build --mode=umd"
               },
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
             },
-            "build_simple": {
+            "build": {
               "configurations": {
+                "umd": {
+                  "mode": "umd"
+                },
                 "demo": {
-                  "args": "--mode=demo"
+                  "mode": "demo"
+                },
+                "production": {
+                  "mode": "production"
                 }
               },
-              "executor": "nx:run-commands",
+              "dependsOn": ["build_lib"],
               "options": {
-                "command": "cd packages/ove && vite build --mode={args.mode}"
-              }
+                "command": "cd packages/ove && yarn vite build --config vite.config.ts"
+              },
+              "parallelism": true,
+              "inputs": ["production", "^production"],
+              "outputs": ["{options.outDir}"],
+              "executor": "nx:run-commands"
             },
             "pushToGhPages": {
               "executor": "nx:run-commands",
               "options": {
                 "command": "yarn gh-pages -a -d demo-dist"
               },
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
+            },
+            "launch-e2e": {
+              "configurations": {},
+              "options": {
+                "watch": true,
+                "headed": true,
+                "browser": "chrome",
+                "cypressConfig": "packages/ove/cypress.config.ts",
+                "devServerTarget": "ove:start:ci",
+                "testingType": "e2e"
+              },
+              "parallelism": true,
+              "inputs": ["default", "^production"],
+              "executor": "@nx/cypress:cypress"
             },
             "launch-e2e-playwright": {
               "executor": "nx:run-commands",
               "options": {
                 "command": "nx run ove:start:ci & cd packages/ove && yarn playwright test --ui"
               },
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
+            },
+            "e2e": {
+              "configurations": {},
+              "options": {
+                "parallel": true,
+                "record": true,
+                "cypressConfig": "packages/ove/cypress.config.ts",
+                "devServerTarget": "ove:start:ci",
+                "testingType": "e2e"
+              },
+              "parallelism": true,
+              "inputs": ["default", "^production"],
+              "executor": "@nx/cypress:cypress"
+            },
+            "lint": {
+              "configurations": {},
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": [
+                  "packages/ove/**/*.{ts,tsx,js,jsx}",
+                  "packages/ove/package.json"
+                ]
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore"
+              ],
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"]
+            },
+            "test": {
+              "configurations": {},
+              "options": {
+                "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts"
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "executor": "nx:run-commands"
+            },
+            "version": {
+              "configurations": {},
+              "options": {
+                "preset": "conventional"
+              },
+              "parallelism": true,
+              "executor": "@jscutlery/semver:version"
             }
           },
-          "sourceRoot": "packages/ove/src",
-          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
           "implicitDependencies": []
         }
       },
@@ -699,127 +830,76 @@
         "type": "lib",
         "data": {
           "root": "packages/ui",
+          "sourceRoot": "packages/ui/src",
           "name": "ui",
+          "projectType": "library",
+          "tags": ["npm:public"],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@teselagen/ui",
+              "packageExports": {
+                ".": {
+                  "import": "./index.es.js",
+                  "require": "./index.cjs.js"
+                },
+                "./style.css": "./style.css"
+              },
+              "packageMain": "./src/index.js",
+              "isInPackageManagerWorkspaces": true
+            }
+          },
           "targets": {
             "nx-release-publish": {
-              "dependsOn": ["^nx-release-publish"],
               "executor": "@nx/js:release-publish",
+              "dependsOn": ["^nx-release-publish"],
               "options": {},
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
+            },
+            "publish": {
+              "configurations": {},
+              "options": {
+                "command": "node tools/scripts/publish.mjs ui latest"
+              },
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
+            },
+            "publish-beta": {
+              "configurations": {},
+              "options": {
+                "command": "node tools/scripts/publish.mjs ui beta"
+              },
+              "parallelism": true,
+              "dependsOn": ["test", "build"],
+              "executor": "nx:run-commands"
             },
             "build": {
-              "executor": "@nx/vite:build",
-              "dependsOn": ["^build"],
-              "inputs": ["production", "^production"],
-              "outputs": ["{options.outputPath}"],
-              "defaultConfiguration": "production",
-              "options": {
-                "outputPath": "dist/ui"
-              },
               "configurations": {
                 "demo": {
-                  "mode": "demo",
-                  "base": "./",
-                  "outputPath": "demo-dist/ui"
+                  "mode": "demo"
                 },
                 "production": {
                   "mode": "production"
                 }
-              }
-            },
-            "lint": {
-              "executor": "@nx/eslint:lint",
-              "inputs": [
-                "default",
-                "{workspaceRoot}/.eslintrc.json",
-                "{workspaceRoot}/.eslintignore"
-              ],
-              "outputs": ["{options.outputFile}"],
-              "options": {
-                "maxWarnings": 0,
-                "lintFilePatterns": [
-                  "packages/ui/**/*.{ts,tsx,js,jsx}",
-                  "packages/ui/package.json"
-                ]
               },
-              "configurations": {}
-            },
-            "test": {
-              "metadata": {},
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
-              "executor": "nx:run-commands",
               "options": {
-                "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts"
+                "command": "cd packages/ui && yarn vite build --config vite.config.ts"
               },
-              "configurations": {}
-            },
-            "e2e": {
-              "executor": "@nx/cypress:cypress",
-              "inputs": ["default", "^production"],
-              "options": {
-                "parallel": true,
-                "key": "1ced39be-1a3a-4fd8-b2d5-a88951d9b766",
-                "record": true,
-                "cypressConfig": "packages/ui/cypress.config.ts",
-                "devServerTarget": "ui:start:ci",
-                "testingType": "e2e"
-              },
-              "configurations": {
-                "dev": {
-                  "parallel": false
-                }
-              }
-            },
-            "launch-e2e": {
-              "executor": "@nx/cypress:cypress",
-              "inputs": ["default", "^production"],
-              "options": {
-                "watch": true,
-                "headed": true,
-                "browser": "chrome",
-                "cypressConfig": "packages/ui/cypress.config.ts",
-                "devServerTarget": "ui:start:ci",
-                "testingType": "e2e"
-              },
-              "configurations": {}
-            },
-            "publish": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs ui latest"
-              },
-              "configurations": {}
-            },
-            "publish-beta": {
-              "dependsOn": ["test", "build"],
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "node tools/scripts/publish.mjs ui beta"
-              },
-              "configurations": {}
-            },
-            "build_simple": {
-              "configurations": {
-                "demo": {
-                  "args": "--mode=demo"
-                }
-              },
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/ui && vite build --mode={args.mode}"
-              }
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "outputs": ["{options.outDir}"],
+              "executor": "nx:run-commands"
             },
             "pushToGhPages": {
               "executor": "nx:run-commands",
               "options": {
                 "command": "yarn gh-pages -a -d demo-dist"
               },
-              "configurations": {}
+              "configurations": {},
+              "parallelism": true
             },
             "start": {
               "executor": "nx:run-commands",
@@ -830,13 +910,77 @@
                 "ci": {
                   "readyWhen": "ready in"
                 }
-              }
+              },
+              "parallelism": true
+            },
+            "launch-e2e": {
+              "configurations": {},
+              "options": {
+                "watch": true,
+                "headed": true,
+                "browser": "chrome",
+                "cypressConfig": "packages/ui/cypress.config.ts",
+                "devServerTarget": "ui:start:ci",
+                "testingType": "e2e"
+              },
+              "parallelism": true,
+              "inputs": ["default", "^production"],
+              "executor": "@nx/cypress:cypress"
+            },
+            "e2e": {
+              "configurations": {},
+              "options": {
+                "parallel": true,
+                "record": true,
+                "cypressConfig": "packages/ui/cypress.config.ts",
+                "devServerTarget": "ui:start:ci",
+                "testingType": "e2e"
+              },
+              "parallelism": true,
+              "inputs": ["default", "^production"],
+              "executor": "@nx/cypress:cypress"
+            },
+            "lint": {
+              "configurations": {},
+              "options": {
+                "maxWarnings": 0,
+                "lintFilePatterns": [
+                  "packages/ui/**/*.{ts,tsx,js,jsx}",
+                  "packages/ui/package.json"
+                ]
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore"
+              ],
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"]
+            },
+            "test": {
+              "configurations": {},
+              "options": {
+                "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts"
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "executor": "nx:run-commands"
+            },
+            "version": {
+              "configurations": {},
+              "options": {
+                "preset": "conventional"
+              },
+              "parallelism": true,
+              "executor": "@jscutlery/semver:version"
             }
           },
-          "sourceRoot": "packages/ui/src",
-          "projectType": "library",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
-          "tags": [],
           "implicitDependencies": []
         }
       }
