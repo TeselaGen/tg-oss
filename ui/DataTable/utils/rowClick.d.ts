@@ -14,7 +14,7 @@ export default function rowClick(e: any, rowInfo: any, entities: any, { reduxFor
 }): void;
 export function changeSelectedEntities({ idMap, entities, change }: {
     idMap: any;
-    entities?: any[] | undefined;
+    entities?: never[] | undefined;
     change: any;
 }): void;
 export function finalizeSelection({ idMap, entities, props: { onDeselect, onSingleRowSelect, onMultiRowSelect, noDeselectAll, onRowSelect, noSelect, change } }: {

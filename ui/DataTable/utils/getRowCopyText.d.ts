@@ -1,3 +1,1 @@
-export function getRowCopyText(rowEl: any, { specificColumn }?: {
-    specificColumn: any;
-}): (string | any[])[];
+export function getRowCopyText(rowEl: any, { specificColumn }?: {}): (string | any[])[];

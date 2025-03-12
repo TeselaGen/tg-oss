@@ -10,9 +10,7 @@ export default class ResizableDraggableDialog extends React.Component<any, any, 
         width: number;
         height: number;
     };
-    setDefaults: ({ doNotSetXOrWidth }?: {
-        doNotSetXOrWidth: any;
-    }) => void;
+    setDefaults: ({ doNotSetXOrWidth }?: {}) => void;
     onWindowResize: () => void;
     componentWillUnmount(): void;
     getWindowWidthAndHeight: () => {

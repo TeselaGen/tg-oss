@@ -19,5 +19,4 @@ import { isEntityClean } from './isEntityClean';
 import { PRIMARY_SELECTED_VAL } from './primarySelectedValue';
 import { removeCleanRows } from './removeCleanRows';
 import { useTableEntities } from './useTableEntities';
-
 export { defaultParsePaste, formatPasteData, getAllRows, getCellCopyText, getCellInfo, getEntityIdToEntity, getFieldPathToIndex, getFieldPathToField, getIdOrCodeOrIndex, getLastSelectedEntity, getNewEntToSelect, getNumberStrAtEnd, getRecordsFromIdMap, getRowCopyText, getSelectedRowsFromEntities, handleCopyColumn, handleCopyHelper, handleCopyRows, handleCopyTable, isBottomRightCornerOfRectangle, isEntityClean, PRIMARY_SELECTED_VAL, removeCleanRows, stripNumberAtEnd, useTableEntities };

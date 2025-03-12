@@ -13,9 +13,7 @@ declare function Uploader({ accept: __accept, action, autoUnzip, beforeUpload, c
     fileList: any;
     innerIcon: any;
     innerText: any;
-    meta?: {
-        form: any;
-    } | undefined;
+    meta?: {} | undefined;
     minimal: any;
     name: any;
     noBuildCsvOption: any;

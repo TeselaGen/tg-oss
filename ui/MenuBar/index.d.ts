@@ -6,9 +6,7 @@ declare class MenuBar extends React.Component<any, any, any> {
         style: {};
     };
     constructor(props: any);
-    hotkeyEnabler: ({ children }?: {
-        children: any;
-    }) => import("react/jsx-runtime").JSX.Element;
+    hotkeyEnabler: ({ children }?: {}) => import("react/jsx-runtime").JSX.Element;
     state: {
         isOpen: boolean;
         openIndex: null;
