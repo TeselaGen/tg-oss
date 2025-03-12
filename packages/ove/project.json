@@ -44,7 +44,11 @@
     "launch-e2e-playwright": {
       "command": "nx run ove:start:ci & cd packages/ove && yarn playwright test --ui"
     },
-    "e2e": {},
+    "e2e": {
+      "options": {
+        "key": "373658d4-4931-4ffd-9263-8eb78a838ab9"
+      }
+    },
     "lint": {},
     "test": {},
     "version": {}

@@ -1,7 +1,7 @@
 import jsonToJsonString from "../src/jsonToJsonString";
 
 import assert from "assert";
-import chai from "chai";
+import * as chai from "chai";
 
 chai.use(require("chai-things"));
 

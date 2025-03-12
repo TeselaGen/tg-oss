@@ -1,6 +1,6 @@
 import getRangeLength from "./getRangeLength";
 import generateRandomRange from "./generateRandomRange";
-import chai from "chai";
+import * as chai from "chai";
 chai.should();
 
 describe("generateRandomRange", function () {

@@ -34,7 +34,11 @@
       }
     },
     "launch-e2e": {},
-    "e2e": {},
+    "e2e": {
+      "options": {
+        "key": "1ced39be-1a3a-4fd8-b2d5-a88951d9b766"
+      }
+    },
     "lint": {},
     "test": {},
     "version": {}

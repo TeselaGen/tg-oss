@@ -1,5 +1,5 @@
 import generateSequenceData from "./generateSequenceData";
-import chai from "chai";
+import * as chai from "chai";
 import chaiSubset from "chai-subset";
 import { map } from "lodash-es";
 

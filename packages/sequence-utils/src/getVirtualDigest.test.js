@@ -1,5 +1,5 @@
 import chaiSubset from "chai-subset";
-import chai from "chai";
+import * as chai from "chai";
 
 //UNDER CONSTRUCTION
 import getVirtualDigest from "./getVirtualDigest";

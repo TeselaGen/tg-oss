@@ -5,7 +5,7 @@ import parseGenbank from "../src/genbankToJson";
 import jsonToGenbank from "../src/jsonToGenbank";
 import path from "path";
 import fs from "fs";
-import chai from "chai";
+import * as chai from "chai";
 import chaiSubset from "chai-subset";
 chai.use(chaiSubset);
 chai.use(require("chai-things"));

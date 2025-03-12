@@ -1,4 +1,4 @@
-import chai from "chai";
+import * as chai from "chai";
 import chaiSubset from "chai-subset";
 import getReverseComplementAnnotation from "./getReverseComplementAnnotation";
 chai.should();

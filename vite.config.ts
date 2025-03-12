@@ -22,6 +22,7 @@ const conf = ({
     cacheDir: `../../node_modules/.vite/${name}`,
     plugins: [
       dts({
+        exclude: ["**/*.test.ts", "**/*.spec.ts"],
         entryRoot: "src",
         tsconfigPath: joinPathFragments(dir, "tsconfig.json")
       }),
@@ -34,7 +35,7 @@ const conf = ({
             viteStaticCopy({
               targets: [
                 {
-                  src: "./src",
+                  src: "./src/**/!(*.test|*.spec).*",
                   dest: "."
                 },
                 {

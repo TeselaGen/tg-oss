@@ -1,5 +1,5 @@
 import expandOrContractRangeByLength from "./expandOrContractRangeByLength";
-import chai from "chai";
+import * as chai from "chai";
 chai.should();
 
 describe("expandOrContractRangeByLength", function () {

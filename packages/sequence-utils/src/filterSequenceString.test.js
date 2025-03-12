@@ -1,5 +1,4 @@
 import filterSequenceString from "./filterSequenceString";
-import { expect } from "vitest";
 
 describe("filterSequenceString", () => {
   it("should not filter u's and should convert t's to u's from isOligo=true seqs", () => {

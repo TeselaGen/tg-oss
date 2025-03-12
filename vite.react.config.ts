@@ -64,6 +64,7 @@ export default ({ name, dir }: { name: string; dir: string }) =>
         //   auto: true
         // }),
         dts({
+          exclude: ["**/*.test.ts", "**/*.spec.ts"],
           entryRoot: "src",
           tsconfigPath: joinPathFragments(dir, "tsconfig.json")
           // skipDiagnostics: true,
@@ -79,7 +80,7 @@ export default ({ name, dir }: { name: string; dir: string }) =>
               viteStaticCopy({
                 targets: [
                   {
-                    src: "./src",
+                    src: "./src/**/!(*.test|*.spec).*",
                     dest: "."
                   },
                   {

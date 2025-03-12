@@ -1,5 +1,5 @@
 import getAnnotationRangeType from "./getAnnotationRangeType";
-import chai from "chai";
+import * as chai from "chai";
 chai.should();
 
 describe("getAnnotationRangeType", function () {

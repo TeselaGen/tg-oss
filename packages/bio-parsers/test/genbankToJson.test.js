@@ -4,7 +4,7 @@ import genbankToJson, { parseFeatureLocation } from "../src/genbankToJson";
 
 import path from "path";
 import fs from "fs";
-import chai from "chai";
+import * as chai from "chai";
 import chaiSubset from "chai-subset";
 import jsonToGenbank from "../src/jsonToGenbank";
 

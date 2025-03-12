@@ -6,7 +6,7 @@ import ab1ToJson from "../src/ab1ToJson";
 
 import path from "path";
 import fs from "fs";
-import chai from "chai";
+import * as chai from "chai";
 import example1OutputChromatogram from "./testData/ab1/example1_output_chromatogram.json";
 chai.use(require("chai-things"));
 

@@ -1,6 +1,6 @@
 //tnr: half finished test.
 
-import chai from "chai";
+import * as chai from "chai";
 
 import { getRangeLength } from "@teselagen/range-utils";
 import { cloneDeep } from "lodash-es";

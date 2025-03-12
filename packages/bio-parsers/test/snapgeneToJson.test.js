@@ -5,7 +5,7 @@ import snapgeneToJson from "../src/snapgeneToJson";
 
 import path from "path";
 import fs from "fs";
-import chai from "chai";
+import * as chai from "chai";
 import chaiSubset from "chai-subset";
 chai.use(require("chai-things"));
 chai.use(chaiSubset);

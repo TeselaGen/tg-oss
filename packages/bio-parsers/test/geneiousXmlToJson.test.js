@@ -2,7 +2,7 @@ import geneiousXmlToJson from "../src/geneiousXmlToJson";
 import anyToJson from "../src/anyToJson";
 import path from "path";
 import fs from "fs";
-import chai from "chai";
+import * as chai from "chai";
 import chaiSubset from "chai-subset";
 chai.use(chaiSubset);
 chai.use(require("chai-things"));

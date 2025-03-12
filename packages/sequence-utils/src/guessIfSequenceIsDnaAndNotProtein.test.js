@@ -1,4 +1,4 @@
-import chai from "chai";
+import * as chai from "chai";
 import guessIfSequenceIsDnaAndNotProtein from "./guessIfSequenceIsDnaAndNotProtein";
 chai.should();
 describe("guessIfSequenceIsDnaAndNotProtein", () => {

@@ -1,6 +1,6 @@
 //tnr: half finished test.
 
-import chai from "chai";
+import * as chai from "chai";
 import chaiSubset from "chai-subset";
 
 import getSequenceDataBetweenRange from "./getSequenceDataBetweenRange";

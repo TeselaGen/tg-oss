@@ -1,7 +1,7 @@
 import {
   editorDragStarted,
   handleSelectionEndGrabbed
-} from "../../../src/withEditorInteractions/clickAndDragUtils";
+} from "../src/withEditorInteractions/clickAndDragUtils";
 
 describe("handleSelectionEndGrabbed", () => {
   it("handleSelectionEndGrabbed will still update selection layer even if there isn't one yet", done => {

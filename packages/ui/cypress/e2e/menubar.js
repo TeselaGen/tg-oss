@@ -4,19 +4,16 @@ describe("MenuBar", () => {
     cy.visit("#/MenuBar");
   });
   it(`menubar submenus shouldn't be getting computed until someone is actually searching`, () => {
-    cy.get("body")
-      .type("{meta}/")
-      .then(() => {
-        // eslint-disable-next-line no-unused-expressions
-        expect(window.Cypress.submenuComputed).to.be.undefined;
-      });
-    cy.focused()
-      .type("c")
-      .then(() => {
-        // eslint-disable-next-line no-unused-expressions
-        expect(window.Cypress.submenuComputed).to.be.true;
-      });
+    cy.get("body").type("{meta}/");
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    expect(window.Cypress.submenuComputed).to.be.undefined;
   });
+  cy.focused()
+    .type("c")
+    .then(() => {
+      // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
+      expect(window.Cypress.submenuComputed).to.be.true;
+    });
   it(`menubar can be opened/closed via hotkey by default!`, () => {
     cy.get("body").type("{meta}/");
     cy.focused().type("c");

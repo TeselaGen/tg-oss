@@ -1,4 +1,4 @@
-import calculateTickMarkPositionsForGivenRange from "../../../src/utils/calculateTickMarkPositionsForGivenRange";
+import calculateTickMarkPositionsForGivenRange from "../src/utils/calculateTickMarkPositionsForGivenRange";
 
 describe("calculateTickMarkPositionsForGivenRange", () => {
   it("calculates tick marks correctly", () => {

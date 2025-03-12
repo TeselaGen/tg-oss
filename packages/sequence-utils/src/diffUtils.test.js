@@ -1,4 +1,4 @@
-import chai from "chai";
+import * as chai from "chai";
 import assert from "assert";
 import { map } from "lodash-es";
 import tidyUpSequenceData from "./tidyUpSequenceData";

@@ -1,5 +1,5 @@
 import jsonToFasta from "../src/jsonToFasta";
-import chai from "chai";
+import * as chai from "chai";
 import fastaToJson from "../src/fastaToJson";
 
 chai.should();

@@ -5,7 +5,7 @@ import anyToJson from "../src/anyToJson.js";
 import fs from "fs";
 import path from "path";
 import assert from "assert";
-import chai from "chai";
+import * as chai from "chai";
 import example1OutputChromatogram from "./testData/ab1/example1_output_chromatogram.json";
 import ab1ToJson from "../src/ab1ToJson";
 import chaiSubset from "chai-subset";

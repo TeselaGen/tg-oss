@@ -1,5 +1,5 @@
 import convertRangeIndices from "./convertRangeIndices";
-import chai from "chai";
+import * as chai from "chai";
 chai.should();
 describe("convertRangeIndices", function () {
   it("should correctly convert various types of ranges", function () {

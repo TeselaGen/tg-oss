@@ -1,5 +1,5 @@
 import invertRange from "./invertRange";
-import chai from "chai";
+import * as chai from "chai";
 chai.should();
 describe("invertRange", function () {
   it("should invert a non-circular range", function () {

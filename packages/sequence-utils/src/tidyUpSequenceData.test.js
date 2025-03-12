@@ -1,6 +1,6 @@
 import assert from "assert";
 import tidyUpSequenceData from "./tidyUpSequenceData";
-import chai from "chai";
+import * as chai from "chai";
 import chaiSubset from "chai-subset";
 chai.use(chaiSubset);
 chai.should();

@@ -6,7 +6,7 @@ import fastaToJson from "../src/fastaToJson";
 
 import path from "path";
 import fs from "fs";
-import chai from "chai";
+import * as chai from "chai";
 import { proteinFasta3 } from "./resultStrings";
 chai.use(require("chai-things"));
 chai.should();
