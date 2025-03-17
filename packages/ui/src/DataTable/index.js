@@ -337,16 +337,6 @@ const DataTable = ({
 
   const queryParams = useMemo(() => {
     if (!isTableParamsConnected) {
-      const additionalFilterToUse =
-        typeof props.additionalFilter === "function"
-          ? props.additionalFilter
-          : () => props.additionalFilter;
-
-      const additionalOrFilterToUse =
-        typeof props.additionalOrFilter === "function"
-          ? props.additionalOrFilter
-          : () => props.additionalOrFilter;
-
       return getQueryParams({
         doNotCoercePageSize,
         currentParams,
@@ -356,8 +346,7 @@ const DataTable = ({
         schema: convertedSchema,
         isInfinite,
         isLocalCall,
-        additionalFilter: additionalFilterToUse,
-        additionalOrFilter: additionalOrFilterToUse,
+        additionalFilter: props.additionalFilter,
         noOrderError: props.noOrderError,
         isCodeModel: props.isCodeModel,
         ownProps: props

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DateInput, DateRangeInput } from "@blueprintjs/datetime";
-import { camelCase } from "lodash-es";
+import { camelCase, startCase } from "lodash-es";
 import classNames from "classnames";
 import {
   Menu,
@@ -349,43 +349,40 @@ function getFilterMenuItems(dataType) {
   let filterMenuItems = [];
   if (dataType === "string") {
     filterMenuItems = [
-      "Contains",
-      "Not Contains",
-      "Starts With",
-      "Ends With",
-      "Is Exactly",
-      "Regex",
-      "In List",
-      "Not In List",
-      "Is Empty",
-      "Not Empty"
+      "contains",
+      "notContains",
+      "startsWith",
+      "endsWith",
+      "isExactly",
+      "regex",
+      "inList",
+      "notInList",
+      "isEmpty",
+      "notEmpty"
     ];
   } else if (dataType === "lookup") {
     filterMenuItems = [
-      "Contains",
-      "Not Contains",
-      "Starts With",
-      "Ends With",
-      "Is Exactly",
-      "Regex"
+      "contains",
+      "notContains",
+      "startsWith",
+      "endsWith",
+      "isExactly",
+      "regex"
     ];
   } else if (dataType === "boolean") {
-    filterMenuItems = ["True", "False"];
+    filterMenuItems = ["true", "false"];
   } else if (dataType === "number" || dataType === "integer") {
-    // else if (dataType === "lookup") {
-    //   filterMenuItems = ["None"];
-    // }
     filterMenuItems = [
-      "Greater Than",
-      "Less Than",
-      "In Range",
-      "Outside Range",
-      "Equal To",
-      "In List",
-      "Not In List"
+      "greaterThan",
+      "lessThan",
+      "inRange",
+      "outsideRange",
+      "equalTo",
+      "inList",
+      "notInList"
     ];
   } else if (dataType === "timestamp") {
-    filterMenuItems = ["Is Between", "Not Between", "Is Before", "Is After"];
+    filterMenuItems = ["isBetween", "notBetween", "isBefore", "isAfter"];
   }
-  return filterMenuItems;
+  return filterMenuItems.map(item => startCase(item));
 }

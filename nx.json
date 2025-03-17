@@ -44,7 +44,7 @@
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd {projectRoot} && yarn vitest run --changed --config vite.config.ts"
+        "command": "cd {projectRoot} && yarn vitest --changed --config vite.config.ts"
       }
     },
     "e2e": {
