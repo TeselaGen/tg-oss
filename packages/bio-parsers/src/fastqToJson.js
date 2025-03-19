@@ -1,3 +1,4 @@
+import { convertBasePosTraceToPerBpTrace } from "./ab1ToJson.js";
 import splitStringIntoLines from "./utils/splitStringIntoLines.js";
 import validateSequenceArray from "./utils/validateSequenceArray";
 
@@ -43,15 +44,21 @@ function fastqToJson(fileString, options = {}) {
 
     validateFastqSet(header, sequence, plusSign, quality);
 
-    // const newChromatogramData = convertBasePosTraceToPerBpTrace({
-    //   aTrace: [0],
-    //   tTrace: [0],
-    //   gTrace: [0],
-    //   cTrace: [0],
-    //   basePos: [1],
-    //   baseCalls: sequence.split(""),
-    //   qualNums: quality.split("").map(char => char.charCodeAt(0) - 33),
-    // });
+    const newChromatogramData = convertBasePosTraceToPerBpTrace({
+      aTrace: [],
+      tTrace: [],
+      gTrace: [],
+      cTrace: [],
+      basePos: [],
+      baseCalls: sequence.split(""),
+      baseTraces: sequence.split("").map(() => ({
+        aTrace: [],
+        tTrace: [],
+        gTrace: [],
+        cTrace: []
+      })),
+      qualNums: quality.split("").map(char => char.charCodeAt(0) - 33)
+    });
 
     const result = {
       success: true,
@@ -60,8 +67,8 @@ function fastqToJson(fileString, options = {}) {
         name: header.slice(1),
         sequence: sequence,
         circular: false,
-        description: ""
-        // chromatogramData: newChromatogramData,
+        description: "",
+        chromatogramData: newChromatogramData
       }
     };
     resultArray.push(result);
