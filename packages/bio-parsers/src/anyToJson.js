@@ -10,7 +10,7 @@ import { tidyUpSequenceData } from "@teselagen/sequence-utils";
 import geneiousXmlToJson from "./geneiousXmlToJson";
 import jbeiXmlToJson from "./jbeiXmlToJson";
 import { unzipSync } from "fflate";
-
+import fastqToJson from "./fastqToJson";
 /**
  * takes in file content string and its file name and determines what parser it needs to be sent to.
  * The file is parsed to our old JSON schema and after it goes through an intermediate step where we convert that json to our new schema
@@ -74,6 +74,9 @@ async function anyToJson(fileContentStringOrFileObj, options) {
   if (/^(fasta|fas|fa|fna|ffn|faa)$/.test(ext)) {
     // FASTA
     return fastaToJson(fileContentString, options);
+  } else if (/^(fastq)$/.test(ext)) {
+    // FASTQ
+    return fastqToJson(fileContentString, options);
   } else if (/^(gb|gbk)$/.test(ext)) {
     // GENBANK
     return genbankToJson(fileContentString, options);
@@ -182,8 +185,8 @@ function getUtf8StringFromFile(file, { emulateBrowser } = {}) {
     return Buffer.isBuffer(file)
       ? file.toString("utf-8")
       : Buffer.isBuffer(file.buffer)
-      ? file.buffer.toString("utf-8")
-      : file;
+        ? file.buffer.toString("utf-8")
+        : file;
   }
   const reader = new window.FileReader();
   reader.readAsText(file, "UTF-8");
@@ -204,8 +207,8 @@ function getUint8ArrayFromFile(file, { emulateBrowser } = {}) {
     return Buffer.isBuffer(file)
       ? new Uint8Array(file)
       : Buffer.isBuffer(file.buffer)
-      ? new Uint8Array(file.buffer)
-      : file;
+        ? new Uint8Array(file.buffer)
+        : file;
   }
   const reader = new window.FileReader();
   // reader.readAsText(file, "UTF-8");
