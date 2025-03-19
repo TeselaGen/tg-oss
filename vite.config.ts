@@ -36,7 +36,7 @@ const conf = ({
               targets: [
                 {
                   src: "./src/**/!(*.test|*.spec).*",
-                  dest: "."
+                  dest: "./src"
                 },
                 {
                   src: "./README.md",

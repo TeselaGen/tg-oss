@@ -21,7 +21,7 @@
       "outputs": ["{options.outDir}"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd {projectRoot} && yarn vite build --config vite.config.ts"
+        "command": "cd {projectRoot} && yarn vite build --emptyOutDir --config vite.config.ts"
       }
     },
     "lint": {
@@ -44,7 +44,13 @@
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd {projectRoot} && yarn vitest --changed --config vite.config.ts"
+        "command": "cd {projectRoot} && yarn vitest --changed --config vite.config.ts",
+        "args": ["--run"]
+      },
+      "configurations": {
+        "watch": {
+          "args": ["--watch"]
+        }
       }
     },
     "e2e": {
