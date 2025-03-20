@@ -28,11 +28,25 @@ export function getStructuredBases({
       }
     }
   }
-  const aRange = {
-    //tnr: this probably needs to be changed in case annotation wraps origin
-    start: annotationRange.start - start,
-    end: annotationRange.end - start
-  };
+
+  const wrapsOrigin = start > end;
+  let aRange;
+  if (!wrapsOrigin) {
+    aRange = {
+      //tnr: this probably needs to be changed in case annotation wraps origin
+      start: annotationRange.start - start,
+      end: annotationRange.end - start
+    };
+  } else {
+    aRange = {
+      start: annotationRange.start === 0 ? sequenceLength - start : 0,
+      end:
+        annotationRange.start === 0
+          ? annLen - 1
+          : getRangeLength(annotationRange) - 1
+    };
+  }
+
   const r = {
     aRange,
     basesNoInserts: basesToUse,
@@ -63,7 +77,7 @@ export function getStructuredBases({
     forward ? r.basesNoInserts : r.basesNoInserts.split("").reverse().join("")
   );
   r.basesNoInsertsWithMetaData = basesForRange.split("").map((b, i) => {
-    const indexOfBase = i + annotationRange.start;
+    const indexOfBase = (i + annotationRange.start) % sequenceLength;
     let seqForBase = (fullSequence && fullSequence[indexOfBase]) || "";
     if (!forward) {
       seqForBase = getComplementSequenceString(seqForBase);
