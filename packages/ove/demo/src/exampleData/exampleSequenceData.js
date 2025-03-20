@@ -34,6 +34,26 @@ export default {
       end: 300,
       type: "primer_bind",
       forward: true
+    },
+    {
+      name: "Origin-spanning primer",
+      start: 5297,
+      end: 4,
+      type: "primer_bind",
+      forward: true,
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "tcgacgt"
+    },
+    {
+      name: "Origin-spanning reverse primer",
+      start: 5297,
+      end: 4,
+      type: "primer_bind",
+      forward: false,
+      color: "red",
+      primerBindsOn: "3prime",
+      bases: "acgtcga"
     }
   ],
   afeatures: [
