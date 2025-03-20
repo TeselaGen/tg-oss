@@ -65,6 +65,19 @@ export function getCCDisplayName(field) {
   );
 }
 
+/**
+ * Takes a schema and returns an object with the fields mapped by their camelCased display name.
+ * If the displayName is not set or is a jsx element, the path is used instead.
+ * The same conversion must be done when using the result of this method
+ */
+function getFieldsMappedByCCDisplayName(schema) {
+  return schema.fields.reduce((acc, field) => {
+    const ccDisplayName = getCCDisplayName(field);
+    acc[ccDisplayName] = field;
+    return acc;
+  }, {});
+}
+
 export function getCurrentParamsFromUrl(location, isSimple) {
   let { search } = location;
   if (isSimple) {
@@ -260,7 +273,7 @@ export function getQueryParams({
   isLocalCall,
   additionalFilter,
   doNotCoercePageSize,
-  // noOrderError,
+  noOrderError,
   // isCodeModel,
   ownProps
 }) {
@@ -288,14 +301,38 @@ export function getQueryParams({
     )[0];
     pageSize = closest;
   }
+
+  let cleanedOrder = [];
+  if (order && order.length) {
+    const ccFields = getFieldsMappedByCCDisplayName(schema);
+    order.forEach(orderVal => {
+      const ccDisplayName = orderVal.replace(/^-/gi, "");
+      const schemaForField = ccFields[ccDisplayName];
+      if (schemaForField) {
+        const { path } = schemaForField;
+        const reversed = ccDisplayName !== orderVal;
+        const prefix = reversed ? "-" : "";
+        cleanedOrder.push(prefix + path);
+      } else {
+        !noOrderError &&
+          console.error(
+            "No schema for field found!",
+            ccDisplayName,
+            JSON.stringify(schema.fields, null, 2)
+          );
+      }
+    });
+  }
+
   const toReturn = {
     //these are values that might be generally useful for the wrapped component
     page,
     pageSize: ownProps.controlled_pageSize || pageSize,
-    order,
+    order: cleanedOrder,
     filters,
     searchTerm
   };
+
   // tnwtodo: need to make sure ignoreSearchTerm still works
   // if (additionalOrFilterToUse && additionalOrFilterToUse.ignoreSearchTerm) {
   //   searchTerm = "";
@@ -307,7 +344,7 @@ export function getQueryParams({
     pageSize,
     searchTerm,
     filters,
-    order,
+    order: cleanedOrder,
     schema
   });
   initializeHasuraWhereAndFilter(additionalFilter, where, currentParams);
