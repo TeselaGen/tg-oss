@@ -6,13 +6,13 @@ import {
   makeDataTableHandlers,
   getQueryParams,
   setCurrentParamsOnUrl,
-  getCurrentParamsFromUrl,
-  getCCDisplayName
+  getCurrentParamsFromUrl
 } from "./queryParams";
 import { withRouter } from "react-router-dom";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
 import { useDeepEqualMemo } from "../../utils/hooks/useDeepEqualMemo";
 import { branch, compose } from "recompose";
+import { getCCDisplayName } from "./tableQueryParamsToHasuraClauses";
 
 /**
  *  Note all these options can be passed at Design Time or at Runtime (like reduxForm())

@@ -54,17 +54,6 @@ function safeParse(val) {
   }
 }
 
-/**
- *
- * @param {object} field
- * @returns the camelCase display name of the field, to be used for filters, sorting, etc
- */
-export function getCCDisplayName(field) {
-  return camelCase(
-    typeof field.displayName === "string" ? field.displayName : field.path
-  );
-}
-
 export function getCurrentParamsFromUrl(location, isSimple) {
   let { search } = location;
   if (isSimple) {
@@ -296,11 +285,6 @@ export function getQueryParams({
     filters,
     searchTerm
   };
-  // tnwtodo: need to make sure ignoreSearchTerm still works
-  // if (additionalOrFilterToUse && additionalOrFilterToUse.ignoreSearchTerm) {
-  //   searchTerm = "";
-  //   additionalOrFilterToUse = additionalOrFilterToUse.additionalOrFilterToUse;
-  // }
 
   const { where, order_by, limit, offset } = tableQueryParamsToHasuraClauses({
     page,
@@ -315,13 +299,14 @@ export function getQueryParams({
   if (isLocalCall) {
     //if the table is local (aka not directly connected to a db) then we need to
     //handle filtering/paging/sorting all on the front end
-    return filterLocalEntitiesToHasura(entities, {
+    const toRet = filterLocalEntitiesToHasura(entities, {
       where,
       order_by,
       limit,
       offset,
       isInfinite
     });
+    return toRet;
   } else {
     return {
       ...toReturn,

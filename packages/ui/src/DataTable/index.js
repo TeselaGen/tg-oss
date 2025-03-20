@@ -92,7 +92,6 @@ import { viewColumn, openColumn, multiViewColumn } from "./viewColumn";
 import convertSchema from "./utils/convertSchema";
 import TableFormTrackerContext from "./TableFormTrackerContext";
 import {
-  getCCDisplayName,
   getCurrentParamsFromUrl,
   getQueryParams,
   makeDataTableHandlers,
@@ -103,6 +102,7 @@ import { formValueSelector, change as _change } from "redux-form";
 import { throwFormError } from "../throwFormError";
 import { isObservableArray, toJS } from "mobx";
 import { isBeingCalledExcessively } from "../utils/isBeingCalledExcessively";
+import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;

@@ -98,11 +98,11 @@ describe("tableQueryParamsToHasuraClauses", () => {
     });
   });
 
-  it("should handle textContains filter", () => {
+  it("should handle contains filter", () => {
     const result = tableQueryParamsToHasuraClauses({
       filters: [
         {
-          selectedFilter: "textContains",
+          selectedFilter: "contains",
           filterOn: "name",
           filterValue: "test"
         }
@@ -116,25 +116,12 @@ describe("tableQueryParamsToHasuraClauses", () => {
     });
   });
 
-  it("should handle textEquals filter", () => {
+  it("should handle equalTo filter for number", () => {
     const result = tableQueryParamsToHasuraClauses({
       filters: [
-        { selectedFilter: "textEquals", filterOn: "name", filterValue: "test" }
-      ]
-    });
-    expect(result).toEqual({
-      where: { _and: [{ name: { _eq: "test" } }] },
-      order_by: {},
-      limit: 25,
-      offset: 0
-    });
-  });
-
-  it("should handle numberEquals filter", () => {
-    const result = tableQueryParamsToHasuraClauses({
-      filters: [
-        { selectedFilter: "numberEquals", filterOn: "age", filterValue: "30" }
-      ]
+        { selectedFilter: "equalTo", filterOn: "age", filterValue: "30" }
+      ],
+      schema
     });
     expect(result).toEqual({
       where: { _and: [{ age: { _eq: 30 } }] },
@@ -161,7 +148,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
       searchTerm: "test",
       filters: [
         {
-          selectedFilter: "numberGreaterThan",
+          selectedFilter: "greaterThan",
           filterOn: "age",
           filterValue: "30"
         }
@@ -192,7 +179,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
       searchTerm: "test",
       filters: [
         {
-          selectedFilter: "numberGreaterThan",
+          selectedFilter: "greaterThan",
           filterOn: "age",
           filterValue: "30"
         }

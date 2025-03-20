@@ -56,10 +56,16 @@ function applyWhereClause(records, where) {
 
     for (const key in filter) {
       if (key === "_and") {
+        if (isEmpty(filter[key])) {
+          continue;
+        }
         if (!every(filter[key], subFilter => applyFilter(record, subFilter))) {
           return false;
         }
       } else if (key === "_or") {
+        if (isEmpty(filter[key])) {
+          continue;
+        }
         if (!some(filter[key], subFilter => applyFilter(record, subFilter))) {
           return false;
         }

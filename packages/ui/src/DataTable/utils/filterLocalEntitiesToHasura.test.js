@@ -1,6 +1,6 @@
-import { filterLocalEntitiesToHasura as filterRecords } from "./filterLocalEntitiesToHasura";
+import { filterLocalEntitiesToHasura } from "./filterLocalEntitiesToHasura";
 
-describe("filterRecords", () => {
+describe("filterLocalEntitiesToHasura", () => {
   const records = [
     {
       id: 123,
@@ -50,49 +50,61 @@ describe("filterRecords", () => {
   ];
 
   it("should filter by _eq", () => {
-    const result = filterRecords(records, { where: { id: { _eq: 123 } } });
+    const result = filterLocalEntitiesToHasura(records, {
+      where: { id: { _eq: 123 } }
+    });
     expect(result.entities).toEqual([records[0]]);
     expect(result.entitiesAcrossPages).toEqual([records[0]]);
     expect(result.entityCount).toBe(1);
   });
 
   it("should filter by _neq", () => {
-    const result = filterRecords(records, { where: { id: { _neq: 123 } } });
+    const result = filterLocalEntitiesToHasura(records, {
+      where: { id: { _neq: 123 } }
+    });
     expect(result.entities).toEqual(records.slice(1));
     expect(result.entitiesAcrossPages).toEqual(records.slice(1));
     expect(result.entityCount).toBe(3);
   });
 
   it("should filter by _gt", () => {
-    const result = filterRecords(records, { where: { age: { _gt: 30 } } });
+    const result = filterLocalEntitiesToHasura(records, {
+      where: { age: { _gt: 30 } }
+    });
     expect(result.entities).toEqual([records[2]]);
     expect(result.entitiesAcrossPages).toEqual([records[2]]);
     expect(result.entityCount).toBe(1);
   });
 
   it("should filter by _gte", () => {
-    const result = filterRecords(records, { where: { age: { _gte: 30 } } });
+    const result = filterLocalEntitiesToHasura(records, {
+      where: { age: { _gte: 30 } }
+    });
     expect(result.entities).toEqual([records[0], records[2]]);
     expect(result.entitiesAcrossPages).toEqual([records[0], records[2]]);
     expect(result.entityCount).toBe(2);
   });
 
   it("should filter by _lt", () => {
-    const result = filterRecords(records, { where: { age: { _lt: 25 } } });
+    const result = filterLocalEntitiesToHasura(records, {
+      where: { age: { _lt: 25 } }
+    });
     expect(result.entities).toEqual([records[3]]);
     expect(result.entitiesAcrossPages).toEqual([records[3]]);
     expect(result.entityCount).toBe(1);
   });
 
   it("should filter by _lte", () => {
-    const result = filterRecords(records, { where: { age: { _lte: 25 } } });
+    const result = filterLocalEntitiesToHasura(records, {
+      where: { age: { _lte: 25 } }
+    });
     expect(result.entities).toEqual([records[1], records[3]]);
     expect(result.entitiesAcrossPages).toEqual([records[1], records[3]]);
     expect(result.entityCount).toBe(2);
   });
 
   it("should filter by _like", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { name: { _like: "%John%" } }
     });
     expect(result.entities).toEqual([records[0], records[2]]);
@@ -101,7 +113,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _ilike", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { name: { _ilike: "%john%" } }
     });
     expect(result.entities).toEqual([records[0], records[2]]);
@@ -110,7 +122,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _nlike", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { name: { _nlike: "%John%" } }
     });
     expect(result.entities).toEqual([records[1], records[3]]);
@@ -119,7 +131,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _nilike", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { name: { _nilike: "%john%" } }
     });
     expect(result.entities).toEqual([records[1], records[3]]);
@@ -128,7 +140,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _starts_with", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { name: { _starts_with: "John" } }
     });
     expect(result.entities).toEqual([records[0]]);
@@ -137,7 +149,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _ends_with", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { name: { _ends_with: "Doe" } }
     });
     expect(result.entities).toEqual([records[0]]);
@@ -146,7 +158,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _is_null", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { email: { _is_null: true } }
     });
     expect(result.entities).toEqual([records[1]]);
@@ -155,7 +167,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _is_null false", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { email: { _is_null: false } }
     });
     expect(result.entities).toEqual([records[0], records[2], records[3]]);
@@ -168,7 +180,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _and", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         _and: [{ age: { _gt: 25 } }, { city: { _eq: "London" } }]
       }
@@ -179,7 +191,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _or", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         _or: [{ city: { _eq: "London" } }, { city: { _eq: "Paris" } }]
       }
@@ -194,7 +206,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _not", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         _not: { is_active: { _eq: true } }
       }
@@ -205,7 +217,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _contains", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         tags: { _contains: ["programming", "javascript"] }
       }
@@ -216,7 +228,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _contained_in", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         tags: { _contained_in: ["programming", "javascript", "python", "java"] }
       }
@@ -227,7 +239,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _has_key", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { data: { _has_key: "category" } }
     });
     expect(result.entities).toEqual(records);
@@ -236,7 +248,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _has_keys_any", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         data: { _has_keys_any: ["category", "missingKey"] }
       }
@@ -247,7 +259,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _has_keys_all", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         data: { _has_keys_all: ["category", "type"] }
       }
@@ -258,7 +270,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by _similar", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         username: { _similar: "(john|alice)%" }
       }
@@ -269,7 +281,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by range _gte and _lte", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { age: { _gte: 25, _lte: 30 } }
     });
     expect(result.entities).toEqual([records[0], records[1]]);
@@ -278,7 +290,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter by range _gt and _lt", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { age: { _gt: 25, _lt: 35 } }
     });
     expect(result.entities).toEqual([records[0]]);
@@ -287,14 +299,22 @@ describe("filterRecords", () => {
   });
 
   it("should handle empty where clause", () => {
-    const result = filterRecords(records, {});
+    const result = filterLocalEntitiesToHasura(records, {});
+    expect(result.entities).toEqual(records);
+    expect(result.entitiesAcrossPages).toEqual(records);
+    expect(result.entityCount).toBe(4);
+  });
+  it("should handle empty _and and _or clauses", () => {
+    const result = filterLocalEntitiesToHasura(records, {
+      where: { _and: [], _or: [] }
+    });
     expect(result.entities).toEqual(records);
     expect(result.entitiesAcrossPages).toEqual(records);
     expect(result.entityCount).toBe(4);
   });
 
   it("should handle nested _and and _or", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: {
         _and: [
           { _or: [{ city: { _eq: "London" } }, { city: { _eq: "Paris" } }] },
@@ -311,7 +331,7 @@ describe("filterRecords", () => {
     expect(result.entityCount).toBe(3);
   });
   it("should order by age ascending", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       order_by: { age: "asc" }
     });
     expect(result.entities).toEqual([
@@ -330,7 +350,7 @@ describe("filterRecords", () => {
   });
 
   it("should order by age descending", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       order_by: { age: "desc" }
     });
     expect(result.entities).toEqual([
@@ -349,7 +369,7 @@ describe("filterRecords", () => {
   });
 
   it("should order by name ascending", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       order_by: { name: "asc" }
     });
     expect(result.entities).toEqual([
@@ -368,7 +388,7 @@ describe("filterRecords", () => {
   });
 
   it("should order by name descending", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       order_by: { name: "desc" }
     });
     expect(result.entities).toEqual([
@@ -387,7 +407,7 @@ describe("filterRecords", () => {
   });
 
   it("should filter and order", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } },
       order_by: { age: "desc" }
     });
@@ -397,7 +417,7 @@ describe("filterRecords", () => {
   });
 
   it("should handle empty order_by", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } }
     });
     expect(result.entities).toEqual([records[0], records[2]]);
@@ -406,7 +426,7 @@ describe("filterRecords", () => {
   });
 
   it("should handle order_by with empty where", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       order_by: { age: "asc" }
     });
     expect(result.entities).toEqual([
@@ -425,28 +445,31 @@ describe("filterRecords", () => {
   });
 
   it("should apply limit", () => {
-    const result = filterRecords(records, { limit: 2 });
+    const result = filterLocalEntitiesToHasura(records, { limit: 2 });
     expect(result.entities).toEqual([records[0], records[1]]);
     expect(result.entitiesAcrossPages).toEqual(records);
     expect(result.entityCount).toBe(4);
   });
 
   it("should apply offset", () => {
-    const result = filterRecords(records, { offset: 2 });
+    const result = filterLocalEntitiesToHasura(records, { offset: 2 });
     expect(result.entities).toEqual([records[2], records[3]]);
     expect(result.entitiesAcrossPages).toEqual(records);
     expect(result.entityCount).toBe(4);
   });
 
   it("should apply limit and offset", () => {
-    const result = filterRecords(records, { limit: 1, offset: 2 });
+    const result = filterLocalEntitiesToHasura(records, {
+      limit: 1,
+      offset: 2
+    });
     expect(result.entities).toEqual([records[2]]);
     expect(result.entitiesAcrossPages).toEqual(records);
     expect(result.entityCount).toBe(4);
   });
 
   it("should apply limit to filtered results", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } },
       limit: 1
     });
@@ -456,7 +479,7 @@ describe("filterRecords", () => {
   });
 
   it("should apply offset to filtered results", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } },
       offset: 1
     });
@@ -466,7 +489,7 @@ describe("filterRecords", () => {
   });
 
   it("should apply limit and offset to filtered and ordered results", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } },
       order_by: { age: "desc" },
       limit: 1,
@@ -478,21 +501,21 @@ describe("filterRecords", () => {
   });
 
   it("should handle offset greater than array length", () => {
-    const result = filterRecords(records, { offset: 10 });
+    const result = filterLocalEntitiesToHasura(records, { offset: 10 });
     expect(result.entities).toEqual([]);
     expect(result.entitiesAcrossPages).toEqual(records);
     expect(result.entityCount).toBe(4);
   });
 
   it("should handle limit greater than array length", () => {
-    const result = filterRecords(records, { limit: 10 });
+    const result = filterLocalEntitiesToHasura(records, { limit: 10 });
     expect(result.entities).toEqual(records);
     expect(result.entitiesAcrossPages).toEqual(records);
     expect(result.entityCount).toBe(4);
   });
 
   it("should handle isInfinite option with filtering", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } },
       isInfinite: true
     });
@@ -502,7 +525,7 @@ describe("filterRecords", () => {
   });
 
   it("should handle isInfinite option with filtering, limit, and offset", () => {
-    const result = filterRecords(records, {
+    const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } },
       limit: 1,
       offset: 1,

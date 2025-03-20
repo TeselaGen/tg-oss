@@ -10,7 +10,7 @@ import {
   Popover,
   Switch
 } from "@blueprintjs/core";
-import { getCCDisplayName } from "./utils/queryParams";
+import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
 
 const DisplayOptions = ({
   compact,
