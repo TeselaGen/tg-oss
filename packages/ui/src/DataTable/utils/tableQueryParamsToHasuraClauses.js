@@ -229,7 +229,7 @@ export function tableQueryParamsToHasuraClauses({
  * If the displayName is not set or is a jsx element, the path is used instead.
  * The same conversion must be done when using the result of this method
  */
-function getFieldsMappedByCCDisplayName(schema) {
+export function getFieldsMappedByCCDisplayName(schema) {
   if (!schema || !schema.fields) return {};
   return schema.fields.reduce((acc, field) => {
     const ccDisplayName = getCCDisplayName(field);

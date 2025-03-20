@@ -1,6 +1,9 @@
 import queryString from "qs";
 import { uniqBy, clone, camelCase } from "lodash-es";
-import { tableQueryParamsToHasuraClauses } from "./tableQueryParamsToHasuraClauses";
+import {
+  getFieldsMappedByCCDisplayName,
+  tableQueryParamsToHasuraClauses
+} from "./tableQueryParamsToHasuraClauses";
 import { filterLocalEntitiesToHasura } from "./filterLocalEntitiesToHasura";
 import {
   addCustomColumnFilters,
@@ -249,7 +252,7 @@ export function getQueryParams({
   isLocalCall,
   additionalFilter,
   doNotCoercePageSize,
-  // noOrderError,
+  noOrderError,
   // isCodeModel,
   ownProps
 }) {
@@ -277,11 +280,34 @@ export function getQueryParams({
     )[0];
     pageSize = closest;
   }
+
+  const cleanedOrder = [];
+  if (order && order.length) {
+    const ccFields = getFieldsMappedByCCDisplayName(schema);
+    order.forEach(orderVal => {
+      const ccDisplayName = orderVal.replace(/^-/gi, "");
+      const schemaForField = ccFields[ccDisplayName];
+      if (schemaForField) {
+        const { path } = schemaForField;
+        const reversed = ccDisplayName !== orderVal;
+        const prefix = reversed ? "-" : "";
+        cleanedOrder.push(prefix + path);
+      } else {
+        !noOrderError &&
+          console.error(
+            "No schema for field found!",
+            ccDisplayName,
+            JSON.stringify(schema.fields, null, 2)
+          );
+      }
+    });
+  }
+
   const toReturn = {
     //these are values that might be generally useful for the wrapped component
     page,
     pageSize: ownProps.controlled_pageSize || pageSize,
-    order,
+    order: cleanedOrder,
     filters,
     searchTerm
   };
@@ -291,7 +317,7 @@ export function getQueryParams({
     pageSize,
     searchTerm,
     filters,
-    order,
+    order: cleanedOrder,
     schema
   });
   initializeHasuraWhereAndFilter(additionalFilter, where, currentParams);
