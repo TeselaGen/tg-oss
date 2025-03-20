@@ -297,6 +297,55 @@ describe("filterLocalEntitiesToHasura", () => {
     expect(result.entitiesAcrossPages).toEqual([records[0]]);
     expect(result.entityCount).toBe(1);
   });
+  it("should filter with nested filters in _and and _or properly ", () => {
+    const result = filterLocalEntitiesToHasura(
+      [
+        {
+          id: 1,
+          type: {
+            special: "01"
+          }
+        },
+        {
+          id: 2,
+          type: {
+            special: "02"
+          }
+        }
+      ],
+      {
+        where: {
+          _and: [
+            {
+              type: {
+                special: {
+                  _ilike: "%01%"
+                }
+              }
+            }
+          ],
+          _or: []
+        }
+      }
+    );
+    expect(result.entities).toEqual([
+      {
+        id: 1,
+        type: {
+          special: "01"
+        }
+      }
+    ]);
+    expect(result.entitiesAcrossPages).toEqual([
+      {
+        id: 1,
+        type: {
+          special: "01"
+        }
+      }
+    ]);
+    expect(result.entityCount).toBe(1);
+  });
 
   it("should handle empty where clause", () => {
     const result = filterLocalEntitiesToHasura(records, {});

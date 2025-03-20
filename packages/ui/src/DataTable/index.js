@@ -603,7 +603,7 @@ const DataTable = ({
                 : !val;
           });
         }
-        if (noValsForField) {
+        if (noValsForField && entities.length) {
           return {
             ...field,
             isHidden: true,

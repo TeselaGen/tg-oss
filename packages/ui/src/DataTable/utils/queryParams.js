@@ -303,7 +303,7 @@ export function getQueryParams({
     });
   }
 
-  const toReturn = {
+  let toRet = {
     //these are values that might be generally useful for the wrapped component
     page,
     pageSize: ownProps.controlled_pageSize || pageSize,
@@ -325,17 +325,20 @@ export function getQueryParams({
   if (isLocalCall) {
     //if the table is local (aka not directly connected to a db) then we need to
     //handle filtering/paging/sorting all on the front end
-    const toRet = filterLocalEntitiesToHasura(entities, {
-      where,
-      order_by,
-      limit,
-      offset,
-      isInfinite
-    });
+    toRet = {
+      ...toRet,
+      ...filterLocalEntitiesToHasura(entities, {
+        where,
+        order_by,
+        limit,
+        offset,
+        isInfinite
+      })
+    };
     return toRet;
   } else {
     return {
-      ...toReturn,
+      ...toRet,
       variables: {
         where,
         order_by,

@@ -77,6 +77,15 @@ function applyWhereClause(records, where) {
         const value = record[key];
         const conditions = filter[key];
 
+        // Handle nested object properties
+        if (
+          isObject(value) &&
+          isObject(conditions) &&
+          !hasOperator(conditions)
+        ) {
+          return applyFilter(value, conditions);
+        }
+
         for (const operator in conditions) {
           const conditionValue = conditions[operator];
 
@@ -206,6 +215,11 @@ function applyWhereClause(records, where) {
     }
 
     return true;
+  }
+
+  // Helper to check if an object contains any Hasura operators
+  function hasOperator(obj) {
+    return Object.keys(obj).some(key => key.startsWith("_"));
   }
 
   return records.filter(record => applyFilter(record, where));
