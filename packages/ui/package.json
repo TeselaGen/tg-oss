@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.7.33-beta.5",
+  "version": "0.7.33-beta.6",
   "main": "./src/index.js",
   "type": "module",
   "exports": {
