@@ -32,8 +32,8 @@ export const RenderCell = ({
   const editingCell = useSelector(
     state => state.form?.[formName]?.values?.reduxFormEditingCell
   );
-  const initialValue = useSelector(
-    state => state.form?.[formName]?.values?.reduxFormInitialValue
+  const shouldEditableCellInputBeCleared = useSelector(
+    state => state.form?.[formName]?.values?.shouldEditableCellInputBeCleared
   );
 
   const [row] = args;
@@ -85,7 +85,7 @@ export const RenderCell = ({
           dataTest={dataTest}
           cancelEdit={cancelCellEdit}
           isNumeric={column.type === "number"}
-          initialValue={initialValue || text}
+          initialValue={shouldEditableCellInputBeCleared ? undefined : text}
           finishEdit={newVal => {
             finishCellEdit(cellId, newVal);
           }}
