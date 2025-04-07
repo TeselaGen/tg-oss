@@ -59,7 +59,8 @@ describe("dataTable.spec", () => {
     cy.visit("#/DataTable?pageSize=400"); // must be >200 to hit the table virtualization
     //  - copying a single row (selected or not)
     cy.get(`[data-test="tgCell_type.special"]`).first().click();
-    cy.focused().type("{cmd+a}");
+    cy.focused().type("{meta+a}");
+    cy.focused().type("{ctrl+a}");
     //tnr: typing both so that the hotkey is triggered even when running on tests on linux in CI (maybe it will be solved some day https://github.com/cypress-io/cypress/issues/8961)
     cy.get(".data-table-container").type("{meta+c}");
     cy.get(".data-table-container").type("{ctrl+c}");
