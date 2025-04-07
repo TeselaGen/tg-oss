@@ -89,17 +89,6 @@ const entities = [
   }
 ];
 
-for (let i = 8; i <= 567; i++) {
-  entities.push({
-    url: `https://example.com/${i}`,
-    name: `Entity ${i}`,
-    id: `${i}`,
-    type: i % 2 === 0 ? "new" : "old",
-    weather: i % 3 === 0 ? "rainy" : "cloudy",
-    bool: i % 2 === 0
-  });
-}
-
 export default function SimpleTable(p) {
   const [isEntityDisabled, isEntityDisabledComp] = useToggle({
     type: "isEntityDisabled"

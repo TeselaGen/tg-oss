@@ -1256,7 +1256,7 @@ const DataTable = ({
         const allRowEls = getAllRows(tableRef);
         if (!allRowEls) return;
         const rowEls = rowNumbersToCopy.map(i => allRowEls[i]);
-
+        if (window.Cypress) window.Cypress.__copiedRowsLength = rowEls.length;
         handleCopyRows(rowEls, {
           onFinishMsg: "Selected rows copied"
         });
