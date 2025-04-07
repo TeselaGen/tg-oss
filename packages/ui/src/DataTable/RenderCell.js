@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Checkbox, Icon } from "@blueprintjs/core";
 import {
   getIdOrCodeOrIndex,
@@ -10,6 +9,7 @@ import { DropdownCell } from "./DropdownCell";
 import { EditableCell } from "./EditableCell";
 import { getVals } from "./getVals";
 import { CellDragHandle } from "./CellDragHandle";
+import { useFormValue } from "./useFormValue";
 
 export const RenderCell = ({
   oldFunc,
@@ -29,12 +29,8 @@ export const RenderCell = ({
   onDragEnd,
   args
 }) => {
-  const editingCell = useSelector(
-    state => state.form?.[formName]?.values?.reduxFormEditingCell
-  );
-  const initialValue = useSelector(
-    state => state.form?.[formName]?.values?.reduxFormInitialValue
-  );
+  const editingCell = useFormValue(formName, "reduxFormEditingCell");
+  const initialValue = useFormValue(formName, "reduxFormInitialValue");
 
   const [row] = args;
   const rowId = getIdOrCodeOrIndex(row.original, row.index);

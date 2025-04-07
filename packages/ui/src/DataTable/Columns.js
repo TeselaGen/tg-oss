@@ -336,6 +336,13 @@ const renderCheckboxHeader = ({
   ) : null;
 };
 
+const infoHelperPopoverProps = {
+  modifiers: {
+    preventOverflow: { enabled: false },
+    hide: { enabled: false }
+  }
+};
+
 export const useColumns = ({
   addFilters,
   cellRenderer,
@@ -777,12 +784,7 @@ export const useColumns = ({
               minimal
               small
               style={{ padding: 2 }}
-              popoverProps={{
-                modifiers: {
-                  preventOverflow: { enabled: false },
-                  hide: { enabled: false }
-                }
-              }}
+              popoverProps={infoHelperPopoverProps}
               onClick={() => {
                 showCollapseAll
                   ? setExpandedEntityIdMap({})

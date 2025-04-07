@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo
+} from "react";
 import classNames from "classnames";
 import { noop, get, toInteger } from "lodash-es";
 import { Button, Classes } from "@blueprintjs/core";
@@ -96,42 +102,51 @@ const PagingTool = ({
   }, []);
 
   // Define event handlers for the component
-  const onRefreshHandler = async () => {
+  const onRefreshHandler = useCallback(async () => {
     setRefetching(true);
     await onRefresh();
     setRefetching(false);
-  };
+  }, [onRefresh]);
 
-  const setPageHandler = page => {
-    setPage(page);
-    onPageChange(page);
-  };
+  const setPageHandler = useCallback(
+    page => {
+      setPage(page);
+      onPageChange(page);
+    },
+    [onPageChange, setPage]
+  );
 
-  const setPageSizeHandler = e => {
-    const newPageSize = parseInt(e.target.value, 10);
-    setPageSize(newPageSize);
-    persistPageSize(newPageSize);
-  };
+  const setPageSizeHandler = useCallback(
+    e => {
+      const newPageSize = parseInt(e.target.value, 10);
+      setPageSize(newPageSize);
+      persistPageSize(newPageSize);
+    },
+    [persistPageSize, setPageSize]
+  );
 
-  const pageBackHandler = () => {
+  const pageBackHandler = useCallback(() => {
     setPageHandler(parseInt(page, 10) - 1);
-  };
+  }, [page, setPageHandler]);
 
-  const pageForwardHandler = () => {
+  const pageForwardHandler = useCallback(() => {
     setPageHandler(parseInt(page, 10) + 1);
-  };
+  }, [page, setPageHandler]);
 
-  const pageInputBlurHandler = e => {
-    const lastPage = Math.ceil(total / pageSize);
-    const pageValue = parseInt(e.target.value, 10);
-    const selectedPage =
-      pageValue > lastPage
-        ? lastPage
-        : pageValue < 1 || isNaN(pageValue)
-          ? 1
-          : pageValue;
-    setPageHandler(selectedPage);
-  };
+  const pageInputBlurHandler = useCallback(
+    e => {
+      const lastPage = Math.ceil(total / pageSize);
+      const pageValue = parseInt(e.target.value, 10);
+      const selectedPage =
+        pageValue > lastPage
+          ? lastPage
+          : pageValue < 1 || isNaN(pageValue)
+            ? 1
+            : pageValue;
+      setPageHandler(selectedPage);
+    },
+    [pageSize, setPageHandler, total]
+  );
 
   // Define rendering logic
   const pageStart = (page - 1) * pageSize + 1;
@@ -139,10 +154,13 @@ const PagingTool = ({
   const backEnabled = page - 1 > 0;
   const forwardEnabled = page * pageSize < total;
   const lastPage = Math.ceil(total / pageSize);
-  const options = [...(window.tgPageSizes || defaultPageSizes)];
-  if (!options.includes(pageSize)) {
-    options.push(pageSize);
-  }
+  const options = useMemo(() => {
+    const opts = [...(window.tgPageSizes || defaultPageSizes)];
+    if (!opts.includes(pageSize)) {
+      opts.push(pageSize);
+    }
+    return opts;
+  }, [pageSize]);
 
   return (
     <div className="paging-toolbar-container">
