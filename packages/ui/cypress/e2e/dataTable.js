@@ -65,7 +65,7 @@ describe("dataTable.spec", () => {
     cy.get(".data-table-container").type("{meta+c}");
     cy.get(".data-table-container").type("{ctrl+c}");
     cy.contains("Selected rows copied").then(() => {
-      assert(Cypress.__copiedRowsLength === 400);
+      expect(Cypress.__copiedRowsLength).to.be(400);
     });
   });
   it(`it can copy a single row, selected rows, or cells to the clipboard`, () => {
