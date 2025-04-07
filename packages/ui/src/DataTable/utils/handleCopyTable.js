@@ -1,9 +1,9 @@
 import { getAllRows } from "./getAllRows";
 import { handleCopyRows } from "./handleCopyRows";
 
-export const handleCopyTable = (e, opts) => {
+export const handleCopyTable = (tableRef, opts) => {
   try {
-    const allRowEls = getAllRows(e);
+    const allRowEls = getAllRows(tableRef);
     if (!allRowEls) return;
     handleCopyRows(allRowEls, {
       ...opts,

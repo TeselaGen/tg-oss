@@ -2,9 +2,9 @@ import { getAllRows } from "./getAllRows";
 import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
 import { handleCopyRows } from "./handleCopyRows";
 
-export const handleCopyColumn = (e, cellWrapper, selectedRecords) => {
+export const handleCopyColumn = (tableRef, cellWrapper, selectedRecords) => {
   const specificColumn = cellWrapper.getAttribute("data-test");
-  let rowElsToCopy = getAllRows(e);
+  let rowElsToCopy = getAllRows(tableRef);
   if (!rowElsToCopy) return;
   if (selectedRecords) {
     const ids = selectedRecords.map(e => getIdOrCodeOrIndex(e)?.toString());
