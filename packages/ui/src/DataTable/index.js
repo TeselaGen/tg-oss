@@ -2986,7 +2986,8 @@ const DataTable = ({
                 "Period",
                 "Slash",
                 "IntlRo",
-                "IntlYen"
+                "IntlYen",
+                "Space"
               ];
               const isSpecialChar = allowedSpecialChars.includes(e.code);
               if (!isNum && !isLetter && !isSpecialChar) {
