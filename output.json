@@ -769,14 +769,15 @@
               "parallelism": true
             },
             "e2e": {
-              "configurations": {},
               "options": {
+                "key": "373658d4-4931-4ffd-9263-8eb78a838ab9",
                 "parallel": true,
                 "record": true,
                 "cypressConfig": "packages/ove/cypress.config.ts",
                 "devServerTarget": "ove:start:ci",
                 "testingType": "e2e"
               },
+              "configurations": {},
               "parallelism": true,
               "inputs": ["default", "^production"],
               "executor": "@nx/cypress:cypress"
@@ -928,14 +929,15 @@
               "executor": "@nx/cypress:cypress"
             },
             "e2e": {
-              "configurations": {},
               "options": {
+                "key": "1ced39be-1a3a-4fd8-b2d5-a88951d9b766",
                 "parallel": true,
                 "record": true,
                 "cypressConfig": "packages/ui/cypress.config.ts",
                 "devServerTarget": "ui:start:ci",
                 "testingType": "e2e"
               },
+              "configurations": {},
               "parallelism": true,
               "inputs": ["default", "^production"],
               "executor": "@nx/cypress:cypress"
