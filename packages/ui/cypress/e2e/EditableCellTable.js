@@ -37,7 +37,7 @@ describe("EditableCellTable.spec", () => {
   });
   it(`typing a letter should start edit`, () => {
     cy.visit("#/DataTable%20-%20EditableCellTable");
-    cy.get(`[data-test="tgCell_name"]:first`).type("zonk{enter}");
+    cy.get(`[data-test="tgCell_name"]:first`).type(" zonk{enter}");
     cy.get(`[data-test="tgCell_name"]:first`).should("contain", "zonk");
   });
 

@@ -1086,11 +1086,17 @@ const DataTable = ({
   }, [selectedCells]);
 
   const startCellEdit = useCallback(
-    (cellId, initialValue) => {
+    (cellId, shouldClear) => {
+      // console.log(`startCellEdit initialValue:`, initialValue)
       // This initial value is not needed if the event is propagated accordingly.
       // This is directly connected to the RenderCell component, which does set
       // the initial value.
-      change("reduxFormInitialValue", initialValue);
+      // change("shouldEditableCellInputBeCleared", undefined);
+      if (shouldClear) {
+        change("shouldEditableCellInputBeCleared", true);
+      } else {
+        change("shouldEditableCellInputBeCleared", false);
+      }
       change("reduxFormEditingCell", prev => {
         //check if the cell is already selected and editing and if so, don't change it
         if (prev === cellId) return cellId;
@@ -2966,12 +2972,30 @@ const DataTable = ({
               const rowDisabled = isEntityDisabled(entity);
               const isNum = e.code?.startsWith("Digit");
               const isLetter = e.code?.startsWith("Key");
-              if (!isNum && !isLetter) {
+              const allowedSpecialChars = [
+                "Minus",
+                "Equal",
+                "Backquote",
+                "BracketLeft",
+                "BracketRight",
+                "Backslash",
+                "IntlBackslash",
+                "Semicolon",
+                "Quote",
+                "Comma",
+                "Period",
+                "Slash",
+                "IntlRo",
+                "IntlYen",
+                "Space"
+              ];
+              const isSpecialChar = allowedSpecialChars.includes(e.code);
+              if (!isNum && !isLetter && !isSpecialChar) {
                 return;
               }
               if (rowDisabled) return;
               e.stopPropagation();
-              startCellEdit(primarySelectedCellId, e.key);
+              startCellEdit(primarySelectedCellId, true);
             }
           })}
         >
