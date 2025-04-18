@@ -1,7 +1,31 @@
 import { Button, Tooltip } from "@blueprintjs/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { wrapDialog } from "../../../src";
 import DemoWrapper from "../DemoWrapper";
+const DelayedTooltipButton = () => {
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowButton(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div>
+      <h6>Button that appears after 2 seconds:</h6>
+      {showButton ? (
+        <Button disabled data-tip="I appeared after 2 seconds!">
+          Delayed Button
+        </Button>
+      ) : (
+        <span>Button will appear in 2 seconds...</span>
+      )}
+    </div>
+  );
+};
 
 export default function EllipsizedTextAutoTooltip() {
   const [isOpen, setOpen] = useState(false);
@@ -11,6 +35,7 @@ export default function EllipsizedTextAutoTooltip() {
       <DemoWrapper>
         <h5>Set a data-tip attribute:</h5>
 
+        <DelayedTooltipButton></DelayedTooltipButton>
         <code>{`<Button data-tip="I'm a tooltip">`}</code>
         <Button data-tip="I'm a tooltip that is reaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaallllllllyreaaaaaaaaaaaaaaaaalllllllly long">
           Hover me!
