@@ -28,7 +28,8 @@ export default class DropHandler extends React.Component {
           ".dna",
           ".prot",
           ".ab1",
-          ".json"
+          ".json",
+          ".fastq"
         ]}
         onDropRejected={() => {
           window.toastr.error("Error: Incorrect File Type");

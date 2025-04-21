@@ -121,50 +121,45 @@ const tagDict = {
   colorDataC: { tagName: "DATA", tagNum: 12, typeToReturn: "getShort" }
 };
 
-const correctionAmount = 3;
 // tnr: this function takes in chromData which has 4 traces and a basePos (which describes where in the trace the base call lands)
 // It "normalizes" that data into a baseTraces array so that each base has its own set of that data (having a per-base trace makes insertion/deletion/copy/paste actions all easier)
 function convertBasePosTraceToPerBpTrace(chromData) {
-  const { basePos, aTrace } = chromData;
-  const traceLength = aTrace.length;
-  let startPos = 0;
-  let nextBasePos = basePos[1];
-  let endPos;
-  function setEndPos() {
-    if (nextBasePos) {
-      endPos = startPos + Math.ceil((nextBasePos - startPos) / 2);
-    } else {
-      endPos = traceLength;
-    }
+  const { basePos } = chromData;
+
+  const peakEdges = [0];
+  for (let i = 0; i < basePos.length - 1; i++) {
+    peakEdges.push(Math.ceil((basePos[i] + basePos[i + 1]) / 2));
   }
-  setEndPos();
+  peakEdges.push(chromData.aTrace.length);
+
+  // Trim edges of trace so that the first and last peak traces are roughly symmetric
+  // around the peak
+  const firstBinWidth = peakEdges[1] - peakEdges[0];
+  const secondBinWidth = peakEdges[2] - peakEdges[1];
+  if (firstBinWidth > secondBinWidth) {
+    peakEdges[0] = peakEdges[1] - secondBinWidth;
+  }
+
+  const lastBinWidth =
+    peakEdges[peakEdges.length - 1] - peakEdges[peakEdges.length - 2];
+  const secondLastBinWidth =
+    peakEdges[peakEdges.length - 2] - peakEdges[peakEdges.length - 3];
+  if (lastBinWidth > secondLastBinWidth) {
+    peakEdges[peakEdges.length - 1] =
+      peakEdges[peakEdges.length - 2] + secondLastBinWidth + 1;
+  }
+
   const baseTraces = [];
-  for (let i = 0; i < basePos.length; i++) {
+  for (let i = 0; i < peakEdges.length - 1; i++) {
+    const start = peakEdges[i];
+    const end = peakEdges[i + 1];
     const tracesForType = {
-      aTrace: [],
-      tTrace: [],
-      gTrace: [],
-      cTrace: []
+      aTrace: chromData.aTrace.slice(start, end),
+      tTrace: chromData.tTrace.slice(start, end),
+      gTrace: chromData.gTrace.slice(start, end),
+      cTrace: chromData.cTrace.slice(start, end)
     };
-    baseTraces[i] = tracesForType;
-    [
-      "aTrace",
-      "tTrace",
-      "gTrace",
-      "cTrace"
-      // eslint-disable-next-line no-loop-func
-    ].forEach(type => {
-      const traceForType = tracesForType[type];
-      const traceData = chromData[type];
-      for (let j = startPos; j < endPos + correctionAmount; j++) {
-        traceForType.push(traceData[j] || 0);
-      }
-    });
-    if (i !== basePos.length - 1) {
-      startPos = endPos + correctionAmount;
-      nextBasePos = basePos[i + 2];
-      setEndPos();
-    }
+    baseTraces.push(tracesForType);
   }
 
   return {
