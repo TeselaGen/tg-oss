@@ -190,7 +190,14 @@ export function tableQueryParamsToHasuraClauses({
               ]
             };
           case "equalTo":
-            return { [filterOn]: { _eq: parseFloat(filterValue) } };
+            return {
+              [filterOn]: {
+                _eq:
+                  type === "number" || type === "integer"
+                    ? parseFloat(filterValue)
+                    : filterValue
+              }
+            };
           case "regex":
             return { [filterOn]: { _regex: filterValue } };
           default:
