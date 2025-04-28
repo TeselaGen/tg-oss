@@ -1117,6 +1117,17 @@ ORIGIN
       "end should be 0"
     );
   });
+
+  it("Protein Fasta with stop codons (*) at the end should be kept", async function () {
+    const string = fs.readFileSync(
+      path.join(__dirname, "./testData/genbank/protein_with_stop_codons.gp"),
+      "utf8"
+    );
+    const result = genbankToJson(string);
+    result[0].parsedSequence.sequence.should.equal(
+      "aaaggggy*yyy*"
+    );
+  });
 });
 
 // const string = fs.readFileSync(path.join(__dirname, '../../../..', './testData/genbank (JBEI Private)/46.gb'), "utf8");
