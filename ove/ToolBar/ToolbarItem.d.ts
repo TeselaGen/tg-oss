@@ -6,9 +6,7 @@ export default _default;
 declare class ToolbarItem extends React.Component<any, any, any> {
     constructor(props: any);
     constructor(props: any, context: any);
-    toggleDropdown: ({ forceClose }?: {
-        forceClose: any;
-    }) => void;
+    toggleDropdown: ({ forceClose }?: {}) => void;
     render(): import("react/jsx-runtime").JSX.Element | null;
     dropdownNode: HTMLDivElement | undefined;
 }

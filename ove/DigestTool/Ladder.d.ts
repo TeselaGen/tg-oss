@@ -1,6 +1,6 @@
 export default function Ladder({ boxHeight, lanes, digestLaneRightClicked, selectedFragment, ladders }: {
     boxHeight?: number | undefined;
-    lanes?: any[] | undefined;
+    lanes?: never[] | undefined;
     digestLaneRightClicked: any;
     selectedFragment: any;
     ladders?: {

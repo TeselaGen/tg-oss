@@ -1,6 +1,6 @@
 export default Labels;
 declare function Labels({ labels, extraSideSpace, smartCircViewLabelRender, radius: outerRadius, editorName, noRedux, rotationRadians, textScalingFactor, labelLineIntensity, labelSize, fontHeightMultiplier, circularViewWidthVsHeightRatio, condenseOverflowingXLabels }: {
-    labels?: any[] | undefined;
+    labels?: never[] | undefined;
     extraSideSpace: any;
     smartCircViewLabelRender: any;
     radius: any;

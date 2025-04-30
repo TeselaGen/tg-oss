@@ -1,5 +1,4 @@
 import { default as React } from '../../../../node_modules/react';
-
 export interface RowViewProps {
   editorName: string; //the name of the editor instance (this should match what you've set up in your redux store)
   height: number; //default = 400

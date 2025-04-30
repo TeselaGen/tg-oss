@@ -7,8 +7,4 @@ export default function getAnnotationNameAndStartStopString({ name, start, end, 
     annotationTypePlural: any;
     overlapsSelf: any;
     isWrappedAddon: any;
-}, { startText, isProtein, readOnly }?: {
-    startText: any;
-    isProtein: any;
-    readOnly: any;
-}): string;
+}, { startText, isProtein, readOnly }?: {}): string;
