@@ -22,7 +22,6 @@ describe("FASTA tests", function () {
     result[0].parsedSequence.description.should.equal(
       "359950697|gb|AEV91138.1| Rfp (plasmid) [synthetic construct]"
     );
-    console.log(result[0].parsedSequence.sequence);
     result[0].parsedSequence.sequence.should.equal(
       "MRSSKNVIKEFMRFKVRMEGTVNGHEFEIEGEGEGRPYEGHNTVKLKVTKGGPLPFAWDILSPQFQYGSKVYVKHPADIPDYKKLSFPEGFKWERVMNFEDGGVVTVTQDSSLQDGCFIYKVKFIGVNFPSDGPVMQKKTMGWEASTERLYPRDGVLKGEIHKALKLKDGGHYLVEFKSIYMAKKPVQLPGYYYVDSKLDITSHNEDYTIVEQYERTEGRHHLFL"
     );
@@ -34,10 +33,10 @@ describe("FASTA tests", function () {
       path.join(__dirname, "./testData/fasta/fasta_with_stop_codons.fasta"),
       "utf8"
     );
-    const result = await fastaToJson(string, { fileName: "fasta_with_stop_codons.faa" });
-    result[0].parsedSequence.sequence.should.equal(
-      "AGCTTT*TAAAA*"
-    );
+    const result = await fastaToJson(string, {
+      fileName: "fasta_with_stop_codons.faa"
+    });
+    result[0].parsedSequence.sequence.should.equal("AGCTTT*TAAAA*");
   });
 
   it("import protein fasta file without replacing spaces to underscore in name", async function () {
