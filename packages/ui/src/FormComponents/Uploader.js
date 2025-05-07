@@ -155,65 +155,72 @@ const InnerDropZone = ({
   // isDragActive
   // isDragReject
   // isDragAccept
-}) => (
-  <section>
-    <div
-      {...getRootProps()}
-      className={classnames("tg-dropzone", className, {
-        "tg-dropzone-minimal": minimal,
-        "tg-dropzone-active": isDragActive,
-        "tg-dropzone-reject": isDragReject, // tnr: the acceptClassName/rejectClassName doesn't work with file extensions (only mimetypes are supported when dragging). Thus we'll just always turn the drop area blue when dragging and let the filtering occur on drop. See https://github.com/react-dropzone/react-dropzone/issues/888#issuecomment-773938074
-        "tg-dropzone-accept": isDragAccept,
-        "tg-dropzone-disabled": dropzoneDisabled,
-        "bp3-disabled": dropzoneDisabled
-      })}
-    >
-      <input {...getInputProps()} />
-      {contentOverride || (
-        <div
-          title={
-            simpleAccept
-              ? "Accepts only the following file types: " + simpleAccept
-              : "Accepts any file input"
+}) => {
+  const rootProps = getRootProps();
+  return (
+    <section>
+      <div
+        {...rootProps}
+        onKeyDown={e => {
+          // tnr: some custom code to prevent Enter from triggering the dropzone if doesn't have an active focus outline
+          if (e.key === "Enter") {
+            if (document.activeElement.classList.contains("tg-dropzone")) {
+              if (!hasOutline(document.activeElement)) {
+                e.preventDefault();
+                return false;
+              }
+            }
           }
-          className="tg-upload-inner"
-        >
-          {innerIcon || <Icon icon="upload" iconSize={minimal ? 15 : 30} />}
-          {innerText || (minimal ? "Upload" : "Click or drag to upload")}
-          {validateAgainstSchema && !noBuildCsvOption && (
-            <div
-              style={{
-                textAlign: "center",
-                // fontSize: 18,
-                marginTop: 7,
-                marginBottom: 5
-              }}
-              onClick={handleManuallyEnterData}
-              className="link-button"
-            >
-              ...or {manualEnterMessage}
-              {/* <div
+          rootProps.onKeyDown(e);
+          return true;
+        }}
+        className={classnames("tg-dropzone", className, {
+          "tg-dropzone-minimal": minimal,
+          "tg-dropzone-active": isDragActive,
+          "tg-dropzone-reject": isDragReject, // tnr: the acceptClassName/rejectClassName doesn't work with file extensions (only mimetypes are supported when dragging). Thus we'll just always turn the drop area blue when dragging and let the filtering occur on drop. See https://github.com/react-dropzone/react-dropzone/issues/888#issuecomment-773938074
+          "tg-dropzone-accept": isDragAccept,
+          "tg-dropzone-disabled": dropzoneDisabled,
+          "bp3-disabled": dropzoneDisabled
+        })}
+      >
+        <input {...getInputProps()} />
+        {contentOverride || (
+          <div
+            title={
+              simpleAccept
+                ? "Accepts only the following file types: " + simpleAccept
+                : "Accepts any file input"
+            }
+            className="tg-upload-inner"
+          >
+            {innerIcon || <Icon icon="upload" iconSize={minimal ? 15 : 30} />}
+            {innerText || (minimal ? "Upload" : "Click or drag to upload")}
+            {validateAgainstSchema && !noBuildCsvOption && (
+              <div
                 style={{
-                  fontSize: 11,
-                  color: Colors.GRAY3,
-                  fontStyle: "italic"
+                  textAlign: "center",
+                  // fontSize: 18,
+                  marginTop: 7,
+                  marginBottom: 5
                 }}
+                onClick={handleManuallyEnterData}
+                className="link-button"
               >
-                {manualEnterSubMessage}
-              </div> */}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-
-    {showFilesCount ? (
-      <div className="tg-upload-file-list-counter">
-        Files: {fileList ? fileList.length : 0}
+                ...or {manualEnterMessage}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-    ) : null}
-  </section>
-);
+
+      {showFilesCount ? (
+        <div className="tg-upload-file-list-counter">
+          Files: {fileList ? fileList.length : 0}
+        </div>
+      ) : null}
+    </section>
+  );
+};
 
 const onFileSuccessDefault = async () => {
   return;
@@ -1276,3 +1283,12 @@ const Uploader = ({
 };
 
 export default Uploader;
+
+function hasOutline(element) {
+  if (!element) {
+    return false; // No active element
+  }
+
+  const style = window.getComputedStyle(element);
+  return style.outlineStyle !== "none" && style.outlineWidth !== "0px";
+}
