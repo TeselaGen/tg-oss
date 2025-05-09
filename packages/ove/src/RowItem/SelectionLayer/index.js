@@ -13,28 +13,27 @@ import {
   preventDefaultStopPropagation
 } from "../../utils/editorUtils";
 
-function SelectionLayer(props) {
-  const {
-    charWidth,
-    isDraggable,
-    row,
-    sequenceLength,
-    regions,
-    leftMargin = 0,
-    isProtein,
-    getGaps,
-    hideTitle: topLevelHideTitle,
-    customTitle: topLevelCustomTitle,
-    color: topLevelColor,
-    hideCarets: topLevelHideCarets = false,
-    selectionLayerRightClicked,
-    className: globalClassname = "",
-    onClick
-  } = props;
+function SelectionLayer({
+  charWidth,
+  isDraggable,
+  row,
+  sequenceLength,
+  regions,
+  leftMargin = 0,
+  isProtein,
+  getGaps,
+  hideTitle: topLevelHideTitle,
+  customTitle: topLevelCustomTitle,
+  color: topLevelColor,
+  hideCarets: topLevelHideCarets = false,
+  selectionLayerRightClicked,
+  className: globalClassname = "",
+  onClick
+}) {
   let hasSelection = false;
 
   const toReturn = (
-    <React.Fragment>
+    <>
       {regions.map(function (selectionLayer, topIndex) {
         const _onClick = onClick
           ? function (event) {
@@ -176,7 +175,7 @@ function SelectionLayer(props) {
           return null;
         }
       })}
-    </React.Fragment>
+    </>
   );
   return hasSelection ? toReturn : null;
 }
