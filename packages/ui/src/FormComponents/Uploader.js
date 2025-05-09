@@ -788,7 +788,11 @@ const Uploader = ({
                     .join(", ")
                 : undefined
             }
-            onDrop={async (_acceptedFiles, rejectedFiles) => {
+            onDrop={async (_acceptedFiles, rejectedFiles, e) => {
+              const parentDropzone = e.target.closest(".tg-dropzone");
+              if (parentDropzone) {
+                parentDropzone.blur();
+              }
               let acceptedFiles = [];
               for (const file of _acceptedFiles) {
                 if ((validateAgainstSchema || autoUnzip) && isZipFile(file)) {

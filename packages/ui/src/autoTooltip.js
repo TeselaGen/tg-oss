@@ -18,6 +18,7 @@ document.addEventListener("mouseup", () => {
 });
 
 let tippys = [];
+
 let recentlyHidden = false;
 let clearMe;
 (function () {
