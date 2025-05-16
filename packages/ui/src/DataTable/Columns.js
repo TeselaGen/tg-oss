@@ -104,7 +104,7 @@ const RenderColumnHeader = ({
   if (order && order.length) {
     order.forEach(order => {
       const orderField = order.replace("-", "");
-      if (orderField === ccDisplayName) {
+      if (orderField === path) {
         if (orderField === order) {
           ordering = "asc";
         } else {
