@@ -8,10 +8,7 @@ export function initializeHasuraWhereAndFilter(
   if (typeof additionalFilter === "function") {
     const newWhere = additionalFilter(where, currentParams);
     if (newWhere) {
-      where = {
-        ...where,
-        ...newWhere
-      };
+      Object.assign(where, newWhere);
     }
   } else if (typeof additionalFilter === "object")
     where._and.push(additionalFilter);
