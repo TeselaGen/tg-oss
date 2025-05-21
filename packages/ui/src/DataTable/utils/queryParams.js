@@ -244,7 +244,7 @@ export function makeDataTableHandlers({
 
 export function getQueryParams({
   currentParams,
-  // urlConnected,
+  urlConnected,
   defaults,
   schema,
   isInfinite,
@@ -253,98 +253,130 @@ export function getQueryParams({
   additionalFilter,
   doNotCoercePageSize,
   noOrderError,
-  // isCodeModel,
+  isCodeModel,
   ownProps
 }) {
-  Object.keys(currentParams).forEach(function (key) {
-    if (currentParams[key] === undefined) {
-      delete currentParams[key]; //we want to use the default value if any of these are undefined
-    }
-  });
-  const tableQueryParams = {
-    ...defaults,
-    ...currentParams
-  };
-  let { page, pageSize, searchTerm, filters, order } = tableQueryParams;
-  if (page <= 0 || isNaN(page)) {
-    page = undefined;
-  }
-  if (isInfinite) {
-    page = undefined;
-    pageSize = undefined;
-  }
-  if (pageSize !== undefined && !doNotCoercePageSize) {
-    //pageSize might come in as an unexpected number so we coerce it to be one of the nums in our pageSizes array
-    const closest = clone(window.tgPageSizes || defaultPageSizes).sort(
-      (a, b) => Math.abs(pageSize - a) - Math.abs(pageSize - b)
-    )[0];
-    pageSize = closest;
-  }
+  let errorParsingUrlString;
 
-  const cleanedOrder = [];
-  if (order && order.length) {
-    const ccFields = getFieldsMappedByCCDisplayName(schema);
-    order.forEach(orderVal => {
-      const ccDisplayName = orderVal.replace(/^-/gi, "");
-      const schemaForField = ccFields[ccDisplayName];
-      if (schemaForField) {
-        const { path } = schemaForField;
-        const reversed = ccDisplayName !== orderVal;
-        const prefix = reversed ? "-" : "";
-        cleanedOrder.push(prefix + path);
-      } else {
-        !noOrderError &&
-          console.error(
-            "No schema for field found!",
-            ccDisplayName,
-            JSON.stringify(schema.fields, null, 2)
-          );
+  try {
+    Object.keys(currentParams).forEach(function (key) {
+      if (currentParams[key] === undefined) {
+        delete currentParams[key]; //we want to use the default value if any of these are undefined
       }
     });
-  }
-
-  let toRet = {
-    //these are values that might be generally useful for the wrapped component
-    page,
-    pageSize: ownProps.controlled_pageSize || pageSize,
-    order: cleanedOrder,
-    filters,
-    searchTerm
-  };
-
-  const { where, order_by, limit, offset } = tableQueryParamsToHasuraClauses({
-    page,
-    pageSize,
-    searchTerm,
-    filters,
-    order: cleanedOrder,
-    schema
-  });
-  initializeHasuraWhereAndFilter(additionalFilter, where, currentParams);
-  addCustomColumnFilters(where, schema.fields, currentParams);
-  if (isLocalCall) {
-    //if the table is local (aka not directly connected to a db) then we need to
-    //handle filtering/paging/sorting all on the front end
-    toRet = {
-      ...toRet,
-      ...filterLocalEntitiesToHasura(entities, {
-        where,
-        order_by,
-        limit,
-        offset,
-        isInfinite
-      })
+    const tableQueryParams = {
+      ...defaults,
+      ...currentParams
     };
-    return toRet;
-  } else {
-    return {
-      ...toRet,
-      variables: {
-        where,
-        order_by,
-        limit,
-        offset
-      }
+    let { page, pageSize, searchTerm, filters, order } = tableQueryParams;
+    if (page <= 0 || isNaN(page)) {
+      page = undefined;
+    }
+    if (isInfinite) {
+      page = undefined;
+      pageSize = undefined;
+    }
+    if (pageSize !== undefined && !doNotCoercePageSize) {
+      //pageSize might come in as an unexpected number so we coerce it to be one of the nums in our pageSizes array
+      const closest = clone(window.tgPageSizes || defaultPageSizes).sort(
+        (a, b) => Math.abs(pageSize - a) - Math.abs(pageSize - b)
+      )[0];
+      pageSize = closest;
+    }
+
+    const cleanedOrder = [];
+    if (order && order.length) {
+      const ccFields = getFieldsMappedByCCDisplayName(schema);
+      order.forEach(orderVal => {
+        const ccDisplayName = orderVal.replace(/^-/gi, "");
+        const schemaForField = ccFields[ccDisplayName];
+        if (schemaForField) {
+          const { path } = schemaForField;
+          const reversed = ccDisplayName !== orderVal;
+          const prefix = reversed ? "-" : "";
+          cleanedOrder.push(prefix + path);
+        } else {
+          !noOrderError &&
+            console.error(
+              "No schema for field found!",
+              ccDisplayName,
+              JSON.stringify(schema.fields, null, 2)
+            );
+        }
+      });
+    }
+    // by default make sort by updated at
+    if (!cleanedOrder.length) {
+      cleanedOrder.push("-updatedAt");
+    }
+
+    // in case entries that have the same value in the column being sorted on
+    // fall back to id as a secondary sort to make sure ordering happens correctly
+    cleanedOrder.push(isCodeModel ? "code" : window.__sortId || "id");
+
+    let toRet = {
+      //these are values that might be generally useful for the wrapped component
+      page,
+      pageSize: ownProps.controlled_pageSize || pageSize,
+      order: cleanedOrder,
+      filters,
+      searchTerm
     };
+
+    const { where, order_by, limit, offset } = tableQueryParamsToHasuraClauses({
+      page,
+      pageSize,
+      searchTerm,
+      filters,
+      order: cleanedOrder,
+      schema
+    });
+    initializeHasuraWhereAndFilter(additionalFilter, where, currentParams);
+    addCustomColumnFilters(where, schema.fields, currentParams);
+    if (isLocalCall) {
+      //if the table is local (aka not directly connected to a db) then we need to
+      //handle filtering/paging/sorting all on the front end
+      toRet = {
+        ...toRet,
+        ...filterLocalEntitiesToHasura(entities, {
+          where,
+          order_by,
+          limit,
+          offset,
+          isInfinite
+        })
+      };
+      return toRet;
+    } else {
+      return {
+        ...toRet,
+        variables: {
+          where,
+          order_by,
+          limit,
+          offset
+        }
+      };
+    }
+  } catch (e) {
+    if (urlConnected) {
+      errorParsingUrlString = e;
+      console.error(
+        "The following error occurred when trying to build the query params. This is probably due to a malformed URL:",
+        e
+      );
+      return {
+        errorParsingUrlString,
+        variables: {
+          where: {},
+          order_by: [],
+          limit: 0,
+          offset: 0
+        }
+      };
+    } else {
+      console.error("Error building query params from filter:");
+      throw e;
+    }
   }
 }

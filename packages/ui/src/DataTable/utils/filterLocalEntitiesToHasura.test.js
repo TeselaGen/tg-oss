@@ -536,7 +536,25 @@ describe("filterLocalEntitiesToHasura", () => {
     expect(result.entitiesAcrossPages).toEqual([records[0], records[2]]);
     expect(result.entityCount).toBe(2);
   });
-
+  it("should order by multiple fields (age asc, name desc)", () => {
+    // Make two of the ages the same for testing secondary sort
+    const modifiedRecords = [
+      records[1], // Jane Smith, age 25
+      { ...records[0], age: 25 }, // John Doe, age 25
+      records[2], // Alice Johnson, age 35
+      records[3] // Bob Williams, age 20
+    ];
+    const result = filterLocalEntitiesToHasura(modifiedRecords, {
+      order_by: [{ age: "asc" }, { name: "desc" }]
+    });
+    expect(result.entities).toEqual([
+      modifiedRecords[3], // age 20, name "Bob Williams"
+      modifiedRecords[1], // age 25, name "John Doe" (name desc)
+      modifiedRecords[0], // age 25, name "Jane Smith"
+      modifiedRecords[2] // age 35, name "Alice Johnson"
+    ]);
+    expect(result.entityCount).toBe(4);
+  });
   it("should apply limit and offset to filtered and ordered results", () => {
     const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } },

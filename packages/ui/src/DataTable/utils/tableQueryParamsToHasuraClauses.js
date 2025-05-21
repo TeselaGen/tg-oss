@@ -11,7 +11,7 @@ export function tableQueryParamsToHasuraClauses({
 }) {
   const ccFields = getFieldsMappedByCCDisplayName(schema);
   let where = {};
-  const order_by = {};
+  const order_by = [];
   const limit = pageSize || 25;
   const offset = page && pageSize ? (page - 1) * pageSize : 0;
 
@@ -224,7 +224,7 @@ export function tableQueryParamsToHasuraClauses({
     order.forEach(item => {
       const field = item.startsWith("-") ? item.substring(1) : item;
       const direction = item.startsWith("-") ? "desc" : "asc";
-      order_by[field] = direction;
+      order_by.push({ [field]: direction });
     });
   }
 

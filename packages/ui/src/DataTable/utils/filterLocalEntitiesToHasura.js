@@ -1,3 +1,4 @@
+import {} from "jszip";
 import {
   isEmpty,
   every,
@@ -225,12 +226,27 @@ function applyWhereClause(records, where) {
   return records.filter(record => applyFilter(record, where));
 }
 
-function applyOrderBy(records, order_by) {
-  const keys = Object.keys(order_by);
-  if (keys.length > 0) {
-    const field = keys[0];
-    const direction = order_by[field] === "asc" ? "asc" : "desc";
-    return orderBy(records, [field], [direction]);
+// takes in an array of records and an order_by clause
+// order_by looks like this: [{ some_field: "asc" }, { some_other_field: "desc" }] or {some_field: "asc"}
+// returns the records sorted by the order_by clause
+function applyOrderBy(records, _order_by) {
+  const order_by = isArray(_order_by)
+    ? _order_by
+    : isEmpty(_order_by)
+      ? []
+      : [_order_by];
+
+  if (order_by.length > 0) {
+    const fields = [];
+    const directions = [];
+    order_by.forEach(item => {
+      // Hasura-style: { field: "asc" }
+      const field = Object.keys(item)[0];
+      const direction = item[field];
+      fields.push(field);
+      directions.push(direction);
+    });
+    records = orderBy(records, fields, directions);
   }
   return records;
 }

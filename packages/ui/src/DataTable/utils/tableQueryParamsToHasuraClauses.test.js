@@ -14,7 +14,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
     const result = tableQueryParamsToHasuraClauses({});
     expect(result).toEqual({
       where: {},
-      order_by: {},
+      order_by: [],
       limit: 25,
       offset: 0
     });
@@ -24,7 +24,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
     const result = tableQueryParamsToHasuraClauses({ page: 2, pageSize: 10 });
     expect(result).toEqual({
       where: {},
-      order_by: {},
+      order_by: [],
       limit: 10,
       offset: 10
     });
@@ -39,7 +39,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
       where: {
         _or: [{ name: { _ilike: "%test%" } }, { email: { _ilike: "%test%" } }]
       },
-      order_by: {},
+      order_by: [],
       limit: 25,
       offset: 0
     });
@@ -58,7 +58,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
           { email: { _ilike: "%30%" } }
         ]
       },
-      order_by: {},
+      order_by: [],
       limit: 25,
       offset: 0
     });
@@ -77,7 +77,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
           { email: { _ilike: "%true%" } }
         ]
       },
-      order_by: {},
+      order_by: [],
       limit: 25,
       offset: 0
     });
@@ -92,7 +92,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
       where: {
         _or: [{ name: { _ilike: "%test%" } }, { email: { _ilike: "%test%" } }]
       },
-      order_by: {},
+      order_by: [],
       limit: 25,
       offset: 0
     });
@@ -110,7 +110,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
     });
     expect(result).toEqual({
       where: { _and: [{ name: { _ilike: "%test%" } }] },
-      order_by: {},
+      order_by: [],
       limit: 25,
       offset: 0
     });
@@ -125,7 +125,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
     });
     expect(result).toEqual({
       where: { _and: [{ age: { _eq: 30 } }] },
-      order_by: {},
+      order_by: [],
       limit: 25,
       offset: 0
     });
@@ -135,7 +135,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
     const result = tableQueryParamsToHasuraClauses({ order: ["name", "-age"] });
     expect(result).toEqual({
       where: {},
-      order_by: { name: "asc", age: "desc" },
+      order_by: [{ name: "asc" }, { age: "desc" }],
       limit: 25,
       offset: 0
     });
@@ -168,7 +168,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
           { age: { _gt: 30 } }
         ]
       },
-      order_by: { name: "asc" },
+      order_by: [{ name: "asc" }],
       limit: 10,
       offset: 10
     });
@@ -198,7 +198,7 @@ describe("tableQueryParamsToHasuraClauses", () => {
           { age: { _gt: 30 } }
         ]
       },
-      order_by: {},
+      order_by: [],
       limit: 25,
       offset: 0
     });
