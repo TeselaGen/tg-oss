@@ -41,6 +41,7 @@ export { default as popoverOverflowModifiers } from "./utils/popoverOverflowModi
 export * from "./utils/tgFormValues";
 export { default as tgFormValues } from "./utils/tgFormValues";
 export { default as withStore } from "./utils/withStore";
+export { default as determineBlackOrWhiteTextColor } from "./utils/determineBlackOrWhiteTextColor";
 export {
   default as withTableParams,
   useTableParams
