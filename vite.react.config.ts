@@ -147,7 +147,8 @@ export default ({ name, dir }: { name: string; dir: string }) =>
                   "redux-form",
                   "@blueprintjs/core",
                   "@blueprintjs/select",
-                  "@blueprintjs/datetime"
+                  "@blueprintjs/datetime2",
+                  "@blueprintjs/popover2"
                 ]
         }
       },
@@ -158,9 +159,13 @@ export default ({ name, dir }: { name: string; dir: string }) =>
             __dirname,
             "node_modules/@blueprintjs/core"
           ),
-          "@blueprintjs/datetime": path.join(
+          "@blueprintjs/datetime2": path.join(
             __dirname,
-            "node_modules/@blueprintjs/datetime"
+            "node_modules/@blueprintjs/datetime2"
+          ),
+          "@blueprintjs/popover2": path.join(
+            __dirname,
+            "node_modules/@blueprintjs/popover2"
           ),
 
           // "@teselagen/react-table/react-table.css": `/Users/tnrich/Sites/react-table/react-table.css`,

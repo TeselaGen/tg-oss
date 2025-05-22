@@ -33,7 +33,6 @@ import {
   Button,
   Menu,
   MenuItem,
-  ContextMenu,
   Icon,
   Intent,
   Callout,
@@ -103,6 +102,7 @@ import { formValueSelector, change as _change } from "redux-form";
 import { throwFormError } from "../throwFormError";
 import { isObservableArray, toJS } from "mobx";
 import { isBeingCalledExcessively } from "../utils/isBeingCalledExcessively";
+import * as Popover2 from "@blueprintjs/popover2";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -2226,7 +2226,10 @@ const DataTable = ({
           )}
         </Menu>
       );
-      ContextMenu.show(menu, { left: e.clientX, top: e.clientY });
+      Popover2.showContextMenu({
+        content: menu,
+        targetOffset: { left: e.clientX, top: e.clientY }
+      });
     },
     [
       contextMenu,

@@ -5,7 +5,7 @@ import {
   HTMLSelect,
   Dialog,
   useHotkeys,
-  KeyCombo
+  KeyComboTag
 } from "@blueprintjs/core";
 import {
   getStringFromReactComponent,
@@ -127,7 +127,7 @@ export default function renderToggle({
               transform: "scale(0.8)"
             }}
           >
-            <KeyCombo minimal combo={hotkey} />
+            <KeyComboTag minimal combo={hotkey} />
           </div>
         </>
       )}
