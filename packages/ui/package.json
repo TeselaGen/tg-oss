@@ -54,7 +54,6 @@
     "@dnd-kit/utilities": "3.2.2",
     "@teselagen/file-utils": "file:../file-utils",
     "@blueprintjs/icons": "3.33.0",
-    "cypress-real-events": "^1.14.0",
-    "@blueprintjs/popover2": "2.1.31"
+    "cypress-real-events": "^1.14.0"
   }
 }

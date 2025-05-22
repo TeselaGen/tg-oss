@@ -1,7 +1,14 @@
 import { debounce, find, get, some, isArray } from "lodash-es";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "@teselagen/ui";
-import { Button, ButtonGroup, Intent, Icon, Tooltip } from "@blueprintjs/core";
+import {
+  Button,
+  ButtonGroup,
+  Intent,
+  Icon,
+  Tooltip,
+  showContextMenu as bpShowContextMenu
+} from "@blueprintjs/core";
 import PropTypes from "prop-types";
 
 import VersionHistoryView from "../VersionHistoryView";
@@ -47,7 +54,6 @@ import isMobile from "is-mobile";
 import { getClientX, getClientY } from "../utils/editorUtils";
 import PCRTool from "../PCRTool/PCRTool";
 import classNames from "classnames";
-import * as Popover2 from "@blueprintjs/popover2";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -298,7 +304,7 @@ export class Editor extends React.Component {
     const { previewModeButtonMenu } = this.props;
     event.preventDefault();
     if (previewModeButtonMenu) {
-      Popover2.showContextMenu({
+      bpShowContextMenu({
         content: previewModeButtonMenu,
         targetOffset: {
           left: getClientX(event),

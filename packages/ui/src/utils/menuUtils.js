@@ -8,7 +8,8 @@ import {
   KeyComboTag,
   Menu,
   Classes,
-  Icon
+  Icon,
+  showContextMenu as bpShowContextMenu
 } from "@blueprintjs/core";
 import {
   startCase,
@@ -21,7 +22,6 @@ import {
 } from "lodash-es";
 import fuzzysearch from "fuzzysearch";
 import classNames from "classnames";
-import * as Popover2 from "@blueprintjs/popover2";
 // https://github.com/palantir/blueprint/issues/2820
 export function MenuItemLink({ text, onClick, icon, navTo, active, disabled }) {
   if (disabled) {
@@ -388,7 +388,7 @@ export function showContextMenu(
   const MenuComponent = menuComp;
   event.persist && event.persist();
   // Render a context menu at the passed event's position
-  Popover2.showContextMenu({
+  bpShowContextMenu({
     content: (
       <MenuComponent>
         {createDynamicMenu(menuDef, enhancers, context)}
