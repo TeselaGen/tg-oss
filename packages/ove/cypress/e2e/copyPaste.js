@@ -8,10 +8,10 @@ describe("copyPaste", function () {
     cy.contains(".veRowViewFeature", "araC")
       .first()
       .trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Copy").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Copy Genbank").click();
+    cy.contains(".bp5-menu-item", "Copy").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Copy Genbank").click();
     // cy.contains(".openVeCopy2", "Copy AA Sequence").click();
-    // cy.contains(".bp3-menu-item", "Copy Reverse Complement").click();
+    // cy.contains(".bp5-menu-item", "Copy Reverse Complement").click();
     cy.window().then(() => {
       assert(window.Cypress.textToCopy.includes("879 aa"));
       assert(window.Cypress.textToCopy.includes("fcillaavsg"));
@@ -27,10 +27,10 @@ describe("copyPaste", function () {
     cy.contains(".veRowViewFeature", "araC")
       .first()
       .trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Copy").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Copy AA Sequence").click();
+    cy.contains(".bp5-menu-item", "Copy").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Copy AA Sequence").click();
     // cy.contains(".openVeCopy2", "Copy AA Sequence").click();
-    // cy.contains(".bp3-menu-item", "Copy Reverse Complement").click();
+    // cy.contains(".bp5-menu-item", "Copy Reverse Complement").click();
     cy.window().then(() => {
       assert(
         window.Cypress.textToCopy ===
@@ -48,8 +48,8 @@ describe("copyPaste", function () {
     cy.contains(".veRowViewFeature", "araC")
       .first()
       .trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Copy").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Copy Reverse Complement").click();
+    cy.contains(".bp5-menu-item", "Copy").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Copy Reverse Complement").click();
     cy.window().then(() => {
       assert(
         window.Cypress.seqDataToCopy.sequence ===
@@ -63,8 +63,8 @@ describe("copyPaste", function () {
     cy.contains(".veRowViewFeature", "araC")
       .first()
       .trigger("contextmenu", { force: true });
-    // cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
-    cy.contains(".bp3-menu-item", "Copy").click();
+    // cy.contains(".bp5-menu-item", "Copy").trigger("mouseover")
+    cy.contains(".bp5-menu-item", "Copy").click();
     cy.contains(".openVeCopy2", "Copy").click();
     cy.window().then(() => {
       assert(
@@ -78,17 +78,17 @@ describe("copyPaste", function () {
     cy.contains(".veRowViewFeature", "araC")
       .first()
       .trigger("contextmenu", { force: true });
-    // cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
-    cy.contains(".bp3-menu-item", "Copy").trigger("mouseover", { force: true });
-    cy.contains(".bp3-menu-item", "Copy Options").trigger("mouseover", {
+    // cy.contains(".bp5-menu-item", "Copy").trigger("mouseover")
+    cy.contains(".bp5-menu-item", "Copy").trigger("mouseover", { force: true });
+    cy.contains(".bp5-menu-item", "Copy Options").trigger("mouseover", {
       force: true
     });
     cy.get(
-      `.bp3-menu-item:contains("Include Features") .bp3-icon-small-tick`
+      `.bp5-menu-item:contains("Include Features") .bp5-icon-small-tick`
     ).should("exist");
-    cy.contains(".bp3-menu-item", "Include Features").click({ force: true });
+    cy.contains(".bp5-menu-item", "Include Features").click({ force: true });
     cy.get(
-      `.bp3-menu-item:contains("Include Features") .bp3-icon-small-tick`
+      `.bp5-menu-item:contains("Include Features") .bp5-icon-small-tick`
     ).should("not.exist");
   });
 });

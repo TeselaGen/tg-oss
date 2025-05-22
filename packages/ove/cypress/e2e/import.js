@@ -87,7 +87,7 @@ describe("import", function () {
     cy.wait(200);
     cy.contains("sequence2").click();
     cy.contains("RFP cassette");
-    cy.contains(`.bp3-dialog button`, "Select").click();
+    cy.contains(`.bp5-dialog button`, "Select").click();
     cy.contains("Sequence Imported");
     cy.contains("Length: 171 bps");
   });

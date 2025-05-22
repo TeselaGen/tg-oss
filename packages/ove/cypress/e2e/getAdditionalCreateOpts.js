@@ -3,8 +3,8 @@ describe("getAdditionalCreateOpts.spec", function () {
     cy.visit("");
     cy.tgToggle("withGetAdditionalCreateOpts");
     cy.contains(".veLabelText", "Part 0").rightclick();
-    cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "Additional Create Option").click();
+    cy.contains(".bp5-menu-item", "Create").click();
+    cy.contains(".bp5-menu-item", "Additional Create Option").click();
     cy.contains("Selecting between 10 : 30");
   });
 });

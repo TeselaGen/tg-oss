@@ -17,7 +17,7 @@ export const MultipleSeqsDetectedOnImportDialog = wrapDialog({
   const selectedSeqData = tidyUpSequenceData(_selectedSeqData);
   return (
     <div>
-      <div className="bp3-dialog-body">
+      <div className="bp5-dialog-body">
         <Callout intent="primary">
           Multiple sequences were detected in the input file. Please choose one
           to continue

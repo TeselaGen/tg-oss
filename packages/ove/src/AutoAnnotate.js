@@ -107,7 +107,7 @@ export const AutoAnnotateModal = compose(
     );
   }
   return (
-    <div className="bp3-dialog-body">
+    <div className="bp5-dialog-body">
       <Tabs
         renderActiveTabPanelOnly
         onChange={setSelectedImportType}

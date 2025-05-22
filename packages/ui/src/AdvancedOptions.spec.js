@@ -11,7 +11,7 @@ describe("AdvancedOptions", () => {
     expect(queryByText("Test Content")).not.toBeInTheDocument();
 
     expect(
-      container.querySelector(".bp3-icon-caret-right")
+      container.querySelector(".bp5-icon-caret-right")
     ).toBeInTheDocument();
   });
 
@@ -21,6 +21,6 @@ describe("AdvancedOptions", () => {
     );
     fireEvent.click(getByText("Test Label"));
     expect(queryByText("Test Content")).toBeInTheDocument();
-    expect(container.querySelector(".bp3-icon-caret-down")).toBeInTheDocument();
+    expect(container.querySelector(".bp5-icon-caret-down")).toBeInTheDocument();
   });
 });

@@ -16,7 +16,7 @@ describe("enzyme overrides", () => {
     cy.tgToggle("overrideManageEnzymes");
     cy.triggerFileCmd("Filter Cut Sites");
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
-    cy.get(".bp3-icon-small-cross").click(); //clear single cutters
+    cy.get(".bp5-icon-small-cross").click(); //clear single cutters
     cy.contains("someGroup").click();
     cy.contains(".veLabelText", "specialEnzyme1").should("exist");
     cy.tgToggle("toggleEnzymeGroup");
@@ -29,7 +29,7 @@ describe("enzyme overrides", () => {
     cy.tgToggle("corruptedOverrideManageEnzymes");
     cy.triggerFileCmd("Filter Cut Sites");
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
-    cy.get(".bp3-icon-small-cross").click(); //clear single cutters
+    cy.get(".bp5-icon-small-cross").click(); //clear single cutters
     cy.contains("someGroup").click();
     cy.contains("anothaGroup").click();
     cy.contains(".veLabelText", "BsmBI").should("exist");
@@ -52,7 +52,7 @@ describe("enzyme overrides", () => {
     cy.tgToggle("overrideManageEnzymes");
     cy.triggerFileCmd("Filter Cut Sites");
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
-    cy.get(".bp3-icon-small-cross").click(); //clear single cutters
+    cy.get(".bp5-icon-small-cross").click(); //clear single cutters
     cy.contains("someGroup").click();
     cy.contains(".veLabelText", "AcsI").should("not.exist");
     cy.contains(".veLabelText", "EcoPI").should("not.exist");
@@ -73,14 +73,14 @@ describe("enzyme overrides", () => {
 
     cy.get(".veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("newGroup");
-    cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
-    cy.contains(".bp3-dialog div", "My Enzymes").click();
-    cy.contains(".bp3-dialog div", "specialEnzyme1").click();
-    cy.contains(".bp3-dialog div", "specialEnzyme2").click();
+    cy.get(".veNewEnzymeGroupPopover .bp5-icon-tick").click();
+    cy.contains(".bp5-dialog div", "My Enzymes").click();
+    cy.contains(".bp5-dialog div", "specialEnzyme1").click();
+    cy.contains(".bp5-dialog div", "specialEnzyme2").click();
     cy.get(".veEnzymeGroupAddEnzymesBtn").click();
 
     cy.contains("Copy 2 Enzyme(s)");
-    cy.get(".veEnzymeGroupMoveEnzymePopover .bp3-icon-tick").click();
+    cy.get(".veEnzymeGroupMoveEnzymePopover .bp5-icon-tick").click();
 
     cy.closeDialog();
 
@@ -88,7 +88,7 @@ describe("enzyme overrides", () => {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click({ force: true }); //the toastr was getting in the way
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
 
-    cy.contains(".bp3-menu-item", "newGroup").click();
+    cy.contains(".bp5-menu-item", "newGroup").click();
     cy.contains(".veLabelText", "specialEnzyme1").should("exist");
     cy.contains(".veLabelText", "specialEnzyme2").should("exist");
   });

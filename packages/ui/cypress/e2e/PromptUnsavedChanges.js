@@ -8,7 +8,7 @@ describe("PromptUnsavedChanges", () => {
     cy.contains("Prompt Unsaved Changes: FALSE").should("exist");
     cy.contains("Alternate Prompt").click();
     cy.contains("Prompt Unsaved Changes: TRUE").should("exist");
-    // cy.get(".bp3-dialog-close-button").click();
+    // cy.get(".bp5-dialog-close-button").click();
     // cy.reload()
     // let text;
     // cy.on("window:confirm", t => {

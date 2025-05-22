@@ -17,7 +17,6 @@
     "@teselagen/file-utils": "file:../file-utils",
     "@teselagen/bio-parsers": "file:../bio-parsers",
     "@blueprintjs/core": "5.19.0",
-    "@blueprintjs/popover2": "^2.1.31",
     "@hello-pangea/dnd": "16.2.0",
     "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/react-list": "0.8.18",
@@ -62,6 +61,7 @@
     "biomsa": "^0.2.4",
     "shortid": "2.2.16",
     "@use-gesture/react": "10.3.0",
-    "@playwright/test": "^1.44.1"
+    "@playwright/test": "^1.44.1",
+    "cypress-real-events": "^1.14.0"
   }
 }

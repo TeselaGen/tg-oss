@@ -12,11 +12,11 @@ body {
   flex-direction: column;
 }
 
-body.bp3-dark {
+body.bp5-dark {
   background: #293742;
 }
 
-body.bp3-dark {
+body.bp5-dark {
   background-color: --baseColor1;
 }
 h1,
@@ -25,11 +25,11 @@ h6 {
   font-weight: 400;
 }
 
-.tg-dark-theme-button .bp3-icon {
+.tg-dark-theme-button .bp5-icon {
   color: #ebf1f5 !important;
 }
 
-.bp3-dark .tg-dark-theme-button .bp3-icon {
+.bp5-dark .tg-dark-theme-button .bp5-icon {
   color: #ffc940 !important;
 }
 
@@ -102,8 +102,8 @@ h6 {
   overflow: auto;
 }
 
-.bp3-dark .demo-area-container,
-.bp3-dark .demo-header {
+.bp5-dark .demo-area-container,
+.bp5-dark .demo-header {
   background: #2f343c;
 }
 
@@ -115,7 +115,7 @@ h6 {
   overflow-y: auto;
 }
 
-.bp3-dark .demo-nav-container {
+.bp5-dark .demo-nav-container {
   background: #383e47;
 }
 
@@ -127,7 +127,7 @@ h6 {
   border-radius: 4px;
 }
 
-.bp3-dark .options-section {
+.bp5-dark .options-section {
   background: #383e47;
 }
 
@@ -137,6 +137,6 @@ h6 {
   border-radius: 5px;
 }
 
-.bp3-dark .demo-wrapper {
+.bp5-dark .demo-wrapper {
   background: #252a31;
 }

@@ -26,7 +26,7 @@ export default (topLevelDialogProps = {}) =>
                 !document.activeElement.closest(".tg-allow-dialog-form-enter")
               ) {
                 //don't do this if you're in any type of bp multi select by default
-                if (document.activeElement.closest(".bp3-multi-select"))
+                if (document.activeElement.closest(".bp5-multi-select"))
                   return doNotTriggerClick();
                 //don't do this if there is an explicit class saying not to
                 if (
@@ -37,14 +37,14 @@ export default (topLevelDialogProps = {}) =>
                 if (document.activeElement.type === "textarea")
                   return doNotTriggerClick();
               }
-              const parentEl = r.current?.closest(".bp3-dialog-container");
+              const parentEl = r.current?.closest(".bp5-dialog-container");
               // eslint-disable-next-line no-inner-declarations
               function triggerClick() {
                 parentEl?.querySelector(`button[type='submit']`).click();
               }
 
               const dialogs = document.querySelectorAll(
-                ".bp3-dialog-container"
+                ".bp5-dialog-container"
               );
               const numDialogs = dialogs?.length;
 

@@ -3,7 +3,7 @@ import { Classes } from "@blueprintjs/core";
 
 const ptIconWrapper = (path, viewboxDefault = 24, rest) => {
   return (
-    <span className="bp3-icon">
+    <span className="bp5-icon">
       <svg
         className={Classes.ICON}
         version="1.1"

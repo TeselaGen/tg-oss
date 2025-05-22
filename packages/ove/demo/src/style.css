@@ -2,7 +2,7 @@
   flex-shrink: 0;
 }
 
-.bp3-popover.bp3-popover-content-sizing .bp3-popover-content {
+.bp5-popover.bp5-popover-content-sizing .bp5-popover-content {
   overflow: auto;
   max-height: 350px;
   max-width: 550px;

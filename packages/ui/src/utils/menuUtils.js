@@ -46,7 +46,7 @@ export function MenuItemLink({ text, onClick, icon, navTo, active, disabled }) {
         })}
       >
         {icon && <Icon icon={icon} />}
-        <div className="bp3-text-overflow-ellipsis bp3-fill">{text}</div>
+        <div className="bp5-text-overflow-ellipsis bp5-fill">{text}</div>
       </Link>
     </li>
   );

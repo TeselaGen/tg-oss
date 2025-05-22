@@ -36,7 +36,7 @@ export default ({
     disabled:
       disabled ||
       (!isPopover && window.Cypress && !window.Cypress.allowInfoHelperTooltips),
-    popoverClassName: "tg-info-helper-popover bp3-tooltip",
+    popoverClassName: "tg-info-helper-popover bp5-tooltip",
     content: content || children,
     modifiers: popoverOverflowModifiers,
     ...popoverProps

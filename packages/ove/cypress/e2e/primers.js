@@ -59,7 +59,7 @@ describe("primers.spec", () => {
     ).type("{uparrow}AAA"); //add the uparrow to make sure we're at the start of the input
     // cy.contains(`Length: 24`)
     // cy.contains(`.veRowViewPrimer`, 'AAAtgtgcgacgctggcgatatca') //shows up in the row view live
-    // cy.get(`.bp3-dialog .tg-no-match-seq:contains(A)`).should('have.length', 3); //the A's should be shown as non-matches
+    // cy.get(`.bp5-dialog .tg-no-match-seq:contains(A)`).should('have.length', 3); //the A's should be shown as non-matches
     // cy.get(`.veRowViewPrimer .tg-no-match-seq:contains(A)`).should('have.length', 3); //the A's should be shown as non-matches
     cy.get("button:contains(Save)").click();
 

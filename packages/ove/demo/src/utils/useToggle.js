@@ -45,7 +45,7 @@ const ShowInfo = ({ description, info, type }) => {
         <div
           key={type + "dialog"}
           style={{ maxWidth: 600, overflow: "auto" }}
-          className="bp3-dialog-body"
+          className="bp5-dialog-body"
         >
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}

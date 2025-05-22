@@ -17,7 +17,7 @@ describe("virtualDigest", function () {
   });
   it(`should show a warning if too many cutsites are visible`, () => {
     cy.triggerFileCmd("Digest");
-    cy.get(`.bp3-multi-select [data-icon="small-cross"`).click();
+    cy.get(`.bp5-multi-select [data-icon="small-cross"`).click();
     cy.contains(
       ">50 cut sites detected. Filter out additional restriction enzymes to visualize digest results"
     );
@@ -26,7 +26,7 @@ describe("virtualDigest", function () {
   it(`should give a right click create feature/part option and have the annotation name autofilled`, () => {
     cy.triggerFileCmd("Digest");
     cy.get(`[data-test="Pae17kI -- Cfr6I 5299 bps"]`).rightclick();
-    cy.contains(".bp3-menu-item", "New Part").click({ force: true });
+    cy.contains(".bp5-menu-item", "New Part").click({ force: true });
     cy.get(`.tg-test-name input`).should(
       "have.value",
       `Pae17kI -- Cfr6I 5299 bps`
@@ -34,11 +34,11 @@ describe("virtualDigest", function () {
   });
   it(`clicking a fragment in the Digest Table view and then right clicking the selection to create a feature should have the annotation name autofilled`, () => {
     cy.triggerFileCmd("Digest");
-    cy.contains(".bp3-tab", "Digest Info").click();
+    cy.contains(".bp5-tab", "Digest Info").click();
     cy.contains(".rt-td", "AvrII").click();
     cy.get(".veSelectionLayer").first().rightclick();
-    cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "Create").click();
+    cy.contains(".bp5-menu-item", "New Feature").click({ force: true });
 
     cy.get(`.tg-test-name input`).should(
       "have.value",

@@ -25,11 +25,11 @@
   text-decoration: underline;
 }
 
-.bp3-dark .veLabels .veAnnotationHovered:not(.topLevelLabelGroup) {
+.bp5-dark .veLabels .veAnnotationHovered:not(.topLevelLabelGroup) {
   /* fill: white !important; */
   font-weight: normal;
 }
-.bp3-dark .veLabels .veAnnotationHovered rect {
+.bp5-dark .veLabels .veAnnotationHovered rect {
   fill: rgb(64, 64, 92) !important;
 }
 
