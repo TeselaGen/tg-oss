@@ -14,13 +14,13 @@ describe("editor", function () {
       "Warning: More than 100 Cut Sites. Only displaying 100 (Configure this under View > Limits)"
     );
     cy.contains(".tg-menu-bar-item", "View").click();
-    cy.contains(".bp3-menu-item", "Limits").click();
-    cy.contains(".bp3-menu-item", "Max Cut Sites To Show").click({
+    cy.contains(".bp5-menu-item", "Limits").click();
+    cy.contains(".bp5-menu-item", "Max Cut Sites To Show").click({
       force: true
     });
-    cy.get(".bp3-menu-item:contains(100) .bp3-icon-small-tick");
-    cy.get(".bp3-menu-item:contains(400)").click({ force: true });
-    cy.get(".bp3-menu-item:contains(400) .bp3-icon-small-tick");
+    cy.get(".bp5-menu-item:contains(100) .bp5-icon-small-tick");
+    cy.get(".bp5-menu-item:contains(400)").click({ force: true });
+    cy.get(".bp5-menu-item:contains(400) .bp5-icon-small-tick");
     cy.contains(
       "Warning: More than 400 Cut Sites. Only displaying 400 (Configure this under View > Limits)"
     );
@@ -31,7 +31,7 @@ describe("editor", function () {
     cy.get(".veWarningMessage").should("not.exist");
     cy.tgToggle("maxAnnotationsToDisplayAdjustment");
     cy.contains(".tg-menu-bar-item", "View").click();
-    cy.contains(".bp3-menu-item", "Limits").should("not.exist");
+    cy.contains(".bp5-menu-item", "Limits").should("not.exist");
     cy.get(".veWarningMessage").trigger("mouseover");
     cy.contains("Warning: More than 5 Features. Only displaying 5");
     cy.contains("(Configure this under View > Limits)").should("not.exist");
@@ -52,31 +52,31 @@ describe("editor", function () {
   });
   it(`should be able to hide the single import button if necessary!`, () => {
     cy.get(".tg-menu-bar").contains("File").click();
-    cy.get(".bp3-menu-item").contains("Import Sequence").should("exist");
+    cy.get(".bp5-menu-item").contains("Import Sequence").should("exist");
     cy.tgToggle("hideSingleImport");
     cy.get(".tg-menu-bar").contains("File").click();
-    cy.get(".bp3-menu-item").contains("Import Sequence").should("not.exist");
+    cy.get(".bp5-menu-item").contains("Import Sequence").should("not.exist");
   });
 
   it(`should be able to set visibilities!`, () => {
-    cy.get(".ve-tool-container-cutsiteTool .bp3-active").should("exist");
-    cy.get(".ve-tool-container-featureTool .bp3-active").should("exist");
-    cy.get(".ve-tool-container-oligoTool .bp3-active").should("exist");
+    cy.get(".ve-tool-container-cutsiteTool .bp5-active").should("exist");
+    cy.get(".ve-tool-container-featureTool .bp5-active").should("exist");
+    cy.get(".ve-tool-container-oligoTool .bp5-active").should("exist");
     cy.tgToggle("setDefaultVisibilities");
-    cy.get(".ve-tool-container-cutsiteTool .bp3-active").should("not.exist");
-    cy.get(".ve-tool-container-featureTool .bp3-active").should("not.exist");
-    cy.get(".ve-tool-container-oligoTool .bp3-active").should("not.exist");
+    cy.get(".ve-tool-container-cutsiteTool .bp5-active").should("not.exist");
+    cy.get(".ve-tool-container-featureTool .bp5-active").should("not.exist");
+    cy.get(".ve-tool-container-oligoTool .bp5-active").should("not.exist");
     //toggling the read only toggle should not affect any visibilities
     cy.tgToggle("readOnly");
-    cy.get(".ve-tool-container-cutsiteTool .bp3-active").should("not.exist");
-    cy.get(".ve-tool-container-featureTool .bp3-active").should("not.exist");
-    cy.get(".ve-tool-container-oligoTool .bp3-active").should("not.exist");
+    cy.get(".ve-tool-container-cutsiteTool .bp5-active").should("not.exist");
+    cy.get(".ve-tool-container-featureTool .bp5-active").should("not.exist");
+    cy.get(".ve-tool-container-oligoTool .bp5-active").should("not.exist");
   });
 
   it("should fire the rename handler", function () {
     cy.triggerFileCmd("Rename");
     cy.focused().type("renamed seq", { delay: 40 });
-    cy.contains(".bp3-dialog button", "OK").click();
+    cy.contains(".bp5-dialog button", "OK").click();
     cy.contains("onRename callback triggered: pj5_00001renamed seq");
   });
   it("should fire the onSelectionOrCaretChanged handler", function () {
@@ -87,14 +87,14 @@ describe("editor", function () {
     cy.contains(
       "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30"
     );
-    cy.get(".bp3-toast .bp3-icon-cross").click();
+    cy.get(".bp5-toast .bp5-icon-cross").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.get("body").type("{meta}/").focused().type("select inverse{enter}");
     cy.contains(
       "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 31 end: 9"
     );
-    cy.get(".bp3-toast .bp3-icon-cross").click();
+    cy.get(".bp5-toast .bp5-icon-cross").click();
     cy.contains("button", "Select Inverse").click();
     cy.contains(
       "onSelectionOrCaretChanged callback triggered caretPosition:-1 selectionLayer: start: 10 end: 30 "
@@ -103,8 +103,8 @@ describe("editor", function () {
   it(`should allow you to view, but not edit features/parts/primers when in read only mode`, () => {
     cy.tgToggle("readOnly");
     cy.contains(".veRowViewPart", "Part 0").first().rightclick();
-    cy.contains(".bp3-menu-item", "View Part Details").click();
-    cy.contains(".bp3-dialog button", "Save").should("be.disabled");
+    cy.contains(".bp5-menu-item", "View Part Details").click();
+    cy.contains(".bp5-dialog button", "Save").should("be.disabled");
   });
   it(`you should not be able to edit bps when disableBpEditing=true`, () => {
     cy.tgToggle("disableBpEditing");
@@ -122,7 +122,7 @@ describe("editor", function () {
       force: true
     });
     cy.contains("This annotation is locked");
-    cy.contains(".bp3-disabled", "Save");
+    cy.contains(".bp5-disabled", "Save");
     cy.closeDialog();
     cy.contains(".veCircularView text", "Edit Locked Part").rightclick({
       force: true
@@ -130,13 +130,13 @@ describe("editor", function () {
     cy.contains("This part is locked because I said so");
   });
   it(`you should not be able to change editability of a sequence when disableSetReadOnly=true`, () => {
-    cy.get(`.bp3-button:contains(File)`).click();
-    cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`).should("not.exist");
+    cy.get(`.bp5-button:contains(File)`).click();
+    cy.get(`[cmd="toggleReadOnlyMode"].bp5-disabled`).should("not.exist");
     cy.get(`.ve-tool-container-editTool.disabled`).should("not.exist");
     cy.tgToggle("disableSetReadOnly");
     cy.get(`.ve-tool-container-editTool.disabled`);
-    cy.get(`.bp3-button:contains(File)`).click();
-    cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`);
+    cy.get(`.bp5-button:contains(File)`).click();
+    cy.get(`[cmd="toggleReadOnlyMode"].bp5-disabled`);
   });
 
   it(`should allow you to view, but not edit the description when in read only mode`, () => {
@@ -145,8 +145,8 @@ describe("editor", function () {
     cy.tgToggle("readOnly");
     cy.contains(".tg-test-description", "Edit").should("not.exist");
     // cy.contains(".veRowViewPart", "Part 0").first().rightclick();
-    // cy.contains(".bp3-menu-item", "View Part Details").click();
-    // cy.contains(".bp3-dialog button", "Save").should("be.disabled");
+    // cy.contains(".bp5-menu-item", "View Part Details").click();
+    // cy.contains(".bp5-dialog button", "Save").should("be.disabled");
   });
 
   it(`should autosave if autosave=true`, function () {
@@ -154,7 +154,7 @@ describe("editor", function () {
     cy.tgToggle("shouldAutosave");
     cy.contains(".veRowViewPart", "Part 0").first().click();
     cy.get(".veRowViewSelectionLayer").first().trigger("contextmenu");
-    cy.get(".bp3-menu-item").contains("Cut").realClick();
+    cy.get(".bp5-menu-item").contains("Cut").realClick();
     cy.contains("onCopy callback triggered");
     cy.contains("onSave callback triggered");
     cy.contains("Selection Cut");
@@ -167,21 +167,21 @@ describe("editor", function () {
     cy.get(".veRowViewSelectionLayer").first().trigger("contextmenu");
     //tnrnote: cut in cypress only works on electron, not firefox or chrome
 
-    cy.get(".bp3-menu-item").contains("Cut").realClick();
+    cy.get(".bp5-menu-item").contains("Cut").realClick();
     cy.contains("Selection Cut");
     cy.get(".tg-menu-bar").contains("File").click();
-    cy.get(".bp3-menu-item").contains("Save As").click();
+    cy.get(".bp5-menu-item").contains("Save As").click();
     cy.contains("onSaveAs callback triggered");
 
     cy.tgToggle("readOnly");
     cy.get(".tg-menu-bar").contains("File").click();
-    cy.get(".bp3-menu-item").contains("Save As").click();
+    cy.get(".bp5-menu-item").contains("Save As").click();
     cy.contains("onSaveAs callback triggered");
   });
   it(`settings alwaysAllowSave=true should allow for saves to happen even when there are no file changes`, function () {
     cy.tgToggle("alwaysAllowSave");
     cy.get(".tg-menu-bar").contains("File").click();
-    cy.get(".bp3-menu-item").contains("Save").click();
+    cy.get(".bp5-menu-item").contains("Save").click();
     cy.contains("onSave callback triggered");
   });
   it(`should give the option to create from a subsection of the sequence if onCreateNewFromSubsequence is passed`, function () {
@@ -189,8 +189,8 @@ describe("editor", function () {
     cy.tgToggle("onCreateNewFromSubsequence");
 
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "New DNA Sequence From Selection").click();
+    cy.contains(".bp5-menu-item", "Create").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "New DNA Sequence From Selection").click();
 
     cy.contains("onCreateNewFromSubsequence callback triggered").should(
       "be.visible"
@@ -199,10 +199,10 @@ describe("editor", function () {
   it(`should fire the beforeAnnotationCreate callback if one is passed`, function () {
     cy.tgToggle("beforeAnnotationCreate");
     cy.contains(".veLabelText", "Part 0").rightclick();
-    cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "New Primer").click();
+    cy.contains(".bp5-menu-item", "Create").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "New Primer").click();
     cy.focused().type("new primer", { force: true });
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".bp5-dialog button", "Save").click();
     cy.contains("beforeAnnotationCreate callback triggered for primers");
   });
   it(`should handle rightClickOverrides correctly if they are passed`, function () {
@@ -210,7 +210,7 @@ describe("editor", function () {
     cy.tgToggle("overrideRightClickExample");
 
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
-    cy.get(".bp3-menu").contains("My Part Override").click();
+    cy.get(".bp5-menu").contains("My Part Override").click();
     cy.contains("Part Override Hit!").should("be.visible");
   });
   it(`should handle clickOverrides correctly if they are passed`, function () {
@@ -249,7 +249,7 @@ describe("editor", function () {
 
   it(`should handle onPanelTab close handler correctly if it is passed`, function () {
     cy.tgToggle("onPanelTabClose");
-    cy.get(".veTabNewDigest").get(".bp3-icon-small-cross").first().click();
+    cy.get(".veTabNewDigest").get(".bp5-icon-small-cross").first().click();
     cy.contains(
       "onPanelClose callback triggered for panelId: alignmentTool"
     ).should("be.visible");
@@ -262,7 +262,7 @@ describe("editor", function () {
     cy.get(`[data-tab-id="parts"]`).click();
     cy.get(".ve-propertiesPanel").contains("parts footer button").click();
 
-    cy.get(".bp3-toast")
+    cy.get(".bp5-toast")
       .contains("properties overrides successfull")
       .should("be.visible");
   });
@@ -271,20 +271,20 @@ describe("editor", function () {
     // if (Cypress.browser !== "")
     cy.tgToggle("menuOverrideExample");
     cy.get(".tg-menu-bar").contains("Custom").click();
-    cy.get(".bp3-menu-item").contains("Copy").click();
-    cy.get(".bp3-toast").contains("No Sequence Selected To Copy");
+    cy.get(".bp5-menu-item").contains("Copy").click();
+    cy.get(".bp5-toast").contains("No Sequence Selected To Copy");
     cy.get(".tg-menu-bar").contains("File").click();
-    cy.get(".bp3-menu-item").contains("Export Sequence").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Custom export option!").click({
+    cy.get(".bp5-menu-item").contains("Export Sequence").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Custom export option!").click({
       force: true
     });
-    cy.get(".bp3-toast").contains("Custom export hit!");
+    cy.get(".bp5-toast").contains("Custom export hit!");
   });
   it(`should handle custom dialog overrides correctly`, () => {
     cy.tgToggle("overrideAddEditFeatureDialog");
     cy.get(".tg-menu-bar").contains("Edit").click();
-    cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "Create").click();
+    cy.contains(".bp5-menu-item", "New Feature").click({ force: true });
     cy.contains("I Am Overridden. Any custom React can go here");
   });
   it(`should focus the linear view`, () => {
@@ -318,7 +318,7 @@ describe("editor", function () {
     cy.tgToggle("beforeSequenceInsertOrDelete");
     cy.tgToggle("maintainOriginSplit");
     cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Replace").click();
+    cy.contains(".bp5-menu-item", "Replace").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.get(".sequenceInputBubble input").type("tta{enter}");
@@ -431,7 +431,7 @@ describe("editor", function () {
     cy.get(".tg-menu-bar").contains("View").click();
     cy.get(".tg-menu-bar-popover").contains("Labels").click();
     cy.contains(".veLabelText", "Part 0").rightclick();
-    cy.contains(".bp3-menu-item", "Edit Part").click();
+    cy.contains(".bp5-menu-item", "Edit Part").click();
     const longName =
       "long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name{enter}";
     cy.get(`input[label="Name"]`).type(longName, {

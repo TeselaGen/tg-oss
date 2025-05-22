@@ -27,7 +27,7 @@ import {
   TextArea,
   Popover
 } from "@blueprintjs/core";
-import { DateInput, DateRangeInput } from "@blueprintjs/datetime";
+import { DateInput3, DateRangeInput3 } from "@blueprintjs/datetime2";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import { difference } from "lodash-es";
 import { set } from "lodash-es";
@@ -292,7 +292,7 @@ export const renderBlueprintDateInput = ({
   inputProps,
   ...rest
 }) => (
-  <DateInput
+  <DateInput3
     {...getDayjsFormatter("L")}
     {...removeUnwantedProps(rest)}
     intent={intent}
@@ -313,7 +313,7 @@ export const renderBlueprintDateRangeInput = ({
   inputProps,
   ...rest
 }) => (
-  <DateRangeInput
+  <DateRangeInput3
     {...getDayjsFormatter("L")}
     {...removeUnwantedProps(rest)}
     intent={intent}

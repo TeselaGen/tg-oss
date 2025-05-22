@@ -26,20 +26,20 @@ declare namespace Cypress {
     triggerFileCmd(text: string, options: { noEnter: boolean }): void;
 
     /**
-     * waits for .bp3-dialog to not exist
+     * waits for .bp5-dialog to not exist
      * @example
      * cy.waitForDialogClose()
      */
     waitForDialogClose(options: waitForOptions): void;
     /**
-     * waits for .bp3-menu to not exist
+     * waits for .bp5-menu to not exist
      * @example
      * cy.waitForMenuClose()
      */
     waitForMenuClose(options: waitForOptions): void;
 
     /**
-     * closes the dialog and waits for .bp3-dialog to not exist
+     * closes the dialog and waits for .bp5-dialog to not exist
      * @example
      * cy.closeDialog()
      */
@@ -53,7 +53,7 @@ declare namespace Cypress {
     closeToasts(): void;
 
     /**
-     * Hides an open .bp3-menu or popover
+     * Hides an open .bp5-menu or popover
      * @example
      * cy.hideMenu()
      */

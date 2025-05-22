@@ -1,7 +1,7 @@
-.bp3-popover.tg-info-helper-popover .bp3-popover-content {
+.bp5-popover.tg-info-helper-popover .bp5-popover-content {
   max-width: 340px;
 }
 
-.info-helper-clickable .bp3-popover-target {
+.info-helper-clickable .bp5-popover-target {
   cursor: pointer;
 }

@@ -15,29 +15,29 @@
   margin: 2px;
 }
 
-.tg-menu-bar .bp3-popover {
+.tg-menu-bar .bp5-popover {
   margin-top: -1px !important;
 }
 
-.tg-menu-bar-popover .bp3-popover .bp3-popover-arrow {
+.tg-menu-bar-popover .bp5-popover .bp5-popover-arrow {
   display: none;
 }
 
 /* removing the display inline styling because they broke menu positioning: https://github.com/TeselaGen/lims/issues/2563 */
-/* .tg-menu-bar-popover .bp3-popover-wrapper {
+/* .tg-menu-bar-popover .bp5-popover-wrapper {
   display: inline;
 }
-.tg-menu-search-suggestions .bp3-popover-wrapper {
+.tg-menu-search-suggestions .bp5-popover-wrapper {
   display: inline;
 } */
 /* add a fix here that applies the above logic to only the first child of the menu */
-.tg-menu-search-suggestions .bp3-menu > .bp3-popover-wrapper {
+.tg-menu-search-suggestions .bp5-menu > .bp5-popover-wrapper {
   display: inline;
 }
 
-li.bp3-menu-divider + li.bp3-menu-divider,
-li.bp3-menu-divider:first-child,
-li.bp3-menu-divider:last-child {
+li.bp5-menu-divider + li.bp5-menu-divider,
+li.bp5-menu-divider:first-child,
+li.bp5-menu-divider:last-child {
   display: none;
 }
 .tg_search_highlight {

@@ -5,11 +5,11 @@ describe("Global Dialogs", () => {
     const fistNodeSelector = ".standaloneDemoNode .veEditor.StandaloneEditor";
     const secondNodeSelector = ".standaloneDemoNode2 .veEditor.vector-editor2";
 
-    cy.contains(".bp3-button-text", "Show Sidebar").click();
+    cy.contains(".bp5-button-text", "Show Sidebar").click();
     cy.contains(".demo-nav-link", "Standalone").should("exist");
     cy.contains(".demo-nav-link", "Standalone").click();
 
-    cy.contains(".bp3-button-text", "Open a second editor").click();
+    cy.contains(".bp5-button-text", "Open a second editor").click();
     cy.get(fistNodeSelector).should("exist");
     cy.get(secondNodeSelector).should("exist");
 
@@ -18,10 +18,10 @@ describe("Global Dialogs", () => {
       "Properties"
     ).click();
     cy.get(
-      `${fistNodeSelector} .ve-propertiesPanel .bp3-tabs .bp3-tab#bp3-tab-title_undefined_features`
+      `${fistNodeSelector} .ve-propertiesPanel .bp5-tabs .bp5-tab#bp5-tab-title_undefined_features`
     ).click();
     cy.contains(
-      `${fistNodeSelector} .bp3-tab-panel .tg-cell-wrapper`,
+      `${fistNodeSelector} .bp5-tab-panel .tg-cell-wrapper`,
       "araC"
     ).should("exist");
 
@@ -30,10 +30,10 @@ describe("Global Dialogs", () => {
       "Properties"
     ).click();
     cy.get(
-      `${secondNodeSelector} .ve-propertiesPanel .bp3-tabs .bp3-tab#bp3-tab-title_undefined_features`
+      `${secondNodeSelector} .ve-propertiesPanel .bp5-tabs .bp5-tab#bp5-tab-title_undefined_features`
     ).click();
     cy.contains(
-      `${secondNodeSelector} .bp3-tab-panel .tg-cell-wrapper`,
+      `${secondNodeSelector} .bp5-tab-panel .tg-cell-wrapper`,
       "Untitled annotation"
     ).should("exist");
 
@@ -41,28 +41,28 @@ describe("Global Dialogs", () => {
       `${fistNodeSelector} .veCircularView .circularViewSvg .veCircularViewTextWrapper`
     ).click();
     cy.contains(
-      `${fistNodeSelector} .bp3-tab-panel .tg-cell-wrapper`,
+      `${fistNodeSelector} .bp5-tab-panel .tg-cell-wrapper`,
       "araC"
     ).dblclick();
     cy.contains(
-      ".bp3-dialog .bp3-dialog-header .bp3-heading",
+      ".bp5-dialog .bp5-dialog-header .bp5-heading",
       "Edit Feature"
     ).should("exist");
-    cy.get('.bp3-dialog input[value="araC"]').should("exist");
-    cy.get(".bp3-dialog .bp3-dialog-close-button").click();
+    cy.get('.bp5-dialog input[value="araC"]').should("exist");
+    cy.get(".bp5-dialog .bp5-dialog-close-button").click();
 
     cy.get(
       `${secondNodeSelector} .veCircularView .circularViewSvg .veCircularViewTextWrapper`
     ).click();
     cy.contains(
-      `${secondNodeSelector} .bp3-tab-panel .tg-cell-wrapper`,
+      `${secondNodeSelector} .bp5-tab-panel .tg-cell-wrapper`,
       "Untitled annotation"
     ).dblclick();
     cy.contains(
-      ".bp3-dialog .bp3-dialog-header .bp3-heading",
+      ".bp5-dialog .bp5-dialog-header .bp5-heading",
       "Edit Feature"
     ).should("exist");
-    cy.get('.bp3-dialog input[value="Untitled annotation"]').should("exist");
-    cy.get(".bp3-dialog .bp3-dialog-close-button").click();
+    cy.get('.bp5-dialog input[value="Untitled annotation"]').should("exist");
+    cy.get(".bp5-dialog .bp5-dialog-close-button").click();
   });
 });

@@ -1,4 +1,4 @@
-import { KeyCombo } from "@blueprintjs/core";
+import { KeyComboTag } from "@blueprintjs/core";
 import React from "react";
 import { hotkeysById, HotkeysDialog, withHotkeys } from "../../../src";
 
@@ -89,7 +89,7 @@ export default class HotkeysDialogDemo extends React.Component {
           <h2 style={{ fontWeight: 300, textAlign: "center" }}>
             To view available hotkeys, press
             <br />
-            <KeyCombo combo={this.dialogHotkeyCombo} />
+            <KeyComboTag combo={this.dialogHotkeyCombo} />
           </h2>
         </div>
         <this.hotkeyEnabler />

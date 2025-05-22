@@ -44,7 +44,7 @@ export default class FillWindow extends React.Component {
     const inner = (
       <div
         className={
-          "tg-fillWindow " + (asPortal ? "bp3-portal " : "") + (className || "")
+          "tg-fillWindow " + (asPortal ? "bp5-portal " : "") + (className || "")
         }
         style={{
           ...style,

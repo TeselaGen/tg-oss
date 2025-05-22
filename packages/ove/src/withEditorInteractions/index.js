@@ -770,7 +770,7 @@ function VectorInteractionHOC(Component /* options */) {
               lastFocusedEl &&
               document.activeElement &&
               (document.activeElement.classList.contains(
-                "bp3-popover-enter-done"
+                "bp5-popover-enter-done"
               ) ||
                 (document.activeElement.type === "textarea" && //this is the clipboard textarea created by clipboardjs
                   document.activeElement.offsetLeft === -9999))

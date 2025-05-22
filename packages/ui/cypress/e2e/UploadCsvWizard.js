@@ -11,15 +11,15 @@ describe("UploadCsvWizard.spec", () => {
       `[data-index="4"] [data-test="tgCell_sequence"]:contains(g)`
     ).click();
     cy.focused().type(`{backspace}`);
-    cy.get(`.bp3-disabled:contains(Edit Data)`);
+    cy.get(`.bp5-disabled:contains(Edit Data)`);
     cy.focused().type(` tom{enter}`);
-    cy.get(`.bp3-button:contains(Edit Data)`).click();
+    cy.get(`.bp5-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
     cy.get(`.tg-upload-file-list-item-edit`).click();
     cy.get(
       `[data-index="4"] [data-test="tgCell_sequence"]:contains(tom)`
     ).click();
-    cy.get(`.bp3-button:contains(Cancel)`).click();
+    cy.get(`.bp5-button:contains(Cancel)`).click();
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
@@ -157,17 +157,17 @@ describe("UploadCsvWizard.spec", () => {
       `It looks like some of the headers in your uploaded file(s) do not match the expected headers. Please look over and correct any issues with the mappings below.`
     );
 
-    cy.contains(".bp3-dialog", `zonk`).should("not.exist"); //the data from the file should be previewed
-    cy.get(".bp3-dialog tr:contains(prescription):contains(Description)"); //the matched headers should show up
-    cy.get(".bp3-dialog tr:contains(Name):contains(tame)"); //the matched headers should show up
-    cy.get(".bp3-dialog tr:contains(Match Type):contains(type2)"); //the matched headers should show up
-    cy.get(".bp3-dialog tr:contains(Is Regex):contains(typo)").should(
+    cy.contains(".bp5-dialog", `zonk`).should("not.exist"); //the data from the file should be previewed
+    cy.get(".bp5-dialog tr:contains(prescription):contains(Description)"); //the matched headers should show up
+    cy.get(".bp5-dialog tr:contains(Name):contains(tame)"); //the matched headers should show up
+    cy.get(".bp5-dialog tr:contains(Match Type):contains(type2)"); //the matched headers should show up
+    cy.get(".bp5-dialog tr:contains(Is Regex):contains(typo)").should(
       "not.exist"
     );
 
     cy.get(`.tg-test-is-regex`).click();
     cy.contains(".tg-select-option", "typo").click();
-    cy.contains(".bp3-dialog", `zonk`).should("exist"); //the data from the file should be previewed
+    cy.contains(".bp5-dialog", `zonk`).should("exist"); //the data from the file should be previewed
 
     cy.contains("Review and Edit Data").click();
 
@@ -191,15 +191,15 @@ describe("UploadCsvWizard.spec", () => {
       `[data-index="4"] [data-test="tgCell_sequence"]:contains(g):last`
     ).click();
     cy.focused().type(`{backspace}`);
-    cy.get(`.bp3-disabled:contains(Edit Data)`);
+    cy.get(`.bp5-disabled:contains(Edit Data)`);
     cy.focused().type(` tom{enter}`);
-    cy.get(`.bp3-button:contains(Edit Data)`).click();
+    cy.get(`.bp5-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
     cy.get(`.tg-upload-file-list-item-edit`).click();
     cy.get(
       `[data-index="4"] [data-test="tgCell_sequence"]:contains(tom)`
     ).click();
-    cy.get(`.bp3-button:contains(Cancel)`).click();
+    cy.get(`.bp5-button:contains(Cancel)`).click();
 
     cy.contains("Finish Upload").click();
     cy.contains("Upload Successful").then(() => {
@@ -490,10 +490,10 @@ a,,desc,,false,dna,misc_feature
     cy.contains("Review and Edit Data").click();
     cy.get(`[data-tip="This value must be unique"]`);
     cy.get(`.hasCellError:last [data-test="tgCell_name"]`);
-    cy.get(`button:contains(Add File).bp3-disabled`);
+    cy.get(`button:contains(Add File).bp5-disabled`);
     cy.contains(`Cancel`).click();
     cy.contains(`File Upload Aborted`);
-    cy.get(`.bp3-dialog`).should("not.exist");
+    cy.get(`.bp5-dialog`).should("not.exist");
   });
   it(`isUnique should trigger validation error on file upload`, () => {
     cy.visit("#/UploadCsvWizard");
@@ -509,10 +509,10 @@ a,,desc,,false,dna,misc_feature
     cy.contains("Review and Edit Data").click();
     cy.get(`[data-tip="This value must be unique"]`);
     cy.get(`.hasCellError:last [data-test="tgCell_name"]`);
-    cy.get(`button:contains(Add File).bp3-disabled`);
+    cy.get(`button:contains(Add File).bp5-disabled`);
     cy.contains(`Cancel`).click();
     cy.contains(`File Upload Aborted`);
-    cy.get(`.bp3-dialog`).should("not.exist");
+    cy.get(`.bp5-dialog`).should("not.exist");
   });
   it(`example data should not bleed into user uploaded files`, () => {
     cy.visit("#/UploadCsvWizard");
@@ -546,20 +546,20 @@ a,,desc,,false,dna,misc_feature
     pj5_0004	old	rainy	4	dna
     pj5_0004	old	snowy	4	dna`);
     cy.get(`[data-tip="This value must be unique"]`);
-    cy.get(`button:contains(Add File).bp3-disabled`);
+    cy.get(`button:contains(Add File).bp5-disabled`);
     cy.get(`.hasCellError:last [data-test="tgCell_name"]`).click({
       force: true
     });
     cy.focused().type(" haha{enter}");
-    cy.get(`button:contains(Add File).bp3-disabled`).should("not.exist");
+    cy.get(`button:contains(Add File).bp5-disabled`).should("not.exist");
     const IS_LINUX =
       window.navigator.platform.toLowerCase().search("linux") > -1;
     const undoCmd = IS_LINUX ? `{alt}z` : "{meta}z";
     const redoCmd = IS_LINUX ? `{alt}{shift}z` : "{meta}{shift}z";
     cy.get(".data-table-container").type(undoCmd);
-    cy.get(`button:contains(Add File).bp3-disabled`);
+    cy.get(`button:contains(Add File).bp5-disabled`);
     cy.focused().type(redoCmd);
-    cy.get(`button:contains(Add File).bp3-disabled`).should("not.exist");
+    cy.get(`button:contains(Add File).bp5-disabled`).should("not.exist");
   });
 
   it(`going back and forth between the pages should not clear the data that has been changed unless the column was switched`, () => {
@@ -573,7 +573,7 @@ a,,desc,,false,dna,misc_feature
     cy.contains(`It looks like there was an error with your data`);
     cy.contains("Review and Edit Data").click();
     cy.contains("Back").click();
-    cy.get(`.tg-test-sequence .bp3-icon-cross`).click();
+    cy.get(`.tg-test-sequence .bp5-icon-cross`).click();
     //the data isn't dirty so we shouldn't get a warning about clearing data when changing the column mapping
     cy.contains("Review and Edit Data").click();
 
@@ -584,11 +584,11 @@ a,,desc,,false,dna,misc_feature
     cy.contains("Back").click();
 
     //the data is dirty so we SHOULD get a warning about clearing data when changing the column mapping
-    cy.get(`.tg-test-name .bp3-icon-cross`).click();
+    cy.get(`.tg-test-name .bp5-icon-cross`).click();
     cy.contains(
       `Are you sure you want to edit the columm mapping? This will clear any changes you've already made to the table data`
     );
-    cy.get(`.bp3-button:contains(No)`).click();
+    cy.get(`.bp5-button:contains(No)`).click();
 
     cy.contains("Review and Edit Data").click();
     cy.get(
@@ -596,11 +596,11 @@ a,,desc,,false,dna,misc_feature
     ).should("not.exist");
     cy.contains("Back").click();
     //the data is dirty so we SHOULD get a warning about clearing data when changing the column mapping
-    cy.get(`.tg-test-name .bp3-icon-cross`).click();
+    cy.get(`.tg-test-name .bp5-icon-cross`).click();
     cy.contains(
       `Are you sure you want to edit the columm mapping? This will clear any changes you've already made to the table data`
     );
-    cy.get(`.bp3-button:contains(Yes)`).click();
+    cy.get(`.bp5-button:contains(Yes)`).click();
     cy.contains("Review and Edit Data").click();
     cy.get(
       `.hasCellError[data-tip="Please enter a value here"] [data-test="tgCell_name"]:first`
@@ -619,50 +619,50 @@ a,,desc,,false,dna,misc_feature
       `Please look over each of the following files and correct any issues.`
     );
     cy.get(
-      `.bp3-dialog .bp3-tab[aria-selected="true"]:contains(testUploadWizard_invalidData.csv) .bp3-icon-warning-sign`
+      `.bp5-dialog .bp5-tab[aria-selected="true"]:contains(testUploadWizard_invalidData.csv) .bp5-icon-warning-sign`
     );
     cy.get(
-      `.bp3-dialog .bp3-tab[aria-selected="true"]:contains(testUploadWizard_messedUpHeaders.csv) .bp3-icon-warning-sign`
+      `.bp5-dialog .bp5-tab[aria-selected="true"]:contains(testUploadWizard_messedUpHeaders.csv) .bp5-icon-warning-sign`
     ).should("not.exist");
     cy.get(
-      ".bp3-dialog .bp3-tab:contains(testUploadWizard_messedUpHeaders.csv) .bp3-icon-warning-sign"
+      ".bp5-dialog .bp5-tab:contains(testUploadWizard_messedUpHeaders.csv) .bp5-icon-warning-sign"
     );
     cy.get(
-      ".bp3-dialog .bp3-tab:contains(testUploadWizard_invalidDataNonUnique.csv) .bp3-icon-tick-circle"
+      ".bp5-dialog .bp5-tab:contains(testUploadWizard_invalidDataNonUnique.csv) .bp5-icon-tick-circle"
     );
     cy.get(
-      ".bp3-dialog .bp3-tab:contains(testUploadWizard_nearPerfect.csv) .bp3-icon-tick-circle"
+      ".bp5-dialog .bp5-tab:contains(testUploadWizard_nearPerfect.csv) .bp5-icon-tick-circle"
     );
-    cy.contains(".bp3-dialog", `zonk`);
-    cy.contains(".bp3-dialog", `DEscription`); //the matched headers should show up
-    cy.contains(".bp3-dialog", `Description`); //the expected headers should show up
+    cy.contains(".bp5-dialog", `zonk`);
+    cy.contains(".bp5-dialog", `DEscription`); //the matched headers should show up
+    cy.contains(".bp5-dialog", `Description`); //the expected headers should show up
     cy.contains("Review and Edit Data").click();
     cy.get(`.hasCellError`).type(" haha{enter}");
     cy.get(`button:contains(Next File):first`).click();
     cy.get(
-      `.bp3-dialog .bp3-tab[aria-selected="true"]:contains(testUploadWizard_messedUpHeaders.csv) .bp3-icon-warning-sign`
+      `.bp5-dialog .bp5-tab[aria-selected="true"]:contains(testUploadWizard_messedUpHeaders.csv) .bp5-icon-warning-sign`
     );
     cy.get(
-      ".bp3-dialog tr:contains(Sequence BPs) .bp3-multi-select-tag-input-input"
+      ".bp5-dialog tr:contains(Sequence BPs) .bp5-multi-select-tag-input-input"
     ).click();
-    cy.get(".bp3-menu-item:contains(lolz)").click();
+    cy.get(".bp5-menu-item:contains(lolz)").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.get(
-      ".bp3-dialog tr:contains(Name) .bp3-multi-select-tag-input-input"
+      ".bp5-dialog tr:contains(Name) .bp5-multi-select-tag-input-input"
     ).click();
-    cy.get(".bp3-menu-item:contains(typo)").click();
+    cy.get(".bp5-menu-item:contains(typo)").click();
 
     cy.contains("Review and Edit Data").click();
-    cy.get(".bp3-button:contains(Add 10 Rows)").eq(1).click();
-    cy.get(`.bp3-button:contains(Finalize Files)`).eq(1).click();
+    cy.get(".bp5-button:contains(Add 10 Rows)").eq(1).click();
+    cy.get(`.bp5-button:contains(Finalize Files)`).eq(1).click();
 
     cy.get(
       `.tg-upload-file-list-item:contains(testUploadWizard_invalidDataNonUnique.csv) .tg-upload-file-list-item-edit`
     ).click();
     cy.get(`[data-index="0"] [data-test="tgCell_sequence"]:last`).click();
     cy.focused().type(` tom{enter}`);
-    cy.get(`.bp3-button:contains(Edit Data)`).click();
+    cy.get(`.bp5-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(2000);
@@ -673,7 +673,7 @@ a,,desc,,false,dna,misc_feature
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.focused().type(` robbin{enter}`, { delay: 100 });
-    cy.get(`.bp3-button:contains(Edit Data)`).click();
+    cy.get(`.bp5-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
 
     cy.contains("Finish Upload").click();
@@ -815,13 +815,13 @@ a,,g,false,dna,misc_feature`,
       `Please review your headers and then correct any errors on the next page.`
     );
 
-    cy.get(`.bp3-dialog tr:contains(Name) .tg-select-clear-all`).click();
+    cy.get(`.bp5-dialog tr:contains(Name) .tg-select-clear-all`).click();
     cy.contains("Review and Edit Data").click();
     cy.get(
-      `.bp3-dialog .bp3-tab[aria-selected="true"]:contains(test.csv) .bp3-icon-warning-sign`
+      `.bp5-dialog .bp5-tab[aria-selected="true"]:contains(test.csv) .bp5-icon-warning-sign`
     );
-    cy.get(`.bp3-dialog .bp3-tab:contains(test2.csv) .bp3-icon-warning-sign`);
-    cy.get(`.bp3-dialog .bp3-tab:contains(test3.csv) .bp3-icon-warning-sign`);
+    cy.get(`.bp5-dialog .bp5-tab:contains(test2.csv) .bp5-icon-warning-sign`);
+    cy.get(`.bp5-dialog .bp5-tab:contains(test3.csv) .bp5-icon-warning-sign`);
     cy.get(`.hasCellError:first [data-test="tgCell_name"]`).click({
       force: true
     });
@@ -830,47 +830,47 @@ a,,g,false,dna,misc_feature`,
     cy.contains("Back").click();
 
     cy.get(
-      ".bp3-dialog tr:contains(Name) .bp3-multi-select-tag-input-input"
+      ".bp5-dialog tr:contains(Name) .bp5-multi-select-tag-input-input"
     ).click();
-    cy.get(".bp3-menu-item:contains(name)").click();
+    cy.get(".bp5-menu-item:contains(name)").click();
     cy.contains(
       `Are you sure you want to edit the columm mapping? This will clear any changes you've already made to the table data`
     );
-    cy.get(`.bp3-button:contains(Yes)`).click();
+    cy.get(`.bp5-button:contains(Yes)`).click();
 
     cy.contains("Review and Edit Data").click();
 
     cy.get(
-      `.bp3-dialog .bp3-tab[aria-selected="true"]:contains(test.csv) .bp3-icon-warning-sign`
+      `.bp5-dialog .bp5-tab[aria-selected="true"]:contains(test.csv) .bp5-icon-warning-sign`
     );
-    cy.get(`.bp3-dialog .bp3-tab:contains(test2.csv) .bp3-icon-warning-sign`);
-    cy.get(`.bp3-dialog .bp3-tab:contains(test3.csv) .bp3-icon-tick-circle`);
+    cy.get(`.bp5-dialog .bp5-tab:contains(test2.csv) .bp5-icon-warning-sign`);
+    cy.get(`.bp5-dialog .bp5-tab:contains(test3.csv) .bp5-icon-tick-circle`);
 
     cy.get(`[data-tip="Please enter a value here"]`);
     cy.get(`.hasCellError:first [data-test="tgCell_name"]`);
-    cy.get(`button:contains(Next File).bp3-disabled`);
+    cy.get(`button:contains(Next File).bp5-disabled`);
     cy.get(`.hasCellError:first [data-test="tgCell_name"]`).click({
       force: true
     });
     cy.focused().type(" haha{enter}");
     // cy.get(`.hasCellError:last [data-test="tgCell_name"]`).type("haha{enter}", {force: true});
     cy.get(`button:contains(Next File):first`).click();
-    cy.get(`.bp3-spinner`);
+    cy.get(`.bp5-spinner`);
     cy.get(`[data-tip="Cannot be Thomas"]`);
     cy.get(`.hasCellError:first [data-test="tgCell_name"]`).click({
       force: true
     });
     cy.focused().type(" ba{enter}");
     cy.get(`button:contains(Next File):first`).click();
-    cy.get(`.bp3-spinner`);
-    cy.get(`.bp3-spinner`).should("not.exist");
+    cy.get(`.bp5-spinner`);
+    cy.get(`.bp5-spinner`).should("not.exist");
     cy.get(`.hasCellError:first [data-test="tgCell_name"]`).click({
       force: true
     });
 
     cy.focused().type(" haha{enter}");
 
-    cy.get(`.bp3-button:contains(Finalize Files)`).eq(1).click();
+    cy.get(`.bp5-button:contains(Finalize Files)`).eq(1).click();
     cy.contains(`Added Fixed Up Files test.csv, test2.csv, test3.csv`);
 
     cy.uploadBlobFiles(
@@ -915,14 +915,14 @@ a,,g,false,dna,misc_feature`,
     );
 
     cy.get(
-      ".bp3-dialog tr:contains(Name) .bp3-multi-select-tag-input-input"
+      ".bp5-dialog tr:contains(Name) .bp5-multi-select-tag-input-input"
     ).click();
-    cy.get(".bp3-menu-item:contains(lalala)").click();
-    cy.get(".bp3-dialog tr:contains(Name):contains(lalala)").click();
+    cy.get(".bp5-menu-item:contains(lalala)").click();
+    cy.get(".bp5-dialog tr:contains(Name):contains(lalala)").click();
     cy.get(
-      ".bp3-dialog tr:contains(Sequence BPs) .bp3-multi-select-tag-input-input"
+      ".bp5-dialog tr:contains(Sequence BPs) .bp5-multi-select-tag-input-input"
     ).click();
-    cy.get(".bp3-menu-item:contains(zonk)").first().click();
+    cy.get(".bp5-menu-item:contains(zonk)").first().click();
     cy.contains("Review and Edit Data").click();
     cy.contains("Finalize Files").first().click();
     cy.contains(`Added Fixed Up Files test4.csv, test5.csv, test6.csv`);
@@ -946,10 +946,10 @@ thomas,3,,g,false,dna,misc_feature
     cy.get(`.tg-select-value:contains(isColumn)`);
     cy.get(`.tg-select-value:contains(max volume)`);
     cy.get(`.tg-select-value:contains(catalog number)`);
-    cy.contains(`.bp3-dialog .bp3-button`, "Review and Edit Data").click();
+    cy.contains(`.bp5-dialog .bp5-button`, "Review and Edit Data").click();
     cy.get(`[data-tip="Please enter a value here"]`).click();
     cy.focused().type(" haha{enter}");
-    cy.contains(`.bp3-dialog .bp3-button`, "Add File").click();
+    cy.contains(`.bp5-dialog .bp5-button`, "Add File").click();
     cy.contains("test.csv");
     cy.get(`.tg-upload-file-list-item-edit`).click();
     cy.get(`[data-test="tgCell_catalog number"]:contains(3)`);
@@ -998,30 +998,30 @@ thomas,,g,false,dna,misc_feature`,
 
     cy.contains(`Cannot be Thomas`);
     cy.contains("Review and Edit Data").click();
-    cy.get(`.bp3-button.bp3-disabled:contains(Next File)`);
+    cy.get(`.bp5-button.bp5-disabled:contains(Next File)`);
     cy.get(`[data-tip="Cannot be Thomas"]`);
     cy.get(`.hasCellError:first [data-test="tgCell_name"]`).click({
       force: true
     });
     cy.focused().type(" ba{enter}");
     cy.get(`button:contains(Next File):first`).click();
-    cy.get(`.bp3-spinner`);
-    cy.get(`.bp3-spinner`).should("not.exist");
+    cy.get(`.bp5-spinner`);
+    cy.get(`.bp5-spinner`).should("not.exist");
     cy.get(`[data-tip="Cannot be Thomas"]`);
     cy.get(`.hasCellError:first [data-test="tgCell_name"]`).click({
       force: true
     });
     cy.focused().type(" ba{enter}");
     cy.get(`button:contains(Next File):first`).click({ force: true });
-    cy.get(`.bp3-spinner`);
-    cy.get(`.bp3-spinner`).should("not.exist");
-    cy.get(`.bp3-button.bp3-disabled:contains(Finalize Files)`);
+    cy.get(`.bp5-spinner`);
+    cy.get(`.bp5-spinner`).should("not.exist");
+    cy.get(`.bp5-button.bp5-disabled:contains(Finalize Files)`);
     cy.get(`[data-tip="Cannot be Thomas"]`);
     cy.get(`.hasCellError:first [data-test="tgCell_name"]`).click({
       force: true
     });
     cy.focused().type(" ba{enter}");
-    cy.get(`.bp3-button:contains(Finalize Files):last`).click();
+    cy.get(`.bp5-button:contains(Finalize Files):last`).click();
   });
   it(`manual entry file name should be editable. The name should be able to be edited after`, () => {
     cy.visit("#/UploadCsvWizard");
@@ -1030,13 +1030,13 @@ thomas,,g,false,dna,misc_feature`,
     cy.get(`[data-test="tgCell_name"]:first`).click({ force: true });
     cy.focused().paste(`Thomas	Wee	agagag	False	dna	misc_feature`);
     cy.get(`[value="manual_data_entry"]`).clear().type("customFileName");
-    cy.contains(".bp3-button", "Add File").click();
+    cy.contains(".bp5-button", "Add File").click();
     cy.contains("customFileName.csv");
     cy.get(
       `.tg-upload-file-list-item:contains(customFileName.csv) .tg-upload-file-list-item-edit`
     ).click();
     cy.get(`[value="customFileName"]`).type("3");
-    cy.get(`.bp3-button:contains(Edit Data)`).click();
+    cy.get(`.bp5-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
     cy.contains("customFileName3.csv");
   });
@@ -1047,14 +1047,14 @@ thomas,,g,false,dna,misc_feature`,
     cy.contains("Build CSV File").click();
     cy.get(`.rt-tbody [role="gridcell"]:first`).click();
     cy.focused().paste(`Thomas	Wee	agagag	False	dna	misc_feature`);
-    cy.contains(".bp3-button", "Add File").click();
+    cy.contains(".bp5-button", "Add File").click();
     cy.contains("manual_data_entry.csv");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.contains("Build CSV File").click();
     cy.get(`.rt-tbody [role="gridcell"]:first`).click();
     cy.focused().paste(`Thomas	Wee	agagag	False	dna	misc_feature`);
-    cy.contains(".bp3-button", "Add File").click();
+    cy.contains(".bp5-button", "Add File").click();
     cy.contains("manual_data_entry(1).csv");
     cy.get(
       `.tg-upload-file-list-item:contains(manual_data_entry.csv) .tg-upload-file-list-item-edit`
@@ -1063,11 +1063,11 @@ thomas,,g,false,dna,misc_feature`,
     cy.contains(`Add 10 Rows`).click();
     cy.get(`[data-index="4"] [role="gridcell"]`).eq(2).click();
     cy.focused().type(`{backspace}`);
-    cy.get(`.bp3-disabled:contains(Edit Data)`).should("not.exist");
+    cy.get(`.bp5-disabled:contains(Edit Data)`).should("not.exist");
     cy.focused().type(` tom{enter}`);
     cy.get(`[data-index="4"] [role="gridcell"]:first`).click();
     cy.focused().type(` taoh{enter}`);
-    cy.get(`.bp3-button:contains(Edit Data)`).click();
+    cy.get(`.bp5-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
@@ -1076,7 +1076,7 @@ thomas,,g,false,dna,misc_feature`,
     ).click();
     cy.get(`[data-index="0"] [role="gridcell"]`).eq(2).click();
     cy.focused().type(` tom{enter}`);
-    cy.get(`.bp3-button:contains(Edit Data)`).click();
+    cy.get(`.bp5-button:contains(Edit Data)`).click();
     cy.contains(`File Updated`);
 
     cy.contains("Finish Upload").click();
@@ -1128,7 +1128,7 @@ thomas,,g,false,dna,misc_feature`,
     cy.get(
       `[data-index="1"] [data-test="tgCell_sequence"]:contains(tom)`
     ).click();
-    cy.get(`.bp3-button:contains(Cancel)`).click();
+    cy.get(`.bp5-button:contains(Cancel)`).click();
     cy.contains("manual_data_entry(1).csv");
   });
   it(`zip data that contains one or more perfect CSV/XLSX should NOT trigger the wizard but should be unzipped`, () => {
@@ -1152,16 +1152,16 @@ thomas,,g,false,dna,misc_feature`,
       true
     );
     cy.contains(`It looks like there was an error with your data`);
-    cy.contains(".bp3-dialog", `zonk`); //the data from the file should be previewed
-    cy.contains(".bp3-dialog", `DEscription`); //the matched headers should show up
-    cy.contains(".bp3-dialog", `Description`); //the expected headers should show up
+    cy.contains(".bp5-dialog", `zonk`); //the data from the file should be previewed
+    cy.contains(".bp5-dialog", `DEscription`); //the matched headers should show up
+    cy.contains(".bp5-dialog", `Description`); //the expected headers should show up
     cy.contains("Review and Edit Data").click();
     cy.get(`[data-tip="Please enter a value here"]`);
     cy.get(`.hasCellError:last [data-test="tgCell_name"]`);
-    cy.get(`button:contains(Add File).bp3-disabled`);
+    cy.get(`button:contains(Add File).bp5-disabled`);
     cy.contains(`Cancel`).click();
     cy.contains(`File Upload Aborted`);
-    cy.get(`.bp3-dialog`).should("not.exist");
+    cy.get(`.bp5-dialog`).should("not.exist");
   });
   it(`invalid data on upload should trigger the wizard`, () => {
     cy.visit("#/UploadCsvWizard");
@@ -1172,16 +1172,16 @@ thomas,,g,false,dna,misc_feature`,
       true
     );
     cy.contains(`It looks like there was an error with your data`);
-    cy.contains(".bp3-dialog", `zonk`); //the data from the file should be previewed
-    cy.contains(".bp3-dialog", `DEscription`); //the matched headers should show up
-    cy.contains(".bp3-dialog", `Description`); //the expected headers should show up
+    cy.contains(".bp5-dialog", `zonk`); //the data from the file should be previewed
+    cy.contains(".bp5-dialog", `DEscription`); //the matched headers should show up
+    cy.contains(".bp5-dialog", `Description`); //the expected headers should show up
     cy.contains("Review and Edit Data").click();
     cy.get(`[data-tip="Please enter a value here"]`);
     cy.get(`.hasCellError:last [data-test="tgCell_name"]`);
-    cy.get(`button:contains(Add File).bp3-disabled`);
+    cy.get(`button:contains(Add File).bp5-disabled`);
     cy.contains(`Cancel`).click();
     cy.contains(`File Upload Aborted`);
-    cy.get(`.bp3-dialog`).should("not.exist");
+    cy.get(`.bp5-dialog`).should("not.exist");
   });
   it(`manual entry should work, additional untouched (_isClean) rows should be omitted`, () => {
     cy.visit("#/UploadCsvWizard");
@@ -1192,13 +1192,13 @@ thomas,,g,false,dna,misc_feature`,
     cy.get(".rt-td").eq(1).type(" description{enter}");
 
     //there should be a checkbox in the isRegex boolean column
-    cy.get(`[data-test="Is Regex"] .bp3-checkbox`);
+    cy.get(`[data-test="Is Regex"] .bp5-checkbox`);
 
     //should be able to edit and then drag to continue that edit further down
     cy.get(".rt-td").eq(0).type(" a{enter}");
     cy.get(".rt-td").eq(2).type(" g{enter}");
 
-    cy.contains(".bp3-button", "Add File").click();
+    cy.contains(".bp5-button", "Add File").click();
     cy.contains("File Added");
     cy.contains(`manual_data_entry.csv`).click();
 

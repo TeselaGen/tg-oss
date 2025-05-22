@@ -14,7 +14,7 @@ export const AddLaddersDialog = compose(
 )(function AddLaddersDialog({ setSelectedLadder }) {
   const [additionalLadders, setLadders] = useLadders();
   return (
-    <div className="bp3-dialog-body">
+    <div className="bp5-dialog-body">
       <FileUploadField
         fileLimit={1}
         threeDotMenuItems={

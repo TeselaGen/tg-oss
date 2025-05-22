@@ -7,7 +7,7 @@
   height: fit-content;
 }
 
-.bp3-dark .cutsiteLabelSelectionLayer {
+.bp5-dark .cutsiteLabelSelectionLayer {
   background: #606468 !important;
 }
 .cutsiteLabelSelectionLayer {
@@ -29,7 +29,7 @@
   margin-left: -2px;
   /* z-index: -1; */
 }
-.bp3-dark .veRowViewCutsite.snipHovered {
+.bp5-dark .veRowViewCutsite.snipHovered {
   background: #c5e3fa !important;
 }
 .veRowViewCutsite.topStrandSnip {
@@ -46,7 +46,7 @@
   border-top: 2px solid #202b33;
   border-bottom: 2px solid #202b33;
 }
-.bp3-dark .cutsiteLabelSelectionLayer.cutsiteLabelSelectionLayerHovered {
+.bp5-dark .cutsiteLabelSelectionLayer.cutsiteLabelSelectionLayerHovered {
   border-top: 2px solid #c5e3fa;
   border-bottom: 2px solid #c5e3fa;
 }
@@ -54,14 +54,14 @@
 .cutsiteLabelSelectionLayerHovered.isTrueStart {
   border-left: 2px solid #202b33;
 }
-.bp3-dark .cutsiteLabelSelectionLayerHovered.isTrueStart {
+.bp5-dark .cutsiteLabelSelectionLayerHovered.isTrueStart {
   border-left: 2px solid #c5e3fa;
 }
 
 .cutsiteLabelSelectionLayerHovered.isTrueEnd {
   border-right: 2px solid #202b33;
 }
-.bp3-dark .cutsiteLabelSelectionLayerHovered.isTrueEnd {
+.bp5-dark .cutsiteLabelSelectionLayerHovered.isTrueEnd {
   border-right: 2px solid #c5e3fa;
 }
 
@@ -98,6 +98,6 @@
 .isBoldSeq {
   stroke: black;
 }
-.bp3-dark .isBoldSeq {
+.bp5-dark .isBoldSeq {
   stroke: white;
 }

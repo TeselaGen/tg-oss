@@ -25,13 +25,13 @@ describe("pcrTool.spec", function () {
       `Please choose a forward and reverse primer to see the resulting PCR sequence`
     ).should("not.exist");
     cy.get(
-      `.tg-test-forward-primer:contains(Example Primer 1) .bp3-icon-cross`
+      `.tg-test-forward-primer:contains(Example Primer 1) .bp5-icon-cross`
     ).click();
     cy.contains(
       `Please choose a forward and reverse primer to see the resulting PCR sequence`
     );
     cy.get(`.tg-test-forward-primer`).click();
-    cy.get(`.bp3-menu-item:contains(Example Primer 3)`).click();
+    cy.get(`.bp5-menu-item:contains(Example Primer 3)`).click();
     cy.contains("5130 bps");
   });
 });

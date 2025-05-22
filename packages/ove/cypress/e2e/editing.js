@@ -10,11 +10,11 @@ describe("editing", function () {
 
   it(`editing a part/feature and saving shouldn't make the new part/feature window initialize in edit mode`, () => {
     cy.contains(".veRowView text", "Part 0").rightclick();
-    cy.contains(`.bp3-menu-item`, "Edit Part").click();
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(`.bp5-menu-item`, "Edit Part").click();
+    cy.contains(".bp5-dialog button", "Save").click();
 
     cy.triggerFileCmd("New Part");
-    cy.contains(`.bp3-dialog`, "New Part");
+    cy.contains(`.bp5-dialog`, "New Part");
     cy.get(`[placeholder="Untitled Annotation"]`);
   });
 
@@ -74,11 +74,11 @@ describe("editing", function () {
     cy.contains("Jump to start").click();
     cy.contains("button", "Jump to end").should("exist");
     cy.contains("button", "Edit").click();
-    cy.contains(".bp3-menu-item", /Complement Selection/).click();
+    cy.contains(".bp5-menu-item", /Complement Selection/).click();
     cy.contains(".ve-row-item-sequence", "5'ctggtcttat");
 
     cy.contains("button", "Edit").click();
-    cy.contains(".bp3-menu-item", "Reverse Complement Selection").click();
+    cy.contains(".bp5-menu-item", "Reverse Complement Selection").click();
 
     cy.contains("Selecting 6 bps from 5297 to 3");
     cy.contains(".ve-row-item-sequence", "5'ctagtcttatg");
@@ -87,10 +87,10 @@ describe("editing", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veRowViewFeature", "araD").find(`path[fill="#006FEF"]`);
     cy.contains(".veLabelText", "araD").rightclick({ force: true });
-    cy.contains(".bp3-menu-item", "Edit Feature").click();
+    cy.contains(".bp5-menu-item", "Edit Feature").click();
     cy.get(".tg-test-type input").click();
     cy.contains(".tg-select-option", "3'UTR").click();
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".bp5-dialog button", "Save").click();
     cy.contains(".veRowViewFeature", "araD")
       .find(`path[fill="#006FEF"]`)
       .should("not.exist");
@@ -99,14 +99,14 @@ describe("editing", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veRowViewPart", "Part 0").dblclick();
     cy.get(".tg-test-name input").should("have.value", "Part 0");
-    cy.get(".bp3-dialog-close-button").click();
+    cy.get(".bp5-dialog-close-button").click();
     cy.contains(".veRowViewFeature", "araD").find(`path[fill="#006FEF"]`);
     cy.contains(".veLabelText", "araD").dblclick({ force: true });
     cy.get(".tg-test-name input").should("have.value", "araD");
-    cy.get(".bp3-dialog-close-button").click();
+    cy.get(".bp5-dialog-close-button").click();
     cy.contains(".veLabelText", "Example Primer 1").dblclick();
     cy.get(".tg-test-name input").should("have.value", "Example Primer 1");
-    cy.get(".bp3-dialog-close-button").click();
+    cy.get(".bp5-dialog-close-button").click();
   });
   it("should be able to edit a feature/part start/end by clicking/dragging in the editor", () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
@@ -118,7 +118,7 @@ describe("editing", function () {
     cy.contains(".veCircularViewLabelText", "T0").click();
     cy.get(".tg-test-start input").should("have.value", "4393");
     cy.get(".tg-test-end input").should("have.value", "4498");
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".bp5-dialog button", "Save").click();
     cy.contains("Selecting 106 bps from 4393 to 4498");
   });
 });

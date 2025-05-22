@@ -45,7 +45,7 @@ describe("find tool", function () {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gataca", { delay: 1 }); //this should cause 1 region to be selected
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
-    cy.contains(".ve-find-options-popover .bp3-switch", "Expanded").click();
+    cy.contains(".ve-find-options-popover .bp5-switch", "Expanded").click();
     cy.get(".veFindBar textarea").should("have.value", "gataca");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
@@ -86,12 +86,12 @@ describe("find tool", function () {
     cy.get(".veSearchLayer.veRowViewSelectionLayer")
       .should("be.visible")
       .rightclick(); //click the search layer
-    cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
-    cy.contains(".bp3-radio", "Positive")
+    cy.contains(".bp5-menu-item", "Create").click();
+    cy.contains(".bp5-menu-item", "New Feature").click({ force: true });
+    cy.contains(".bp5-radio", "Positive")
       .find("input")
       .should("not.be.checked");
-    cy.contains(".bp3-radio", "Negative").find("input").should("be.checked");
+    cy.contains(".bp5-radio", "Negative").find("input").should("be.checked");
   });
   it(`reverse strand matches should cause annotations created from click and then subsequent create to be in reverse direction`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
@@ -100,16 +100,16 @@ describe("find tool", function () {
       .should("be.visible")
       .click(); //click the search layer
     cy.triggerFileCmd("New Primer");
-    cy.contains(".bp3-radio", "Positive")
+    cy.contains(".bp5-radio", "Positive")
       .find("input")
       .should("not.be.checked");
-    cy.contains(".bp3-radio", "Negative").find("input").should("be.checked");
+    cy.contains(".bp5-radio", "Negative").find("input").should("be.checked");
   });
   it(`clear search layers when closed and retain the previous search and be selected when re-opened`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gattac", { noPrevValue: true }); //this should cause 1 region to be selected
     cy.get(".veSearchLayerContainer").should("exist");
-    cy.get(".veFindBar .bp3-icon-small-cross").click();
+    cy.get(".veFindBar .bp5-icon-small-cross").click();
     cy.get(".veSearchLayerContainer").should("not.exist");
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.get(".veSearchLayerContainer").should("exist"); //test that the search didn't get cleared

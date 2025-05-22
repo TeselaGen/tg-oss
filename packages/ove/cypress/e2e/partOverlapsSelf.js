@@ -7,7 +7,7 @@ describe("partTypes", function () {
     cy.tgToggle("allowPartsToOverlapSelf");
     cy.contains(".veCircularViewLabelText", "I wrap myself").dblclick();
     cy.get(`.tg-test-start input`).clear().type(1);
-    cy.contains(".bp3-button", "Save").click();
+    cy.contains(".bp5-button", "Save").click();
     cy.get(`.veRowItemWrapper .veLabelText:contains(I wrap myself)`)
       .eq(2)
       .click();
@@ -40,23 +40,23 @@ describe("partTypes", function () {
     cy.contains("I wrap myself - Start: 88 End: 94 (Overlaps Self)");
     cy.contains(".veCircularViewLabelText", "I wrap myself").dblclick();
     cy.contains("Length: 5306");
-    cy.contains(".bp3-dialog div", "Overlaps Self").click();
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".bp5-dialog div", "Overlaps Self").click();
+    cy.contains(".bp5-dialog button", "Save").click();
     cy.get(".veRowViewPart.overlapsSelf").should("not.exist");
     cy.get(".veCircularViewPart.overlapsSelf").should("not.exist");
 
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Edit Part").click();
-    cy.contains(".bp3-dialog div", "Advanced").click();
-    cy.contains(".bp3-dialog div", "Overlaps Self").click();
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".bp5-menu-item", "Edit Part").click();
+    cy.contains(".bp5-dialog div", "Advanced").click();
+    cy.contains(".bp5-dialog div", "Overlaps Self").click();
+    cy.contains(".bp5-dialog button", "Save").click();
 
     cy.get(".veRowViewPart.overlapsSelf").should("exist");
     cy.get(".veCircularViewPart.overlapsSelf").should("exist");
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Edit Part").click();
+    cy.contains(".bp5-menu-item", "Edit Part").click();
     //this should already be open!
-    cy.contains(".bp3-dialog div", "Overlaps Self");
+    cy.contains(".bp5-dialog div", "Overlaps Self");
   });
 });
 Cypress.on("uncaught:exception", (err, runnable) => {

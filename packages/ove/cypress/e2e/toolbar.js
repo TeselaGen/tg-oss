@@ -6,13 +6,13 @@ describe("toolbar", function () {
   it(`save tool should be disabled initially and then enabled after an edit is made`, () => {
     cy.get(`[data-test="saveTool"]`)
       .parent()
-      .should("have.class", "bp3-disabled");
+      .should("have.class", "bp5-disabled");
     cy.selectRange(2, 5);
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Cut").click();
     cy.get(`[data-test="saveTool"]`)
       .parent()
-      .should("not.have.class", "bp3-disabled");
+      .should("not.have.class", "bp5-disabled");
   });
   it("should be able to have individual tool functionality overridden", function () {
     cy.tgToggle("overrideToolbarOptions");

@@ -76,7 +76,7 @@
 .preview-mode-view-fullscreen:hover {
   background: #0e5a8a;
 }
-.bp3-tag.tg-smallTag {
+.bp5-tag.tg-smallTag {
   transform: scale(0.8);
 }
 
@@ -171,7 +171,7 @@
   top: -7px;
   left: -4px;
 }
-.bp3-dark .veEditor :not(.veSearchLayer).selectionLayerCaret::after {
+.bp5-dark .veEditor :not(.veSearchLayer).selectionLayerCaret::after {
   border-top: 10px solid white;
 }
 .vePolygonCaretHandle,
@@ -181,15 +181,15 @@
 .veEditor .vePolygonCaretHandle {
   display: inherit;
 }
-.bp3-dark .veEditor .vePolygonCaretHandle {
+.bp5-dark .veEditor .vePolygonCaretHandle {
   fill: white;
 }
-.bp3-dark .veTabActive {
+.bp5-dark .veTabActive {
   color: #48aff0 !important;
   border-bottom-color: #48aff0 !important;
 }
 
-[cmd="filterPartsByTagCmd"] > .bp3-text-overflow-ellipsis {
+[cmd="filterPartsByTagCmd"] > .bp5-text-overflow-ellipsis {
   overflow: visible;
 }
 .vePart {
@@ -223,12 +223,12 @@ tspan.vePart {
   background: #e5f3ff;
 }
 
-.bp3-dark .veEditor .ve-draggable-tabs {
+.bp5-dark .veEditor .ve-draggable-tabs {
   color: #f5f8fa !important;
   border-bottom: 1px solid #4a4b4b;
 }
 
-.bp3-dark .veEditor .ve-draggable-tabs.is-dragging-over {
+.bp5-dark .veEditor .ve-draggable-tabs.is-dragging-over {
   background: #0c5174;
 }
 .ve-draggable-tabs::-webkit-scrollbar {

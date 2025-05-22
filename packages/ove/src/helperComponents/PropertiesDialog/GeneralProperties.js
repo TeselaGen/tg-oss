@@ -38,7 +38,7 @@ class GeneralProperties extends React.Component {
     return (
       <React.Fragment>
         <div className="ve-flex-row">
-          <div className="ve-column-left bp3-label">Name</div>{" "}
+          <div className="ve-column-left bp5-label">Name</div>{" "}
           <div className="ve-column-right">
             <InputField
               disabled={readOnly}
@@ -54,7 +54,7 @@ class GeneralProperties extends React.Component {
 
         {!isProtein && !isOligo && !isRna && (
           <div className="ve-flex-row circularLinearSelect">
-            <div className="ve-column-left bp3-label">Circular/Linear</div>{" "}
+            <div className="ve-column-left bp5-label">Circular/Linear</div>{" "}
             <div className="ve-column-right">
               {" "}
               <EditCircularityItem editorName={editorName} showCircularity />
@@ -64,7 +64,7 @@ class GeneralProperties extends React.Component {
 
         {showAvailability && (
           <div className="ve-flex-row">
-            <div className="ve-column-left bp3-label">
+            <div className="ve-column-left bp5-label">
               Material Availability
             </div>{" "}
             <div className="ve-column-right">
@@ -74,7 +74,7 @@ class GeneralProperties extends React.Component {
           </div>
         )}
         <div className="ve-flex-row">
-          <div className="ve-column-left bp3-label">Length</div>{" "}
+          <div className="ve-column-left bp5-label">Length</div>{" "}
           <div className="ve-column-right">
             {" "}
             {isProtein ? proteinSequence.length : sequence.length}
@@ -82,7 +82,7 @@ class GeneralProperties extends React.Component {
         </div>
         {showReadOnly && (
           <div className="ve-flex-row">
-            <div className="ve-column-left bp3-label">Is Editable</div>{" "}
+            <div className="ve-column-left bp5-label">Is Editable</div>{" "}
             <div className="ve-column-right">
               {" "}
               <EditReadOnlyItem

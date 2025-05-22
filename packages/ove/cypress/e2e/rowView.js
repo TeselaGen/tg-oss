@@ -7,7 +7,7 @@ describe("rowView", function () {
     cy.get(
       ".veRowViewSelectionLayer:not(.cutsiteLabelSelectionLayer)"
     ).rightclick();
-    cy.contains(".bp3-menu-item", "Replace").click();
+    cy.contains(".bp5-menu-item", "Replace").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type("agagagagag{enter}", { delay: 40 });

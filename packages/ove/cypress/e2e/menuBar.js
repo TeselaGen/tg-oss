@@ -22,12 +22,12 @@ describe("menuBar", function () {
     cy.contains(".veLabelText", "pSC101**");
     cy.contains(".veLabelText", "araD");
     cy.contains(".veLabelText", "araC");
-    cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Filter Individually")
+    cy.contains(".bp5-menu-item", "Features").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Filter Individually")
       .contains("22/22")
       .trigger("mouseover", { force: true });
-    cy.contains(".bp3-menu-item", "araD").click({ force: true });
-    cy.contains(".bp3-menu-item", "araC").click({ force: true });
+    cy.contains(".bp5-menu-item", "araD").click({ force: true });
+    cy.contains(".bp5-menu-item", "araC").click({ force: true });
 
     cy.contains(".veLabelText", "araD").should("not.exist");
     cy.contains(".veLabelText", "araC").should("not.exist");
@@ -38,22 +38,22 @@ describe("menuBar", function () {
 
     cy.contains(".veLabelText", "Part 0");
     cy.contains(".veLabelText", "Curtis' Part");
-    cy.contains(".bp3-menu-item", "Parts").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Filter Individually")
+    cy.contains(".bp5-menu-item", "Parts").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Filter Individually")
       .contains("3/3")
       .trigger("mouseover", { force: true });
-    cy.contains(".bp3-menu-item", "Part 0").click({ force: true });
+    cy.contains(".bp5-menu-item", "Part 0").click({ force: true });
     cy.contains(".veLabelText", "Part 0").should("not.exist");
-    cy.contains(".bp3-menu-item", "Uncheck All").click({ force: true });
+    cy.contains(".bp5-menu-item", "Uncheck All").click({ force: true });
     cy.contains(".veLabelText", "Curtis' Part").should("not.exist");
-    cy.contains(".bp3-menu-item", "Check All").click({ force: true });
+    cy.contains(".bp5-menu-item", "Check All").click({ force: true });
     cy.contains(".veLabelText", "Part 0");
     cy.contains(".veLabelText", "Curtis' Part");
   });
   it("Should be able to filter features by length", () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".tg-menu-bar button", "View").click();
-    cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Features").trigger("mouseover");
     cy.get("[data-test=filter-feature-length]").click("top", { force: true });
     cy.contains(".veLabelText", "pSC101**").should("not.exist");
     cy.contains(".veLabelText", "araD").should("not.exist");
@@ -70,7 +70,7 @@ describe("menuBar", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".tg-menu-bar button", "View").click();
     cy.contains("Part - pj5_00001 - Start: 1 End: 5299");
-    cy.contains(".bp3-menu-item", "Part").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Part").trigger("mouseover");
     cy.get("[data-test=filter-part-length]").click("top", { force: true });
     cy.contains("Part - pj5_00001 - Start: 1 End: 5299").should("not.exist");
     cy.get('[data-test="max-part-length"]').type("{selectall}6000", {
@@ -80,20 +80,20 @@ describe("menuBar", function () {
   });
   it("Should be able to change circular/linear from the menu bar", () => {
     cy.contains(".tg-menu-bar button", "Edit").click();
-    cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(
+    cy.contains(".bp5-menu-item", "Change Circular/Linear").trigger(
       "mouseover"
     );
-    cy.get(":nth-child(2) > .bp3-menu-item").click({ force: true });
+    cy.get(":nth-child(2) > .bp5-menu-item").click({ force: true });
     cy.contains("Truncate Annotations").click();
     cy.contains(".tg-menu-bar button", "Edit").click();
-    cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(
+    cy.contains(".bp5-menu-item", "Change Circular/Linear").trigger(
       "mouseover"
     );
     cy.get(
-      ".bp3-menu > :nth-child(1) > .bp3-menu-item > .bp3-icon > svg"
+      ".bp5-menu > :nth-child(1) > .bp5-menu-item > .bp5-icon > svg"
     ).should("have.attr", "data-icon", "blank");
     cy.get(
-      ".bp3-menu > :nth-child(2) > .bp3-menu-item > .bp3-icon > svg"
+      ".bp5-menu > :nth-child(2) > .bp5-menu-item > .bp5-icon > svg"
     ).should("have.attr", "data-icon", "small-tick");
   });
   it(`should be able to use the search/shortcut bar to translate the sequence`, () => {
@@ -123,12 +123,12 @@ describe("menuBar", function () {
   it(`should be able to permanently change sequence case`, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
-    cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Upper Case Sequence").click({ force: true });
+    cy.contains(".bp5-menu-item", "Change Case").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Upper Case Sequence").click({ force: true });
     cy.contains(".rowViewTextContainer", "GACGTCTTATGA");
     cy.get(".tg-menu-bar").contains("Edit").click();
-    cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Lower Case Sequence").click({ force: true });
+    cy.contains(".bp5-menu-item", "Change Case").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Lower Case Sequence").click({ force: true });
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
   });
   it(`should be able to permanently change selected sequence case`, () => {
@@ -136,8 +136,8 @@ describe("menuBar", function () {
       force: true
     });
     cy.contains(".rowViewTextContainer", "gacgtcttatgacaacttgacgg");
-    cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Upper Case Selection").click();
+    cy.contains(".bp5-menu-item", "Change Case").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Upper Case Selection").click();
     cy.contains(".rowViewTextContainer", "gacgtcTTATGACAACTTGACGG");
   });
   // it(`should be able toggle sequence case`, () => {
@@ -145,29 +145,29 @@ describe("menuBar", function () {
   //     .contains("View")
   //     .click();
   //   cy.contains(".rowViewTextContainer", "gacgtcttatga");
-  //   cy.contains(".bp3-menu-item", "Sequence Case").trigger("mouseover");
-  //   cy.contains(".bp3-menu-item", "Upper").click();
+  //   cy.contains(".bp5-menu-item", "Sequence Case").trigger("mouseover");
+  //   cy.contains(".bp5-menu-item", "Upper").click();
   //   cy.contains(".rowViewTextContainer", "GACGTCTTATGA");
-  //   cy.contains(".bp3-menu-item", "Upper").click();
+  //   cy.contains(".bp5-menu-item", "Upper").click();
   //   cy.contains(".rowViewTextContainer", "gacgtcttatga");
   // });
 
   it(`should be able to filter by feature`, () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.get(".tg-menu-bar").contains("View").click();
-    cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Filter By Type")
+    cy.contains(".bp5-menu-item", "Features").trigger("mouseover");
+    cy.contains(".bp5-menu-item", "Filter By Type")
       .contains("9/9")
       .trigger("mouseover", { force: true });
     cy.contains(".veLabelText", "araD");
     cy.contains(".veLabelText", "araC");
-    cy.contains(".bp3-menu-item", "misc_feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "misc_feature").click({ force: true });
     cy.contains(".veLabelText", "araD").should("not.exist");
-    cy.contains(".bp3-menu-item", "Filter By Type").contains("8/9");
-    cy.contains(".bp3-menu-item", "Uncheck All").click({ force: true });
-    cy.contains(".bp3-menu-item", "Filter By Type").contains("0/9");
+    cy.contains(".bp5-menu-item", "Filter By Type").contains("8/9");
+    cy.contains(".bp5-menu-item", "Uncheck All").click({ force: true });
+    cy.contains(".bp5-menu-item", "Filter By Type").contains("0/9");
     cy.contains(".veLabelText", "araC").should("not.exist");
-    cy.contains(".bp3-menu-item", "Check All").click({ force: true });
+    cy.contains(".bp5-menu-item", "Check All").click({ force: true });
     cy.contains(".veLabelText", "araC").should("exist");
   });
   it(`should be able to open the hotkeys dialog`, () => {
@@ -175,9 +175,9 @@ describe("menuBar", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type("hotkeys{enter}");
-    cy.contains(".bp3-dialog", "Editor Hotkeys");
+    cy.contains(".bp5-dialog", "Editor Hotkeys");
     cy.focused().type("{esc}", { force: true });
-    cy.contains(".bp3-dialog", "Editor Hotkeys").should("not.exist");
+    cy.contains(".bp5-dialog", "Editor Hotkeys").should("not.exist");
   });
   it(`should be able to remove duplicate features`, () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
@@ -186,18 +186,18 @@ describe("menuBar", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type("remove duplicate feature{enter}", { delay: 1 });
-    cy.contains(".bp3-dialog button", "Remove 2 Duplicates");
-    cy.get(".bp3-dialog .bp3-icon-settings").click();
+    cy.contains(".bp5-dialog button", "Remove 2 Duplicates");
+    cy.get(".bp5-dialog .bp5-icon-settings").click();
     cy.get(".tg-test-ignore-name .tg-no-fill-field").click();
     cy.get(".tg-test-ignore-strand .tg-no-fill-field").click();
     cy.get(".tg-test-ignore-start-and-end .tg-no-fill-field").click();
-    cy.contains(".bp3-dialog button", "Remove 21 Duplicates").click();
+    cy.contains(".bp5-dialog button", "Remove 21 Duplicates").click();
     cy.contains(".veLabelText", "araD").should("not.exist");
   });
 
   it("should not be able to select a range in a length 0 sequence", function () {
     function shouldBeDisabled(text) {
-      cy.contains(".bp3-menu-item", text).closest(".bp3-disabled");
+      cy.contains(".bp5-menu-item", text).closest(".bp5-disabled");
     }
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select All").click();
@@ -268,14 +268,14 @@ describe("menuBar", function () {
 
   it(`save tool should be disabled initially and then enabled after an edit is made`, () => {
     cy.contains(".tg-menu-bar button", "File").click();
-    cy.get(`[cmd="saveSequence"]`).should("have.class", "bp3-disabled");
+    cy.get(`[cmd="saveSequence"]`).should("have.class", "bp5-disabled");
 
     cy.selectRange(2, 5);
     cy.get(".tg-menu-bar").contains("Edit").trigger("mouseover");
     cy.get(".tg-menu-bar-popover").contains("Cut").realClick();
 
     cy.get(".tg-menu-bar").contains("File").click();
-    cy.get(`[cmd="saveSequence"]`).should("not.have.class", "bp3-disabled");
+    cy.get(`[cmd="saveSequence"]`).should("not.have.class", "bp5-disabled");
   });
 
   it("menubar can be optionally displayed above or on the same line as the shortcuts", function () {
@@ -295,13 +295,13 @@ describe("menuBar", function () {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Go To").click();
     cy.focused().clear().type("0", { noPrevValue: true });
-    cy.get(".bp3-dialog").contains("OK").should("be.enabled");
+    cy.get(".bp5-dialog").contains("OK").should("be.enabled");
     cy.focused().clear().type("5299", { noPrevValue: true });
-    cy.get(".bp3-dialog").contains("OK").should("be.enabled");
+    cy.get(".bp5-dialog").contains("OK").should("be.enabled");
     cy.focused().clear().type("2000000", { noPrevValue: true });
-    cy.get(".bp3-dialog").contains("OK").should("be.disabled");
+    cy.get(".bp5-dialog").contains("OK").should("be.disabled");
     cy.focused().clear().type("20", { noPrevValue: true });
-    cy.get(".bp3-dialog").contains("OK").click();
+    cy.get(".bp5-dialog").contains("OK").click();
     cy.contains("Caret Between Bases 20 and 21");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Rotate To Caret Position").click();
@@ -313,7 +313,7 @@ describe("menuBar", function () {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Go To").click();
     cy.focused().clear().type("10", { noPrevValue: true });
-    cy.get(".bp3-dialog").contains("OK").click();
+    cy.get(".bp5-dialog").contains("OK").click();
     cy.focused().type("a", { passThru: true });
     cy.contains(".sequenceInputBubble", "Press ENTER to insert");
     cy.get(".tg-menu-bar").contains("Edit").click();

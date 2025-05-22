@@ -57,22 +57,22 @@ describe("dataTable.spec", () => {
     cy.visit("#/DataTable");
     //  - copying a single row (selected or not)
     cy.get(`[data-test="tgCell_type.special"]`).first().trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Copy").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
-    cy.contains(".bp3-menu-item", "Row").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
+    cy.contains(".bp5-menu-item", "Copy").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
+    cy.contains(".bp5-menu-item", "Row").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
     cy.contains("Row Copied");
     cy.get(`[data-test="tgCell_type.special"]`).first().click();
     // - copying a single cell
     cy.get(`[data-test="tgCell_type.special"]`).first().trigger("contextmenu");
 
-    cy.contains(".bp3-menu-item", "Copy").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
-    cy.contains(".bp3-menu-item", "Cell").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
+    cy.contains(".bp5-menu-item", "Copy").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
+    cy.contains(".bp5-menu-item", "Cell").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
     cy.contains("Cell copied");
     // - copying multiple selected rows
     cy.get(`[data-test="tgCell_type.special"]`).eq(1).click();
     cy.get(`[data-test="tgCell_type.special"]`).first().trigger("contextmenu");
 
-    cy.contains(".bp3-menu-item", "Copy").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
-    cy.contains(".bp3-menu-item", "Rows").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
+    cy.contains(".bp5-menu-item", "Copy").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
+    cy.contains(".bp5-menu-item", "Rows").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
     cy.contains("Selected rows copied");
   });
   it(`doesn't break when selecting items across pages and copying`, () => {
@@ -90,8 +90,8 @@ describe("dataTable.spec", () => {
 
     cy.get(`[data-test="tgCell_type.special"]`).first().trigger("contextmenu");
 
-    cy.contains(".bp3-menu-item", "Copy").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
-    cy.contains(".bp3-menu-item", "Rows").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
+    cy.contains(".bp5-menu-item", "Copy").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
+    cy.contains(".bp5-menu-item", "Rows").click({ force: true }); //the force true prevents cypress from unecessarily scrolling when clicking the context menu
     cy.contains("Selected rows copied");
   });
   it(`it can click the tg filter menu and type some stuff`, () => {
@@ -100,8 +100,8 @@ describe("dataTable.spec", () => {
       .find(".tg-filter-menu-button")
       .invoke("show")
       .click();
-    cy.get(".bp3-popover input").type("989");
-    cy.get(".bp3-popover").contains("Filter").click();
+    cy.get(".bp5-popover input").type("989");
+    cy.get(".bp5-popover").contains("Filter").click();
     //the clear filter button should show up and we can click it
     cy.get(".data-table-clear-filters").click();
     //the clear filter button should no longer be there!
@@ -206,7 +206,7 @@ describe("dataTable.spec", () => {
   it("can search for a specific row using search button in the search bar", () => {
     cy.visit("#/DataTable");
     cy.get(".datatable-search-input input").type("row 3");
-    cy.get(".datatable-search-input .bp3-icon-search").click();
-    cy.get(".bp3-icon-filter-remove").should("exist");
+    cy.get(".datatable-search-input .bp5-icon-search").click();
+    cy.get(".bp5-icon-filter-remove").should("exist");
   });
 });

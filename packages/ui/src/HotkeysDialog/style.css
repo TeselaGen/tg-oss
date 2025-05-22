@@ -1,4 +1,4 @@
-.tg-hotkeys-dialog .bp3-tab-list {
+.tg-hotkeys-dialog .bp5-tab-list {
   /* border-top: 1px solid #ddd; */
   display: flex;
   justify-content: center;
@@ -13,7 +13,7 @@
   border-spacing: 0;
 }
 
-.tg-hotkeys-dialog .bp3-tab-panel {
+.tg-hotkeys-dialog .bp5-tab-panel {
   margin-top: 5px;
   padding: 10px;
 }
@@ -40,7 +40,7 @@
 .tg-hotkeys-dialog tr:nth-child(2n) td {
   background-color: #f8f8f8;
 }
-.bp3-dark .tg-hotkeys-dialog tr:nth-child(2n) td {
+.bp5-dark .tg-hotkeys-dialog tr:nth-child(2n) td {
   background-color: #3e4b6d;
 }
 

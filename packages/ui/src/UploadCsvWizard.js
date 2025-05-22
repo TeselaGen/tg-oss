@@ -195,7 +195,7 @@ export const SimpleInsertDataDialog = compose(
   );
   return (
     <>
-      <div className="bp3-dialog-body">
+      <div className="bp5-dialog-body">
         <InputField
           isRequired
           rightElement={
@@ -322,7 +322,7 @@ const UploadCsvWizardDialogInner = reduxForm()(({
       {!doAllFilesHaveSameHeaders && (
         <SimpleStepViz style={{ marginTop: 8 }} steps={steps} />
       )}
-      <div className="bp3-dialog-body">{inner}</div>
+      <div className="bp5-dialog-body">{inner}</div>
       <DialogFooter
         text={
           !hasSubmitted

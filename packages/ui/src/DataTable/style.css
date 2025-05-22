@@ -24,7 +24,7 @@
   display: flex;
 }
 
-.datatable-search-input.bp3-form-group {
+.datatable-search-input.bp5-form-group {
   margin-bottom: 0;
 }
 
@@ -36,7 +36,7 @@
   align-items: center;
 }
 
-.data-table-header-and-buttons .bp3-button-group {
+.data-table-header-and-buttons .bp5-button-group {
   overflow: auto;
 }
 
@@ -141,7 +141,7 @@
   border: none;
 }
 
-.bp3-dark .ReactTable.ReactTable .rt-tbody .rt-tr-group {
+.bp5-dark .ReactTable.ReactTable .rt-tbody .rt-tr-group {
   border-bottom-color: rgba(16, 22, 26, 0.15);
 }
 
@@ -161,7 +161,7 @@
   margin-bottom: 20px;
 } */
 
-.bp3-icon-standard.bp3-disabled {
+.bp5-icon-standard.bp5-disabled {
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -198,7 +198,7 @@
   flex-direction: column;
 }
 
-.tg-sort-arrow-container .bp3-icon {
+.tg-sort-arrow-container .bp5-icon {
   display: none;
 }
 
@@ -228,16 +228,16 @@
 }
 
 .tg-filter-menu-button.tg-active-filter,
-.tg-sort-arrow-container .bp3-icon.active,
+.tg-sort-arrow-container .bp5-icon.active,
 body:not(.drag-active)
   .tg-react-table-column-header:hover
   .tg-sort-arrow-container
-  .bp3-icon,
+  .bp5-icon,
 body:not(.drag-active)
   .tg-react-table-column-header:hover
   .tg-filter-menu-button,
 .tg-filter-menu-button.tg-active-filter,
-.tg-react-table-column-header .bp3-popover-open .tg-filter-menu-button {
+.tg-react-table-column-header .bp5-popover-open .tg-filter-menu-button {
   display: block !important;
   opacity: 1 !important;
 }
@@ -267,7 +267,7 @@ body:not(.drag-active)
   position: unset;
 }
 
-.bp3-dark .ReactTable .rt-thead {
+.bp5-dark .ReactTable .rt-thead {
   background: #202b33;
 }
 
@@ -398,16 +398,16 @@ body:not(.drag-active)
   padding: 0;
 }
 
-.tg-react-table-checkbox-header-container .bp3-control,
-.tg-react-table-checkbox-cell-container .bp3-control {
+.tg-react-table-checkbox-header-container .bp5-control,
+.tg-react-table-checkbox-cell-container .bp5-control {
   margin-bottom: 0;
   margin-top: 0;
   /* there is a weird padding on the blueprint checkbox, so this centers it some */
   padding-left: 18px;
 }
 
-.tg-react-table-checkbox-header-container .bp3-control-indicator,
-.tg-react-table-checkbox-cell-container .bp3-control-indicator {
+.tg-react-table-checkbox-header-container .bp5-control-indicator,
+.tg-react-table-checkbox-cell-container .bp5-control-indicator {
   margin-left: -10px !important;
 }
 
@@ -454,24 +454,24 @@ body:not(.drag-active)
   /* max-height: 24px; */
 }
 
-.tg-dropdown-cell-edit-container .bp3-tag-input .bp3-button {
+.tg-dropdown-cell-edit-container .bp5-tag-input .bp5-button {
   margin: 0;
 }
-/* .tg-dropdown-cell-edit-container .bp3-tag-input .bp3-tag-input-values > * {
+/* .tg-dropdown-cell-edit-container .bp5-tag-input .bp5-tag-input-values > * {
   margin-bottom: 0;
 } */
 .tg-dropdown-cell-edit-container:not(.tg-dropdown-cell-edit-container-multi)
-  .bp3-tag-input {
+  .bp5-tag-input {
   min-height: 0;
   max-height: 22px;
 }
 
-.tg-dropdown-cell-edit-container .bp3-tag-input-values {
+.tg-dropdown-cell-edit-container .bp5-tag-input-values {
   margin-top: 0;
   margin-right: 0;
 }
 
-.tg-dropdown-cell-edit-container .bp3-input {
+.tg-dropdown-cell-edit-container .bp5-input {
   background: #f7f7f7 !important;
   box-shadow: none !important;
 }
@@ -490,7 +490,7 @@ body:not(.drag-active)
   border-right: 1px solid #e1e8ed;
 }
 
-.bp3-dark .ReactTable .rt-thead .rt-resizable-header {
+.bp5-dark .ReactTable .rt-thead .rt-resizable-header {
   border-right: 1px solid #202b33;
 }
 
@@ -514,41 +514,41 @@ body:not(.drag-active)
 }
 
 /* dark styles */
-.bp3-dark .ReactTable {
+.bp5-dark .ReactTable {
   background: #182026 !important;
   color: #f5f8fa !important;
   border-color: #293742;
 }
 /* dark styles */
-.bp3-dark .ReactTable .rt-tbody {
+.bp5-dark .ReactTable .rt-tbody {
   background: #30404d !important;
 }
 .ReactTable .rt-thead.-header {
   box-shadow: none;
 }
-.bp3-dark .ReactTable .rt-thead.-header {
+.bp5-dark .ReactTable .rt-thead.-header {
   color: #f5f8fa !important;
 }
 
-.bp3-dark .ReactTable .rt-tbody .rt-td,
-.bp3-dark .tg-react-table-name {
+.bp5-dark .ReactTable .rt-tbody .rt-td,
+.bp5-dark .tg-react-table-name {
   color: #f5f8fa !important;
 }
 
-.bp3-dark .ReactTable .rt-noData {
+.bp5-dark .ReactTable .rt-noData {
   background: #202b33 !important;
   color: inherit !important;
 }
 
-.bp3-dark .ReactTable .-loading {
+.bp5-dark .ReactTable .-loading {
   background: #30404d !important;
 }
 
-.bp3-dark .ReactTable .-loading > div {
+.bp5-dark .ReactTable .-loading > div {
   color: #f5f8fa !important;
 }
 
-.bp3-dark .ReactTable .rt-tr-group.selected {
+.bp5-dark .ReactTable .rt-tr-group.selected {
   background: #26738cb0 !important;
 }
 
@@ -556,11 +556,11 @@ body:not(.drag-active)
   background: inherit !important;
 }
 
-.bp3-dark .ReactTable .rt-thead .rt-resizable-header:hover {
+.bp5-dark .ReactTable .rt-thead .rt-resizable-header:hover {
   border-right-color: #738694;
 }
 
-.bp3-dark .data-table-container.fullscreen {
+.bp5-dark .data-table-container.fullscreen {
   background: #293742;
 }
 
@@ -569,13 +569,13 @@ body:not(.drag-active)
   right: -5px;
 }
 
-.bp3-dark .dt-minimalStyle .ReactTable {
+.bp5-dark .dt-minimalStyle .ReactTable {
   background: transparent !important;
 }
-.bp3-dark .dt-minimalStyle .ReactTable {
+.bp5-dark .dt-minimalStyle .ReactTable {
   border-color: transparent !important;
 }
-.bp3-dark .dt-minimalStyle .ReactTable * {
+.bp5-dark .dt-minimalStyle .ReactTable * {
   border-color: transparent !important ;
 }
 .dt-minimalStyle .ReactTable {
@@ -588,7 +588,7 @@ body:not(.drag-active)
   border-color: transparent !important ;
 }
 
-.bp3-dark .tg-dropdown-cell-edit-container .bp3-input {
+.bp5-dark .tg-dropdown-cell-edit-container .bp5-input {
   background: rgb(48, 64, 77) !important;
 }
 

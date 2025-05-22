@@ -8,7 +8,7 @@ describe("rna editing in OVE", function () {
     cy.contains("uuaugacaacuugacggcuacaucauucacuuuuucuuca");
     cy.selectRange(10, 11);
     cy.get(".veSelectionLayer").first().rightclick({ force: true });
-    cy.contains(".bp3-menu-item", "Replace").click();
+    cy.contains(".bp5-menu-item", "Replace").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.focused().type("tguugttuuuuuuuuuuuuuuuaa{enter}");

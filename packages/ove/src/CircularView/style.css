@@ -36,7 +36,7 @@
       min(100%, calc(var(--p) - 50) * 100%),
     linear-gradient(to right, #ccc 50%, #4ac5ed 0);
 }
-.bp3-dark .circularViewMinimap {
+.bp5-dark .circularViewMinimap {
   --bg: #293742;
 }
 .veCircularView .ve-monospace-font.veCircularViewInternalLabelText {

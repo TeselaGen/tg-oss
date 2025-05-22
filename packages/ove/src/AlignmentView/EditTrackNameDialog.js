@@ -11,7 +11,7 @@ export const EditTrackNameDialog = compose(
 )(function ({ handleSubmit, updateName, hideModal }) {
   return (
     <div>
-      <div className="bp3-dialog-body">
+      <div className="bp5-dialog-body">
         <InputField
           autoFocus
           label="New Name"

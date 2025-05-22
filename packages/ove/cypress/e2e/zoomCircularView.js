@@ -22,8 +22,8 @@ describe("zoomCircularView.spec", function () {
       `.veLabels .veLabelText:contains(CmR I'm a real long label)`
     ).click();
     cy.dragBetween(
-      ".veZoomCircularSlider .bp3-slider-handle",
-      ".veZoomCircularSlider .bp3-icon-plus"
+      ".veZoomCircularSlider .bp5-slider-handle",
+      ".veZoomCircularSlider .bp5-icon-plus"
     );
     cy.get(`.veLabels .veLabelText:contains(CmR I'm a real long label)`).should(
       "not.exist"
@@ -40,8 +40,8 @@ describe("zoomCircularView.spec", function () {
     );
     //rotate to the end of the sequence
     cy.dragBetween(
-      ".veRotateCircularSlider .bp3-slider-handle",
-      ".veRotateCircularSlider .bp3-icon-arrow-right"
+      ".veRotateCircularSlider .bp5-slider-handle",
+      ".veRotateCircularSlider .bp5-icon-arrow-right"
     );
     //new stuff should come in/out of view
     cy.get(".veCircularViewDnaSequence").should("exist");
@@ -61,14 +61,14 @@ describe("zoomCircularView.spec", function () {
       "not.exist"
     );
     cy.dragBetween(
-      ".veRotateCircularSlider .bp3-slider-handle",
+      ".veRotateCircularSlider .bp5-slider-handle",
       ".veTabCircularMap"
     );
     cy.get(`.circularViewSvg g[style="transform: rotate(255deg);"]`);
     cy.get(`.veCircularViewLabelText:contains(pBAD promoter)`);
     cy.dragBetween(
-      ".veZoomCircularSlider .bp3-slider-handle",
-      ".veZoomCircularSlider .bp3-icon-plus"
+      ".veZoomCircularSlider .bp5-slider-handle",
+      ".veZoomCircularSlider .bp5-icon-plus"
     );
     //after zoom in make sure we're not rotated back to the start of the sequence
     cy.get(`.veCircularViewFeature:contains(GFPuv)`).should("exist");
@@ -81,8 +81,8 @@ describe("zoomCircularView.spec", function () {
     //zoom all the way in
     cy.visit("");
     cy.dragBetween(
-      ".veZoomCircularSlider .bp3-slider-handle",
-      ".veZoomCircularSlider .bp3-icon-plus"
+      ".veZoomCircularSlider .bp5-slider-handle",
+      ".veZoomCircularSlider .bp5-icon-plus"
     );
     cy.get(".veCircularViewDnaSequence").should("exist");
     cy.get(".veTabLinearMap").click();
@@ -123,7 +123,7 @@ describe("zoomCircularView.spec", function () {
   //     "not.be.visible"
   //   );
 
-  //   cy.get(".tg-zoom-bar .bp3-icon-minus").click();
+  //   cy.get(".tg-zoom-bar .bp5-icon-minus").click();
   //   cy.get(".veRowViewFeature:contains(dbl term):first").should("be.visible");
   // });
 });

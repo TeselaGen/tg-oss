@@ -7,7 +7,7 @@ import {
   Intent,
   Icon,
   Tooltip,
-  ContextMenu
+  showContextMenu as bpShowContextMenu
 } from "@blueprintjs/core";
 import PropTypes from "prop-types";
 
@@ -304,9 +304,12 @@ export class Editor extends React.Component {
     const { previewModeButtonMenu } = this.props;
     event.preventDefault();
     if (previewModeButtonMenu) {
-      ContextMenu.show(previewModeButtonMenu, {
-        left: getClientX(event),
-        top: getClientY(event)
+      bpShowContextMenu({
+        content: previewModeButtonMenu,
+        targetOffset: {
+          left: getClientX(event),
+          top: getClientY(event)
+        }
       });
     }
   };

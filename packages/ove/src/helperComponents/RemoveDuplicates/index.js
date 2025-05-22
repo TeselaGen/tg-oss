@@ -114,7 +114,6 @@ const RemoveDuplicatesDialog = props => {
         }}
       >
         <Popover
-          target={<Button icon="settings" />}
           content={
             <div style={{ padding: 20, maxWidth: 250 }}>
               <div>Ignore These Fields While Finding Duplicates:</div>
@@ -147,7 +146,9 @@ const RemoveDuplicatesDialog = props => {
               />
             </div>
           }
-        />
+        >
+          <Button icon="settings" />
+        </Popover>
 
         <Button
           intent="primary"

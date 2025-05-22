@@ -34,7 +34,7 @@ export default compose(
     selectTableRecords(newAnnotations);
   }, [newAnnotations, selectTableRecords]);
   return (
-    <div className="bp3-dialog-body">
+    <div className="bp5-dialog-body">
       <div>
         The following {annotationType}
         {newAnnotations.length > 1 ? "s" : ""} will be added:

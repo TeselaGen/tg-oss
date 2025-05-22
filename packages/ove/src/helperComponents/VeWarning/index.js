@@ -9,7 +9,7 @@ function VeWarning(props) {
       <Tooltip
         position="bottom"
         intent="warning"
-        popoverClassName="bp3-popover-content-sizing"
+        popoverClassName="bp5-popover-content-sizing"
         content={tooltip}
       >
         <Icon size={20} intent="warning" icon="warning-sign" />

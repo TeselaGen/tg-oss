@@ -162,7 +162,7 @@ const fileCommandDefs = {
       return (
         // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <div
-          className="bp3-menu-item"
+          className="bp5-menu-item"
           style={{
             padding: 3,
             paddingLeft: 30

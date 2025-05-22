@@ -2,9 +2,9 @@ describe("proteinEditor", function () {
   it(`annotations shouldn't have a strand field to edit and all annotations be 'forward'`, () => {
     cy.visit("/#/Editor?moleculeType=Protein");
     cy.contains(".veRowViewPart", "Part 0").rightclick();
-    cy.contains(".bp3-menu-item", "Edit Part").click();
-    cy.contains(".bp3-dialog", "Add Note"); //dialog should exist, but strand shouldn't
-    cy.contains(".bp3-dialog", "Strand").should("not.exist");
+    cy.contains(".bp5-menu-item", "Edit Part").click();
+    cy.contains(".bp5-dialog", "Add Note"); //dialog should exist, but strand shouldn't
+    cy.contains(".bp5-dialog", "Strand").should("not.exist");
   });
   it(`should have non protein actions hidden from the menu search`, () => {
     cy.visit("/#/Editor?moleculeType=Protein");
@@ -12,7 +12,7 @@ describe("proteinEditor", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type("translation{enter}");
-    cy.contains(".bp3-menu-item", "Translations").should("not.exist");
+    cy.contains(".bp5-menu-item", "Translations").should("not.exist");
   });
   it(`should be able to toggle between protein and dna mode after firing some actions`, () => {
     cy.visit("/#/Editor?moleculeType=Protein");
@@ -23,13 +23,13 @@ describe("proteinEditor", function () {
   it(`feature/part add/edit should be AA indexed`, () => {
     cy.visit("/#/Editor?moleculeType=Protein");
     cy.get(".tg-menu-bar").contains("Edit").click();
-    cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "Create").click();
+    cy.contains(".bp5-menu-item", "New Feature").click({ force: true });
     cy.focused().type("NF");
     cy.get(`.tg-test-start input[value="1"]`);
     cy.get(`.tg-test-end [value="1"]`);
     cy.get(`.tg-test-end [icon="chevron-up"]`).click();
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".bp5-dialog button", "Save").click();
     cy.contains(".veRowViewFeature", "NF").click({ force: true });
     cy.contains("Selecting 2 AAs from 1 to 2");
 
@@ -37,15 +37,15 @@ describe("proteinEditor", function () {
     // cy.get(".veLabelText")
     //   .contains("araC")
     //   .trigger("contextmenu", { force: true });
-    // cy.contains(".bp3-menu-item", "Edit Feature").click();
+    // cy.contains(".bp5-menu-item", "Edit Feature").click();
     // cy.get(`.tg-test-locations-2-start input[value="501"]`);
     // cy.contains("Add Joined Feature Span").click();
     // cy.get(`.tg-test-locations-3-start input[value="886"]`).type(
     //   "{selectall}3"
     // );
     // cy.get(`.tg-test-locations-3-end input[value="886"]`).type("{selectall}3");
-    // cy.contains(".bp3-dialog button", "Save").click();
-    // cy.get(`.tg-test-locations-3-end .bp3-intent-danger`).should("exist");
+    // cy.contains(".bp5-dialog button", "Save").click();
+    // cy.get(`.tg-test-locations-3-end .bp5-intent-danger`).should("exist");
     // cy.closeDialog();
 
     cy.get(".veLabelText")
@@ -66,7 +66,7 @@ describe("proteinEditor", function () {
     cy.focused().type("{rightarrow}{rightarrow}");
 
     cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Insert").click();
+    cy.contains(".bp5-menu-item", "Insert").click();
     cy.contains("Press ENTER to insert 0 AAs after AA 2");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
@@ -82,7 +82,7 @@ describe("proteinEditor", function () {
       force: true
     });
     cy.get(".veRowViewSelectionLayer.notCaret").trigger("contextmenu");
-    cy.contains(".bp3-menu-item", "Replace").click();
+    cy.contains(".bp5-menu-item", "Replace").click();
 
     cy.get(".sequenceInputBubble input").type(".*-masdzz,", {
       assertVal: ".*-masdzz"
@@ -105,7 +105,7 @@ describe("proteinEditor", function () {
     });
 
     cy.get(".veRowViewCaret:first").trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Replace").click();
+    cy.contains(".bp5-menu-item", "Replace").click();
     cy.contains("Press ENTER");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
@@ -130,8 +130,8 @@ describe("proteinEditor", function () {
       .first()
       .click({ force: true });
     cy.get(".veRowViewSelectionLayer").first().rightclick({ force: true });
-    cy.contains(".bp3-menu-item", "Cut").click();
-    cy.get(".bp3-toast .bp3-icon-cross").first().click();
+    cy.contains(".bp5-menu-item", "Cut").click();
+    cy.get(".bp5-toast .bp5-icon-cross").first().click();
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
       .focused()
@@ -163,13 +163,13 @@ describe("proteinEditor", function () {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Go To").click();
     cy.focused().clear().type("0");
-    cy.get(".bp3-dialog").contains("OK").should("be.enabled");
+    cy.get(".bp5-dialog").contains("OK").should("be.enabled");
     cy.focused().clear().type("1384");
-    cy.get(".bp3-dialog").contains("OK").should("be.enabled");
+    cy.get(".bp5-dialog").contains("OK").should("be.enabled");
     cy.focused().clear().type("2000000");
-    cy.get(".bp3-dialog").contains("OK").should("be.disabled");
+    cy.get(".bp5-dialog").contains("OK").should("be.disabled");
     cy.focused().clear().type("20");
-    cy.get(".bp3-dialog").contains("OK").click();
+    cy.get(".bp5-dialog").contains("OK").click();
     cy.contains("Caret Between AAs 20 and 21");
     cy.get(".tg-menu-bar").contains("Edit").click();
     // cy.get(".tg-menu-bar-popover")
@@ -273,27 +273,27 @@ describe("proteinEditor", function () {
     cy.get(".tg-menu-bar").contains("Tools").should("not.exist");
 
     //comment this in again once the tools menu exists again
-    // cy.contains(".bp3-menu", "Restriction Enzymes Manager")
+    // cy.contains(".bp5-menu", "Restriction Enzymes Manager")
     //   .should("not.exist");
-    // cy.contains(".bp3-menu", "Simulate Digestion")
+    // cy.contains(".bp5-menu", "Simulate Digestion")
     //   .should("not.exist");
 
     cy.log("not show options to view cutsites, orfs, translations ");
     cy.get(".tg-menu-bar").contains("View").click();
-    cy.get(".bp3-menu").contains("ORFs").should("not.exist");
-    cy.get(".bp3-menu").contains("Amino Acid Numbers").should("not.exist");
-    cy.get(".bp3-menu").contains("Translations").should("not.exist");
-    cy.get(".bp3-menu")
+    cy.get(".bp5-menu").contains("ORFs").should("not.exist");
+    cy.get(".bp5-menu").contains("Amino Acid Numbers").should("not.exist");
+    cy.get(".bp5-menu").contains("Translations").should("not.exist");
+    cy.get(".bp5-menu")
       .contains("Full Sequence Translation")
       .should("not.exist");
 
-    cy.get(".bp3-menu").contains("Cut Sites").should("not.exist");
-    cy.get(".bp3-menu").contains("Cut Site Labels").should("not.exist");
+    cy.get(".bp5-menu").contains("Cut Sites").should("not.exist");
+    cy.get(".bp5-menu").contains("Cut Site Labels").should("not.exist");
     cy.log("be able to hide/show the underlying dna sequence");
     cy.triggerFileCmd("DNA Sequence");
     cy.get(".ve-row-item-sequence").first().click();
     cy.triggerFileCmd("Case", { noEnter: true });
-    cy.get(".bp3-menu").contains("Case").should("not.exist");
+    cy.get(".bp5-menu").contains("Case").should("not.exist");
   });
 });
 

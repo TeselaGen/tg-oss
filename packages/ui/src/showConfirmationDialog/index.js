@@ -62,7 +62,7 @@ export class AlertWrapper extends Component {
     return (
       <Dialog
         title={title}
-        className={(title ? "" : "bp3-alert") + ` ${className || ""}`}
+        className={(title ? "" : "bp5-alert") + ` ${className || ""}`}
         isOpen={this.state.isOpen}
         intent={intent}
         cancelButtonText={cancelButtonText}
@@ -77,7 +77,7 @@ export class AlertWrapper extends Component {
         })}
       >
         <div
-          className={title ? "bp3-dialog-body" : "bp3-alert-contents"}
+          className={title ? "bp5-dialog-body" : "bp5-alert-contents"}
           style={{ padding: 5 }}
         >
           {content}
@@ -136,7 +136,7 @@ export class AlertWrapper extends Component {
                   )}
                 </React.Fragment>
               ) : undefined,
-            containerClassname: title ? "" : "bp3-alert-footer",
+            containerClassname: title ? "" : "bp5-alert-footer",
             backText: noCancelButton ? "" : cancelButtonText,
             text: confirmButtonText,
             intent

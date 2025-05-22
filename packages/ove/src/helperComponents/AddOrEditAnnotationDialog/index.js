@@ -382,7 +382,8 @@ class AddOrEditAnnotationDialog extends React.Component {
             <div
               style={{ marginBottom: 10, fontSize: 12, fontStyle: "italic" }}
             >
-              You can also click or drag in the editor to change the selection{" "}
+              You can also click or drag in the editor to change the
+              selection{" "}
             </div>
             <NumericInputField
               inlineLabel
@@ -416,7 +417,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           <FieldArray component={this.renderLocations} name="locations" />
         ) : null}
         <div
-          className="bp3-text-muted bp3-text-small"
+          className="bp5-text-muted bp5-text-small"
           style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
         >
           {`${

@@ -6,7 +6,7 @@ describe("addAdditionalEnzymes", function () {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.contains(".tg-select-option", "AatII").click();
-    cy.get(".tg-select .bp3-icon-caret-up").click();
+    cy.get(".tg-select .bp5-icon-caret-up").click();
     cy.contains("(2 cuts)").should("not.exist");
     cy.contains("(1 cut)");
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();

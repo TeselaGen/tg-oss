@@ -1,11 +1,11 @@
-.ve-propertiesPanel .bp3-tabs {
+.ve-propertiesPanel .bp5-tabs {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
-.ve-propertiesPanel .bp3-tab-list::-webkit-scrollbar {
+.ve-propertiesPanel .bp5-tab-list::-webkit-scrollbar {
   display: none;
 }
 
@@ -13,10 +13,10 @@
   margin-top: 3px;
   margin-right: 3px;
 }
-.ve-propertiesPanel .bp3-tab-list {
+.ve-propertiesPanel .bp5-tab-list {
   overflow: scroll;
 }
-.ve-propertiesPanel .bp3-tabs .bp3-tab-panel {
+.ve-propertiesPanel .bp5-tabs .bp5-tab-panel {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -41,7 +41,7 @@
   flex-shrink: 0;
 } */
 
-.ve-propertiesPanel .bp3-popover-wrapper {
+.ve-propertiesPanel .bp5-popover-wrapper {
   width: fit-content;
 }
 

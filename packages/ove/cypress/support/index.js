@@ -306,16 +306,16 @@ Cypress.Commands.add("scrollAlignmentToPercent", percent => {
   window.Cypress.scrollAlignmentToPercent(percent);
 });
 Cypress.Commands.add("closeDialog", () => {
-  cy.get(`.bp3-dialog [aria-label="Close"]`).click();
+  cy.get(`.bp5-dialog [aria-label="Close"]`).click();
 });
 Cypress.Commands.add("replaceSelection", sequenceString => {
   cy.get(".veRowViewSelectionLayer")
     .first()
     .trigger("contextmenu", { force: true });
-  cy.contains(".bp3-menu-item", "Replace").click();
+  cy.contains(".bp5-menu-item", "Replace").click();
   // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(200);
-  cy.contains(".bp3-menu-item", "Replace").should("not.exist");
+  cy.contains(".bp5-menu-item", "Replace").should("not.exist");
   cy.get(".sequenceInputBubble input").type(
     (Cypress.config("isInteractive") ? "" : "            ") +
       `${sequenceString}{enter}`
@@ -327,27 +327,27 @@ Cypress.Commands.add("deleteSelection", () => {
   )
     .first()
     .trigger("contextmenu", { force: true });
-  cy.contains(".bp3-menu-item", "Cut").click();
+  cy.contains(".bp5-menu-item", "Cut").click();
 });
 
 Cypress.Commands.add("waitForDialogClose", ({ timeout } = {}) => {
-  cy.get(".bp3-dialog", {
+  cy.get(".bp5-dialog", {
     timeout: timeout || 40000
   }).should("not.exist");
 });
 
 Cypress.Commands.add("waitForMenuClose", ({ timeout } = {}) => {
-  cy.get(".bp3-menu", {
+  cy.get(".bp5-menu", {
     timeout: timeout || 40000
   }).should("not.exist");
 });
 
 Cypress.Commands.add("closeDialog", ({ timeout } = {}) => {
-  cy.get(".bp3-dialog-close-button").click();
+  cy.get(".bp5-dialog-close-button").click();
   cy.waitForDialogClose({ timeout: timeout || 40000 });
 });
 Cypress.Commands.add("hideMenu", () => {
-  cy.get(".bp3-popover").invoke("hide");
+  cy.get(".bp5-popover").invoke("hide");
 });
 
 Cypress.Commands.add("closeToasts", () => {

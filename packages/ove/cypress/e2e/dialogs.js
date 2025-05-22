@@ -6,24 +6,24 @@ describe("dialogs", function () {
   it("editing notes should work", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veLabelText", "araD").trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "Edit Feature").click({ force: true });
     cy.contains("Add Note").click();
     cy.contains(`[data-test="note-2"] .addAnnNoteKey`, "note");
     cy.get(`[data-test="note-2"] .addAnnNoteValue`).click();
     cy.focused().type("I'm a description");
-    cy.get(`[data-test="note-0"] .bp3-icon-trash`).click();
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.get(`[data-test="note-0"] .bp5-icon-trash`).click();
+    cy.contains(".bp5-dialog button", "Save").click();
     cy.contains(".veLabelText", "araD").trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "Edit Feature").click({ force: true });
     cy.get(".addAnnNoteValue").should("have.length", 2);
     cy.contains(".addAnnNoteValue", "I'm a description");
   });
   it("adding notes on a new feature should save", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veLabelText", "araD").rightclick({ force: true });
-    cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click();
-    cy.contains(".bp3-menu-item", "New Feature").should("not.exist");
+    cy.contains(".bp5-menu-item", "Create").click();
+    cy.contains(".bp5-menu-item", "New Feature").click();
+    cy.contains(".bp5-menu-item", "New Feature").should("not.exist");
     cy.get(`[placeholder="Untitled Annotation"]`).type("new feat");
     cy.screenshot();
 
@@ -34,17 +34,17 @@ describe("dialogs", function () {
     cy.get(`.addAnnNoteValue`).click();
     cy.focused().type("I'm a description");
 
-    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains(".bp5-dialog button", "Save").click();
     cy.contains(".veLabelText", "new feat").trigger("contextmenu", {
       force: true
     });
-    cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "Edit Feature").click({ force: true });
     cy.get(".addAnnNoteValue").should("have.length", 1);
     cy.contains(".addAnnNoteValue", "I'm a description");
   });
   it("right click editing joined feature should work", function () {
     cy.contains(".veLabelText", "araC").trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Edit Feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "Edit Feature").click({ force: true });
     cy.get(".tg-test-locations-0-start input").should("have.value", "7");
     cy.get(".tg-test-locations-0-end input").should("have.value", "25");
     cy.get(".tg-test-locations-1-start input").should("have.value", "29");
@@ -53,16 +53,16 @@ describe("dialogs", function () {
   it(`new feature dialog should not show a warning for a circular feature that fits within the sequence bounds if the sequence is circular`, () => {
     //open the new feature dialog
     cy.get(".tg-menu-bar").contains("Edit").click();
-    cy.contains(".bp3-menu-item", "Create").click();
+    cy.contains(".bp5-menu-item", "Create").click();
     //translation create should be disabled
-    cy.contains(".bp3-menu-item.bp3-disabled", "New Translation").should(
+    cy.contains(".bp5-menu-item.bp5-disabled", "New Translation").should(
       "exist"
     );
     cy.contains(
-      ".bp3-menu-item.bp3-disabled",
+      ".bp5-menu-item.bp5-disabled",
       "New Reverse Translation"
     ).should("exist");
-    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
+    cy.contains(".bp5-menu-item", "New Feature").click({ force: true });
     //change the start/end inputs to be making an origin spanning feature
     cy.get(".tg-test-name input").clear().type("Fake name");
     cy.get(".tg-test-start input").clear().type("400");
@@ -70,16 +70,16 @@ describe("dialogs", function () {
 
     // verify that we can make that feature
     cy.get(".tg-upsert-annotation").contains("Save").click();
-    cy.get(".tg-test-end .bp3-intent-danger").should("not.exist");
-    cy.get(".tg-test-start .bp3-intent-danger").should("not.exist");
+    cy.get(".tg-test-end .bp5-intent-danger").should("not.exist");
+    cy.get(".tg-test-start .bp5-intent-danger").should("not.exist");
     cy.get(".veLabelText").contains("Fake name").should("be.visible");
   });
   it(`new part dialog should show a warning for a circular part that goes beyond the sequence and not show a warning for a circular part that fits within the sequence bounds if the sequence is circular`, () => {
     //open the new feature dialog
     cy.get(".tg-menu-bar").contains("Edit").click();
 
-    cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Part").click({ force: true });
+    cy.contains(".bp5-menu-item", "Create").click();
+    cy.contains(".bp5-menu-item", "New Part").click({ force: true });
     //change the start/end inputs to be making an origin spanning feature
     cy.get(".tg-test-name input").clear().type("Fake name");
     cy.get(".tg-test-start input").clear().type("400");
@@ -87,13 +87,13 @@ describe("dialogs", function () {
 
     // verify that we can't make an out of range part
     cy.get(".tg-upsert-annotation").contains("Save").click();
-    cy.get(".tg-test-start .bp3-intent-danger").should("exist");
+    cy.get(".tg-test-start .bp5-intent-danger").should("exist");
 
     // fix the range issue and verify that we can make that feature
     cy.get(".tg-test-end input").clear().type("20");
     cy.get(".tg-upsert-annotation").contains("Save").click();
-    cy.get(".tg-test-end .bp3-intent-danger").should("not.exist");
-    cy.get(".tg-test-start .bp3-intent-danger").should("not.exist");
+    cy.get(".tg-test-end .bp5-intent-danger").should("not.exist");
+    cy.get(".tg-test-start .bp5-intent-danger").should("not.exist");
     cy.get(".veLabelText").contains("Fake name").should("be.visible");
   });
 

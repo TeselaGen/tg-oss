@@ -5,7 +5,7 @@ import {
   HTMLSelect,
   Dialog,
   useHotkeys,
-  KeyCombo
+  KeyComboTag
 } from "@blueprintjs/core";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -45,7 +45,7 @@ const ShowInfo = ({ description, info, type }) => {
         <div
           key={type + "dialog"}
           style={{ maxWidth: 600, overflow: "auto" }}
-          className="bp3-dialog-body"
+          className="bp5-dialog-body"
         >
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -185,7 +185,7 @@ const useToggle = ({
               transform: "scale(0.8)"
             }}
           >
-            <KeyCombo minimal combo={hotkey} />
+            <KeyComboTag minimal combo={hotkey} />
           </div>
         </>
       )}

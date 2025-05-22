@@ -20,14 +20,14 @@ describe("label tests", () => {
     cy.visit("#/Editor?showCicularViewInternalLabels=false");
     cy.contains(".veCircularViewLabelText", "araC");
     cy.triggerFileCmd("Feature Labels", { noEnter: true });
-    cy.contains(".bp3-menu-item", "Feature")
-      .find(".bp3-icon-small-tick")
+    cy.contains(".bp5-menu-item", "Feature")
+      .find(".bp5-icon-small-tick")
       .should("exist");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type(`{enter}`);
-    cy.contains(".bp3-menu-item", "Feature")
-      .find(".bp3-icon-small-tick")
+    cy.contains(".bp5-menu-item", "Feature")
+      .find(".bp5-icon-small-tick")
       .should("not.exist");
     cy.contains(".veCircularViewLabelText", "araC").should("not.exist");
   });
@@ -35,21 +35,21 @@ describe("label tests", () => {
   it(`should not initially show the option to toggle assembly piece labels`, function () {
     cy.visit("#/Editor?showCicularViewInternalLabels=false");
     cy.triggerFileCmd("Assembly Piece Labels", { noEnter: true });
-    cy.contains(".bp3-menu-item", "Features").should("not.exist");
+    cy.contains(".bp5-menu-item", "Features").should("not.exist");
     cy.contains(".veCircularViewLabelText", "Assembly Piece 2").should(
       "not.exist"
     );
     cy.tgToggle("showAssemblyPieces");
     cy.contains(".veCircularViewLabelText", "Assembly Piece 2");
     cy.triggerFileCmd("Assembly Piece Labels", { noEnter: true });
-    cy.contains(".bp3-menu-item", "Assembly Pieces")
-      .find(".bp3-icon-small-tick")
+    cy.contains(".bp5-menu-item", "Assembly Pieces")
+      .find(".bp5-icon-small-tick")
       .should("exist");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type(`{enter}`);
-    cy.contains(".bp3-menu-item", "Assembly Pieces")
-      .find(".bp3-icon-small-tick")
+    cy.contains(".bp5-menu-item", "Assembly Pieces")
+      .find(".bp5-icon-small-tick")
       .should("not.exist");
     cy.contains(".veCircularViewLabelText", "Assembly Piece 2").should(
       "not.exist"

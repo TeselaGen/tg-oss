@@ -9,7 +9,7 @@ test("cutsite cut numbers should update as cutsites are added", async ({
   await page.click('[data-test="cutsiteToolDropdown"]');
   await page.click(".veToolbarCutsiteFilterHolder .tg-select");
   await page.click('.tg-select-option:has-text("AatII")');
-  await page.click(".tg-select .bp3-icon-caret-up");
+  await page.click(".tg-select .bp5-icon-caret-up");
   await expect(page.getByText("(2 cuts)")).toHaveCount(0);
 
   await page.getByText("(1 cut)");

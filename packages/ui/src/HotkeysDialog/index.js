@@ -3,7 +3,7 @@ import {
   Dialog,
   Tab,
   Tabs,
-  KeyCombo,
+  KeyComboTag,
   Classes /*, Tooltip*/
 } from "@blueprintjs/core";
 // import { startCase } from "lodash-es";
@@ -57,7 +57,7 @@ export default function HotkeysDialog(props) {
                         <tr key={id}>
                           <td>{def.label}</td>
                           <td>
-                            <KeyCombo combo={def.combo} />
+                            <KeyComboTag combo={def.combo} />
                             {/* <Tooltip
                               content={comboToLabel(def.combo, false)}
                             >

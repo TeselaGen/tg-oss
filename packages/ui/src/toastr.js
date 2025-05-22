@@ -44,12 +44,12 @@ const generateToast = intent => (message, options) => {
       button.remove();
     });
     const activeToasts = document.querySelectorAll(
-      `.bp3-toast:not(.bp3-toast-exit)`
+      `.bp5-toast:not(.bp5-toast-exit)`
     );
     if (activeToasts.length > 1) {
       // add custom clear all button
 
-      const topToaster = document.querySelector(`.bp3-toast`);
+      const topToaster = document.querySelector(`.bp5-toast`);
       if (!topToaster) return;
       const closeButton = document.createElement("div");
       closeButton.classList.add(

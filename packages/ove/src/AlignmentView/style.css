@@ -1,7 +1,7 @@
 .tg-pinch-helper {
   width: 100%;
 }
-.ove-slider .bp3-slider {
+.ove-slider .bp5-slider {
   min-width: 10px !important;
   margin-bottom: 4px;
 }
@@ -48,7 +48,7 @@
 .alignmentMinimapTracks::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
-.bp3-dark .alignmentTrackName {
+.bp5-dark .alignmentTrackName {
   background: #30404d;
 }
 /* .alignmentViewTrackContainer:hover .alignmentTrackNameDiv {
