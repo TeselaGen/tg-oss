@@ -2989,8 +2989,8 @@
   version "0.4.28"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../../../Users/drivi/AppData/Local/Yarn/Cache/v6/npm-@teselagen-bio-parsers-0.4.28-305497a5-397d-4deb-82ca-3bbb4acc6f0e-1747928657327/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../../../Users/drivi/AppData/Local/Yarn/Cache/v6/npm-@teselagen-bio-parsers-0.4.28-305497a5-397d-4deb-82ca-3bbb4acc6f0e-1747928657327/node_modules/@teselagen/sequence-utils"
+    "@teselagen/range-utils" "file:../../../../Users/drivi/AppData/Local/Yarn/Cache/v6/npm-@teselagen-bio-parsers-0.4.28-5e373237-ad55-4fcf-9fa9-1c166a6e7de6-1747937009798/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../../../Users/drivi/AppData/Local/Yarn/Cache/v6/npm-@teselagen-bio-parsers-0.4.28-5e373237-ad55-4fcf-9fa9-1c166a6e7de6-1747937009798/node_modules/@teselagen/sequence-utils"
     buffer "5.7.1"
     bufferpack "^0.0.6"
     color "3.2.1"
@@ -3032,7 +3032,7 @@
 "@teselagen/sequence-utils@file:packages/sequence-utils":
   version "0.3.31"
   dependencies:
-    "@teselagen/range-utils" "file:../../../../Users/drivi/AppData/Local/Yarn/Cache/v6/npm-@teselagen-sequence-utils-0.3.31-e0375aff-dfac-403d-9976-a3ae149a356e-1747928657322/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../../../Users/drivi/AppData/Local/Yarn/Cache/v6/npm-@teselagen-sequence-utils-0.3.31-a98103d6-8054-4a92-b618-9421d65c2506-1747937009799/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.4.1"
     lodash-es "^4.17.21"
@@ -3051,13 +3051,11 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../../../Users/drivi/AppData/Local/Yarn/Cache/v6/npm-@teselagen-ui-0.8.6-9f3ffe9b-c8d0-43b6-8552-416786196819-1747928657323/node_modules/@teselagen/file-utils"
+    "@teselagen/file-utils" "file:../../../../Users/drivi/AppData/Local/Yarn/Cache/v6/npm-@teselagen-ui-0.8.6-360ce563-b11f-4052-8f4b-04e6fbb48bf8-1747937009799/node_modules/@teselagen/file-utils"
     "@teselagen/react-table" "6.10.16"
-    chance "^1.1.11"
     classnames "^2.3.2"
     color "^3.2.1"
     copy-to-clipboard "^3.3.1"
-    cypress-real-events "^1.13.0"
     dayjs "^1.10.4"
     dom-scroll-into-view "^2.0.1"
     downloadjs "^1.4.7"
@@ -4925,7 +4923,7 @@ chalk@^5.4.1:
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.4.1.tgz#1b48bf0963ec158dce2aacf69c093ae2dd2092d8"
   integrity sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w==
 
-chance@^1.1.11, chance@^1.1.12:
+chance@^1.1.12:
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/chance/-/chance-1.1.13.tgz#d4ecfd20c5e6799aaf5c2270d7653b32385cd6e3"
   integrity sha512-V6lQCljcLznE7tUYUM9EOAnnKXbctE6j/rdQkYOHIWbfGQbrzTsAXNW9CdU5XCo4ArXQCj/rb6HgxPlmGJcaUg==
@@ -5665,7 +5663,7 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.3.tgz#d80ff294d114fb0e6ac500fbf85b60137d7eff81"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
 
-cypress-real-events@^1.13.0, cypress-real-events@^1.14.0:
+cypress-real-events@^1.14.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/cypress-real-events/-/cypress-real-events-1.14.0.tgz#c5495db50a2bd247f4accde983af7153566945d3"
   integrity sha512-XmI8y3OZLh6cjRroPalzzS++iv+pGCaD9G9kfIbtspgv7GVsDt30dkZvSXfgZb4rAN+3pOkMVB7e0j4oXydW7Q==

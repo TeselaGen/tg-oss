@@ -533,14 +533,13 @@ class EnzymesDialog extends React.Component {
                           }}
                         ></MoveToInner>
                       }
-                      target={
-                        <AnchorButton
-                          className="veEnzymeGroupAddEnzymesBtn"
-                          disabled={!selectedCount}
-                          icon="duplicate"
-                        ></AnchorButton>
-                      }
-                    ></Popover>
+                    >
+                      <AnchorButton
+                        className="veEnzymeGroupAddEnzymesBtn"
+                        disabled={!selectedCount}
+                        icon="duplicate"
+                      ></AnchorButton>
+                    </Popover>
                   </Tooltip>
                 </div>
                 <div>

@@ -1602,15 +1602,14 @@ export const AlignmentView = props => {
                         />
                       </Menu>
                     }
-                    target={
-                      <Button
-                        small
-                        text="Sort Order"
-                        rightIcon="caret-down"
-                        icon="sort"
-                      />
-                    }
-                  />
+                  >
+                    <Button
+                      small
+                      text="Sort Order"
+                      rightIcon="caret-down"
+                      icon="sort"
+                    />
+                  </Popover>
                 )}
                 {additionalTopEl}
                 {saveMessage && (

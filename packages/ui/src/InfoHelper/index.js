@@ -51,9 +51,9 @@ export default ({
       </React.Fragment>
     );
   } else if (isPopover) {
-    toReturn = <Popover {...toolTipOrPopoverProps} target={IconInner} />;
+    toReturn = <Popover {...toolTipOrPopoverProps}>{IconInner}</Popover>;
   } else {
-    toReturn = <Tooltip {...toolTipOrPopoverProps} target={IconInner} />;
+    toReturn = <Tooltip {...toolTipOrPopoverProps}>{IconInner}</Tooltip>;
   }
   const El = isInline ? "span" : "div";
   return (
