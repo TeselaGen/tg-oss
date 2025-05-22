@@ -25,7 +25,7 @@ describe("autoAnnotate", function () {
 
     cy.triggerFileCmd("Auto Annotate Features");
     cy.contains("My Features").click();
-    cy.contains(".bp3-dialog button", "Annotate").click();
+    cy.contains(".bp5-dialog button", "Annotate").click();
     cy.contains(
       `Detected that Row 1 (I cover the full Seq) has a non-standard type of`
     );
@@ -44,8 +44,8 @@ describe("autoAnnotate", function () {
     cy.removeFeatures();
     cy.triggerFileCmd("Auto Annotate Features");
     cy.contains("ApE File").click();
-    cy.uploadFile(`.bp3-dialog .tg-dropzone`, "Default_Features.txt");
-    cy.contains(".bp3-dialog button", "Annotate").click();
+    cy.uploadFile(`.bp5-dialog .tg-dropzone`, "Default_Features.txt");
+    cy.contains(".bp5-dialog button", "Annotate").click();
     cy.contains(
       `Detected that Row 5 (SP6) has a non-standard type of primer_zoink. We will assign it and all subsequent non-standard types to use the misc_feature type instead`
     );
@@ -61,12 +61,12 @@ describe("autoAnnotate", function () {
     cy.removeFeatures();
     cy.triggerFileCmd("Auto Annotate Parts");
     cy.uploadFile(
-      `.bp3-dialog .tg-dropzone`,
+      `.bp5-dialog .tg-dropzone`,
       "csvAnnotationList.csv",
       "text/csv"
     );
     cy.contains(`csvAnnotationList.csv`);
-    cy.contains(".bp3-dialog button", "Annotate").click();
+    cy.contains(".bp5-dialog button", "Annotate").click();
     cy.contains("11 Selected");
     cy.contains("button", "Add").click();
     cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
@@ -78,12 +78,12 @@ describe("autoAnnotate", function () {
     cy.removeFeatures();
     cy.triggerFileCmd("Auto Annotate Parts");
     cy.uploadFile(
-      `.bp3-dialog .tg-dropzone`,
+      `.bp5-dialog .tg-dropzone`,
       "csvAnnotationList_no_type.csv",
       "text/csv"
     );
 
-    cy.contains(".bp3-dialog button", "Annotate").click();
+    cy.contains(".bp5-dialog button", "Annotate").click();
     cy.contains("10 Selected");
 
     cy.contains("button", "Add").click();
@@ -97,12 +97,12 @@ describe("autoAnnotate", function () {
     cy.triggerFileCmd("Auto Annotate Features");
 
     cy.uploadFile(
-      `.bp3-dialog .tg-dropzone`,
+      `.bp5-dialog .tg-dropzone`,
       "csvAnnotationList.csv",
       "text/csv"
     );
     cy.contains(`csvAnnotationList.csv`);
-    cy.contains(".bp3-dialog button", "Annotate").click();
+    cy.contains(".bp5-dialog button", "Annotate").click();
     cy.contains("11 Selected");
     cy.get(`.rt-tr:contains(Example Feature 1)`).click();
     cy.get(`.rt-tr:contains(Example Feature 2)`);
@@ -122,7 +122,7 @@ describe("autoAnnotate", function () {
     //   `.veFeature:contains(Reverse Feature - Start: 1577 End: 2801) path[fill="#EF6500"]`
     // ); //it should be orange
     cy.contains(".veCircularViewLabelText", "Example Feature 3").dblclick();
-    cy.get(`.bp3-radio input[name="forward"][value="true"]`);
+    cy.get(`.bp5-radio input[name="forward"][value="true"]`);
     cy.get(`.tg-select-value:contains(primer_bind)`);
   });
 });

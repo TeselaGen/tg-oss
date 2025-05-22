@@ -9,9 +9,9 @@ const itemRenderer = (i = "", { index, handleClick, modifiers }) => (
     onClick={handleClick}
     key={index}
     className={classNames(
-      "tg-select-option bp3-menu-item bp3-fill bp3-text-overflow-ellipsis",
+      "tg-select-option bp5-menu-item bp5-fill bp5-text-overflow-ellipsis",
       {
-        "bp3-active": modifiers.active
+        "bp5-active": modifiers.active
       }
     )}
   >

@@ -32,8 +32,8 @@ describe("simpleCircularOrLinearView", function () {
     cy.get(".ve-monospace-font").contains("gacgt").should("not.exist");
     cy.tgToggle("withZoomLinearView");
     cy.dragBetween(
-      ".veZoomLinearSlider .bp3-slider-handle",
-      ".veZoomLinearSlider .bp3-icon-plus"
+      ".veZoomLinearSlider .bp5-slider-handle",
+      ".veZoomLinearSlider .bp5-icon-plus"
     );
     cy.get(".ve-monospace-font").contains("gaga").should("exist");
   });
@@ -45,8 +45,8 @@ describe("simpleCircularOrLinearView", function () {
     cy.tgToggle("withZoomCircularView");
     cy.get(`.veRotateCircularSlider`).should("exist");
     cy.dragBetween(
-      ".veZoomCircularSlider .bp3-slider-handle",
-      ".veZoomCircularSlider .bp3-icon-plus"
+      ".veZoomCircularSlider .bp5-slider-handle",
+      ".veZoomCircularSlider .bp5-icon-plus"
     );
     cy.get(".veLabelText:contains(Part 1)").should("not.exist");
   });

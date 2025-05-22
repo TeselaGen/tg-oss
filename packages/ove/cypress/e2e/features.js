@@ -14,21 +14,21 @@ describe("features", () => {
     );
     cy.contains(`/direction="NONE"`).should("not.exist");
     cy.contains(".veLabelText", "araD").dblclick({ force: true });
-    cy.get(`.tg-arrowheadType-BOTTOM.bp3-active`);
+    cy.get(`.tg-arrowheadType-BOTTOM.bp5-active`);
     cy.get(`.tg-arrowheadType-NONE`).click();
     cy.get(`button:contains(Save)`).click();
-    cy.get(".bp3-tab:contains(Genbank)").click({ force: true });
+    cy.get(".bp5-tab:contains(Genbank)").click({ force: true });
     cy.contains(`/direction="NONE"`).should("exist");
     cy.contains(".veLabelText", "araD").dblclick({ force: true });
-    cy.get(`.tg-arrowheadType-NONE.bp3-active`);
+    cy.get(`.tg-arrowheadType-NONE.bp5-active`);
   });
   it(`when allowMultipleFeatureDirections=true, features should be able to have a strand of NONE - keywords: arrowheadType directionality`, () => {
     cy.visit("#Editor?allowMultipleFeatureDirections=true");
     cy.selectRange(10, 20);
 
     cy.triggerFileCmd("New Feature");
-    cy.get(`.tg-arrowheadType-TOP.bp3-active`);
-    cy.get(`.tg-arrowheadType-BOTTOM.bp3-active`).should("not.exist");
+    cy.get(`.tg-arrowheadType-TOP.bp5-active`);
+    cy.get(`.tg-arrowheadType-BOTTOM.bp5-active`).should("not.exist");
     cy.get(`.ann-forward:contains(Untitled)`);
     cy.get(`.ann-reverse:contains(Untitled)`).should("not.exist");
     cy.get(`.tg-arrowheadType-BOTTOM`).click();

@@ -5,11 +5,11 @@ import {
   MenuItem,
   MenuDivider,
   Tooltip,
-  KeyCombo,
-  ContextMenu,
+  KeyComboTag,
   Menu,
   Classes,
-  Icon
+  Icon,
+  showContextMenu as bpShowContextMenu
 } from "@blueprintjs/core";
 import {
   startCase,
@@ -46,7 +46,7 @@ export function MenuItemLink({ text, onClick, icon, navTo, active, disabled }) {
         })}
       >
         {icon && <Icon icon={icon} />}
-        <div className="bp3-text-overflow-ellipsis bp3-fill">{text}</div>
+        <div className="bp5-text-overflow-ellipsis bp5-fill">{text}</div>
       </Link>
     </li>
   );
@@ -237,7 +237,9 @@ export const DynamicMenuItem = ({
         {...omit(item, unwantedAttrs)}
         context={context}
         icon={item.icon || item.iconName}
-        labelElement={item.hotkey && <KeyCombo minimal combo={item.hotkey} />}
+        labelElement={
+          item.hotkey && <KeyComboTag minimal combo={item.hotkey} />
+        }
         text={item.text}
       >
         {item.submenu
@@ -336,7 +338,7 @@ export function showCommandContextMenu(
  *   for a normal divider, or some label text for a labeled one
  * icon: name of icon to show (optional)
  * label: right-aligned label, used mostly for shortcuts (optional)
- * hotkey: right-aligned label formatted with <KeyCombo> (optional)
+ * hotkey: right-aligned label formatted with <KeyComboTag> (optional)
  * tooltip: tooltip text to use (optional)
  * submenu: nested menu structure describing submenu (i.e. array of item objects),
  *   or array of MenuItem elements
@@ -386,13 +388,15 @@ export function showContextMenu(
   const MenuComponent = menuComp;
   event.persist && event.persist();
   // Render a context menu at the passed event's position
-  ContextMenu.show(
-    <MenuComponent>
-      {createDynamicMenu(menuDef, enhancers, context)}
-    </MenuComponent>,
-    { left: event.clientX, top: event.clientY },
-    onClose
-  );
+  bpShowContextMenu({
+    content: (
+      <MenuComponent>
+        {createDynamicMenu(menuDef, enhancers, context)}
+      </MenuComponent>
+    ),
+    targetOffset: { left: event.clientX, top: event.clientY },
+    onClose: onClose
+  });
   event.stopPropagation && event.stopPropagation();
   event.preventDefault && event.preventDefault();
 }

@@ -100,7 +100,7 @@ async function getSaveDialogEl() {
     });
 
     const id = setInterval(() => {
-      const componentToPrint = document.querySelector(".bp3-dialog");
+      const componentToPrint = document.querySelector(".bp5-dialog");
       if (componentToPrint) {
         clearInterval(id);
         resolve(componentToPrint);
@@ -116,7 +116,7 @@ async function getSaveDialogEl() {
 const generatePngFromPrintDialog = async props => {
   const saveDialog = await getSaveDialogEl(props);
 
-  const printArea = saveDialog.querySelector(".bp3-dialog-body");
+  const printArea = saveDialog.querySelector(".bp5-dialog-body");
 
   const result = await domtoimage
     .toBlob(printArea)

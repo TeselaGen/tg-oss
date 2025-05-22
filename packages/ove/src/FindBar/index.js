@@ -172,13 +172,6 @@ export class FindBar extends React.Component {
             autoFocus={false}
             enforceFocus={false}
             position={Position.BOTTOM}
-            target={
-              <Button
-                data-test="veFindBarOptionsToggle"
-                minimal
-                icon="wrench"
-              />
-            }
             content={
               <div
                 className="ve-find-options-popover"
@@ -194,7 +187,9 @@ export class FindBar extends React.Component {
                 {findOptionsEls}
               </div>
             }
-          />
+          >
+            <Button data-test="veFindBarOptionsToggle" minimal icon="wrench" />
+          </Popover>
         )}
         <span style={{ marginRight: 3, color: "lightgrey" }}>
           {matchesTotal > 0 ? matchNumber + 1 : 0}/{matchesTotal}
@@ -259,44 +254,6 @@ export class FindBar extends React.Component {
         <Popover
           autoFocus={false}
           enforceFocus={false}
-          target={
-            <InputToUse
-              autoFocus
-              style={{
-                resize: "vertical",
-                ...(!isInline && { width: 350, minHeight: 70 })
-              }}
-              className="tg-find-tool-input"
-              inputRef={n => {
-                if (n) this.inputEl = n;
-              }}
-              onKeyDown={e => {
-                e.persist();
-                if (e.metaKey && e.keyCode === 70) {
-                  //cmd-f
-                  // toggleFindTool();
-                  e.preventDefault();
-                  e.stopPropagation();
-                } else if (e.keyCode === 13) {
-                  //enter key!
-                  updateMatchNumber(
-                    matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
-                  );
-                  e.stopPropagation();
-                  e.preventDefault();
-                } else if (e.keyCode === 27) {
-                  //esc key!
-                  toggleFindTool();
-                }
-              }}
-              rightElement={rightEl}
-              onChange={e => {
-                return updateSearchText(e.target.value.replace(/\s/g, ""));
-              }}
-              value={searchText}
-              leftIcon="search"
-            />
-          }
           position="bottom"
           minimal
           isOpen={
@@ -311,7 +268,44 @@ export class FindBar extends React.Component {
               annotationSearchMatches={annotationSearchMatches}
             />
           }
-        />
+        >
+          <InputToUse
+            autoFocus
+            style={{
+              resize: "vertical",
+              ...(!isInline && { width: 350, minHeight: 70 })
+            }}
+            className="tg-find-tool-input"
+            inputRef={n => {
+              if (n) this.inputEl = n;
+            }}
+            onKeyDown={e => {
+              e.persist();
+              if (e.metaKey && e.keyCode === 70) {
+                //cmd-f
+                // toggleFindTool();
+                e.preventDefault();
+                e.stopPropagation();
+              } else if (e.keyCode === 13) {
+                //enter key!
+                updateMatchNumber(
+                  matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
+                );
+                e.stopPropagation();
+                e.preventDefault();
+              } else if (e.keyCode === 27) {
+                //esc key!
+                toggleFindTool();
+              }
+            }}
+            rightElement={rightEl}
+            onChange={e => {
+              return updateSearchText(e.target.value.replace(/\s/g, ""));
+            }}
+            value={searchText}
+            leftIcon="search"
+          />
+        </Popover>
 
         {!isInline && (
           <div

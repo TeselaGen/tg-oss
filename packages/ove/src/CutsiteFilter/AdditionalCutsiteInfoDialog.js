@@ -554,7 +554,7 @@ export const addCutsiteGroupClickHandler = ({
         ? undefined
         : e => {
             const isInMultiSelect = e.target.closest(
-              ".bp3-multi-select-popover"
+              ".bp5-multi-select-popover"
             );
             if (!forceOpenCutsiteInfo && isInMultiSelect) return true;
             closeDropDown();

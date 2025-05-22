@@ -11,7 +11,7 @@ describe("oligo mode editing in OVE", function () {
     );
     cy.selectRange(10, 11);
     cy.get(".veSelectionLayer").first().rightclick({ force: true });
-    cy.contains(".bp3-menu-item", "Replace").click();
+    cy.contains(".bp5-menu-item", "Replace").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.focused().type("gatccaauu{enter}");
@@ -19,7 +19,7 @@ describe("oligo mode editing in OVE", function () {
     cy.contains("gatccaauu");
     cy.get(".veTabProperties").click();
     cy.contains("Circular/Linear:").should("not.exist");
-    cy.contains(".bp3-tab", "Primers").should("not.exist");
+    cy.contains(".bp5-tab", "Primers").should("not.exist");
   });
   it(`primer tool should not exist for oligo mode but then come back when switching back to DNA mode`, () => {
     cy.visit("");

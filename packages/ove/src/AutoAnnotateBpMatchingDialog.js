@@ -11,7 +11,7 @@ export const AutoAnnotateBpMatchingDialog = wrapDialog({
   title: "Annotation Matching"
 })(function ({ isRegex }) {
   return (
-    <div className="bp3-dialog-body">
+    <div className="bp5-dialog-body">
       <Tabs defaultSelectedTabId={isRegex ? "regex" : "iupac"}>
         <Tab
           id="iupac"

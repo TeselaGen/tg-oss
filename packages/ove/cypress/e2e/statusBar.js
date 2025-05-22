@@ -19,7 +19,7 @@ describe("statusBar", function () {
     cy.selectRange(10, 30);
     cy.contains("Melting Temp").should("not.exist");
     cy.get(".tg-menu-bar").contains("View").click();
-    cy.get(".bp3-menu-item").contains("Melting Temp").click();
+    cy.get(".bp5-menu-item").contains("Melting Temp").click();
     cy.contains("Melting Temp: 62.7").click();
     cy.get(`[value="default"][checked]`);
     cy.contains(`NEB Tm`).click();
@@ -55,7 +55,7 @@ describe("statusBar", function () {
     );
 
     cy.get(".tg-menu-bar").contains("View").click();
-    cy.get(".bp3-menu-item").contains("GC Content").click();
+    cy.get(".bp5-menu-item").contains("GC Content").click();
 
     cy.get(`[data-test="veStatusBar-selection"]`)
       .contains("Selecting 100 bps from 1 to 100 (")

@@ -5,11 +5,11 @@ describe("tgSelect", () => {
   it(`isTagSelect will only allow a single tag option to be selected at a time`, () => {
     cy.tgToggle("isTagSelect");
     cy.get(".tg-select input").type("my friend{enter}");
-    cy.contains(".bp3-tag-input-values", "my: friend");
+    cy.contains(".bp5-tag-input-values", "my: friend");
 
     cy.get(".tg-select input").type("my accomplice{enter}");
-    cy.contains(".bp3-tag-input-values", "my: friend").should("not.exist");
-    cy.contains(".bp3-tag-input-values", "my: accomplice").should("exist");
+    cy.contains(".bp5-tag-input-values", "my: friend").should("not.exist");
+    cy.contains(".bp5-tag-input-values", "my: accomplice").should("exist");
   });
   it(`It can search for a custom label`, () => {
     cy.get(".tg-select input").type("i'm some{enter}");
@@ -33,19 +33,19 @@ describe("tgSelect", () => {
     cy.tgToggle("creatable");
     cy.get(".tg-select input").type("tHEr");
     cy.contains(".tg-select-option", "There");
-    cy.contains(".bp3-menu-item", `Create "tHEr"`);
+    cy.contains(".bp5-menu-item", `Create "tHEr"`);
     cy.get(".tg-select input").type("e");
     cy.contains(".tg-select-option", "There");
-    cy.contains(".bp3-menu-item", `Create "tHEr"`).should("not.exist");
+    cy.contains(".bp5-menu-item", `Create "tHEr"`).should("not.exist");
   });
   it(`creatable multi select won't allow for making duplicates`, () => {
     cy.tgToggle("creatable");
     cy.tgToggle("multi");
     cy.get(".tg-select input").type("hey");
     cy.contains(".tg-select-option", "hey");
-    cy.contains(".bp3-menu-item", `Create "hey"`).should("not.exist");
+    cy.contains(".bp5-menu-item", `Create "hey"`).should("not.exist");
     cy.get(".tg-select input").type("a");
-    cy.contains(".bp3-menu-item", `Create "heya"`).should("exist");
+    cy.contains(".bp5-menu-item", `Create "heya"`).should("exist");
   });
 
   it("passing in static options should still render and filter list correctly", () => {
@@ -63,8 +63,8 @@ describe("tgSelect", () => {
     cy.tgToggle("onCreateNewOption");
     cy.tgToggle("creatable");
     cy.get(".tg-select input").type("weeeeee");
-    cy.contains(".bp3-menu-item", `Create "weeeeee"`).click();
-    cy.contains(".bp3-toast", "New option weeeeee created").should("exist");
+    cy.contains(".bp5-menu-item", `Create "weeeeee"`).click();
+    cy.contains(".bp5-toast", "New option weeeeee created").should("exist");
     cy.contains(".tg-select-value", "new option").should("not.exist");
   });
 });

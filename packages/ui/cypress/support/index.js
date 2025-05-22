@@ -173,7 +173,7 @@ function dropFile({
     .then(() => {
       if (!noFileList) {
         cy.get(
-          `.bp3-form-group:has(${selector}) .tg-upload-file-list-item`
+          `.bp5-form-group:has(${selector}) .tg-upload-file-list-item`
         ).should("exist");
         cy.get(".tg-spin").should("not.exist");
       }

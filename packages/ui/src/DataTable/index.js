@@ -33,12 +33,12 @@ import {
   Button,
   Menu,
   MenuItem,
-  ContextMenu,
   Icon,
   Intent,
   Callout,
   Tooltip,
-  useHotkeys
+  useHotkeys,
+  showContextMenu as bpShowContextMenu
 } from "@blueprintjs/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import classNames from "classnames";
@@ -2226,7 +2226,10 @@ const DataTable = ({
           )}
         </Menu>
       );
-      ContextMenu.show(menu, { left: e.clientX, top: e.clientY });
+      bpShowContextMenu({
+        content: menu,
+        targetOffset: { left: e.clientX, top: e.clientY }
+      });
     },
     [
       contextMenu,

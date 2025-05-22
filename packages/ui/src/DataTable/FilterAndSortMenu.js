@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DateInput, DateRangeInput } from "@blueprintjs/datetime";
+import { DateInput3, DateRangeInput3 } from "@blueprintjs/datetime2";
 import { camelCase } from "lodash-es";
 import classNames from "classnames";
 import {
@@ -295,7 +295,7 @@ const FilterInput = ({
     case "date":
       inputGroup = (
         <div className="custom-menu-item">
-          <DateInput
+          <DateInput3
             value={filterValue ? dayjs(filterValue).toDate() : undefined}
             {...getDayjsFormatter("L")}
             {...dateMinMaxHelpers}
@@ -317,7 +317,7 @@ const FilterInput = ({
       }
       inputGroup = (
         <div className="custom-menu-item">
-          <DateRangeInput
+          <DateRangeInput3
             value={
               filterValueToUse && filterValueToUse[0] && filterValueToUse[1]
                 ? [new Date(filterValueToUse[0]), new Date(filterValueToUse[1])]

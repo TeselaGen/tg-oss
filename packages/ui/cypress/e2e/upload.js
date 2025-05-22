@@ -4,7 +4,7 @@ describe("upload", () => {
     cy.tgToggle(`accept`);
     cy.tgToggle(`autoUnzip`);
     cy.get(`a:contains(.ab1)`).click();
-    cy.get(`.bp3-menu-item:contains(Download File 1)`);
+    cy.get(`.bp5-menu-item:contains(Download File 1)`);
     cy.get(`.tgFileTypeDescriptor:contains(.zip)`);
     cy.uploadFile(
       ".tg-dropzone",
@@ -31,7 +31,7 @@ describe("upload", () => {
     );
 
     cy.get(
-      ".bp3-form-group:has(.fileUploadZoink.tg-dropzone) .tg-upload-file-list-item"
+      ".bp5-form-group:has(.fileUploadZoink.tg-dropzone) .tg-upload-file-list-item"
     ).should("exist");
   });
   it(`FileUploadField component should not be able to upload if disabled`, () => {
@@ -45,7 +45,7 @@ describe("upload", () => {
       true
     );
     cy.get(
-      ".bp3-form-group:has(.fileUploadZoink.tg-dropzone) .tg-upload-file-list-item"
+      ".bp5-form-group:has(.fileUploadZoink.tg-dropzone) .tg-upload-file-list-item"
     ).should("not.exist");
   });
 

@@ -41,7 +41,7 @@
   cursor: pointer;
 }
 
-.openVeContextMenu .bp3-key {
+.openVeContextMenu .bp5-key {
   box-shadow: none;
   margin: 0px !important;
   padding: 0px !important;
@@ -50,7 +50,7 @@
   background: none;
 }
 
-.openVeContextMenu .bp3-icon-standard {
+.openVeContextMenu .bp5-icon-standard {
   font-size: 10px;
   height: 10px;
 }
@@ -93,12 +93,12 @@ body.tg-no-scroll-body {
   padding-bottom: 1px;
   background: #ebf1f5;
 }
-.bp3-dark .veToolbar-outer {
+.bp5-dark .veToolbar-outer {
   background: #202b33;
 }
 /* .veVersionHistoryView {
   background: #ebf1f5;
 }
-.bp3-dark .veVersionHistoryView {
+.bp5-dark .veVersionHistoryView {
   background: #202b33;
 } */

@@ -113,7 +113,7 @@ const CustomContentEditable = generateField(function CustomContentEditable({
         ref={inputRef}
         spellCheck="false"
         contentEditable={!disabled}
-        className={classNames("bp3-input tg-custom-sequence-editable", {
+        className={classNames("bp5-input tg-custom-sequence-editable", {
           hasTempError
         })}
         onInput={emitChange}
@@ -314,7 +314,7 @@ export default AddOrEditAnnotationDialog({
 
 const InnerWrapperMeltingTemp = p => (
   <div
-    className="bp3-text-muted bp3-text-small"
+    className="bp5-text-muted bp5-text-small"
     style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
   >
     {p.children}

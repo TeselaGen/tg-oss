@@ -79,9 +79,9 @@
 .sequenceInputBubble input.focus {
   border: solid 1px #1585c5;
 }
-.bp3-dark .sequenceInputBubble {
+.bp5-dark .sequenceInputBubble {
   background: #394b59;
 }
-.bp3-dark .sequenceInputBubble:after {
+.bp5-dark .sequenceInputBubble:after {
   border-color: #394b59 transparent;
 }

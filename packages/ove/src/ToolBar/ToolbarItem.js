@@ -179,9 +179,10 @@ class ToolbarItem extends React.Component {
           canEscapeKeyClose
           minimal
           position={Position.BOTTOM}
-          target={target}
           content={content}
-        />
+        >
+          {target}
+        </Popover>
       </div>
     );
   }

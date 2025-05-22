@@ -36,7 +36,7 @@ export default ({
     disabled:
       disabled ||
       (!isPopover && window.Cypress && !window.Cypress.allowInfoHelperTooltips),
-    popoverClassName: "tg-info-helper-popover bp3-tooltip",
+    popoverClassName: "tg-info-helper-popover bp5-tooltip",
     content: content || children,
     modifiers: popoverOverflowModifiers,
     ...popoverProps
@@ -51,9 +51,9 @@ export default ({
       </React.Fragment>
     );
   } else if (isPopover) {
-    toReturn = <Popover {...toolTipOrPopoverProps} target={IconInner} />;
+    toReturn = <Popover {...toolTipOrPopoverProps}>{IconInner}</Popover>;
   } else {
-    toReturn = <Tooltip {...toolTipOrPopoverProps} target={IconInner} />;
+    toReturn = <Tooltip {...toolTipOrPopoverProps}>{IconInner}</Tooltip>;
   }
   const El = isInline ? "span" : "div";
   return (

@@ -165,7 +165,7 @@ const InnerDropZone = ({
         "tg-dropzone-reject": isDragReject, // tnr: the acceptClassName/rejectClassName doesn't work with file extensions (only mimetypes are supported when dragging). Thus we'll just always turn the drop area blue when dragging and let the filtering occur on drop. See https://github.com/react-dropzone/react-dropzone/issues/888#issuecomment-773938074
         "tg-dropzone-accept": isDragAccept,
         "tg-dropzone-disabled": dropzoneDisabled,
-        "bp3-disabled": dropzoneDisabled
+        "bp5-disabled": dropzoneDisabled
       })}
     >
       <input {...getInputProps()} />
