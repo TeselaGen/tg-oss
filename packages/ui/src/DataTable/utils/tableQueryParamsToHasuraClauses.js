@@ -108,7 +108,7 @@ export function tableQueryParamsToHasuraClauses({
           case "contains":
             return { [filterOn]: { _ilike: `%${filterValue}%` } };
           case "notContains":
-            return { [filterOn]: { _not_ilike: `%${filterValue}%` } };
+            return { [filterOn]: { _nilike: `%${filterValue}%` } };
           case "isExactly":
             return { [filterOn]: { _eq: filterValue } };
           case "isEmpty":
