@@ -239,14 +239,30 @@ function applyOrderBy(records, _order_by) {
   if (order_by.length > 0) {
     const fields = [];
     const directions = [];
+    const iteratees = [];
+
     order_by.forEach(item => {
       // Hasura-style: { field: "asc" }
       const field = Object.keys(item)[0];
       const direction = item[field];
       fields.push(field);
       directions.push(direction);
+
+      // Create a custom iteratee function for natural sorting
+      iteratees.push(record => {
+        const value = record[field];
+        // Use natural sorting only for strings that contain numbers
+        if (isString(value) && /\d/.test(value)) {
+          // Return the value in a format that can be naturally sorted
+          // This effectively creates a sort key that respects natural ordering
+          return value.replace(/(\d+)/g, num => num.padStart(10, "0"));
+        }
+        return value;
+      });
     });
-    records = orderBy(records, fields, directions);
+
+    // Use the custom iteratees for natural sorting
+    records = orderBy(records, iteratees, directions);
   }
   return records;
 }

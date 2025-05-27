@@ -536,6 +536,24 @@ describe("filterLocalEntitiesToHasura", () => {
     expect(result.entitiesAcrossPages).toEqual([records[0], records[2]]);
     expect(result.entityCount).toBe(2);
   });
+  it("should order order well names properly, aka names a1, a11, a2, a3 should be sorted a1, a2, a3, a11", () => {
+    const recordsWithNames = [
+      { id: 1, name: "a1" },
+      { id: 2, name: "a11" },
+      { id: 3, name: "a2" },
+      { id: 4, name: "a3" }
+    ];
+    const result = filterLocalEntitiesToHasura(recordsWithNames, {
+      order_by: { name: "asc" }
+    });
+    expect(result.entities).toEqual([
+      recordsWithNames[0], // a1
+      recordsWithNames[2], // a2
+      recordsWithNames[3], // a3
+      recordsWithNames[1] // a11
+    ]);
+    expect(result.entityCount).toBe(4);
+  });
   it("should order by multiple fields (age asc, name desc)", () => {
     // Make two of the ages the same for testing secondary sort
     const modifiedRecords = [
