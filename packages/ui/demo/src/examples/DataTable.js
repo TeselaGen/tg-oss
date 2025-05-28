@@ -17,7 +17,7 @@ import OptionsSection from "../OptionsSection";
 import { useToggle } from "../useToggle";
 
 const controlled_page_size = 33;
-const defaultNumOfEntities = 60;
+const defaultNumOfEntities = window.Cypress?._dt_num_entities || 60;
 const chance = new Chance();
 
 const generateFakeRows = num => {
@@ -160,6 +160,7 @@ const DataTableDemo = () => {
       " isInfinite to see something actually show up with it"
   });
   const [urlConnected, urlConnectedSwitch] = useToggle({
+    defaultValue: true,
     type: "urlConnected",
     description:
       "Turn off urlConnected if you don't want the url to be updated by the table"

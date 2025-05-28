@@ -1124,9 +1124,7 @@ ORIGIN
       "utf8"
     );
     const result = genbankToJson(string);
-    result[0].parsedSequence.sequence.should.equal(
-      "aaaggggy*yyy*"
-    );
+    result[0].parsedSequence.sequence.should.equal("aaaggggy*yyy*");
   });
 });
 
