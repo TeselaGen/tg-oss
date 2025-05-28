@@ -2,7 +2,7 @@ name: Playwright tests
 on: [push, pull_request]
 jobs:
   playwright-run:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         # the actual items in the array do not matter,

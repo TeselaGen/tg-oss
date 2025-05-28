@@ -27,6 +27,18 @@ describe("FASTA tests", function () {
     );
     result[0].parsedSequence.isProtein.should.equal(true);
   });
+
+  it("Protein Fasta with stop codons (*) at the end should be kept", async function () {
+    const string = fs.readFileSync(
+      path.join(__dirname, "./testData/fasta/fasta_with_stop_codons.fasta"),
+      "utf8"
+    );
+    const result = await fastaToJson(string, {
+      fileName: "fasta_with_stop_codons.faa"
+    });
+    result[0].parsedSequence.sequence.should.equal("AGCTTT*TAAAA*");
+  });
+
   it("import protein fasta file without replacing spaces to underscore in name", async function () {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/fasta/proteinFasta.fas"),

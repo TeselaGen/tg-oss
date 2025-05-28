@@ -44,7 +44,8 @@ class TranslationProperties extends React.Component {
     const translationsToUse = map(translations, translation => {
       let aaString = "";
       for (let i = 0; i < translation.aminoAcids.length; i++) {
-        aaString += translation.aminoAcids[i].aminoAcid.value;
+        // sometimes the `translation.aminoAcids[i].aminoAcid` is null
+        aaString += translation.aminoAcids[i].aminoAcid?.value || "";
       }
       return {
         ...translation,

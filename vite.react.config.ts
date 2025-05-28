@@ -80,7 +80,7 @@ export default ({ name, dir }: { name: string; dir: string }) =>
               viteStaticCopy({
                 targets: [
                   {
-                    src: "./src/**/!(*.test|*.spec).*",
+                    src: "./src",
                     dest: "."
                   },
                   {

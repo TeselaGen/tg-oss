@@ -35,7 +35,7 @@ const conf = ({
             viteStaticCopy({
               targets: [
                 {
-                  src: "./src/**/!(*.test|*.spec).*",
+                  src: "./src",
                   dest: "."
                 },
                 {

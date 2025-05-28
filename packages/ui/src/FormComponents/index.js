@@ -114,14 +114,14 @@ function removeUnwantedProps(props) {
 
 const LabelWithTooltipInfo = ({ label, tooltipInfo, labelStyle }) =>
   tooltipInfo ? (
-    <div style={{ display: "flex", alignItems: "center", ...labelStyle }}>
+    <span style={{ display: "flex", alignItems: "center", ...labelStyle }}>
       {label}{" "}
       <InfoHelper
         style={{ marginLeft: "5px", marginTop: "-6px" }}
         size={12}
         content={tooltipInfo}
       />
-    </div>
+    </span>
   ) : (
     label || null
   );

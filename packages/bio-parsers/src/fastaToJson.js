@@ -62,14 +62,7 @@ function fastaToJson(fileString, options = {}) {
       if (!result) {
         result = createInitialSequence(options);
       }
-      if ("*" === line[line.length - 1]) {
-        //some resultArray are ended with an asterisk
-        parseSequenceLine(line.substring(0, line.length - 1));
-        resultArray.push(result);
-        result = null;
-      } else {
-        parseSequenceLine(line);
-      }
+      parseSequenceLine(line);
     }
     if (options && options.parseFastaAsCircular) {
       result.parsedSequence.circular = true;

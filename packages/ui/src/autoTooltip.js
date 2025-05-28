@@ -18,6 +18,7 @@ document.addEventListener("mouseup", () => {
 });
 
 let tippys = [];
+
 let recentlyHidden = false;
 let clearMe;
 (function () {
@@ -52,7 +53,23 @@ let clearMe;
           elem.classList.remove(id);
         });
 
-        el.classList.add(id);
+        // Check if element is disabled, if so use parent instead
+        let targetEl = el;
+        if (targetEl.disabled || targetEl.getAttribute("disabled") !== null) {
+          const parent = targetEl.parentElement;
+          if (parent) {
+            // Use the parent as the tooltip target
+            parent.classList.add(id);
+            targetEl = parent; // Change the tooltip target to parent
+          } else {
+            // No parent, keep using the original element
+            el.classList.add(id);
+          }
+        } else {
+          // Element not disabled, use it directly
+          el.classList.add(id);
+        }
+
         const inst = tippy(`.${id}`, {
           theme: "teselagen",
           plugins: [followCursor],
@@ -84,19 +101,12 @@ let clearMe;
                   requires: ["computeStyles"],
                   requiresIfExists: ["offset"],
                   fn({ state }) {
-                    // console.log(`state:`, state);
-                    // state.styles.popper.bottom = 20 + "px";
                     const customBoundary =
                       document.querySelector(dataAvoid) ||
                       document.querySelector(dataAvoidBackup);
 
                     if (!customBoundary) return;
                     const a = customBoundary.getBoundingClientRect();
-                    // console.log(
-                    //   `state.rects.reference.y:`,
-                    //   state.rects.reference.y
-                    // );
-                    // console.log(`a.top:`, a.top);
 
                     if (a.top < state.rects.reference.y) {
                       const b = Math.abs(
@@ -104,16 +114,6 @@ let clearMe;
                       );
                       state.styles.popper.bottom = b + "px";
                     }
-
-                    // const overflow = detectOverflow(state, {
-                    //   boundary: customBoundary,
-                    //   altBoundary: true
-                    // });
-                    // console.log(`overflow:`, overflow);
-                    // if (overflow.bottom > 0) {
-                    //   const a = Math.abs(overflow.bottom);
-                    //   state.styles.popper.bottom = a + "px";
-                    // }
                   }
                 }
               ]
@@ -199,3 +199,6 @@ function parentIncludesNoChildDataTip(el, count) {
   if (el.getAttribute("data-no-child-data-tip")) return true;
   return parentIncludesNoChildDataTip(el.parentElement, count + 1);
 }
+
+// Export the function to clear parent tooltips so it can be used elsewhere
+// export { clearParentTooltips };
