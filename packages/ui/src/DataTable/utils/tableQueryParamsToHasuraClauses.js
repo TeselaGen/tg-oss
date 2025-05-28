@@ -112,6 +112,15 @@ export function tableQueryParamsToHasuraClauses({
           case "isExactly":
             return { [filterOn]: { _eq: filterValue } };
           case "isEmpty":
+            if (filterOn.includes(".")) {
+              // if we're filtering on a nested field, like a sequence table with parts.name
+              // we really want to just query on the top level field's existence
+              return {
+                _not: {
+                  [filterOn.split(".")[0]]: {}
+                }
+              };
+            }
             return {
               _or: [
                 { [filterOn]: { _eq: "" } },
