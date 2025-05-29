@@ -22,7 +22,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - ove-electron - https://github.com/teselagen/ove-electron (Simple desktop plasmid editor a la ApE)
 - JBEI - https://bioparts.org/ (Auto annotation and blast tool)
 - JBEI - https://public-registry.jbei.org/ (Lab management and design)
-- Labii - https://docs.labii.com/widgets/biology/@teselagen/ove (Lab management)
+- Labii - https://docs.labii.com/widgets/section-widgets/biology/molecular-biology-suite/open-vector-editor (All-in-One Configurable Platform for Scientific Data Management)
 - eLabFTW - https://www.elabftw.net/ (Open source ELN)
 - Colabra - https://www.colabra.ai/ (Lab management, ELN, and R&D AI Copilot) [Docs](https://docs.colabra.ai/guide/reference/run-your-experiments/slash-commands/dna-sequences)
 
