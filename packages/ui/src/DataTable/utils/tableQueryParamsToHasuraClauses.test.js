@@ -44,6 +44,26 @@ describe("tableQueryParamsToHasuraClauses", () => {
       offset: 0
     });
   });
+  it("should flatten queries with dup paths", () => {
+    const result = tableQueryParamsToHasuraClauses({
+      searchTerm: "test",
+      schema: {
+        fields: [
+          ...schema.fields,
+          { path: "name", type: "string" },
+          { path: "name", type: "string" }
+        ]
+      }
+    });
+    expect(result).toEqual({
+      where: {
+        _or: [{ name: { _ilike: "%test%" } }, { email: { _ilike: "%test%" } }]
+      },
+      order_by: [],
+      limit: 25,
+      offset: 0
+    });
+  });
 
   it("should handle searchTerm with number fields", () => {
     const result = tableQueryParamsToHasuraClauses({

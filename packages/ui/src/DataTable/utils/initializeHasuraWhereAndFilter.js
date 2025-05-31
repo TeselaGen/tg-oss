@@ -13,11 +13,3 @@ export function initializeHasuraWhereAndFilter(
   } else if (typeof additionalFilter === "object")
     where._and.push(additionalFilter);
 }
-
-export const addCustomColumnFilters = (where, fields, currentParams) => {
-  fields.forEach(field => {
-    const { customColumnFilter, filterDisabled } = field;
-    if (filterDisabled || !customColumnFilter) return;
-    customColumnFilter(where, currentParams);
-  });
-};

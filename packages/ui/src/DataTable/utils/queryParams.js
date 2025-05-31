@@ -5,10 +5,7 @@ import {
   tableQueryParamsToHasuraClauses
 } from "./tableQueryParamsToHasuraClauses";
 import { filterLocalEntitiesToHasura } from "./filterLocalEntitiesToHasura";
-import {
-  addCustomColumnFilters,
-  initializeHasuraWhereAndFilter
-} from "./initializeHasuraWhereAndFilter";
+import { initializeHasuraWhereAndFilter } from "./initializeHasuraWhereAndFilter";
 
 const defaultPageSizes = [5, 10, 15, 25, 50, 100, 200, 400];
 
@@ -332,7 +329,6 @@ export function getQueryParams({
       schema
     });
     initializeHasuraWhereAndFilter(additionalFilter, where, currentParams);
-    addCustomColumnFilters(where, schema.fields, currentParams);
     if (isLocalCall) {
       //if the table is local (aka not directly connected to a db) then we need to
       //handle filtering/paging/sorting all on the front end
