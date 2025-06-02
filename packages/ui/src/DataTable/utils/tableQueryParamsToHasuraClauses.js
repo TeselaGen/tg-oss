@@ -20,39 +20,46 @@ export function tableQueryParamsToHasuraClauses({
     // Create a map to deduplicate fields by path
     const uniqueFieldsByPath = {};
 
+    // Split the search term by comma to support multi-term searching
+    const searchTerms = searchTerm.split(",");
+
     schema.fields.forEach(field => {
       const { type, path, searchDisabled } = field;
       if (uniqueFieldsByPath[path]) return; // Skip if already added
       uniqueFieldsByPath[path] = true;
       if (searchDisabled || field.filterDisabled || type === "color") return;
-      const filterValue = searchTerm; // No cleaning needed here, we're using _ilike
 
-      if (type === "string" || type === "lookup") {
-        const o = set({}, path, { _ilike: `%${filterValue}%` });
-        searchTermFilters.push(o);
-      } else if (type === "boolean") {
-        let regex;
-        try {
-          regex = new RegExp("^" + searchTerm, "ig");
-        } catch (error) {
-          //ignore
-        }
-        if (regex) {
-          if ("true".replace(regex, "") !== "true") {
-            const o = set({}, path, { _eq: true });
-            searchTermFilters.push(o);
-          } else if ("false".replace(regex, "") !== "false") {
-            const o = set({}, path, { _eq: false });
-            searchTermFilters.push(o);
+      // Process each search term
+      searchTerms.forEach(term => {
+        const filterValue = term.trim(); // Trim the term to handle spaces after commas
+
+        if (type === "string" || type === "lookup") {
+          const o = set({}, path, { _ilike: `%${filterValue}%` });
+          searchTermFilters.push(o);
+        } else if (type === "boolean") {
+          let regex;
+          try {
+            regex = new RegExp("^" + filterValue, "ig");
+          } catch (error) {
+            //ignore
           }
+          if (regex) {
+            if ("true".replace(regex, "") !== "true") {
+              const o = set({}, path, { _eq: true });
+              searchTermFilters.push(o);
+            } else if ("false".replace(regex, "") !== "false") {
+              const o = set({}, path, { _eq: false });
+              searchTermFilters.push(o);
+            }
+          }
+        } else if (
+          (type === "number" || type === "integer") &&
+          !isNaN(filterValue)
+        ) {
+          const o = set({}, path, { _eq: parseFloat(filterValue) });
+          searchTermFilters.push(o);
         }
-      } else if (
-        (type === "number" || type === "integer") &&
-        !isNaN(filterValue)
-      ) {
-        const o = set({}, path, { _eq: parseFloat(filterValue) });
-        searchTermFilters.push(o);
-      }
+      });
     });
 
     if (searchTermFilters.length > 0) {

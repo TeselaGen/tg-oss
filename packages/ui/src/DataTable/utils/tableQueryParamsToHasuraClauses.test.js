@@ -44,6 +44,25 @@ describe("tableQueryParamsToHasuraClauses", () => {
       offset: 0
     });
   });
+  it("should handle searchTerm with string fields with a comma in them", () => {
+    const result = tableQueryParamsToHasuraClauses({
+      searchTerm: "test,test2",
+      schema
+    });
+    expect(result).toEqual({
+      where: {
+        _or: [
+          { name: { _ilike: "%test%" } },
+          { name: { _ilike: "%test2%" } },
+          { email: { _ilike: "%test%" } },
+          { email: { _ilike: "%test2%" } }
+        ]
+      },
+      order_by: [],
+      limit: 25,
+      offset: 0
+    });
+  });
   it("should flatten queries with dup paths", () => {
     const result = tableQueryParamsToHasuraClauses({
       searchTerm: "test",
