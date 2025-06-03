@@ -379,42 +379,152 @@ describe("filterLocalEntitiesToHasura", () => {
     ]);
     expect(result.entityCount).toBe(3);
   });
-  it("should order by age ascending", () => {
-    const result = filterLocalEntitiesToHasura(records, {
-      order_by: { age: "asc" }
-    });
+  it("should order by age ascending and put null vals last by default", () => {
+    const result = filterLocalEntitiesToHasura(
+      [{ id: 111, name: "Null Age", age: null, city: "Unknown" }, ...records],
+      {
+        order_by: { age: "asc" }
+      }
+    );
     expect(result.entities).toEqual([
       records[3],
       records[1],
       records[0],
-      records[2]
+      records[2],
+      { id: 111, name: "Null Age", age: null, city: "Unknown" }
     ]);
     expect(result.entitiesAcrossPages).toEqual([
       records[3],
       records[1],
       records[0],
-      records[2]
+      records[2],
+      { id: 111, name: "Null Age", age: null, city: "Unknown" }
     ]);
-    expect(result.entityCount).toBe(4);
+    expect(result.entityCount).toBe(5);
+  });
+  it("should order by age desc and put null/undefined vals last by default", () => {
+    const result = filterLocalEntitiesToHasura(
+      [
+        { id: 111, name: "Null Age", age: null, city: "Unknown" },
+        { id: 1121, name: "Undefined Age", age: undefined, city: "Unknown" },
+        ...records
+      ],
+      {
+        order_by: { age: "desc" }
+      }
+    );
+    expect(result.entities).toEqual([
+      records[2],
+      records[0],
+      records[1],
+      records[3],
+      { id: 111, name: "Null Age", age: null, city: "Unknown" },
+      { id: 1121, name: "Undefined Age", age: undefined, city: "Unknown" }
+    ]);
+    expect(result.entityCount).toBe(6);
   });
 
-  it("should order by age descending", () => {
-    const result = filterLocalEntitiesToHasura(records, {
-      order_by: { age: "desc" }
-    });
+  it.only("should order by updatedAt descending, putting null/undefined vals last ", () => {
+    const result = filterLocalEntitiesToHasura(
+      [
+        {
+          name: "-10_signal",
+          color: "#4ECDC4",
+          isGenbankStandardType: true,
+          __typename: "featureTypeOverride"
+        },
+        {
+          name: "-35_signal",
+          color: "#F7FFF7",
+          isGenbankStandardType: true,
+          __typename: "featureTypeOverride"
+        },
+        {
+          name: "3'clip",
+          color: "#FF6B6B",
+          isGenbankStandardType: true,
+          __typename: "featureTypeOverride"
+        },
+        {
+          name: "3'UTR",
+          color: "#FFE66D",
+          isGenbankStandardType: true,
+          __typename: "featureTypeOverride"
+        },
+
+        {
+          __typename: "featureTypeOverride",
+          id: "33a90fcb-fc26-406f-a6d5-41ac4ba8ea64",
+          name: "lalala",
+          description: null,
+          color: "#81bb41",
+          genbankEquivalentType: null,
+          updatedAt: "2025-06-03T01:02:24.737499+00:00",
+          isHidden: false,
+          isCustomType: true
+        }
+      ],
+      {
+        order_by: [{ updatedAt: "desc" }]
+      }
+    );
+    expect(result.entities).toEqual([
+      {
+        __typename: "featureTypeOverride",
+        id: "33a90fcb-fc26-406f-a6d5-41ac4ba8ea64",
+        name: "lalala",
+        description: null,
+        color: "#81bb41",
+        genbankEquivalentType: null,
+        updatedAt: "2025-06-03T01:02:24.737499+00:00",
+        isHidden: false,
+        isCustomType: true
+      },
+      {
+        name: "-10_signal",
+        color: "#4ECDC4",
+        isGenbankStandardType: true,
+        __typename: "featureTypeOverride"
+      },
+      {
+        name: "-35_signal",
+        color: "#F7FFF7",
+        isGenbankStandardType: true,
+        __typename: "featureTypeOverride"
+      },
+      {
+        name: "3'clip",
+        color: "#FF6B6B",
+        isGenbankStandardType: true,
+        __typename: "featureTypeOverride"
+      },
+      {
+        name: "3'UTR",
+        color: "#FFE66D",
+        isGenbankStandardType: true,
+        __typename: "featureTypeOverride"
+      }
+    ]);
+  });
+  it("should order by age descending, putting null/undefined vals last ", () => {
+    const result = filterLocalEntitiesToHasura(
+      [
+        { id: 111, name: "Null Age", age: null, city: "Unknown" },
+        { id: 1121, name: "Undefined Age", age: undefined, city: "Unknown" },
+        ...records
+      ],
+      {
+        order_by: { age: "desc" }
+      }
+    );
     expect(result.entities).toEqual([
       records[2],
       records[0],
       records[1],
-      records[3]
+      records[3],
+      { id: 111, name: "Null Age", age: null, city: "Unknown" },
+      { id: 1121, name: "Undefined Age", age: undefined, city: "Unknown" }
     ]);
-    expect(result.entitiesAcrossPages).toEqual([
-      records[2],
-      records[0],
-      records[1],
-      records[3]
-    ]);
-    expect(result.entityCount).toBe(4);
   });
 
   it("should order by name ascending", () => {

@@ -251,6 +251,10 @@ function applyOrderBy(records, _order_by) {
       // Create a custom iteratee function for natural sorting
       iteratees.push(record => {
         const value = record[field];
+        // Handle null values based on sort direction
+        if (isNull(value) || value === undefined) {
+          return direction === "asc" ? -Infinity : -Infinity;
+        }
         // Use natural sorting only for strings that contain numbers
         if (isString(value) && /\d/.test(value)) {
           // Return the value in a format that can be naturally sorted
@@ -261,8 +265,29 @@ function applyOrderBy(records, _order_by) {
       });
     });
 
-    // Use the custom iteratees for natural sorting
-    records = orderBy(records, iteratees, directions);
+    // First sort normally
+    let sortedRecords = orderBy(records, iteratees, directions);
+
+    // Then ensure entries with a value for the field come before entries without a value
+    // for any field sorted in descending order
+    order_by.forEach(item => {
+      const field = Object.keys(item)[0];
+      const direction = item[field];
+
+      if (direction === "desc") {
+        // For descending sorts, we want entries with values to appear before entries without values
+        sortedRecords = [
+          ...sortedRecords.filter(
+            record => !isNull(record[field]) && record[field] !== undefined
+          ),
+          ...sortedRecords.filter(
+            record => isNull(record[field]) || record[field] === undefined
+          )
+        ];
+      }
+    });
+
+    records = sortedRecords;
   }
   return records;
 }
