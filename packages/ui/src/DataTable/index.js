@@ -3078,7 +3078,7 @@ const DataTable = ({
                     try {
                       const allEntities = await safeQuery(fragment, {
                         variables: {
-                          filter: variables.filter,
+                          where: variables.where,
                           sort: variables.sort
                         },
                         canCancel: true
