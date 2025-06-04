@@ -10,7 +10,9 @@ import {
   includes,
   isObject,
   has,
-  orderBy
+  orderBy,
+  endsWith,
+  get
 } from "lodash-es";
 
 export function filterLocalEntitiesToHasura(
@@ -237,57 +239,104 @@ function applyOrderBy(records, _order_by) {
       : [_order_by];
 
   if (order_by.length > 0) {
-    const fields = [];
-    const directions = [];
-    const iteratees = [];
+    const orderFuncs = [];
+    const ascOrDescArray = [];
 
-    order_by.forEach(item => {
-      // Hasura-style: { field: "asc" }
-      const field = Object.keys(item)[0];
-      const direction = item[field];
-      fields.push(field);
-      directions.push(direction);
+    order_by.forEach(
+      ({ path, direction, type, sortFn, getValueToFilterOn, ownProps }) => {
+        // Default direction is "desc" if not specified
+        direction = direction || "desc";
 
-      // Create a custom iteratee function for natural sorting
-      iteratees.push(record => {
-        const value = record[field];
-        // Handle null values based on sort direction
-        if (isNull(value) || value === undefined) {
-          return direction === "asc" ? -Infinity : -Infinity;
+        if (sortFn) {
+          // Handle specifically custom sort functions
+          // First make sure we have an array of sort functions
+          const sortFnArray = Array.isArray(sortFn) ? sortFn : [sortFn];
+
+          // For each sort function
+          sortFnArray.forEach(fn => {
+            // First handle null check for this function's values
+            orderFuncs.push(r => {
+              const val = fn(r);
+              return val !== null && val !== undefined ? 1 : 0;
+            });
+            ascOrDescArray.push("desc"); // Always push nulls to the bottom
+
+            // Then the actual sort function
+            orderFuncs.push(fn);
+            ascOrDescArray.push(direction);
+          });
+        } else if (getValueToFilterOn) {
+          // Custom getValue function
+          // First handle null check
+          orderFuncs.push(r => {
+            const val = getValueToFilterOn(r, ownProps);
+            return val !== null && val !== undefined ? 1 : 0;
+          });
+          ascOrDescArray.push("desc"); // Always push nulls to the bottom
+
+          // Then the actual value getter function
+          orderFuncs.push(r => getValueToFilterOn(r, ownProps));
+          ascOrDescArray.push(direction);
+        } else if (type === "timestamp") {
+          // Sort nulls/undefined to the bottom regardless of sort direction
+          orderFuncs.push(r => {
+            const val = get(r, path);
+            // First check if value exists, this ensures nulls go to the bottom
+            return val ? 1 : 0;
+          });
+          ascOrDescArray.push("desc"); // always put nulls at the bottom
+
+          // Then actual timestamp sorting
+          orderFuncs.push(r => {
+            const val = get(r, path);
+            return val ? new Date(val).getTime() : -Infinity;
+          });
+          ascOrDescArray.push(direction);
+        } else if (path && endsWith(path.toLowerCase(), "id")) {
+          // Handle ID fields - sort numerically
+          // First handle null check
+          orderFuncs.push(r => {
+            const val = get(r, path);
+            return val !== null && val !== undefined ? 1 : 0;
+          });
+          ascOrDescArray.push("desc"); // Always push nulls to the bottom
+
+          // Then the actual ID parsing
+          orderFuncs.push(o => {
+            const val = get(o, path);
+            if (val === null || val === undefined) return -Infinity;
+            return parseInt(val, 10) || 0;
+          });
+          ascOrDescArray.push(direction);
+        } else {
+          // Default sorting
+          // First sort by existence (non-nulls first)
+          orderFuncs.push(r => {
+            const val = get(r, path);
+            return val !== null && val !== undefined ? 1 : 0;
+          });
+          ascOrDescArray.push("desc"); // Always put nulls at the bottom
+
+          // Then sort by actual value
+          orderFuncs.push(r => {
+            const val = get(r, path);
+            if (val === null || val === undefined) return -Infinity;
+
+            // For string sorting, implement natural sort
+            if (isString(val)) {
+              return val.toLowerCase().replace(/(\d+)/g, num =>
+                // Pad numbers with leading zeros for proper natural sort
+                num.padStart(10, "0")
+              );
+            }
+            return val;
+          });
+          ascOrDescArray.push(direction);
         }
-        // Use natural sorting only for strings that contain numbers
-        if (isString(value) && /\d/.test(value)) {
-          // Return the value in a format that can be naturally sorted
-          // This effectively creates a sort key that respects natural ordering
-          return value.replace(/(\d+)/g, num => num.padStart(10, "0"));
-        }
-        return value;
-      });
-    });
-
-    // First sort normally
-    let sortedRecords = orderBy(records, iteratees, directions);
-
-    // Then ensure entries with a value for the field come before entries without a value
-    // for any field sorted in descending order
-    order_by.forEach(item => {
-      const field = Object.keys(item)[0];
-      const direction = item[field];
-
-      if (direction === "desc") {
-        // For descending sorts, we want entries with values to appear before entries without values
-        sortedRecords = [
-          ...sortedRecords.filter(
-            record => !isNull(record[field]) && record[field] !== undefined
-          ),
-          ...sortedRecords.filter(
-            record => isNull(record[field]) || record[field] === undefined
-          )
-        ];
       }
-    });
+    );
 
-    records = sortedRecords;
+    records = orderBy(records, orderFuncs, ascOrDescArray);
   }
   return records;
 }

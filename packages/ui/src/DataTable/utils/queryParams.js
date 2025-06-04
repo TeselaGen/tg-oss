@@ -53,7 +53,6 @@ function safeParse(val) {
     return val;
   }
 }
-
 export function getCurrentParamsFromUrl(location, isSimple) {
   let { search } = location;
   if (isSimple) {
@@ -239,6 +238,27 @@ export function makeDataTableHandlers({
   };
 }
 
+function cleanupFilters({ filters, ccFields }) {
+  (filters || []).forEach(filter => {
+    const { filterOn, filterValue } = filter;
+    const field = ccFields[filterOn];
+    if (field.type === "number" || field.type === "integer") {
+      filter.filterValue = Array.isArray(filterValue)
+        ? filterValue.map(val => Number(val))
+        : Number(filterValue);
+    }
+    if (
+      filter.selectedFilter === "inList" &&
+      typeof filter.filterValue === "number"
+    ) {
+      // if an inList value only has two items like
+      // 2.3 then it will get parsed to a number and
+      // break, convert it back to a string here
+      filter.filterValue = filter.filterValue.toString();
+    }
+  });
+}
+
 export function getQueryParams({
   currentParams,
   urlConnected,
@@ -266,6 +286,10 @@ export function getQueryParams({
       ...currentParams
     };
     let { page, pageSize, searchTerm, filters, order } = tableQueryParams;
+    const ccFields = getFieldsMappedByCCDisplayName(schema);
+
+    cleanupFilters({ filters, ccFields });
+
     if (page <= 0 || isNaN(page)) {
       page = undefined;
     }
@@ -283,7 +307,6 @@ export function getQueryParams({
 
     const cleanedOrder = [];
     if (order && order.length) {
-      const ccFields = getFieldsMappedByCCDisplayName(schema);
       order.forEach(orderVal => {
         const ccDisplayName = orderVal.replace(/^-/gi, "");
         const schemaForField = ccFields[ccDisplayName];
@@ -302,15 +325,6 @@ export function getQueryParams({
         }
       });
     }
-    // by default make sort by updated at
-    if (!cleanedOrder.length) {
-      cleanedOrder.push("-updatedAt");
-    }
-
-    // in case entries that have the same value in the column being sorted on
-    // fall back to id as a secondary sort to make sure ordering happens correctly
-    cleanedOrder.push(isCodeModel ? "code" : window.__sortId || "id");
-
     let toRet = {
       //these are values that might be generally useful for the wrapped component
       page,
@@ -332,18 +346,39 @@ export function getQueryParams({
     if (isLocalCall) {
       //if the table is local (aka not directly connected to a db) then we need to
       //handle filtering/paging/sorting all on the front end
+      const newEnts = filterLocalEntitiesToHasura(entities, {
+        where,
+        order_by: (Array.isArray(order_by) ? order_by : [order_by]).map(obj => {
+          const path = Object.keys(obj)[0];
+          return {
+            path,
+            direction: obj[path],
+            ownProps,
+            ...ccFields[path]
+          };
+        }),
+        limit,
+        offset,
+        isInfinite
+      });
+
       toRet = {
         ...toRet,
-        ...filterLocalEntitiesToHasura(entities, {
-          where,
-          order_by,
-          limit,
-          offset,
-          isInfinite
-        })
+        ...newEnts
       };
       return toRet;
     } else {
+      if (!order_by.length) {
+        // if no order by is specified, we will default to sorting by updatedAt
+        // this is useful for models that do not have a code field
+        order_by.push({ updatedAt: "desc" });
+      }
+      // in case entries that have the same value in the column being sorted on
+      // fall back to id as a secondary sort to make sure ordering happens correctly
+      order_by.push(
+        isCodeModel ? { code: "desc" } : { [window.__sortId || "id"]: "desc" }
+      );
+
       return {
         ...toRet,
         variables: {

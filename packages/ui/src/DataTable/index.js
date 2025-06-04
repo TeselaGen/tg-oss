@@ -92,9 +92,9 @@ import { viewColumn, openColumn, multiViewColumn } from "./viewColumn";
 import convertSchema from "./utils/convertSchema";
 import TableFormTrackerContext from "./TableFormTrackerContext";
 import {
-  getCurrentParamsFromUrl,
   getQueryParams,
   makeDataTableHandlers,
+  getCurrentParamsFromUrl,
   setCurrentParamsOnUrl
 } from "./utils/queryParams";
 import { useColumns } from "./Columns";
