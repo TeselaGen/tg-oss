@@ -44,8 +44,7 @@
       "inputs": ["default", "^production"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "bun test",
-        "args": ["--run"]
+        "command": "bun test"
       },
       "configurations": {
         "watch": {

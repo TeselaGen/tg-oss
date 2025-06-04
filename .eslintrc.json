@@ -14,7 +14,12 @@
         "@nx/dependency-checks": [
           "error",
           {
-            "ignoredDependencies": ["recompose"]
+            "ignoredDependencies": [
+              "recompose",
+              "buffer",
+              "string_decoder",
+              "@teselagen/react-table"
+            ]
           }
         ]
       }

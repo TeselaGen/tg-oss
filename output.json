@@ -93,15 +93,10 @@
                 }
               },
               "options": {
-                "command": "cd packages/sequence-utils && yarn vitest --changed --config vite.config.ts",
-                "args": ["--run"]
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             }
           },
@@ -242,15 +237,10 @@
                 }
               },
               "options": {
-                "command": "cd packages/bounce-loader && yarn vitest --changed --config vite.config.ts",
-                "args": ["--run"]
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             },
             "version": {
@@ -358,15 +348,10 @@
                 }
               },
               "options": {
-                "command": "cd packages/bio-parsers && yarn vitest --changed --config vite.config.ts",
-                "args": ["--run"]
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             }
           },
@@ -460,15 +445,10 @@
                 }
               },
               "options": {
-                "command": "cd packages/range-utils && yarn vitest --changed --config vite.config.ts",
-                "args": ["--run"]
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             }
           },
@@ -591,15 +571,10 @@
                 }
               },
               "options": {
-                "command": "cd packages/file-utils && yarn vitest --changed --config vite.config.ts",
-                "args": ["--run"]
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             }
           },
@@ -832,15 +807,10 @@
                 }
               },
               "options": {
-                "command": "cd packages/ove && yarn vitest --changed --config vite.config.ts",
-                "args": ["--run"]
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             },
             "version": {
@@ -997,15 +967,10 @@
                 }
               },
               "options": {
-                "command": "cd packages/ui && yarn vitest --changed --config vite.config.ts",
-                "args": ["--run"]
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             },
             "version": {

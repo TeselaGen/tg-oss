@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-useless-constructor */
+/* eslint-disable @typescript-eslint/no-empty-function */
 // test-setup.js
 import { JSDOM } from "jsdom";
 import { beforeEach, afterEach } from "bun:test";
