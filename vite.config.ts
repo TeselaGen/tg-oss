@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { defineConfig } from "vite";
 
 import viteTsConfigPaths from "vite-tsconfig-paths";
@@ -92,7 +91,6 @@ const conf = ({
     },
     test: {
       globals: true,
-      cacheDir: "../../node_modules/.vitest",
       environment: testEnvironment || "node",
       include: [
         "src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",

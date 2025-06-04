@@ -301,10 +301,12 @@ export const filterFilesInZip = async (file, accepted) => {
   }
 
   if (acceptedFiles.length && acceptedFiles.length < zipExtracted.length)
-    window.toastr.warning("Some files don't have the proper file extension.");
+    window?.toastr?.warning?.(
+      "Some files don't have the proper file extension."
+    );
 
   if (!acceptedFiles.length)
-    window.toastr.warning("No files with the proper extension were found.");
+    window?.toastr?.warning?.("No files with the proper extension were found.");
 
   return acceptedFiles;
 };

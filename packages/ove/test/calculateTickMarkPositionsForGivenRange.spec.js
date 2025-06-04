@@ -8,6 +8,6 @@ describe("calculateTickMarkPositionsForGivenRange", () => {
       range: { start: 500, end: 60 },
       sequenceLength: 540
     });
-    expect(res[0]).to.eql(509);
+    expect(res[0]).toEqual(509);
   });
 });

@@ -41,10 +41,10 @@
       }
     },
     "test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "inputs": ["default", "^production"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd {projectRoot} && yarn vitest --changed --config vite.config.ts",
+        "command": "bun test",
         "args": ["--run"]
       },
       "configurations": {
@@ -107,7 +107,6 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)"
     ],
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"]

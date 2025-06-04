@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import fs from "node:fs";
 import react from "@vitejs/plugin-react";
@@ -170,15 +169,6 @@ export default ({ name, dir }: { name: string; dir: string }) =>
           "redux-form": path.join(__dirname, "node_modules/redux-form"),
           redux: path.join(__dirname, "node_modules/redux")
         }
-      },
-      test: {
-        globals: true,
-        cache: {
-          dir: "../../node_modules/.vitest"
-        },
-        setupFiles: ["../../vitest.setup.ts"],
-        environment: "jsdom",
-        include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"]
       }
     };
   });

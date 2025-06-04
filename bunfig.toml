@@ -1,0 +1,7 @@
+
+
+# bunfig.toml
+
+[test]
+root = "packages"
+preload = ["./test-setup.js"]
