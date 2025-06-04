@@ -76,7 +76,7 @@ function applyWhereClause(records, where) {
           return false;
         }
       } else {
-        const value = record[key];
+        const value = get(record, key);
         const conditions = filter[key];
 
         // Handle nested object properties

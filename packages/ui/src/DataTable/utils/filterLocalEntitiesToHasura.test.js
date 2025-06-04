@@ -57,6 +57,14 @@ describe("filterLocalEntitiesToHasura", () => {
     expect(result.entitiesAcrossPages).toEqual([records[0]]);
     expect(result.entityCount).toBe(1);
   });
+  it("should filter num fields by _eq", () => {
+    const result = filterLocalEntitiesToHasura(records, {
+      where: { age: { _eq: 30 } }
+    });
+    expect(result.entities).toEqual([records[0]]);
+    expect(result.entitiesAcrossPages).toEqual([records[0]]);
+    expect(result.entityCount).toBe(1);
+  });
 
   it("should filter by _neq", () => {
     const result = filterLocalEntitiesToHasura(records, {
