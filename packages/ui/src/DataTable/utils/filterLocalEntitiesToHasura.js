@@ -344,13 +344,12 @@ function applyOrderBy(records, _order_by) {
 
 function restoreEntitiesFromLocalFilter(ents) {
   return ents.map(entity => {
-    const newEnt = { ...entity };
     forEach(entity, (val, key) => {
       if (key.startsWith("___original___")) {
-        newEnt[key.slice("___original___".length)] = val;
-        delete newEnt[key];
+        entity[key.slice("___original___".length)] = val;
+        delete entity[key];
       }
     });
-    return newEnt;
+    return entity;
   });
 }

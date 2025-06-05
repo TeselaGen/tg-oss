@@ -420,15 +420,16 @@ export function getQueryParams({
 function prepEntitiesForLocalFilter({ entities, ccFields }) {
   // Prepare entities for local filtering by mapping over them and applying necessary transformations
   const r = entities.map(entity => {
+    const newEnt = { ...entity };
     // Apply any necessary transformations using ccFields
     forEach(ccFields, ({ getValueToFilterOn, path }) => {
       if (getValueToFilterOn) {
-        entity["___original___" + path] = entity[path];
-        const value = getValueToFilterOn(entity);
-        entity[path] = value;
+        newEnt["___original___" + path] = newEnt[path];
+        const value = getValueToFilterOn(newEnt);
+        newEnt[path] = value;
       }
     });
-    return entity;
+    return newEnt;
   });
   return r;
 }
