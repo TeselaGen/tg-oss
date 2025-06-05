@@ -249,21 +249,22 @@ function applyOrderBy(records, _order_by) {
         direction = direction || "desc";
 
         if (sortFn) {
-          // Handle specifically custom sort functions
-          // First make sure we have an array of sort functions
+          // Allow sortFn to be a function, a string, or an array of functions/strings
           const sortFnArray = Array.isArray(sortFn) ? sortFn : [sortFn];
 
-          // For each sort function
           sortFnArray.forEach(fn => {
-            // First handle null check for this function's values
+            // If fn is a string, treat it as a path to get from the record
+            const getter = typeof fn === "function" ? fn : r => get(r, fn);
+
+            // First handle null check for this function's/string's values
             orderFuncs.push(r => {
-              const val = fn(r);
+              const val = getter(r);
               return val !== null && val !== undefined ? 1 : 0;
             });
             ascOrDescArray.push("desc"); // Always push nulls to the bottom
 
-            // Then the actual sort function
-            orderFuncs.push(fn);
+            // Then the actual sort function or path getter
+            orderFuncs.push(getter);
             ascOrDescArray.push(direction);
           });
         } else if (getValueToFilterOn) {
@@ -345,7 +346,7 @@ function applyOrderBy(records, _order_by) {
 function restoreEntitiesFromLocalFilter(ents) {
   return ents.map(entity => {
     forEach(entity, (val, key) => {
-      if (key.startsWith("___original___")) {
+      if (key.startsWith?.("___original___")) {
         entity[key.slice("___original___".length)] = val;
         delete entity[key];
       }

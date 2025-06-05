@@ -1216,4 +1216,70 @@ describe("filterLocalEntitiesToHasura", () => {
     ]);
     expect(result.entityCount).toBe(5);
   });
+  it("should order using array of string paths in sortFn", () => {
+    // Records with rowPosition and columnPosition properties
+    const gridRecords = [
+      { id: 1, name: "Item A", rowPosition: 2, columnPosition: 3 },
+      { id: 2, name: "Item B", rowPosition: 1, columnPosition: 2 },
+      { id: 3, name: "Item C", rowPosition: 1, columnPosition: 1 },
+      { id: 4, name: "Item D", rowPosition: 2, columnPosition: 1 },
+      { id: 5, name: "Item E", rowPosition: 0, columnPosition: 0 }
+    ];
+
+    const result = filterLocalEntitiesToHasura(gridRecords, {
+      order_by: [
+        { path: "rowPosition", direction: "asc" },
+        { path: "columnPosition", direction: "asc" }
+      ]
+    });
+
+    // Should sort first by rowPosition ascending, then by columnPosition ascending
+    expect(result.entities).toEqual([
+      gridRecords[4], // rowPos: 0, colPos: 0
+      gridRecords[2], // rowPos: 1, colPos: 1
+      gridRecords[1], // rowPos: 1, colPos: 2
+      gridRecords[3], // rowPos: 2, colPos: 1
+      gridRecords[0] // rowPos: 2, colPos: 3
+    ]);
+    expect(result.entitiesAcrossPages).toEqual([
+      gridRecords[4],
+      gridRecords[2],
+      gridRecords[1],
+      gridRecords[3],
+      gridRecords[0]
+    ]);
+    expect(result.entityCount).toBe(5);
+  });
+  it("should handle nulls and missing properties with array of string paths in sortFn", () => {
+    // Records with some missing or null rowPosition and columnPosition properties
+    const gridRecords = [
+      { id: 1, name: "Item A", rowPosition: 2, columnPosition: 3 },
+      { id: 2, name: "Item B", rowPosition: null, columnPosition: 2 },
+      { id: 3, name: "Item C", rowPosition: 1, columnPosition: null },
+      { id: 4, name: "Item D" }, // Missing both properties
+      { id: 5, name: "Item E", rowPosition: 0, columnPosition: 0 }
+    ];
+
+    const result = filterLocalEntitiesToHasura(gridRecords, {
+      order_by: { sortFn: ["rowPosition", "columnPosition"], direction: "asc" }
+    });
+
+    // Should sort first by rowPosition ascending, then by columnPosition ascending
+    // Null or undefined values should be placed at the end
+    expect(result.entities).toEqual([
+      gridRecords[4], // rowPos: 0, colPos: 0
+      gridRecords[2], // rowPos: 1, colPos: null
+      gridRecords[0], // rowPos: 2, colPos: 3
+      gridRecords[1], // rowPos: null, colPos: 2
+      gridRecords[3] // rowPos: undefined, colPos: undefined
+    ]);
+    expect(result.entitiesAcrossPages).toEqual([
+      gridRecords[4],
+      gridRecords[2],
+      gridRecords[0],
+      gridRecords[1],
+      gridRecords[3]
+    ]);
+    expect(result.entityCount).toBe(5);
+  });
 });
