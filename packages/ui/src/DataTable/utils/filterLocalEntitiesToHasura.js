@@ -11,7 +11,8 @@ import {
   has,
   orderBy,
   endsWith,
-  get
+  get,
+  forEach
 } from "lodash-es";
 
 export function filterLocalEntitiesToHasura(
@@ -29,6 +30,7 @@ export function filterLocalEntitiesToHasura(
   if (order_by) {
     filteredRecords = applyOrderBy(filteredRecords, order_by);
   }
+  filteredRecords = restoreEntitiesFromLocalFilter(filteredRecords);
 
   // Store the complete filtered and ordered records for pagination info
   const allFilteredRecords = [...filteredRecords];
@@ -338,4 +340,17 @@ function applyOrderBy(records, _order_by) {
     records = orderBy(records, orderFuncs, ascOrDescArray);
   }
   return records;
+}
+
+function restoreEntitiesFromLocalFilter(ents) {
+  return ents.map(entity => {
+    const newEnt = { ...entity };
+    forEach(entity, (val, key) => {
+      if (key.startsWith("___original___")) {
+        newEnt[key.slice("___original___".length)] = val;
+        delete newEnt[key];
+      }
+    });
+    return newEnt;
+  });
 }

@@ -1,5 +1,5 @@
 import queryString from "qs";
-import { uniqBy, clone, camelCase } from "lodash-es";
+import { uniqBy, clone, camelCase, forEach } from "lodash-es";
 import {
   getFieldsMappedByCCDisplayName,
   tableQueryParamsToHasuraClauses
@@ -346,21 +346,26 @@ export function getQueryParams({
     if (isLocalCall) {
       //if the table is local (aka not directly connected to a db) then we need to
       //handle filtering/paging/sorting all on the front end
-      const newEnts = filterLocalEntitiesToHasura(entities, {
-        where,
-        order_by: (Array.isArray(order_by) ? order_by : [order_by]).map(obj => {
-          const path = Object.keys(obj)[0];
-          return {
-            path,
-            direction: obj[path],
-            ownProps,
-            ...ccFields[path]
-          };
-        }),
-        limit,
-        offset,
-        isInfinite
-      });
+      const newEnts = filterLocalEntitiesToHasura(
+        prepEntitiesForLocalFilter({ entities, ccFields }),
+        {
+          where,
+          order_by: (Array.isArray(order_by) ? order_by : [order_by]).map(
+            obj => {
+              const path = Object.keys(obj)[0];
+              return {
+                path,
+                direction: obj[path],
+                ownProps,
+                ...ccFields[path]
+              };
+            }
+          ),
+          limit,
+          offset,
+          isInfinite
+        }
+      );
 
       toRet = {
         ...toRet,
@@ -410,4 +415,20 @@ export function getQueryParams({
       throw e;
     }
   }
+}
+
+function prepEntitiesForLocalFilter({ entities, ccFields }) {
+  // Prepare entities for local filtering by mapping over them and applying necessary transformations
+  const r = entities.map(entity => {
+    // Apply any necessary transformations using ccFields
+    forEach(ccFields, ({ getValueToFilterOn, path }) => {
+      if (getValueToFilterOn) {
+        entity["___original___" + path] = entity[path];
+        const value = getValueToFilterOn(entity);
+        entity[path] = value;
+      }
+    });
+    return entity;
+  });
+  return r;
 }
