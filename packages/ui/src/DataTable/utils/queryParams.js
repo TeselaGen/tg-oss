@@ -346,7 +346,7 @@ export function getQueryParams({
     if (isLocalCall) {
       //if the table is local (aka not directly connected to a db) then we need to
       //handle filtering/paging/sorting all on the front end
-      const newEnts = filterLocalEntitiesToHasura(
+      const r = filterLocalEntitiesToHasura(
         prepEntitiesForLocalFilter({ entities, ccFields }),
         {
           where,
@@ -369,7 +369,7 @@ export function getQueryParams({
 
       toRet = {
         ...toRet,
-        ...newEnts
+        ...r
       };
       return toRet;
     } else {
@@ -420,16 +420,22 @@ export function getQueryParams({
 function prepEntitiesForLocalFilter({ entities, ccFields }) {
   // Prepare entities for local filtering by mapping over them and applying necessary transformations
   const r = entities.map(entity => {
-    const newEnt = { ...entity };
+    const toSpread = {};
+    let hasChanged = false;
     // Apply any necessary transformations using ccFields
     forEach(ccFields, ({ getValueToFilterOn, path }) => {
       if (getValueToFilterOn) {
-        newEnt["___original___" + path] = newEnt[path];
-        const value = getValueToFilterOn(newEnt);
-        newEnt[path] = value;
+        hasChanged = true;
+        toSpread["___original___" + path] = entity[path];
+        const value = getValueToFilterOn(entity);
+        toSpread[path] = value;
       }
     });
-    return newEnt;
+    if (hasChanged) {
+      // If there are any transformations, spread them into the entity
+      return { ...entity, ...toSpread };
+    }
+    return entity;
   });
   return r;
 }
