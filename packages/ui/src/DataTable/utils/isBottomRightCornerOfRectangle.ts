@@ -5,6 +5,13 @@ export const isBottomRightCornerOfRectangle = ({
   lastCellIndex,
   entityMap,
   pathToIndex
+}: {
+  cellId: string;
+  selectionGrid: (string | undefined)[][];
+  lastRowIndex: number;
+  lastCellIndex: number;
+  entityMap: Record<string, { i: number }>;
+  pathToIndex: Record<string, number>;
 }) => {
   selectionGrid.forEach(row => {
     // remove undefineds from start of row

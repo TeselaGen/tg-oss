@@ -1,4 +1,4 @@
-export function isEntityClean(e) {
+export function isEntityClean(e: { [key: string]: unknown } | null): boolean {
   if (typeof e !== "object" || e === null) {
     return true; // or return false depending on what you want for non-object inputs
   }
