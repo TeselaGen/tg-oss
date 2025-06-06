@@ -381,7 +381,7 @@ export function getQueryParams({
       // in case entries that have the same value in the column being sorted on
       // fall back to id as a secondary sort to make sure ordering happens correctly
       order_by.push(
-        isCodeModel ? { code: "desc" } : { [window.__sortId || "id"]: "desc" }
+        isCodeModel ? { code: "asc" } : { [window.__sortId || "id"]: "asc" }
       );
 
       return {
