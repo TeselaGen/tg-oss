@@ -1,7 +1,27 @@
 import { camelCase } from "lodash-es";
 import { startCase, keyBy, map } from "lodash-es";
 
-function convertSchema(schema) {
+type Field = {
+  type?: string;
+  displayName?: string;
+  path?: string;
+  filterDisabled?: boolean;
+  sortDisabled?: boolean;
+};
+
+type Schema = { fields: (Field | string)[] };
+
+type CompleteField = Field & {
+  type: string;
+  displayName: string;
+  path: string;
+};
+
+type CompleteSchema = {
+  fields: CompleteField[];
+};
+
+const convertSchema = (schema: Schema): CompleteSchema => {
   let schemaToUse = schema;
   if (!schemaToUse.fields && Array.isArray(schema)) {
     schemaToUse = {
@@ -12,40 +32,30 @@ function convertSchema(schema) {
     ...schemaToUse
   };
   schemaToUse.fields = schemaToUse.fields.map((field, i) => {
-    let fieldToUse = field;
     if (typeof field === "string") {
-      fieldToUse = {
+      return {
         displayName: startCase(camelCase(field)),
         path: field,
         type: "string"
       };
-    } else if (!field.type) {
-      fieldToUse = {
-        ...field,
-        type: "string"
-      };
+    } else {
+      const fieldToUse = { ...(field as Field) };
+      fieldToUse.type = fieldToUse.type || "string";
+      fieldToUse.displayName =
+        fieldToUse.displayName || startCase(camelCase(fieldToUse.path || ""));
+      // paths are needed for column resizing
+      if (!fieldToUse.path) {
+        fieldToUse.filterDisabled = true;
+        fieldToUse.sortDisabled = true;
+        fieldToUse.path = "fake-path" + i;
+      }
+      return fieldToUse as CompleteField;
     }
-    if (!fieldToUse.displayName) {
-      fieldToUse = {
-        ...fieldToUse,
-        displayName: startCase(camelCase(fieldToUse.path))
-      };
-    }
-    // paths are needed for column resizing
-    if (!fieldToUse.path) {
-      fieldToUse = {
-        ...fieldToUse,
-        filterDisabled: true,
-        sortDisabled: true,
-        path: "fake-path" + i
-      };
-    }
-    return fieldToUse;
   });
-  return schemaToUse;
-}
+  return schemaToUse as CompleteSchema;
+};
 
-export function mergeSchemas(_originalSchema, _overrideSchema) {
+export function mergeSchemas(_originalSchema: Schema, _overrideSchema: Schema) {
   const originalSchema = convertSchema(_originalSchema);
   const overrideSchema = convertSchema(_overrideSchema);
 
