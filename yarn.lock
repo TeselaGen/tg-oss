@@ -3755,15 +3755,13 @@
   version "0.4.28"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-f4ccd3b9-fc98-4306-adf1-1f987879cbfe-1749067850035/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-f4ccd3b9-fc98-4306-adf1-1f987879cbfe-1749067850035/node_modules/@teselagen/sequence-utils"
-    buffer "5.7.1"
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-eb524613-78f4-4e96-bbd7-ca70e276bb9d-1749496659711/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-eb524613-78f4-4e96-bbd7-ca70e276bb9d-1749496659711/node_modules/@teselagen/sequence-utils"
     bufferpack "^0.0.6"
     color "3.2.1"
     fast-xml-parser "^4.2.5"
     fflate "^0.8.0"
     lodash-es "^4.17.21"
-    string_decoder "^1.3.0"
     validate.io-nonnegative-integer-array "^1.0.1"
 
 "@teselagen/file-utils@file:packages/file-utils":
@@ -3787,18 +3785,10 @@
   dependencies:
     prop-types "15"
 
-"@teselagen/react-table@6.10.16":
-  version "6.10.16"
-  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.16.tgz#fbc4ba79d4964368ec07e911c1e5fe171c9b0758"
-  integrity sha512-oyS/F/rDtE9dgXvfuoMHh7ag/ZksxkexmnUTYrm6tthXRU/wVn6S6MrfSztjiYB0TaGi9aFCZB4f/onNTaRVcQ==
-  dependencies:
-    "@teselagen/react-list" "0.8.18"
-    classnames "^2.2.5"
-
 "@teselagen/sequence-utils@file:packages/sequence-utils":
   version "0.3.31"
   dependencies:
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.31-80a93f3f-d052-4a12-8ceb-f5055cd079a0-1749067850036/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.31-5a5d2007-74e1-48ea-bb2a-4ada4c699529-1749496659712/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.4.1"
     lodash-es "^4.17.21"
@@ -3806,7 +3796,7 @@
     string-splice "^1.3.0"
 
 "@teselagen/ui@file:packages/ui":
-  version "0.8.6-beta.14"
+  version "0.8.6-beta.23"
   dependencies:
     "@blueprintjs/core" "3.54.0"
     "@blueprintjs/datetime" "^3.24.1"
@@ -3816,8 +3806,7 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.8.6-beta.14-35594016-d871-4728-a8dc-adad9b9ac044-1749067850036/node_modules/@teselagen/file-utils"
-    "@teselagen/react-table" "6.10.16"
+    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.8.6-beta.23-e1d8cc08-d776-4ccb-a5aa-cb3b47656b69-1749496659712/node_modules/@teselagen/file-utils"
     chance "^1.1.11"
     classnames "^2.3.2"
     color "^3.2.1"
@@ -5690,7 +5679,7 @@ ci-info@^4.1.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-4.1.0.tgz#92319d2fa29d2620180ea5afed31f589bc98cf83"
   integrity sha512-HutrvTNsF48wnxkzERIXOe5/mlcfFcbfCmwcg6CJnizbSue78AbDt+1cgl26zwn61WFxhcPykPfZrbqjGmBb4A==
 
-classnames@^2.2, classnames@^2.2.5, classnames@^2.3.2:
+classnames@^2.2, classnames@^2.3.2:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
   integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
@@ -12762,7 +12751,7 @@ string.prototype.trimstart@^1.0.8:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
-string_decoder@^1.1.1, string_decoder@^1.3.0:
+string_decoder@^1.1.1:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.3.0.tgz#42f114594a46cf1a8e30b0a84f56c78c3edac21e"
   integrity sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==

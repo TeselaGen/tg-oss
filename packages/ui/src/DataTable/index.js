@@ -43,7 +43,7 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import classNames from "classnames";
 import scrollIntoView from "dom-scroll-into-view";
-import ReactTable from "@teselagen/react-table";
+import ReactTable, { VIRTUALIZE_CUTOFF_LENGTH } from "@teselagen/react-table";
 import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
 import { useDispatch, useSelector } from "react-redux";
@@ -141,6 +141,7 @@ const DataTable = ({
   );
   const tableRef = useRef();
   const alreadySelected = useRef(false);
+  const [noVirtual, setNoVirtual] = useState(false);
   const [onlyShowRowsWErrors, setOnlyShowRowsWErrors] = useState(false);
   const [entitiesUndoRedoStack, setEntitiesUndoRedoStack] = useState({
     currentVersion: 0
@@ -1145,70 +1146,94 @@ const DataTable = ({
     updateValidation
   ]);
 
-  const handleCopySelectedCells = useCallback(
-    e => {
-      // if the current selection is consecutive cells then copy with
-      // tabs between. if not then just select primary selected cell
-      if (isEmpty(selectedCells)) return;
-      const pathToIndex = getFieldPathToIndex(schema);
-      const entityIdToEntity = getEntityIdToEntity(entities);
-      const selectionGrid = [];
-      let firstRowIndex;
-      let firstCellIndex;
-      Object.keys(selectedCells).forEach(key => {
-        const [rowId, path] = key.split(":");
-        const eInfo = entityIdToEntity[rowId];
-        if (eInfo) {
-          if (firstRowIndex === undefined || eInfo.i < firstRowIndex) {
-            firstRowIndex = eInfo.i;
-          }
-          if (!selectionGrid[eInfo.i]) {
-            selectionGrid[eInfo.i] = [];
-          }
-          const cellIndex = pathToIndex[path];
-          if (firstCellIndex === undefined || cellIndex < firstCellIndex) {
-            firstCellIndex = cellIndex;
-          }
-          selectionGrid[eInfo.i][cellIndex] = true;
+  const waitUntilAllRowsAreRendered = useCallback(() => {
+    return new Promise(resolve => {
+      const interval = setInterval(() => {
+        const allRowEls =
+          tableRef.current?.tableRef?.querySelectorAll(".rt-tr-group");
+        if (allRowEls?.length === entities.length) {
+          clearInterval(interval);
+          resolve();
         }
-      });
-      if (firstRowIndex === undefined) return;
-      const allRows = getAllRows(e);
-      let fullCellText = "";
-      const fullJson = [];
-      times(selectionGrid.length, i => {
-        const row = selectionGrid[i];
-        if (fullCellText) {
-          fullCellText += "\n";
-        }
-        if (!row) {
-          return;
-        } else {
-          const jsonRow = [];
-          // ignore header
-          let [rowCopyText, json] = getRowCopyText(allRows[i + 1]);
-          rowCopyText = rowCopyText.split("\t");
-          times(row.length, i => {
-            const cell = row[i];
-            if (cell) {
-              fullCellText += rowCopyText[i];
-              jsonRow.push(json[i]);
-            }
-            if (i !== row.length - 1 && i >= firstCellIndex)
-              fullCellText += "\t";
-          });
-          fullJson.push(jsonRow);
-        }
-      });
-      if (!fullCellText) return window.toastr.warning("No text to copy");
+      }, 50);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-      handleCopyHelper(fullCellText, fullJson, "Selected cells copied");
-    },
-    [entities, selectedCells, schema]
-  );
+  const handleCopySelectedCells = useCallback(async () => {
+    // if the current selection is consecutive cells then copy with
+    // tabs between. if not then just select primary selected cell
+    if (isEmpty(selectedCells)) return;
+
+    // Temporarily disable virtualization for large tables
+    if (entities.length > VIRTUALIZE_CUTOFF_LENGTH) {
+      setNoVirtual(true);
+      await waitUntilAllRowsAreRendered();
+    }
+
+    const pathToIndex = getFieldPathToIndex(schema);
+    const entityIdToEntity = getEntityIdToEntity(entities);
+    const selectionGrid = [];
+    let firstRowIndex;
+    let firstCellIndex;
+    Object.keys(selectedCells).forEach(key => {
+      const [rowId, path] = key.split(":");
+      const eInfo = entityIdToEntity[rowId];
+      if (eInfo) {
+        if (firstRowIndex === undefined || eInfo.i < firstRowIndex) {
+          firstRowIndex = eInfo.i;
+        }
+        if (!selectionGrid[eInfo.i]) {
+          selectionGrid[eInfo.i] = [];
+        }
+        const cellIndex = pathToIndex[path];
+        if (firstCellIndex === undefined || cellIndex < firstCellIndex) {
+          firstCellIndex = cellIndex;
+        }
+        selectionGrid[eInfo.i][cellIndex] = true;
+      }
+    });
+    if (firstRowIndex === undefined) return;
+    const allRows = getAllRows(tableRef);
+    let fullCellText = "";
+    const fullJson = [];
+    times(selectionGrid.length, i => {
+      const row = selectionGrid[i];
+      if (fullCellText) {
+        fullCellText += "\n";
+      }
+      if (!row) {
+        return;
+      } else {
+        const jsonRow = [];
+        // ignore header
+        let [rowCopyText, json] = getRowCopyText(allRows[i + 1]);
+        rowCopyText = rowCopyText.split("\t");
+        times(row.length, i => {
+          const cell = row[i];
+          if (cell) {
+            fullCellText += rowCopyText[i];
+            jsonRow.push(json[i]);
+          }
+          if (i !== row.length - 1 && i >= firstCellIndex) fullCellText += "\t";
+        });
+        fullJson.push(jsonRow);
+      }
+    });
+    if (!fullCellText) return window.toastr.warning("No text to copy");
+
+    handleCopyHelper(fullCellText, fullJson, "Selected cells copied");
+
+    // Re-enable virtualization if it was disabled
+    setNoVirtual(false);
+  }, [entities, selectedCells, schema, waitUntilAllRowsAreRendered]);
 
   const handleCopySelectedRows = useCallback(
-    (selectedRecords, e) => {
+    async selectedRecords => {
+      if (entities.length > VIRTUALIZE_CUTOFF_LENGTH) {
+        setNoVirtual(true);
+        await waitUntilAllRowsAreRendered();
+      }
       const idToIndex = entities.reduce((acc, e, i) => {
         acc[e.id || e.code] = i;
         return acc;
@@ -1223,10 +1248,10 @@ const DataTable = ({
       if (!rowNumbersToCopy.length) return;
       rowNumbersToCopy.unshift(0); //add in the header row
       try {
-        const allRowEls = getAllRows(e);
+        const allRowEls = getAllRows(tableRef);
         if (!allRowEls) return;
         const rowEls = rowNumbersToCopy.map(i => allRowEls[i]);
-
+        if (window.Cypress) window.Cypress.__copiedRowsLength = rowEls.length;
         handleCopyRows(rowEls, {
           onFinishMsg: "Selected rows copied"
         });
@@ -1234,8 +1259,9 @@ const DataTable = ({
         console.error(`error:`, error);
         window.toastr.error("Error copying rows.");
       }
+      setNoVirtual(false);
     },
-    [entities]
+    [entities, waitUntilAllRowsAreRendered]
   );
 
   const handleCopyHotkey = useCallback(
@@ -2096,7 +2122,7 @@ const DataTable = ({
             <MenuItem
               key="copyColumn"
               onClick={() => {
-                handleCopyColumn(e, cellWrapper);
+                handleCopyColumn(tableRef, cellWrapper);
               }}
               text="Column"
             />
@@ -2106,7 +2132,7 @@ const DataTable = ({
               <MenuItem
                 key="copyColumnSelected"
                 onClick={() => {
-                  handleCopyColumn(e, cellWrapper, selectedRecords);
+                  handleCopyColumn(tableRef, cellWrapper, selectedRecords);
                 }}
                 text="Column (Selected)"
               />
@@ -2146,7 +2172,7 @@ const DataTable = ({
           <MenuItem
             key="copyFullTableRows"
             onClick={() => {
-              handleCopyTable(e);
+              handleCopyTable(tableRef);
               // loop through each cell in the row
             }}
             text="Table"
@@ -2754,6 +2780,7 @@ const DataTable = ({
       <ReactTable
         data={filteredEnts}
         ref={tableRef}
+        noVirtual={noVirtual}
         className={classNames({
           isCellEditable,
           "tg-table-loading": isLoading,
@@ -2835,7 +2862,8 @@ const DataTable = ({
       resizePersist,
       resized,
       rowsToShow,
-      style
+      style,
+      noVirtual
     ]
   );
 
@@ -3152,8 +3180,8 @@ const DataTable = ({
                 )}
               </div>
               <Button
-                onClick={e => {
-                  handleCopyTable(e, { isDownload: true });
+                onClick={() => {
+                  handleCopyTable(tableRef, { isDownload: true });
                 }}
                 data-tip="Download Table as CSV"
                 minimal
