@@ -13,6 +13,7 @@ export const updateAmbiguousOrLiteral = createAction(
   "updateAmbiguousOrLiteral"
 );
 export const updateDnaOrAA = createAction("updateDnaOrAA");
+export const updateMismatchesAllowed = createAction("updateMismatchesAllowed");
 export const updateMatchNumber = createAction("updateMatchNumber");
 
 // ------------------------------------
@@ -53,6 +54,13 @@ export default createMergedDefaultStateReducer(
         dnaOrAA: payload
       };
     },
+    [updateMismatchesAllowed]: (state, payload) => {
+      return {
+        ...state,
+        matchNumber: 0,
+        mismatchesAllowed: payload
+      };
+    },
     [updateSearchText]: (state, payload) => {
       return {
         ...state,
@@ -74,6 +82,7 @@ export default createMergedDefaultStateReducer(
     dnaOrAA: "DNA",
     ambiguousOrLiteral: "LITERAL",
     highlightAll: false,
+    mismatchesAllowed: 0,
     matchNumber: 0
   }
 );

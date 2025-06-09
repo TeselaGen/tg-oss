@@ -6,7 +6,8 @@ import {
   Popover,
   Position,
   TextArea,
-  Tooltip
+  Tooltip,
+  NumericInput
 } from "@blueprintjs/core";
 import withEditorProps from "../withEditorProps";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
@@ -50,6 +51,7 @@ export class FindBar extends React.Component {
       annotationVisibilityShow,
       updateAmbiguousOrLiteral,
       updateDnaOrAA,
+      updateMismatchesAllowed,
       updateMatchNumber: _updateMatchNumber,
       selectionLayerUpdate,
       annotationSearchMatches,
@@ -63,6 +65,7 @@ export class FindBar extends React.Component {
       ambiguousOrLiteral,
       matchesTotal = 0,
       matchNumber = 0,
+      mismatchesAllowed = 0,
       isInline
     } = findTool;
     const updateMatchNumber = (...args) => {
@@ -139,6 +142,32 @@ export class FindBar extends React.Component {
           </div>
         </InfoHelper>
       </div>,
+      <div
+        key="mismatchesAllowed"
+        style={{ marginTop: "8px", display: "flex", alignItems: "center" }}
+      >
+        <label style={{ marginRight: "8px" }}>Mismatches Allowed:</label>
+        <NumericInput
+          min={0}
+          max={10}
+          style={{ width: "60px" }}
+          value={mismatchesAllowed}
+          disabled={dnaOrAA !== "DNA" || ambiguousOrLiteral !== "LITERAL"}
+          onValueChange={value => {
+            const newValue = Math.max(0, parseInt(value, 10) || 0);
+            updateMismatchesAllowed(newValue);
+          }}
+        />
+        <InfoHelper style={{ marginLeft: 10 }}>
+          <div>
+            Number of mismatches allowed when searching DNA sequences with
+            literal matching.
+            <br />
+            <br />
+            Higher values may slow down search performance.
+          </div>
+        </InfoHelper>
+      </div>,
       <Switch
         key="highlightall"
         checked={highlightAll}
@@ -152,6 +181,7 @@ export class FindBar extends React.Component {
           Highlight All
         </Tooltip>
       </Switch>,
+
       ...(isMobile()
         ? []
         : [

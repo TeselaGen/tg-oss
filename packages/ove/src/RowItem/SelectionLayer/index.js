@@ -149,7 +149,8 @@ function SelectionLayer(props) {
                 )
               ];
             }
-            return [
+            // Create base selection layer element
+            const selectionElement = (
               <div
                 onClick={_onClick}
                 title={selectionMessage}
@@ -168,9 +169,46 @@ function SelectionLayer(props) {
                   background: color || topLevelColor,
                   height
                 }}
-              />,
-              ...caretSvgs
-            ];
+              ></div>
+            );
+
+            // Generate mismatch sub-regions if mismatchPositions exist
+            let mismatchElements = [];
+            if (
+              selectionLayer.mismatchPositions &&
+              selectionLayer.mismatchPositions.length > 0
+            ) {
+              // Calculate relative mismatch positions within this overlap
+              const relativeToOverlap = selectionLayer.mismatchPositions
+                .filter(pos => {
+                  // Adjust position based on overlap's relation to the original selection layer
+                  const absPos = pos + selectionLayer.start;
+                  return absPos >= overlap.start && absPos <= overlap.end;
+                })
+                .map(pos => {
+                  // Convert to position relative to this overlap segment
+                  return pos - (overlap.start - selectionLayer.start);
+                });
+
+              // Create a red highlight for each mismatch position
+              mismatchElements = relativeToOverlap.map((pos, i) => (
+                <div
+                  key={`${key}-mismatch-${i}`}
+                  className="veSelectionLayer veMismatchLayer notCaret"
+                  style={{
+                    width: charWidth,
+                    left: leftMargin + xStart + pos * charWidth,
+                    top: 0,
+                    height: height || "100%",
+                    background: "red",
+                    position: "absolute",
+                    opacity: 0.5
+                  }}
+                ></div>
+              ));
+            }
+
+            return [selectionElement, ...mismatchElements, ...caretSvgs];
           });
         } else {
           return null;
