@@ -20,6 +20,7 @@ const justSrc = [
   /\/src\/.*\.ts$/,
   /\/src\/.*\.tsx$/
 ];
+
 const sourceJSPattern = [
   ...justSrc,
   /\/demo\/.*\.js$/,
@@ -35,6 +36,24 @@ const rollupPlugin = (matchers: RegExp[]) => ({
     return undefined;
   }
 });
+
+const forceJSXLoaderForDemo = () =>
+  ({
+    name: "force-jsx-loader-for-demo",
+    enforce: "pre",
+    transform(code: string, id: string) {
+      if (/\/(src|demo)\/.*\.js$/.test(id)) {
+        return esbuild.transformSync(code, { loader: "jsx", sourcemap: true });
+      }
+      return;
+    }
+  }) as const;
+
+const esbuildLoaderOptions = {
+  ".js": "jsx",
+  ".ts": "ts",
+  ".tsx": "tsx"
+} as const;
 
 export default ({ name, dir }: { name: string; dir: string }) =>
   defineConfig(({ command, mode = "production" }) => {
@@ -93,10 +112,10 @@ export default ({ name, dir }: { name: string; dir: string }) =>
                 ]
               })
             ]
-          : [])
+          : []),
+        forceJSXLoaderForDemo()
       ],
       esbuild: {
-        loader: "jsx",
         include: sourceJSPattern,
         exclude: [],
         keepNames: true,
@@ -105,10 +124,7 @@ export default ({ name, dir }: { name: string; dir: string }) =>
       },
       optimizeDeps: {
         esbuildOptions: {
-          loader: {
-            ".js": "jsx",
-            ".ts": "tsx"
-          }
+          loader: esbuildLoaderOptions
         }
       },
       build: {
@@ -129,7 +145,7 @@ export default ({ name, dir }: { name: string; dir: string }) =>
               }
             }),
         rollupOptions: {
-          plugins: [rollupPlugin(justSrc)],
+          plugins: [rollupPlugin(sourceJSPattern)],
           output: {
             name: camelCase(name)
           },
@@ -161,7 +177,6 @@ export default ({ name, dir }: { name: string; dir: string }) =>
             __dirname,
             "node_modules/@blueprintjs/datetime"
           ),
-          // "@teselagen/react-table": path.join( "/Users/thomasrich/Sites/react-table"),
           "react-dom": path.join(__dirname, "node_modules/react-dom"),
           "react-redux": path.join(__dirname, "node_modules/react-redux"),
           "redux-form": path.join(__dirname, "node_modules/redux-form"),

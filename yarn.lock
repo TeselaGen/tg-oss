@@ -3748,8 +3748,8 @@
   version "0.4.28"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-0795e3ea-e0e6-4afc-8811-64755a7067ee-1749662839573/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-0795e3ea-e0e6-4afc-8811-64755a7067ee-1749662839573/node_modules/@teselagen/sequence-utils"
+    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-0024180e-52f3-4d81-92d9-a99d5d949d2f-1749664494000/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-0024180e-52f3-4d81-92d9-a99d5d949d2f-1749664494000/node_modules/@teselagen/sequence-utils"
     bufferpack "^0.0.6"
     color "3.2.1"
     fast-xml-parser "^4.2.5"
@@ -3789,7 +3789,7 @@
 "@teselagen/sequence-utils@file:packages/sequence-utils":
   version "0.3.31"
   dependencies:
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.31-be398f73-7e9b-4e2a-a9f4-83fd9992f23e-1749662839571/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.31-6802c8b2-4acf-4f6d-997f-c00beb20efdb-1749664494002/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.4.1"
     lodash-es "^4.17.21"
@@ -3807,7 +3807,7 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.8.6-beta.23-07738bfd-71a5-40e4-addc-807e1e828659-1749662839572/node_modules/@teselagen/file-utils"
+    "@teselagen/file-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.8.6-beta.23-1caf594f-82af-4a24-a051-f1f1bc0b3cb0-1749664494000/node_modules/@teselagen/file-utils"
     "@teselagen/react-table" "6.10.18"
     chance "^1.1.11"
     classnames "^2.3.2"
