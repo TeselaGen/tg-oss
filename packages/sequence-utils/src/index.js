@@ -40,6 +40,7 @@ export { default as getDegenerateRnaStringFromAAString } from "./getDegenerateRn
 export { default as getVirtualDigest } from "./getVirtualDigest";
 export { default as isEnzymeType2S } from "./isEnzymeType2S";
 export { default as insertGapsIntoRefSeq } from "./insertGapsIntoRefSeq";
+export { default as findApproxMatches } from "./findApproxMatches";
 export { default as adjustBpsToReplaceOrInsert } from "./adjustBpsToReplaceOrInsert";
 export { default as calculatePercentGC } from "./calculatePercentGC";
 export { default as calculateTm } from "./calculateTm";

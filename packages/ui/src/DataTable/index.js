@@ -92,10 +92,9 @@ import { viewColumn, openColumn, multiViewColumn } from "./viewColumn";
 import convertSchema from "./utils/convertSchema";
 import TableFormTrackerContext from "./TableFormTrackerContext";
 import {
-  getCCDisplayName,
-  getCurrentParamsFromUrl,
   getQueryParams,
   makeDataTableHandlers,
+  getCurrentParamsFromUrl,
   setCurrentParamsOnUrl
 } from "./utils/queryParams";
 import { useColumns } from "./Columns";
@@ -103,6 +102,7 @@ import { formValueSelector, change as _change } from "redux-form";
 import { throwFormError } from "../throwFormError";
 import { isObservableArray, toJS } from "mobx";
 import { isBeingCalledExcessively } from "../utils/isBeingCalledExcessively";
+import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -338,16 +338,6 @@ const DataTable = ({
 
   const queryParams = useMemo(() => {
     if (!isTableParamsConnected) {
-      const additionalFilterToUse =
-        typeof props.additionalFilter === "function"
-          ? props.additionalFilter
-          : () => props.additionalFilter;
-
-      const additionalOrFilterToUse =
-        typeof props.additionalOrFilter === "function"
-          ? props.additionalOrFilter
-          : () => props.additionalOrFilter;
-
       return getQueryParams({
         doNotCoercePageSize,
         currentParams,
@@ -357,8 +347,7 @@ const DataTable = ({
         schema: convertedSchema,
         isInfinite,
         isLocalCall,
-        additionalFilter: additionalFilterToUse,
-        additionalOrFilter: additionalOrFilterToUse,
+        additionalFilter: props.additionalFilter,
         noOrderError: props.noOrderError,
         isCodeModel: props.isCodeModel,
         ownProps: props
@@ -615,7 +604,7 @@ const DataTable = ({
                 : !val;
           });
         }
-        if (noValsForField) {
+        if (noValsForField && entities.length) {
           return {
             ...field,
             isHidden: true,
@@ -3117,7 +3106,7 @@ const DataTable = ({
                     try {
                       const allEntities = await safeQuery(fragment, {
                         variables: {
-                          filter: variables.filter,
+                          where: variables.where,
                           sort: variables.sort
                         },
                         canCancel: true

@@ -86,3 +86,4 @@ const noop = () => undefined;
 export { noop };
 export { default as showDialogOnDocBody } from "./showDialogOnDocBody";
 export { default as TableFormTrackerContext } from "./DataTable/TableFormTrackerContext";
+export { initializeHasuraWhereAndFilter } from "./DataTable/utils/initializeHasuraWhereAndFilter";

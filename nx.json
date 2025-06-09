@@ -41,10 +41,15 @@
       }
     },
     "test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "inputs": ["default", "^production"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd {projectRoot} && yarn vitest run --changed --config vite.config.ts"
+        "command": "bun test"
+      },
+      "configurations": {
+        "watch": {
+          "args": ["--watch"]
+        }
       }
     },
     "e2e": {
@@ -74,14 +79,14 @@
       }
     },
     "publish": {
-      "dependsOn": ["test", "build"],
+      "dependsOn": ["test", "build", "build_umd"],
       "executor": "nx:run-commands",
       "options": {
         "command": "node tools/scripts/publish.mjs {projectName} latest"
       }
     },
     "publish-beta": {
-      "dependsOn": ["test", "build"],
+      "dependsOn": ["test", "build", "build_umd"],
       "executor": "nx:run-commands",
       "options": {
         "command": "node tools/scripts/publish.mjs {projectName} beta"
@@ -101,7 +106,6 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)"
     ],
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"]

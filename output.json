@@ -56,7 +56,7 @@
                 "command": "node tools/scripts/publish.mjs sequence-utils latest"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "publish-beta": {
@@ -65,7 +65,7 @@
                 "command": "node tools/scripts/publish.mjs sequence-utils beta"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "lint": {
@@ -87,16 +87,16 @@
               "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "configurations": {},
+              "configurations": {
+                "watch": {
+                  "args": ["--watch"]
+                }
+              },
               "options": {
-                "command": "cd packages/sequence-utils && yarn vitest run --changed --config vite.config.ts"
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             }
           },
@@ -200,7 +200,7 @@
                 "command": "node tools/scripts/publish.mjs bounce-loader latest"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "publish-beta": {
@@ -209,7 +209,7 @@
                 "command": "node tools/scripts/publish.mjs bounce-loader beta"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "lint": {
@@ -231,16 +231,16 @@
               "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "configurations": {},
+              "configurations": {
+                "watch": {
+                  "args": ["--watch"]
+                }
+              },
               "options": {
-                "command": "cd packages/bounce-loader && yarn vitest run --changed --config vite.config.ts"
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             },
             "version": {
@@ -311,7 +311,7 @@
                 "command": "node tools/scripts/publish.mjs bio-parsers latest"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "publish-beta": {
@@ -320,7 +320,7 @@
                 "command": "node tools/scripts/publish.mjs bio-parsers beta"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "lint": {
@@ -342,16 +342,16 @@
               "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "configurations": {},
+              "configurations": {
+                "watch": {
+                  "args": ["--watch"]
+                }
+              },
               "options": {
-                "command": "cd packages/bio-parsers && yarn vitest run --changed --config vite.config.ts"
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             }
           },
@@ -408,7 +408,7 @@
                 "command": "node tools/scripts/publish.mjs range-utils latest"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "publish-beta": {
@@ -417,7 +417,7 @@
                 "command": "node tools/scripts/publish.mjs range-utils beta"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "lint": {
@@ -439,16 +439,16 @@
               "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "configurations": {},
+              "configurations": {
+                "watch": {
+                  "args": ["--watch"]
+                }
+              },
               "options": {
-                "command": "cd packages/range-utils && yarn vitest run --changed --config vite.config.ts"
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             }
           },
@@ -534,7 +534,7 @@
                 "command": "node tools/scripts/publish.mjs file-utils latest"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "publish-beta": {
@@ -543,7 +543,7 @@
                 "command": "node tools/scripts/publish.mjs file-utils beta"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "lint": {
@@ -565,16 +565,16 @@
               "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "configurations": {},
+              "configurations": {
+                "watch": {
+                  "args": ["--watch"]
+                }
+              },
               "options": {
-                "command": "cd packages/file-utils && yarn vitest run --changed --config vite.config.ts"
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             }
           },
@@ -697,7 +697,7 @@
                 "command": "node tools/scripts/publish.mjs ove latest"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "publish-beta": {
@@ -706,7 +706,7 @@
                 "command": "node tools/scripts/publish.mjs ove beta"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "build_umd": {
@@ -729,11 +729,11 @@
                   "mode": "production"
                 }
               },
-              "dependsOn": ["build_lib"],
               "options": {
                 "command": "cd packages/ove && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
+              "dependsOn": ["^build"],
               "inputs": ["production", "^production"],
               "outputs": ["{options.outDir}"],
               "executor": "nx:run-commands"
@@ -801,16 +801,16 @@
               "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "configurations": {},
+              "configurations": {
+                "watch": {
+                  "args": ["--watch"]
+                }
+              },
               "options": {
-                "command": "cd packages/ove && yarn vitest run --changed --config vite.config.ts"
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             },
             "version": {
@@ -864,7 +864,7 @@
                 "command": "node tools/scripts/publish.mjs ui latest"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "publish-beta": {
@@ -873,7 +873,7 @@
                 "command": "node tools/scripts/publish.mjs ui beta"
               },
               "parallelism": true,
-              "dependsOn": ["test", "build"],
+              "dependsOn": ["test", "build", "build_umd"],
               "executor": "nx:run-commands"
             },
             "build": {
@@ -961,16 +961,16 @@
               "outputs": ["{options.outputFile}"]
             },
             "test": {
-              "configurations": {},
+              "configurations": {
+                "watch": {
+                  "args": ["--watch"]
+                }
+              },
               "options": {
-                "command": "cd packages/ui && yarn vitest run --changed --config vite.config.ts"
+                "command": "bun test"
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production"],
               "executor": "nx:run-commands"
             },
             "version": {

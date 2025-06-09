@@ -33,10 +33,10 @@ import getTextFromEl from "../utils/getTextFromEl";
 import rowClick, { finalizeSelection } from "./utils/rowClick";
 import { editCellHelper } from "./editCellHelper";
 import { getCellVal } from "./getCellVal";
-import { getCCDisplayName } from "./utils/queryParams";
 import { useDispatch } from "react-redux";
 import { change as _change } from "redux-form";
 import { RenderCell } from "./RenderCell";
+import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
 
 dayjs.extend(localizedFormat);
 
@@ -104,7 +104,7 @@ const RenderColumnHeader = ({
   if (order && order.length) {
     order.forEach(order => {
       const orderField = order.replace("-", "");
-      if (orderField === ccDisplayName) {
+      if (orderField === path) {
         if (orderField === order) {
           ordering = "asc";
         } else {

@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+
 import {
   editorDragStarted,
   handleSelectionEndGrabbed
-} from "../src/withEditorInteractions/clickAndDragUtils";
+} from "../src/withEditorInteractions/clickAndDragUtils"; // Adjust path if needed
 
 describe("handleSelectionEndGrabbed", () => {
-  it("handleSelectionEndGrabbed will still update selection layer even if there isn't one yet", done => {
+  it("handleSelectionEndGrabbed will still update selection layer even if there isn't one yet", async () => {
+    let newCaretValue;
     editorDragStarted({
       caretPositionOnDragStart: 10,
       selectionStartOrEndGrabbed: "end"
@@ -15,16 +18,17 @@ describe("handleSelectionEndGrabbed", () => {
       sequenceLength: 30,
       doNotWrapOrigin: true,
       caretPositionUpdate: newCaret => {
-        expect(newCaret).to.eq(10);
-
-        done();
+        newCaretValue = newCaret;
       }
     });
+    expect(newCaretValue).toBe(10);
   });
-  it("handleSelectionEndGrabbed removes selection and updates caret when doNotWrapOrigin=true and nearestCaretPos===selectionLayerStart", done => {
+
+  it("handleSelectionEndGrabbed removes selection and updates caret when doNotWrapOrigin=true and nearestCaretPos===selectionLayerStart", async () => {
+    let newCaretValue;
     editorDragStarted({
       caretPositionOnDragStart: 10,
-      selectionStartOrEndGrabbed: "end"
+      selectionStartOrEndGrabStart: "end"
     });
     handleSelectionEndGrabbed({
       selectionLayer: { start: 10, end: 20 },
@@ -32,13 +36,14 @@ describe("handleSelectionEndGrabbed", () => {
       sequenceLength: 30,
       doNotWrapOrigin: true,
       caretPositionUpdate: newCaret => {
-        expect(newCaret).to.eq(10);
-
-        done();
+        newCaretValue = newCaret;
       }
     });
+    expect(newCaretValue).toBe(10);
   });
-  it("handleSelectionEndGrabbed selects till end when selection is exactly at the end", done => {
+
+  it("handleSelectionEndGrabbed selects till end when selection is exactly at the end", async () => {
+    let newSelectionValue;
     editorDragStarted({
       caretPositionOnDragStart: 10,
       selectionStartOrEndGrabbed: "end"
@@ -49,13 +54,15 @@ describe("handleSelectionEndGrabbed", () => {
       sequenceLength: 30,
       doNotWrapOrigin: false,
       selectionLayerUpdate: newSelection => {
-        expect(newSelection.start).to.eq(10);
-        expect(newSelection.end).to.eq(29);
-        done();
+        newSelectionValue = newSelection;
       }
     });
+    expect(newSelectionValue.start).toBe(10);
+    expect(newSelectionValue.end).toBe(29);
   });
-  it("handleSelectionEndGrabbed selects till end when selection is way past the end", done => {
+
+  it("handleSelectionEndGrabbed selects till end when selection is way past the end", async () => {
+    let newSelectionValue;
     editorDragStarted({
       caretPositionOnDragStart: 10,
       selectionStartOrEndGrabbed: "end"
@@ -66,13 +73,15 @@ describe("handleSelectionEndGrabbed", () => {
       sequenceLength: 30,
       doNotWrapOrigin: false,
       selectionLayerUpdate: newSelection => {
-        expect(newSelection.start).to.eq(10);
-        expect(newSelection.end).to.eq(29);
-        done();
+        newSelectionValue = newSelection;
       }
     });
+    expect(newSelectionValue.start).toBe(10);
+    expect(newSelectionValue.end).toBe(29);
   });
-  it("handleSelectionEndGrabbed selects till end when selection is just past the end", done => {
+
+  it("handleSelectionEndGrabbed selects till end when selection is just past the end", async () => {
+    let newSelectionValue;
     editorDragStarted({
       caretPositionOnDragStart: 10,
       selectionStartOrEndGrabbed: "end"
@@ -83,10 +92,10 @@ describe("handleSelectionEndGrabbed", () => {
       sequenceLength: 30,
       doNotWrapOrigin: false,
       selectionLayerUpdate: newSelection => {
-        expect(newSelection.start).to.eq(10);
-        expect(newSelection.end).to.eq(29);
-        done();
+        newSelectionValue = newSelection;
       }
     });
+    expect(newSelectionValue.start).toBe(10);
+    expect(newSelectionValue.end).toBe(29);
   });
 });

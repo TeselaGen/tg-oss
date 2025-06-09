@@ -6,13 +6,13 @@ import {
   makeDataTableHandlers,
   getQueryParams,
   setCurrentParamsOnUrl,
-  getCurrentParamsFromUrl,
-  getCCDisplayName
+  getCurrentParamsFromUrl
 } from "./queryParams";
 import { withRouter } from "react-router-dom";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
 import { useDeepEqualMemo } from "../../utils/hooks/useDeepEqualMemo";
 import { branch, compose } from "recompose";
+import { getCCDisplayName } from "./tableQueryParamsToHasuraClauses";
 
 /**
  *  Note all these options can be passed at Design Time or at Runtime (like reduxForm())
@@ -32,7 +32,6 @@ import { branch, compose } from "recompose";
 export const useTableParams = props => {
   const {
     additionalFilter,
-    additionalOrFilter,
     controlled_pageSize,
     defaults: _defaults,
     doNotCoercePageSize,
@@ -166,16 +165,6 @@ export const useTableParams = props => {
   );
 
   const queryParams = useMemo(() => {
-    const additionalFilterToUse =
-      typeof additionalFilter === "function"
-        ? additionalFilter
-        : () => additionalFilter;
-
-    const additionalOrFilterToUse =
-      typeof additionalOrFilter === "function"
-        ? additionalOrFilter
-        : () => additionalOrFilter;
-
     return getQueryParams({
       doNotCoercePageSize,
       currentParams,
@@ -185,8 +174,7 @@ export const useTableParams = props => {
       schema: convertedSchema,
       isInfinite: isInfinite || (isSimple && !withPaging),
       isLocalCall,
-      additionalFilter: additionalFilterToUse,
-      additionalOrFilter: additionalOrFilterToUse,
+      additionalFilter,
       noOrderError,
       isCodeModel,
       ownProps: passingProps
@@ -194,7 +182,6 @@ export const useTableParams = props => {
   }, [
     additionalFilter,
     passingProps,
-    additionalOrFilter,
     doNotCoercePageSize,
     currentParams,
     entities,

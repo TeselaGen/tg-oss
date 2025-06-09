@@ -1,3 +1,10 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+// file-utils.spec.js
+
+// Import Bun's built-in test utilities
+import { expect, beforeAll, describe, it } from "bun:test";
+
+// Assuming file-utils.js is in the same directory or a relative path
 import {
   isZipFile,
   isExcelFile,
@@ -9,10 +16,98 @@ import {
   removeExt,
   filterFilesInZip,
   parseCsvFile
-} from "./file-utils"; // replace 'yourFile' with the path of your actual file
+} from "./file-utils";
 
-import * as JSZip from "jszip";
-import * as mock from "mock-fs";
+// Fix: Correct JSZip import - import the default export directly
+import JSZip from "jszip";
+
+// --- Mocking Web APIs for Papaparse ---
+// Papaparse uses FileReader and FileReaderSync.
+// We need to mock these to make them available in the Bun test environment.
+// A simple mock suffices to prevent 'not defined' errors.
+global.FileReader = class {
+  constructor() {
+    this.onload = null;
+    this.onerror = null;
+    this.result = null; // Store the result of readAsText/readAsArrayBuffer
+  }
+
+  // Simulate reading a Blob/File as text
+  readAsText(blob) {
+    if (blob instanceof File || blob instanceof Blob) {
+      // In a real scenario, you'd convert blob to text
+      // For testing purposes, we might just assume it's text or trigger onload directly
+      blob
+        .arrayBuffer()
+        .then(buffer => {
+          this.result = new TextDecoder().decode(buffer); // Decode buffer to string
+          if (typeof this.onload === "function") {
+            this.onload({ target: { result: this.result } });
+          }
+        })
+        .catch(error => {
+          if (typeof this.onerror === "function") {
+            this.onerror(error);
+          }
+        });
+    } else {
+      // Handle cases where a non-File/Blob is passed, if necessary
+      if (typeof this.onerror === "function") {
+        this.onerror(new Error("FileReader: Input must be a Blob or File."));
+      }
+    }
+  }
+
+  // Simulate reading a Blob/File as ArrayBuffer
+  readAsArrayBuffer(blob) {
+    if (blob instanceof File || blob instanceof Blob) {
+      blob
+        .arrayBuffer()
+        .then(buffer => {
+          this.result = buffer;
+          if (typeof this.onload === "function") {
+            this.onload({ target: { result: this.result } });
+          }
+        })
+        .catch(error => {
+          if (typeof this.onerror === "function") {
+            this.onerror(error);
+          }
+        });
+    } else {
+      if (typeof this.onerror === "function") {
+        this.onerror(new Error("FileReader: Input must be a Blob or File."));
+      }
+    }
+  }
+
+  // Add other methods like readAsDataURL if needed by papaparse or your code
+};
+
+// If papaparse explicitly tries to use FileReaderSync in some branches, mock it too.
+// This is a minimal mock to prevent ReferenceError. Its functionality won't be fully tested here.
+global.FileReaderSync = class {
+  readAsText() {
+    // Just return a dummy string, as this is typically in a worker context
+    return "mocked content";
+  }
+  readAsArrayBuffer() {
+    return new ArrayBuffer(0); // Return an empty buffer
+  }
+  // Add other read methods if needed
+};
+
+// --- Mocking 'window.toastr' to prevent ReferenceError ---
+// If the 'file-utils.js' code depends on window.toastr, we need to mock it.
+// This mock prevents the 'window is not defined' error during tests.
+// You might want to enhance this mock if you need to assert toastr calls.
+global.window = {
+  toastr: {
+    warning: () => {}, // Mock the warning method
+    error: () => {}, // Mock other methods if used
+    success: () => {}
+  }
+};
 
 describe("parseCsvFile", () => {
   it("resolves with results when parsing is successful", async () => {
@@ -23,7 +118,8 @@ describe("parseCsvFile", () => {
 mat 1
 mat 2`
         ],
-        "dummyFile"
+        "dummyFile",
+        { type: "text/csv" } // Important: specify type for correct FileReader behavior
       )
     });
     expect(results.data).toEqual([
@@ -33,40 +129,52 @@ mat 2`
   });
 });
 
-describe.skip("filterFilesInZip", () => {
+describe("filterFilesInZip", () => {
+  let zipFileBlob; // Will store the zip content as a Blob
+
   beforeAll(async () => {
     const zip = new JSZip();
     zip.file("test1.txt", "Hello World");
     zip.file("test2.csv", "id,name\n1,John");
 
-    const data = await zip.generateAsync({ type: "nodebuffer" });
+    // Generate the zip content as a Blob directly
+    // This is more compatible with browser-like environments like Bun's test runner
+    zipFileBlob = await zip.generateAsync({ type: "blob" });
+  });
 
-    mock({
-      "/path/to": {
-        "myzipfile.zip": data
-      }
+  it("should filter and return only .csv files from an in-memory zip blob", async () => {
+    // Pass the Blob directly or wrap it in a File object if filterFilesInZip expects it
+    const file = new File([zipFileBlob], "myzipfile.zip", {
+      type: "application/zip"
     });
-  });
 
-  afterAll(() => {
-    mock.restore();
-  });
-
-  it("should filter and return only .csv files", async () => {
-    const file = {
-      path: "/path/to/myzipfile.zip",
-      originalname: "myzipfile.zip",
-      mimetype: "application/zip"
-    };
     const accepted = [".csv"];
 
-    const files = await filterFilesInZip(file, accepted);
+    // Assuming filterFilesInZip receives an object with an 'originFileObj'
+    // or a 'data' property that it then passes to JSZip.loadAsync.
+    // If filterFilesInZip expects a specific structure, ensure this matches.
+    const files = await filterFilesInZip(
+      {
+        originFileObj: file, // Pass the File object which contains the Blob
+        originalname: file.name,
+        mimetype: file.type
+      },
+      accepted
+    );
 
     expect(files.length).toBe(1);
     expect(files[0].name).toBe("test2.csv");
+
     const accepted2 = ["csv"];
 
-    const files2 = await filterFilesInZip(file, accepted2);
+    const files2 = await filterFilesInZip(
+      {
+        originFileObj: file,
+        originalname: file.name,
+        mimetype: file.type
+      },
+      accepted2
+    );
 
     expect(files2.length).toBe(1);
     expect(files2[0].name).toBe("test2.csv");

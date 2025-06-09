@@ -10,6 +10,6 @@ describe("BounceLoader", () => {
     const loader = getByTestId("bounce-loader");
     expect(loader).toHaveClass("tg-bounce-loader");
     expect(loader).toHaveClass("test-class");
-    expect(loader.querySelectorAll(".rect1")).to.have.length(1);
+    expect(loader.querySelectorAll(".rect1")).toHaveLength(1);
   });
 });

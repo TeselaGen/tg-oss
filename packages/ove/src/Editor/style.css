@@ -89,9 +89,14 @@
   border-right-color: yellow !important;
 }
 .veSearchLayerActive {
-  stroke: red !important;
-  fill: red !important;
-  background: red !important;
+  stroke: green !important;
+  fill: green !important;
+  background: green !important;
+}
+.veMismatchedBase {
+  color: red !important;
+  font-weight: bold;
+  background-color: rgba(255, 0, 0, 0.3);
 }
 .notCaret.veSearchLayerBottomStrand:after {
   content: "";

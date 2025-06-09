@@ -1,4 +1,7 @@
-import { findSequenceMatches } from "@teselagen/sequence-utils";
+import {
+  findSequenceMatches,
+  findApproxMatches
+} from "@teselagen/sequence-utils";
 import sequenceSelector from "./sequenceSelector";
 import { createSelector } from "reselect";
 import circularSelector from "./circularSelector";
@@ -11,7 +14,8 @@ function searchLayersSelector(
   ambiguousOrLiteral,
   dnaOrAA,
   isProtein,
-  proteinSequence
+  proteinSequence,
+  mismatchesAllowed
 ) {
   if (!searchString || !isOpen) {
     return [];
@@ -40,6 +44,39 @@ function searchLayersSelector(
           end: end * 3 + 2
         }));
   }
+
+  // Use findApproxMatches when literal matching DNA with mismatches allowed
+  if (
+    dnaOrAA === "DNA" &&
+    ambiguousOrLiteral === "LITERAL" &&
+    mismatchesAllowed > 0
+  ) {
+    const approxMatches = findApproxMatches(
+      searchString,
+      sequence,
+      mismatchesAllowed,
+      isCircular
+    );
+    // Convert approximate matches to the format expected by the application
+    const matches = approxMatches
+      .map(match => ({
+        start: match.index,
+        end: match.index + match.match.length - 1,
+        matchedString: match.match,
+        mismatchPositions: match.mismatchPositions,
+        numMismatches: match.numMismatches,
+        isSearchLayer: true,
+        forward: true
+      }))
+      .sort((a, b) => a.start - b.start);
+
+    return matches.map(match => ({
+      ...match,
+      className: "veSearchLayer"
+    }));
+  }
+
+  // Use regular findSequenceMatches for all other cases
   const matches = findSequenceMatches(sequence, searchString, {
     isCircular,
     isAmbiguous: ambiguousOrLiteral === "AMBIGUOUS",
@@ -67,5 +104,6 @@ export default createSelector(
   state => state.findTool && state.findTool.dnaOrAA,
   state => state.sequenceData.isProtein,
   state => state.sequenceData.proteinSequence,
+  state => state.findTool && state.findTool.mismatchesAllowed,
   searchLayersSelector
 );
