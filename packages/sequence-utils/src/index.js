@@ -56,6 +56,7 @@ export {
   default as filterSequenceString,
   filterRnaString
 } from "./filterSequenceString";
+export * from "./calculateMeltingTempUtils"
 export { default as findNearestRangeOfSequenceOverlapToPosition } from "./findNearestRangeOfSequenceOverlapToPosition";
 export { default as findOrfsInPlasmid } from "./findOrfsInPlasmid";
 export { default as findSequenceMatches } from "./findSequenceMatches";

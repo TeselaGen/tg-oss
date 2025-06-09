@@ -3,7 +3,7 @@ import tgUseLocalStorageState from "tg-use-local-storage-state";
 const useTmType = () => {
   return tgUseLocalStorageState("tmType", {
     isSimpleString: true,
-    defaultValue: "default"
+    defaultValue: "breslauer1986Tm"
   });
 };
 
