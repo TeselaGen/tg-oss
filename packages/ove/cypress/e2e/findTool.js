@@ -3,6 +3,15 @@ describe("find tool", function () {
     cy.visit("");
   });
 
+  it(`searching for mismatches should work`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("tgacaacttcacggcta"); //this should cause 0 regions to be selected
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("not.exist");
+    cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
+    cy.get(`.tg-mismatches-allowed-input input`).type("1");
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("exist");
+    cy.contains("1").should("exist");
+  });
   it(`the find tool shouldn't get stuck in a weird state where the match number is greater than the number of matches`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gatg"); //this should cause 1 region to be selected

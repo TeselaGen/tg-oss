@@ -150,6 +150,7 @@ export class FindBar extends React.Component {
         <NumericInput
           min={0}
           max={10}
+          className={"tg-mismatches-allowed-input"}
           style={{ width: "60px" }}
           value={mismatchesAllowed}
           disabled={dnaOrAA !== "DNA" || ambiguousOrLiteral !== "LITERAL"}
