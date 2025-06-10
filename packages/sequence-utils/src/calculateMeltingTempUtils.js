@@ -1,4 +1,4 @@
-// eatodo - remove any unused code here (should show up with yellow eslint warnings!)
+// eatodo - remove any unused code here and fix lint warnings (should show up with yellow eslint warnings!)
 
 /**
  * Copyright (c) 2025 by TeselaGen Biotechnology Inc.
