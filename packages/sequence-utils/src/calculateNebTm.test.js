@@ -1,6 +1,5 @@
 import assert from "assert";
 import calculateNebTm from "./calculateNebTm";
-// import calculateTm from "./calculateTm";
 
 describe("calculate Tm based on SantaLucia 1998 & Owczarzy 2004", () => {
   it("should return the melting temperature of a given sequence, if no degenerate bases are present", () => {
@@ -9,9 +8,6 @@ describe("calculate Tm based on SantaLucia 1998 & Owczarzy 2004", () => {
       monovalentCationConc: 0.05,
       primerConc: 0.0000005
     };
-    // console.log(`calculateNebTm("AGCGGATAACAATTTCACACAGGA", options),:`,calculateNebTm("AGCGGATAACAATTTCACACAGGA", options),)
-    // console.log(`calculateTm("AGCGGATAACAATTTCACACAGGA", options),:`,calculateTm("AGCGGATAACAATTTCACACAGGA", options),)
-    // console.log(`calculateTm("AGCGGATAnbACdAATTTCACACANNGGA", options),:`,calculateTm("AGCGGATAACAATTTCACACAGGA", options),)
     // primer concentration in Q5 protocol is 500 nM
     assert.equal(
       calculateNebTm("AGCGGATAACAATTTCACACAGGA", options),
