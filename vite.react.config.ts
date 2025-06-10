@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import fs from "node:fs";
 import react from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import * as esbuild from "esbuild";
@@ -26,18 +25,8 @@ const sourceJSPattern = [
   /\/demo\/.*\.js$/,
   /\/helperUtils\/.*\.js$/
 ];
-const rollupPlugin = (matchers: RegExp[]) => ({
-  name: "js-in-jsx",
-  load(id: string) {
-    if (matchers.some(matcher => matcher.test(id))) {
-      const file = fs.readFileSync(id, { encoding: "utf-8" });
-      return esbuild.transformSync(file, { loader: "jsx" }).code;
-    }
-    return undefined;
-  }
-});
 
-const forceJSXLoaderForDemo = () =>
+const forceJSXLoader = () =>
   ({
     name: "force-jsx-loader-for-demo",
     enforce: "pre",
@@ -113,7 +102,7 @@ export default ({ name, dir }: { name: string; dir: string }) =>
               })
             ]
           : []),
-        forceJSXLoaderForDemo()
+        forceJSXLoader()
       ],
       esbuild: {
         include: sourceJSPattern,
@@ -145,7 +134,6 @@ export default ({ name, dir }: { name: string; dir: string }) =>
               }
             }),
         rollupOptions: {
-          plugins: [rollupPlugin(sourceJSPattern)],
           output: {
             name: camelCase(name)
           },
