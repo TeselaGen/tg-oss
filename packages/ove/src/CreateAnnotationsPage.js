@@ -1,6 +1,5 @@
 import { compose } from "redux";
 import pluralize from "pluralize";
-
 import { formName } from "./constants";
 import { typeField } from "./helperComponents/PropertiesDialog/typeField";
 import {
@@ -9,7 +8,7 @@ import {
   withSelectTableRecords,
   withSelectedEntities
 } from "@teselagen/ui";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { hideDialog } from "./GlobalDialogUtils";
 import { startCase } from "lodash-es";
 import { tidyUpAnnotation } from "@teselagen/sequence-utils";

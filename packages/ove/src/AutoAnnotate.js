@@ -33,7 +33,7 @@ import {
 } from "@teselagen/ui";
 import { startCase } from "lodash-es";
 import withEditorProps from "./withEditorProps";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Colors, Tab, Tabs } from "@blueprintjs/core";
 import { typeField } from "./helperComponents/PropertiesDialog/typeField";
 
