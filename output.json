@@ -177,15 +177,6 @@
               "configurations": {},
               "parallelism": true
             },
-            "e2e-playwright": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "cd packages/bounce-loader && yarn playwright test"
-              },
-              "configurations": {},
-              "parallelism": true,
-              "inputs": ["default", "^production"]
-            },
             "e2e2": {
               "executor": "nx:run-commands",
               "options": {
@@ -759,14 +750,6 @@
               "parallelism": true,
               "inputs": ["default", "^production"],
               "executor": "@nx/cypress:cypress"
-            },
-            "launch-e2e-playwright": {
-              "executor": "nx:run-commands",
-              "options": {
-                "command": "nx run ove:start:ci & cd packages/ove && yarn playwright test --ui"
-              },
-              "configurations": {},
-              "parallelism": true
             },
             "e2e": {
               "options": {

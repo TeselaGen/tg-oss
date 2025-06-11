@@ -25,7 +25,6 @@
     "@nx/vite": "20.4.6",
     "@nx/web": "20.4.6",
     "@nx/workspace": "20.4.6",
-    "@playwright/test": "^1.44.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "16.3.0",

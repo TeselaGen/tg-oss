@@ -61,7 +61,6 @@
     "cypress-real-events": "^1.13.0",
     "biomsa": "^0.2.4",
     "shortid": "2.2.16",
-    "@use-gesture/react": "10.3.0",
-    "@playwright/test": "^1.44.1"
+    "@use-gesture/react": "10.3.0"
   }
 }
