@@ -8,20 +8,6 @@ import { avoidOverlapWith } from "../drawAnnotations";
 
 const fontWidthToFontSize = 1.75;
 
-const singleEnStringWidthMap = {};
-export const getSingleEnStringWidth = fontSize => {
-  if (singleEnStringWidthMap[fontSize]) {
-    return singleEnStringWidthMap[fontSize];
-  }
-
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-  context.font = `${fontSize}px Menlo, Monaco, monospace`;
-  const singleEnStringWidth = context.measureText("A").width;
-  singleEnStringWidthMap[fontSize] = singleEnStringWidth;
-  return singleEnStringWidth;
-};
-
 export const getTextLength = text => {
   const displayTextForWrappedWhitespace = (text || "Unlabeled").replaceAll(
     /\s+/g,
