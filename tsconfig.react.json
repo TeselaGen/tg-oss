@@ -5,13 +5,7 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": ["node", "vite/client"],
-    "ignoreDeprecations": "error",
-    "ts-ignore": [
-      {
-        "requireDescription": false
-      }
-    ]
+    "types": ["node", "vite/client"]
   },
   "files": [
     "./node_modules/@nx/react/typings/cssmodule.d.ts",
