@@ -1,8 +1,9 @@
 import { isEntityClean } from "./isEntityClean";
 import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
+import { Entity } from "./types/Entity";
 
 export const removeCleanRows = (
-  entities: ({ [key: string]: unknown } & { _isClean?: boolean })[],
+  entities: Entity[],
   cellValidation: Record<string, unknown>
 ) => {
   const toFilterOut: Record<string, boolean> = {};
