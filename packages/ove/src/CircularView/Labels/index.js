@@ -225,28 +225,10 @@ const DrawLabelGroup = withHover(function ({
   let groupLabelXStart;
   //Add the number of unshown labels
   if (label.labelAndSublabels && label.labelAndSublabels.length > 1) {
-    // if (label.x > 0) {
     text = "+" + (label.labelAndSublabels.length - 1) + "," + text;
-    // } else {
-    //   text += ', +' + (label.labelAndSublabels.length - 1)
-    // }
   }
 
-  const textLength = getTextLengthWithCollapseSpace(text);
-  const labelLength = textLength * fontWidth;
-
-  // Calculate the maximum label length for hovered status
-  const maxLabelLength = labelAndSublabels.reduce(function (
-    currentLength,
-    { text = "Unlabeled" }
-  ) {
-    const _textLength = getTextLengthWithCollapseSpace(text);
-    if (_textLength > currentLength) {
-      return _textLength;
-    }
-    return currentLength;
-  }, 0);
-  let maxLabelWidth = maxLabelLength * fontWidth;
+  const labelLength = getTextLengthWithCollapseSpace(text) * fontWidth;
 
   const labelOnLeft = label.angle > Math.PI;
   let labelXStart = label.x - (labelOnLeft ? labelLength : 0);
@@ -257,12 +239,9 @@ const DrawLabelGroup = withHover(function ({
       Math.abs(label.x + (labelOnLeft ? -labelLength : labelLength)) -
       maxDistance;
 
-    // Math.max(outerRadius (circularViewWidthVsHeightRatio / 2 + 80));
     if (distancePastBoundary > 0) {
       const numberOfCharsToChop =
         Math.ceil(distancePastBoundary / fontWidth) + 2;
-      //   if (numberOfCharsToChop > text.length) numberOfCharsToChop = text.length
-      //label overflows the boundaries!
       text = text.slice(0, -numberOfCharsToChop) + "..";
       groupLabelXStart =
         labelXStart +
@@ -274,30 +253,49 @@ const DrawLabelGroup = withHover(function ({
   const textYStart = label.y + dy / 2;
 
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
-
   let content;
   const labelClass = ` veLabelText veLabel veCircularViewLabelText clickable ${label.color} `;
 
   if ((multipleLabels || groupLabelXStart !== undefined) && hovered) {
+    // Calculate the maximum label length for hovered status
+    const maxLabelLength = labelAndSublabels.reduce(function (
+      currentLength,
+      { text = "Unlabeled" }
+    ) {
+      const _textLength = getTextLengthWithCollapseSpace(text);
+      if (_textLength > currentLength) {
+        return _textLength;
+      }
+      return currentLength;
+    }, 0);
+    const maxLabelWidth = maxLabelLength * fontWidth;
+
+    labelXStart = label.x - (labelOnLeft ? maxLabelWidth : 0);
+    let distancePastBoundary =  Math.abs(label.x + (labelOnLeft ? -maxLabelLength : maxLabelLength)) - maxDistance;
+    let lableRectWidth = maxLabelWidth - 14;
+
+    if (maxLabelWidth > maxDistance * 2) {
+      labelXStart = -maxDistance;
+      lableRectWidth = maxDistance * 2 - 24;
+      distancePastBoundary = maxLabelWidth - maxDistance * 2;
+    } else if (distancePastBoundary > 0) {
+      labelXStart += (labelOnLeft ? distancePastBoundary : -distancePastBoundary);
+      distancePastBoundary = 0;
+    }
+
     //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
     window.isLabelGroupOpen = true;
     let hoveredLabel;
-    if (groupLabelXStart !== undefined) {
-      labelXStart = groupLabelXStart;
-    }
 
     let truncatedLabelAndSublabels;
-    if (Math.abs(labelXStart) > maxDistance) {
-      const overflowDistance = Math.abs(labelXStart) - maxDistance;
-      labelXStart += overflowDistance;
-      maxLabelWidth -= overflowDistance;
+    if (distancePastBoundary > 0) {
       truncatedLabelAndSublabels = labelAndSublabels.map(lable => {
         const labelWidth = getTextLengthWithCollapseSpace(lable.text) * fontWidth;
         const truncatedText =
-          labelWidth >= maxLabelWidth
+          labelWidth >= lableRectWidth
             ? lable.text.slice(
                 0,
-                -Math.ceil(overflowDistance / fontWidth) - 2
+                -Math.ceil((labelWidth - lableRectWidth) / fontWidth) - 2
               ) + ".."
             : lable.text;
         return {
@@ -352,7 +350,7 @@ const DrawLabelGroup = withHover(function ({
             // zIndex={10}
             x={labelXStart - 4}
             y={labelYStart - dy / 2}
-            width={maxLabelWidth + 24}
+            width={lableRectWidth + 24}
             height={labelGroupHeight + 4}
             fill="white"
             stroke="black"
