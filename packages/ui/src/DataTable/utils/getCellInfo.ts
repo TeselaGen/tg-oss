@@ -1,6 +1,7 @@
 import { getIdOrCodeOrIndex } from "./getIdOrCodeOrIndex";
+import { Entity } from "./types/Entity";
 
-export const getCellInfo = ({
+export const getCellInfo = <T extends Entity>({
   columnIndex,
   columnPath,
   rowId,
@@ -9,6 +10,15 @@ export const getCellInfo = ({
   rowIndex,
   isEntityDisabled,
   entity
+}: {
+  columnIndex: number;
+  columnPath: string;
+  rowId: string | number;
+  schema: { fields: { path: string }[] };
+  entities: T[];
+  rowIndex: number;
+  isEntityDisabled: (entity: T) => boolean;
+  entity: T;
 }) => {
   const leftpath = schema.fields[columnIndex - 1]?.path;
   const rightpath = schema.fields[columnIndex + 1]?.path;

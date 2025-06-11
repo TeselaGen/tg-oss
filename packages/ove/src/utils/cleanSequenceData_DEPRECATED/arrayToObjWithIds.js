@@ -1,6 +1,6 @@
 //helper function to make sure any arrays coming in
 
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 //get converted to objects with unique ids
 export default function arrayToObjWithIds(array) {
@@ -8,7 +8,7 @@ export default function arrayToObjWithIds(array) {
   array.forEach(function (item) {
     const newItem = {
       ...item,
-      id: item.id || shortid()
+      id: item.id || nanoid()
     };
     newObj[newItem.id] = newItem;
   });

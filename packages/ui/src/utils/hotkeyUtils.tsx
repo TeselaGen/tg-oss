@@ -2,14 +2,29 @@ import React, { useMemo } from "react";
 import { useHotkeys } from "@blueprintjs/core";
 import { startCase } from "lodash-es";
 
+type Out = {
+  combo: string;
+  label: string;
+  [key: string]: unknown;
+  global?: boolean;
+};
+type Hotkeys = {
+  [key: string]: string | [string, string, object] | Out;
+};
+
 // This has been mostly superseded by blueprint's KeyCombo component, but may
 // still be useful for cases where we need plain text
-export function comboToLabel(def, useSymbols = true) {
+export function comboToLabel(
+  def: string | { combo: string },
+  useSymbols = true
+) {
   const combo = typeof def === "string" ? def : def.combo;
 
   if (useSymbols) {
     let parts = combo.replace("++", "+plus").split("+");
-    parts = parts.map(p => symbols[p] || startCase(p) || p);
+    parts = parts.map(p =>
+      p in symbols ? symbols[p as keyof typeof symbols] : startCase(p) || p
+    );
     return parts.join("");
   } else {
     return combo
@@ -24,8 +39,8 @@ export function comboToLabel(def, useSymbols = true) {
 
 // HOF to get hotkey combos by id
 export const hotkeysById =
-  (hotkeys, mode = "raw") =>
-  id => {
+  (hotkeys: Hotkeys, mode = "raw") =>
+  (id: string) => {
     const def = getHotkeyProps(hotkeys[id]);
     return (
       def &&
@@ -34,10 +49,13 @@ export const hotkeysById =
   };
 
 // Translate shorthand array if needed
-export const getHotkeyProps = (def, id) => {
-  let out;
+export const getHotkeyProps = (
+  def: string | [string, string, object] | Out,
+  id?: string
+) => {
+  let out: Out;
   if (typeof def === "string") {
-    out = { combo: def };
+    out = { combo: def, label: def };
   } else if (def instanceof Array) {
     out = { combo: def[0], label: def[1], ...(def[2] || {}) };
   } else {
@@ -68,8 +86,11 @@ export const getHotkeyProps = (def, id) => {
  * dummy ad-hoc component with no output.
  *
  */
-export const withHotkeys = (hotkeys, handlers) => {
-  return ({ children } = {}) => {
+export const withHotkeys = (
+  hotkeys: Hotkeys,
+  handlers: { [key: string]: (e: KeyboardEvent) => void }
+) => {
+  return ({ children }: { children?: React.ReactElement } = {}) => {
     const memoedHotkeys = useMemo(
       () =>
         Object.keys(hotkeys).map(id => {
@@ -77,7 +98,7 @@ export const withHotkeys = (hotkeys, handlers) => {
           return {
             key: id,
             global: props.global !== false,
-            onKeyDown: function (e) {
+            onKeyDown: function (e: KeyboardEvent) {
               return handlers[id](e);
             },
             ...props
@@ -96,19 +117,23 @@ export const withHotkeys = (hotkeys, handlers) => {
       React.cloneElement(children, newProps)
     ) : (
       //if not, then we'll return a div that can be used
-      <div className="hotkeyHandler" {...newProps}></div>
+      <div className="hotkeyHandler" {...newProps} />
     );
   };
 };
 
 const isMac = navigator.userAgent.includes("Mac OS X");
 
+const cmd = "⌘";
+const meta = "⌘";
+const ctrl = "⌃";
+
 // TODO maybe avoid using symbols by default when not on Mac?
 // Anyway, alternative 'Key + Key' description is provided as well
 const symbols = {
-  cmd: "⌘",
-  meta: "⌘",
-  ctrl: "⌃",
+  cmd,
+  meta,
+  ctrl,
   alt: "⌥",
   shift: "⇧",
   esc: "␛", //'⎋',
@@ -125,7 +150,6 @@ const symbols = {
   left: "←",
   right: "→",
   up: "↑",
-  down: "↓"
-};
-
-symbols.mod = symbols[isMac ? "meta" : "ctrl"];
+  down: "↓",
+  mod: isMac ? cmd : ctrl
+} as const;

@@ -1,5 +1,5 @@
 // tnrtodo: figure out where to insert this validation exactly..
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
 import { cloneDeep, flatMap } from "lodash-es";
@@ -155,7 +155,7 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
         if (item.id || item.id === 0) {
           itemId = item.id;
         } else {
-          itemId = shortid();
+          itemId = nanoid();
           if (!doNotProvideIdsForAnnotations) {
             item.id = itemId; //assign the newly created id to the item
           }

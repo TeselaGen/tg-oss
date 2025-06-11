@@ -93,7 +93,7 @@
                 }
               },
               "options": {
-                "command": "bun test"
+                "command": "bun test packages/sequence-utils"
               },
               "parallelism": true,
               "inputs": ["default", "^production"],
@@ -228,7 +228,7 @@
                 }
               },
               "options": {
-                "command": "bun test"
+                "command": "bun test packages/bounce-loader"
               },
               "parallelism": true,
               "inputs": ["default", "^production"],
@@ -339,7 +339,7 @@
                 }
               },
               "options": {
-                "command": "bun test"
+                "command": "bun test packages/bio-parsers"
               },
               "parallelism": true,
               "inputs": ["default", "^production"],
@@ -436,7 +436,7 @@
                 }
               },
               "options": {
-                "command": "bun test"
+                "command": "bun test packages/range-utils"
               },
               "parallelism": true,
               "inputs": ["default", "^production"],
@@ -562,7 +562,7 @@
                 }
               },
               "options": {
-                "command": "bun test"
+                "command": "bun test packages/file-utils"
               },
               "parallelism": true,
               "inputs": ["default", "^production"],
@@ -790,7 +790,7 @@
                 }
               },
               "options": {
-                "command": "bun test"
+                "command": "bun test packages/ove"
               },
               "parallelism": true,
               "inputs": ["default", "^production"],
@@ -950,7 +950,7 @@
                 }
               },
               "options": {
-                "command": "bun test"
+                "command": "bun test packages/ui"
               },
               "parallelism": true,
               "inputs": ["default", "^production"],

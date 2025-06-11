@@ -1,6 +1,6 @@
 import deepEqual from "deep-equal";
 import { tidyUpSequenceData } from "@teselagen/sequence-utils";
-import uuid from "shortid";
+import { nanoid } from "nanoid";
 
 import createAction from "../utils/createMetaAction";
 import features from "./features";
@@ -75,7 +75,7 @@ export default function (state, action) {
     return {
       // ...cloneDeep(newState),
       ...newState,
-      stateTrackingId: newState.stateTrackingId ? uuid() : "initialLoadId"
+      stateTrackingId: newState.stateTrackingId ? nanoid() : "initialLoadId"
     };
   }
 }

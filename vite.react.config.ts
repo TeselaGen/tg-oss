@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import fs from "node:fs";
 import react from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import * as esbuild from "esbuild";
@@ -20,21 +19,30 @@ const justSrc = [
   /\/src\/.*\.ts$/,
   /\/src\/.*\.tsx$/
 ];
+
 const sourceJSPattern = [
   ...justSrc,
   /\/demo\/.*\.js$/,
   /\/helperUtils\/.*\.js$/
 ];
-const rollupPlugin = (matchers: RegExp[]) => ({
-  name: "js-in-jsx",
-  load(id: string) {
-    if (matchers.some(matcher => matcher.test(id))) {
-      const file = fs.readFileSync(id, { encoding: "utf-8" });
-      return esbuild.transformSync(file, { loader: "jsx" }).code;
+
+const forceJSXLoader = () =>
+  ({
+    name: "force-jsx-loader-for-demo",
+    enforce: "pre",
+    transform(code: string, id: string) {
+      if (/\/(src|demo)\/.*\.js$/.test(id)) {
+        return esbuild.transformSync(code, { loader: "jsx", sourcemap: true });
+      }
+      return;
     }
-    return undefined;
-  }
-});
+  }) as const;
+
+const esbuildLoaderOptions = {
+  ".js": "jsx",
+  ".ts": "ts",
+  ".tsx": "tsx"
+} as const;
 
 export default ({ name, dir }: { name: string; dir: string }) =>
   defineConfig(({ command, mode = "production" }) => {
@@ -93,10 +101,10 @@ export default ({ name, dir }: { name: string; dir: string }) =>
                 ]
               })
             ]
-          : [])
+          : []),
+        forceJSXLoader()
       ],
       esbuild: {
-        loader: "jsx",
         include: sourceJSPattern,
         exclude: [],
         keepNames: true,
@@ -105,10 +113,7 @@ export default ({ name, dir }: { name: string; dir: string }) =>
       },
       optimizeDeps: {
         esbuildOptions: {
-          loader: {
-            ".js": "jsx",
-            ".ts": "tsx"
-          }
+          loader: esbuildLoaderOptions
         }
       },
       build: {
@@ -129,7 +134,6 @@ export default ({ name, dir }: { name: string; dir: string }) =>
               }
             }),
         rollupOptions: {
-          plugins: [rollupPlugin(justSrc)],
           output: {
             name: camelCase(name)
           },
@@ -161,7 +165,6 @@ export default ({ name, dir }: { name: string; dir: string }) =>
             __dirname,
             "node_modules/@blueprintjs/datetime"
           ),
-          // "@teselagen/react-table": path.join( "/Users/thomasrich/Sites/react-table"),
           "react-dom": path.join(__dirname, "node_modules/react-dom"),
           "react-redux": path.join(__dirname, "node_modules/react-redux"),
           "redux-form": path.join(__dirname, "node_modules/redux-form"),
