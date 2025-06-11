@@ -1,1 +1,1 @@
-export function getAllRows(e: any): any;
+export function getAllRows(tableRef: any): any;

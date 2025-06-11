@@ -1,1 +1,1 @@
-export function handleCopyTable(e: any, opts: any): void;
+export function handleCopyTable(tableRef: any, opts: any): void;

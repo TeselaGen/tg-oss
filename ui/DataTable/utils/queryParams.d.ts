@@ -3,12 +3,6 @@ export function getMergedOpts(topLevel?: {}, instanceLevel?: {}): {
     defaults: any;
     formName: string;
 };
-/**
- *
- * @param {object} field
- * @returns the camelCase display name of the field, to be used for filters, sorting, etc
- */
-export function getCCDisplayName(field: object): string;
 export function getCurrentParamsFromUrl(location: any, isSimple: any): any;
 export function setCurrentParamsOnUrl(newParams: any, replace: any, isSimple: any): void;
 export function makeDataTableHandlers({ setNewParams, defaults, onlyOneFilter }: {
@@ -25,7 +19,7 @@ export function makeDataTableHandlers({ setNewParams, defaults, onlyOneFilter }:
     setOrder: (order: any, isRemove: any, shiftHeld: any) => any;
     setNewParams: any;
 };
-export function getQueryParams({ currentParams, urlConnected, defaults, schema, isInfinite, entities, isLocalCall, additionalFilter, additionalOrFilter, doNotCoercePageSize, noOrderError, isCodeModel, ownProps }: {
+export function getQueryParams({ currentParams, urlConnected, defaults, schema, isInfinite, entities, isLocalCall, additionalFilter, doNotCoercePageSize, noOrderError, isCodeModel, ownProps }: {
     currentParams: any;
     urlConnected: any;
     defaults: any;
@@ -34,7 +28,6 @@ export function getQueryParams({ currentParams, urlConnected, defaults, schema, 
     entities: any;
     isLocalCall: any;
     additionalFilter: any;
-    additionalOrFilter: any;
     doNotCoercePageSize: any;
     noOrderError: any;
     isCodeModel: any;
@@ -42,18 +35,29 @@ export function getQueryParams({ currentParams, urlConnected, defaults, schema, 
 }): {
     page: any;
     pageSize: any;
-    order: any;
+    order: any[];
     filters: any;
     searchTerm: any;
 } | {
     variables: {
-        sort: never[];
+        where: {};
+        order_by: any[];
+        limit: any;
+        offset: number;
     };
-    errorParsingUrlString: unknown;
     page: any;
     pageSize: any;
-    order: any;
+    order: any[];
     filters: any;
     searchTerm: any;
+    errorParsingUrlString?: undefined;
+} | {
+    errorParsingUrlString: unknown;
+    variables: {
+        where: {};
+        order_by: never[];
+        limit: number;
+        offset: number;
+    };
 };
 export const defaultPageSizes: number[];
