@@ -3745,13 +3745,13 @@
     tslib "^2.4.0"
 
 "@teselagen/bio-parsers@file:packages/bio-parsers":
-  version "0.4.28"
+  version "0.4.29-beta.1"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-0024180e-52f3-4d81-92d9-a99d5d949d2f-1749664494000/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-0024180e-52f3-4d81-92d9-a99d5d949d2f-1749664494000/node_modules/@teselagen/sequence-utils"
+    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.29-beta.1-919ac4ed-d88c-4828-8564-bb062197d608-1749670215258/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.29-beta.1-919ac4ed-d88c-4828-8564-bb062197d608-1749670215258/node_modules/@teselagen/sequence-utils"
     bufferpack "^0.0.6"
-    color "3.2.1"
+    color "^5.0.0"
     fast-xml-parser "^4.2.5"
     fflate "^0.8.0"
     lodash-es "^4.17.21"
@@ -3767,7 +3767,7 @@
     papaparse "5.3.2"
 
 "@teselagen/range-utils@file:packages/range-utils":
-  version "0.3.13"
+  version "0.3.14-beta.1"
   dependencies:
     lodash-es "^4.17.21"
 
@@ -3787,9 +3787,9 @@
     classnames "^2.2.5"
 
 "@teselagen/sequence-utils@file:packages/sequence-utils":
-  version "0.3.31"
+  version "0.3.32-beta.1"
   dependencies:
-    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.31-6802c8b2-4acf-4f6d-997f-c00beb20efdb-1749664494002/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.32-beta.1-8338197d-8089-4910-a914-73d6aec54251-1749670215257/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.4.1"
     lodash-es "^4.17.21"
@@ -3797,7 +3797,7 @@
     string-splice "^1.3.0"
 
 "@teselagen/ui@file:packages/ui":
-  version "0.8.6-beta.23"
+  version "0.8.6-beta.25"
   dependencies:
     "@blueprintjs/core" "3.54.0"
     "@blueprintjs/datetime" "^3.24.1"
@@ -3807,11 +3807,11 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.8.6-beta.23-1caf594f-82af-4a24-a051-f1f1bc0b3cb0-1749664494000/node_modules/@teselagen/file-utils"
+    "@teselagen/file-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.8.6-beta.25-7c0bd033-4d11-4139-bb73-922ad03cb3d0-1749670215256/node_modules/@teselagen/file-utils"
     "@teselagen/react-table" "6.10.18"
     chance "^1.1.11"
     classnames "^2.3.2"
-    color "^3.2.1"
+    color "^5.0.0"
     copy-to-clipboard "^3.3.1"
     cypress-real-events "^1.13.0"
     dayjs "^1.10.4"
@@ -5788,7 +5788,7 @@ co@^4.6.0:
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
 
-color-convert@^1.9.0, color-convert@^1.9.3:
+color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
   integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
@@ -5802,31 +5802,42 @@ color-convert@^2.0.1:
   dependencies:
     color-name "~1.1.4"
 
+color-convert@^3.0.1:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-3.1.0.tgz#ce16ebb832f9d7522649ed9e11bc0ccb9433a524"
+  integrity sha512-TVoqAq8ZDIpK5lsQY874DDnu65CSsc9vzq0wLpNQ6UMBq81GSZocVazPiBbYGzngzBOIRahpkTzCLVe2at4MfA==
+  dependencies:
+    color-name "^2.0.0"
+
 color-name@1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
   integrity sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==
 
-color-name@^1.0.0, color-name@~1.1.4:
+color-name@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/color-name/-/color-name-2.0.0.tgz#03ff6b1b5aec9bb3cf1ed82400c2790dfcd01d2d"
+  integrity sha512-SbtvAMWvASO5TE2QP07jHBMXKafgdZz8Vrsrn96fiL+O92/FN/PLARzUW5sKt013fjAprK2d2iCn2hk2Xb5oow==
+
+color-name@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-color-string@^1.6.0:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.9.1.tgz#4467f9146f036f855b764dfb5bf8582bf342c7a4"
-  integrity sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==
+color-string@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/color-string/-/color-string-2.0.1.tgz#89e20d5baa60a49b3d7ffdd95b28d2bb9c1074e8"
+  integrity sha512-5z9FbYTZPAo8iKsNEqRNv+OlpBbDcoE+SY9GjLfDUHEfcNNV7tS9eSAlFHEaub/r5tBL9LtskAeq1l9SaoZ5tQ==
   dependencies:
-    color-name "^1.0.0"
-    simple-swizzle "^0.2.2"
+    color-name "^2.0.0"
 
-color@3.2.1, color@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/color/-/color-3.2.1.tgz#3544dc198caf4490c3ecc9a790b54fe9ff45e164"
-  integrity sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==
+color@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/color/-/color-5.0.0.tgz#3583bf8f6a77cec41b329ea228dd05d2f5270218"
+  integrity sha512-16BlyiuyLq3MLxpRWyOTiWsO3ii/eLQLJUQXBSNcxMBBSnyt1ee9YUdaozQp03ifwm5woztEZGDbk9RGVuCsdw==
   dependencies:
-    color-convert "^1.9.3"
-    color-string "^1.6.0"
+    color-convert "^3.0.1"
+    color-string "^2.0.0"
 
 colorette@^2.0.16, colorette@^2.0.20:
   version "2.0.20"
@@ -8716,11 +8727,6 @@ is-arrayish@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.2.1.tgz#77c99840527aa8ecb1a8ba697b80645a7a926a9d"
   integrity sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==
-
-is-arrayish@^0.3.1:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.3.2.tgz#4574a2ae56f7ab206896fb431eaeed066fdf8f03"
-  integrity sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==
 
 is-async-function@^2.0.0:
   version "2.0.0"
@@ -12420,13 +12426,6 @@ signal-exit@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-4.1.0.tgz#952188c1cbd546070e2dd20d0f41c0ae0530cb04"
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
-
-simple-swizzle@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
-  integrity sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==
-  dependencies:
-    is-arrayish "^0.3.1"
 
 sisteransi@^1.0.5:
   version "1.0.5"

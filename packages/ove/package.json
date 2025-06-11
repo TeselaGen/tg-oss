@@ -21,7 +21,7 @@
     "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/react-list": "0.8.18",
     "classnames": "^2.3.2",
-    "color": "^3.2.1",
+    "color": "^5.0.0",
     "combokeys": "^3.0.1",
     "copy-to-clipboard": "^3.3.1",
     "deep-equal": "^1.1.1",

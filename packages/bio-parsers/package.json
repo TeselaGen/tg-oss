@@ -5,7 +5,7 @@
   "dependencies": {
     "@gmod/gff": "^1.2.1",
     "bufferpack": "^0.0.6",
-    "color": "3.2.1",
+    "color": "^5.0.0",
     "fast-xml-parser": "^4.2.5",
     "fflate": "^0.8.0",
     "lodash-es": "^4.17.21",

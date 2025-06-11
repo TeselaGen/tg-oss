@@ -6,7 +6,12 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 
-function TimelineEvent({ date, children }) {
+interface TimelineEventProps {
+  date: string | number | Date | dayjs.Dayjs;
+  children?: React.ReactNode;
+}
+
+function TimelineEvent({ date, children }: TimelineEventProps) {
   return (
     <div className="tg-timeline-event">
       <div

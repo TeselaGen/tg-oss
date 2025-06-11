@@ -35,7 +35,6 @@ export { default as PromptUnsavedChanges } from "./PromptUnsavedChanges";
 export { default as BlueprintError } from "./BlueprintError";
 export { default as DropdownButton } from "./DropdownButton";
 export { default as DialogFooter } from "./DialogFooter";
-export { default as adHoc } from "./utils/adHoc";
 export { default as IntentText } from "./IntentText";
 export { default as popoverOverflowModifiers } from "./utils/popoverOverflowModifiers";
 export * from "./utils/tgFormValues";
