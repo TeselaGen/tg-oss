@@ -271,7 +271,7 @@ const DrawLabelGroup = withHover(function ({
     const maxLabelWidth = maxLabelLength * fontWidth;
 
     labelXStart = label.x - (labelOnLeft ? maxLabelWidth : 0);
-    let distancePastBoundary =  Math.abs(label.x + (labelOnLeft ? -maxLabelLength : maxLabelLength)) - maxDistance;
+    let distancePastBoundary =  Math.abs(label.x + (labelOnLeft ? -maxLabelWidth : maxLabelWidth)) - maxDistance;
     let lableRectWidth = maxLabelWidth - 14;
 
     if (maxLabelWidth > maxDistance * 2) {
