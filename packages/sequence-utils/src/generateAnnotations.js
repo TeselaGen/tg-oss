@@ -1,5 +1,5 @@
 import { generateRandomRange } from "@teselagen/range-utils";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 function generateAnnotations(
   numberOfAnnotationsToGenerate,
@@ -21,7 +21,7 @@ function generateAnnotation(start, end, maxLength) {
     ...range,
     name: getRandomInt(0, 100000).toString(),
     type: "misc_feature",
-    id: shortid(),
+    id: nanoid(),
     forward: Math.random() > 0.5,
     notes: {}
   };

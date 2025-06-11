@@ -1,5 +1,5 @@
 import omit from "lodash/omit";
-import uuid from "shortid";
+import { nanoid } from "nanoid";
 
 // ------------------------------------
 // Reducer
@@ -10,7 +10,7 @@ export default function upsertDeleteActionGenerator(
 ) {
   return {
     [upsertAction]: (state, payload) => {
-      const idToUse = payload.id || uuid();
+      const idToUse = payload.id || nanoid();
       return {
         ...state,
         [idToUse]: { ...(state[idToUse] || {}), ...payload, id: idToUse }

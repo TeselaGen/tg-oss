@@ -1,5 +1,5 @@
 import { assign } from "lodash-es";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 import {
@@ -268,7 +268,7 @@ function cutSequence(
       const overhangBps = getSequenceWithinRange(cutRange, originalSequence);
 
       restrictionCutSite = {
-        id: shortid(),
+        id: nanoid(),
         start,
         end,
         topSnipPosition,

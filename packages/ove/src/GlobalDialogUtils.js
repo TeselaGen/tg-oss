@@ -1,4 +1,4 @@
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 import { cloneDeep, startCase } from "lodash-es";
 import { convertRangeTo1Based } from "@teselagen/range-utils";
@@ -36,7 +36,7 @@ export function showDialog({
   dialogHolder.CustomModalComponent = ModalComponent;
   dialogHolder.props = props;
   dialogHolder.overrideName = overrideName;
-  dialogHolder.setUniqKeyToForceRerender(shortid());
+  dialogHolder.setUniqKeyToForceRerender(nanoid());
 }
 export function hideDialog() {
   delete dialogHolder.dialogType;

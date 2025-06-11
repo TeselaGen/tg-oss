@@ -10,7 +10,7 @@ import {
 import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "@teselagen/bio-parsers";
 import { flatMap } from "lodash-es";
-import uniqid from "shortid";
+import { nanoid } from "nanoid";
 import { cloneDeep } from "lodash-es";
 import classNames from "classnames";
 
@@ -155,7 +155,7 @@ class AlignmentTool extends React.Component {
     }
 
     hideModal();
-    const alignmentId = uniqid();
+    const alignmentId = nanoid();
     // const alignmentIdMismatches = uniqid();
     createNewAlignment({
       id: alignmentId,

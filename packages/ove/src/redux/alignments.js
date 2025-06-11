@@ -3,7 +3,7 @@ import {
   condensePairwiseAlignmentDifferences
 } from "@teselagen/sequence-utils";
 import { convertBasePosTraceToPerBpTrace } from "@teselagen/bio-parsers";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
 
@@ -149,7 +149,7 @@ export default (state = {}, { payload = {}, type }) => {
   if (type === "UPSERT_ALIGNMENT_RUN") {
     const { id } = payload;
     const payloadToUse = {
-      stateTrackingId: state[id]?.stateTrackingId ? shortid() : "initialLoadId",
+      stateTrackingId: state[id]?.stateTrackingId ? nanoid() : "initialLoadId",
       alignmentType: state[id]?.alignmentType,
       ...payload,
       //assign default visibilities

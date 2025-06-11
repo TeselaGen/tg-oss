@@ -3748,8 +3748,8 @@
   version "0.4.29-beta.1"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.29-beta.1-919ac4ed-d88c-4828-8564-bb062197d608-1749670215258/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.29-beta.1-919ac4ed-d88c-4828-8564-bb062197d608-1749670215258/node_modules/@teselagen/sequence-utils"
+    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.29-beta.1-b3c7cc06-d892-4775-8455-e00c3395ac0e-1749674089982/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.29-beta.1-b3c7cc06-d892-4775-8455-e00c3395ac0e-1749674089982/node_modules/@teselagen/sequence-utils"
     bufferpack "^0.0.6"
     color "^5.0.0"
     fast-xml-parser "^4.2.5"
@@ -3789,11 +3789,11 @@
 "@teselagen/sequence-utils@file:packages/sequence-utils":
   version "0.3.32-beta.1"
   dependencies:
-    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.32-beta.1-8338197d-8089-4910-a914-73d6aec54251-1749670215257/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.32-beta.1-ca6c86a9-f452-4abf-996e-d08f60488b5c-1749674089980/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.4.1"
     lodash-es "^4.17.21"
-    shortid "2.2.16"
+    nanoid "^5.1.5"
     string-splice "^1.3.0"
 
 "@teselagen/ui@file:packages/ui":
@@ -3807,7 +3807,7 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.8.6-beta.25-7c0bd033-4d11-4139-bb73-922ad03cb3d0-1749670215256/node_modules/@teselagen/file-utils"
+    "@teselagen/file-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.8.6-beta.25-eb6b91c2-0e0e-49b0-9df3-8c356f65b132-1749674089980/node_modules/@teselagen/file-utils"
     "@teselagen/react-table" "6.10.18"
     chance "^1.1.11"
     classnames "^2.3.2"
@@ -3823,7 +3823,7 @@
     lodash-es "^4.17.21"
     math-expression-evaluator "^1.3.7"
     mobx "^6.10.2"
-    nanoid "^4.0.0"
+    nanoid "^5.1.5"
     papaparse "5.3.2"
     qs "^6.9.6"
     react "^18.3.1"
@@ -10607,25 +10607,20 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-nanoid@^2.1.0:
-  version "2.1.11"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-2.1.11.tgz#ec24b8a758d591561531b4176a01e3ab4f0f0280"
-  integrity sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==
-
 nanoid@^3.3.8:
   version "3.3.8"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.8.tgz#b1be3030bee36aaff18bacb375e5cce521684baf"
   integrity sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==
 
-nanoid@^4.0.0:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-4.0.2.tgz#140b3c5003959adbebf521c170f282c5e7f9fb9e"
-  integrity sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==
-
 nanoid@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.7.tgz#6452e8c5a816861fd9d2b898399f7e5fd6944cc6"
   integrity sha512-oLxFY2gd2IqnjcYyOXD8XGCftpGtZP2AbHbOkthDkvRywH5ayNtPVy9YlOPcHckXzbLTCHpkb7FB+yuxKV13pQ==
+
+nanoid@^5.1.5:
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.1.5.tgz#f7597f9d9054eb4da9548cdd53ca70f1790e87de"
+  integrity sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==
 
 natural-compare-lite@^1.4.0:
   version "1.4.0"
@@ -12399,13 +12394,6 @@ shell-quote@^1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.8.1.tgz#6dbf4db75515ad5bac63b4f1894c3a154c766680"
   integrity sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==
-
-shortid@2.2.16:
-  version "2.2.16"
-  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.16.tgz#b742b8f0cb96406fd391c76bfc18a67a57fe5608"
-  integrity sha512-Ugt+GIZqvGXCIItnsL+lvFJOiN7RYqlGy7QE41O3YC1xbNSeDGIRO7xg2JJXIAj1cAGnOeC1r7/T9pgrtQbv4g==
-  dependencies:
-    nanoid "^2.1.0"
 
 side-channel@^1.0.4, side-channel@^1.0.6:
   version "1.0.6"

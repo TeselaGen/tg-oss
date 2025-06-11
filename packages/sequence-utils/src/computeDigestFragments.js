@@ -1,4 +1,4 @@
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 import { flatMap, cloneDeep } from "lodash-es";
 import {
   normalizePositionByRangeLength,
@@ -27,7 +27,7 @@ function computeDigestFragments({
   });
   if (!circular && cutsites.length) {
     sortedCutsites.push({
-      id: "seqTerm_" + shortid(),
+      id: "seqTerm_" + nanoid(),
       start: 0,
       end: 0,
       overhangBps: "",

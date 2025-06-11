@@ -1,5 +1,5 @@
 import React from "react";
-import uuid from "shortid";
+import { nanoid } from "nanoid";
 
 import { reduxForm } from "redux-form";
 
@@ -58,7 +58,7 @@ class MergeFeaturesDialog extends React.Component {
             upsertFeature(
               {
                 ...feat1,
-                id: uuid(),
+                id: nanoid(),
                 start: start - 1,
                 end: end - 1,
                 name
