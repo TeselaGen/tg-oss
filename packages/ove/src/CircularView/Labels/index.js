@@ -8,16 +8,19 @@ import { avoidOverlapWith } from "../drawAnnotations";
 
 const fontWidthToFontSize = 1.75;
 
-export const getTextLength = text => {
-  const displayTextForWrappedWhitespace = (text || "Unlabeled").replaceAll(
-    /\s+/g,
-    " "
-  );
-  let len = displayTextForWrappedWhitespace.length;
+export const getTextLengthWithCollapseSpace = (text, collapseWhiteSpace = true) => {
+  let displayText = text || "Unlabeled";
+  if (collapseWhiteSpace) {
+    displayText = displayText.replaceAll(
+      /\s+/g,
+      " "
+    );
+  }
+  let len = displayText.length;
   // eslint-disable-next-line no-control-regex
   const nonEnInputReg = /[^\x00-\xff]+/g;
   const nonEnStrings =
-    displayTextForWrappedWhitespace.match(nonEnInputReg) || [];
+  displayText.match(nonEnInputReg) || [];
   nonEnStrings.forEach(str => (len += str.length * 0.5));
   return len;
 };
@@ -63,7 +66,7 @@ function Labels({
         _annotationCenterAngle + (rotationRadians || 0);
       return {
         ...label,
-        width: getTextLength(label.text) * fontWidth,
+        width: getTextLengthWithCollapseSpace(label.text) * fontWidth,
         //three points define the label:
         innerPoint: {
           ...polarToSpecialCartesian(
@@ -229,7 +232,7 @@ const DrawLabelGroup = withHover(function ({
     // }
   }
 
-  const textLength = getTextLength(text);
+  const textLength = getTextLengthWithCollapseSpace(text);
   const labelLength = textLength * fontWidth;
 
   // Calculate the maximum label length for hovered status
@@ -237,7 +240,7 @@ const DrawLabelGroup = withHover(function ({
     currentLength,
     { text = "Unlabeled" }
   ) {
-    const _textLength = getTextLength(text);
+    const _textLength = getTextLengthWithCollapseSpace(text);
     if (_textLength > currentLength) {
       return _textLength;
     }
@@ -289,7 +292,7 @@ const DrawLabelGroup = withHover(function ({
       labelXStart += overflowDistance;
       maxLabelWidth -= overflowDistance;
       truncatedLabelAndSublabels = labelAndSublabels.map(lable => {
-        const labelWidth = getTextLength(lable.text) * fontWidth;
+        const labelWidth = getTextLengthWithCollapseSpace(lable.text) * fontWidth;
         const truncatedText =
           labelWidth >= maxLabelWidth
             ? lable.text.slice(
@@ -398,7 +401,7 @@ const DrawLabelGroup = withHover(function ({
         data-title={label.title || label.text}
         {...avoidOverlapWith}
         x={labelXStart}
-        textLength={getTextLength(text) * fontWidth}
+        textLength={getTextLengthWithCollapseSpace(text) * fontWidth}
         lengthAdjust="spacing"
         className={
           labelClass + label.className + (hovered ? " veAnnotationHovered" : "")
@@ -472,7 +475,7 @@ const DrawGroupInnerLabel = withHover(
         data-title={label.title}
         {...avoidOverlapWith}
         x={labelXStart}
-        textLength={getTextLength(label.text) * fontWidth}
+        textLength={getTextLengthWithCollapseSpace(label.text) * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
         onDoubleClick={e => {

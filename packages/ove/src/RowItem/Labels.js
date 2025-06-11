@@ -8,7 +8,7 @@ import { reduce, values, startCase, filter, clamp } from "lodash-es";
 import { getRangeLength } from "@teselagen/range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
-import { getTextLength } from "../CircularView/Labels";
+import { getTextLengthWithCollapseSpace } from "../CircularView/Labels";
 
 const BUFFER_WIDTH = 6; //labels shouldn't be less than 6px from eachother on the same line
 
@@ -99,7 +99,7 @@ function Labels(props) {
       annotation = annotationRange;
     }
     const annotationLength =
-      getTextLength(
+    getTextLengthWithCollapseSpace(
         annotation.name ||
           (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name) ||
           ""
