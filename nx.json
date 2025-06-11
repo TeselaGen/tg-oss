@@ -4,13 +4,7 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e",
-          "e2e-playwright"
-        ]
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
@@ -62,9 +56,6 @@
         "devServerTarget": "{projectName}:start:ci",
         "testingType": "e2e"
       }
-    },
-    "e2e-playwright": {
-      "inputs": ["default", "^production"]
     },
     "launch-e2e": {
       "inputs": ["default", "^production"],
