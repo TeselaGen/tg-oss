@@ -390,6 +390,21 @@ class TgSelect extends React.Component {
             onKeyDown: e => {
               const { which } = e;
               e.persist();
+              // Handle Cmd+Enter (macOS) or Ctrl+Enter (Windows/Linux)
+              if ((e.metaKey || e.ctrlKey) && which === Keys.ENTER) {
+                e.preventDefault();
+                // Try to select the active item, or the first enabled item
+                const items = options || [];
+                let activeItem = this.state.activeItem;
+                if (!activeItem) {
+                  // Find the first enabled item
+                  activeItem = items.find(opt => !itemDisabled(opt));
+                }
+                if (activeItem) {
+                  this.handleItemSelect(activeItem, e);
+                }
+                return;
+              }
               if (which === Keys.ENTER) {
                 e.preventDefault();
                 // e.stopPropagation();
