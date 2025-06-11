@@ -103,11 +103,11 @@ export default compose(
           hoveredAnnotationUpdate(idToPass, { editorName });
       },
     onMouseLeave: props => e => {
-      // hoveredAnnEasyStore.hoveredAnn = undefined;
-      // const { editorName, hoveredAnnotationClear } = props;
-      // e.stopPropagation();
-      // if (window.__veDragging || window.__veScrolling) return;
-      // hoveredAnnotationClear && hoveredAnnotationClear(true, { editorName });
+      hoveredAnnEasyStore.hoveredAnn = undefined;
+      const { editorName, hoveredAnnotationClear } = props;
+      e.stopPropagation();
+      if (window.__veDragging || window.__veScrolling) return;
+      hoveredAnnotationClear && hoveredAnnotationClear(true, { editorName });
     }
   })
 );
