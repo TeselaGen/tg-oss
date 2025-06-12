@@ -26,7 +26,7 @@ describe("label tests", () => {
     cy.get(".tg-test-start input").clear().type("100");
     cy.get(".tg-test-end input").clear().type("120");
     cy.get(".tg-upsert-annotation").contains("Save").click();
-    cy.get(`.veLabelText:contains(测试 テスト 테스트한국어)`).first().trigger("mouseover");
+    cy.get(`.veLabelText:contains(测试 テスト 테스트한국어)`).first().trigger("mouseover", {force: true});
     cy.get(`.veLabelText.veAnnotationHovered:contains('测试 テスト 테스트한국어 тестированиерусский!@#￥%&*()_+{❤|:abcdefghijkl..')`);
     cy.get(`.veRowItemWrapper .veLabelText:contains('测试 テスト 테스트한국어 тестированиерусский!@#￥%&*()_+{❤|:abcdefghij..')`);
   })
