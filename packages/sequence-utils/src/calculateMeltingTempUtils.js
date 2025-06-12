@@ -1,5 +1,3 @@
-// eatodo - remove any unused code here and fix lint warnings (should show up with yellow eslint warnings!)
-
 /**
  * Copyright (c) 2025 by TeselaGen Biotechnology Inc.
  * This JavaScript implementation is based on the Python Biopython module, durrently released under the "Biopython License Agreement" (given in full below).
@@ -13,98 +11,7 @@
 /**
  * Calculate the melting temperature of nucleotide sequences.
  *
- * This module contains three different methods to calculate the melting
- * temperature of oligonucleotides:
- *
- * 1. Tm_Wallace: 'Rule of thumb'
- * 2. Tm_GC: Empirical formulas based on GC content. Salt and mismatch corrections
- *    can be included.
- * 3. Tm_NN: Calculation based on nearest neighbor thermodynamics. Several tables
- *    for DNA/DNA, DNA/RNA and RNA/RNA hybridizations are included.
- *    Correction for mismatches, dangling ends, salt concentration and other
- *    additives are available.
- *
- * General parameters for most Tm methods:
- *  - seq -- A sequence string.
- *  - check -- Checks if the sequence is valid for the given method (default=
- *    true). In general, whitespaces and non-base characters are removed and
- *    characters are converted to uppercase. RNA will be backtranscribed.
- *  - strict -- Do not allow base characters or neighbor duplex keys (e.g.
- *    'AT/NA') that could not or not unambiguously be evaluated for the respective
- *    method (default=true). Note that W (= A or T) and S (= C or G) are not
- *    ambiguous for Tm_Wallace and Tm_GC. If 'false', average values (if
- *    applicable) will be used.
- *
- * This module is not able to detect self-complementary and it will not use
- * alignment tools to align an oligonucleotide sequence to its target sequence.
- * Thus it can not detect dangling-ends and mismatches by itself (don't even think
- * about bulbs and loops). These parameters have to be handed over to the
- * respective method.
- *
- * Other public methods of this module:
- *  - make_table     : To create a table with thermodynamic data.
- *  - salt_correction: To adjust Tm to a given salt concentration by different
- *    formulas. This method is called from Tm_GC and Tm_NN but may
- *    also be accessed 'manually'. It returns a correction term, not
- *    a corrected Tm!
- *  - chem_correction: To adjust Tm regarding the chemical additives DMSO and
- *    formaldehyde. The method returns a corrected Tm. Chemical
- *    correction is not an integral part of the Tm methods and must
- *    be called additionally.
- */
-
-// Thermodynamic lookup tables (objects):
-// Enthalpy (dH) and entropy (dS) values for nearest neighbors and initiation
-// process. Calculation of duplex initiation is quite different in several
-// papers; to allow for a general calculation, all different initiation
-// parameters are included in all tables and non-applicable parameters are set
-// to zero.
-// The key is either an initiation type (e.g., 'init_A/T') or a nearest neighbor
-// duplex sequence (e.g., GT/CA, to read 5'GT3'-3'CA5'). The values are arrays
-// of dH (kcal/mol), dS (cal/mol K).
-
-// DNA/DNA
-// Breslauer et al. (1986), Proc Natl Acad Sci USA 83: 3746-3750
-const DNA_NN1 = {
-  init: [0, 0],
-  "init_A/T": [0, 0],
-  "init_G/C": [0, 0],
-  "init_oneG/C": [0, -16.8],
-  "init_allA/T": [0, -20.1],
-  "init_5T/A": [0, 0],
-  sym: [0, -1.3],
-  "AA/TT": [-9.1, -24.0],
-  "AT/TA": [-8.6, -23.9],
-  "TA/AT": [-6.0, -16.9],
-  "CA/GT": [-5.8, -12.9],
-  "GT/CA": [-6.5, -17.3],
-  "CT/GA": [-7.8, -20.8],
-  "GA/CT": [-5.6, -13.5],
-  "CG/GC": [-11.9, -27.8],
-  "GC/CG": [-11.1, -26.7],
-  "GG/CC": [-11.0, -26.6]
-};
-
-// Sugimoto et al. (1996), Nuc Acids Res 24 : 4501-4505
-const DNA_NN2 = {
-  init: [0.6, -9.0],
-  "init_A/T": [0, 0],
-  "init_G/C": [0, 0],
-  "init_oneG/C": [0, 0],
-  "init_allA/T": [0, 0],
-  "init_5T/A": [0, 0],
-  sym: [0, -1.4],
-  "AA/TT": [-8.0, -21.9],
-  "AT/TA": [-5.6, -15.2],
-  "TA/AT": [-6.6, -18.4],
-  "CA/GT": [-8.2, -21.0],
-  "GT/CA": [-9.4, -25.5],
-  "CT/GA": [-6.6, -16.4],
-  "GA/CT": [-8.8, -23.5],
-  "CG/GC": [-11.8, -29.0],
-  "GC/CG": [-10.5, -26.4],
-  "GG/CC": [-10.9, -28.4]
-};
+/**/
 
 // Allawi and SantaLucia (1997), Biochemistry 36: 10581-10594
 const DNA_NN3 = {
@@ -127,49 +34,7 @@ const DNA_NN3 = {
   "GG/CC": [-8.0, -19.9]
 };
 
-// SantaLucia & Hicks (2004), Annu. Rev. Biophys. Biomol. Struct 33: 415-440
-const DNA_NN4 = {
-  init: [0.2, -5.7],
-  "init_A/T": [2.2, 6.9],
-  "init_G/C": [0, 0],
-  "init_oneG/C": [0, 0],
-  "init_allA/T": [0, 0],
-  "init_5T/A": [0, 0],
-  sym: [0, -1.4],
-  "AA/TT": [-7.6, -21.3],
-  "AT/TA": [-7.2, -20.4],
-  "TA/AT": [-7.2, -21.3],
-  "CA/GT": [-8.5, -22.7],
-  "GT/CA": [-8.4, -22.4],
-  "CT/GA": [-7.8, -21.0],
-  "GA/CT": [-8.2, -22.2],
-  "CG/GC": [-10.6, -27.2],
-  "GC/CG": [-9.8, -24.4],
-  "GG/CC": [-8.0, -19.9]
-};
-
 // RNA/RNA
-// Freier et al. (1986), Proc Natl Acad Sci USA 83: 9373-9377
-const RNA_NN1 = {
-  init: [0, -10.8],
-  "init_A/T": [0, 0],
-  "init_G/C": [0, 0],
-  "init_oneG/C": [0, 0],
-  "init_allA/T": [0, 0],
-  "init_5T/A": [0, 0],
-  sym: [0, -1.4],
-  "AA/TT": [-6.6, -18.4],
-  "AT/TA": [-5.7, -15.5],
-  "TA/AT": [-8.1, -22.6],
-  "CA/GT": [-10.5, -27.8],
-  "GT/CA": [-10.2, -26.2],
-  "CT/GA": [-7.6, -19.2],
-  "GA/CT": [-13.3, -35.5],
-  "CG/GC": [-8.0, -19.4],
-  "GC/CG": [-14.2, -34.9],
-  "GG/CC": [-12.2, -29.7]
-};
-
 // Xia et al (1998), Biochemistry 37: 14719-14735
 const RNA_NN2 = {
   init: [3.61, -1.5],
@@ -189,66 +54,6 @@ const RNA_NN2 = {
   "CG/GC": [-10.64, -26.7],
   "GC/CG": [-14.88, -36.9],
   "GG/CC": [-13.39, -32.7]
-};
-
-// Chen et al. (2012), Biochemistry 51: 3508-3522
-const RNA_NN3 = {
-  init: [6.4, 6.99],
-  "init_A/T": [3.85, 11.04],
-  "init_G/C": [0, 0],
-  "init_oneG/C": [0, 0],
-  "init_allA/T": [0, 0],
-  "init_5T/A": [0, 0],
-  sym: [0, -1.4],
-  "AA/TT": [-7.09, -19.8],
-  "AT/TA": [-9.11, -25.8],
-  "TA/AT": [-8.5, -22.9],
-  "CA/GT": [-11.03, -28.8],
-  "GT/CA": [-11.98, -31.3],
-  "CT/GA": [-10.9, -28.5],
-  "GA/CT": [-13.21, -34.9],
-  "CG/GC": [-10.88, -27.4],
-  "GC/CG": [-16.04, -40.6],
-  "GG/CC": [-14.18, -35.0],
-  "GT/TG": [-13.83, -46.9],
-  "GG/TT": [-17.82, -56.7],
-  "AG/TT": [-3.96, -11.6],
-  "TG/AT": [-0.96, -1.8],
-  "TT/AG": [-10.38, -31.8],
-  "TG/GT": [-12.64, -38.9],
-  "AT/TG": [-7.39, -21.0],
-  "CG/GT": [-5.56, -13.9],
-  "CT/GG": [-9.44, -24.7],
-  "GG/CT": [-7.03, -16.8],
-  "GT/CG": [-11.09, -28.8]
-};
-
-// RNA/DNA
-// Sugimoto et al. (1995), Biochemistry 34: 11211-11216
-const R_DNA_NN1 = {
-  init: [1.9, -3.9],
-  "init_A/T": [0, 0],
-  "init_G/C": [0, 0],
-  "init_oneG/C": [0, 0],
-  "init_allA/T": [0, 0],
-  "init_5T/A": [0, 0],
-  sym: [0, 0],
-  "TT/AA": [-11.5, -36.4],
-  "GT/CA": [-7.8, -21.6],
-  "CT/GA": [-7.0, -19.7],
-  "AT/TA": [-8.3, -23.9],
-  "TG/AC": [-10.4, -28.4],
-  "GG/CC": [-12.8, -31.9],
-  "CG/GC": [-16.3, -47.1],
-  "AG/TC": [-9.1, -23.5],
-  "TC/AG": [-8.6, -22.9],
-  "GC/CG": [-8.0, -17.1],
-  "CC/GG": [-9.3, -23.2],
-  "AC/TG": [-5.9, -12.3],
-  "TA/AT": [-7.8, -23.2],
-  "GA/CT": [-5.5, -13.5],
-  "CA/GT": [-9.0, -26.1],
-  "AA/TT": [-7.8, -21.9]
 };
 
 // Internal mismatch and inosine table (DNA)
@@ -438,108 +243,6 @@ const DNA_DE1 = {
   ".T/TA": [-3.8, -12.6]
 };
 
-// Dangling ends table (RNA)
-// Turner & Mathews (2010), Nucl Acids Res 38: D280-D282
-const RNA_DE1 = {
-  ".T/AA": [-4.9, -13.2],
-  ".T/CA": [-0.9, -1.3],
-  ".T/GA": [-5.5, -15.1],
-  ".T/TA": [-2.3, -5.5],
-  ".G/AC": [-9.0, -23.5],
-  ".G/CC": [-4.1, -10.6],
-  ".G/GC": [-8.6, -22.2],
-  ".G/TC": [-7.5, -20.31],
-  ".C/AG": [-7.4, -20.3],
-  ".C/CG": [-2.8, -7.7],
-  ".C/GG": [-6.4, -16.4],
-  ".C/TG": [-3.6, -9.7],
-  ".T/AG": [-4.9, -13.2],
-  ".T/CG": [-0.9, -1.3],
-  ".T/GG": [-5.5, -15.1],
-  ".T/TG": [-2.3, -5.5],
-  ".A/AT": [-5.7, -16.1],
-  ".A/CT": [-0.7, -1.9],
-  ".A/GT": [-5.8, -16.4],
-  ".A/TT": [-2.2, -6.8],
-  ".G/AT": [-5.7, -16.1],
-  ".G/CT": [-0.7, -1.9],
-  ".G/GT": [-5.8, -16.4],
-  ".G/TT": [-2.2, -6.8],
-  "AT/.A": [-0.5, -0.6],
-  "CT/.A": [6.9, 22.6],
-  "GT/.A": [0.6, 2.6],
-  "TT/.A": [0.6, 2.6],
-  "AG/.C": [-1.6, -4.5],
-  "CG/.C": [0.7, 3.2],
-  "GG/.C": [-4.6, -14.8],
-  "TG/.C": [-0.4, -1.3],
-  "AC/.G": [-2.4, -6.1],
-  "CC/.G": [3.3, 11.6],
-  "GC/.G": [0.8, 3.2],
-  "TC/.G": [-1.4, -4.2],
-  "AT/.G": [-0.5, -0.6],
-  "CT/.G": [6.9, 22.6],
-  "GT/.G": [0.6, 2.6],
-  "TT/.G": [0.6, 2.6],
-  "AA/.T": [1.6, 6.1],
-  "CA/.T": [2.2, 8.1],
-  "GA/.T": [0.7, 3.5],
-  "TA/.T": [3.1, 10.6],
-  "AG/.T": [1.6, 6.1],
-  "CG/.T": [2.2, 8.1],
-  "GG/.T": [0.7, 3.5],
-  "TG/.T": [3.1, 10.6]
-};
-
-/**
- * Return a table with thermodynamic parameters (as object).
- *
- * @param {Object} oldtable - An existing object with thermodynamic parameters.
- * @param {Object} values - An object with new or updated values.
- * @returns {Object} A new table with thermodynamic parameters.
- *
- * Example:
- * To replace the initiation parameters in the Sugimoto '96 dataset with
- * the initiation parameters from Allawi & SantaLucia '97:
- *
- * const table = DNA_NN2;                               // Sugimoto '96
- * console.log(table['init_A/T']);                      // [0, 0]
- * const newtable = make_table(DNA_NN2, {'init': [0, 0],
- *                             'init_A/T': [2.3, 4.1],
- *                             'init_G/C': [0.1, -2.8]});
- * console.log(newtable['init_A/T']);                   // [2.3, 4.1]
- */
-function make_table(oldtable = null, values = null) {
-  let table;
-  if (oldtable === null) {
-    table = {
-      init: [0, 0],
-      "init_A/T": [0, 0],
-      "init_G/C": [0, 0],
-      "init_oneG/C": [0, 0],
-      "init_allA/T": [0, 0],
-      "init_5T/A": [0, 0],
-      sym: [0, 0],
-      "AA/TT": [0, 0],
-      "AT/TA": [0, 0],
-      "TA/AT": [0, 0],
-      "CA/GT": [0, 0],
-      "GT/CA": [0, 0],
-      "CT/GA": [0, 0],
-      "GA/CT": [0, 0],
-      "CG/GC": [0, 0],
-      "GC/CG": [0, 0],
-      "GG/CC": [0, 0]
-    };
-  } else {
-    table = { ...oldtable };
-  }
-  if (values) {
-    Object.assign(table, values);
-  }
-  return table;
-}
-
 /**
  * Return a sequence which fulfills the requirements of the given method.
  *
@@ -642,7 +345,7 @@ function salt_correction({
     Mon += 120 * Math.sqrt(Mg - dNTPs);
   }
 
-  let mon = Mon * 1e-3;
+  const mon = Mon * 1e-3;
 
   // Note: Math.log = ln(), Math.log10 = log()
   if (method >= 1 && method <= 6 && !mon) {
@@ -673,16 +376,17 @@ function salt_correction({
   }
   if (method === 7) {
     let a = 3.92,
-      b = -0.911,
-      c = 6.26,
       d = 1.42;
-    let e = -48.2,
-      f = 52.5,
-      g = 8.31;
+    const b = -0.911,
+      c = 6.26;
+
+    const e = -48.2,
+      f = 52.5;
+    let g = 8.31;
 
     if (dNTPs > 0) {
-      let dntps = dNTPs * 1e-3;
-      let ka = 3e4; // Dissociation constant for Mg:dNTP
+      const dntps = dNTPs * 1e-3;
+      const ka = 3e4; // Dissociation constant for Mg:dNTP
 
       // Free Mg2+ calculation:
       mg =
@@ -692,7 +396,7 @@ function salt_correction({
     }
 
     if (Mon > 0) {
-      let R = Math.sqrt(mg) / mon;
+      const R = Math.sqrt(mg) / mon;
 
       if (R < 0.22) {
         corr =
@@ -726,111 +430,6 @@ function salt_correction({
 }
 
 /**
- * Correct a given Tm for DMSO and formamide.
- *
- * Please note that these corrections are +/- rough approximations.
- *
- * @param {number} melting_temp - Melting temperature
- * @param {Object} options - Options for chemical correction
- * @param {number} [options.DMSO=0] - Percent DMSO
- * @param {number} [options.fmd=0] - Formamide concentration in %(fmdmethod=1) or molar (fmdmethod=2)
- * @param {number} [options.DMSOfactor=0.75] - How much should Tm decreases per percent DMSO
- * @param {number} [options.fmdfactor=0.65] - How much should Tm decrease per percent formamide
- * @param {number} [options.fmdmethod=1] - Method for formamide correction (1 or 2)
- * @param {number} [options.GC=null] - GC content in percent
- * @returns {number} - The corrected melting temperature
- */
-function chem_correction(
-  melting_temp,
-  {
-    DMSO = 0,
-    fmd = 0,
-    DMSOfactor = 0.75,
-    fmdfactor = 0.65,
-    fmdmethod = 1,
-    GC = null
-  } = {}
-) {
-  if (DMSO) {
-    melting_temp -= DMSOfactor * DMSO;
-  }
-
-  if (fmd) {
-    // McConaughy et al. (1969), Biochemistry 8: 3289-3295
-    if (fmdmethod === 1) {
-      // Note: Here fmd is given in percent
-      melting_temp -= fmdfactor * fmd;
-    }
-    // Blake & Delcourt (1996), Nucl Acids Res 11: 2095-2103
-    if (fmdmethod === 2) {
-      if (GC === null || GC < 0) {
-        throw new Error("'GC' is missing or negative");
-      }
-      // Note: Here fmd is given in molar
-      melting_temp += (0.453 * (GC / 100.0) - 2.88) * fmd;
-    }
-    if (fmdmethod !== 1 && fmdmethod !== 2) {
-      throw new Error("'fmdmethod' must be 1 or 2");
-    }
-  }
-
-  return melting_temp;
-}
-
-/**
- * Calculate and return the Tm using the 'Wallace rule'.
- *
- * Tm = 4 degC * (G + C) + 2 degC * (A+T)
- *
- * The Wallace rule (Thein & Wallace 1986, in Human genetic diseases: a
- * practical approach, 33-50) is often used as rule of thumb for approximate
- * Tm calculations for primers of 14 to 20 nt length.
- *
- * Non-DNA characters (e.g., E, F, J, !, 1, etc) are ignored by this method.
- *
- * @param {string} seq - The sequence
- * @param {boolean} [check=true] - Whether to check and process the sequence
- * @param {boolean} [strict=true] - Whether to disallow ambiguous bases
- * @returns {number} - The calculated melting temperature
- */
-function Tm_Wallace(seq, check = true, strict = true) {
-  seq = String(seq);
-
-  if (check) {
-    seq = _check(seq, "Tm_Wallace");
-  }
-
-  // Count occurrences of specific bases
-  const countBases = (seq, bases) => {
-    return bases
-      .split("")
-      .reduce(
-        (count, base) =>
-          count + (seq.match(new RegExp(base, "g")) || []).length,
-        0
-      );
-  };
-
-  let melting_temp = 2 * countBases(seq, "ATW") + 4 * countBases(seq, "CGS");
-
-  // Intermediate values for ambiguous positions:
-  let tmp =
-    3 * countBases(seq, "KMNRY") +
-    (10 / 3.0) * countBases(seq, "BV") +
-    (8 / 3.0) * countBases(seq, "DH");
-
-  if (strict && tmp) {
-    throw new Error(
-      "ambiguous bases B, D, H, K, M, N, R, V, Y not allowed when strict=True"
-    );
-  } else {
-    melting_temp += tmp;
-  }
-
-  return melting_temp;
-}
-
-/**
  * Calculate the fraction of G and C bases in a sequence.
  *
  * @param {string} seq - The sequence
@@ -841,8 +440,8 @@ function gc_fraction(seq, method = "ignore") {
   seq = seq.toUpperCase();
 
   // Count unambiguous bases
-  let gc = (seq.match(/[GC]/g) || []).length;
-  let at = (seq.match(/[AT]/g) || []).length;
+  const gc = (seq.match(/[GC]/g) || []).length;
+  const at = (seq.match(/[AT]/g) || []).length;
 
   // Handle ambiguous bases
   if (method === "ignore") {
@@ -850,19 +449,19 @@ function gc_fraction(seq, method = "ignore") {
     return gc / (gc + at) || 0;
   } else if (method === "weighted") {
     // Count ambiguous bases with appropriate weights
-    let s = (seq.match(/S/g) || []).length; // S = G or C, weight 1.0
-    let w = (seq.match(/W/g) || []).length; // W = A or T, weight 0.0
-    let r = (seq.match(/R/g) || []).length; // R = A or G, weight 0.5
-    let y = (seq.match(/Y/g) || []).length; // Y = C or T, weight 0.5
-    let k = (seq.match(/K/g) || []).length; // K = G or T, weight 0.5
-    let m = (seq.match(/M/g) || []).length; // M = A or C, weight 0.5
-    let b = (seq.match(/B/g) || []).length; // B = C or G or T, weight 0.67
-    let d = (seq.match(/D/g) || []).length; // D = A or G or T, weight 0.33
-    let h = (seq.match(/H/g) || []).length; // H = A or C or T, weight 0.33
-    let v = (seq.match(/V/g) || []).length; // V = A or C or G, weight 0.67
-    let n = (seq.match(/[NX]/g) || []).length; // N or X = any base, weight 0.5
+    const s = (seq.match(/S/g) || []).length; // S = G or C, weight 1.0
+    const w = (seq.match(/W/g) || []).length; // W = A or T, weight 0.0
+    const r = (seq.match(/R/g) || []).length; // R = A or G, weight 0.5
+    const y = (seq.match(/Y/g) || []).length; // Y = C or T, weight 0.5
+    const k = (seq.match(/K/g) || []).length; // K = G or T, weight 0.5
+    const m = (seq.match(/M/g) || []).length; // M = A or C, weight 0.5
+    const b = (seq.match(/B/g) || []).length; // B = C or G or T, weight 0.67
+    const d = (seq.match(/D/g) || []).length; // D = A or G or T, weight 0.33
+    const h = (seq.match(/H/g) || []).length; // H = A or C or T, weight 0.33
+    const v = (seq.match(/V/g) || []).length; // V = A or C or G, weight 0.67
+    const n = (seq.match(/[NX]/g) || []).length; // N or X = any base, weight 0.5
 
-    let total = gc + at + s + w + r + y + k + m + b + d + h + v + n;
+    const total = gc + at + s + w + r + y + k + m + b + d + h + v + n;
 
     if (total === 0) {
       return 0;
@@ -875,130 +474,6 @@ function gc_fraction(seq, method = "ignore") {
   } else {
     throw new Error(`Unknown method: ${method}`);
   }
-}
-
-/**
- * Return the Tm using empirical formulas based on GC content.
- *
- * General format: Tm = A + B(%GC) - C/N + salt correction - D(%mismatch)
- *
- * @param {string} seq - The sequence
- * @param {Object} options - Options for Tm calculation
- * @param {boolean} [options.check=true] - Whether to check and process the sequence
- * @param {boolean} [options.strict=true] - Whether to disallow ambiguous bases
- * @param {number} [options.valueset=7] - Which set of empirical values to use (1-8)
- * @param {Array} [options.userset=null] - Custom set of values [A, B, C, D]
- * @param {number} [options.Na=50] - Millimolar concentration of Na+ ion
- * @param {number} [options.K=0] - Millimolar concentration of K+ ion
- * @param {number} [options.Tris=0] - Millimolar concentration of Tris
- * @param {number} [options.Mg=0] - Millimolar concentration of Mg2+ ion
- * @param {number} [options.dNTPs=0] - Millimolar concentration of dNTPs
- * @param {number} [options.saltcorr=0] - Salt correction method (0-7)
- * @param {boolean} [options.mismatch=true] - Whether to count 'X' as mismatch
- * @returns {number} - The calculated melting temperature
- */
-function Tm_GC(
-  seq,
-  {
-    check = true,
-    strict = true,
-    valueset = 7,
-    userset = null,
-    Na = 50,
-    K = 0,
-    Tris = 0,
-    Mg = 0,
-    dNTPs = 0,
-    saltcorr = 0,
-    mismatch = true
-  } = {}
-) {
-  if (saltcorr === 5) {
-    throw new Error("salt-correction method 5 not applicable to Tm_GC");
-  }
-
-  seq = String(seq);
-
-  if (check) {
-    seq = _check(seq, "Tm_GC");
-  }
-
-  if (strict && /[KMNRYBVDH]/.test(seq)) {
-    throw new Error(
-      "ambiguous bases B, D, H, K, M, N, R, V, Y not allowed when 'strict=True'"
-    );
-  }
-
-  // Ambiguous bases: add 0.5, 0.67 or 0.33% depending on G+C probability:
-  let percent_gc = gc_fraction(seq, "weighted") * 100;
-
-  // gc_fraction counts X as 0.5
-  if (mismatch) {
-    percent_gc -= ((seq.match(/X/g) || []).length * 50.0) / seq.length;
-  }
-
-  let A, B, C, D;
-
-  if (userset) {
-    [A, B, C, D] = userset;
-  } else {
-    if (valueset === 1) {
-      [A, B, C, D] = [69.3, 0.41, 650, 1];
-      saltcorr = 0;
-    }
-    if (valueset === 2) {
-      [A, B, C, D] = [81.5, 0.41, 675, 1];
-      saltcorr = 0;
-    }
-    if (valueset === 3) {
-      [A, B, C, D] = [81.5, 0.41, 675, 1];
-      saltcorr = 1;
-    }
-    if (valueset === 4) {
-      [A, B, C, D] = [81.5, 0.41, 500, 1];
-      saltcorr = 2;
-    }
-    if (valueset === 5) {
-      [A, B, C, D] = [78.0, 0.7, 500, 1];
-      saltcorr = 2;
-    }
-    if (valueset === 6) {
-      [A, B, C, D] = [67.0, 0.8, 500, 1];
-      saltcorr = 2;
-    }
-    if (valueset === 7) {
-      [A, B, C, D] = [81.5, 0.41, 600, 1];
-      saltcorr = 1;
-    }
-    if (valueset === 8) {
-      [A, B, C, D] = [77.1, 0.41, 528, 1];
-      saltcorr = 4;
-    }
-  }
-
-  if (valueset > 8) {
-    throw new Error("allowed values for parameter 'valueset' are 0-8.");
-  }
-
-  let melting_temp = A + B * percent_gc - C / seq.length;
-
-  if (saltcorr) {
-    melting_temp += salt_correction({
-      Na: Na,
-      K: K,
-      Tris: Tris,
-      Mg: Mg,
-      dNTPs: dNTPs,
-      seq: seq,
-      method: saltcorr
-    });
-  }
-
-  if (mismatch) {
-    melting_temp -= D * (((seq.match(/X/g) || []).length * 100.0) / seq.length);
-  }
-
-  return melting_temp;
 }
 
 /**

@@ -13,8 +13,7 @@ describe("index.js", () => {
             file.indexOf("prepareRowData_output1.json") > -1 ||
             file.indexOf("featureTypesAndColors") > -1 ||
             file.indexOf("diffUtils") > -1 ||
-            file.indexOf(".test.js") > -1 ||
-            file.indexOf("index.js") > -1
+            file.indexOf("calculateMeltingTempUtils") > -1
           ) {
             return;
           }
