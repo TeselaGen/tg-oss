@@ -51,8 +51,6 @@
     "url-join": "^4.0.1",
     "use-deep-compare-effect": "^1.6.1",
     "write-excel-file": "^1.4.25",
-    "cypress-real-events": "^1.13.0",
-    "chance": "^1.1.11",
     "@dnd-kit/utilities": "3.2.2",
     "@teselagen/file-utils": "file:../file-utils",
     "@blueprintjs/icons": "3.33.0"

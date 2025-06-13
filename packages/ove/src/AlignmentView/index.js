@@ -15,9 +15,6 @@ import { connect } from "react-redux";
 import {
   Button,
   Intent,
-  Popover,
-  Menu,
-  MenuItem,
   Tooltip,
   Icon,
   Spinner,
@@ -108,8 +105,6 @@ export const AlignmentView = props => {
     minimapLaneSpacing,
     isInPairwiseOverviewView,
     noVisibilityOptions,
-    updateAlignmentSortOrder,
-    alignmentSortOrder,
     handleBackButtonClicked,
     allowTrimming,
     additionalSelectionLayerRightClickedOptions,
@@ -616,7 +611,6 @@ export const AlignmentView = props => {
     } else {
       i = _i;
     }
-
     const track = alignmentTracks?.[i];
     if (!track) return null;
     const {
@@ -636,7 +630,7 @@ export const AlignmentView = props => {
     });
     const linearViewWidth =
       (alignmentData || sequenceData).sequence.length * charWidth;
-    const name = sequenceData.name || sequenceData.id;
+    const name = alignmentData.name || sequenceData.name || sequenceData.id;
 
     const tickSpacing = massageTickSpacing(Math.ceil(120 / charWidth));
 
@@ -1261,7 +1255,7 @@ export const AlignmentView = props => {
                             await navigator.clipboard.writeText(seqDataToCopy);
                           };
 
-                          const getAllAlignmentsFastaText = async () => {
+                          const copyAllAlignmentsFastaText = async () => {
                             await navigator.clipboard.writeText(
                               getAllAlignmentsFastaText()
                             );
@@ -1281,7 +1275,7 @@ export const AlignmentView = props => {
                                   "copyAllAlignmentsFastaClipboardHelper",
                                 hotkey: "cmd+c",
                                 onClick: () => {
-                                  getAllAlignmentsFastaText();
+                                  copyAllAlignmentsFastaText();
                                   window.toastr.success("Selection Copied");
                                 }
                               },
@@ -1289,8 +1283,8 @@ export const AlignmentView = props => {
                                 text: `Copy Selection of ${name} as Fasta`,
                                 className:
                                   "copySpecificAlignmentFastaClipboardHelper",
-                                onClick: () => {
-                                  copySpecificAlignmentFasta();
+                                onClick: e => {
+                                  copySpecificAlignmentFasta(e);
                                   window.toastr.success(
                                     "Selection Copied As Fasta"
                                   );
@@ -1579,37 +1573,6 @@ export const AlignmentView = props => {
                       currentPairwiseAlignmentIndex
                     }
                     {...alignmentVisibilityToolOptions}
-                  />
-                )}
-                {updateAlignmentSortOrder && !isInPairwiseOverviewView && (
-                  <Popover
-                    minimal
-                    content={
-                      <Menu>
-                        <MenuItem
-                          active={true || alignmentSortOrder}
-                          onClick={() => {
-                            updateAlignmentSortOrder("Position");
-                          }}
-                          text="Position"
-                        />
-                        <MenuItem
-                          active={false || alignmentSortOrder}
-                          onClick={() => {
-                            updateAlignmentSortOrder("Alphabetical");
-                          }}
-                          text="Alphabetical"
-                        />
-                      </Menu>
-                    }
-                    target={
-                      <Button
-                        small
-                        text="Sort Order"
-                        rightIcon="caret-down"
-                        icon="sort"
-                      />
-                    }
                   />
                 )}
                 {additionalTopEl}

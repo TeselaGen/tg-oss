@@ -57,19 +57,59 @@ describe("copyPaste", function () {
       );
     });
   });
-  it(`should be able to copy normal sequence`, () => {
+  it(`should be able to copy and paste normal sequence w features`, () => {
     cy.selectRange(10, 12); //select some random range (we were seeing an error where the selection layer wasn't getting updated correctly)
     //right click a feature
-    cy.contains(".veRowViewFeature", "araC")
+    cy.contains(".veRowViewFeature", "araD")
       .first()
       .trigger("contextmenu", { force: true });
     // cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
     cy.contains(".bp3-menu-item", "Copy").click();
-    cy.contains(".openVeCopy2", "Copy").click();
+    cy.contains(".openVeCopy2", "Copy").realClick();
     cy.window().then(() => {
       assert(
         window.Cypress.seqDataToCopy.sequence ===
           "ttatgacaacttgacggctacatcattcactttttcttcacaaccggcacggaactcgctcgggctggccccggtgcattttttaaatacccgcgagaaatagagttgatcgtcaaaaccaacattgcgaccgacggtggcgataggcatccgggtggtgctcaaaagcagcttcgcctggctgatacgttggtcctcgcgccagcttaagacgctaatccctaactgctggcggaaaagatgtgacagacgcgacggcgacaagcaaacatgctgtgcgacgctggcgatatcaaaattgctgtctgccaggtgatcgctgatgtactgacaagcctcgcgtacccgattatccatcggtggatggagcgactcgttaatcgcttccatgcgccgcagtaacaattgctcaagcagatttatcgccagcagctccgaatagcgcccttccccttgcccggcgttaatgatttgcccaaacaggtcgctgaaatgcggctggtgcgcttcatccgggcgaaagaaccccgtattggcaaatattgacggccagttaagccattcatgccagtaggcgcgcggacgaaagtaaacccactggtgataccattcgcgagcctccggatgacgaccgtagtgatgaatctctcctggcgggaacagcaaaatatcacccggtcggcaaacaaattctcgtccctgatttttcaccaccccctgaccgcgaatggtgagattgagaatataacctttcattcccagcggtcggtcgataaaaaaatcgagataaccgttggcctcaatcggcgttaaacccgccaccagatgggcattaaacgagtatcccggcagcaggggatcattttgcgcttcagccat"
+      );
+      assert(window.Cypress.seqDataToCopy.features.length === 2);
+      cy.contains("Selection Copied");
+      // paste it back into the seq
+      cy.get(`.veCircularViewFeature:contains("CmR"):first`).realClick();
+      // assert that the correct element is focused
+      cy.window().then(w => {
+        assert(
+          w.document.activeElement.classList.contains(
+            "veVectorInteractionWrapper"
+          )
+        );
+      });
+      // cy.get(`[data-test="ve-draggable-tabs0"] .veVectorInteractionWrapper`).should("be.focused");
+      cy.get(`.veCircularViewFeature:contains("araD") textPath`).should(
+        "have.length",
+        1
+      );
+      cy.get(`.veCircularViewFeature:contains("CmR") textPath`).should(
+        "have.length",
+        1
+      );
+
+      cy.get(`.veVectorInteractionWrapper:focused input`).trigger("paste", {
+        force: true,
+        clipboardData: {
+          // we have to mock the paste event cause cypress doesn't actually trigger a paste event when typing cmd+v
+          getData: type =>
+            type === "application/json"
+              ? JSON.stringify(window.Cypress.seqDataToCopy)
+              : window.Cypress.seqDataToCopy.sequence,
+          types: ["application/json"]
+        }
+      });
+      cy.get(`.veCircularViewFeature:contains("CmR") textPath`).should(
+        "not.exist"
+      );
+      cy.get(`.veCircularViewFeature:contains("araD") textPath`).should(
+        "have.length",
+        2
       );
     });
   });

@@ -18,7 +18,10 @@
               "recompose",
               "buffer",
               "string_decoder",
-              "@teselagen/react-table"
+              "@teselagen/react-table",
+              "deep-equal",
+              "cypress-real-events",
+              "clipboard"
             ]
           }
         ]
