@@ -27,7 +27,8 @@ import {
   isFunction,
   isEqual,
   every,
-  some
+  some,
+  identity
 } from "lodash-es";
 import {
   Button,
@@ -1241,16 +1242,16 @@ const DataTable = ({
 
       //index 0 of the table is the column titles
       //must add 1 to rowNum
-      const rowNumbersToCopy = selectedRecords
-        .map(rec => idToIndex[rec.id || rec.code] + 1)
-        .sort();
+      const rowNumbersToCopy = Array.from(
+        new Set(selectedRecords.map(rec => idToIndex[rec.id || rec.code] + 1))
+      ).sort();
 
       if (!rowNumbersToCopy.length) return;
       rowNumbersToCopy.unshift(0); //add in the header row
       try {
         const allRowEls = getAllRows(tableRef);
         if (!allRowEls) return;
-        const rowEls = rowNumbersToCopy.map(i => allRowEls[i]);
+        const rowEls = rowNumbersToCopy.map(i => allRowEls[i]).filter(identity);
         if (window.Cypress) window.Cypress.__copiedRowsLength = rowEls.length;
         handleCopyRows(rowEls, {
           onFinishMsg: "Selected rows copied"
