@@ -2869,7 +2869,12 @@ const DataTable = ({
   );
 
   return (
-    <div tabIndex="1" onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+    <div
+      tabIndex="1"
+      style={{ height: "100%" }}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
+    >
       <div
         className={classNames(
           "data-table-container",
