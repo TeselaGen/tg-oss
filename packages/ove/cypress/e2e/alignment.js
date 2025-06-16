@@ -128,9 +128,9 @@ describe("alignment", function () {
   });
   it("scrolls the yellow scroll handle correctly", function () {
     cy.visit("#/Alignment");
-    cy.contains("F05225").should("not.exist");
+    cy.contains("F05233").should("not.exist");
     cy.get(`[data-lane-index="13"]`).click();
-    cy.contains("F05225").should("exist");
+    cy.contains("F05233").should("exist");
   });
   it("can turn on/off the axis with one click", function () {
     cy.visit("#/Alignment");

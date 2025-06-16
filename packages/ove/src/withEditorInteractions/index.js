@@ -259,7 +259,8 @@ function VectorInteractionHOC(Component /* options */) {
       e.preventDefault();
     };
 
-    handleCutOrCopy = isCut => async e => {
+    handleCutOrCopy = _isCut => async e => {
+      const isCut = _isCut || this.isCut || false;
       e.preventDefault();
       const {
         onCopy = noop,
@@ -328,11 +329,11 @@ function VectorInteractionHOC(Component /* options */) {
           }),
           this.props
         );
-        document.body.removeEventListener("cut", this.handleCut);
       } else {
         onCopy(e, seqData, this.props);
-        document.body.removeEventListener("copy", this.handleCopy);
       }
+      document.body.removeEventListener("cut", this.handleCut);
+      document.body.removeEventListener("copy", this.handleCopy);
       window.toastr.success(
         `Selection ${
           isCut && !(readOnly || disableBpEditing) && !disableBpEditing
@@ -601,15 +602,15 @@ function VectorInteractionHOC(Component /* options */) {
       const { sequenceData, readOnly, disableBpEditing, selectionLayer } =
         this.props;
       const { isProtein } = sequenceData;
+      // Add the appropriate listener
+      document.body.addEventListener("copy", this.handleCopy, { once: true });
+      document.body.addEventListener("cut", this.handleCut, { once: true });
+
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
           action: () => action,
           text: () => {
-            if (action === "copy") {
-              document.body.addEventListener("copy", this.handleCopy);
-            } else {
-              document.body.addEventListener("cut", this.handleCut);
-            }
+            this.isCut = action === "cut";
             const { editorName, store } = this.props;
             const { sequenceData, copyOptions, selectionLayer } =
               store.getState().VectorEditor[editorName];
@@ -678,7 +679,6 @@ function VectorInteractionHOC(Component /* options */) {
                   this.openVeCut && this.openVeCut.destroy();
                 },
                 didMount: ({ className }) => {
-                  // TODO: Maybe use a cut action instead
                   this.openVeCut = makeTextCopyable(
                     s => ({
                       ...s,
