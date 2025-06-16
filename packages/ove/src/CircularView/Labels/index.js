@@ -8,11 +8,19 @@ import { avoidOverlapWith } from "../drawAnnotations";
 
 const fontWidthToFontSize = 1.75;
 
-const getTextLength = text => {
-  let len = (text || "Unlabeled").length;
+export const getTextLengthWithCollapseSpace = (text, collapseWhiteSpace = true) => {
+  let displayText = text || "Unlabeled";
+  if (collapseWhiteSpace) {
+    displayText = displayText.replaceAll(
+      /\s+/g,
+      " "
+    );
+  }
+  let len = displayText.length;
   // eslint-disable-next-line no-control-regex
   const nonEnInputReg = /[^\x00-\xff]+/g;
-  const nonEnStrings = (text || "Unlabeled").match(nonEnInputReg) || [];
+  const nonEnStrings =
+  displayText.match(nonEnInputReg) || [];
   nonEnStrings.forEach(str => (len += str.length * 0.5));
   return len;
 };
@@ -58,7 +66,7 @@ function Labels({
         _annotationCenterAngle + (rotationRadians || 0);
       return {
         ...label,
-        width: getTextLength(label.text) * fontWidth,
+        width: getTextLengthWithCollapseSpace(label.text) * fontWidth,
         //three points define the label:
         innerPoint: {
           ...polarToSpecialCartesian(
@@ -214,42 +222,26 @@ const DrawLabelGroup = withHover(function ({
 }) {
   let { text = "Unlabeled" } = label;
 
-  const textLength = getTextLength(text);
   let groupLabelXStart;
   //Add the number of unshown labels
   if (label.labelAndSublabels && label.labelAndSublabels.length > 1) {
-    // if (label.x > 0) {
     text = "+" + (label.labelAndSublabels.length - 1) + "," + text;
-    // } else {
-    //   text += ', +' + (label.labelAndSublabels.length - 1)
-    // }
   }
 
-  const labelLength = textLength * fontWidth;
-  const maxLabelLength = labelAndSublabels.reduce(function (
-    currentLength,
-    { text = "Unlabeled" }
-  ) {
-    const _textLength = getTextLength(text);
-    if (_textLength > currentLength) {
-      return _textLength;
-    }
-    return currentLength;
-  }, 0);
+  const labelLength = getTextLengthWithCollapseSpace(text) * fontWidth;
 
-  const maxLabelWidth = maxLabelLength * fontWidth;
   const labelOnLeft = label.angle > Math.PI;
   let labelXStart = label.x - (labelOnLeft ? labelLength : 0);
+  const maxDistance =
+    (outerRadius + 90) * Math.max(1, circularViewWidthVsHeightRatio);
   if (condenseOverflowingXLabels) {
     const distancePastBoundary =
       Math.abs(label.x + (labelOnLeft ? -labelLength : labelLength)) -
-      (outerRadius + 90) * Math.max(1, circularViewWidthVsHeightRatio);
-    // Math.max(outerRadius (circularViewWidthVsHeightRatio / 2 + 80));
+      maxDistance;
+
     if (distancePastBoundary > 0) {
       const numberOfCharsToChop =
         Math.ceil(distancePastBoundary / fontWidth) + 2;
-      //   if (numberOfCharsToChop > text.length) numberOfCharsToChop = text.length
-      //label overflows the boundaries!
       text = text.slice(0, -numberOfCharsToChop) + "..";
       groupLabelXStart =
         labelXStart +
@@ -261,17 +253,58 @@ const DrawLabelGroup = withHover(function ({
   const textYStart = label.y + dy / 2;
 
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
-
   let content;
   const labelClass = ` veLabelText veLabel veCircularViewLabelText clickable ${label.color} `;
 
   if ((multipleLabels || groupLabelXStart !== undefined) && hovered) {
+    // Calculate the maximum label length for hovered status
+    const maxLabelLength = labelAndSublabels.reduce(function (
+      currentLength,
+      { text = "Unlabeled" }
+    ) {
+      const _textLength = getTextLengthWithCollapseSpace(text);
+      if (_textLength > currentLength) {
+        return _textLength;
+      }
+      return currentLength;
+    }, 0);
+    const maxLabelWidth = maxLabelLength * fontWidth;
+
+    labelXStart = label.x - (labelOnLeft ? maxLabelWidth : 0);
+    let distancePastBoundary =  Math.abs(label.x + (labelOnLeft ? -maxLabelWidth : maxLabelWidth)) - maxDistance;
+    let lableRectWidth = maxLabelWidth - 14;
+
+    if (maxLabelWidth > maxDistance * 2) {
+      labelXStart = -maxDistance;
+      lableRectWidth = maxDistance * 2 - 24;
+      distancePastBoundary = maxLabelWidth - maxDistance * 2;
+    } else if (distancePastBoundary > 0) {
+      labelXStart += (labelOnLeft ? distancePastBoundary : -distancePastBoundary);
+      distancePastBoundary = 0;
+    }
+
     //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
     window.isLabelGroupOpen = true;
     let hoveredLabel;
-    if (groupLabelXStart !== undefined) {
-      labelXStart = groupLabelXStart;
+
+    let truncatedLabelAndSublabels;
+    if (distancePastBoundary > 0) {
+      truncatedLabelAndSublabels = labelAndSublabels.map(lable => {
+        const labelWidth = getTextLengthWithCollapseSpace(lable.text) * fontWidth;
+        const truncatedText =
+          labelWidth >= lableRectWidth
+            ? lable.text.slice(
+                0,
+                -Math.ceil((labelWidth - lableRectWidth) / fontWidth) - 2
+              ) + ".."
+            : lable.text;
+        return {
+          ...lable,
+          text: truncatedText
+        };
+      });
     }
+
     labelAndSublabels.some(function (label) {
       if (label.id === hoveredId) {
         hoveredLabel = label;
@@ -317,7 +350,7 @@ const DrawLabelGroup = withHover(function ({
             // zIndex={10}
             x={labelXStart - 4}
             y={labelYStart - dy / 2}
-            width={maxLabelWidth + 24}
+            width={lableRectWidth + 24}
             height={labelGroupHeight + 4}
             fill="white"
             stroke="black"
@@ -331,24 +364,26 @@ const DrawLabelGroup = withHover(function ({
               fontStyle: label.fontStyle
             }}
           >
-            {labelAndSublabels.map(function (label, index) {
-              return (
-                <DrawGroupInnerLabel
-                  isSubLabel
-                  noRedux={noRedux}
-                  editorName={editorName}
-                  logHover
-                  key={"labelItem" + index}
-                  className={
-                    (label.className || "") +
-                    labelClass +
-                    " veDrawGroupInnerLabel"
-                  }
-                  id={label.id}
-                  {...{ labelXStart, label, fontWidth, index, dy }}
-                />
-              );
-            })}
+            {(truncatedLabelAndSublabels || labelAndSublabels).map(
+              function (label, index) {
+                return (
+                  <DrawGroupInnerLabel
+                    isSubLabel
+                    noRedux={noRedux}
+                    editorName={editorName}
+                    logHover
+                    key={"labelItem" + index}
+                    className={
+                      (label.className || "") +
+                      labelClass +
+                      " veDrawGroupInnerLabel"
+                    }
+                    id={label.id}
+                    {...{ labelXStart, label, fontWidth, index, dy }}
+                  />
+                );
+              }
+            )}
           </text>
         </g>
       </PutMyParentOnTop>
@@ -364,7 +399,7 @@ const DrawLabelGroup = withHover(function ({
         data-title={label.title || label.text}
         {...avoidOverlapWith}
         x={labelXStart}
-        textLength={getTextLength(text) * fontWidth}
+        textLength={getTextLengthWithCollapseSpace(text) * fontWidth}
         lengthAdjust="spacing"
         className={
           labelClass + label.className + (hovered ? " veAnnotationHovered" : "")
@@ -438,7 +473,7 @@ const DrawGroupInnerLabel = withHover(
         data-title={label.title}
         {...avoidOverlapWith}
         x={labelXStart}
-        textLength={getTextLength(label.text) * fontWidth}
+        textLength={getTextLengthWithCollapseSpace(label.text) * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
         onDoubleClick={e => {
