@@ -1,3 +1,4 @@
+export function getTextLengthWithCollapseSpace(text: any, collapseWhiteSpace?: boolean): any;
 export default Labels;
 declare function Labels({ labels, extraSideSpace, smartCircViewLabelRender, radius: outerRadius, editorName, noRedux, rotationRadians, textScalingFactor, labelLineIntensity, labelSize, fontHeightMultiplier, circularViewWidthVsHeightRatio, condenseOverflowingXLabels }: {
     labels?: never[] | undefined;

@@ -4,6 +4,7 @@ export const toggleIsInline: import('redux-act').ComplexActionCreator1<any, any,
 export const updateSearchText: import('redux-act').ComplexActionCreator1<any, any, any>;
 export const updateAmbiguousOrLiteral: import('redux-act').ComplexActionCreator1<any, any, any>;
 export const updateDnaOrAA: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const updateMismatchesAllowed: import('redux-act').ComplexActionCreator1<any, any, any>;
 export const updateMatchNumber: import('redux-act').ComplexActionCreator1<any, any, any>;
 declare const _default: {
     (newState: {} | undefined, action: any): any;
