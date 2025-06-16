@@ -1242,9 +1242,15 @@ const DataTable = ({
 
       //index 0 of the table is the column titles
       //must add 1 to rowNum
-      const rowNumbersToCopy = Array.from(
-        new Set(selectedRecords.map(rec => idToIndex[rec.id || rec.code] + 1))
-      ).sort();
+      // Dedupe rows by row index, not by Set (which dedupes by value)
+      const rowNumbersToCopy = [];
+      selectedRecords.forEach(rec => {
+        const rowIndex = idToIndex[rec.id || rec.code] + 1;
+        if (!rowNumbersToCopy.includes(rowIndex)) {
+          rowNumbersToCopy.push(rowIndex);
+        }
+      });
+      rowNumbersToCopy.sort();
 
       if (!rowNumbersToCopy.length) return;
       rowNumbersToCopy.unshift(0); //add in the header row
