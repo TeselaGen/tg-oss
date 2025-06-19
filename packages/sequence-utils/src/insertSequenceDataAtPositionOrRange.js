@@ -27,9 +27,10 @@ export default function insertSequenceDataAtPositionOrRange(
     ...options
   });
   const newSequenceData = cloneDeep(existingSequenceData);
-  const insertLength = sequenceDataToInsert.proteinSequence
-    ? sequenceDataToInsert.proteinSequence.length * 3
-    : sequenceDataToInsert.sequence.length;
+  const insertLength =
+    sequenceDataToInsert.isProtein && sequenceDataToInsert.proteinSequence
+      ? sequenceDataToInsert.proteinSequence.length * 3
+      : sequenceDataToInsert.sequence.length;
   let caretPosition = caretPositionOrRange;
 
   const isInsertSameLengthAsSelection =
