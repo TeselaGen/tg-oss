@@ -87,6 +87,7 @@ try {
 
 export const AlignmentView = props => {
   const {
+    dimensions,
     alignmentType,
     alignmentRunUpdate,
     alignmentName: _alignmentName,
@@ -100,7 +101,7 @@ export const AlignmentView = props => {
     sequenceLength,
     shouldAutosave,
     store,
-    height,
+    height: _height,
     minimapLaneHeight,
     minimapLaneSpacing,
     isInPairwiseOverviewView,
@@ -116,6 +117,10 @@ export const AlignmentView = props => {
     style,
     unmappedSeqs
   } = props;
+  let height = _height;
+  if (dimensions && dimensions.height) {
+    height = dimensions.height;
+  }
 
   const {
     alignmentId,
@@ -1404,7 +1409,6 @@ export const AlignmentView = props => {
       updateLabelsForInViewFeatures();
     }
   };
-
   return (
     <PinchHelper {...pinchHandler}>
       <ResizeSensor onResize={handleResize}>
