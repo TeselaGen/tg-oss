@@ -71,6 +71,7 @@ import { updateTrackHelper } from "./updateTrackHelper";
 import { isTargetWithinEl } from "./isTargetWithinEl";
 import { EditTrackNameDialog } from "./EditTrackNameDialog";
 import { coerceInitialValue } from "./coerceInitialValue";
+import { tabHeight } from "../constants";
 
 let charWidthInLinearViewDefault = 12;
 try {
@@ -119,7 +120,7 @@ export const AlignmentView = props => {
   } = props;
   let height = _height;
   if (dimensions && dimensions.height) {
-    height = dimensions.height;
+    height = dimensions.height - tabHeight; //subtract the height of the tab header
   }
 
   const {

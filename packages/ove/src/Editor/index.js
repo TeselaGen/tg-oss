@@ -54,6 +54,7 @@ import isMobile from "is-mobile";
 import { getClientX, getClientY } from "../utils/editorUtils";
 import PCRTool from "../PCRTool/PCRTool";
 import classNames from "classnames";
+import { tabHeight } from "../constants";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -90,7 +91,6 @@ const reorder = (list, startIndex, endIndex) => {
 
   return result;
 };
-const tabHeight = 34;
 
 const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
   return {

@@ -23,6 +23,7 @@ import undoTool from "./undoTool";
 import redoTool from "./redoTool";
 import isMobile from "is-mobile";
 import { useMemo } from "react";
+import { tabHeight } from "../constants";
 
 const allTools = {
   downloadTool,
@@ -189,7 +190,7 @@ export function ToolBar(props) {
           items
         )}
       </div>
-      <div style={{ height: 34, display: "flex" }}>
+      <div style={{ height: tabHeight, display: "flex" }}>
         {additionalTopRightToolbarButtons}
         {closeFullscreen && (
           <CloseFullscreenButton onClick={handleFullscreenClose} />
