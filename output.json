@@ -42,7 +42,7 @@
             "build": {
               "configurations": {},
               "options": {
-                "command": "cd packages/sequence-utils && yarn vite build --config vite.config.ts"
+                "command": "rm -rf dist/packages/sequence-utils && cd packages/sequence-utils && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
               "dependsOn": ["^build"],
@@ -139,7 +139,7 @@
             "build": {
               "configurations": {},
               "options": {
-                "command": "cd packages/bounce-loader && yarn vite build --config vite.config.ts"
+                "command": "rm -rf dist/packages/bounce-loader && cd packages/bounce-loader && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
               "dependsOn": ["^build"],
@@ -288,7 +288,7 @@
             "build": {
               "configurations": {},
               "options": {
-                "command": "cd packages/bio-parsers && yarn vite build --config vite.config.ts"
+                "command": "rm -rf dist/packages/bio-parsers && cd packages/bio-parsers && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
               "dependsOn": ["^build"],
@@ -385,7 +385,7 @@
             "build": {
               "configurations": {},
               "options": {
-                "command": "cd packages/range-utils && yarn vite build --config vite.config.ts"
+                "command": "rm -rf dist/packages/range-utils && cd packages/range-utils && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
               "dependsOn": ["^build"],
@@ -511,7 +511,7 @@
             "build": {
               "configurations": {},
               "options": {
-                "command": "cd packages/file-utils && yarn vite build --config vite.config.ts"
+                "command": "rm -rf dist/packages/file-utils && cd packages/file-utils && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
               "dependsOn": ["^build"],
@@ -625,7 +625,7 @@
             "build": {
               "configurations": {},
               "options": {
-                "command": "cd packages/uploader && yarn vite build --config vite.config.ts"
+                "command": "rm -rf dist/packages/uploader && cd packages/uploader && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
               "dependsOn": ["^build"],
@@ -721,7 +721,7 @@
                 }
               },
               "options": {
-                "command": "cd packages/ove && yarn vite build --config vite.config.ts"
+                "command": "rm -rf dist/packages/ove && cd packages/ove && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
               "dependsOn": ["^build"],
@@ -869,7 +869,7 @@
                 }
               },
               "options": {
-                "command": "cd packages/ui && yarn vite build --config vite.config.ts"
+                "command": "rm -rf dist/packages/ui && cd packages/ui && yarn vite build --config vite.config.ts"
               },
               "parallelism": true,
               "dependsOn": ["^build"],

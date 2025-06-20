@@ -36,60 +36,6 @@ export default {
       forward: true
     }
   ],
-  afeatures: [
-    // {
-    //   notes: {},
-    //   type: "promoter",
-    //   strand: 1,
-    //   name: "I'm a nice Long Sentence wahooo hahahahaha",
-    //   // start: 4900,
-    //   // end: 440
-    //   start: 4163,
-    //   end: 2650
-    // },
-    {
-      notes: {
-        preferred5PrimeOverhangs: [""],
-        preferred3PrimeOverhangs: [""]
-      },
-      arrowheadType: "NONE",
-      type: "misc_feature",
-      strand: 1,
-      name: "CmR I'm a real long label",
-      start: 4513,
-      end: 5172
-    }
-    // {
-    //   notes: {},
-    //   type: "promoter",
-    //   strand: 1,
-    //   name: "I'm a nice Long Sentence wahooo hahahahaha",
-    //   // start: 4900,
-    //   // end: 440
-    //   start: 1590,
-    //   end: 2650
-    // },
-    // {
-    //   notes: {},
-    //   type: "promoter",
-    //   strand: 1,
-    //   name: "I'm a nice Long Sentence wahooo hahahahaha",
-    //   // start: 4900,
-    //   // end: 440
-    //   start: 1590,
-    //   end: 2650
-    // },
-    // {
-    //   notes: {},
-    //   type: "promoter",
-    //   strand: 1,
-    //   name: "I'm a nice Long Sentence wahooo hahahahaha",
-    //   // start: 4900,
-    //   // end: 440
-    //   start: 1590,
-    //   end: 2650
-    // },
-  ],
   features: [
     {
       notes: {},

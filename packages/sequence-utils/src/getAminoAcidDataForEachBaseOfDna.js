@@ -186,6 +186,9 @@ export default function getAminoAcidDataForEachBaseOfDna(
   optionalSubrangeRange,
   isProteinSequence
 ) {
+  if (!originalSequenceString) {
+    return [];
+  }
   // Obtain derived properties, see getTranslatedSequenceProperties
   const {
     sequenceString,

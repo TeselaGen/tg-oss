@@ -99,7 +99,6 @@ export const AlignmentView = props => {
     scrollPercentageToJumpTo,
     selectionLayer,
     sequenceData,
-    sequenceLength,
     shouldAutosave,
     store,
     height: _height,
@@ -371,11 +370,12 @@ export const AlignmentView = props => {
       if (sequenceData?.isProtein) {
         nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
       }
+      const sequenceLength = getSequenceLength();
       if (sequenceLength === 0) nearestCaretPos = 0;
       const callbackVals = {
         updateSelectionOrCaret,
         nearestCaretPos,
-        sequenceLength: getSequenceLength(),
+        sequenceLength,
         caretPosition: easyStore.current.caretPosition,
         selectionLayer: easyStore.current.selectionLayer,
         easyStore: easyStore.current,
@@ -402,7 +402,6 @@ export const AlignmentView = props => {
       nameDivWidth,
       selectionLayerUpdate,
       sequenceData?.isProtein,
-      sequenceLength,
       updateSelectionOrCaret
     ]
   );
