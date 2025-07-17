@@ -8,7 +8,13 @@ export default connectToEditor(({ findTool = {} }) => {
   return {
     isOpen: findTool.isOpen
   };
-})(({ toolbarItemProps, editorName, toggleFindTool, isOpen }) => {
+})(({
+  toolbarItemProps,
+  editorName,
+  toggleFindTool,
+  isOpen,
+  additionalEnzymes
+}) => {
   return (
     <ToolbarItem
       {...{
@@ -18,7 +24,10 @@ export default connectToEditor(({ findTool = {} }) => {
             <Icon icon="caret-right" />
           </div>
         ) : (
-          <FindBar editorName={editorName} />
+          <FindBar
+            editorName={editorName}
+            additionalEnzymes={additionalEnzymes}
+          />
         ),
         renderIconAbove: isOpen,
         onIconClick: toggleFindTool,
