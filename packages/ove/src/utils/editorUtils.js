@@ -32,7 +32,7 @@ export function getSelectionMessage({
       ).toFixed(numDecimalDigits);
     const seqLen = divideBy3(length, isProtein);
     return `${customTitle || "Selecting"} ${seqLen} ${
-      (isProtein ? "AA" : "bp") + (seqLen === 1 ? "" : "s")
+      (isProtein ? "codon" : "bp") + (seqLen === 1 ? "" : "s")
     } from ${divideBy3(_selectionLayer.start, isProtein) + 1} to ${divideBy3(
       _selectionLayer.end + 1,
       isProtein
@@ -48,7 +48,7 @@ export function getSelectionMessage({
     return (
       `Caret Between ` +
       (isProtein
-        ? `AAs ${divideBy3(insertBetween[0], true)} and ${divideBy3(
+        ? `codons ${divideBy3(insertBetween[0], true)} and ${divideBy3(
             insertBetween[1] + 2,
             true
           )}`

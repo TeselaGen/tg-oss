@@ -140,7 +140,7 @@ const ShowLengthItem = connectToEditor(
   <StatusBarItem dataTest="veStatusBar-length">{`Length: ${divideBy3(
     sequenceLength,
     isProtein
-  )} ${isProtein ? "AAs" : "bps"}`}</StatusBarItem>
+  )} ${isProtein ? "codon" : "bp"}${sequenceLength > 1 ? "s" : ""}`}</StatusBarItem>
 ));
 
 const ShowTypeItem = connectToEditor(({ sequenceData }) => ({

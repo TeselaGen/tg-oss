@@ -652,7 +652,7 @@ export function CircularView(props) {
   const widthToUse = Math.max(Number(width) || 300);
   const heightToUse = Math.max(Number(height) || 300);
   const bpTitle = isProtein
-    ? `${Math.floor(sequenceLength / 3)} AAs`
+    ? `${Math.floor(sequenceLength / 3)} codons`
     : `${sequenceLength} bps`;
   const nameEl = (
     <div
