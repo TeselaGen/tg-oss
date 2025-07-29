@@ -103,7 +103,7 @@ export function getAcceptedChars({
   isMixedRnaAndDna
 } = {}) {
   return isProtein
-    ? `${extended_protein_letters.toLowerCase()}}`
+    ? `${extended_protein_letters.toLowerCase()}`
     : isOligo
       ? ambiguous_rna_letters.toLowerCase() + "t"
       : isRna
