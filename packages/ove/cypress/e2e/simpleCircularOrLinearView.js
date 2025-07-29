@@ -23,7 +23,7 @@ describe("simpleCircularOrLinearView", function () {
     cy.get(".veLabelText:contains(Part 2)").click();
     cy.get(".veCaret").should("not.exist");
     cy.tgToggle("withCaretEnabled");
-    cy.get(".veLabelText:contains(Part 2)").click();
+    cy.get(".veLabelText:contains(Part 2)").click({force: true});
     cy.get(".veCaret").should("exist");
   });
   it(`withZoomLinearView should work`, () => {
