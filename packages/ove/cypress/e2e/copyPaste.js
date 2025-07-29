@@ -64,7 +64,7 @@ describe("copyPaste", function () {
       .first()
       .trigger("contextmenu", { force: true });
     // cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
-    cy.contains(".bp3-menu-item", "Copy").click();
+    cy.contains(".bp3-menu-item", "Copy").realClick();
     cy.contains(".openVeCopy2", "Copy").realClick();
     cy.window().then(() => {
       assert(
