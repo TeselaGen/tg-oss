@@ -63,8 +63,7 @@ describe("copyPaste", function () {
     cy.contains(".veRowViewFeature", "araD")
       .first()
       .trigger("contextmenu", { force: true });
-    // cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
-    cy.contains(".bp3-menu-item", "Copy").click();
+    cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
     cy.contains(".openVeCopy2", "Copy").realClick();
     cy.window().then(() => {
       assert(
