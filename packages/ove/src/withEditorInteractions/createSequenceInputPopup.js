@@ -65,8 +65,7 @@ class SequenceInputNoHotkeys extends React.Component {
     }
     const seqToInsert = isProtein
       ? {
-          proteinSequence: charsToInsert,
-          isProtein: true
+          proteinSequence: charsToInsert
         }
       : {
           sequence: charsToInsert
