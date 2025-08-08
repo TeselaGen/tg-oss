@@ -2,18 +2,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 // test-setup.js
 import { JSDOM } from "jsdom";
-import { beforeEach, afterEach } from "bun:test";
-// Import jest-dom custom matchers conditionally
-// Only import if we're not in a problematic test environment
-if (typeof process !== 'undefined' && !process.env.SKIP_JEST_DOM) {
-  try {
-    // Don't import jest-dom for now to avoid the expect issue
-    // import "@testing-library/jest-dom";
-  } catch (error) {
-    // Silently ignore if jest-dom setup fails
-    console.warn("Jest-DOM setup failed, continuing without custom matchers:", error.message);
-  }
-}
+
+import { beforeEach, afterEach, expect } from "bun:test";
+import * as matchers from "@testing-library/jest-dom/matchers"; // Import for custom matchers
+
+// Extend expect with jest-dom matchers
+expect.extend(matchers);
+
 
 // Declare jsdom and related globals at a higher scope
 // so they can be reassigned in beforeEach and cleaned in afterEach

@@ -1,6 +1,8 @@
 import React from "react";
-import { render, fireEvent, cleanup } from "@testing-library/react";
-import { describe, test, expect, beforeEach, afterEach } from "bun:test";
+
+import { render, fireEvent } from "@testing-library/react";
+import { expect, describe, test } from "bun:test";
+
 import AdvancedOptions from "./AdvancedOptions";
 
 // Set up DOM environment for this test file
