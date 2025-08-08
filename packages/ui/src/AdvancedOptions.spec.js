@@ -1,5 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
+import { expect, describe, test } from "bun:test";
 import AdvancedOptions from "./AdvancedOptions";
 
 describe("AdvancedOptions", () => {
