@@ -152,6 +152,8 @@ describe("proteinEditor", function () {
     cy.get(".veStatusBarItem")
       .contains("Selecting 11 AAs from 10 to 20")
       .should("be.visible");
+    cy.get('[title="Caret Between AAs 9 and 10"]').should('exist');
+    cy.get('[title="Caret Between AAs 20 and 21"]').should('exist');
   });
 
   it(`goTo, rotateTo work
