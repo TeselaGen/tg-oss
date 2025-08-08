@@ -107,6 +107,7 @@ function SelectionLayer(props) {
                   <Caret
                     key={key + "caret1"}
                     {...{
+                      isProtein,
                       leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
                       onRightClick: onSelectionContextMenu,
@@ -129,6 +130,7 @@ function SelectionLayer(props) {
                   <Caret
                     key={key + "caret2"}
                     {...{
+                      isProtein,
                       leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
                       onRightClick: onSelectionContextMenu,
