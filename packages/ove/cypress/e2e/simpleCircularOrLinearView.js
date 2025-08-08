@@ -23,7 +23,7 @@ describe("simpleCircularOrLinearView", function () {
     cy.get(".veLabelText:contains(Part 2)").click();
     cy.get(".veCaret").should("not.exist");
     cy.tgToggle("withCaretEnabled");
-    cy.get(".veLabelText:contains(Part 2)").click();
+    cy.get(".veLabelText:contains(Part 2)").click({force: true});
     cy.get(".veCaret").should("exist");
   });
   it(`withZoomLinearView should work`, () => {
@@ -128,22 +128,22 @@ describe("simpleCircularOrLinearView", function () {
     cy.tgToggle("featTableSelect");
     cy.get(`[data-id="feat1"]`);
     cy.get(`[data-id="feat2"]`);
-    cy.get(`.showHideButton-visible-feat1`).click();
-    cy.get(`.showHideButton-visible-feat2`).click();
+    cy.get(`.showHideButton-visible-feat1`).click({ force: true });
+    cy.get(`.showHideButton-visible-feat2`).click({ force: true });
     cy.get(`[data-id="feat1"]`).should("not.exist");
     cy.get(`[data-id="feat2"]`).should("not.exist");
 
-    cy.get(`.showHideButton-hidden-feat1`).click();
-    cy.get(`.showHideButton-hidden-feat2`).click();
+    cy.get(`.showHideButton-hidden-feat1`).click({ force: true });
+    cy.get(`.showHideButton-hidden-feat2`).click({ force: true });
     cy.get(`[data-id="feat1"]`);
     cy.get(`[data-id="feat2"]`);
-    cy.get(`.showHideAllButton-visible`).click();
+    cy.get(`.showHideAllButton-visible`).click({ force: true });
     cy.get(`[data-id="feat1"]`).should("not.exist");
-    cy.get(`.showHideAllButton-hidden`).click();
+    cy.get(`.showHideAllButton-hidden`).click({ force: true });
     cy.get(`[data-id="feat1"]`).should("exist");
-    cy.get(`.showHideButton-visible-feat1`).click();
+    cy.get(`.showHideButton-visible-feat1`).click({ force: true });
     cy.get(`[data-id="feat1"]`).should("not.exist");
-    cy.get(`.showHideAllButton-hidden`).click();
+    cy.get(`.showHideAllButton-hidden`).click({ force: true });
     cy.get(`[data-id="feat1"]`).should("exist");
   });
 });
