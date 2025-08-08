@@ -15,7 +15,7 @@ describe("demo", function () {
   it(`demo options should persist even if "Show Demo Options" is unchecked`, () => {
     cy.visit("#/Editor?showDemoOptions=false&moleculeType=Protein");
     cy.contains("pj5_00001");
-    cy.contains("Length: 1384 AAs");
+    cy.contains("Length: 1384 codons");
     cy.contains(`Length: 5299 bps`).should("not.exist");
   });
 });

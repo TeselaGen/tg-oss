@@ -31,7 +31,7 @@ describe("proteinEditor", function () {
     cy.get(`.tg-test-end [icon="chevron-up"]`).click();
     cy.contains(".bp3-dialog button", "Save").click();
     cy.contains(".veRowViewFeature", "NF").click({ force: true });
-    cy.contains("Selecting 2 AAs from 1 to 2");
+    cy.contains("Selecting 2 codons from 1 to 2");
 
     //tnr commenting this out for now. I've disabled editing feature locations
     // cy.get(".veLabelText")
@@ -56,7 +56,7 @@ describe("proteinEditor", function () {
     cy.get(`.tg-test-start input[value="11"]`);
     cy.get(`.tg-test-end [value="31"]`);
   });
-  it(`should be able to insert AAs correctly via typing in the editor`, () => {
+  it(`should be able to insert codons correctly via typing in the editor`, () => {
     cy.visit("/#/Editor?moleculeType=Protein");
     cy.contains("Part - pj5_00001 - Start: 1 End: 1384");
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
@@ -67,7 +67,7 @@ describe("proteinEditor", function () {
 
     cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Insert").click();
-    cy.contains("Press ENTER to insert 0 AAs after AA 2");
+    cy.contains("Press ENTER to insert 0 codon after codon 2");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.get(".sequenceInputBubble input").type("gg{enter}");
@@ -87,15 +87,15 @@ describe("proteinEditor", function () {
     cy.get(".sequenceInputBubble input").type(".*-masdzz,", {
       assertVal: ".*-masdzz"
     });
-    cy.contains("Press ENTER to replace 1 AAs between 1386 and 2");
+    cy.contains("Press ENTER to replace 1 codon between 1386 and 2");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.get(".sequenceInputBubble input").type("{enter}");
-    cy.contains("Selecting 7 AAs from 1 to 7");
-    cy.contains("Length: 1392 AAs");
+    cy.contains("Selecting 7 codons from 1 to 7");
+    cy.contains("Length: 1392 codons");
     cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type("ma");
 
-    cy.get(`[title="Selecting 2 AAs from 2 to 3"]`).should("exist");
+    cy.get(`[title="Selecting 2 codons from 2 to 3"]`).should("exist");
   });
   it.skip(`selection layer should be updated correctly if inserting at the end of an AA seq`, () => {
     // TNWTODO
@@ -112,7 +112,7 @@ describe("proteinEditor", function () {
     cy.get(".sequenceInputBubble input").type("rggta{enter}");
     //we don't want to see the insert successful message because no bps were entered
     cy.contains("Sequence Inserted Successfully");
-    cy.contains("Selecting 5 AAs from 14 to 18");
+    cy.contains("Selecting 5 codons from 14 to 18");
   });
   it(`should be able to delete correctly when backspace/del pressed`, () => {
     cy.visit("/#/Editor?moleculeType=Protein");
@@ -120,8 +120,8 @@ describe("proteinEditor", function () {
       force: true
     });
     cy.focused().type("{rightarrow}{backspace}");
-    cy.contains("Caret Between AAs 1383 and 1");
-    cy.contains("Length: 1383 AAs");
+    cy.contains("Caret Between codons 1383 and 1");
+    cy.contains("Length: 1383 codons");
   });
   it(`should be able to cut /* todo: and paste */ correctly`, () => {
     cy.visit("/#/Editor?moleculeType=Protein");
@@ -130,14 +130,14 @@ describe("proteinEditor", function () {
       .first()
       .click({ force: true });
     cy.get(".veRowViewSelectionLayer").first().rightclick({ force: true });
-    cy.contains(".bp3-menu-item", "Cut").click();
+    cy.contains(".bp3-menu-item", "Cut").realClick();
     cy.get(".bp3-toast .bp3-icon-cross").first().click();
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
       .focused()
       // .type("{meta}v")
       .type("lpl");
-    cy.get(`[title="Selecting 3 AAs from 10 to 12"]`).should("exist");
+    cy.get(`[title="Selecting 3 codons from 10 to 12"]`).should("exist");
 
     cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
   });
@@ -148,9 +148,9 @@ describe("proteinEditor", function () {
     cy.get(".tg-menu-bar-popover").contains("Select").click();
     cy.get(`[label="From:"]`).clear().type("10", { noPrevValue: true });
     cy.get(`[label="To:"]`).clear().type("20", { noPrevValue: true });
-    cy.get(".tg-min-width-dialog").contains("Select 11 AAs").click();
+    cy.get(".tg-min-width-dialog").contains("Select 11 Codons").click();
     cy.get(".veStatusBarItem")
-      .contains("Selecting 11 AAs from 10 to 20")
+      .contains("Selecting 11 codons from 10 to 20")
       .should("be.visible");
   });
 
@@ -170,12 +170,8 @@ describe("proteinEditor", function () {
     cy.get(".bp3-dialog").contains("OK").should("be.disabled");
     cy.focused().clear().type("20");
     cy.get(".bp3-dialog").contains("OK").click();
-    cy.contains("Caret Between AAs 20 and 21");
+    cy.contains("Caret Between codons 20 and 21");
     cy.get(".tg-menu-bar").contains("Edit").click();
-    // cy.get(".tg-menu-bar-popover")
-    //   .contains("Rotate To Caret Position")
-    //   .click();
-    // cy.contains("Caret Between AAs 1384 and 1");
   });
 
   it(`can move the caret around correctly`, () => {
@@ -184,7 +180,7 @@ describe("proteinEditor", function () {
       force: true
     });
     cy.focused().type("{rightarrow}{rightarrow}{rightarrow}");
-    cy.contains("Caret Between AAs 3 and 4");
+    cy.contains("Caret Between codons 3 and 4");
   });
   it(`
     -can find AA's by default in the search bar`, () => {
@@ -197,12 +193,12 @@ describe("proteinEditor", function () {
     cy.get(`[name="dnaOrAA"]`).select("Amino Acids");
 
     cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
-    cy.contains("Selecting 3 AAs from 1 to 3");
+    cy.contains("Selecting 3 codons from 1 to 3");
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
     cy.get(`[name="ambiguousOrLiteral"]`).select("Ambiguous");
     cy.get(".veFindBar input").type("xx");
     cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
-    cy.contains("Selecting 5 AAs from 1 to 5");
+    cy.contains("Selecting 5 codons from 1 to 5");
   });
   it(`should
     -has 1, 5, 10 AA's in the rowview axis
@@ -219,8 +215,8 @@ describe("proteinEditor", function () {
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
     });
-    cy.contains("Selecting 1 AA from 1 to 1");
-    cy.contains("Length: 1384 AAs");
+    cy.contains("Selecting 1 codon from 1 to 1");
+    cy.contains("Length: 1384 codons");
 
     cy.log(
       "-not show circularity/cutsite/orf/translations tools or properties"
@@ -259,7 +255,7 @@ describe("proteinEditor", function () {
     `, function () {
     cy.visit("/#/Editor?moleculeType=Protein");
     cy.log("show the AA count");
-    cy.contains("1384 AAs");
+    cy.contains("1384 codons");
 
     cy.log("the protein seq should be the primary sequence displayed");
     cy.get(".veRowViewPrimaryProteinSequenceContainer");

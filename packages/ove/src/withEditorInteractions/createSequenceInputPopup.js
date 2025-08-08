@@ -92,11 +92,16 @@ class SequenceInputNoHotkeys extends React.Component {
         sequenceLength
       );
 
+      const rangeLength = divideBy3(
+        getRangeLength(selectionLayer, sequenceLength),
+        isProtein
+      );
+
       message = (
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to replace{" "}
-          {divideBy3(getRangeLength(selectionLayer, sequenceLength), isProtein)}{" "}
-          {isProtein ? "AAs" : "base pairs"} between{" "}
+          {rangeLength} {isProtein ? "codon" : "base pair"}
+          {rangeLength > 1 ? "s" : ""} between{" "}
           {isProtein
             ? convertDnaCaretPositionOrRangeToAA(betweenVals[0])
             : betweenVals[0]}{" "}
@@ -110,8 +115,9 @@ class SequenceInputNoHotkeys extends React.Component {
       message = (
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to insert{" "}
-          {charsToInsert.length} {isProtein ? "AAs" : "base pairs"} after{" "}
-          {isProtein ? "AA" : "base"}{" "}
+          {charsToInsert.length} {isProtein ? "codon" : "base pair"}
+          {charsToInsert.length > 1 ? "s" : ""} after{" "}
+          {isProtein ? "codon" : "base"}{" "}
           {isProtein
             ? convertDnaCaretPositionOrRangeToAA(caretPosition)
             : caretPosition}
