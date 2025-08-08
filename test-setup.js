@@ -3,7 +3,16 @@
 // test-setup.js
 import { JSDOM } from "jsdom";
 import { beforeEach, afterEach } from "bun:test";
-import "@testing-library/jest-dom"; // Import for custom matchers
+try {
+  // Import jest-dom custom matchers, but handle the case where expect isn't available yet
+  const jestDom = await import("@testing-library/jest-dom");
+  if (typeof expect !== 'undefined') {
+    expect.extend(jestDom.default);
+  }
+} catch (error) {
+  // Silently ignore if jest-dom setup fails
+  console.warn("Jest-DOM setup failed, continuing without custom matchers:", error.message);
+}
 
 // Declare jsdom and related globals at a higher scope
 // so they can be reassigned in beforeEach and cleaned in afterEach
