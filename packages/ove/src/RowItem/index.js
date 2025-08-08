@@ -618,6 +618,7 @@ export default function RowItem(props) {
         {caretPosition > -1 && (
           <Caret
             caretPosition={caretPosition}
+            isProtein={isProtein}
             {...{ ...annotationCommonProps, ...{ getGaps: undefined } }}
             row={
               alignmentData

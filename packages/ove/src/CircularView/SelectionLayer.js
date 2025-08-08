@@ -103,6 +103,7 @@ function SelectionLayer({
           onClick={onClick ? noop : preventDefaultStopPropagation}
           selectionMessage={selectionMessage}
           caretPosition={start}
+          isProtein={isProtein}
           sequenceLength={sequenceLength}
           innerRadius={innerRadius}
           outerRadius={radius}
@@ -120,6 +121,7 @@ function SelectionLayer({
           onClick={onClick ? noop : preventDefaultStopPropagation}
           selectionMessage={selectionMessage}
           caretPosition={end + 1}
+          isProtein={isProtein}
           sequenceLength={sequenceLength}
           innerRadius={innerRadius}
           outerRadius={radius}
