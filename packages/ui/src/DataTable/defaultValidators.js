@@ -29,6 +29,10 @@ export const defaultValidators = {
   },
   number: (newVal, field) => {
     if (isValueEmpty(newVal) && !field.isRequired) return;
+    if (field.allowNaN && Number.isNaN(newVal)) {
+      // Allow actual NaN when explicitly permitted
+      return;
+    }
     if (isNaN(newVal) || !isNumber(newVal)) {
       return "Must be a number";
     }
