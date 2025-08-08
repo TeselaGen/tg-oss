@@ -1,47 +1,26 @@
 import React from "react";
-
-import { render, fireEvent } from "@testing-library/react";
-import { expect, describe, test } from "bun:test";
+import { JSDOM } from "jsdom";
+import { render, fireEvent, cleanup } from "@testing-library/react";
+import { expect, describe, test, afterEach } from "bun:test";
 
 import AdvancedOptions from "./AdvancedOptions";
 
-// Set up DOM environment for this test file
-let cleanupDOM;
-
-beforeEach(() => {
-  // Only set up DOM if not already available
-  if (typeof global.document === 'undefined') {
-    const { JSDOM } = require('jsdom');
-    const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
-      url: 'http://localhost',
-      pretendToBeVisual: true,
-      resources: 'usable'
-    });
-    
-    global.window = dom.window;
-    global.document = dom.window.document;
-    global.navigator = dom.window.navigator;
-    global.HTMLElement = dom.window.HTMLElement;
-    global.DocumentFragment = dom.window.DocumentFragment;
-    global.KeyboardEvent = dom.window.KeyboardEvent;
-    global.MouseEvent = dom.window.MouseEvent;
-    
-    cleanupDOM = () => {
-      dom.window.close();
-      global.window = undefined;
-      global.document = undefined;
-      global.navigator = undefined;
-    };
-  }
+// Set up DOM environment once for this test file
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
+  url: 'http://localhost',
 });
+
+global.window = dom.window;
+global.document = dom.window.document;
+global.navigator = dom.window.navigator;
+global.HTMLElement = dom.window.HTMLElement;
+global.DocumentFragment = dom.window.DocumentFragment;
+global.KeyboardEvent = dom.window.KeyboardEvent;
+global.MouseEvent = dom.window.MouseEvent;
 
 describe("AdvancedOptions", () => {
   afterEach(() => {
     cleanup();
-    if (cleanupDOM) {
-      cleanupDOM();
-      cleanupDOM = null;
-    }
   });
   
   test("renders correctly with given props and default state", () => {
