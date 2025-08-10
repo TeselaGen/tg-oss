@@ -112,6 +112,15 @@ const proteinAlphabet = {
     mass: 128.17228
   },
 
+  O: {
+    value: "O",
+    name: "Pyrrolysine",
+    threeLettersName: "Pyl",
+    colorByFamily: "#FFC0CB",
+    color: "hsl(264.7, 100%, 69%)",
+    mass: 255.313
+  },
+
   M: {
     value: "M",
     name: "Methionine",
