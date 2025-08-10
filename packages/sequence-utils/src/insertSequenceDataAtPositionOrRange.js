@@ -188,7 +188,7 @@ function adjustAnnotationsToDelete(annotationsToBeAdjusted, range, maxLength) {
         ...newRange,
         start: newLocations[0].start,
         end: newLocations[newLocations.length - 1].end,
-        ...(newLocations.length > 1 && { locations: newLocations })
+        ...(newLocations.length > 0 && { locations: newLocations })
       };
     } else {
       return newRange;

@@ -130,7 +130,7 @@ describe("proteinEditor", function () {
       .first()
       .click({ force: true });
     cy.get(".veRowViewSelectionLayer").first().rightclick({ force: true });
-    cy.contains(".bp3-menu-item", "Cut").click();
+    cy.contains(".bp3-menu-item", "Cut").realClick();
     cy.get(".bp3-toast .bp3-icon-cross").first().click();
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
