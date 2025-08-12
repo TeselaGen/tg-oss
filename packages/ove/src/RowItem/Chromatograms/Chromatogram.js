@@ -63,7 +63,8 @@ export default function Chromatogram(props) {
         noQualityScores: !showChromQualScores
       })}
       style={{
-        position: "relative"
+        position: "relative",
+        textAlign: "left"
       }}
       onContextMenu={e => {
         showContextMenu([chromatogramMenu], undefined, e);
