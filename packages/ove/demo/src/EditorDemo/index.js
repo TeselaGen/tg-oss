@@ -89,6 +89,7 @@ const defaultState = {
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
+  addMaxInsertSize: false,
   adjustCircularLabelSpacing: false,
   bpLimit: undefined,
   nameFontSizeCircularView: false,
@@ -341,6 +342,7 @@ export default class EditorDemo extends React.Component {
   render() {
     const {
       forceHeightMode,
+      addMaxInsertSize,
       passAutoAnnotateHandlers,
       withAutoAnnotateAddon,
       withGetCustomAutoAnnotateList,
@@ -539,13 +541,13 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
         },
         info: `
         This feature can be used to execute some functionality before closing a panel.  If the function returns true, the panel closes, otherwise it stays open.
-        
+
 \`\`\`
 onPanelTabClose: (panelId) => {
     window.toastr.success('onPanelClose callback triggered.');
     return confirm("Close panel?")
   }
-    
+
 `
       })
     ].filter(i => i);
@@ -1199,6 +1201,12 @@ rightClickOverrides: {
                 type: "forceHeightMode",
                 label: "Force Height 500px",
                 info: "You can force a height for the editor by passing `height:500` (same for width) "
+              })}
+              {renderToggle({
+                that: this,
+                type: "addMaxInsertSize",
+                label: "Add Max Insert Size 100",
+                info: "You can change the max size for insert/copy for the editor by passing `maxInsertSize:100`"
               })}
               {renderToggle({
                 that: this,
@@ -2714,6 +2722,7 @@ doubleClickOverrides: {
             })}
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
+            {...(addMaxInsertSize && { maxInsertSize: 100 })}
             {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}
             {...(bpLimit && { bpLimit: 8000 })}
             {...(withVersionHistory && {

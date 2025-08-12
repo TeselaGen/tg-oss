@@ -211,7 +211,8 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         onPaste,
         disableBpEditing,
-        sequenceData
+        sequenceData,
+        maxInsertSize
       } = this.props;
 
       if (disableBpEditing) {
@@ -239,6 +240,12 @@ function VectorInteractionHOC(Component /* options */) {
       }
       if (sequenceData.isProtein && !seqDataToInsert.proteinSequence) {
         seqDataToInsert.proteinSequence = seqDataToInsert.sequence;
+      }
+
+      if (maxInsertSize && (seqDataToInsert.proteinSequence || seqDataToInsert.sequence).length > maxInsertSize) {
+        return window.toastr.error(
+          `Sorry, the pasted sequence exceeds the maximum allowed length of ${maxInsertSize}`
+        );
       }
 
       seqDataToInsert = tidyUpSequenceData(seqDataToInsert, {
@@ -387,7 +394,8 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
         readOnly,
-        disableBpEditing
+        disableBpEditing,
+        maxInsertSize,
         // updateSequenceData,
         // wrappedInsertSequenceDataAtPositionOrRange
         // handleInsert
@@ -408,6 +416,7 @@ function VectorInteractionHOC(Component /* options */) {
           selectionLayer,
           sequenceLength,
           caretPosition,
+          maxInsertSize,
           handleInsert: async seqDataToInsert => {
             await insertAndSelectHelper({
               props: this.props,

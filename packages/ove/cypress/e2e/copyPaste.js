@@ -42,6 +42,35 @@ describe("copyPaste", function () {
       );
     });
   });
+
+  it('should show warning when pasted sequence is larger than the max insert size', () => {
+    cy.get(`[data-test="moleculeType"]`).select("Protein");
+    cy.tgToggle("addMaxInsertSize");
+    cy.selectRange(10, 12);
+    cy.contains(".veRowViewFeature", "araE")
+      .first()
+      .trigger("contextmenu", { force: true });
+    // cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
+    cy.contains(".bp3-menu-item", "Copy").click();
+    cy.contains(".openVeCopy2", "Copy").realClick();
+
+    cy.contains("Selection Copied");
+
+    cy.get(`.veVectorInteractionWrapper:focused input`).trigger("paste", {
+        force: true,
+        clipboardData: {
+          // we have to mock the paste event cause cypress doesn't actually trigger a paste event when typing cmd+v
+          getData: type =>
+            type === "application/json"
+              ? JSON.stringify(window.Cypress.seqDataToCopy)
+              : window.Cypress.seqDataToCopy.sequence,
+          types: ["application/json"]
+        }
+      });
+
+      cy.contains("Sorry, the pasted sequence exceeds the maximum allowed length of 100");
+  })
+
   it(`should be able to copy reverse complement`, () => {
     cy.selectRange(10, 12); //select some random range (we were seeing an error where the selection layer wasn't getting updated correctly)
     //right click a feature

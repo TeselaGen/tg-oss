@@ -154,10 +154,9 @@ class SequenceInputNoHotkeys extends React.Component {
                 });
               }, 200);
             }
-            if (maxInsertSize && sanitizedVal.lenth > maxInsertSize) {
+            if (maxInsertSize && sanitizedVal.length > maxInsertSize) {
               return window.toastr.error(
-                "Sorry, your insert is greater than ",
-                maxInsertSize
+                `Sorry, your insert is greater than ${maxInsertSize}`,
               );
             }
             e.target.value = sanitizedVal;

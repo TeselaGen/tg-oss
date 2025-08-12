@@ -360,6 +360,7 @@ export class Editor extends React.Component {
       hideStatusBar,
       hoveredId,
       isFullscreen,
+      maxInsertSize,
       maxAnnotationsToDisplay,
       minHeight = 400,
       onlyShowLabelsThatDoNotFit = true,
@@ -592,6 +593,7 @@ export class Editor extends React.Component {
           doubleClickOverrides={this.props.doubleClickOverrides}
           {...panelPropsToSpread}
           editorName={editorName}
+          maxInsertSize={maxInsertSize}
           isProtein={sequenceData.isProtein}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           tabHeight={tabHeight}
