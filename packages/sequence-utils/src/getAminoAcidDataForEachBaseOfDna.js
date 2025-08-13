@@ -208,7 +208,7 @@ export default function getAminoAcidDataForEachBaseOfDna(
   // Iterate over the DNA sequence length in increments of 3
   for (let index = 0; index < sequenceStringLength; index += 3) {
     let aminoAcid;
-    const aminoAcidIndex = index / 3;
+    const aminoAcidIndex = Math.floor(index / 3);
     let codonPositionsInCDS;
     let basesRead;
 
