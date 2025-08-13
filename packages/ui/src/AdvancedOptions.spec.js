@@ -1,28 +1,13 @@
 import React from "react";
-import { JSDOM } from "jsdom";
-import { render, fireEvent, cleanup } from "@testing-library/react";
-import { expect, describe, test, afterEach } from "bun:test";
+import { render, fireEvent } from "@testing-library/react";
 
 import AdvancedOptions from "./AdvancedOptions";
 
-// Set up DOM environment once for this test file
-const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
-  url: 'http://localhost',
-});
-
-global.window = dom.window;
-global.document = dom.window.document;
-global.navigator = dom.window.navigator;
-global.HTMLElement = dom.window.HTMLElement;
-global.DocumentFragment = dom.window.DocumentFragment;
-global.KeyboardEvent = dom.window.KeyboardEvent;
-global.MouseEvent = dom.window.MouseEvent;
-
 describe("AdvancedOptions", () => {
-  afterEach(() => {
-    cleanup();
-  });
-  
+  // afterEach(() => {
+  //   cleanup();
+  // });
+
   test("renders correctly with given props and default state", () => {
     const { queryByText, container } = render(
       <AdvancedOptions label="Test Label" content="Test Content" />
@@ -40,13 +25,13 @@ describe("AdvancedOptions", () => {
     const { container, queryByText } = render(
       <AdvancedOptions label="Test Label 2" content="Test Content 2" />
     );
-    
+
     // Find and click the toggle button
     const toggleButton = container.querySelector(".tg-toggle-advanced-options");
     expect(toggleButton).not.toBeNull();
-    
+
     fireEvent.click(toggleButton);
-    
+
     // After click, content should be visible
     expect(queryByText("Test Content 2")).not.toBeNull();
     // After click, down caret icon should be present (expanded state)

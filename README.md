@@ -51,3 +51,13 @@ nx run ui:publish-beta
 nx run ove:publish-beta
 nx run-many --target=publish-beta --projects=bio-parsers,ove,sequence-utils,ui
 ```
+
+# Running tests
+
+Unit tests are run automatically via precommit hook that runs a `bun test` command at the top level
+
+Cypress e2e tests can be run locally via the following commands:
+`nx run ove:launch-e2e`
+`nx run ui:launch-e2e`
+
+CI is run via GitHub Actions on every push and pull request and runs a suite of Cypress e2e tests

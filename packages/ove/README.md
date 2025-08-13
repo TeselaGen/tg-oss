@@ -713,6 +713,6 @@ you can either add your test to an existing cypress file or make a new test file
 
 once you're satisfied, make a pull request back to tg-oss and mention @tnrich
 
-```
+## Running unit tests
 
-```
+Run `bun test` from the root of the repo to execute all unit tests.
