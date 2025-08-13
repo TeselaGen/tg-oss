@@ -17,6 +17,7 @@
             "ignoredDependencies": [
               "recompose",
               "buffer",
+              "chance",
               "string_decoder",
               "@teselagen/react-table",
               "deep-equal",
