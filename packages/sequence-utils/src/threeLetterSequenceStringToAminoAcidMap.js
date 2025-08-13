@@ -1,6 +1,6 @@
 import proteinAlphabet from "./proteinAlphabet";
 
-const threeLetterSequenceStringToAminoAcidMap = {
+const initThreeLetterSequenceStringToAminoAcidMap = {
   gct: proteinAlphabet.A,
   gcc: proteinAlphabet.A,
   gca: proteinAlphabet.A,
@@ -99,8 +99,80 @@ const threeLetterSequenceStringToAminoAcidMap = {
   taa: proteinAlphabet["*"],
   tag: proteinAlphabet["*"],
   tga: proteinAlphabet["*"],
+  uaa: proteinAlphabet["*"],
+  uag: proteinAlphabet["*"],
+  uga: proteinAlphabet["*"],
   "...": proteinAlphabet["."],
   "---": proteinAlphabet["-"]
 };
+
+// IUPAC nucleotide codes (DNA/RNA) with U awareness
+const IUPAC = {
+  A: ["A"],
+  C: ["C"],
+  G: ["G"],
+  T: ["T"],
+  U: ["U"],
+
+  R: ["A", "G"],
+  Y: ["C", "T", "U"],
+  K: ["G", "T", "U"],
+  M: ["A", "C"],
+  S: ["G", "C"],
+  W: ["A", "T", "U"],
+  B: ["C", "G", "T", "U"],
+  D: ["A", "G", "T", "U"],
+  H: ["A", "C", "T", "U"],
+  V: ["A", "C", "G"],
+  N: ["A", "C", "G", "T", "U"],
+  X: ["A", "C", "G", "T", "U"]
+};
+
+
+function expandAndResolve(threeLetterCodon) {
+  const chars = threeLetterCodon.toUpperCase().split("");
+  const picks = chars.map((c) => IUPAC[c] || [c]);
+
+  let allPossibleThreeLetterCodons = [""];
+  for (const set of picks) {
+    const next = [];
+    for (const prefix of allPossibleThreeLetterCodons) for (const b of set) next.push(prefix + b);
+    allPossibleThreeLetterCodons = next;
+  }
+  let foundAminoAcid = null;
+  for (const codon of allPossibleThreeLetterCodons) {
+    const lowerCodon = codon.toLowerCase();
+    const aminoAcidObj = initThreeLetterSequenceStringToAminoAcidMap[lowerCodon] ?? initThreeLetterSequenceStringToAminoAcidMap[lowerCodon.replace(/u/g, "t")] ?? initThreeLetterSequenceStringToAminoAcidMap[lowerCodon.replace(/t/g, "u")];
+    if (aminoAcidObj) {
+      if (!foundAminoAcid) {
+        foundAminoAcid = aminoAcidObj;
+      } else if (foundAminoAcid.value !== aminoAcidObj.value ) {
+        return null
+      }
+    } else {
+      return null;
+    }
+  }
+  return foundAminoAcid;
+}
+
+function getCodonToAminoAcidMap() {
+  const map = initThreeLetterSequenceStringToAminoAcidMap;
+  // generate all IUPAC 3-mers
+  const codes = Object.keys(IUPAC);
+  for (const a of codes)
+    for (const b of codes)
+      for (const c of codes) {
+        const codon = a + b + c;
+        const lowerCodon = codon.toLowerCase();
+        if (map[lowerCodon]) continue;
+        const aminoAcidObj = expandAndResolve(codon);
+        if (aminoAcidObj) map[lowerCodon] = aminoAcidObj;
+      }
+
+  return map;
+}
+
+const threeLetterSequenceStringToAminoAcidMap = getCodonToAminoAcidMap();
 
 export default threeLetterSequenceStringToAminoAcidMap;
