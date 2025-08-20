@@ -242,7 +242,11 @@ function VectorInteractionHOC(Component /* options */) {
         seqDataToInsert.proteinSequence = seqDataToInsert.sequence;
       }
 
-      if (maxInsertSize && (seqDataToInsert.proteinSequence || seqDataToInsert.sequence).length > maxInsertSize) {
+      if (
+        maxInsertSize &&
+        (seqDataToInsert.proteinSequence || seqDataToInsert.sequence).length >
+          maxInsertSize
+      ) {
         return window.toastr.error(
           `Sorry, the pasted sequence exceeds the maximum allowed length of ${maxInsertSize}`
         );
@@ -395,7 +399,7 @@ function VectorInteractionHOC(Component /* options */) {
         sequenceData = { sequence: "" },
         readOnly,
         disableBpEditing,
-        maxInsertSize,
+        maxInsertSize
         // updateSequenceData,
         // wrappedInsertSequenceDataAtPositionOrRange
         // handleInsert
@@ -611,6 +615,7 @@ function VectorInteractionHOC(Component /* options */) {
       const { sequenceData, readOnly, disableBpEditing, selectionLayer } =
         this.props;
       const { isProtein } = sequenceData;
+
       // Add the appropriate listener
       document.body.addEventListener("copy", this.handleCopy, { once: true });
       document.body.addEventListener("cut", this.handleCut, { once: true });
@@ -836,6 +841,8 @@ function VectorInteractionHOC(Component /* options */) {
           [this.commandEnhancer],
           e,
           () => {
+            document.body.removeEventListener("cut", this.handleCut);
+            document.body.removeEventListener("copy", this.handleCopy);
             if (lastFocusedEl) {
               lastFocusedEl.focus();
             }
