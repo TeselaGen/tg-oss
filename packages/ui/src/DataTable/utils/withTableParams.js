@@ -228,7 +228,7 @@ export const useTableParams = props => {
 
   const tableParams = useMemo(
     () => ({
-      changeFormValue: (...args) => change(...args),
+      changeFormValue: change,
       selectedEntities,
       ..._tableParams,
       formName,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import classNames from "classnames";
-import { noop, get, toInteger } from "lodash-es";
+import { noop, toInteger } from "lodash-es";
 import { Button, Classes } from "@blueprintjs/core";
 import { onEnterOrBlurHelper } from "../utils/handlerHelpers";
 import { defaultPageSizes } from "./utils/queryParams";
@@ -69,7 +69,7 @@ const PagingTool = ({
   const setPageSize = controlled_setPageSize || _setPageSize;
 
   const onPageChange = useCallback(() => {
-    const record = get(entities, "[0]");
+    const record = entities?.[0];
     if (
       !keepSelectionOnPageChange &&
       (!record || !getIdOrCodeOrIndex(record))

@@ -21,7 +21,6 @@
     "@teselagen/react-table": "6.10.18",
     "chance": "1.1.11",
     "classnames": "^2.3.2",
-    "color": "^3.2.1",
     "copy-to-clipboard": "^3.3.1",
     "dayjs": "^1.10.4",
     "dom-scroll-into-view": "^2.0.1",
