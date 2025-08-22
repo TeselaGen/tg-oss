@@ -506,7 +506,7 @@ export const ReactTable = ({
         "data-tip": typeof rowDisabled === "string" ? rowDisabled : undefined,
         onDoubleClick: e => {
           if (rowDisabled) return;
-          getRowClassName &&
+          onDoubleClick &&
             onDoubleClick(rowInfo.original, rowInfo.index, history, e);
         }
       };
