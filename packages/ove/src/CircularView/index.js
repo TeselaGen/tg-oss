@@ -168,6 +168,7 @@ export function CircularView(props) {
     readOnly,
     hideName = false,
     editorName,
+    showAminoAcidUnitAsCodon,
     smartCircViewLabelRender,
     showCicularViewInternalLabels,
     withRotateCircularView: _withRotateCircularView,
@@ -600,6 +601,7 @@ export function CircularView(props) {
               key={"veCircularViewSelectionLayer" + index}
               {...{
                 index,
+                showAminoAcidUnitAsCodon,
                 isDraggable: true,
                 isProtein,
                 selectionLayer,
@@ -637,6 +639,7 @@ export function CircularView(props) {
           key="veCircularViewCaret"
           {...{
             caretPosition,
+            showAminoAcidUnitAsCodon,
             sequenceLength,
             isProtein,
             innerRadius,
@@ -651,8 +654,9 @@ export function CircularView(props) {
   if (radius < 150) radius = 150;
   const widthToUse = Math.max(Number(width) || 300);
   const heightToUse = Math.max(Number(height) || 300);
+  const proteinUnits = showAminoAcidUnitAsCodon ? "codons" : "AAs";
   const bpTitle = isProtein
-    ? `${Math.floor(sequenceLength / 3)} AAs`
+    ? `${Math.floor(sequenceLength / 3)} ${proteinUnits}`
     : `${sequenceLength} bps`;
   const nameEl = (
     <div

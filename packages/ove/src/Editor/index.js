@@ -361,6 +361,7 @@ export class Editor extends React.Component {
       hoveredId,
       isFullscreen,
       maxInsertSize,
+      showAminoAcidUnitAsCodon,
       maxAnnotationsToDisplay,
       minHeight = 400,
       onlyShowLabelsThatDoNotFit = true,
@@ -594,6 +595,7 @@ export class Editor extends React.Component {
           {...panelPropsToSpread}
           editorName={editorName}
           maxInsertSize={maxInsertSize}
+          showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
           isProtein={sequenceData.isProtein}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           tabHeight={tabHeight}
@@ -961,6 +963,7 @@ export class Editor extends React.Component {
                 )
               }
               editorName={editorName}
+              showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
               {...StatusBarProps}
             />
           )}

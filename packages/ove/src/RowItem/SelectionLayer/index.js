@@ -22,6 +22,7 @@ function SelectionLayer(props) {
     regions,
     leftMargin = 0,
     isProtein,
+    showAminoAcidUnitAsCodon,
     getGaps,
     hideTitle: topLevelHideTitle,
     customTitle: topLevelCustomTitle,
@@ -63,7 +64,8 @@ function SelectionLayer(props) {
                 selectionLayer,
                 customTitle: customTitle || topLevelCustomTitle,
                 sequenceLength,
-                isProtein
+                isProtein,
+                showAminoAcidUnitAsCodon
               });
         const onSelectionContextMenu = function (event) {
           selectionLayerRightClicked &&
@@ -108,6 +110,7 @@ function SelectionLayer(props) {
                     key={key + "caret1"}
                     {...{
                       isProtein,
+                      showAminoAcidUnitAsCodon,
                       leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
                       onRightClick: onSelectionContextMenu,
@@ -131,6 +134,7 @@ function SelectionLayer(props) {
                     key={key + "caret2"}
                     {...{
                       isProtein,
+                      showAminoAcidUnitAsCodon,
                       leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
                       onRightClick: onSelectionContextMenu,

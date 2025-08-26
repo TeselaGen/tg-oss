@@ -242,7 +242,11 @@ function VectorInteractionHOC(Component /* options */) {
         seqDataToInsert.proteinSequence = seqDataToInsert.sequence;
       }
 
-      if (maxInsertSize && (seqDataToInsert.proteinSequence || seqDataToInsert.sequence).length > maxInsertSize) {
+      if (
+        maxInsertSize &&
+        (seqDataToInsert.proteinSequence || seqDataToInsert.sequence).length >
+          maxInsertSize
+      ) {
         return window.toastr.error(
           `Sorry, the pasted sequence exceeds the maximum allowed length of ${maxInsertSize}`
         );
@@ -396,6 +400,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         disableBpEditing,
         maxInsertSize,
+        showAminoAcidUnitAsCodon
         // updateSequenceData,
         // wrappedInsertSequenceDataAtPositionOrRange
         // handleInsert
@@ -417,6 +422,7 @@ function VectorInteractionHOC(Component /* options */) {
           sequenceLength,
           caretPosition,
           maxInsertSize,
+          showAminoAcidUnitAsCodon,
           handleInsert: async seqDataToInsert => {
             await insertAndSelectHelper({
               props: this.props,
