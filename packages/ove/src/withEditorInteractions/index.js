@@ -238,8 +238,12 @@ function VectorInteractionHOC(Component /* options */) {
           sequence: clipboardData.getData("text/plain") || e.target.value
         };
       }
-      if (sequenceData.isProtein && !seqDataToInsert.proteinSequence) {
-        seqDataToInsert.proteinSequence = seqDataToInsert.sequence;
+      if (sequenceData.isProtein) {
+        seqDataToInsert.isProtein = true;
+
+        if (!seqDataToInsert.proteinSequence) {
+          seqDataToInsert.proteinSequence = seqDataToInsert.sequence;
+        }
       }
 
       if (
