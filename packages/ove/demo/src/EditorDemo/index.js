@@ -90,6 +90,7 @@ const defaultState = {
   isProtein: false,
   forceHeightMode: false,
   addMaxInsertSize: false,
+  showAminoAcidUnitAsCodon: false,
   adjustCircularLabelSpacing: false,
   bpLimit: undefined,
   nameFontSizeCircularView: false,
@@ -343,6 +344,7 @@ export default class EditorDemo extends React.Component {
     const {
       forceHeightMode,
       addMaxInsertSize,
+      showAminoAcidUnitAsCodon,
       passAutoAnnotateHandlers,
       withAutoAnnotateAddon,
       withGetCustomAutoAnnotateList,
@@ -1207,6 +1209,12 @@ rightClickOverrides: {
                 type: "addMaxInsertSize",
                 label: "Add Max Insert Size 100",
                 info: "You can change the max size for insert/paste for the editor by passing `maxInsertSize:100`"
+              })}
+              {renderToggle({
+                that: this,
+                type: "showAminoAcidUnitAsCodon",
+                label: "Show Amino Acid Unit As 'Codon'",
+                info: "You change the unit for amino acid from 'AA' to 'codon' by passing `showAminoAcidUnitAsCodon:true`"
               })}
               {renderToggle({
                 that: this,
@@ -2723,6 +2731,9 @@ doubleClickOverrides: {
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(addMaxInsertSize && { maxInsertSize: 100 })}
+            {...(showAminoAcidUnitAsCodon && {
+              showAminoAcidUnitAsCodon: true
+            })}
             {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}
             {...(bpLimit && { bpLimit: 8000 })}
             {...(withVersionHistory && {

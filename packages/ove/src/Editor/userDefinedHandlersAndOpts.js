@@ -57,5 +57,6 @@ export const userDefinedHandlersAndOpts = [
   "onCreateNewFromSubsequence",
   "onPreviewModeFullscreenClose",
   "onPaste",
-  "menuFilter"
+  "menuFilter",
+  "showAminoAcidUnitAsCodon"
 ];
