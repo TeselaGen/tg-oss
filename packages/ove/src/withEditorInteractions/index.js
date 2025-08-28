@@ -617,6 +617,7 @@ function VectorInteractionHOC(Component /* options */) {
       const { sequenceData, readOnly, disableBpEditing, selectionLayer } =
         this.props;
       const { isProtein } = sequenceData;
+
       // Add the appropriate listener
       document.body.addEventListener("copy", this.handleCopy, { once: true });
       document.body.addEventListener("cut", this.handleCut, { once: true });
@@ -842,6 +843,8 @@ function VectorInteractionHOC(Component /* options */) {
           [this.commandEnhancer],
           e,
           () => {
+            document.body.removeEventListener("cut", this.handleCut);
+            document.body.removeEventListener("copy", this.handleCopy);
             if (lastFocusedEl) {
               lastFocusedEl.focus();
             }
