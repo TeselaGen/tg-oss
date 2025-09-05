@@ -270,19 +270,19 @@ export class FindBar extends React.Component {
               }
             : {
                 position: "fixed",
-                top: 0,
+                top: 120,
                 right: 25,
                 padding: 10,
                 display: "flex",
-                alignItems: "center",
+                alignItems: "start",
                 paddingBottom: 5,
-                background: "white",
-                zIndex: "20000",
-                borderBottom: "1px solid lightgrey",
-                borderLeft: "1px solid lightgrey",
-                borderRight: "1px solid lightgrey",
-                borderBottomLeftRadius: "5px",
-                borderBottomRightRadius: "5px"
+                zIndex: 20000
+                // background: "white",
+                // borderBottom: "1px solid lightgrey",
+                // borderLeft: "1px solid lightgrey",
+                // borderRight: "1px solid lightgrey",
+                // borderBottomLeftRadius: "5px",
+                // borderBottomRightRadius: "5px"
               }
         }
         className="veFindBar"
@@ -295,7 +295,10 @@ export class FindBar extends React.Component {
               autoFocus
               style={{
                 resize: "vertical",
-                ...(!isInline && { width: 350, minHeight: 70 })
+                ...(!isInline && {
+                  width: 350,
+                  height: 190
+                })
               }}
               className="tg-find-tool-input"
               inputRef={n => {
@@ -347,12 +350,10 @@ export class FindBar extends React.Component {
         {!isInline && (
           <div
             style={{
+              marginLeft: 10,
               display: "flex",
-              maxWidth: "400px",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-              alignItems: "stretch",
-              height: "76px"
+              flexDirection: "column",
+              gap: 5
             }}
           >
             {rightEl}
@@ -362,7 +363,7 @@ export class FindBar extends React.Component {
         {!isInline && (
           <Button
             minimal
-            style={{ position: "absolute", bottom: 0, right: -10 }}
+            style={{ position: "absolute", bottom: 0, right: 0 }}
             onClick={toggleFindTool}
             icon="cross"
           />
