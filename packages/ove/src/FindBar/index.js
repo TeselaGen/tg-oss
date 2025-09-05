@@ -277,12 +277,6 @@ export class FindBar extends React.Component {
                 alignItems: "start",
                 paddingBottom: 5,
                 zIndex: 20000
-                // background: "white",
-                // borderBottom: "1px solid lightgrey",
-                // borderLeft: "1px solid lightgrey",
-                // borderRight: "1px solid lightgrey",
-                // borderBottomLeftRadius: "5px",
-                // borderBottomRightRadius: "5px"
               }
         }
         className="veFindBar"
