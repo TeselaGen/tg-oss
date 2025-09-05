@@ -41,7 +41,6 @@ export default ({ demos, isOpen, setIsOpen }) => {
           icon="chevron-left"
         ></Button>
       </div>
-
       <InputGroup
         rightElement={
           search && (
@@ -96,6 +95,7 @@ export default ({ demos, isOpen, setIsOpen }) => {
         })}
       <br></br>
       <br></br>
+      Teselagen Open Source UI Library Demo
       <a
         href="https://teselagen.github.io/tg-oss/ui/"
         style={{ fontSize: 16 }}
@@ -105,7 +105,7 @@ export default ({ demos, isOpen, setIsOpen }) => {
         tg-oss/ui demo page
       </a>
       <br></br>
-
+      Teselagen Open Vector Editor - OVE - (Vector/Plasmid Editor) Demo
       <a
         href="https://teselagen.github.io/tg-oss/ove/"
         style={{ fontSize: 16 }}
@@ -114,7 +114,6 @@ export default ({ demos, isOpen, setIsOpen }) => {
       >
         tg-oss/ove demo page
       </a>
-
       <br></br>
       <br></br>
       <br></br>
