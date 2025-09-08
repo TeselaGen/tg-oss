@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@blueprintjs/core": "3.54.0",
+    "@blueprintjs/datetime": "^6.0.5",
+    "@blueprintjs/select": "^6.0.5",
     "@hello-pangea/dnd": "16.2.0",
     "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/bio-parsers": "file:../bio-parsers",
