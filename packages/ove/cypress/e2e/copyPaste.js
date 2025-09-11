@@ -43,7 +43,7 @@ describe("copyPaste", function () {
     });
   });
 
-  it('should show warning when pasted sequence is larger than the max insert size', () => {
+  it("should show warning when pasted sequence is larger than the max insert size", () => {
     cy.get(`[data-test="moleculeType"]`).select("Protein");
     cy.tgToggle("addMaxInsertSize");
     cy.selectRange(10, 12);
@@ -57,19 +57,21 @@ describe("copyPaste", function () {
     cy.contains("Selection Copied");
 
     cy.get(`.veVectorInteractionWrapper:focused input`).trigger("paste", {
-        force: true,
-        clipboardData: {
-          // we have to mock the paste event cause cypress doesn't actually trigger a paste event when typing cmd+v
-          getData: type =>
-            type === "application/json"
-              ? JSON.stringify(window.Cypress.seqDataToCopy)
-              : window.Cypress.seqDataToCopy.sequence,
-          types: ["application/json"]
-        }
-      });
+      force: true,
+      clipboardData: {
+        // we have to mock the paste event cause cypress doesn't actually trigger a paste event when typing cmd+v
+        getData: type =>
+          type === "application/json"
+            ? JSON.stringify(window.Cypress.seqDataToCopy)
+            : window.Cypress.seqDataToCopy.sequence,
+        types: ["application/json"]
+      }
+    });
 
-      cy.contains("Sorry, the pasted sequence exceeds the maximum allowed length of 100");
-  })
+    cy.contains(
+      "Sorry, the pasted sequence exceeds the maximum allowed length of 100"
+    );
+  });
 
   it(`should be able to copy reverse complement`, () => {
     cy.selectRange(10, 12); //select some random range (we were seeing an error where the selection layer wasn't getting updated correctly)
@@ -133,12 +135,12 @@ describe("copyPaste", function () {
           types: ["application/json"]
         }
       });
-      cy.get(`.veCircularViewFeature:contains("CmR") textPath`).should(
-        "not.exist"
-      );
       cy.get(`.veCircularViewFeature:contains("araD") textPath`).should(
         "have.length",
         2
+      );
+      cy.get(`.veCircularViewFeature:contains("CmR") textPath`).should(
+        "not.exist"
       );
     });
   });
