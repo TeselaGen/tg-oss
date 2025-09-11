@@ -12,8 +12,8 @@ describe("rna editing in OVE", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
     cy.focused().type("tguugttuuuuuuuuuuuuuuuaa{enter}");
-    cy.contains("Selecting 24 bps from 10 to 33"); //the t's should be converted to u's
-    cy.contains("uguuguuuuuuuuuuuuuuuuuaa");
+    cy.contains("Selecting 23 bps from 10 to 32"); //the t's should be converted to u's
+    cy.contains("guuguuuuuuuuuuuuuuuuuaa");
   });
   it(`should support mixed rna and dna editing`, () => {
     cy.get(`[data-test="moleculeType"]`).select("mixedRnaAndDna");
