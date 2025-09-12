@@ -68,7 +68,8 @@ export default compose(
         extraProps,
         isProtein,
         invalid,
-        handleSubmit
+        handleSubmit,
+        showAminoAcidUnitAsCodon
       } = this.props;
       const selectionLength = getRangeLength(
         {
@@ -132,7 +133,9 @@ export default compose(
               type="submit"
               intent={Intent.PRIMARY}
               text={`Select ${invalid ? 0 : selectionLength} ${
-                isProtein ? "AA" : "BP"
+                isProtein
+                  ? `${showAminoAcidUnitAsCodon ? "codon" : "AA"}`
+                  : "BP"
               }${selectionLength === 1 ? "" : "s"}`}
               disabled={invalid}
             />

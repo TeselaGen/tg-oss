@@ -173,6 +173,7 @@ class _LinearView extends React.Component {
       annotationVisibilityOverrides,
       isProtein,
       noWarnings,
+      showAminoAcidUnitAsCodon,
       ...rest
     } = this.props;
 
@@ -291,6 +292,7 @@ class _LinearView extends React.Component {
             <SequenceName
               {...{
                 isProtein,
+                showAminoAcidUnitAsCodon,
                 sequenceName,
                 sequenceLength: sequenceData.sequence
                   ? sequenceData.sequence.length

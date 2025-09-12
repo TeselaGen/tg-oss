@@ -126,7 +126,8 @@ export default function RowItem(props) {
     isLinearView,
     scalePct,
     setScalePct,
-    extraAnnotationProps = {}
+    extraAnnotationProps = {},
+    showAminoAcidUnitAsCodon
   } = props;
 
   const {
@@ -319,6 +320,7 @@ export default function RowItem(props) {
   const translationCommonProps = {
     CompOverride: Translations,
     showAminoAcidNumbers: showAminoAcidNumbers,
+    showAminoAcidUnitAsCodon: showAminoAcidUnitAsCodon,
     sequenceLength,
     aminoAcidNumbersHeight
   };
@@ -360,6 +362,7 @@ export default function RowItem(props) {
           // hideCarets
           regions={searchLayers}
           {...annotationCommonProps}
+          showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
           selectionLayerRightClicked={searchLayerRightClicked}
           row={
             alignmentData
@@ -381,6 +384,7 @@ export default function RowItem(props) {
             additionalSelectionLayers,
             selectionLayer
           })}
+          showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
         />
         {drawAnnotations("warning")}
         {drawAnnotations("assemblyPiece")}
@@ -619,6 +623,7 @@ export default function RowItem(props) {
           <Caret
             caretPosition={caretPosition}
             isProtein={isProtein}
+            showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
             {...{ ...annotationCommonProps, ...{ getGaps: undefined } }}
             row={
               alignmentData

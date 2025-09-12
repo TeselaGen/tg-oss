@@ -19,7 +19,8 @@ export function getSelectionMessage({
   sequenceData,
   showGCContent, //these are only passed in for the status bar
   GCDecimalDigits, //these are only passed in for the status bar
-  isProtein
+  isProtein,
+  showAminoAcidUnitAsCodon
 }) {
   let _selectionLayer = selectionLayer;
   const isSelecting = selectionLayer.start > -1;
@@ -32,7 +33,8 @@ export function getSelectionMessage({
       ).toFixed(numDecimalDigits);
     const seqLen = divideBy3(length, isProtein);
     return `${customTitle || "Selecting"} ${seqLen} ${
-      (isProtein ? "AA" : "bp") + (seqLen === 1 ? "" : "s")
+      (isProtein ? `${showAminoAcidUnitAsCodon ? "codon" : "AA"}` : "bp") +
+      (seqLen === 1 ? "" : "s")
     } from ${divideBy3(_selectionLayer.start, isProtein) + 1} to ${divideBy3(
       _selectionLayer.end + 1,
       isProtein
@@ -48,7 +50,7 @@ export function getSelectionMessage({
     return (
       `Caret Between ` +
       (isProtein
-        ? `AAs ${divideBy3(insertBetween[0], true)} and ${divideBy3(
+        ? `${showAminoAcidUnitAsCodon ? "codons" : "AAs"} ${divideBy3(insertBetween[0], true)} and ${divideBy3(
             insertBetween[1] + 2,
             true
           )}`

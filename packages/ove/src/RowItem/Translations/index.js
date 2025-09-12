@@ -7,6 +7,7 @@ function getExtraInnerCompProps(
   annotationRange,
   {
     showAminoAcidNumbers,
+    showAminoAcidUnitAsCodon,
     getGaps,
     isProtein,
     colorType,
@@ -20,6 +21,7 @@ function getExtraInnerCompProps(
 
   return {
     showAminoAcidNumbers,
+    showAminoAcidUnitAsCodon,
     getGaps,
     height: anotationHeightNoSpace,
     aminoAcidNumbersHeight,
