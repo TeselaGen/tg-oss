@@ -1,6 +1,6 @@
 import { Icon, Menu } from "@blueprintjs/core";
 import React from "react";
-import { createCommandMenu } from "@teselagen/ui";
+import { createCommandMenu } from "@teselagen-biotech/ui";
 import viewSubmenu from "../MenuBar/viewSubmenu";
 import getCommands from "../commands";
 import ToolbarItem from "./ToolbarItem";

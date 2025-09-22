@@ -3,15 +3,15 @@ import { Tag, Classes, NumericInput, Slider } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   getSequenceWithinRange
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
-import { showConfirmationDialog } from "@teselagen/ui";
+import { showConfirmationDialog } from "@teselagen-biotech/ui";
 import {
   adjustBpsToReplaceOrInsert,
   annotationTypes,
   getSequenceDataBetweenRange
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import { oveCommandFactory } from "../utils/commandUtils";
 import {
   upperFirst,

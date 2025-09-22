@@ -1,5 +1,5 @@
 import React from "react";
-import { MenuBar, commandMenuEnhancer } from "@teselagen/ui";
+import { MenuBar, commandMenuEnhancer } from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import { memoize } from "lodash-es";
 import withEditorProps from "../withEditorProps";

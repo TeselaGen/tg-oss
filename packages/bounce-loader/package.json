@@ -1,5 +1,5 @@
 {
-  "name": "@teselagen/bounce-loader",
+  "name": "@teselagen-biotech/bounce-loader",
   "version": "0.3.15",
   "main": "./src/index.js",
   "type": "module",

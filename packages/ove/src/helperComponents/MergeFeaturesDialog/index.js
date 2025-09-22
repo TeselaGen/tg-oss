@@ -9,13 +9,13 @@ import {
   wrapDialog,
   InfoHelper,
   tgFormValues
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import { flatMap } from "lodash-es";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
-import { CheckboxField } from "@teselagen/ui";
+import { CheckboxField } from "@teselagen-biotech/ui";
 import "./style.css";
 
 class MergeFeaturesDialog extends React.Component {

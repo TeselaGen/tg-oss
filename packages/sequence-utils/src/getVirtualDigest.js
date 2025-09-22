@@ -5,7 +5,7 @@ import { get } from "lodash-es";
 import {
   normalizePositionByRangeLength,
   getRangeLength
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 
 export default function getVirtualDigest({
   cutsites,

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { DataTable } from "@teselagen/ui";
+import { DataTable } from "@teselagen-biotech/ui";
 import { CutsiteTag } from "../../CutsiteFilter/AdditionalCutsiteInfoDialog";
 import EnzymeViewer from "../../EnzymeViewer";
 import { getEnzymeAliases } from "../../utils/editorUtils";

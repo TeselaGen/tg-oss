@@ -1,4 +1,4 @@
-import { getReverseComplementSequenceAndAnnotations } from "@teselagen/sequence-utils";
+import { getReverseComplementSequenceAndAnnotations } from "@teselagen-biotech/sequence-utils";
 
 export default function addDashesForMatchStartAndEndForTracks(alignmentTracks) {
   return alignmentTracks.map((track, i) => {

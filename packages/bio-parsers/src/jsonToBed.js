@@ -1,4 +1,4 @@
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
+import { tidyUpSequenceData } from "@teselagen-biotech/sequence-utils";
 
 function jsonToBed(jsonSequence, options = {}) {
   const sequenceInfo = options.featuresOnly

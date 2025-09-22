@@ -19,7 +19,6 @@
               "buffer",
               "chance",
               "string_decoder",
-              "@teselagen-biotech/react-table",
               "deep-equal",
               "cypress-real-events",
               "clipboard"

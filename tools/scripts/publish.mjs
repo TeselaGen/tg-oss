@@ -39,7 +39,7 @@ const getDeps = name => {
   simpleGraph.dependencies[name].forEach(({ target }) => {
     console.info(`target:`, target);
     if (target === "shared-demo") return; //we don't actually need to rely on this since it is only used for the demo pages
-    const key = `@teselagen/${target}`;
+    const key = `@teselagen-biotech/${target}`;
     if (!deps[key]) {
       const p = readFileSync(`./packages/${target}/package.json`).toString();
       deps[key] = JSON.parse(p).version;

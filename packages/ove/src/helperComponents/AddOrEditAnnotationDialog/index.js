@@ -13,7 +13,7 @@ import {
   bluntFeatureIcon,
   featureIcon,
   tgFormValues
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import {
   Button,
@@ -29,11 +29,11 @@ import {
   isRangeWithinRange,
   checkIfPotentiallyCircularRangesOverlap,
   getRangeLength
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import {
   tidyUpAnnotation,
   getFeatureToColorMap
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import classNames from "classnames";
 import { store, view } from "@risingstack/react-easy-state";
 
@@ -382,7 +382,8 @@ class AddOrEditAnnotationDialog extends React.Component {
             <div
               style={{ marginBottom: 10, fontSize: 12, fontStyle: "italic" }}
             >
-              You can also click or drag in the editor to change the selection{" "}
+              You can also click or drag in the editor to change the
+              selection{" "}
             </div>
             <NumericInputField
               inlineLabel

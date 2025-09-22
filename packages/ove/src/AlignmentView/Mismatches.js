@@ -1,5 +1,5 @@
 import React from "react";
-import { DataTable, withSelectedEntities } from "@teselagen/ui";
+import { DataTable, withSelectedEntities } from "@teselagen-biotech/ui";
 
 class Mismatches extends React.Component {
   UNSAFE_componentWillMount() {

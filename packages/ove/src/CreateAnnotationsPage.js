@@ -8,11 +8,11 @@ import {
   DialogFooter,
   withSelectTableRecords,
   withSelectedEntities
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { useEffect } from "react";
 import { hideDialog } from "./GlobalDialogUtils";
 import { startCase } from "lodash-es";
-import { tidyUpAnnotation } from "@teselagen/sequence-utils";
+import { tidyUpAnnotation } from "@teselagen-biotech/sequence-utils";
 
 const schemaFeatures = ["name", typeField, "start", "end", "strand"];
 const schemaOther = ["name", "start", "end", "strand"];

@@ -1,17 +1,17 @@
-import { getFeatureToColorMap } from "@teselagen/sequence-utils";
+import { getFeatureToColorMap } from "@teselagen-biotech/sequence-utils";
 import {
   anyToJson,
   jsonToGenbank,
   jsonToFasta,
   cleanUpTeselagenJsonForExport
-} from "@teselagen/bio-parsers";
+} from "@teselagen-biotech/bio-parsers";
 import FileSaver from "file-saver";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
-import { showConfirmationDialog } from "@teselagen/ui";
+import { showConfirmationDialog } from "@teselagen-biotech/ui";
 import { some, map, keyBy, omit, isArray, noop } from "lodash-es";
 import {
   tidyUpSequenceData,
@@ -19,14 +19,14 @@ import {
   insertSequenceDataAtPositionOrRange,
   getReverseComplementSequenceAndAnnotations,
   rotateSequenceDataToPosition
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import { Intent } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   getRangeLength,
   invertRange,
   normalizeRange
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import shortid from "shortid";
 
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";

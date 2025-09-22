@@ -3,7 +3,7 @@ import {
   getSequenceWithinRange,
   normalizePositionByRangeLength,
   isPositionCloserToRangeStartThanRangeEnd
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 
 export default function getLeftAndRightOfSequenceInRangeGivenPosition(
   range,

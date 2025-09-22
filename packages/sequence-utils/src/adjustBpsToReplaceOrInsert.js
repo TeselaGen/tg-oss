@@ -4,7 +4,7 @@ import {
   getRangeLength,
   invertRange,
   isPositionWithinRange
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 
 import spliceString from "string-splice";
 

@@ -24,7 +24,7 @@ import VersionHistoryViewDemo from "./VersionHistoryViewDemo";
 
 import "./style.css";
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { DemoPage } from "@teselagen/shared-demo";
+import { DemoPage } from "@teselagen-biotech/shared-demo";
 
 const demos = {
   Editor: {

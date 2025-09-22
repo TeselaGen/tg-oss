@@ -5,17 +5,17 @@ import {
   DropdownButton,
   generateField,
   RadioGroupField
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import {
   filterSequenceString,
   getReverseComplementSequenceString
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
-import { convertRangeTo0Based } from "@teselagen/range-utils";
+import { convertRangeTo0Based } from "@teselagen-biotech/range-utils";
 import classNames from "classnames";
 import "./style.css";
-import { getSequenceWithinRange } from "@teselagen/range-utils";
+import { getSequenceWithinRange } from "@teselagen-biotech/range-utils";
 import { flatMap } from "lodash-es";
 import CaretPositioning, {
   selectionSaveCaretPosition

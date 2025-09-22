@@ -13,9 +13,9 @@ import { divideBy3 } from "../utils/proteinUtils";
 import { getSelectionMessage } from "../utils/editorUtils";
 import useMeltingTemp from "../utils/useMeltingTemp";
 import MeltingTemp from "./MeltingTemp";
-import { getSequenceWithinRange } from "@teselagen/range-utils";
+import { getSequenceWithinRange } from "@teselagen-biotech/range-utils";
 import { handleReadOnlyChange } from "../ToolBar/editTool";
-import { TgHTMLSelect } from "@teselagen/ui";
+import { TgHTMLSelect } from "@teselagen-biotech/ui";
 
 export const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly

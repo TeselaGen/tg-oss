@@ -1,15 +1,15 @@
 import { connect } from "react-redux";
 // import {reduxForm, Field, formValueSelector} from 'redux-form'
 import React from "react";
-import { DialogFooter, InfoHelper, wrapDialog } from "@teselagen/ui";
+import { DialogFooter, InfoHelper, wrapDialog } from "@teselagen-biotech/ui";
 
 // import './style.css';
-import { cutSequenceByRestrictionEnzyme } from "@teselagen/sequence-utils";
+import { cutSequenceByRestrictionEnzyme } from "@teselagen-biotech/sequence-utils";
 // import QuestionTooltip from '../../components/QuestionTooltip';
 import {
   defaultEnzymesByName,
   getReverseComplementSequenceString
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import EnzymeViewer from "../EnzymeViewer";
 import "./style.css";
 import { connectToEditor } from "../withEditorProps";

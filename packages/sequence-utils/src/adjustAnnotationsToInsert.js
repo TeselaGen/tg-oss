@@ -1,4 +1,4 @@
-import { adjustRangeToInsert } from "@teselagen/range-utils";
+import { adjustRangeToInsert } from "@teselagen-biotech/range-utils";
 import { map } from "lodash-es";
 
 export default function adjustAnnotationsToInsert(

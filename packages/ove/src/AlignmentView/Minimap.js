@@ -10,7 +10,7 @@ import {
   invertRange,
   isPositionWithinRange,
   splitRangeIntoTwoPartsIfItIsCircular
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
 export default class Minimap extends React.Component {

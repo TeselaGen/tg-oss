@@ -1,8 +1,8 @@
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 import { map, cloneDeep } from "lodash-es";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import rotateSequenceDataToPosition from "./rotateSequenceDataToPosition";
-import { adjustRangeToDeletionOfAnotherRange } from "@teselagen/range-utils";
+import { adjustRangeToDeletionOfAnotherRange } from "@teselagen-biotech/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import { modifiableTypes } from "./annotationTypes";
 import adjustBpsToReplaceOrInsert from "./adjustBpsToReplaceOrInsert";

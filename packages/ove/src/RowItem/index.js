@@ -2,7 +2,7 @@ import {
   normalizePositionByRangeLength,
   getSequenceWithinRange,
   getOverlapsOfPotentiallyCircularRanges
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import {
   map,
   camelCase,
@@ -12,7 +12,7 @@ import {
   assign,
   noop
 } from "lodash-es";
-import { getComplementSequenceString } from "@teselagen/sequence-utils";
+import { getComplementSequenceString } from "@teselagen-biotech/sequence-utils";
 import React, { useMemo } from "react";
 import pluralize from "pluralize";
 import SelectionLayer from "./SelectionLayer";

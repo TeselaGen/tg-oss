@@ -2,9 +2,9 @@ import { Button, Callout, Icon, InputGroup } from "@blueprintjs/core";
 import {
   generateSequenceData,
   tidyUpSequenceData
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import React from "react";
-import { isRangeOrPositionWithinRange } from "@teselagen/range-utils";
+import { isRangeOrPositionWithinRange } from "@teselagen-biotech/range-utils";
 import isMobile from "is-mobile";
 import immer from "immer";
 import biomsa from "biomsa";
@@ -19,7 +19,7 @@ import exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
-import { DialogFooter, showConfirmationDialog } from "@teselagen/ui";
+import { DialogFooter, showConfirmationDialog } from "@teselagen-biotech/ui";
 import {
   autoAnnotateFeatures,
   autoAnnotateParts,
@@ -29,7 +29,7 @@ import { startCase } from "lodash-es";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
-import { convertBasePosTraceToPerBpTrace } from "@teselagen/bio-parsers";
+import { convertBasePosTraceToPerBpTrace } from "@teselagen-biotech/bio-parsers";
 import { defaultToolList } from "../../../src/ToolBar";
 const chromData = convertBasePosTraceToPerBpTrace(_chromData);
 const exampleProteinDataShort = {
@@ -685,7 +685,7 @@ the protein sequenceData object should look like so
 	proteinSequence: "mmhlrlfcillaavs...etc"
 	sequence: "gtagagagagcca...etc" //optional!
 	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices .
-	//You can use the helper util from @teselagen/sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
+	//You can use the helper util from @teselagen-biotech/sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
 	//features/parts coming in as AA-indexed
 	features: [{name: "testFeature1",
 		start: 3, //start on AA 1

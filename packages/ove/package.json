@@ -1,5 +1,5 @@
 {
-  "name": "@teselagen/ove",
+  "name": "@teselagen-biotech/ove",
   "version": "0.7.37",
   "main": "./src/index.js",
   "type": "module",
@@ -14,12 +14,12 @@
     "@blueprintjs/core": "3.54.0",
     "@hello-pangea/dnd": "16.2.0",
     "@risingstack/react-easy-state": "^6.3.0",
-    "@teselagen/bio-parsers": "file:../bio-parsers",
-    "@teselagen/file-utils": "file:../file-utils",
-    "@teselagen/range-utils": "file:../range-utils",
+    "@teselagen-biotech/bio-parsers": "file:../bio-parsers",
+    "@teselagen-biotech/file-utils": "file:../file-utils",
+    "@teselagen-biotech/range-utils": "file:../range-utils",
     "@teselagen/react-list": "0.8.18",
-    "@teselagen/sequence-utils": "file:../sequence-utils",
-    "@teselagen/ui": "file:../ui",
+    "@teselagen-biotech/sequence-utils": "file:../sequence-utils",
+    "@teselagen-biotech/ui": "file:../ui",
     "@use-gesture/react": "10.3.0",
     "biomsa": "^0.2.4",
     "classnames": "^2.3.2",
@@ -60,6 +60,7 @@
     "tg-use-local-storage-state": "^16.0.3",
     "to-regex-range": "5.0.1",
     "use-debounce": "^8.0.4",
-    "validate.io-nonnegative-integer-array": "^1.0.1"
+    "validate.io-nonnegative-integer-array": "^1.0.1",
+    "shortid": "2.2.16"
   }
 }

@@ -5,14 +5,14 @@ import {
   DataTable,
   SwitchField,
   useTableEntities
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import { Button, Classes, Popover } from "@blueprintjs/core";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { forEach, camelCase, startCase } from "lodash-es";
 import { sizeSchema } from "../PropertiesDialog/utils";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 import { useFormValue } from "../../utils/useFormValue";
 
 const dialogFormName = "RemoveDuplicatesDialog";

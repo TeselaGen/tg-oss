@@ -44,9 +44,7 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import classNames from "classnames";
 import scrollIntoView from "dom-scroll-into-view";
-import ReactTable, {
-  VIRTUALIZE_CUTOFF_LENGTH
-} from "@teselagen-biotech/react-table";
+import ReactTable from "react-table";
 import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
 import { useDispatch, useSelector } from "react-redux";
@@ -84,7 +82,7 @@ import DisabledLoadingComponent from "./DisabledLoadingComponent";
 import SortableColumns from "./SortableColumns";
 import dataTableEnhancer from "./dataTableEnhancer";
 import "../toastr";
-import "@teselagen-biotech/react-table/react-table.css";
+import "react-table/react-table.css";
 import "./style.css";
 import { nanoid } from "nanoid";
 import { SwitchField } from "../FormComponents";
@@ -106,6 +104,8 @@ import { throwFormError } from "../throwFormError";
 import { isObservableArray, toJS } from "mobx";
 import { isBeingCalledExcessively } from "../utils/isBeingCalledExcessively";
 import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
+
+const VIRTUALIZE_CUTOFF_LENGTH = 200;
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;

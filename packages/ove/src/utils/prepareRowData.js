@@ -1,5 +1,5 @@
-import { mapAnnotationsToRows } from "@teselagen/sequence-utils";
-import { annotationTypes } from "@teselagen/sequence-utils";
+import { mapAnnotationsToRows } from "@teselagen-biotech/sequence-utils";
+import { annotationTypes } from "@teselagen-biotech/sequence-utils";
 export default function prepareRowData(sequenceData, bpsPerRow) {
   const sequenceLength = sequenceData.noSequence
     ? sequenceData.size

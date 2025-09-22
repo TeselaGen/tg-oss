@@ -6,7 +6,7 @@ import DemoNav from "./DemoNav";
 
 import "./style.css";
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { DataTable } from "@teselagen/ui";
+import { DataTable } from "@teselagen-biotech/ui";
 import VersionSwitcher from "./VersionSwitcher";
 
 import {
@@ -72,14 +72,14 @@ const DemoPage = ({ moduleName, demos, showComponentList }) => {
                 )
               }
               packageName={`${moduleName}`}
-              testBadge={`[![@teselagen/${moduleName}](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/gwixeq/master&style=flat&logo=cypress)](https://cloud.cypress.io/projects/gwixeq/runs)`}
+              testBadge={`[![@teselagen-biotech/${moduleName}](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/gwixeq/master&style=flat&logo=cypress)](https://cloud.cypress.io/projects/gwixeq/runs)`}
             />
 
             <a
               style={{ fontSize: 16 }}
               href={`https://github.com/TeselaGen/tg-oss/tree/master/packages/${moduleName}`}
             >
-              @teselagen/{`${moduleName}`}
+              @teselagen-biotech/{`${moduleName}`}
             </a>
             <Tooltip
               content={darkTheme ? "Light Theme" : "Dark Theme"}

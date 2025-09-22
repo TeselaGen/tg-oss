@@ -1,7 +1,7 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
 
 import { Tab, Tabs } from "@blueprintjs/core";
-import { wrapDialog } from "@teselagen/ui";
+import { wrapDialog } from "@teselagen-biotech/ui";
 
 const highlightStyle = {
   background: "red",

@@ -1,9 +1,9 @@
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
-import { getFeatureTypes } from "@teselagen/sequence-utils";
+import { getFeatureTypes } from "@teselagen-biotech/sequence-utils";
 import {
   filterSequenceString,
   guessIfSequenceIsDnaAndNotProtein
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import { filter, some, upperFirst } from "lodash-es";
 import pragmasAndTypes from "./pragmasAndTypes.js";
 import { forEach } from "lodash-es";

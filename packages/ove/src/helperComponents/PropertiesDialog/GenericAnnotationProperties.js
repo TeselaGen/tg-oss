@@ -9,7 +9,7 @@ import {
   createCommandMenu,
   popoverOverflowModifiers,
   removeDuplicatesIcon
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { map, upperFirst, pick, startCase, isFunction } from "lodash-es";
 import {
   AnchorButton,
@@ -19,7 +19,7 @@ import {
   Tag,
   Tooltip
 } from "@blueprintjs/core";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 // import { Popover } from "@blueprintjs/core";
 // import ColorPicker from "./ColorPicker";
 import { connectToEditor } from "../../withEditorProps";
@@ -28,8 +28,8 @@ import commands from "../../commands";
 import { sizeSchema } from "./utils";
 import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
 import { typeField } from "./typeField";
-import { getSequenceWithinRange } from "@teselagen/range-utils";
-import { getReverseComplementSequenceString } from "@teselagen/sequence-utils";
+import { getSequenceWithinRange } from "@teselagen-biotech/range-utils";
+import { getReverseComplementSequenceString } from "@teselagen-biotech/sequence-utils";
 
 const genericAnnotationProperties = ({
   annotationType,

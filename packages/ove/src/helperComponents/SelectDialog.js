@@ -1,15 +1,15 @@
-import { convertRangeTo0Based } from "@teselagen/range-utils";
+import { convertRangeTo0Based } from "@teselagen-biotech/range-utils";
 import classNames from "classnames";
 import React from "react";
 
 import { reduxForm } from "redux-form";
-import { tgFormValues, wrapDialog } from "@teselagen/ui";
+import { tgFormValues, wrapDialog } from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 
-import { NumericInputField } from "@teselagen/ui";
+import { NumericInputField } from "@teselagen-biotech/ui";
 import { get } from "lodash-es";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 import { tryToRefocusEditor } from "../utils/editorUtils";
 
 // Single validation function - from & to have the same range

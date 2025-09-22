@@ -1,5 +1,5 @@
 import React from "react";
-import { InputField, TextareaField } from "@teselagen/ui";
+import { InputField, TextareaField } from "@teselagen-biotech/ui";
 import { reduxForm } from "redux-form";
 import withEditorProps from "../../withEditorProps";
 import { compose } from "recompose";

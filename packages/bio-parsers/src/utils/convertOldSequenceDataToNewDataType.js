@@ -1,4 +1,4 @@
-import { isRangeWithinRange } from "@teselagen/range-utils";
+import { isRangeWithinRange } from "@teselagen-biotech/range-utils";
 
 export default function convertOldSequenceDataToNewDataType(
   oldTeselagenJson,

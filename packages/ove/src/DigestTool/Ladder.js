@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from "react";
-import { showConfirmationDialog, TgSelect } from "@teselagen/ui";
+import { showConfirmationDialog, TgSelect } from "@teselagen-biotech/ui";
 
 import "./Ladder.css";
 import { Button, Tooltip } from "@blueprintjs/core";

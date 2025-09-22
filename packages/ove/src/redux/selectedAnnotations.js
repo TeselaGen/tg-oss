@@ -1,4 +1,4 @@
-import { showContextMenu } from "@teselagen/ui";
+import { showContextMenu } from "@teselagen-biotech/ui";
 import without from "lodash/without";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";

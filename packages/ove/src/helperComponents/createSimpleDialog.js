@@ -3,7 +3,7 @@ import React from "react";
 import { reduxForm } from "redux-form";
 import { startCase } from "lodash-es";
 import { withProps } from "recompose";
-import { InputField, wrapDialog } from "@teselagen/ui";
+import { InputField, wrapDialog } from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import classNames from "classnames";

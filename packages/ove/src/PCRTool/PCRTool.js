@@ -2,7 +2,7 @@ import { compose } from "recompose";
 import React from "react";
 
 import withEditorInteractions from "../withEditorInteractions";
-import { ReactSelectField, tgFormValues } from "@teselagen/ui";
+import { ReactSelectField, tgFormValues } from "@teselagen-biotech/ui";
 import { reduxForm } from "redux-form";
 import { flatMap, forEach, keyBy } from "lodash-es";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
@@ -11,8 +11,11 @@ import {
   getSequenceDataBetweenRange,
   tidyUpSequenceData,
   shiftAnnotationsByLen
-} from "@teselagen/sequence-utils";
-import { getRangeLength, getSequenceWithinRange } from "@teselagen/range-utils";
+} from "@teselagen-biotech/sequence-utils";
+import {
+  getRangeLength,
+  getSequenceWithinRange
+} from "@teselagen-biotech/range-utils";
 
 function PCRTool(props) {
   const {

@@ -161,7 +161,6 @@ export default ({ name, dir }: { name: string; dir: string }) =>
             __dirname,
             "node_modules/@blueprintjs/datetime"
           ),
-          // "@teselagen-biotech/react-table": path.join( "/Users/thomasrich/Sites/react-table"),
           "react-dom": path.join(__dirname, "node_modules/react-dom"),
           "react-redux": path.join(__dirname, "node_modules/react-redux"),
           "redux-form": path.join(__dirname, "node_modules/redux-form"),

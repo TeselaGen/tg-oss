@@ -1,5 +1,5 @@
 /* eslint-disable no-var*/
-import { convertAACaretPositionOrRangeToDna } from "@teselagen/sequence-utils";
+import { convertAACaretPositionOrRangeToDna } from "@teselagen-biotech/sequence-utils";
 
 import { gbDivisions, untitledSequenceName } from "./utils/constants";
 import flattenSequenceArray from "./utils/flattenSequenceArray";

@@ -1,5 +1,5 @@
 import deepEqual from "deep-equal";
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
+import { tidyUpSequenceData } from "@teselagen-biotech/sequence-utils";
 import uuid from "shortid";
 
 import createAction from "../utils/createMetaAction";

@@ -2,7 +2,7 @@ import "./shimGlobal";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { Loading } from "@teselagen/ui";
+import { Loading } from "@teselagen-biotech/ui";
 
 import store from "./store";
 import "./index.css";

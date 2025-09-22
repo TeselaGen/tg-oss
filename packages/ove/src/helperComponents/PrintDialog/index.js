@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { reduxForm } from "redux-form";
 
-import { wrapDialog } from "@teselagen/ui";
+import { wrapDialog } from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import { Button, Classes, ButtonGroup } from "@blueprintjs/core";
 import classNames from "classnames";

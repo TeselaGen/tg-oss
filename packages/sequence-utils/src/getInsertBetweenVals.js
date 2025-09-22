@@ -1,4 +1,4 @@
-import { normalizePositionByRangeLength1Based } from "@teselagen/range-utils";
+import { normalizePositionByRangeLength1Based } from "@teselagen-biotech/range-utils";
 
 export default function getInsertBetweenVals(
   caretPosition,

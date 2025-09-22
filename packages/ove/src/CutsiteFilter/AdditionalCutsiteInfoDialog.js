@@ -1,5 +1,5 @@
 import { compose } from "recompose";
-import { wrapDialog, DropdownButton } from "@teselagen/ui";
+import { wrapDialog, DropdownButton } from "@teselagen-biotech/ui";
 import React from "react";
 import { Classes, Icon, Menu, MenuItem, Tag } from "@blueprintjs/core";
 import withEditorProps from "../withEditorProps";
@@ -21,7 +21,7 @@ import {
   aliasedEnzymesByName,
   cutSequenceByRestrictionEnzyme,
   defaultEnzymesByName
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
 import { getEnzymeAliases } from "../utils/editorUtils";
 

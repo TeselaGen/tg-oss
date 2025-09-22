@@ -1,5 +1,5 @@
 import createSimpleDialog from "./createSimpleDialog";
-import { NumericInputField } from "@teselagen/ui";
+import { NumericInputField } from "@teselagen-biotech/ui";
 import { get } from "lodash-es";
 import { tryToRefocusEditor } from "../utils/editorUtils";
 

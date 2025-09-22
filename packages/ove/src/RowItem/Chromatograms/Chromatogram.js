@@ -1,4 +1,4 @@
-import { showContextMenu } from "@teselagen/ui";
+import { showContextMenu } from "@teselagen-biotech/ui";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@blueprintjs/core";
 import {

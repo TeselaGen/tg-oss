@@ -10,7 +10,7 @@ import {
 import {
   getStringFromReactComponent,
   doesSearchValMatchText
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { lifecycle, mapProps } from "recompose";
 import { omit } from "lodash-es";
 import ReactMarkdown from "react-markdown";

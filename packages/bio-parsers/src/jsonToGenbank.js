@@ -5,7 +5,7 @@ import color from "color";
 import pragmasAndTypes from "./utils/pragmasAndTypes.js";
 import { mangleOrStripUrls } from "./utils/unmangleUrls.js";
 import { reformatName } from "./utils/NameUtils.js";
-import { getFeatureToColorMap } from "@teselagen/sequence-utils";
+import { getFeatureToColorMap } from "@teselagen-biotech/sequence-utils";
 const StringUtil = {
   /** Trims white space at beginning and end of string
    * @param {string} line
@@ -206,11 +206,11 @@ function createGenbankLocus(serSeq, options) {
   } else if (serSeq.type === "RNA") {
     dnaType = serSeq?.doubleStranded
       ? "RNA"
-      : serSeq?.sequenceTypeFromLocus ?? "ss-RNA";
+      : (serSeq?.sequenceTypeFromLocus ?? "ss-RNA");
   } else {
     dnaType = serSeq?.doubleStranded
       ? "DNA"
-      : serSeq?.sequenceTypeFromLocus ?? "DNA";
+      : (serSeq?.sequenceTypeFromLocus ?? "DNA");
   }
   const date = getCurrentDateString();
 

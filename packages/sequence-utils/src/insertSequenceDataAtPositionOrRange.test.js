@@ -2,7 +2,7 @@
 
 import * as chai from "chai";
 
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 import assert from "assert";
 import chaiSubset from "chai-subset";
 

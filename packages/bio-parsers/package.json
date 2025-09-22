@@ -1,5 +1,5 @@
 {
-  "name": "@teselagen/bio-parsers",
+  "name": "@teselagen-biotech/bio-parsers",
   "version": "0.4.28",
   "type": "module",
   "dependencies": {
@@ -10,8 +10,8 @@
     "fflate": "^0.8.0",
     "lodash-es": "^4.17.21",
     "validate.io-nonnegative-integer-array": "^1.0.1",
-    "@teselagen/sequence-utils": "file:../sequence-utils",
-    "@teselagen/range-utils": "file:../range-utils"
+    "@teselagen-biotech/sequence-utils": "file:../sequence-utils",
+    "@teselagen-biotech/range-utils": "file:../range-utils"
   },
   "exports": {
     ".": {
