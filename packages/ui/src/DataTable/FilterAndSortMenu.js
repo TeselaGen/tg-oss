@@ -17,7 +17,7 @@ import getDayjsFormatter from "../utils/getDayjsFormatter";
 import { onEnterHelper } from "../utils/handlerHelpers";
 import DialogFooter from "../DialogFooter";
 import TgSelect from "../TgSelect";
-import "@teselagen/react-table/react-table.css";
+import "@teselagen-biotech/react-table/react-table.css";
 import "./style.css";
 import "../toastr";
 

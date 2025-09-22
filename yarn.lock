@@ -3744,12 +3744,17 @@
   dependencies:
     tslib "^2.4.0"
 
+"@teselagen-biotech/react-table@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@teselagen-biotech/react-table/-/react-table-7.0.0.tgz#bcf1fe4553a6a77872c1a6c796df91d5fe5c6bd7"
+  integrity sha512-FaZlE8m1jbEdgTUfPwb33MqRUxNa+6KpuNv+2vJ8jq5U36C5z/e3q52/BN8ZFz7+WWper1yCVEQoJ+rQgLrkmQ==
+
 "@teselagen/bio-parsers@file:packages/bio-parsers":
   version "0.4.28"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-22e28384-28b8-4540-b1b0-c12be53c8115-1755605419787/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-22e28384-28b8-4540-b1b0-c12be53c8115-1755605419787/node_modules/@teselagen/sequence-utils"
+    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-647069f0-963f-45c9-84d3-22d4981c309b-1758552790721/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-647069f0-963f-45c9-84d3-22d4981c309b-1758552790721/node_modules/@teselagen/sequence-utils"
     bufferpack "^0.0.6"
     color "3.2.1"
     fast-xml-parser "^4.2.5"
@@ -3778,18 +3783,10 @@
   dependencies:
     prop-types "15"
 
-"@teselagen/react-table@6.10.18":
-  version "6.10.18"
-  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.18.tgz#3d27277a511879e06e8415555d9138b49e1ac937"
-  integrity sha512-XRNPzoQRpmPqT+B/zsF0rMqHc4ri7pqFur3fGnLx+o2CMomEjy6MebV9tee+QuZ8Yd4a99t3BmP+w1IDvS/Ipg==
-  dependencies:
-    "@teselagen/react-list" "0.8.18"
-    classnames "^2.2.5"
-
 "@teselagen/sequence-utils@file:packages/sequence-utils":
   version "0.3.32"
   dependencies:
-    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.32-a24e838f-dbde-4db1-a844-49b1ed92a06e-1755605419785/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.32-ef152755-ec61-4ca2-9d80-d52d7089fb8f-1758552790723/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.4.1"
     lodash-es "^4.17.21"
@@ -3807,11 +3804,10 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.9.6-aba1871b-e543-405f-9ce3-f1867a83d71a-1755605419788/node_modules/@teselagen/file-utils"
-    "@teselagen/react-table" "6.10.18"
+    "@teselagen-biotech/react-table" "7.0.0"
+    "@teselagen/file-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.9.6-cc8814f1-4c46-406a-a23c-2b40077b0b8a-1758552790723/node_modules/@teselagen/file-utils"
     chance "1.1.11"
     classnames "^2.3.2"
-    color "^3.2.1"
     copy-to-clipboard "^3.3.1"
     dayjs "^1.10.4"
     dom-scroll-into-view "^2.0.1"
@@ -5675,7 +5671,7 @@ ci-info@^4.1.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-4.1.0.tgz#92319d2fa29d2620180ea5afed31f589bc98cf83"
   integrity sha512-HutrvTNsF48wnxkzERIXOe5/mlcfFcbfCmwcg6CJnizbSue78AbDt+1cgl26zwn61WFxhcPykPfZrbqjGmBb4A==
 
-classnames@^2.2, classnames@^2.2.5, classnames@^2.3.2:
+classnames@^2.2, classnames@^2.3.2:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
   integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==

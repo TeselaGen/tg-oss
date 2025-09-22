@@ -44,7 +44,9 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import classNames from "classnames";
 import scrollIntoView from "dom-scroll-into-view";
-import ReactTable, { VIRTUALIZE_CUTOFF_LENGTH } from "@teselagen/react-table";
+import ReactTable, {
+  VIRTUALIZE_CUTOFF_LENGTH
+} from "@teselagen-biotech/react-table";
 import immer, { produceWithPatches, enablePatches, applyPatches } from "immer";
 import papaparse from "papaparse";
 import { useDispatch, useSelector } from "react-redux";
@@ -82,7 +84,7 @@ import DisabledLoadingComponent from "./DisabledLoadingComponent";
 import SortableColumns from "./SortableColumns";
 import dataTableEnhancer from "./dataTableEnhancer";
 import "../toastr";
-import "@teselagen/react-table/react-table.css";
+import "@teselagen-biotech/react-table/react-table.css";
 import "./style.css";
 import { nanoid } from "nanoid";
 import { SwitchField } from "../FormComponents";

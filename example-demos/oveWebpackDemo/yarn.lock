@@ -1234,7 +1234,7 @@
     "@teselagen/file-utils" "0.3.18"
     "@teselagen/range-utils" "0.3.10"
     "@teselagen/react-list" "0.8.18"
-    "@teselagen/react-table" "6.10.16"
+    "@teselagen-biotech/react-table" "6.10.16"
     "@teselagen/sequence-utils" "0.3.28-beta.1"
     "@teselagen/ui" "0.7.21-beta.2"
     "@use-gesture/react" "^10.2.23"
@@ -1325,9 +1325,9 @@
   dependencies:
     prop-types "15"
 
-"@teselagen/react-table@6.10.16":
+"@teselagen-biotech/react-table@6.10.16":
   version "6.10.16"
-  resolved "https://registry.yarnpkg.com/@teselagen/react-table/-/react-table-6.10.16.tgz#fbc4ba79d4964368ec07e911c1e5fe171c9b0758"
+  resolved "https://registry.yarnpkg.com/@teselagen-biotech/react-table/-/react-table-6.10.16.tgz#fbc4ba79d4964368ec07e911c1e5fe171c9b0758"
   integrity sha512-oyS/F/rDtE9dgXvfuoMHh7ag/ZksxkexmnUTYrm6tthXRU/wVn6S6MrfSztjiYB0TaGi9aFCZB4f/onNTaRVcQ==
   dependencies:
     "@teselagen/react-list" "0.8.18"
@@ -1369,7 +1369,7 @@
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
     "@teselagen/file-utils" "0.3.18"
-    "@teselagen/react-table" "6.10.16"
+    "@teselagen-biotech/react-table" "6.10.16"
     bluebird "3.7.2"
     buffer "5.7.1"
     classnames "^2.3.2"
