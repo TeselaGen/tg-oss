@@ -5,7 +5,7 @@ import {
   trimNumberToFitWithin0ToAnotherNumber,
   normalizePositionByRangeLength,
   expandOrContractRangeToPosition
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 
 let dragInProgress = false;
 let selectionStartOrEndGrabbed;

@@ -12,7 +12,7 @@ import {
   parseCsvFile,
   validateCSVRequiredHeaders,
   validateCSVRow
-} from "@teselagen/file-utils";
+} from "@teselagen-biotech/file-utils";
 import downloadjs from "downloadjs";
 import {
   autoAnnotate,
@@ -20,7 +20,7 @@ import {
   convertProteinSeqToDNAIupac,
   getFeatureToColorMap,
   getFeatureTypes
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import { hideDialog, showDialog } from "./GlobalDialogUtils";
 import { compose } from "redux";
 import {
@@ -30,7 +30,7 @@ import {
   InfoHelper,
   showConfirmationDialog,
   wrapDialog
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { startCase } from "lodash-es";
 import withEditorProps from "./withEditorProps";
 import { useEffect, useState } from "react";

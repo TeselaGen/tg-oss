@@ -1,7 +1,7 @@
 import "cypress-real-events";
 import { isString } from "lodash-es";
 import toRegexRange from "to-regex-range";
-import { insertSequenceDataAtPositionOrRange } from "@teselagen/sequence-utils";
+import { insertSequenceDataAtPositionOrRange } from "@teselagen-biotech/sequence-utils";
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite

@@ -12,11 +12,11 @@ import {
 import withEditorProps from "../withEditorProps";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import "./style.css";
-import { InfoHelper, TgHTMLSelect } from "@teselagen/ui";
+import { InfoHelper, TgHTMLSelect } from "@teselagen-biotech/ui";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
-import { getFeatureToColorMap } from "@teselagen/sequence-utils";
-import { getReverseComplementSequenceString } from "@teselagen/sequence-utils";
+import { getFeatureToColorMap } from "@teselagen-biotech/sequence-utils";
+import { getReverseComplementSequenceString } from "@teselagen-biotech/sequence-utils";
 import isMobile from "is-mobile";
 
 const opts = [

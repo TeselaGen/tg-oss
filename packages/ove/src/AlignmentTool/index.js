@@ -1,5 +1,5 @@
 import React from "react";
-// import { DataTable } from "@teselagen/ui";
+// import { DataTable } from "@teselagen-biotech/ui";
 // import CutsiteFilter from "../CutsiteFilter";
 // import { Tabs, Tab, Button, InputGroup, Intent } from "@blueprintjs/core";
 

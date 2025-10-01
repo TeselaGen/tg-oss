@@ -6,7 +6,7 @@ import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
 import { createSelector } from "reselect";
 
 import { flatMap as flatmap, map } from "lodash-es";
-import { getCutsitesFromSequence } from "@teselagen/sequence-utils";
+import { getCutsitesFromSequence } from "@teselagen-biotech/sequence-utils";
 import { getLowerCaseObj } from "../utils/arrayUtils";
 
 function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {

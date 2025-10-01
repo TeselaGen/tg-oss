@@ -5,7 +5,7 @@ import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import { reduce, values, startCase, filter, clamp } from "lodash-es";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import { getTextLengthWithCollapseSpace } from "../CircularView/Labels";
@@ -99,7 +99,7 @@ function Labels(props) {
       annotation = annotationRange;
     }
     const annotationLength =
-    getTextLengthWithCollapseSpace(
+      getTextLengthWithCollapseSpace(
         annotation.name ||
           (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name) ||
           ""

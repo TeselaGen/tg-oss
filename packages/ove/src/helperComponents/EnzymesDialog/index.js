@@ -3,7 +3,11 @@ import React from "react";
 
 // import { reduxForm, formValues } from "redux-form";
 
-import { InfoHelper, showConfirmationDialog, wrapDialog } from "@teselagen/ui";
+import {
+  InfoHelper,
+  showConfirmationDialog,
+  wrapDialog
+} from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import {
   Classes,
@@ -27,7 +31,7 @@ import {
   aliasedEnzymesByName,
   defaultEnzymesByName,
   getCutsitesFromSequence
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import { store, view } from "@risingstack/react-easy-state";
 import { showDialog } from "../../GlobalDialogUtils";
 

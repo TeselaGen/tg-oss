@@ -19,13 +19,13 @@
 ## Installing
 
 ```
-npm install @teselagen/range-utils
+npm install @teselagen-biotech/range-utils
 ```
 
 ## Usage
 
 ```
-import { getRangeLength } from '@teselagen/range-utils';
+import { getRangeLength } from '@teselagen-biotech/range-utils';
 ```
 
 ## About this Repo

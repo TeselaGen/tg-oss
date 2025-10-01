@@ -14,7 +14,7 @@ import InfoHelper from "./examples/InfoHelper";
 import Loading from "./examples/Loading";
 import PromptUnsavedChanges from "./examples/PromptUnsavedChanges";
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { DemoPage } from "@teselagen/shared-demo";
+import { DemoPage } from "@teselagen-biotech/shared-demo";
 import FillWindowExample from "./examples/FillWindow";
 
 import TimelineDemo from "./examples/TimelineDemo";

@@ -1,11 +1,11 @@
 import { flatMap, extend, forEach, startCase } from "lodash-es";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import insertSequenceDataAtPosition from "./insertSequenceDataAtPosition";
 import {
   getSequenceWithinRange,
   getZeroedRangeOverlaps
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import { annotationTypes } from "./annotationTypes";
 

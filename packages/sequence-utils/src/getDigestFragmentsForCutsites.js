@@ -1,7 +1,7 @@
 import {
   normalizePositionByRangeLength,
   getRangeLength
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 
 export default function getDigestFragmentsForCutsites(
   sequenceLength,

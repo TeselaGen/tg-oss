@@ -1,6 +1,6 @@
 import { MenuItem } from "@blueprintjs/core";
 import React from "react";
-import { InfoHelper } from "@teselagen/ui";
+import { InfoHelper } from "@teselagen-biotech/ui";
 import useAAColorType from "../utils/useAAColorType";
 import { LimitAnnotations } from "../utils/useAnnotationLimits";
 import { chromatogramMenu } from "../utils/useChromatogramPrefs";

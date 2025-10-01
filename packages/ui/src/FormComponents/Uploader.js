@@ -32,7 +32,7 @@ import {
   isZipFile,
   parseCsvOrExcelFile,
   removeExt
-} from "@teselagen/file-utils";
+} from "@teselagen-biotech/file-utils";
 import tryToMatchSchemas from "./tryToMatchSchemas";
 import { isArray, isFunction, isPlainObject, noop } from "lodash-es";
 import { flatMap } from "lodash-es";

@@ -6,7 +6,7 @@ import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen-biotech/range-utils";
 
 function DeletionLayers(props) {
   const {

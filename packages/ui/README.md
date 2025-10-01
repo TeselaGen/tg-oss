@@ -13,7 +13,7 @@ Run `nx run ui:launch-e2e` to launch the Cypress test runner locally
 ## Installation (react)
 
 ```
-yarn add @teselagen/ui react react-dom
+yarn add @teselagen-biotech/ui react react-dom
 ```
 
 ## Running locally

@@ -3,7 +3,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import {
   vectorEditorReducer as VectorEditor,
   vectorEditorMiddleware
-} from "@teselagen/ove";
+} from "@teselagen-biotech/ove";
 import thunk from "redux-thunk";
 import { reducer as form } from "redux-form";
 

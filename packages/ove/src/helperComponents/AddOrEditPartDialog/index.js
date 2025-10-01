@@ -5,8 +5,8 @@ import {
   getTagsAndTagOptions,
   CheckboxField,
   InfoHelper
-} from "@teselagen/ui";
-import { getFeatureTypes } from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/ui";
+import { getFeatureTypes } from "@teselagen-biotech/sequence-utils";
 import { get } from "lodash-es";
 
 const RenderTypes = ({ readOnly, type }) => (

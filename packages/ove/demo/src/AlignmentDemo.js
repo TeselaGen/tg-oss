@@ -10,7 +10,7 @@ import {
   BPSelect,
   getCurrentParamsFromUrl,
   setCurrentParamsOnUrl
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import pairwiseAlignment2 from "./exampleData/pairwiseAlignment2.json";
 import { Button } from "@blueprintjs/core";
 import { difference } from "lodash-es";

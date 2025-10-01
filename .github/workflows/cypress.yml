@@ -24,6 +24,8 @@ jobs:
         with:
           # just perform install
           runTests: false
+        env: # Or as an environment variable
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - uses: mansagroup/nrwl-nx-action@v3
         with:
           parallel: 1

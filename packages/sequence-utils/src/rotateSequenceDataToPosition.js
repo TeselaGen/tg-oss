@@ -1,5 +1,5 @@
 import { map } from "lodash-es";
-import { adjustRangeToRotation } from "@teselagen/range-utils";
+import { adjustRangeToRotation } from "@teselagen-biotech/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import { modifiableTypes } from "./annotationTypes";
 import rotateBpsToPosition from "./rotateBpsToPosition";

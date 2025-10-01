@@ -6,7 +6,7 @@ import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 import React, { useState } from "react";
 import "./style.css";
-import { popoverOverflowModifiers, TgSelect } from "@teselagen/ui";
+import { popoverOverflowModifiers, TgSelect } from "@teselagen-biotech/ui";
 
 import { map, flatMap, includes, pickBy, isEmpty, noop } from "lodash-es";
 import { omit } from "lodash-es";
@@ -22,7 +22,7 @@ import {
   aliasedEnzymesByName,
   cutSequenceByRestrictionEnzyme,
   defaultEnzymesByName
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 
 const NoResults = withRestrictionEnzymes(props => {
   const {
@@ -121,7 +121,8 @@ const NoResults = withRestrictionEnzymes(props => {
 
   return (
     <div className="noResultsTextPlusButton">
-      No results... Add enzymes to your list via the {manageEnzymesLink} link{" "}
+      No results... Add enzymes to your list via the {manageEnzymesLink}{" "}
+      link{" "}
     </div>
   );
 });

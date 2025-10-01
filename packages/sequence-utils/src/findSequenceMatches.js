@@ -1,7 +1,7 @@
 import {
   modulateRangeBySequenceLength,
   flipContainedRange
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import { reduce, uniqBy } from "lodash-es";
 import escapeStringRegexp from "escape-string-regexp";
 import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";

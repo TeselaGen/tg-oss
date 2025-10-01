@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Icon, Popover, RadioGroup } from "@blueprintjs/core";
 
-import { calculateTm, calculateNebTm } from "@teselagen/sequence-utils";
+import { calculateTm, calculateNebTm } from "@teselagen-biotech/sequence-utils";
 
 import { isNumber, isString } from "lodash-es";
-import { popoverOverflowModifiers } from "@teselagen/ui";
+import { popoverOverflowModifiers } from "@teselagen-biotech/ui";
 import useTmType from "../utils/useTmType";
 
 export default function MeltingTemp({

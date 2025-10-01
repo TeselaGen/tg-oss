@@ -5,7 +5,7 @@ import aminoAcidToDegenerateDnaMap from "./aminoAcidToDegenerateDnaMap";
 import {
   normalizePositionByRangeLength,
   reversePositionInRange
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 //seqsToAnnotateById must not be length = 0

@@ -107,7 +107,7 @@ yarn start
 ## Installation (react)
 
 ```
-yarn add @teselagen/ove react react-dom
+yarn add @teselagen-biotech/ove react react-dom
 ```
 
 ## Code (react)
@@ -115,7 +115,7 @@ yarn add @teselagen/ove react react-dom
 Require the following components like:
 
 ```
-import {Editor, RowView} from "@teselagen/ove"
+import {Editor, RowView} from "@teselagen-biotech/ove"
 ```
 
 ### Editor
@@ -171,21 +171,21 @@ The universal build can be used in any app with or without react. It corresponds
 ### via npm:
 
 ```
-npm install @teselagen/ove
+npm install @teselagen-biotech/ove
 ```
 
 then add the links
 
 ```html
-<link rel="stylesheet" type="text/css" href="your-path-to-node-modules/@teselagen/ove/umd/style.css" />
-<script type="text/javascript" src="your-path-to-node-modules/@teselagen/ove/index.umd.js"></script>
+<link rel="stylesheet" type="text/css" href="your-path-to-node-modules/@teselagen-biotech/ove/umd/style.css" />
+<script type="text/javascript" src="your-path-to-node-modules/@teselagen-biotech/ove/index.umd.js"></script>
 ```
 
 ### Or via CDN:
 
 ```html
-<link rel="stylesheet" type="text/css" href="https://unpkg.com/@teselagen/ove/style.css" />
-<script type="text/javascript" src="https://unpkg.com/@teselagen/ove/index.umd.js"></script>
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/@teselagen-biotech/ove/style.css" />
+<script type="text/javascript" src="https://unpkg.com/@teselagen-biotech/ove/index.umd.js"></script>
 ```
 
 ### Full Example:
@@ -460,7 +460,7 @@ the protein sequenceData object should look like so
 	proteinSequence: "mmhlrlfcillaavs...etc"
 	sequence: "gtagagagagcca...etc" //optional!
 	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices .
-	//You can use the helper util from @teselagen/sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
+	//You can use the helper util from @teselagen-biotech/sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
 	//features/parts coming in as AA-indexed
 	features: [{name: "testFeature1",
 		start: 3, //start on AA 1

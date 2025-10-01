@@ -3,10 +3,10 @@ import {
   DataTable,
   withSelectedEntities,
   createCommandMenu
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { map } from "lodash-es";
 // import { Button } from "@blueprintjs/core";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";

@@ -3,7 +3,7 @@ import { each, forEach, startsWith, filter } from "lodash-es";
 import {
   getYOffsetForPotentiallyCircularRange,
   splitRangeIntoTwoPartsIfItIsCircular
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 
 export default function mapAnnotationsToRows(
   annotations,

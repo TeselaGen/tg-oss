@@ -1,7 +1,7 @@
 import { omit } from "lodash-es";
 
 import cleanUpTeselagenJsonForExport from "./utils/cleanUpTeselagenJsonForExport";
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
+import { tidyUpSequenceData } from "@teselagen-biotech/sequence-utils";
 
 /**
  * @param {*} incomingJson

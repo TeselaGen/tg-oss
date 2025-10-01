@@ -2,10 +2,10 @@ import React from "react";
 import {
   getFeatureToColorMap,
   getFeatureTypes
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
-import { ReactSelectField } from "@teselagen/ui";
+import { ReactSelectField } from "@teselagen-biotech/ui";
 
 const RenderTypes = ({ readOnly, type }) => (
   <ReactSelectField

@@ -1,8 +1,8 @@
 import {
   tidyUpSequenceData /* generateSequenceData */,
   condensePairwiseAlignmentDifferences
-} from "@teselagen/sequence-utils";
-import { convertBasePosTraceToPerBpTrace } from "@teselagen/bio-parsers";
+} from "@teselagen-biotech/sequence-utils";
+import { convertBasePosTraceToPerBpTrace } from "@teselagen-biotech/bio-parsers";
 import shortid from "shortid";
 
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";

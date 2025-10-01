@@ -1,5 +1,5 @@
 import { FocusStyleManager } from "@blueprintjs/core";
-import { showContextMenu } from "@teselagen/ui";
+import { showContextMenu } from "@teselagen-biotech/ui";
 import "./createVectorEditor";
 import "./style.css";
 export { getUserGroupLabel } from "./CutsiteFilter/AdditionalCutsiteInfoDialog";

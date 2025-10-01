@@ -1,4 +1,4 @@
-import { genericCommandFactory } from "@teselagen/ui";
+import { genericCommandFactory } from "@teselagen-biotech/ui";
 import { noop } from "lodash-es";
 
 export function oveCommandFactory(instance, commandDefs) {

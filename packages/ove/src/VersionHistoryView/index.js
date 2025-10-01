@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Intent } from "@blueprintjs/core";
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
-import { DataTable } from "@teselagen/ui";
+import { tidyUpSequenceData } from "@teselagen-biotech/sequence-utils";
+import { DataTable } from "@teselagen-biotech/ui";
 
 import Editor from "../Editor";
 import FillWindow from "../Editor/FillWindow";

@@ -1,6 +1,11 @@
 import { Icon } from "@blueprintjs/core";
 import React from "react";
-import { orfIcon, CmdCheckbox, CmdDiv, InfoHelper } from "@teselagen/ui";
+import {
+  orfIcon,
+  CmdCheckbox,
+  CmdDiv,
+  InfoHelper
+} from "@teselagen-biotech/ui";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";

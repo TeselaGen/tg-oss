@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { DataTable, createCommandMenu } from "@teselagen/ui";
+import { DataTable, createCommandMenu } from "@teselagen-biotech/ui";
 import { get } from "lodash-es";
 import CutsiteFilter from "../../CutsiteFilter";
 import { Button, ButtonGroup } from "@blueprintjs/core";

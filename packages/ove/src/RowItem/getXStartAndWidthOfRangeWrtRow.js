@@ -1,4 +1,4 @@
-import { normalizePositionByRangeLength } from "@teselagen/range-utils";
+import { normalizePositionByRangeLength } from "@teselagen-biotech/range-utils";
 import { isNumber } from "lodash-es";
 
 export default function getXStartAndWidthOfRangeWrtRow({

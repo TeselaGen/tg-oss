@@ -1,4 +1,4 @@
-import { noop } from "@teselagen/ui";
+import { noop } from "@teselagen-biotech/ui";
 import Caret from "./Caret";
 import sector from "paths-js/sector";
 import getRangeAngles from "./getRangeAnglesSpecial";

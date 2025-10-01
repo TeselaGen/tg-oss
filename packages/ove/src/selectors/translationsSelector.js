@@ -4,11 +4,11 @@ import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
 
-import { getAminoAcidDataForEachBaseOfDna } from "@teselagen/sequence-utils";
+import { getAminoAcidDataForEachBaseOfDna } from "@teselagen-biotech/sequence-utils";
 import each from "lodash/each";
 import translationsRawSelector from "./translationsRawSelector";
 import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
-import { normalizePositionByRangeLength } from "@teselagen/range-utils";
+import { normalizePositionByRangeLength } from "@teselagen-biotech/range-utils";
 import cdsFeaturesSelector from "./cdsFeaturesSelector";
 import circularSelector from "./circularSelector";
 

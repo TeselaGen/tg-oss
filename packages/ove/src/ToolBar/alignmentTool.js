@@ -6,9 +6,9 @@ import {
   EditableTextField,
   CheckboxField,
   wrapDialog
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { reduxForm, FieldArray } from "redux-form";
-import { anyToJson } from "@teselagen/bio-parsers";
+import { anyToJson } from "@teselagen-biotech/bio-parsers";
 import { flatMap } from "lodash-es";
 import uniqid from "shortid";
 import { cloneDeep } from "lodash-es";

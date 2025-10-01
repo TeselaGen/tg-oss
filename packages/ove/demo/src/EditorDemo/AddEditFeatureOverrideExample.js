@@ -10,19 +10,19 @@ import {
   TextareaField,
   wrapDialog,
   tgFormValues
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   isRangeWithinRange,
   checkIfPotentiallyCircularRangesOverlap
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import {
   getFeatureToColorMap,
   getFeatureTypes,
   tidyUpAnnotation
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import classNames from "classnames";
 
 import { withEditorProps } from "../../../src";

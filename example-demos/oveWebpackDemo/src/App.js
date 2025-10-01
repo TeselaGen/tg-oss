@@ -1,6 +1,6 @@
 import React from "react";
-import { Editor, updateEditor } from "@teselagen/ove";
-import "@teselagen/ove/style.css";
+import { Editor, updateEditor } from "@teselagen-biotech/ove";
+import "@teselagen-biotech/ove/style.css";
 
 import store from "./store";
 

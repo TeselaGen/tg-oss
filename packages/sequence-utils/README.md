@@ -19,13 +19,13 @@
 ## Installing
 
 ```
-npm install @teselagen/sequence-utils
+npm install @teselagen-biotech/sequence-utils
 ```
 
 ## Usage
 
 ```
-import { getComplementSequence } from '@teselagen/sequence-utils';
+import { getComplementSequence } from '@teselagen-biotech/sequence-utils';
 
 const mySequence = 'ATGAGAG';
 const myComplement = getComplementSequence(mySequence);

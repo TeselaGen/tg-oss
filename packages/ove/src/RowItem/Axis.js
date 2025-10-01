@@ -1,4 +1,4 @@
-import { normalizePositionByRangeLength } from "@teselagen/range-utils";
+import { normalizePositionByRangeLength } from "@teselagen-biotech/range-utils";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
 import React, { useMemo } from "react";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";

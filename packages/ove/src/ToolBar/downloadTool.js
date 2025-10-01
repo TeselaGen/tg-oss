@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon, Menu } from "@blueprintjs/core";
-import { createCommandMenu } from "@teselagen/ui";
+import { createCommandMenu } from "@teselagen-biotech/ui";
 import getCommands from "../commands";
 
 import { connectToEditor } from "../withEditorProps";

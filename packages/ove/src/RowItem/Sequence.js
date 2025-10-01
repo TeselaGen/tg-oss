@@ -5,10 +5,10 @@ import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 import { fudge2, realCharWidth } from "./constants";
 import dnaToColor, { getDnaColor } from "../constants/dnaToColor";
 import { hoveredAnnEasyStore } from "../helperComponents/withHover";
-import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen-biotech/range-utils";
 import { partOverhangs } from "./partOverhangs";
-import { isPositionWithinRange } from "@teselagen/range-utils";
-import { isSafari } from "@teselagen/ui";
+import { isPositionWithinRange } from "@teselagen-biotech/range-utils";
+import { isSafari } from "@teselagen-biotech/ui";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));

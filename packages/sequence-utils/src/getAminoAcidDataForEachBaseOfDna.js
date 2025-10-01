@@ -3,7 +3,7 @@ import {
   getSequenceWithinRange,
   flipContainedRange,
   isPositionWithinRange
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import revComp from "./getReverseComplementSequenceString";
 import getAA from "./getAminoAcidFromSequenceTriplet";
 

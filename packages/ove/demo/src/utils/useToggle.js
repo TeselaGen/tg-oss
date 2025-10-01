@@ -14,7 +14,7 @@ import {
   getCurrentParamsFromUrl,
   getStringFromReactComponent,
   setCurrentParamsOnUrl
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 import { startCase } from "lodash-es";
 
 const HandleHotkeys = ({ combo, onKeyDown }) => {

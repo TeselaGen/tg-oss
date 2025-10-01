@@ -6,7 +6,7 @@ import snapgeneToJson from "./snapgeneToJson";
 import ab1ToJson from "./ab1ToJson";
 import gffToJson from "./gffToJson";
 import isBrowser from "./utils/isBrowser";
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
+import { tidyUpSequenceData } from "@teselagen-biotech/sequence-utils";
 import geneiousXmlToJson from "./geneiousXmlToJson";
 import jbeiXmlToJson from "./jbeiXmlToJson";
 import { unzipSync } from "fflate";

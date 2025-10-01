@@ -2,10 +2,10 @@ import React from "react";
 import {
   getSequenceWithinRange,
   zeroSubrangeByContainerRange
-} from "@teselagen/range-utils";
+} from "@teselagen-biotech/range-utils";
 import AASliver from "./AASliver";
 import pureNoFunc from "../../utils/pureNoFunc";
-import { proteinAlphabet } from "@teselagen/sequence-utils";
+import { proteinAlphabet } from "@teselagen-biotech/sequence-utils";
 
 class Translation extends React.Component {
   state = {
@@ -164,7 +164,7 @@ class Translation extends React.Component {
               aminoAcidSliver.aminoAcidIndex + 1
             } -- Hydrophobicity: ${aminoAcid.hydrophobicity} -- Mass: ${
               aminoAcid.mass
-            }\n 
+            }\n
 Part of ${annotation.translationType} Translation from BPs ${
               annotation.start + 1
             } to ${annotation.end + 1} (${aminoAcids.length / 3} AAs)`}

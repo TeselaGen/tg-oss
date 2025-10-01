@@ -1,6 +1,6 @@
 import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
 
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen-biotech/range-utils";
 // import Tether from "tether";
 import Popper from "popper.js";
 
@@ -8,7 +8,7 @@ import {
   getInsertBetweenVals,
   convertDnaCaretPositionOrRangeToAA,
   filterSequenceString
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 import React from "react";
 import { divideBy3 } from "../utils/proteinUtils";
 import "./createSequenceInputPopupStyle.css";
@@ -156,7 +156,7 @@ class SequenceInputNoHotkeys extends React.Component {
             }
             if (maxInsertSize && sanitizedVal.length > maxInsertSize) {
               return window.toastr.error(
-                `Sorry, your insert is greater than ${maxInsertSize}`,
+                `Sorry, your insert is greater than ${maxInsertSize}`
               );
             }
             e.target.value = sanitizedVal;

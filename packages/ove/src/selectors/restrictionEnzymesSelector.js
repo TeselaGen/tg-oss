@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import {
   defaultEnzymesByName,
   aliasedEnzymesByName
-} from "@teselagen/sequence-utils";
+} from "@teselagen-biotech/sequence-utils";
 
 export default createSelector(
   () => defaultEnzymesByName,

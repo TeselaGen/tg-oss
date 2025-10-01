@@ -3,7 +3,7 @@ import {
   showContextMenu,
   commandMenuEnhancer,
   FillWindow
-} from "@teselagen/ui";
+} from "@teselagen-biotech/ui";
 
 import { CircularView } from "./CircularView";
 import { LinearView } from "./LinearView";

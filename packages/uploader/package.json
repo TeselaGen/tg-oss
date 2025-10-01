@@ -1,5 +1,5 @@
 {
-  "name": "@teselagen/uploader",
+  "name": "@teselagen-biotech/uploader",
   "version": "0.2.0",
   "main": "./src/index.js",
   "types": "./index.d.ts",
