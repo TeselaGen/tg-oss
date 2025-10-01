@@ -3,5 +3,6 @@ import { useSelector } from "react-redux";
 import { get } from "lodash";
 
 export const useFormValue = (formName, field) => {
-  return useSelector(state => get(state.form?.[formName]?.values, field));
+  const formValSelector = state => get(state.form?.[formName]?.values, field);
+  return useSelector(formValSelector);
 };

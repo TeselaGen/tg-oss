@@ -173,15 +173,15 @@ const DataTable = ({
     reduxFormEntities,
     reduxFormQueryParams: _reduxFormQueryParams = {},
     reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
-  } = useSelector(state =>
-    formValueSelector(formName)(
+  } = useSelector(function dtFormParamsSelector(state) {
+    return formValueSelector(formName)(
       state,
       "reduxFormCellValidation",
       "reduxFormEntities",
       "reduxFormQueryParams",
       "reduxFormSelectedEntityIdMap"
-    )
-  );
+    );
+  });
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
@@ -488,7 +488,6 @@ const DataTable = ({
     () => (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || [],
     [_origEntities, reduxFormEntities]
   );
-
   const entities = useDeepEqualMemo(_entities);
 
   const entitiesAcrossPages = useDeepEqualMemo(_entitiesAcrossPages);
@@ -505,12 +504,13 @@ const DataTable = ({
       entities,
       change
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     entitiesAcrossPages,
     reduxFormSelectedEntityIdMap,
     change,
-    noExcessiveCheck
+    noExcessiveCheck,
+    entities,
+    formName
   ]);
 
   const [tableConfig, setTableConfig] = useState({ fieldOptions: [] });

@@ -1,6 +1,6 @@
 // import PropTypes from "prop-types";
 import React from "react";
-import pureNoFunc from "../../utils/pureNoFunc";
+import { pureNoFunc } from "@teselagen/ui";
 
 function AASliver(props) {
   const {

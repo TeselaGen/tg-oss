@@ -98,16 +98,17 @@ export const useTableParams = props => {
     }
   }
 
-  const {
-    reduxFormQueryParams: _reduxFormQueryParams = {},
-    reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
-  } = useSelector(state =>
+  const formValueStateSelector = state =>
     formValueSelector(formName)(
       state,
       "reduxFormQueryParams",
       "reduxFormSelectedEntityIdMap"
-    )
-  );
+    );
+
+  const {
+    reduxFormQueryParams: _reduxFormQueryParams = {},
+    reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
+  } = useSelector(formValueStateSelector);
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders

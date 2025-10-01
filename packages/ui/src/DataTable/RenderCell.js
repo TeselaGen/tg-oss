@@ -29,11 +29,15 @@ export const RenderCell = ({
   onDragEnd,
   args
 }) => {
-  const editingCell = useSelector(
-    state => state.form?.[formName]?.values?.reduxFormEditingCell
-  );
+  const editingCellSelector = state =>
+    state.form?.[formName]?.values?.reduxFormEditingCell;
+
+  const shouldEditableCellInputBeClearedSelector = state =>
+    state.form?.[formName]?.values?.shouldEditableCellInputBeCleared;
+
+  const editingCell = useSelector(editingCellSelector);
   const shouldEditableCellInputBeCleared = useSelector(
-    state => state.form?.[formName]?.values?.shouldEditableCellInputBeCleared
+    shouldEditableCellInputBeClearedSelector
   );
 
   const [row] = args;
