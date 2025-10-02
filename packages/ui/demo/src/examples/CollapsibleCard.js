@@ -7,6 +7,7 @@ export default function CollapsibleCardDemo() {
   return (
     <DemoWrapper>
       <CollapsibleCard
+        helperText={"Here is some helper text"}
         title="Jobs"
         openTitleElements={<Button text="hey" icon="add" />}
         icon="build"

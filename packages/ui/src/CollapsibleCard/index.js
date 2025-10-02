@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Classes, Icon } from "@blueprintjs/core";
 import classNames from "classnames";
 import "./style.css";
+import InfoHelper from "../InfoHelper";
 
 export default function CollapsibleCard({
   title,
@@ -11,6 +12,7 @@ export default function CollapsibleCard({
   className,
   style,
   children,
+  helperText,
   initialClosed = false,
   toggle,
   isOpen
@@ -48,7 +50,12 @@ export default function CollapsibleCard({
           >
             {title}
           </h6>
-          <div>{open && openTitleElements}</div>
+          {helperText && (
+            <>
+              <InfoHelper children={helperText}></InfoHelper> &nbsp;
+            </>
+          )}
+          {open && <div> {openTitleElements}</div>}
         </div>
         <div>
           <Button

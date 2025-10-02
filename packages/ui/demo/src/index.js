@@ -118,6 +118,11 @@ const demos = {
         description: "Items to be displayed in header when card is open"
       },
       {
+        name: "helperText",
+        type: "React Element",
+        description: "Helper text to be displayed next to the title"
+      },
+      {
         name: "noCard",
         description: "Removes card styling",
         type: "boolean"
