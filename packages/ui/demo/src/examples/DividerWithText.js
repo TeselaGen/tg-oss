@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Divider } from "@blueprintjs/core";
 import DividerWithText from "../../../src/DividerWithText";
 
-export default function BlueprintDividerDemo() {
+export default function DividerWithTextDemo() {
   return (
     <div>
       <Card>
