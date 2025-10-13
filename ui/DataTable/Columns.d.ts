@@ -1,7 +1,8 @@
-export function useColumns({ addFilters, cellRenderer, columns, currentParams, compact, editingCell, editingCellSelectAll, entities, expandedEntityIdMap, extraCompact, filters, formName, getCellHoverText, isCellEditable, isEntityDisabled, isLocalCall, isSimple, isSingleSelect, isSelectionARectangle, noDeselectAll, noSelect, noUserSelect, onDeselect, onMultiRowSelect, onRowClick, onRowSelect, onSingleRowSelect, order, primarySelectedCellId, reduxFormCellValidation, reduxFormSelectedEntityIdMap, refocusTable, removeSingleFilter, schema, selectedCells, setExpandedEntityIdMap, setNewParams, setOrder, setSelectedCells, shouldShowSubComponent, startCellEdit, SubComponent, tableRef, updateEntitiesHelper, updateValidation, withCheckboxes, withExpandAndCollapseAllButton, withFilter: _withFilter, withSort, recordIdToIsVisibleMap, setRecordIdToIsVisibleMap }: {
+export function useColumns({ addFilters, cellRenderer, columns, resetDefaultVisibility, currentParams, compact, editingCell, editingCellSelectAll, entities, expandedEntityIdMap, extraCompact, filters, formName, getCellHoverText, isCellEditable, isEntityDisabled, isLocalCall, isSimple, isSingleSelect, isSelectionARectangle, noDeselectAll, noSelect, noUserSelect, onDeselect, onMultiRowSelect, onRowClick, onRowSelect, onSingleRowSelect, order, primarySelectedCellId, reduxFormCellValidation, reduxFormSelectedEntityIdMap, refocusTable, removeSingleFilter, schema, selectedCells, setExpandedEntityIdMap, setNewParams, updateColumnVisibility, setOrder, setSelectedCells, shouldShowSubComponent, startCellEdit, SubComponent, tableRef, updateEntitiesHelper, updateValidation, withCheckboxes, withExpandAndCollapseAllButton, withFilter: _withFilter, withSort, recordIdToIsVisibleMap, setRecordIdToIsVisibleMap, withDisplayOptions }: {
     addFilters: any;
     cellRenderer: any;
     columns: any;
+    resetDefaultVisibility: any;
     currentParams: any;
     compact: any;
     editingCell: any;
@@ -36,6 +37,7 @@ export function useColumns({ addFilters, cellRenderer, columns, currentParams, c
     selectedCells: any;
     setExpandedEntityIdMap: any;
     setNewParams: any;
+    updateColumnVisibility: any;
     setOrder?: ((...args: any[]) => void) | undefined;
     setSelectedCells: any;
     shouldShowSubComponent: any;
@@ -50,4 +52,5 @@ export function useColumns({ addFilters, cellRenderer, columns, currentParams, c
     withSort?: boolean | undefined;
     recordIdToIsVisibleMap: any;
     setRecordIdToIsVisibleMap: any;
+    withDisplayOptions: any;
 }): any;
