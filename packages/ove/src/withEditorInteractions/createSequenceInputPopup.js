@@ -221,6 +221,10 @@ export default function createSequenceInputPopup(props) {
   // function closeInput() {
   //   sequenceInputBubble.remove();
   // }
+  if (document.getElementById("sequenceInputBubble")) {
+    // remove the old one if it exists
+    document.getElementById("sequenceInputBubble").outerHTML = "";
+  }
   div = document.createElement("div");
   div.style.zIndex = "400000";
   div.id = "sequenceInputBubble";
