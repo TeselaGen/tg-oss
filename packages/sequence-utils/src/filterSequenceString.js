@@ -112,6 +112,7 @@ export function getAcceptedChars({
           ? ambiguous_rna_letters.toLowerCase() +
             ambiguous_dna_letters.toLowerCase()
           : //just plain old dna
+            ambiguous_rna_letters.toLowerCase() +
             ambiguous_dna_letters.toLowerCase();
 }
 export function getReplaceChars({

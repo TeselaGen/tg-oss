@@ -11,11 +11,13 @@ import {
   Switch
 } from "@blueprintjs/core";
 import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
+import InfoHelper from "../InfoHelper";
 
 const DisplayOptions = ({
   compact,
   extraCompact,
   disabled,
+  doNotSearchHiddenColumns,
   hideDisplayOptionsIcon,
   resetDefaultVisibility = noop,
   updateColumnVisibility = noop,
@@ -52,7 +54,7 @@ const DisplayOptions = ({
   let numVisible = 0;
 
   const getFieldCheckbox = (field, i) => {
-    const { displayName, isHidden, isForcedHidden, path } = field;
+    const { displayName, isHidden, isForcedHidden, path, subFrag } = field;
     if (isForcedHidden) return;
     if (!isHidden) numVisible++;
     return (
@@ -68,7 +70,20 @@ const DisplayOptions = ({
           updateColumnVisibility({ shouldShow: isHidden, path });
         }}
         checked={!isHidden}
-        label={displayName}
+        label={
+          <span style={{ display: "flex", marginTop: -17 }}>
+            {displayName}
+            {subFrag && (
+              <InfoHelper
+                icon="warning-sign"
+                intent="warning"
+                style={{ marginLeft: 5 }}
+              >
+                Viewing this column may cause the table to load slower
+              </InfoHelper>
+            )}
+          </span>
+        }
       />
     );
   };
@@ -127,7 +142,9 @@ const DisplayOptions = ({
       content={
         <Menu>
           <div style={{ padding: 10, paddingLeft: 20, paddingRight: 20 }}>
-            <h5 style={{ marginBottom: 10 }}>Display Density:</h5>
+            <h5 style={{ marginBottom: 10, fontWeight: "bold" }}>
+              Display Density:
+            </h5>
             <div className={Classes.SELECT + " tg-table-display-density"}>
               <select
                 onChange={changeTableDensity}
@@ -150,8 +167,21 @@ const DisplayOptions = ({
                 </option>
               </select>
             </div>
-            <h5 style={{ marginBottom: 10, marginTop: 10 }}>
-              Displayed Columns:
+            <h5
+              style={{
+                fontWeight: "bold",
+                marginBottom: 10,
+                marginTop: 10,
+                display: "flex"
+              }}
+            >
+              Displayed Columns: &nbsp;
+              {doNotSearchHiddenColumns && (
+                <InfoHelper>
+                  Note: Hidden columns will NOT be used when searching the
+                  datatable
+                </InfoHelper>
+              )}
             </h5>
             <div style={{ maxHeight: 260, overflowY: "auto", padding: 2 }}>
               {mainFields.map(getFieldCheckbox)}
@@ -176,9 +206,10 @@ const DisplayOptions = ({
               <Button
                 onClick={resetDefaultVisibility}
                 title="Display Options"
+                icon="reset"
                 minimal
               >
-                Reset
+                Reset Column Visibilites
               </Button>
             </div>
           </div>
