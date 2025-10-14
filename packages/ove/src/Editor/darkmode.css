@@ -61,6 +61,9 @@
 .bp3-dark .alignmentViewTrackContainer text {
   fill: #f5f8fa !important;
 }
+.bp3-dark [data-tick-mark] {
+  fill: #f5f8fa !important;
+}
 
 /* .bp3-dark .veRowViewAxis text {
   stroke: #f5f8fa !important;

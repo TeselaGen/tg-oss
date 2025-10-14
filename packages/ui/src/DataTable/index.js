@@ -2761,7 +2761,7 @@ const DataTable = ({
     columns,
     currentParams,
     compact,
-    // withDisplayOptions,
+    withDisplayOptions,
     resetDefaultVisibility,
     editingCellSelectAll,
     entities,
@@ -2825,6 +2825,7 @@ const DataTable = ({
         noVirtual={noVirtual}
         className={classNames({
           isCellEditable,
+          loading: isLoading,
           "tg-table-loading": isLoading,
           "tg-table-disabled": disabled
         })}

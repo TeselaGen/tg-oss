@@ -108,6 +108,8 @@ describe("copyPaste", function () {
       cy.get(`.veCircularViewFeature:contains("CmR"):first`).realClick();
       // assert that the correct element is focused
       cy.window().then(w => {
+        console.info(w.document.activeElement);
+        cy.log(w.document.activeElement.classList);
         assert(
           w.document.activeElement.classList.contains(
             "veVectorInteractionWrapper"
