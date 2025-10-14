@@ -3262,6 +3262,7 @@ const DataTable = ({
                     resetDefaultVisibility={resetDefaultVisibility}
                     updateColumnVisibility={updateColumnVisibility}
                     updateTableDisplayDensity={updateTableDisplayDensity}
+                    moveColumnPersist={moveColumnPersist}
                     showForcedHiddenColumns={showForcedHiddenColumns}
                     setShowForcedHidden={setShowForcedHidden}
                     hasOptionForForcedHidden={

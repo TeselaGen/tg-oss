@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MouseSensor, useSensor, useSensors, DndContext } from "@dnd-kit/core";
 import {
   SortableContext,
-  horizontalListSortingStrategy
+  horizontalListSortingStrategy,
+  arrayMove as dndArrayMove
 } from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 
@@ -16,6 +17,15 @@ const CustomTheadComponent = ({
   // We need to do this because react table gives the children wrapped
   // in another component
   const children = _children.props.children;
+  const [sortedItems, setSortedItems] = useState(() =>
+    children.map((_, index) => `${index}`)
+  );
+
+  // Update local state when children change
+  useEffect(() => {
+    setSortedItems(children.map((_, index) => `${index}`));
+  }, [children]);
+
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 10
@@ -23,8 +33,28 @@ const CustomTheadComponent = ({
   });
 
   const sensors = useSensors(mouseSensor);
+
+  const handleDragStart = event => {
+    onSortStart();
+
+    // Add a class to the active drag item for styling
+    const { active } = event;
+    if (active) {
+      const activeNode = document.querySelector(`.rt-th[index="${active.id}"]`);
+      if (activeNode) {
+        activeNode.classList.add("th-dragging");
+      }
+    }
+  };
+
   const handleDragEnd = event => {
     const { active, over } = event;
+
+    // Remove the drag styling
+    const draggingItem = document.querySelector(".rt-th.th-dragging");
+    if (draggingItem) {
+      draggingItem.classList.remove("th-dragging");
+    }
 
     if (!over || !active) {
       return;
@@ -34,15 +64,26 @@ const CustomTheadComponent = ({
       return;
     }
 
+    // Update local state immediately for smooth UI
+    const oldIndex = parseInt(active.id);
+    const newIndex = parseInt(over.id);
+    const newSortedItems = dndArrayMove(
+      sortedItems,
+      sortedItems.indexOf(`${oldIndex}`),
+      sortedItems.indexOf(`${newIndex}`)
+    );
+    setSortedItems(newSortedItems);
+
+    // Pass to parent for persistence
     onSortEnd({
-      oldIndex: parseInt(active.id),
-      newIndex: parseInt(over.id)
+      oldIndex,
+      newIndex
     });
   };
 
   return (
     <DndContext
-      onDragStart={onSortStart}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       modifiers={[restrictToHorizontalAxis]}
       sensors={sensors}
@@ -50,7 +91,7 @@ const CustomTheadComponent = ({
       <div className={"rt-thead " + className} style={style}>
         <div className="rt-tr">
           <SortableContext
-            items={children.map((_, index) => `${index}`)}
+            items={sortedItems}
             strategy={horizontalListSortingStrategy}
           >
             {children}

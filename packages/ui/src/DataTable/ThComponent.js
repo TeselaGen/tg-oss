@@ -13,15 +13,30 @@ export const ThComponent = ({
   ...rest
 }) => {
   const index = columnindex ?? -1;
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: `${index}`,
-      disabled: immovable === "true"
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({
+    id: `${index}`,
+    disabled: immovable === "true",
+    // Maintain dragging state even when cursor moves outside column
+    autoScroll: true
+  });
 
+  // Enhanced styles for dragging - more visible across the table
   const sortStyles = {
     transform: CSS.Transform.toString(transform),
-    transition
+    transition,
+    zIndex: isDragging ? 999 : undefined,
+    // Add more pronounced visual feedback when dragging
+    ...(isDragging && {
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+      opacity: 0.85
+    })
   };
 
   return (
@@ -30,7 +45,7 @@ export const ThComponent = ({
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      className={classNames("rt-th", className)}
+      className={classNames("rt-th", className, { "th-dragging": isDragging })}
       onClick={e => toggleSort && toggleSort(e)}
       role="columnheader"
       tabIndex="-1" // Resolves eslint issues without implementing keyboard navigation incorrectly

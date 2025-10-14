@@ -598,3 +598,34 @@ body:not(.drag-active)
   display: flex;
   flex-direction: column;
 }
+
+/* Prevent column ordering flashing during drag */
+body.column-dragging .SortableItem,
+body.drag-active .rt-th {
+  z-index: 1;
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.SortableItem.dragging {
+  z-index: 999 !important;
+  cursor: grabbing !important;
+  opacity: 0.8;
+  background-color: #f5f8fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  outline: 1px solid #106ba3;
+}
+
+.rt-th.th-dragging {
+  z-index: 999 !important;
+  cursor: grabbing !important;
+  opacity: 0.8;
+  background-color: #ebf1f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  outline: 1px solid #106ba3;
+}
+
+.bp3-dark .SortableItem.dragging,
+.bp3-dark .rt-th.th-dragging {
+  background-color: #30404d;
+  outline: 1px solid #48aff0;
+}

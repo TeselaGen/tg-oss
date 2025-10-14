@@ -38,6 +38,7 @@ import { change as _change } from "redux-form";
 import { RenderCell } from "./RenderCell";
 import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
 import { showContextMenu } from "../utils/menuUtils";
+import { dragNoticeEl } from "./dragNoticeEl";
 
 dayjs.extend(localizedFormat);
 
@@ -177,6 +178,7 @@ const RenderColumnHeader = ({
         e.persist();
         showContextMenu(
           [
+            dragNoticeEl,
             {
               text: "Hide Column",
               disabled: onlyOneVisibleColumn,

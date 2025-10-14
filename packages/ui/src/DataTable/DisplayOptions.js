@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { map, isEmpty, noop, startCase } from "lodash-es";
 import {
   Button,
-  Checkbox,
   Menu,
   MenuItem,
   Classes,
@@ -12,6 +11,8 @@ import {
 } from "@blueprintjs/core";
 import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
 import InfoHelper from "../InfoHelper";
+import DraggableColumnOptions from "./DraggableColumnOptions";
+import { dragNoticeEl } from "./dragNoticeEl";
 
 const DisplayOptions = ({
   compact,
@@ -22,6 +23,7 @@ const DisplayOptions = ({
   resetDefaultVisibility = noop,
   updateColumnVisibility = noop,
   updateTableDisplayDensity,
+  moveColumnPersist = noop,
   showForcedHiddenColumns,
   setShowForcedHidden,
   hasOptionForForcedHidden,
@@ -53,39 +55,14 @@ const DisplayOptions = ({
 
   let numVisible = 0;
 
-  const getFieldCheckbox = (field, i) => {
-    const { displayName, isHidden, isForcedHidden, path, subFrag } = field;
-    if (isForcedHidden) return;
-    if (!isHidden) numVisible++;
-    return (
-      <Checkbox
-        name={`${path}-${i}`}
-        key={path || i}
-        onChange={() => {
-          if (numVisible <= 1 && !isHidden) {
-            return window.toastr.warning(
-              "We have to display at least one column :)"
-            );
-          }
-          updateColumnVisibility({ shouldShow: isHidden, path });
-        }}
-        checked={!isHidden}
-        label={
-          <span style={{ display: "flex", marginTop: -17 }}>
-            {displayName}
-            {subFrag && (
-              <InfoHelper
-                icon="warning-sign"
-                intent="warning"
-                style={{ marginLeft: 5 }}
-              >
-                Viewing this column may cause the table to load slower
-              </InfoHelper>
-            )}
-          </span>
-        }
-      />
-    );
+  // Count number of visible fields
+  mainFields.forEach(field => {
+    if (!field.isHidden && !field.isForcedHidden) numVisible++;
+  });
+
+  // Handle column reordering
+  const handleColumnReorder = ({ oldIndex, newIndex }) => {
+    moveColumnPersist({ oldIndex, newIndex });
   };
 
   let fieldGroupMenu;
@@ -122,14 +99,19 @@ const DisplayOptions = ({
               });
             }}
           />
-          {groupFields
-            .filter(
-              field =>
-                startCase(getCCDisplayName(field)) // We have to use startCase with the camelCase here because the displayName is not always a string
-                  .toLowerCase()
-                  .indexOf(searchTerm.toLowerCase()) > -1
-            )
-            .map(getFieldCheckbox)}
+          <DraggableColumnOptions
+            fields={groupFields
+              .filter(
+                field =>
+                  startCase(getCCDisplayName(field)) // We have to use startCase with the camelCase here because the displayName is not always a string
+                    .toLowerCase()
+                    .indexOf(searchTerm.toLowerCase()) > -1
+              )
+              .filter(field => !field.isForcedHidden)}
+            onVisibilityChange={updateColumnVisibility}
+            onReorder={handleColumnReorder}
+            numVisible={numVisible}
+          />
         </MenuItem>
       );
     });
@@ -170,7 +152,7 @@ const DisplayOptions = ({
             <h5
               style={{
                 fontWeight: "bold",
-                marginBottom: 10,
+                marginBottom: 0,
                 marginTop: 10,
                 display: "flex"
               }}
@@ -183,8 +165,15 @@ const DisplayOptions = ({
                 </InfoHelper>
               )}
             </h5>
-            <div style={{ maxHeight: 260, overflowY: "auto", padding: 2 }}>
-              {mainFields.map(getFieldCheckbox)}
+            {dragNoticeEl}
+
+            <div style={{ maxHeight: 360, overflowY: "auto", padding: 2 }}>
+              <DraggableColumnOptions
+                fields={mainFields.filter(field => !field.isForcedHidden)}
+                onVisibilityChange={updateColumnVisibility}
+                onReorder={handleColumnReorder}
+                numVisible={numVisible}
+              />
             </div>
             <div>{fieldGroupMenu}</div>
             {hasOptionForForcedHidden && (
@@ -196,22 +185,14 @@ const DisplayOptions = ({
                 />
               </div>
             )}
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "flex-end"
-              }}
+            <Button
+              onClick={resetDefaultVisibility}
+              title="Display Options"
+              icon="reset"
+              minimal
             >
-              <Button
-                onClick={resetDefaultVisibility}
-                title="Display Options"
-                icon="reset"
-                minimal
-              >
-                Reset Column Visibilites
-              </Button>
-            </div>
+              Reset Column Visibilites
+            </Button>
           </div>
         </Menu>
       }
