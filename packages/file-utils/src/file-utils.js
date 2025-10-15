@@ -1,7 +1,6 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
 import { camelCase, flatMap, remove, startsWith, snakeCase } from "lodash-es";
 import { loadAsync } from "jszip";
-import Promise from "bluebird";
 import { parse, unparse } from "papaparse";
 
 const debug = false;
@@ -36,28 +35,32 @@ export const extractZipFiles = async allFiles => {
   const zipFiles = remove(allFiles, isZipFile);
   if (!zipFiles.length) return allFiles;
   const zipFilesArray = Array.isArray(zipFiles) ? zipFiles : [zipFiles];
-  const parsedZips = await Promise.map(zipFilesArray, file =>
-    loadAsync(
-      file instanceof
-        (typeof Blob !== "undefined" ? Blob : require("buffer").Blob)
-        ? file
-        : file.originFileObj
+  const parsedZips = await Promise.all(
+    zipFilesArray.map(file =>
+      loadAsync(
+        file instanceof
+          (typeof Blob !== "undefined" ? Blob : require("buffer").Blob)
+          ? file
+          : file.originFileObj
+      )
     )
   );
   const zippedFiles = flatMap(parsedZips, zip =>
     Object.keys(zip.files).map(key => zip.files[key])
   );
-  const unzippedFiles = await Promise.map(zippedFiles, file => {
-    // converts the compressed file to a string of its contents
-    return file.async("blob").then(function (fileData) {
-      const newFileObj = new File([fileData], file.name);
-      return {
-        name: file.name,
-        originFileObj: newFileObj,
-        originalFileObj: newFileObj
-      };
-    });
-  });
+  const unzippedFiles = await Promise.all(
+    zippedFiles.map(file => {
+      // converts the compressed file to a string of its contents
+      return file.async("blob").then(function (fileData) {
+        const newFileObj = new File([fileData], file.name);
+        return {
+          name: file.name,
+          originFileObj: newFileObj,
+          originalFileObj: newFileObj
+        };
+      });
+    })
+  );
   if (unzippedFiles.length) {
     return allFiles.concat(
       unzippedFiles.filter(

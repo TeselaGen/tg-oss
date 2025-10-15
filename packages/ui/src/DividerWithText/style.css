@@ -1,0 +1,37 @@
+.tg-blueprint-divider {
+  position: relative;
+}
+
+/* Override Blueprint's default divider when we use text */
+.tg-blueprint-divider-with-text.bp3-divider {
+  /* Remove Blueprint's default border styling to avoid duplication */
+  border: none;
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  height: auto;
+}
+
+.tg-blueprint-divider-with-text::before,
+.tg-blueprint-divider-with-text::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid rgba(16, 22, 26, 0.15);
+}
+
+.tg-blueprint-divider-text {
+  padding: 0 10px;
+  font-size: 14px;
+  color: rgba(92, 112, 128, 0.6);
+  white-space: nowrap;
+}
+
+/* Dark theme support */
+.bp3-dark .tg-blueprint-divider-with-text::before,
+.bp3-dark .tg-blueprint-divider-with-text::after {
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+.bp3-dark .tg-blueprint-divider-text {
+  color: rgba(167, 182, 194, 0.6);
+}

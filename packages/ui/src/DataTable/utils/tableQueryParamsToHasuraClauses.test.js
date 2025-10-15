@@ -63,6 +63,27 @@ describe("tableQueryParamsToHasuraClauses", () => {
       offset: 0
     });
   });
+  it("shouldn't search on hidden fields", () => {
+    const result = tableQueryParamsToHasuraClauses({
+      searchTerm: "test",
+      schema: {
+        fields: [
+          { path: "name", type: "string", isHidden: true },
+          { path: "age", type: "number" },
+          { path: "isActive", type: "boolean" },
+          { path: "email", type: "string" }
+        ]
+      }
+    });
+    expect(result).toEqual({
+      where: {
+        _or: [{ email: { _ilike: "%test%" } }]
+      },
+      order_by: [],
+      limit: 25,
+      offset: 0
+    });
+  });
   it("should flatten queries with dup paths", () => {
     const result = tableQueryParamsToHasuraClauses({
       searchTerm: "test",

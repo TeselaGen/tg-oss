@@ -253,7 +253,11 @@ body:not(.drag-active)
   user-select: none;
   background: #f7f7f7;
 }
-
+/* disable the table header interactions while the table is loading */
+.ReactTable.loading .rt-thead {
+  opacity: 0.7;
+  pointer-events: none;
+}
 .ReactTable .rt-thead {
   box-shadow: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -421,10 +425,6 @@ body:not(.drag-active)
   padding-left: 2px;
 }
 
-.ReactTable .-loading.disabled {
-  cursor: not-allowed;
-}
-
 /* to get the height to resize based on its container:  */
 .ReactTable {
   height: 100%;
@@ -538,14 +538,6 @@ body:not(.drag-active)
 .bp3-dark .ReactTable .rt-noData {
   background: #202b33 !important;
   color: inherit !important;
-}
-
-.bp3-dark .ReactTable .-loading {
-  background: #30404d !important;
-}
-
-.bp3-dark .ReactTable .-loading > div {
-  color: #f5f8fa !important;
 }
 
 .bp3-dark .ReactTable .rt-tr-group.selected {

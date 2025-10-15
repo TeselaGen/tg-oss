@@ -5,6 +5,7 @@ import "./style.css";
 import "./autoTooltip";
 export { LoadingDots } from "./FormComponents/LoadingDots";
 export { FormSeparator } from "./FormComponents/FormSeparator";
+export { default as DividerWithText } from "./DividerWithText";
 export * from "./AssignDefaultsModeContext";
 export { default as Uploader } from "./FormComponents/Uploader";
 export { mergeSchemas } from "./DataTable/utils/convertSchema";

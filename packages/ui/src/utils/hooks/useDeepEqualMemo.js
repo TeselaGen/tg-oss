@@ -1,9 +1,9 @@
-import { isEqual } from "lodash-es";
 import { useEffect, useRef } from "react";
+import { isEqualIgnoreFunctions } from "../isEqualIgnoreFunctions";
 
 export const useDeepEqualMemo = value => {
   const ref = useRef();
-  if (!isEqual(value, ref.current)) {
+  if (!isEqualIgnoreFunctions(value, ref.current)) {
     ref.current = value;
   }
   return ref.current;

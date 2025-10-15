@@ -24,10 +24,16 @@ export function tableQueryParamsToHasuraClauses({
     const searchTerms = searchTerm.split(",");
 
     schema.fields.forEach(field => {
-      const { type, path, searchDisabled } = field;
+      const { type, path, searchDisabled, isHidden } = field;
       if (uniqueFieldsByPath[path]) return; // Skip if already added
       uniqueFieldsByPath[path] = true;
-      if (searchDisabled || field.filterDisabled || type === "color") return;
+      if (
+        searchDisabled ||
+        field.filterDisabled ||
+        type === "color" ||
+        isHidden
+      )
+        return;
 
       // Process each search term
       searchTerms.forEach(term => {

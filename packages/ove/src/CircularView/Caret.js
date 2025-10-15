@@ -3,7 +3,7 @@ import { getRangeAngles } from "@teselagen/range-utils";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
-import pureNoFunc from "../utils/pureNoFunc";
+import { pureNoFunc } from "@teselagen/ui";
 import { getSelectionMessage } from "../utils/editorUtils";
 
 function Caret({

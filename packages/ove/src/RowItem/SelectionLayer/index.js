@@ -2,8 +2,7 @@
 import draggableClassnames from "../../constants/draggableClassnames";
 import React from "react";
 import Caret from "../Caret";
-import pureNoFunc from "../../utils/pureNoFunc";
-
+import { pureNoFunc } from "@teselagen/ui";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";

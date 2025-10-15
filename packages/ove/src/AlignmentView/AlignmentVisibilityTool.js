@@ -9,8 +9,7 @@ import {
 } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash-es";
-import pureNoFunc from "../utils/pureNoFunc";
-// import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
+import { pureNoFunc } from "@teselagen/ui";
 
 export default pureNoFunc(function AlignmentVisibilityTool(props) {
   return (

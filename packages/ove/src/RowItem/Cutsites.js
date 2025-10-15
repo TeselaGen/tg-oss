@@ -4,7 +4,7 @@ import React from "react";
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
-import pureNoFunc from "../utils/pureNoFunc";
+import { pureNoFunc } from "@teselagen/ui";
 import { connectToEditor } from "../withEditorProps";
 
 let snipStyle = {

@@ -118,6 +118,7 @@ const DataTable = ({
   controlled_pageSize,
   formName = "tgDataTable",
   history,
+  doNotSearchHiddenColumns,
   isSimple,
   isLocalCall = true,
   isTableParamsConnected,
@@ -173,15 +174,15 @@ const DataTable = ({
     reduxFormEntities,
     reduxFormQueryParams: _reduxFormQueryParams = {},
     reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
-  } = useSelector(state =>
-    formValueSelector(formName)(
+  } = useSelector(function dtFormParamsSelector(state) {
+    return formValueSelector(formName)(
       state,
       "reduxFormCellValidation",
       "reduxFormEntities",
       "reduxFormQueryParams",
       "reduxFormSelectedEntityIdMap"
-    )
-  );
+    );
+  });
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
@@ -481,14 +482,14 @@ const DataTable = ({
     withSelectAll,
     withSort,
     withTitle = !isSimple,
-    noExcessiveCheck
+    noExcessiveCheck,
+    isEntityCountLoading
   } = props;
 
   const _entities = useMemo(
     () => (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || [],
     [_origEntities, reduxFormEntities]
   );
-
   const entities = useDeepEqualMemo(_entities);
 
   const entitiesAcrossPages = useDeepEqualMemo(_entitiesAcrossPages);
@@ -505,16 +506,34 @@ const DataTable = ({
       entities,
       change
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     entitiesAcrossPages,
     reduxFormSelectedEntityIdMap,
     change,
-    noExcessiveCheck
+    noExcessiveCheck,
+    entities,
+    formName
   ]);
 
-  const [tableConfig, setTableConfig] = useState({ fieldOptions: [] });
-
+  const [tableConfig, _setTableConfig] = useState({ fieldOptions: [] });
+  const setTableConfig = useCallback(
+    newConfig => {
+      _setTableConfig(prev => {
+        let newConfigVal = newConfig;
+        if (typeof newConfig === "function") {
+          newConfigVal = newConfig(prev);
+        }
+        if (!isEqual(prev.fieldOptions, newConfigVal.fieldOptions)) {
+          change(
+            "reduxFormReadOnlyFieldOptions",
+            newConfigVal.fieldOptions || []
+          );
+        }
+        return newConfigVal;
+      });
+    },
+    [change]
+  );
   useEffect(() => {
     if (withDisplayOptions) {
       let newTableConfig = {};
@@ -544,6 +563,7 @@ const DataTable = ({
   }, [
     convertedSchema, // If the schema changes we want to take into account the synced tableConfig again
     formName,
+    setTableConfig,
     syncDisplayOptionsToDb,
     tableConfigurations,
     withDisplayOptions,
@@ -663,6 +683,7 @@ const DataTable = ({
     convertedSchema,
     currentParams,
     entities,
+    setTableConfig,
     history,
     isInfinite,
     isOpenable,
@@ -780,6 +801,7 @@ const DataTable = ({
     currentUser?.user?.id,
     deleteTableConfiguration,
     formName,
+    setTableConfig,
     schema.fields,
     syncDisplayOptionsToDb,
     tableConfig,
@@ -2635,13 +2657,23 @@ const DataTable = ({
       _selectedAndTotalMessage += `/ `;
     }
     if (showCount) {
-      _selectedAndTotalMessage += `${entityCount || 0} Total`;
+      if (isEntityCountLoading && entityCount < 1) {
+        _selectedAndTotalMessage += `Loading...`;
+      } else {
+        _selectedAndTotalMessage += `${entityCount || 0} Total`;
+      }
     }
     if (_selectedAndTotalMessage) {
       _selectedAndTotalMessage = <div>{_selectedAndTotalMessage}</div>;
     }
     return _selectedAndTotalMessage;
-  }, [entityCount, selectedRowCount, showCount, showNumSelected]);
+  }, [
+    entityCount,
+    selectedRowCount,
+    showCount,
+    showNumSelected,
+    isEntityCountLoading
+  ]);
 
   const shouldShowPaging =
     !isInfinite &&
@@ -2729,6 +2761,8 @@ const DataTable = ({
     columns,
     currentParams,
     compact,
+    withDisplayOptions,
+    resetDefaultVisibility,
     editingCellSelectAll,
     entities,
     expandedEntityIdMap,
@@ -2766,6 +2800,7 @@ const DataTable = ({
     startCellEdit,
     SubComponent,
     tableRef,
+    updateColumnVisibility,
     updateEntitiesHelper,
     updateValidation,
     withCheckboxes,
@@ -2790,6 +2825,7 @@ const DataTable = ({
         noVirtual={noVirtual}
         className={classNames({
           isCellEditable,
+          loading: isLoading,
           "tg-table-loading": isLoading,
           "tg-table-disabled": disabled
         })}
@@ -2809,7 +2845,8 @@ const DataTable = ({
         expanded={expandedRows}
         showPagination={false}
         sortable={false}
-        loading={isLoading || disabled}
+        // loading={isLoading || disabled}
+        loading={disabled}
         defaultResized={resized}
         onResizedChange={(newResized = []) => {
           const resizedToUse = newResized.map(column => {
@@ -2830,7 +2867,9 @@ const DataTable = ({
         getTrGroupProps={getTableRowProps}
         getTdProps={getTableCellProps}
         NoDataComponent={({ children }) =>
-          isLoading ? null : (
+          isLoading ? (
+            <div className="rt-noData">Loading...</div>
+          ) : (
             <div className="rt-noData">{noRowsFoundMessage || children}</div>
           )
         }
@@ -3215,6 +3254,7 @@ const DataTable = ({
                 {!noFullscreenButton && toggleFullscreenButton}
                 {withDisplayOptions && (
                   <DisplayOptions
+                    doNotSearchHiddenColumns={doNotSearchHiddenColumns}
                     compact={compact}
                     extraCompact={extraCompact}
                     disabled={disabled}
