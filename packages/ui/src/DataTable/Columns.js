@@ -953,7 +953,8 @@ export const useColumns = ({
         // needs to be a string because it is getting passed
         // to the dom
         immovable: column.immovable ? "true" : "false",
-        columnindex: column.columnIndex
+        columnindex: column.columnIndex,
+        path: column.path
       })
     };
     const noEllipsis = column.noEllipsis;

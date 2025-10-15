@@ -603,7 +603,7 @@ body:not(.drag-active)
 body.column-dragging .SortableItem,
 body.drag-active .rt-th {
   z-index: 1;
-  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
+  /* transition: transform 200ms cubic-bezier(0.2, 0, 0, 1); */
 }
 
 .SortableItem.dragging {

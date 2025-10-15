@@ -18,12 +18,15 @@ const CustomTheadComponent = ({
   // in another component
   const children = _children.props.children;
   const [sortedItems, setSortedItems] = useState(() =>
-    children.map((_, index) => `${index}`)
+    children.map(c => {
+      // Use the path as the ID for sorting instead of the index
+      return c.props.path || c.key.split("-")[1];
+    })
   );
 
   // Update local state when children change
   useEffect(() => {
-    setSortedItems(children.map((_, index) => `${index}`));
+    setSortedItems(children.map(c => c.props.path || c.key.split("-")[1]));
   }, [children]);
 
   const mouseSensor = useSensor(MouseSensor, {
@@ -40,7 +43,8 @@ const CustomTheadComponent = ({
     // Add a class to the active drag item for styling
     const { active } = event;
     if (active) {
-      const activeNode = document.querySelector(`.rt-th[index="${active.id}"]`);
+      // Use a more specific selector for path-based attributes
+      const activeNode = document.querySelector(`.rt-th[path="${active.id}"]`);
       if (activeNode) {
         activeNode.classList.add("th-dragging");
       }
@@ -65,20 +69,16 @@ const CustomTheadComponent = ({
     }
 
     // Update local state immediately for smooth UI
-    const oldIndex = parseInt(active.id);
-    const newIndex = parseInt(over.id);
-    const newSortedItems = dndArrayMove(
-      sortedItems,
-      sortedItems.indexOf(`${oldIndex}`),
-      sortedItems.indexOf(`${newIndex}`)
-    );
+    // Use path ID directly instead of parsing as integer
+    const oldPath = active.id;
+    const newPath = over.id;
+    const oldIndex = sortedItems.indexOf(oldPath);
+    const newIndex = sortedItems.indexOf(newPath);
+    const newSortedItems = dndArrayMove(sortedItems, oldIndex, newIndex);
     setSortedItems(newSortedItems);
 
     // Pass to parent for persistence
-    onSortEnd({
-      oldIndex,
-      newIndex
-    });
+    onSortEnd({ oldIndex, newIndex });
   };
 
   return (
@@ -111,8 +111,7 @@ const SortableColumns = ({ className, style, children, moveColumn }) => {
     );
   };
 
-  const onSortEnd = (...args) => {
-    const { oldIndex, newIndex } = args[0];
+  const onSortEnd = ({ oldIndex, newIndex }) => {
     document.body.classList.remove("drag-active");
     moveColumn({
       oldIndex,

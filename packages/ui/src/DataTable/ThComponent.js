@@ -9,10 +9,11 @@ export const ThComponent = ({
   className,
   children,
   style,
+  path,
   columnindex,
   ...rest
 }) => {
-  const index = columnindex ?? -1;
+  const index = columnindex ? path : -1;
   const {
     attributes,
     listeners,
@@ -21,10 +22,8 @@ export const ThComponent = ({
     transition,
     isDragging
   } = useSortable({
-    id: `${index}`,
-    disabled: immovable === "true",
-    // Maintain dragging state even when cursor moves outside column
-    autoScroll: true
+    id: path,
+    disabled: immovable === "true"
   });
 
   // Enhanced styles for dragging - more visible across the table
@@ -50,6 +49,7 @@ export const ThComponent = ({
       role="columnheader"
       tabIndex="-1" // Resolves eslint issues without implementing keyboard navigation incorrectly
       columnindex={columnindex}
+      path={path}
       index={index}
       {...rest}
     >

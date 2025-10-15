@@ -1832,8 +1832,9 @@ const DataTable = ({
       const moveColumn = ({ oldIndex, newIndex }) => {
         let oldStateColumnIndex, newStateColumnIndex;
         columns.forEach((column, i) => {
-          if (oldIndex === column.columnIndex) oldStateColumnIndex = i;
-          if (newIndex === column.columnIndex) newStateColumnIndex = i;
+          // Use path-based comparison instead of columnIndex
+          if (oldIndex === column.path) oldStateColumnIndex = i;
+          if (newIndex === column.path) newStateColumnIndex = i;
         });
         // because it is all handled in state we need
         // to perform the move and update the columnIndices

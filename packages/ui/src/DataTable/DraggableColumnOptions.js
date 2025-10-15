@@ -17,11 +17,13 @@ const DraggableColumnOption = ({
   onVisibilityChange,
   numVisible
 }) => {
-  const { displayName, isHidden, isForcedHidden, path, subFrag } = field;
+  const { displayName, isHidden, isForcedHidden, path, subFrag, immovable } =
+    field;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
-      id: path
+      id: path,
+      disabled: immovable === "true"
     });
 
   const style = {
