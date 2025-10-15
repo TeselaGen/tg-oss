@@ -229,7 +229,6 @@ const DataTable = ({
   const {
     doNotCoercePageSize,
     isInfinite = isSimple && !withPaging,
-    syncDisplayOptionsToDb,
     urlConnected,
     withSelectedEntities
   } = props;
@@ -255,7 +254,7 @@ const DataTable = ({
       _defaults.order = r;
     }
 
-    if (!syncDisplayOptionsToDb && userSetPageSize) {
+    if (userSetPageSize) {
       _defaults.pageSize = userSetPageSize;
     }
 
@@ -266,7 +265,6 @@ const DataTable = ({
     isLocalCall,
     orderByFirstColumn,
     props.defaults,
-    syncDisplayOptionsToDb,
     userSetPageSize
   ]);
 
@@ -393,8 +391,6 @@ const DataTable = ({
     controlled_setPage,
     controlled_setPageSize,
     controlled_total,
-    currentUser,
-    deleteTableConfiguration,
     disabled = false,
     disableSetPageSize,
     doNotShowEmptyRows,
@@ -471,8 +467,6 @@ const DataTable = ({
     tableConfigurations,
     tableName,
     topLeftItems,
-    upsertFieldOption,
-    upsertTableConfiguration,
     variables,
     withCheckboxes = false,
     withDisplayOptions,
@@ -537,11 +531,7 @@ const DataTable = ({
   useEffect(() => {
     if (withDisplayOptions) {
       let newTableConfig = {};
-      if (syncDisplayOptionsToDb) {
-        newTableConfig = tableConfigurations && tableConfigurations[0];
-      } else {
-        newTableConfig = getTableConfigFromStorage(formName);
-      }
+      newTableConfig = getTableConfigFromStorage(formName);
       !noExcessiveCheck &&
         isBeingCalledExcessively({ uniqName: `dt_setTableConfig_${formName}` });
       // if the tableConfig is the same as the newTableConfig, don't update
@@ -564,7 +554,6 @@ const DataTable = ({
     convertedSchema, // If the schema changes we want to take into account the synced tableConfig again
     formName,
     setTableConfig,
-    syncDisplayOptionsToDb,
     tableConfigurations,
     withDisplayOptions,
     noExcessiveCheck
@@ -715,79 +704,45 @@ const DataTable = ({
 
     if (withDisplayOptions) {
       const fieldOptsByPath = keyBy(tableConfig.fieldOptions, "path");
-      if (syncDisplayOptionsToDb) {
-        // sync up to db
-        // There must be a better way to set this variable...
-        let tableConfigurationId;
-        resetDefaultVisibility = function () {
-          tableConfigurationId = tableConfig.id;
-          if (tableConfigurationId) {
-            deleteTableConfiguration(tableConfigurationId);
-          }
-        };
-        updateColumnVisibility = function ({ shouldShow, path }) {
-          if (tableConfigurationId) {
-            const existingFieldOpt = fieldOptsByPath[path] || {};
-            upsertFieldOption({
-              id: existingFieldOpt.id,
-              path,
-              isHidden: !shouldShow,
-              tableConfigurationId
-            });
-          } else {
-            upsertTableConfiguration({
-              userId: currentUser.user.id,
-              formName,
-              fieldOptions: [
-                {
-                  path,
-                  isHidden: !shouldShow
-                }
-              ]
-            });
-          }
-        };
-      } else {
-        const syncStorage = newTableConfig => {
-          setTableConfig(newTableConfig);
-          window.localStorage.setItem(formName, JSON.stringify(newTableConfig));
-        };
 
-        //sync display options with localstorage
-        resetDefaultVisibility = function () {
-          setTableConfig({ fieldOptions: [] });
-          window.localStorage.removeItem(formName);
+      const syncStorage = newTableConfig => {
+        setTableConfig(newTableConfig);
+        window.localStorage.setItem(formName, JSON.stringify(newTableConfig));
+      };
+
+      //sync display options with localstorage
+      resetDefaultVisibility = function () {
+        setTableConfig({ fieldOptions: [] });
+        window.localStorage.removeItem(formName);
+      };
+      updateColumnVisibility = function ({ path, paths, shouldShow }) {
+        const newFieldOpts = {
+          ...fieldOptsByPath
         };
-        updateColumnVisibility = function ({ path, paths, shouldShow }) {
-          const newFieldOpts = {
-            ...fieldOptsByPath
-          };
-          const pathsToUse = paths ? paths : [path];
-          pathsToUse.forEach(path => {
-            newFieldOpts[path] = { path, isHidden: !shouldShow };
-          });
-          syncStorage({ ...tableConfig, fieldOptions: toArray(newFieldOpts) });
-        };
-        updateTableDisplayDensity = function (density) {
-          syncStorage({ ...tableConfig, density: density });
-        };
-        persistPageSize = function (pageSize) {
-          syncStorage({ ...tableConfig, userSetPageSize: pageSize });
-        };
-        moveColumnPersist = function ({ oldIndex, newIndex }) {
-          // we might already have an array of the fields [path1, path2, ..etc]
-          const columnOrderings =
-            tableConfig.columnOrderings ||
-            schema.fields.map(({ path }) => path); // columnOrderings is [path1, path2, ..etc]
-          syncStorage({
-            ...tableConfig,
-            columnOrderings: arrayMove(columnOrderings, oldIndex, newIndex)
-          });
-        };
-        resizePersist = function (newResized) {
-          syncStorage({ ...tableConfig, resized: newResized });
-        };
-      }
+        const pathsToUse = paths ? paths : [path];
+        pathsToUse.forEach(path => {
+          newFieldOpts[path] = { path, isHidden: !shouldShow };
+        });
+        syncStorage({ ...tableConfig, fieldOptions: toArray(newFieldOpts) });
+      };
+      updateTableDisplayDensity = function (density) {
+        syncStorage({ ...tableConfig, density: density });
+      };
+      persistPageSize = function (pageSize) {
+        syncStorage({ ...tableConfig, userSetPageSize: pageSize });
+      };
+      moveColumnPersist = function ({ oldIndex, newIndex }) {
+        // we might already have an array of the fields [path1, path2, ..etc]
+        const columnOrderings =
+          tableConfig.columnOrderings || schema.fields.map(({ path }) => path); // columnOrderings is [path1, path2, ..etc]
+        syncStorage({
+          ...tableConfig,
+          columnOrderings: arrayMove(columnOrderings, oldIndex, newIndex)
+        });
+      };
+      resizePersist = function (newResized) {
+        syncStorage({ ...tableConfig, resized: newResized });
+      };
     }
     return {
       moveColumnPersist,
@@ -798,15 +753,10 @@ const DataTable = ({
       updateTableDisplayDensity
     };
   }, [
-    currentUser?.user?.id,
-    deleteTableConfiguration,
     formName,
     setTableConfig,
     schema.fields,
-    syncDisplayOptionsToDb,
     tableConfig,
-    upsertFieldOption,
-    upsertTableConfiguration,
     withDisplayOptions
   ]);
 
