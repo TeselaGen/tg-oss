@@ -599,13 +599,6 @@ body:not(.drag-active)
   flex-direction: column;
 }
 
-/* Prevent column ordering flashing during drag */
-body.column-dragging .SortableItem,
-body.drag-active .rt-th {
-  z-index: 1;
-  /* transition: transform 200ms cubic-bezier(0.2, 0, 0, 1); */
-}
-
 .SortableItem.dragging {
   z-index: 999 !important;
   cursor: grabbing !important;

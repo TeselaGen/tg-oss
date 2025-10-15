@@ -11,7 +11,6 @@ const CustomTheadComponent = ({
   children: _children,
   className,
   onSortEnd,
-  onSortStart,
   style
 }) => {
   // We need to do this because react table gives the children wrapped
@@ -38,8 +37,6 @@ const CustomTheadComponent = ({
   const sensors = useSensors(mouseSensor);
 
   const handleDragStart = event => {
-    onSortStart();
-
     // Add a class to the active drag item for styling
     const { active } = event;
     if (active) {
@@ -111,24 +108,11 @@ const SortableColumns = ({ className, style, children, moveColumn }) => {
     );
   };
 
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    document.body.classList.remove("drag-active");
-    moveColumn({
-      oldIndex,
-      newIndex
-    });
-  };
-
-  const onSortStart = () => {
-    document.body.classList.add("drag-active");
-  };
-
   return (
     <CustomTheadComponent
       className={className}
       style={style}
-      onSortStart={onSortStart}
-      onSortEnd={onSortEnd}
+      onSortEnd={moveColumn}
       helperClass="above-dialog"
       shouldCancelStart={shouldCancelStart}
     >
