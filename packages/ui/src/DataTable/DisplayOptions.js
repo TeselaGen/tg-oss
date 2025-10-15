@@ -186,6 +186,7 @@ const DisplayOptions = ({
               </div>
             )}
             <Button
+              marginTop={5}
               onClick={resetDefaultVisibility}
               title="Display Options"
               icon="reset"

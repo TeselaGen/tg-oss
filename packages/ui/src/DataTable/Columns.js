@@ -9,7 +9,8 @@ import {
   noop,
   cloneDeep,
   get,
-  padStart
+  padStart,
+  flatMap
 } from "lodash-es";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -919,7 +920,10 @@ export const useColumns = ({
     });
   }
 
-  const tableColumns = columns.map(column => {
+  const tableColumns = flatMap(columns, column => {
+    if (column.isHidden) {
+      return [];
+    }
     const tableColumn = {
       ...column,
       Header: RenderColumnHeader({

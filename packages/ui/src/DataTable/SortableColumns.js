@@ -10,7 +10,8 @@ import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 const CustomTheadComponent = ({
   children: _children,
   className,
-  onSortEnd,
+  moveColumn,
+  sortedItemsFull,
   style
 }) => {
   // We need to do this because react table gives the children wrapped
@@ -35,27 +36,8 @@ const CustomTheadComponent = ({
   });
 
   const sensors = useSensors(mouseSensor);
-
-  const handleDragStart = event => {
-    // Add a class to the active drag item for styling
-    const { active } = event;
-    if (active) {
-      // Use a more specific selector for path-based attributes
-      const activeNode = document.querySelector(`.rt-th[path="${active.id}"]`);
-      if (activeNode) {
-        activeNode.classList.add("th-dragging");
-      }
-    }
-  };
-
   const handleDragEnd = event => {
     const { active, over } = event;
-
-    // Remove the drag styling
-    const draggingItem = document.querySelector(".rt-th.th-dragging");
-    if (draggingItem) {
-      draggingItem.classList.remove("th-dragging");
-    }
 
     if (!over || !active) {
       return;
@@ -69,18 +51,17 @@ const CustomTheadComponent = ({
     // Use path ID directly instead of parsing as integer
     const oldPath = active.id;
     const newPath = over.id;
-    const oldIndex = sortedItems.indexOf(oldPath);
-    const newIndex = sortedItems.indexOf(newPath);
-    const newSortedItems = dndArrayMove(sortedItems, oldIndex, newIndex);
+    const oldIndex = sortedItemsFull.indexOf(oldPath);
+    const newIndex = sortedItemsFull.indexOf(newPath);
+    const newSortedItems = dndArrayMove(sortedItemsFull, oldIndex, newIndex);
     setSortedItems(newSortedItems);
 
     // Pass to parent for persistence
-    onSortEnd({ oldIndex, newIndex });
+    moveColumn({ oldIndex, newIndex });
   };
 
   return (
     <DndContext
-      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       modifiers={[restrictToHorizontalAxis]}
       sensors={sensors}
@@ -99,7 +80,13 @@ const CustomTheadComponent = ({
   );
 };
 
-const SortableColumns = ({ className, style, children, moveColumn }) => {
+const SortableColumns = ({
+  className,
+  style,
+  children,
+  moveColumn,
+  sortedItemsFull
+}) => {
   const shouldCancelStart = e => {
     const className = e.target.className;
     // if its an svg then it's a blueprint icon
@@ -112,7 +99,8 @@ const SortableColumns = ({ className, style, children, moveColumn }) => {
     <CustomTheadComponent
       className={className}
       style={style}
-      onSortEnd={moveColumn}
+      sortedItemsFull={sortedItemsFull}
+      moveColumn={moveColumn}
       helperClass="above-dialog"
       shouldCancelStart={shouldCancelStart}
     >

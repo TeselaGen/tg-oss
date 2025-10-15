@@ -14,28 +14,25 @@ export const ThComponent = ({
   ...rest
 }) => {
   const index = columnindex ? path : -1;
+  const disabled = !path || immovable === "true" || immovable === true;
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-    isDragging
+    isDragging: _isDragging
   } = useSortable({
     id: path,
-    disabled: immovable === "true"
+    disabled
   });
+  const isDragging = _isDragging && !disabled;
 
   // Enhanced styles for dragging - more visible across the table
   const sortStyles = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 999 : undefined,
-    // Add more pronounced visual feedback when dragging
-    ...(isDragging && {
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-      opacity: 0.85
-    })
+    zIndex: isDragging ? 999 : undefined
   };
 
   return (
