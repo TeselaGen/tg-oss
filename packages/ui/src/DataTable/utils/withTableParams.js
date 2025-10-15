@@ -49,7 +49,6 @@ export const useTableParams = props => {
     orderByFirstColumn,
     pageSize,
     schema,
-    syncDisplayOptionsToDb,
     tableParams: _tableParams,
     urlConnected,
     withDisplayOptions,
@@ -164,13 +163,13 @@ export const useTableParams = props => {
       _tableConfig?.userSetPageSize &&
       parseInt(_tableConfig.userSetPageSize, 10);
     let _defaultsToUse = defaults;
-    if (!syncDisplayOptionsToDb && userSetPageSize) {
+    if (userSetPageSize) {
       _defaultsToUse = _defaultsToUse || {};
       _defaultsToUse.pageSize = userSetPageSize;
     }
 
     return _defaultsToUse;
-  }, [defaults, formName, syncDisplayOptionsToDb]);
+  }, [defaults, formName]);
 
   const passingProps = useMemo(
     () => ({
