@@ -1,4 +1,4 @@
-export function getSelectionMessage({ caretPosition, selectionLayer, customTitle, sequenceLength, sequenceData, showGCContent, GCDecimalDigits, isProtein }: {
+export function getSelectionMessage({ caretPosition, selectionLayer, customTitle, sequenceLength, sequenceData, showGCContent, GCDecimalDigits, isProtein, showAminoAcidUnitAsCodon }: {
     caretPosition?: number | undefined;
     selectionLayer?: {
         start: number;
@@ -10,6 +10,7 @@ export function getSelectionMessage({ caretPosition, selectionLayer, customTitle
     showGCContent: any;
     GCDecimalDigits: any;
     isProtein: any;
+    showAminoAcidUnitAsCodon: any;
 }): string;
 export function preventDefaultStopPropagation(e: any): void;
 export function getNodeToRefocus(caretEl: any): any;
