@@ -24,9 +24,5 @@ jobs:
         with:
           # just perform install
           runTests: false
-      - uses: mansagroup/nrwl-nx-action@v3
-        with:
-          parallel: 1
-          targets: e2e
-          all: true
-          affected: false
+      - name: Run e2e tests
+        run: npx nx affected --target=e2e --base=origin/master --parallel=1
