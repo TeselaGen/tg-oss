@@ -311,10 +311,15 @@ export function getQueryParams({
         const ccDisplayName = orderVal.replace(/^-/gi, "");
         const schemaForField = ccFields[ccDisplayName];
         if (schemaForField) {
-          const { path } = schemaForField;
+          const { path, additionalSearchPaths } = schemaForField;
           const reversed = ccDisplayName !== orderVal;
           const prefix = reversed ? "-" : "";
           cleanedOrder.push(prefix + path);
+          if (additionalSearchPaths && additionalSearchPaths.length) {
+            additionalSearchPaths.forEach(additionalPath => {
+              cleanedOrder.push(prefix + additionalPath);
+            });
+          }
         } else {
           !noOrderError &&
             console.error(

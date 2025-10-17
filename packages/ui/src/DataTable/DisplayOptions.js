@@ -1,15 +1,6 @@
 import React, { useState } from "react";
-import { map, isEmpty, noop, startCase } from "lodash-es";
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Classes,
-  InputGroup,
-  Popover,
-  Switch
-} from "@blueprintjs/core";
-import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
+import { noop } from "lodash-es";
+import { Button, Menu, Classes, Popover, Switch } from "@blueprintjs/core";
 import InfoHelper from "../InfoHelper";
 import DraggableColumnOptions from "./DraggableColumnOptions";
 import { dragNoticeEl } from "./dragNoticeEl";
@@ -30,7 +21,6 @@ const DisplayOptions = ({
   schema
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerms, setSearchTerms] = useState({});
 
   const changeTableDensity = e => {
     updateTableDisplayDensity(e.target.value);
@@ -43,79 +33,13 @@ const DisplayOptions = ({
     return null; //don't show antyhing!
   }
   const { fields } = schema;
-  const fieldGroups = {};
-  const mainFields = [];
-
-  fields.forEach(field => {
-    if (field.hideInMenu) return;
-    if (!field.fieldGroup) return mainFields.push(field);
-    if (!fieldGroups[field.fieldGroup]) fieldGroups[field.fieldGroup] = [];
-    fieldGroups[field.fieldGroup].push(field);
-  });
 
   let numVisible = 0;
 
   // Count number of visible fields
-  mainFields.forEach(field => {
-    if (!field.isHidden && !field.isForcedHidden) numVisible++;
+  fields.forEach(field => {
+    if (!field.isHidden && field.type !== "action") numVisible++;
   });
-
-  // Handle column reordering
-  const handleColumnReorder = ({ oldIndex, newIndex }) => {
-    moveColumnPersist({ oldIndex, newIndex });
-  };
-
-  let fieldGroupMenu;
-  if (!isEmpty(fieldGroups)) {
-    fieldGroupMenu = map(fieldGroups, (groupFields, groupName) => {
-      const searchTerm = searchTerms[groupName] || "";
-      const anyVisible = groupFields.some(
-        field => !field.isHidden && !field.isForcedHidden
-      );
-      const anyNotForcedHidden = groupFields.some(
-        field => !field.isForcedHidden
-      );
-      if (!anyNotForcedHidden) return;
-      return (
-        <MenuItem key={groupName} text={groupName}>
-          <InputGroup
-            leftIcon="search"
-            value={searchTerm}
-            onChange={e => {
-              setSearchTerms(prev => ({
-                ...prev,
-                [groupName]: e.target.value
-              }));
-            }}
-          />
-          <Button
-            className={Classes.MINIMAL}
-            text={(anyVisible ? "Hide" : "Show") + " All"}
-            style={{ margin: "10px 0" }}
-            onClick={() => {
-              updateColumnVisibility({
-                shouldShow: !anyVisible,
-                paths: groupFields.map(field => field.path)
-              });
-            }}
-          />
-          <DraggableColumnOptions
-            fields={groupFields
-              .filter(
-                field =>
-                  startCase(getCCDisplayName(field)) // We have to use startCase with the camelCase here because the displayName is not always a string
-                    .toLowerCase()
-                    .indexOf(searchTerm.toLowerCase()) > -1
-              )
-              .filter(field => !field.isForcedHidden)}
-            onVisibilityChange={updateColumnVisibility}
-            onReorder={handleColumnReorder}
-            numVisible={numVisible}
-          />
-        </MenuItem>
-      );
-    });
-  }
 
   return (
     <Popover
@@ -169,13 +93,12 @@ const DisplayOptions = ({
 
             <div style={{ maxHeight: 360, overflowY: "auto", padding: 2 }}>
               <DraggableColumnOptions
-                fields={mainFields.filter(field => !field.isForcedHidden)}
+                fields={fields}
                 onVisibilityChange={updateColumnVisibility}
-                onReorder={handleColumnReorder}
+                moveColumnPersist={moveColumnPersist}
                 numVisible={numVisible}
               />
             </div>
-            <div>{fieldGroupMenu}</div>
             {hasOptionForForcedHidden && (
               <div style={{ marginTop: 15 }}>
                 <Switch
@@ -186,7 +109,7 @@ const DisplayOptions = ({
               </div>
             )}
             <Button
-              marginTop={5}
+              style={{ marginTop: 5 }}
               onClick={resetDefaultVisibility}
               title="Display Options"
               icon="reset"

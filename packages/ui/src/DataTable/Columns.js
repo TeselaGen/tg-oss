@@ -956,7 +956,8 @@ export const useColumns = ({
       getHeaderProps: () => ({
         // needs to be a string because it is getting passed
         // to the dom
-        immovable: column.immovable ? "true" : "false",
+        immovable:
+          column.type === "action" || column.immovable ? "true" : "false",
         columnindex: column.columnIndex,
         path: column.path
       })

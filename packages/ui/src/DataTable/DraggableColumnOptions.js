@@ -8,7 +8,7 @@ import {
   arrayMove
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Checkbox } from "@blueprintjs/core";
+import { Checkbox, Classes } from "@blueprintjs/core";
 import InfoHelper from "../InfoHelper";
 
 const DraggableColumnOption = ({
@@ -17,8 +17,7 @@ const DraggableColumnOption = ({
   onVisibilityChange,
   numVisible
 }) => {
-  const { displayName, isHidden, isForcedHidden, path, subFrag, immovable } =
-    field;
+  const { displayName, isHidden, path, subFrag, immovable, type } = field;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -26,14 +25,16 @@ const DraggableColumnOption = ({
       disabled: immovable === "true"
     });
 
+  if (type === "action") {
+    return null; // Skip action columns
+  }
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     cursor: "grab",
     marginBottom: 5
   };
-
-  if (isForcedHidden) return null;
 
   return (
     <div
@@ -58,7 +59,15 @@ const DraggableColumnOption = ({
         checked={!isHidden}
         label={
           <span style={{ display: "flex", marginTop: -17 }}>
-            {displayName}
+            {displayName}{" "}
+            {field.fieldGroup && (
+              <span
+                style={{ fontSize: 10, marginLeft: 5, marginTop: 2 }}
+                className={Classes.TEXT_MUTED}
+              >
+                ({field.fieldGroup})
+              </span>
+            )}
             {subFrag && (
               <InfoHelper
                 icon="warning-sign"
@@ -78,7 +87,7 @@ const DraggableColumnOption = ({
 const DraggableColumnOptions = ({
   fields,
   onVisibilityChange,
-  onReorder,
+  moveColumnPersist,
   numVisible
 }) => {
   const [sortedFields, setSortedFields] = useState(fields);
@@ -134,7 +143,7 @@ const DraggableColumnOptions = ({
     setSortedFields(newSortedFields);
 
     // Notify parent component to persist the change
-    onReorder({ oldIndex, newIndex });
+    moveColumnPersist({ oldIndex, newIndex });
   };
 
   return (

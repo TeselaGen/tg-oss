@@ -617,8 +617,7 @@ const DataTable = ({
         if (noValsForField && entities.length) {
           return {
             ...field,
-            isHidden: true,
-            isForcedHidden: true
+            isHidden: true
           };
         } else if (fieldOpt) {
           return {

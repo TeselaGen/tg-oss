@@ -27,8 +27,9 @@ export const ThComponent = ({
     disabled
   });
   const isDragging = _isDragging && !disabled;
-
-  // Enhanced styles for dragging - more visible across the table
+  if (transform) {
+    transform.scaleX = 1; // Prevent column header from shrinking/expanding during drag (looks bad)
+  }
   const sortStyles = {
     transform: CSS.Transform.toString(transform),
     transition,
