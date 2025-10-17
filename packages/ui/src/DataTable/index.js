@@ -617,8 +617,7 @@ const DataTable = ({
         if (noValsForField && entities.length) {
           return {
             ...field,
-            isHidden: true,
-            isForcedHidden: true
+            isHidden: true
           };
         } else if (fieldOpt) {
           return {
@@ -686,6 +685,7 @@ const DataTable = ({
     withDisplayOptions,
     recordIdToIsVisibleMap
   ]);
+  const [columns, setColumns] = useState([]);
 
   const {
     moveColumnPersist,
@@ -734,7 +734,7 @@ const DataTable = ({
       moveColumnPersist = function ({ oldIndex, newIndex }) {
         // we might already have an array of the fields [path1, path2, ..etc]
         const columnOrderings =
-          tableConfig.columnOrderings || schema.fields.map(({ path }) => path); // columnOrderings is [path1, path2, ..etc]
+          tableConfig.columnOrderings || columns.map(({ path }) => path); // columnOrderings is [path1, path2, ..etc]
         syncStorage({
           ...tableConfig,
           columnOrderings: arrayMove(columnOrderings, oldIndex, newIndex)
@@ -752,13 +752,7 @@ const DataTable = ({
       updateColumnVisibility,
       updateTableDisplayDensity
     };
-  }, [
-    formName,
-    setTableConfig,
-    schema.fields,
-    tableConfig,
-    withDisplayOptions
-  ]);
+  }, [formName, setTableConfig, columns, tableConfig, withDisplayOptions]);
 
   let compact = _compact;
   let extraCompact = _extraCompact;
@@ -1474,7 +1468,6 @@ const DataTable = ({
   );
 
   const { handleKeyDown, handleKeyUp } = useHotkeys(hotKeys);
-  const [columns, setColumns] = useState([]);
   const [fullscreen, setFullscreen] = useState(false);
   const [selectingAll, setSelectingAll] = useState(false);
 
@@ -1685,21 +1678,19 @@ const DataTable = ({
     addFilters(additionalFilters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [additionalFilters]);
-
   useEffect(() => {
-    setColumns(
-      schema.fields
-        ? schema.fields.reduce((col, field, i) => {
-            if (field.isHidden) {
-              return col;
-            }
-            return col.concat({
-              ...field,
-              columnIndex: i
-            });
-          }, [])
-        : []
-    );
+    const newCols = schema.fields
+      ? schema.fields.reduce((columns, field, i) => {
+          if (field.isHidden) {
+            return columns.concat(field);
+          }
+          return columns.concat({
+            ...field,
+            columnIndex: i
+          });
+        }, [])
+      : [];
+    setColumns(newCols);
   }, [schema?.fields]);
 
   const setSelectedIds = useCallback(
@@ -1780,28 +1771,22 @@ const DataTable = ({
   const TheadComponent = useCallback(
     ({ className, style, children }) => {
       const moveColumn = ({ oldIndex, newIndex }) => {
-        let oldStateColumnIndex, newStateColumnIndex;
-        columns.forEach((column, i) => {
-          if (oldIndex === column.columnIndex) oldStateColumnIndex = i;
-          if (newIndex === column.columnIndex) newStateColumnIndex = i;
-        });
         // because it is all handled in state we need
         // to perform the move and update the columnIndices
         // because they are used for the sortable columns
-        const newColumns = arrayMove(
-          columns,
-          oldStateColumnIndex,
-          newStateColumnIndex
-        ).map((column, i) => {
-          return {
-            ...column,
-            columnIndex: i
-          };
-        });
+        const newColumns = arrayMove(columns, oldIndex, newIndex).map(
+          (column, i) => {
+            return {
+              ...column,
+              columnIndex: i
+            };
+          }
+        );
         setColumns(newColumns);
       };
       return (
         <SortableColumns
+          sortedItemsFull={columns.map(c => c.path)}
           className={className}
           style={style}
           moveColumn={moveColumnPersist || moveColumn}
@@ -3212,6 +3197,7 @@ const DataTable = ({
                     resetDefaultVisibility={resetDefaultVisibility}
                     updateColumnVisibility={updateColumnVisibility}
                     updateTableDisplayDensity={updateTableDisplayDensity}
+                    moveColumnPersist={moveColumnPersist}
                     showForcedHiddenColumns={showForcedHiddenColumns}
                     setShowForcedHidden={setShowForcedHidden}
                     hasOptionForForcedHidden={

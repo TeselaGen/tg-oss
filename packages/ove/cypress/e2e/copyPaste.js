@@ -94,6 +94,7 @@ describe("copyPaste", function () {
     cy.contains(".veRowViewFeature", "araD")
       .first()
       .trigger("contextmenu", { force: true });
+    cy.get(`.veVectorInteractionWrapper:focus`).should("not.exist");
     // cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
     cy.contains(".bp3-menu-item", "Copy").click();
     cy.contains(".openVeCopy2", "Copy").realClick();
@@ -105,17 +106,8 @@ describe("copyPaste", function () {
       assert(window.Cypress.seqDataToCopy.features.length === 2);
       cy.contains("Selection Copied");
       // paste it back into the seq
+      cy.get(`.veVectorInteractionWrapper:focus`);
       cy.get(`.veCircularViewFeature:contains("CmR"):first`).realClick();
-      // assert that the correct element is focused
-      cy.window().then(w => {
-        console.info(w.document.activeElement);
-        cy.log(w.document.activeElement.classList);
-        assert(
-          w.document.activeElement.classList.contains(
-            "veVectorInteractionWrapper"
-          )
-        );
-      });
       // cy.get(`[data-test="ve-draggable-tabs0"] .veVectorInteractionWrapper`).should("be.focused");
       cy.get(`.veCircularViewFeature:contains("araD") textPath`).should(
         "have.length",

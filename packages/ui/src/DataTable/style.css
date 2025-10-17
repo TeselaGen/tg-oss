@@ -598,3 +598,16 @@ body:not(.drag-active)
   display: flex;
   flex-direction: column;
 }
+.th-dragging {
+  z-index: 999 !important;
+  cursor: grabbing !important;
+  opacity: 0.8;
+  background-color: #f5f8fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.bp3-dark .th-dragging {
+  background-color: #30404d;
+  box-shadow: 0 2px 8px rgba(250, 245, 245, 0.15);
+  outline: 1px solid #48aff0;
+}

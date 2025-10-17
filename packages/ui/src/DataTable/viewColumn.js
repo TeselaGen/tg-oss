@@ -5,7 +5,6 @@ import { reduce } from "lodash-es";
 export const viewColumn = {
   width: 35,
   noEllipsis: true,
-  hideInMenu: true,
   immovable: true,
   type: "action",
   render: () => {

@@ -9,7 +9,8 @@ import {
   noop,
   cloneDeep,
   get,
-  padStart
+  padStart,
+  flatMap
 } from "lodash-es";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -38,6 +39,7 @@ import { change as _change } from "redux-form";
 import { RenderCell } from "./RenderCell";
 import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
 import { showContextMenu } from "../utils/menuUtils";
+import { dragNoticeEl } from "./dragNoticeEl";
 
 dayjs.extend(localizedFormat);
 
@@ -177,6 +179,7 @@ const RenderColumnHeader = ({
         e.persist();
         showContextMenu(
           [
+            dragNoticeEl,
             {
               text: "Hide Column",
               disabled: onlyOneVisibleColumn,
@@ -917,7 +920,10 @@ export const useColumns = ({
     });
   }
 
-  const tableColumns = columns.map(column => {
+  const tableColumns = flatMap(columns, column => {
+    if (column.isHidden) {
+      return [];
+    }
     const tableColumn = {
       ...column,
       Header: RenderColumnHeader({
@@ -950,8 +956,10 @@ export const useColumns = ({
       getHeaderProps: () => ({
         // needs to be a string because it is getting passed
         // to the dom
-        immovable: column.immovable ? "true" : "false",
-        columnindex: column.columnIndex
+        immovable:
+          column.type === "action" || column.immovable ? "true" : "false",
+        columnindex: column.columnIndex,
+        path: column.path
       })
     };
     const noEllipsis = column.noEllipsis;
