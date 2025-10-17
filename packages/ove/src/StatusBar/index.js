@@ -86,6 +86,7 @@ const ShowSelectionItem = compose(
   caretPosition = -1,
   sequenceLength = 0,
   isProtein,
+  showAminoAcidUnitAsCodon,
   sequenceData = { sequence: "" },
   showGCContent,
   GCDecimalDigits,
@@ -107,7 +108,7 @@ const ShowSelectionItem = compose(
           sequenceLength,
           sequenceData,
           showGCContent,
-
+          showAminoAcidUnitAsCodon,
           GCDecimalDigits,
           isProtein
         })}
@@ -136,11 +137,11 @@ const ShowLengthItem = connectToEditor(
   ({ sequenceData = { sequence: "" } }) => ({
     sequenceLength: sequenceData.sequence.length
   })
-)(({ isProtein, sequenceLength = 0 }) => (
+)(({ isProtein, sequenceLength = 0, showAminoAcidUnitAsCodon }) => (
   <StatusBarItem dataTest="veStatusBar-length">{`Length: ${divideBy3(
     sequenceLength,
     isProtein
-  )} ${isProtein ? "AAs" : "bps"}`}</StatusBarItem>
+  )} ${isProtein ? `${showAminoAcidUnitAsCodon ? "codons" : "AAs"}` : "bps"}`}</StatusBarItem>
 ));
 
 const ShowTypeItem = connectToEditor(({ sequenceData }) => ({
@@ -239,6 +240,7 @@ export function StatusBar({
   onSelectionOrCaretChanged,
   GCDecimalDigits = 1,
   isProtein,
+  showAminoAcidUnitAsCodon,
   beforeReadOnlyChange
 }) {
   return (
@@ -263,13 +265,18 @@ export function StatusBar({
         showAvailability={showAvailability}
       />
       <ShowSelectionItem
+        showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
         editorName={editorName}
         isProtein={isProtein}
         showGCContentByDefault={showGCContentByDefault}
         onSelectionOrCaretChanged={onSelectionOrCaretChanged}
         GCDecimalDigits={GCDecimalDigits}
       />
-      <ShowLengthItem isProtein={isProtein} editorName={editorName} />
+      <ShowLengthItem
+        isProtein={isProtein}
+        editorName={editorName}
+        showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
+      />
     </div>
   );
 }

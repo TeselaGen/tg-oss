@@ -16,7 +16,8 @@ function Caret({
   onRightClick,
   style,
   selectionMessage,
-  className = ""
+  className = "",
+  showAminoAcidUnitAsCodon
 }) {
   if (
     (row.start <= caretPosition && row.end + 1 >= caretPosition) ||
@@ -35,7 +36,12 @@ function Caret({
         }
         title={
           selectionMessage ||
-          getSelectionMessage({ caretPosition, isProtein, sequenceLength })
+          getSelectionMessage({
+            caretPosition,
+            isProtein,
+            sequenceLength,
+            showAminoAcidUnitAsCodon
+          })
         }
         className={classnames(
           {
