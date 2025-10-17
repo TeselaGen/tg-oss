@@ -4,12 +4,6 @@ jobs:
   cypress-run:
     name: Cypress run
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # the actual items in the array do not matter,
-        # just the number - to force CI to sping 3 copies
-        # of the current job in parallel
-        machines: [1, 2, 3, 4, 5, 6]
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -24,7 +18,5 @@ jobs:
         with:
           # just perform install
           runTests: false
-      - uses: mansagroup/nrwl-nx-action@v3
-        with:
-          parallel: 1
-          targets: e2e
+      - name: Run e2e tests
+        run: npx nx affected --target=e2e --base=origin/master --parallel=1
