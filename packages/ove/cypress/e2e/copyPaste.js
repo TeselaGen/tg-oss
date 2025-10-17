@@ -106,8 +106,8 @@ describe("copyPaste", function () {
       assert(window.Cypress.seqDataToCopy.features.length === 2);
       cy.contains("Selection Copied");
       // paste it back into the seq
-      cy.get(`.veCircularViewFeature:contains("CmR"):first`).realClick();
       cy.get(`.veVectorInteractionWrapper:focus`);
+      cy.get(`.veCircularViewFeature:contains("CmR"):first`).realClick();
       // cy.get(`[data-test="ve-draggable-tabs0"] .veVectorInteractionWrapper`).should("be.focused");
       cy.get(`.veCircularViewFeature:contains("araD") textPath`).should(
         "have.length",
