@@ -28,4 +28,5 @@ jobs:
         with:
           parallel: 1
           targets: e2e
-          args: '--base=origin/master'
+          all: true
+          affected: false
