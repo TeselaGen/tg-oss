@@ -69,12 +69,9 @@ const DraggableColumnOption = ({
               </span>
             )}
             {subFrag && (
-              <InfoHelper
-                icon="warning-sign"
-                intent="warning"
-                style={{ marginLeft: 5 }}
-              >
-                Viewing this column may cause the table to load slower
+              <InfoHelper style={{ marginLeft: 5 }}>
+                Note: Viewing this complex column may cause the table to load
+                slower. Try hiding it for better performance.
               </InfoHelper>
             )}
           </span>
