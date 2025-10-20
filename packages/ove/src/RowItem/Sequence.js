@@ -3,7 +3,27 @@ import { times, map } from "lodash-es";
 import { view } from "@risingstack/react-easy-state";
 import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 import { fudge2, realCharWidth } from "./constants";
-import dnaToColor, { getDnaColor } from "../constants/dnaToColor";
+import dnaToColor, {
+  getDnaColor,
+  getSerineThreonineColor,
+  getNegativeColor,
+  getPositiveColor,
+  getChargedColor,
+  getHydrophobicity,
+  getPolarColor,
+  getAliphaticColor,
+  getAromaticColor,
+  getColorScheme,
+  serineThreonineToColor,
+  hydrophobicityColor,
+  polarColors,
+  negativeColors,
+  positiveColors,
+  chargedColors,
+  aliphaticColors,
+  aromaticColors,
+  colorScheme
+} from "../constants/dnaToColor";
 import { hoveredAnnEasyStore } from "../helperComponents/withHover";
 import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
 import { partOverhangs } from "./partOverhangs";
@@ -12,6 +32,28 @@ import { isSafari } from "@teselagen/ui";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
+
+function renderColoredLayer(props, fudge, width, toColor) {
+  return (
+    <svg
+      style={{
+        left: props.startOffset * props.charWidth,
+        height: props.height,
+        width,
+        position: "absolute"
+      }}
+      className="rowViewTextContainer"
+      height={Math.max(0, Number(props.height))}
+    >
+      <ColoredSequence
+        {...props}
+        fudge={fudge}
+        totalWidth={width}
+        toColor={toColor}
+      />
+    </svg>
+  );
+}
 
 class Sequence extends React.Component {
   render() {
@@ -29,6 +71,15 @@ class Sequence extends React.Component {
       chunkSize = 100,
       scrollData,
       showDnaColors,
+      showSerineThreonine,
+      showHydrophobicity,
+      showPolar,
+      showNegative,
+      showPositive,
+      showCharged,
+      showAliphatic,
+      showAromatic,
+      showColorScheme,
       fivePrimeThreePrimeHints,
       alignmentData,
       sequenceLength,
@@ -78,6 +129,18 @@ class Sequence extends React.Component {
           : undefined;
       }
     });
+
+    const colorLayers = [
+      { show: showSerineThreonine, toColor: "serineThreonine" },
+      { show: showHydrophobicity, toColor: "hydrophobicity" },
+      { show: showPolar, toColor: "polar" },
+      { show: showNegative, toColor: "negative" },
+      { show: showPositive, toColor: "positive" },
+      { show: showCharged, toColor: "charged" },
+      { show: showAliphatic, toColor: "aliphatic" },
+      { show: showAromatic, toColor: "aromatic" },
+      { show: showColorScheme, toColor: "colorScheme" }
+    ];
 
     const style = {
       position: "relative",
@@ -173,6 +236,10 @@ class Sequence extends React.Component {
             5'
           </div>
         )}
+        {colorLayers.map(
+          ({ show, toColor }) =>
+            show && renderColoredLayer(this.props, fudge, width, toColor)
+        )}
         {!hideBps && (
           <svg
             style={{
@@ -189,7 +256,8 @@ class Sequence extends React.Component {
                 {...{
                   ...this.props,
                   fudge,
-                  totalWidth: width
+                  totalWidth: width,
+                  toColor: "dnaColor"
                 }}
               />
             )}
@@ -226,20 +294,46 @@ class ColoredSequence extends React.Component {
       alignmentData,
       getGaps,
       fudge,
-      totalWidth
+      totalWidth,
+      toColor
     } = this.props;
     if (alignmentData) {
       sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
     }
+    const colorMap = {
+      dnaColor: dnaToColor,
+      serineThreonine: serineThreonineToColor,
+      hydrophobicity: hydrophobicityColor,
+      polar: polarColors,
+      negative: negativeColors,
+      positive: positiveColors,
+      charged: chargedColors,
+      aliphatic: aliphaticColors,
+      aromatic: aromaticColors,
+      colorScheme: colorScheme
+    };
+
+    const colorMethods = {
+      dnaColor: getDnaColor,
+      serineThreonine: getSerineThreonineColor,
+      hydrophobicity: getHydrophobicity,
+      polar: getPolarColor,
+      negative: getNegativeColor,
+      positive: getPositiveColor,
+      charged: getChargedColor,
+      aliphatic: getAliphaticColor,
+      aromatic: getAromaticColor,
+      colorScheme: getColorScheme
+    };
     //we use big paths instead of many individual rects to improve performance
-    const colorPaths = Object.values(dnaToColor).reduce((acc, color) => {
+    const colorPaths = Object.values(colorMap[toColor]).reduce((acc, color) => {
       acc[color] = "";
       return acc;
     }, {});
     const gapsBefore = getGaps ? getGaps({ start: 0, end: 0 }).gapsBefore : 0;
     sequence.split("").forEach((char, i) => {
       const width = Number(charWidth);
-      const color = getDnaColor(char, isReverse);
+      const color = colorMethods[toColor](char, isReverse);
       const x = (i + gapsBefore) * charWidth;
       const y = 0;
       colorPaths[color] =

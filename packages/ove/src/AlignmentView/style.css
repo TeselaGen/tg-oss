@@ -105,3 +105,19 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.veLabileSites {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  z-index: 10;
+}
+
+.veAlignmentViewLabileSiteLine {
+  position: absolute;
+  height: 100%;
+  width: 4px;
+  background: #1585c5;
+  opacity: 0.5;
+  top: 0;
+}

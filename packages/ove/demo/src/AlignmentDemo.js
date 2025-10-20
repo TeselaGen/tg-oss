@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import store from "./store";
 import msaAlignment from "./exampleData/msaAlignment.json";
+import proteinMSA from "./exampleData/msaAlignment_protein.json";
 import pairwiseAlignment from "./exampleData/pairwiseAlignment.json";
 import sangerAlignment from "./exampleData/sangerAlignment.json";
 import msaAlignmentWithGaps from "./exampleData/msaAlignment_withGaps.json";
@@ -41,7 +42,8 @@ const bpSelectOptions = [
     value: pairwiseAlignment2.id
   },
   { label: "Sanger Alignment", value: sangerAlignment.id },
-  { label: "MSA with gaps", value: msaAlignmentWithGaps.id }
+  { label: "MSA with gaps", value: msaAlignmentWithGaps.id },
+  { label: "Protein MSA", value: proteinMSA.id }
 ];
 
 const alignmentViewStyle = {
@@ -55,6 +57,7 @@ export default props => {
     addAlignment(store, pairwiseAlignment2);
     addAlignment(store, sangerAlignment);
     addAlignment(store, msaAlignmentWithGaps);
+    addAlignment(store, proteinMSA);
   }, []);
 
   const defaultValues = useMemo(() => {
