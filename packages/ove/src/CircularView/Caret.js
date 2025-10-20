@@ -3,7 +3,7 @@ import { getRangeAngles } from "@teselagen/range-utils";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
-import pureNoFunc from "../utils/pureNoFunc";
+import { pureNoFunc } from "@teselagen/ui";
 import { getSelectionMessage } from "../utils/editorUtils";
 
 function Caret({
@@ -15,7 +15,8 @@ function Caret({
   innerRadius,
   outerRadius,
   isProtein,
-  selectionMessage
+  selectionMessage,
+  showAminoAcidUnitAsCodon
 }) {
   const { startAngle, endAngle } = getRangeAngles(
     { start: caretPosition, end: caretPosition },
@@ -37,7 +38,12 @@ function Caret({
     >
       <title>
         {selectionMessage ||
-          getSelectionMessage({ caretPosition, isProtein, sequenceLength })}
+          getSelectionMessage({
+            caretPosition,
+            isProtein,
+            sequenceLength,
+            showAminoAcidUnitAsCodon
+          })}
       </title>
       <line
         strokeWidth="1.5px"

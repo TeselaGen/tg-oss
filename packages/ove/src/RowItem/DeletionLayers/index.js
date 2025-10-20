@@ -1,8 +1,7 @@
 import AnnotationPositioner from "../AnnotationPositioner";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import React from "react";
-import pureNoFunc from "../../utils/pureNoFunc";
-
+import { pureNoFunc } from "@teselagen/ui";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";

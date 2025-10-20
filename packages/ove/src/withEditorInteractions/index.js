@@ -238,8 +238,12 @@ function VectorInteractionHOC(Component /* options */) {
           sequence: clipboardData.getData("text/plain") || e.target.value
         };
       }
-      if (sequenceData.isProtein && !seqDataToInsert.proteinSequence) {
-        seqDataToInsert.proteinSequence = seqDataToInsert.sequence;
+      if (sequenceData.isProtein) {
+        seqDataToInsert.isProtein = true;
+
+        if (!seqDataToInsert.proteinSequence) {
+          seqDataToInsert.proteinSequence = seqDataToInsert.sequence;
+        }
       }
 
       if (
@@ -399,7 +403,8 @@ function VectorInteractionHOC(Component /* options */) {
         sequenceData = { sequence: "" },
         readOnly,
         disableBpEditing,
-        maxInsertSize
+        maxInsertSize,
+        showAminoAcidUnitAsCodon
         // updateSequenceData,
         // wrappedInsertSequenceDataAtPositionOrRange
         // handleInsert
@@ -421,6 +426,7 @@ function VectorInteractionHOC(Component /* options */) {
           sequenceLength,
           caretPosition,
           maxInsertSize,
+          showAminoAcidUnitAsCodon,
           handleInsert: async seqDataToInsert => {
             await insertAndSelectHelper({
               props: this.props,

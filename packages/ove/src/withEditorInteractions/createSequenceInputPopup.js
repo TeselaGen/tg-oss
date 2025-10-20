@@ -81,7 +81,8 @@ class SequenceInputNoHotkeys extends React.Component {
       isProtein,
       caretPosition,
       sequenceData,
-      maxInsertSize
+      maxInsertSize,
+      showAminoAcidUnitAsCodon
     } = this.props;
     const { charsToInsert, hasTempError } = this.state;
 
@@ -97,7 +98,12 @@ class SequenceInputNoHotkeys extends React.Component {
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to replace{" "}
           {divideBy3(getRangeLength(selectionLayer, sequenceLength), isProtein)}{" "}
-          {isProtein ? "AAs" : "base pairs"} between{" "}
+          {isProtein
+            ? showAminoAcidUnitAsCodon
+              ? "codons"
+              : "AAs"
+            : "base pairs"}{" "}
+          between{" "}
           {isProtein
             ? convertDnaCaretPositionOrRangeToAA(betweenVals[0])
             : betweenVals[0]}{" "}
@@ -111,8 +117,12 @@ class SequenceInputNoHotkeys extends React.Component {
       message = (
         <span>
           Press <span style={{ fontWeight: "bolder" }}>ENTER</span> to insert{" "}
-          {charsToInsert.length} {isProtein ? "AAs" : "base pairs"} after{" "}
-          {isProtein ? "AA" : "base"}{" "}
+          {charsToInsert.length}{" "}
+          {isProtein
+            ? `${showAminoAcidUnitAsCodon ? "codons" : "AAs"}`
+            : "base pairs"}{" "}
+          after{" "}
+          {isProtein ? `${showAminoAcidUnitAsCodon ? "codon" : "AA"}` : "base"}{" "}
           {isProtein
             ? convertDnaCaretPositionOrRangeToAA(caretPosition)
             : caretPosition}
@@ -156,7 +166,7 @@ class SequenceInputNoHotkeys extends React.Component {
             }
             if (maxInsertSize && sanitizedVal.length > maxInsertSize) {
               return window.toastr.error(
-                `Sorry, your insert is greater than ${maxInsertSize}`,
+                `Sorry, your insert is greater than ${maxInsertSize}`
               );
             }
             e.target.value = sanitizedVal;
@@ -221,6 +231,10 @@ export default function createSequenceInputPopup(props) {
   // function closeInput() {
   //   sequenceInputBubble.remove();
   // }
+  if (document.getElementById("sequenceInputBubble")) {
+    // remove the old one if it exists
+    document.getElementById("sequenceInputBubble").outerHTML = "";
+  }
   div = document.createElement("div");
   div.style.zIndex = "400000";
   div.id = "sequenceInputBubble";

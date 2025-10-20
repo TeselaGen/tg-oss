@@ -9,7 +9,8 @@ import {
   noop,
   cloneDeep,
   get,
-  padStart
+  padStart,
+  flatMap
 } from "lodash-es";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -37,6 +38,8 @@ import { useDispatch } from "react-redux";
 import { change as _change } from "redux-form";
 import { RenderCell } from "./RenderCell";
 import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
+import { showContextMenu } from "../utils/menuUtils";
+import { dragNoticeEl } from "./dragNoticeEl";
 
 dayjs.extend(localizedFormat);
 
@@ -50,8 +53,13 @@ const RenderColumnHeader = ({
   entities,
   extraCompact,
   filters,
+  resetDefaultVisibility,
+  onlyOneVisibleColumn,
   formName,
   isCellEditable,
+  updateColumnVisibility,
+  schema,
+  withDisplayOptions,
   isLocalCall,
   order,
   removeSingleFilter,
@@ -163,6 +171,61 @@ const RenderColumnHeader = ({
           <strong>${columnTitle}:</strong> <br>
           ${description} ${isUnique ? "<br>Must be unique" : ""}</div>`
       })}
+      onContextMenu={e => {
+        if (!withDisplayOptions) {
+          return;
+        }
+        e.preventDefault();
+        e.persist();
+        showContextMenu(
+          [
+            dragNoticeEl,
+            {
+              text: "Hide Column",
+              disabled: onlyOneVisibleColumn,
+              icon: "eye-off",
+              onClick: () => {
+                updateColumnVisibility({
+                  shouldShow: false,
+                  path
+                });
+              }
+            },
+            {
+              text: "Hide Other Columns",
+              icon: "eye-off",
+              onClick: () => {
+                updateColumnVisibility({
+                  shouldShow: false,
+                  paths: schema.fields
+                    .map(c => c.path)
+                    .filter(Boolean)
+                    .filter(p => p !== path)
+                });
+              }
+            },
+            {
+              text: "Reset Column Visibilities",
+              icon: "reset",
+              onClick: () => {
+                resetDefaultVisibility();
+              }
+            },
+            {
+              text: "Table Display Options",
+              icon: "cog",
+              onClick: () => {
+                e.target
+                  .closest(".data-table-container")
+                  ?.querySelector(".tg-table-display-options")
+                  ?.click();
+              }
+            }
+          ],
+          undefined,
+          e
+        );
+      }}
       data-test={columnTitleTextified}
       data-path={path}
       data-copy-text={columnTitleTextified}
@@ -340,6 +403,7 @@ export const useColumns = ({
   addFilters,
   cellRenderer,
   columns,
+  resetDefaultVisibility,
   currentParams,
   compact,
   editingCell,
@@ -374,6 +438,7 @@ export const useColumns = ({
   selectedCells,
   setExpandedEntityIdMap,
   setNewParams,
+  updateColumnVisibility,
   setOrder = noop,
   setSelectedCells,
   shouldShowSubComponent,
@@ -387,7 +452,8 @@ export const useColumns = ({
   withFilter: _withFilter,
   withSort = true,
   recordIdToIsVisibleMap,
-  setRecordIdToIsVisibleMap
+  setRecordIdToIsVisibleMap,
+  withDisplayOptions
 }) => {
   const dispatch = useDispatch();
   const change = useCallback(
@@ -854,19 +920,27 @@ export const useColumns = ({
     });
   }
 
-  const tableColumns = columns.map(column => {
+  const tableColumns = flatMap(columns, column => {
+    if (column.isHidden) {
+      return [];
+    }
     const tableColumn = {
       ...column,
       Header: RenderColumnHeader({
+        onlyOneVisibleColumn: columns.length === 1,
         recordIdToIsVisibleMap,
         setRecordIdToIsVisibleMap,
         column,
+        withDisplayOptions,
         isLocalCall,
         filters,
         currentParams,
         order,
+        resetDefaultVisibility,
         setOrder,
         withSort,
+        schema,
+        updateColumnVisibility,
         formName,
         extraCompact,
         withFilter,
@@ -882,8 +956,10 @@ export const useColumns = ({
       getHeaderProps: () => ({
         // needs to be a string because it is getting passed
         // to the dom
-        immovable: column.immovable ? "true" : "false",
-        columnindex: column.columnIndex
+        immovable:
+          column.type === "action" || column.immovable ? "true" : "false",
+        columnindex: column.columnIndex,
+        path: column.path
       })
     };
     const noEllipsis = column.noEllipsis;

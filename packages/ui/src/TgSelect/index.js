@@ -429,6 +429,8 @@ class TgSelect extends React.Component {
               }
             },
             inputProps: {
+              autoComplete: "off",
+              name: "tg-multiselect-input",
               autoFocus: autoFocus || autoOpen,
               onBlur,
               ...(tagInputProps && tagInputProps.inputProps)

@@ -1080,10 +1080,22 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
+<<<<<<< HEAD
 "@dnd-kit/accessibility@^3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@dnd-kit/accessibility/-/accessibility-3.1.1.tgz#3b4202bd6bb370a0730f6734867785919beac6af"
   integrity sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==
+=======
+"@dmsnell/diff-match-patch@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@dmsnell/diff-match-patch/-/diff-match-patch-1.1.0.tgz#5bac00243fa2583fa970d9865609f632dcd90e32"
+  integrity sha512-yejLPmM5pjsGvxS9gXablUSbInW7H976c/FJ4iQxWIm7/38xBySRemTPDe34lhg1gVLbJntX0+sH0jYfU+PN9A==
+
+"@dnd-kit/accessibility@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/accessibility/-/accessibility-3.1.0.tgz#1054e19be276b5f1154ced7947fc0cb5d99192e0"
+  integrity sha512-ea7IkhKvlJUv9iSHJOnxinBcoOI3ppGnnL+VDJ75O45Nss6HtZd8IdN8touXPDtASfeI2T2LImb8VOZcL47wjQ==
+>>>>>>> master
   dependencies:
     tslib "^2.0.0"
 
@@ -2882,8 +2894,13 @@
   version "0.4.28"
   dependencies:
     "@gmod/gff" "^1.2.1"
+<<<<<<< HEAD
     "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-1c7e8936-b33d-4259-a737-224153500ed1-1759423995731/node_modules/@teselagen/range-utils"
     "@teselagen/sequence-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-1c7e8936-b33d-4259-a737-224153500ed1-1759423995731/node_modules/@teselagen/sequence-utils"
+=======
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-ce0015cb-0cc6-4108-8398-a07dbf648c8e-1760375893076/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.28-ce0015cb-0cc6-4108-8398-a07dbf648c8e-1760375893076/node_modules/@teselagen/sequence-utils"
+>>>>>>> master
     bufferpack "^0.0.6"
     color "3.2.1"
     fast-xml-parser "^4.2.5"
@@ -2894,7 +2911,6 @@
 "@teselagen/file-utils@file:packages/file-utils":
   version "0.3.20"
   dependencies:
-    bluebird "^3.7.2"
     buffer "5.7.1"
     jszip "^3.10.1"
     lodash-es "^4.17.21"
@@ -2923,15 +2939,19 @@
 "@teselagen/sequence-utils@file:packages/sequence-utils":
   version "0.3.32"
   dependencies:
+<<<<<<< HEAD
     "@teselagen/range-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.32-b54a6bff-884c-4ee8-8811-dd2da7f1d358-1759423995730/node_modules/@teselagen/range-utils"
+=======
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.32-69fa2061-7daa-452e-a122-beab22469ffe-1760375893076/node_modules/@teselagen/range-utils"
+>>>>>>> master
     escape-string-regexp "5.0.0"
-    jsondiffpatch "0.4.1"
+    jsondiffpatch "0.7.3"
     lodash-es "^4.17.21"
     shortid "2.2.16"
     string-splice "^1.3.0"
 
 "@teselagen/ui@file:packages/ui":
-  version "0.9.6"
+  version "0.10.4"
   dependencies:
     "@blueprintjs/core" "3.54.0"
     "@blueprintjs/datetime" "^3.24.1"
@@ -2941,7 +2961,11 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
+<<<<<<< HEAD
     "@teselagen/file-utils" "file:../../../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.9.6-8900b8ce-069e-41dc-857a-92fa049f59eb-1759423995732/node_modules/@teselagen/file-utils"
+=======
+    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.10.4-a2338977-ef64-4c06-8c20-19ca6a1c0be9-1760375893077/node_modules/@teselagen/file-utils"
+>>>>>>> master
     "@teselagen/react-table" "6.10.18"
     chance "1.1.11"
     classnames "^2.3.2"
@@ -3097,11 +3121,6 @@
   integrity sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==
   dependencies:
     "@babel/types" "^7.28.2"
-
-"@types/bluebird@^3.5.42":
-  version "3.5.42"
-  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.42.tgz#7ec05f1ce9986d920313c1377a5662b1b563d366"
-  integrity sha512-Jhy+MWRlro6UjVi578V/4ZGNfeCOcNCp0YaFNIUGFKlImowqwb1O/22wDVk3FDGMLqxdpOV3qQHD5fPEH4hK6A==
 
 "@types/debug@^4.0.0":
   version "4.1.12"
@@ -4652,7 +4671,16 @@ chalk@4.1.2, chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+<<<<<<< HEAD
 chalk@^2.3.0:
+=======
+chalk@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.3.0.tgz#67c20a7ebef70e7f3970a01f90fa210cb6860385"
+  integrity sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==
+
+chalk@^2.4.2:
+>>>>>>> master
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
   integrity sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
@@ -5679,11 +5707,6 @@ devlop@^1.0.0, devlop@^1.1.0:
   integrity sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==
   dependencies:
     dequal "^2.0.0"
-
-diff-match-patch@^1.0.0:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/diff-match-patch/-/diff-match-patch-1.0.5.tgz#abb584d5f10cd1196dfc55aa03701592ae3f7b37"
-  integrity sha512-IayShXAgj/QMXgB0IWmKx+rOPuGMhqm5w6jvFxmVenXKIzRqTAAsbBPT3kWQeGANj3jGgvcvv4yK6SxqYmikgw==
 
 diff-sequences@^29.6.3:
   version "29.6.3"
@@ -8358,13 +8381,12 @@ jsonc-parser@3.2.0:
   resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-3.2.0.tgz#31ff3f4c2b9793f89c67212627c51c6394f88e76"
   integrity sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==
 
-jsondiffpatch@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/jsondiffpatch/-/jsondiffpatch-0.4.1.tgz#9fb085036767f03534ebd46dcd841df6070c5773"
-  integrity sha512-t0etAxTUk1w5MYdNOkZBZ8rvYYN5iL+2dHCCx/DpkFm/bW28M6y5nUS83D4XdZiHy35Fpaw6LBb+F88fHZnVCw==
+jsondiffpatch@0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/jsondiffpatch/-/jsondiffpatch-0.7.3.tgz#d83360730767c48076fb4a8db89d33d46de0cbe2"
+  integrity sha512-zd4dqFiXSYyant2WgSXAZ9+yYqilNVvragVNkNRn2IFZKgjyULNrKRznqN4Zon0MkLueCg+3QaPVCnDAVP20OQ==
   dependencies:
-    chalk "^2.3.0"
-    diff-match-patch "^1.0.0"
+    "@dmsnell/diff-match-patch" "^1.1.0"
 
 jsonfile@^4.0.0:
   version "4.0.0"

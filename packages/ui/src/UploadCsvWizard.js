@@ -185,7 +185,9 @@ export const SimpleInsertDataDialog = compose(
   }, [dataTableForm, dispatch]);
 
   const _reduxFormCellValidation = useSelector(
-    state => state.form?.[dataTableForm]?.values.reduxFormCellValidation
+    function _reduxFormCellValidationSelector(state) {
+      return state.form?.[dataTableForm]?.values.reduxFormCellValidation;
+    }
   );
   const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
 
@@ -272,13 +274,13 @@ const UploadCsvWizardDialogInner = reduxForm()(({
   const {
     reduxFormEntities: _reduxFormEntities,
     reduxFormCellValidation: _reduxFormCellValidation
-  } = useSelector(state =>
-    formValueSelector(datatableFormName)(
+  } = useSelector(function dtFormNameSelector(state) {
+    return formValueSelector(datatableFormName)(
       state,
       "reduxFormEntities",
       "reduxFormCellValidation"
-    )
-  );
+    );
+  });
 
   const reduxFormEntities = useDeepEqualMemo(_reduxFormEntities);
   const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);

@@ -9,7 +9,7 @@ chai.use(require("chai-things"));
 chai.should();
 
 describe("gffToJson tests", () => {
-  it.only("parses a gff file correctly", async () => {
+  it("parses a gff file correctly", async () => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/gff/example.gff3"),
       "utf8"

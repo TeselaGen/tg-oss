@@ -4,7 +4,7 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import each from "lodash/each";
 import withHover from "../helperComponents/withHover";
-import pureNoFunc from "../utils/pureNoFunc";
+import { pureNoFunc } from "@teselagen/ui";
 
 function Cutsites({
   radius,

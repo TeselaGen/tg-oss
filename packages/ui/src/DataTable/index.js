@@ -118,6 +118,7 @@ const DataTable = ({
   controlled_pageSize,
   formName = "tgDataTable",
   history,
+  doNotSearchHiddenColumns,
   isSimple,
   isLocalCall = true,
   isTableParamsConnected,
@@ -173,15 +174,15 @@ const DataTable = ({
     reduxFormEntities,
     reduxFormQueryParams: _reduxFormQueryParams = {},
     reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
-  } = useSelector(state =>
-    formValueSelector(formName)(
+  } = useSelector(function dtFormParamsSelector(state) {
+    return formValueSelector(formName)(
       state,
       "reduxFormCellValidation",
       "reduxFormEntities",
       "reduxFormQueryParams",
       "reduxFormSelectedEntityIdMap"
-    )
-  );
+    );
+  });
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
@@ -228,7 +229,6 @@ const DataTable = ({
   const {
     doNotCoercePageSize,
     isInfinite = isSimple && !withPaging,
-    syncDisplayOptionsToDb,
     urlConnected,
     withSelectedEntities
   } = props;
@@ -254,7 +254,7 @@ const DataTable = ({
       _defaults.order = r;
     }
 
-    if (!syncDisplayOptionsToDb && userSetPageSize) {
+    if (userSetPageSize) {
       _defaults.pageSize = userSetPageSize;
     }
 
@@ -265,7 +265,6 @@ const DataTable = ({
     isLocalCall,
     orderByFirstColumn,
     props.defaults,
-    syncDisplayOptionsToDb,
     userSetPageSize
   ]);
 
@@ -392,8 +391,6 @@ const DataTable = ({
     controlled_setPage,
     controlled_setPageSize,
     controlled_total,
-    currentUser,
-    deleteTableConfiguration,
     disabled = false,
     disableSetPageSize,
     doNotShowEmptyRows,
@@ -470,8 +467,6 @@ const DataTable = ({
     tableConfigurations,
     tableName,
     topLeftItems,
-    upsertFieldOption,
-    upsertTableConfiguration,
     variables,
     withCheckboxes = false,
     withDisplayOptions,
@@ -481,14 +476,14 @@ const DataTable = ({
     withSelectAll,
     withSort,
     withTitle = !isSimple,
-    noExcessiveCheck
+    noExcessiveCheck,
+    isEntityCountLoading
   } = props;
 
   const _entities = useMemo(
     () => (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || [],
     [_origEntities, reduxFormEntities]
   );
-
   const entities = useDeepEqualMemo(_entities);
 
   const entitiesAcrossPages = useDeepEqualMemo(_entitiesAcrossPages);
@@ -505,24 +500,38 @@ const DataTable = ({
       entities,
       change
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     entitiesAcrossPages,
     reduxFormSelectedEntityIdMap,
     change,
-    noExcessiveCheck
+    noExcessiveCheck,
+    entities,
+    formName
   ]);
 
-  const [tableConfig, setTableConfig] = useState({ fieldOptions: [] });
-
+  const [tableConfig, _setTableConfig] = useState({ fieldOptions: [] });
+  const setTableConfig = useCallback(
+    newConfig => {
+      _setTableConfig(prev => {
+        let newConfigVal = newConfig;
+        if (typeof newConfig === "function") {
+          newConfigVal = newConfig(prev);
+        }
+        if (!isEqual(prev.fieldOptions, newConfigVal.fieldOptions)) {
+          change(
+            "reduxFormReadOnlyFieldOptions",
+            newConfigVal.fieldOptions || []
+          );
+        }
+        return newConfigVal;
+      });
+    },
+    [change]
+  );
   useEffect(() => {
     if (withDisplayOptions) {
       let newTableConfig = {};
-      if (syncDisplayOptionsToDb) {
-        newTableConfig = tableConfigurations && tableConfigurations[0];
-      } else {
-        newTableConfig = getTableConfigFromStorage(formName);
-      }
+      newTableConfig = getTableConfigFromStorage(formName);
       !noExcessiveCheck &&
         isBeingCalledExcessively({ uniqName: `dt_setTableConfig_${formName}` });
       // if the tableConfig is the same as the newTableConfig, don't update
@@ -544,7 +553,7 @@ const DataTable = ({
   }, [
     convertedSchema, // If the schema changes we want to take into account the synced tableConfig again
     formName,
-    syncDisplayOptionsToDb,
+    setTableConfig,
     tableConfigurations,
     withDisplayOptions,
     noExcessiveCheck
@@ -608,8 +617,7 @@ const DataTable = ({
         if (noValsForField && entities.length) {
           return {
             ...field,
-            isHidden: true,
-            isForcedHidden: true
+            isHidden: true
           };
         } else if (fieldOpt) {
           return {
@@ -663,6 +671,7 @@ const DataTable = ({
     convertedSchema,
     currentParams,
     entities,
+    setTableConfig,
     history,
     isInfinite,
     isOpenable,
@@ -676,6 +685,7 @@ const DataTable = ({
     withDisplayOptions,
     recordIdToIsVisibleMap
   ]);
+  const [columns, setColumns] = useState([]);
 
   const {
     moveColumnPersist,
@@ -694,79 +704,45 @@ const DataTable = ({
 
     if (withDisplayOptions) {
       const fieldOptsByPath = keyBy(tableConfig.fieldOptions, "path");
-      if (syncDisplayOptionsToDb) {
-        // sync up to db
-        // There must be a better way to set this variable...
-        let tableConfigurationId;
-        resetDefaultVisibility = function () {
-          tableConfigurationId = tableConfig.id;
-          if (tableConfigurationId) {
-            deleteTableConfiguration(tableConfigurationId);
-          }
-        };
-        updateColumnVisibility = function ({ shouldShow, path }) {
-          if (tableConfigurationId) {
-            const existingFieldOpt = fieldOptsByPath[path] || {};
-            upsertFieldOption({
-              id: existingFieldOpt.id,
-              path,
-              isHidden: !shouldShow,
-              tableConfigurationId
-            });
-          } else {
-            upsertTableConfiguration({
-              userId: currentUser.user.id,
-              formName,
-              fieldOptions: [
-                {
-                  path,
-                  isHidden: !shouldShow
-                }
-              ]
-            });
-          }
-        };
-      } else {
-        const syncStorage = newTableConfig => {
-          setTableConfig(newTableConfig);
-          window.localStorage.setItem(formName, JSON.stringify(newTableConfig));
-        };
 
-        //sync display options with localstorage
-        resetDefaultVisibility = function () {
-          setTableConfig({ fieldOptions: [] });
-          window.localStorage.removeItem(formName);
+      const syncStorage = newTableConfig => {
+        setTableConfig(newTableConfig);
+        window.localStorage.setItem(formName, JSON.stringify(newTableConfig));
+      };
+
+      //sync display options with localstorage
+      resetDefaultVisibility = function () {
+        setTableConfig({ fieldOptions: [] });
+        window.localStorage.removeItem(formName);
+      };
+      updateColumnVisibility = function ({ path, paths, shouldShow }) {
+        const newFieldOpts = {
+          ...fieldOptsByPath
         };
-        updateColumnVisibility = function ({ path, paths, shouldShow }) {
-          const newFieldOpts = {
-            ...fieldOptsByPath
-          };
-          const pathsToUse = paths ? paths : [path];
-          pathsToUse.forEach(path => {
-            newFieldOpts[path] = { path, isHidden: !shouldShow };
-          });
-          syncStorage({ ...tableConfig, fieldOptions: toArray(newFieldOpts) });
-        };
-        updateTableDisplayDensity = function (density) {
-          syncStorage({ ...tableConfig, density: density });
-        };
-        persistPageSize = function (pageSize) {
-          syncStorage({ ...tableConfig, userSetPageSize: pageSize });
-        };
-        moveColumnPersist = function ({ oldIndex, newIndex }) {
-          // we might already have an array of the fields [path1, path2, ..etc]
-          const columnOrderings =
-            tableConfig.columnOrderings ||
-            schema.fields.map(({ path }) => path); // columnOrderings is [path1, path2, ..etc]
-          syncStorage({
-            ...tableConfig,
-            columnOrderings: arrayMove(columnOrderings, oldIndex, newIndex)
-          });
-        };
-        resizePersist = function (newResized) {
-          syncStorage({ ...tableConfig, resized: newResized });
-        };
-      }
+        const pathsToUse = paths ? paths : [path];
+        pathsToUse.forEach(path => {
+          newFieldOpts[path] = { path, isHidden: !shouldShow };
+        });
+        syncStorage({ ...tableConfig, fieldOptions: toArray(newFieldOpts) });
+      };
+      updateTableDisplayDensity = function (density) {
+        syncStorage({ ...tableConfig, density: density });
+      };
+      persistPageSize = function (pageSize) {
+        syncStorage({ ...tableConfig, userSetPageSize: pageSize });
+      };
+      moveColumnPersist = function ({ oldIndex, newIndex }) {
+        // we might already have an array of the fields [path1, path2, ..etc]
+        const columnOrderings =
+          tableConfig.columnOrderings || columns.map(({ path }) => path); // columnOrderings is [path1, path2, ..etc]
+        syncStorage({
+          ...tableConfig,
+          columnOrderings: arrayMove(columnOrderings, oldIndex, newIndex)
+        });
+      };
+      resizePersist = function (newResized) {
+        syncStorage({ ...tableConfig, resized: newResized });
+      };
     }
     return {
       moveColumnPersist,
@@ -776,17 +752,7 @@ const DataTable = ({
       updateColumnVisibility,
       updateTableDisplayDensity
     };
-  }, [
-    currentUser?.user?.id,
-    deleteTableConfiguration,
-    formName,
-    schema.fields,
-    syncDisplayOptionsToDb,
-    tableConfig,
-    upsertFieldOption,
-    upsertTableConfiguration,
-    withDisplayOptions
-  ]);
+  }, [formName, setTableConfig, columns, tableConfig, withDisplayOptions]);
 
   let compact = _compact;
   let extraCompact = _extraCompact;
@@ -1502,7 +1468,6 @@ const DataTable = ({
   );
 
   const { handleKeyDown, handleKeyUp } = useHotkeys(hotKeys);
-  const [columns, setColumns] = useState([]);
   const [fullscreen, setFullscreen] = useState(false);
   const [selectingAll, setSelectingAll] = useState(false);
 
@@ -1713,21 +1678,19 @@ const DataTable = ({
     addFilters(additionalFilters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [additionalFilters]);
-
   useEffect(() => {
-    setColumns(
-      schema.fields
-        ? schema.fields.reduce((col, field, i) => {
-            if (field.isHidden) {
-              return col;
-            }
-            return col.concat({
-              ...field,
-              columnIndex: i
-            });
-          }, [])
-        : []
-    );
+    const newCols = schema.fields
+      ? schema.fields.reduce((columns, field, i) => {
+          if (field.isHidden) {
+            return columns.concat(field);
+          }
+          return columns.concat({
+            ...field,
+            columnIndex: i
+          });
+        }, [])
+      : [];
+    setColumns(newCols);
   }, [schema?.fields]);
 
   const setSelectedIds = useCallback(
@@ -1808,28 +1771,22 @@ const DataTable = ({
   const TheadComponent = useCallback(
     ({ className, style, children }) => {
       const moveColumn = ({ oldIndex, newIndex }) => {
-        let oldStateColumnIndex, newStateColumnIndex;
-        columns.forEach((column, i) => {
-          if (oldIndex === column.columnIndex) oldStateColumnIndex = i;
-          if (newIndex === column.columnIndex) newStateColumnIndex = i;
-        });
         // because it is all handled in state we need
         // to perform the move and update the columnIndices
         // because they are used for the sortable columns
-        const newColumns = arrayMove(
-          columns,
-          oldStateColumnIndex,
-          newStateColumnIndex
-        ).map((column, i) => {
-          return {
-            ...column,
-            columnIndex: i
-          };
-        });
+        const newColumns = arrayMove(columns, oldIndex, newIndex).map(
+          (column, i) => {
+            return {
+              ...column,
+              columnIndex: i
+            };
+          }
+        );
         setColumns(newColumns);
       };
       return (
         <SortableColumns
+          sortedItemsFull={columns.map(c => c.path)}
           className={className}
           style={style}
           moveColumn={moveColumnPersist || moveColumn}
@@ -2635,13 +2592,23 @@ const DataTable = ({
       _selectedAndTotalMessage += `/ `;
     }
     if (showCount) {
-      _selectedAndTotalMessage += `${entityCount || 0} Total`;
+      if (isEntityCountLoading && entityCount < 1) {
+        _selectedAndTotalMessage += `Loading...`;
+      } else {
+        _selectedAndTotalMessage += `${entityCount || 0} Total`;
+      }
     }
     if (_selectedAndTotalMessage) {
       _selectedAndTotalMessage = <div>{_selectedAndTotalMessage}</div>;
     }
     return _selectedAndTotalMessage;
-  }, [entityCount, selectedRowCount, showCount, showNumSelected]);
+  }, [
+    entityCount,
+    selectedRowCount,
+    showCount,
+    showNumSelected,
+    isEntityCountLoading
+  ]);
 
   const shouldShowPaging =
     !isInfinite &&
@@ -2729,6 +2696,8 @@ const DataTable = ({
     columns,
     currentParams,
     compact,
+    withDisplayOptions,
+    resetDefaultVisibility,
     editingCellSelectAll,
     entities,
     expandedEntityIdMap,
@@ -2766,6 +2735,7 @@ const DataTable = ({
     startCellEdit,
     SubComponent,
     tableRef,
+    updateColumnVisibility,
     updateEntitiesHelper,
     updateValidation,
     withCheckboxes,
@@ -2790,6 +2760,7 @@ const DataTable = ({
         noVirtual={noVirtual}
         className={classNames({
           isCellEditable,
+          loading: isLoading,
           "tg-table-loading": isLoading,
           "tg-table-disabled": disabled
         })}
@@ -2809,7 +2780,8 @@ const DataTable = ({
         expanded={expandedRows}
         showPagination={false}
         sortable={false}
-        loading={isLoading || disabled}
+        // loading={isLoading || disabled}
+        loading={disabled}
         defaultResized={resized}
         onResizedChange={(newResized = []) => {
           const resizedToUse = newResized.map(column => {
@@ -2830,7 +2802,9 @@ const DataTable = ({
         getTrGroupProps={getTableRowProps}
         getTdProps={getTableCellProps}
         NoDataComponent={({ children }) =>
-          isLoading ? null : (
+          isLoading ? (
+            <div className="rt-noData">Loading...</div>
+          ) : (
             <div className="rt-noData">{noRowsFoundMessage || children}</div>
           )
         }
@@ -3215,6 +3189,7 @@ const DataTable = ({
                 {!noFullscreenButton && toggleFullscreenButton}
                 {withDisplayOptions && (
                   <DisplayOptions
+                    doNotSearchHiddenColumns={doNotSearchHiddenColumns}
                     compact={compact}
                     extraCompact={extraCompact}
                     disabled={disabled}
@@ -3222,6 +3197,7 @@ const DataTable = ({
                     resetDefaultVisibility={resetDefaultVisibility}
                     updateColumnVisibility={updateColumnVisibility}
                     updateTableDisplayDensity={updateTableDisplayDensity}
+                    moveColumnPersist={moveColumnPersist}
                     showForcedHiddenColumns={showForcedHiddenColumns}
                     setShowForcedHidden={setShowForcedHidden}
                     hasOptionForForcedHidden={

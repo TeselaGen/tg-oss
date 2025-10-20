@@ -22,6 +22,7 @@ import UploaderDemo from "./examples/UploaderDemo";
 import IntentTextDemo from "./examples/IntentText";
 import ScrollToTopDemo from "./examples/ScrollToTop";
 import DefaultValDemo from "./examples/DefaultVal";
+import DividerWithTextDemo from "./examples/DividerWithText";
 
 import showAppSpinnerDemo from "./examples/showAppSpinnerDemo";
 import EditableCellTable from "./examples/EditableCellTable";
@@ -116,6 +117,11 @@ const demos = {
         name: "openTitleElements",
         type: "React Element",
         description: "Items to be displayed in header when card is open"
+      },
+      {
+        name: "helperText",
+        type: "React Element",
+        description: "Helper text to be displayed next to the title"
       },
       {
         name: "noCard",
@@ -213,6 +219,9 @@ const demos = {
   },
   UploadCsvWizard: {
     DemoComponent: UploadCsvWizard
+  },
+  DividerWithText: {
+    demo: DividerWithTextDemo
   },
   wrapDialog: {
     demo: WrapDialog

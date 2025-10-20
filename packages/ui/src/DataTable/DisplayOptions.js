@@ -1,32 +1,26 @@
 import React, { useState } from "react";
-import { map, isEmpty, noop, startCase } from "lodash-es";
-import {
-  Button,
-  Checkbox,
-  Menu,
-  MenuItem,
-  Classes,
-  InputGroup,
-  Popover,
-  Switch
-} from "@blueprintjs/core";
-import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
+import { noop } from "lodash-es";
+import { Button, Menu, Classes, Popover, Switch } from "@blueprintjs/core";
+import InfoHelper from "../InfoHelper";
+import DraggableColumnOptions from "./DraggableColumnOptions";
+import { dragNoticeEl } from "./dragNoticeEl";
 
 const DisplayOptions = ({
   compact,
   extraCompact,
   disabled,
+  doNotSearchHiddenColumns,
   hideDisplayOptionsIcon,
   resetDefaultVisibility = noop,
   updateColumnVisibility = noop,
   updateTableDisplayDensity,
+  moveColumnPersist = noop,
   showForcedHiddenColumns,
   setShowForcedHidden,
   hasOptionForForcedHidden,
   schema
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerms, setSearchTerms] = useState({});
 
   const changeTableDensity = e => {
     updateTableDisplayDensity(e.target.value);
@@ -39,86 +33,13 @@ const DisplayOptions = ({
     return null; //don't show antyhing!
   }
   const { fields } = schema;
-  const fieldGroups = {};
-  const mainFields = [];
-
-  fields.forEach(field => {
-    if (field.hideInMenu) return;
-    if (!field.fieldGroup) return mainFields.push(field);
-    if (!fieldGroups[field.fieldGroup]) fieldGroups[field.fieldGroup] = [];
-    fieldGroups[field.fieldGroup].push(field);
-  });
 
   let numVisible = 0;
 
-  const getFieldCheckbox = (field, i) => {
-    const { displayName, isHidden, isForcedHidden, path } = field;
-    if (isForcedHidden) return;
-    if (!isHidden) numVisible++;
-    return (
-      <Checkbox
-        name={`${path}-${i}`}
-        key={path || i}
-        onChange={() => {
-          if (numVisible <= 1 && !isHidden) {
-            return window.toastr.warning(
-              "We have to display at least one column :)"
-            );
-          }
-          updateColumnVisibility({ shouldShow: isHidden, path });
-        }}
-        checked={!isHidden}
-        label={displayName}
-      />
-    );
-  };
-
-  let fieldGroupMenu;
-  if (!isEmpty(fieldGroups)) {
-    fieldGroupMenu = map(fieldGroups, (groupFields, groupName) => {
-      const searchTerm = searchTerms[groupName] || "";
-      const anyVisible = groupFields.some(
-        field => !field.isHidden && !field.isForcedHidden
-      );
-      const anyNotForcedHidden = groupFields.some(
-        field => !field.isForcedHidden
-      );
-      if (!anyNotForcedHidden) return;
-      return (
-        <MenuItem key={groupName} text={groupName}>
-          <InputGroup
-            leftIcon="search"
-            value={searchTerm}
-            onChange={e => {
-              setSearchTerms(prev => ({
-                ...prev,
-                [groupName]: e.target.value
-              }));
-            }}
-          />
-          <Button
-            className={Classes.MINIMAL}
-            text={(anyVisible ? "Hide" : "Show") + " All"}
-            style={{ margin: "10px 0" }}
-            onClick={() => {
-              updateColumnVisibility({
-                shouldShow: !anyVisible,
-                paths: groupFields.map(field => field.path)
-              });
-            }}
-          />
-          {groupFields
-            .filter(
-              field =>
-                startCase(getCCDisplayName(field)) // We have to use startCase with the camelCase here because the displayName is not always a string
-                  .toLowerCase()
-                  .indexOf(searchTerm.toLowerCase()) > -1
-            )
-            .map(getFieldCheckbox)}
-        </MenuItem>
-      );
-    });
-  }
+  // Count number of visible fields
+  fields.forEach(field => {
+    if (!field.isHidden && field.type !== "action") numVisible++;
+  });
 
   return (
     <Popover
@@ -127,7 +48,9 @@ const DisplayOptions = ({
       content={
         <Menu>
           <div style={{ padding: 10, paddingLeft: 20, paddingRight: 20 }}>
-            <h5 style={{ marginBottom: 10 }}>Display Density:</h5>
+            <h5 style={{ marginBottom: 10, fontWeight: "bold" }}>
+              Display Density:
+            </h5>
             <div className={Classes.SELECT + " tg-table-display-density"}>
               <select
                 onChange={changeTableDensity}
@@ -150,13 +73,32 @@ const DisplayOptions = ({
                 </option>
               </select>
             </div>
-            <h5 style={{ marginBottom: 10, marginTop: 10 }}>
-              Displayed Columns:
+            <h5
+              style={{
+                fontWeight: "bold",
+                marginBottom: 0,
+                marginTop: 10,
+                display: "flex"
+              }}
+            >
+              Displayed Columns: &nbsp;
+              {doNotSearchHiddenColumns && (
+                <InfoHelper>
+                  Note: Hidden columns will NOT be used when searching the
+                  datatable
+                </InfoHelper>
+              )}
             </h5>
-            <div style={{ maxHeight: 260, overflowY: "auto", padding: 2 }}>
-              {mainFields.map(getFieldCheckbox)}
+            {dragNoticeEl}
+
+            <div style={{ maxHeight: 360, overflowY: "auto", padding: 2 }}>
+              <DraggableColumnOptions
+                fields={fields}
+                onVisibilityChange={updateColumnVisibility}
+                moveColumnPersist={moveColumnPersist}
+                numVisible={numVisible}
+              />
             </div>
-            <div>{fieldGroupMenu}</div>
             {hasOptionForForcedHidden && (
               <div style={{ marginTop: 15 }}>
                 <Switch
@@ -166,21 +108,15 @@ const DisplayOptions = ({
                 />
               </div>
             )}
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "flex-end"
-              }}
+            <Button
+              style={{ marginTop: 5 }}
+              onClick={resetDefaultVisibility}
+              title="Display Options"
+              icon="reset"
+              minimal
             >
-              <Button
-                onClick={resetDefaultVisibility}
-                title="Display Options"
-                minimal
-              >
-                Reset
-              </Button>
-            </div>
+              Reset Column Visibilites
+            </Button>
           </div>
         </Menu>
       }

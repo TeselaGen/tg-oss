@@ -7,10 +7,9 @@ import {
   Menu,
   MenuItem
 } from "@blueprintjs/core";
-import React, { useState } from "react";
+import React from "react";
 import { map, startCase } from "lodash-es";
-import pureNoFunc from "../utils/pureNoFunc";
-import { InfoHelper, withDialog, wrapDialog } from "@teselagen/ui";
+import { pureNoFunc, wrapDialog } from "@teselagen/ui";
 import { compose } from "redux";
 import { showDialog } from "../GlobalDialogUtils";
 // import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";

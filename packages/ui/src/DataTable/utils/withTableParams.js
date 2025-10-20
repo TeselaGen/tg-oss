@@ -49,7 +49,6 @@ export const useTableParams = props => {
     orderByFirstColumn,
     pageSize,
     schema,
-    syncDisplayOptionsToDb,
     tableParams: _tableParams,
     urlConnected,
     withDisplayOptions,
@@ -76,7 +75,39 @@ export const useTableParams = props => {
     [_defaults, controlled_pageSize]
   );
 
-  const convertedSchema = useMemo(() => convertSchema(schema), [schema]);
+  const formValueStateSelector = state =>
+    formValueSelector(formName)(
+      state,
+      "reduxFormQueryParams",
+      "reduxFormSelectedEntityIdMap",
+      "reduxFormReadOnlyFieldOptions"
+    );
+
+  const {
+    reduxFormQueryParams: _reduxFormQueryParams = {},
+    reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {},
+    reduxFormReadOnlyFieldOptions
+  } = useSelector(formValueStateSelector);
+
+  const convertedSchema = useMemo(() => {
+    const pathToHiddenMap = {};
+    reduxFormReadOnlyFieldOptions?.forEach(({ path, isHidden }) => {
+      if (path) pathToHiddenMap[path] = isHidden;
+    });
+    const s = convertSchema(schema);
+
+    s.fields = s.fields.map(f => {
+      const isHidden = pathToHiddenMap[f.path];
+      if (pathToHiddenMap[f.path] !== undefined) {
+        return {
+          ...f,
+          isHidden
+        };
+      }
+      return f;
+    });
+    return s;
+  }, [schema, reduxFormReadOnlyFieldOptions]);
 
   if (isLocalCall) {
     if (!noForm && (!formName || formName === "tgDataTable")) {
@@ -97,17 +128,6 @@ export const useTableParams = props => {
       );
     }
   }
-
-  const {
-    reduxFormQueryParams: _reduxFormQueryParams = {},
-    reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
-  } = useSelector(state =>
-    formValueSelector(formName)(
-      state,
-      "reduxFormQueryParams",
-      "reduxFormSelectedEntityIdMap"
-    )
-  );
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
@@ -143,13 +163,13 @@ export const useTableParams = props => {
       _tableConfig?.userSetPageSize &&
       parseInt(_tableConfig.userSetPageSize, 10);
     let _defaultsToUse = defaults;
-    if (!syncDisplayOptionsToDb && userSetPageSize) {
+    if (userSetPageSize) {
       _defaultsToUse = _defaultsToUse || {};
       _defaultsToUse.pageSize = userSetPageSize;
     }
 
     return _defaultsToUse;
-  }, [defaults, formName, syncDisplayOptionsToDb]);
+  }, [defaults, formName]);
 
   const passingProps = useMemo(
     () => ({

@@ -5,7 +5,7 @@ import getRangeAngles from "./getRangeAnglesSpecial";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
-import pureNoFunc from "../utils/pureNoFunc";
+import { pureNoFunc } from "@teselagen/ui";
 import {
   getSelectionMessage,
   preventDefaultStopPropagation
@@ -21,7 +21,8 @@ function SelectionLayer({
   onRightClicked,
   onClick,
   index,
-  isProtein
+  isProtein,
+  showAminoAcidUnitAsCodon
 }) {
   const {
     color,
@@ -47,7 +48,8 @@ function SelectionLayer({
   const selectionMessage = getSelectionMessage({
     sequenceLength,
     selectionLayer,
-    isProtein
+    isProtein,
+    showAminoAcidUnitAsCodon
   });
   // let section2 = sector({
   //   center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!

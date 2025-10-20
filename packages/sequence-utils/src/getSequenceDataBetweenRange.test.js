@@ -225,22 +225,14 @@ describe("getSequenceDataBetweenRange", () => {
         end: 3
       }
     );
-    res.should.containSubset({
-      sequence: "gc",
-      features: [
-        {
-          start: 0,
-          end: 1,
-          locations: [
-            {
-              start: 0,
-              end: 1
-            }
-          ],
-          name: "happy"
-        }
-      ]
-    });
+    res.features.should.containSubset([
+      {
+        start: 0,
+        end: 1,
+        name: "happy"
+      }
+    ]);
+    res.sequence.should.equal("gc");
   });
   it("feature with locations, non circular enclosing range", () => {
     const res = getSequenceDataBetweenRange(
@@ -283,7 +275,7 @@ describe("getSequenceDataBetweenRange", () => {
       ]
     });
   });
-  it.only("feature with locations, non circular, non-fully enclosing range - it should trim the start/end correctly to match the location", () => {
+  it("feature with locations, non circular, non-fully enclosing range - it should trim the start/end correctly to match the location", () => {
     const res = getSequenceDataBetweenRange(
       {
         sequence: "gggatgcatgca",

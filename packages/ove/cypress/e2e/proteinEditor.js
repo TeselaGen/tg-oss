@@ -57,7 +57,7 @@ describe("proteinEditor", function () {
     cy.get(`.tg-test-end [value="31"]`);
   });
 
-  it('should show warning when insert sequence is larger than the max insert size', () => {
+  it("should show warning when insert sequence is larger than the max insert size", () => {
     cy.visit("/#/Editor?moleculeType=Protein&addMaxInsertSize=true");
     cy.contains("Part - pj5_00001 - Start: 1 End: 1384");
     cy.contains("Part - pj5_00001 - Start: 1 End: 1384");
@@ -69,9 +69,13 @@ describe("proteinEditor", function () {
 
     cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Insert").click();
-    cy.get(".sequenceInputBubble input").type("aaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggc{enter}");
+    cy.get(".sequenceInputBubble input")
+      .type("a")
+      .type(
+        "aaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggc{enter}"
+      );
     cy.contains("Sorry, your insert is greater than 100");
-  })
+  });
 
   it(`should be able to insert AAs correctly via typing in the editor`, () => {
     cy.visit("/#/Editor?moleculeType=Protein");
@@ -169,8 +173,8 @@ describe("proteinEditor", function () {
     cy.get(".veStatusBarItem")
       .contains("Selecting 11 AAs from 10 to 20")
       .should("be.visible");
-    cy.get('[title="Caret Between AAs 9 and 10"]').should('exist');
-    cy.get('[title="Caret Between AAs 20 and 21"]').should('exist');
+    cy.get('[title="Caret Between AAs 9 and 10"]').should("exist");
+    cy.get('[title="Caret Between AAs 20 and 21"]').should("exist");
   });
 
   it(`goTo, rotateTo work

@@ -111,24 +111,6 @@ const schema = {
     { path: "createdAt", type: "timestamp", displayName: "Date Created" },
     { path: "updatedAt", type: "timestamp", displayName: "Last Edited" },
     {
-      type: "lookup",
-      displayName: "User Status",
-      path: "user.status.name",
-      render: s => {
-        return (
-          <span>
-            <button>{s}</button>
-            <button>yep {s} </button>
-          </span>
-        );
-      }
-    },
-    {
-      type: "lookup",
-      displayName: "User Status",
-      path: "user.status.name"
-    },
-    {
       sortDisabled: true,
       path: "user.lastName",
       type: "string",
