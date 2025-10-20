@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Button } from "@blueprintjs/core";
 import "./style.css";
 import {
   calculateAminoAcidFrequency,
@@ -112,18 +111,7 @@ export default ({ properties, setProperties, style }) => {
           paddingBottom: 11,
           width: "100%"
         }}
-      >
-        <Button
-          style={{ height: "fit-content" }}
-          onClick={() => {
-            setProperties({ isOpen: false, track: null });
-          }}
-          minimal
-          text={"Hide Properties"}
-          intent="primary"
-          icon="chevron-right"
-        ></Button>
-      </div>
+      ></div>
       <h5>Properties</h5>
       <div className="bp3-tab-panel">
         <div className="ve-flex-row property-name">

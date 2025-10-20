@@ -1793,6 +1793,20 @@ export const AlignmentView = props => {
                         {saveMessage}
                       </div>
                     )}
+                    <Button
+                      small
+                      minimal
+                      icon="menu-open"
+                      intent="primary"
+                      style={{ marginLeft: "auto" }}
+                      onClick={() => {
+                        // tnw - this should toggle
+                        setPropertySidePanel({
+                          isOpen: true
+                        });
+                      }}
+                      data-tip="Show Track Properties"
+                    ></Button>
                   </div>
                   {hasTemplate ? (
                     <>

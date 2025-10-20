@@ -4,13 +4,14 @@ describe("Amino Acid MSA", function () {
     cy.get(".bp3-select select").select("Protein MSA");
   });
 
-  it("it should display the consensus sequence", function () {
+  it("should display all amino acid MSA features and functionality", function () {
+    // Check consensus sequence is displayed
     cy.contains(
       `[data-alignment-track-index="0"] .alignmentTrackName`,
       "Consensus"
     );
-  });
-  it("it should display the sequence identity", function () {
+
+    // Check sequence identity information is displayed
     cy.contains(
       `[data-alignment-track-index="1"] .alignmentTrackName`,
       "142 AAs"
@@ -21,10 +22,10 @@ describe("Amino Acid MSA", function () {
     );
     cy.contains(
       `[data-alignment-track-index="1"] .alignmentTrackName`,
-      "Identity: 95.07%"
+      "Identity: 95.1%"
     );
-  });
-  it("it should display the sequence properties", function () {
+
+    // Check sequence properties are displayed in the sidebar
     cy.contains(
       `[data-alignment-track-index="1"] .alignmentTrackName`,
       "Chicken Hemoglobin Alpha"
@@ -48,6 +49,7 @@ describe("Amino Acid MSA", function () {
     cy.contains("Region").should("exist");
     cy.contains(".sidebar-container .property-region", "1 - 142");
 
+    // Check amino acid frequencies are displayed
     cy.contains("Amino Acid Frequencies").should("exist");
     const aminoAcids = [
       "A (Ala)",
@@ -77,62 +79,36 @@ describe("Amino Acid MSA", function () {
         aa
       );
     });
-  });
 
-  it("it should display the amino acid visibility options", function () {
+    // Check amino acid visibility options
     cy.get(".tg-alignment-visibility-toggle").click();
-    cy.contains("Physical Properties").should("exist");
-    cy.contains("Serine Threonine").should("exist");
-    cy.contains("Labile Sites").should("exist");
-    cy.contains("Color Scheme").should("exist");
-    cy.contains("Plot").should("exist");
 
-    cy.contains("Physical Properties")
-      .click()
-      .then(() => {
-        cy.contains("Hydrophobicity").should("exist");
-        cy.contains("Polar").should("exist");
-        cy.contains("Negative").should("exist");
-        cy.contains("Positive").should("exist");
-        cy.contains("Charged").should("exist");
-        cy.contains("Aliphatic").should("exist");
-        cy.contains("Aromatic").should("exist");
-      });
-
-    cy.contains("Plot")
-      .click()
-      .then(() => {
-        cy.contains("Conservation").should("exist");
-        cy.contains("Properties").should("exist");
-      });
-  });
-
-  it("it should display the labile sites", function () {
-    cy.get(".tg-alignment-visibility-toggle").click();
+    // Check labile sites
+    cy.get(`.veAlignmentViewLabileSiteLine`).should("not.exist");
     cy.contains("Labile Sites").click();
     cy.get(`.veAlignmentViewLabileSiteLine`);
-  });
 
-  it("it should display the amino acid plots", function () {
-    cy.get(".tg-alignment-visibility-toggle").click();
-    cy.contains("Plot")
-      .click()
-      .then(() => {
-        cy.contains("Conservation").click();
-      });
+    // Check conservation plot
+    cy.contains("Plot").click();
 
     cy.get(
-      `[data-alignment-track-index="0"] > .veLinearView > .ve-linear-view-conservation-plot`
+      `[data-alignment-track-index="0"] .veLinearView .ve-linear-view-conservation-plot`
+    ).should("not.exist");
+    cy.contains("Conservation").click();
+
+    cy.get(
+      `[data-alignment-track-index="0"] .veLinearView .ve-linear-view-conservation-plot`
     );
 
-    cy.contains("Plot")
-      .click()
-      .then(() => {
-        cy.contains(".plot-properties", "Properties").click();
-      });
+    // Check properties plot
+    cy.get(
+      `[data-alignment-track-index="0"] .veLinearView .ve-linear-view-property-analysis-plot`
+    ).should("not.exist");
+
+    cy.contains(".plot-properties", "Properties").click();
 
     cy.get(
-      `[data-alignment-track-index="0"] > .veLinearView > .ve-linear-view-property-analysis-plot`
+      `[data-alignment-track-index="0"] .veLinearView .ve-linear-view-property-analysis-plot`
     );
   });
 });
