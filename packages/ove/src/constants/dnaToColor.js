@@ -115,7 +115,7 @@ function hexToRgba(hex) {
   if (hex === "transparent") return hex;
   hex = hex.replace(/^#/, "");
   // Parse r, g, b values
-  let bigint = parseInt(hex, 16);
+  const bigint = parseInt(hex, 16);
   let r, g, b;
   if (hex.length === 6) {
     r = (bigint >> 16) & 255;

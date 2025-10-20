@@ -180,7 +180,7 @@ export const AlignmentView = props => {
     isOpen: false,
     selection: null,
     track: null,
-    isPariwise: false
+    isPairwise: false
   });
 
   const getAllAlignmentsFastaText = useCallback(() => {
@@ -257,6 +257,11 @@ export const AlignmentView = props => {
 
   const isDarkMode = store?.getState()?.platform?.ui?.theme.dark ?? false;
 
+  const {
+    alignmentAnnotationVisibility,
+    togglableAlignmentAnnotationSettings
+  } = alignmentVisibilityToolOptions;
+
   useEffect(() => {
     const dnaAnnotations = [
       "chromatogram",
@@ -289,40 +294,29 @@ export const AlignmentView = props => {
 
     if (alignmentTracks[0].sequenceData.isProtein) {
       dnaAnnotations.forEach(key => {
-        delete alignmentVisibilityToolOptions.alignmentAnnotationVisibility[
-          key
-        ];
-        delete alignmentVisibilityToolOptions
-          .togglableAlignmentAnnotationSettings[key];
+        delete alignmentAnnotationVisibility[key];
+        delete togglableAlignmentAnnotationSettings[key];
       });
 
       aminoAcidAnnotations.forEach(key => {
-        alignmentVisibilityToolOptions.alignmentAnnotationVisibility[key] =
-          false;
-        alignmentVisibilityToolOptions.togglableAlignmentAnnotationSettings[
-          key
-        ] = false;
+        alignmentAnnotationVisibility[key] = false;
+        togglableAlignmentAnnotationSettings[key] = false;
       });
 
       if (isPairwise) {
         noNeededAnnotationsForPairwise.forEach(key => {
-          delete alignmentVisibilityToolOptions.alignmentAnnotationVisibility[
-            key
-          ];
-          delete alignmentVisibilityToolOptions
-            .togglableAlignmentAnnotationSettings[key];
+          delete alignmentAnnotationVisibility[key];
+          delete togglableAlignmentAnnotationSettings[key];
         });
       }
     } else {
       aminoAcidAnnotations.forEach(key => {
-        delete alignmentVisibilityToolOptions.alignmentAnnotationVisibility[
-          key
-        ];
-        delete alignmentVisibilityToolOptions
-          .togglableAlignmentAnnotationSettings[key];
+        delete alignmentAnnotationVisibility[key];
+        delete togglableAlignmentAnnotationSettings[key];
       });
     }
-  }, [alignmentTracks]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alignmentTracks, isPairwise]);
 
   const maxLength = useMemo(() => {
     const { sequenceData = { sequence: "" }, alignmentData } =
@@ -574,6 +568,12 @@ export const AlignmentView = props => {
     stateTrackingId
   ]);
 
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const annotationClicked = ({
     event,
     annotation,
@@ -695,7 +695,7 @@ export const AlignmentView = props => {
   const aminoAcidAlignmentProperties = useMemo(() => {
     if (isPairwise || !alignmentTracks[0].sequenceData.isProtein) return;
     return getAlignedAminoAcidSequenceProps(alignmentTracks);
-  }, [alignmentTracks]);
+  }, [alignmentTracks, isPairwise]);
 
   const renderItem = (_i, _key, isTemplate, cloneProps) => {
     const isDragDisabled = !allowTrackRearrange || isPairwise;
@@ -1548,12 +1548,6 @@ export const AlignmentView = props => {
   );
 
   const tgDrawerWidth = document.querySelector(".tg-drawer")?.clientWidth;
-
-  useEffect(() => {
-    const handleResize = () => setViewportWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   /**
    * Parameters to be passed to our Pinch Handler component

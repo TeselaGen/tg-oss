@@ -202,10 +202,7 @@ const PropertyDialog = compose(
 )(function () {
   return (
     <div style={{ width: "100%", padding: 10 }}>
-      <img
-        src="https://private-user-images.githubusercontent.com/166736845/501524856-7f8cd9aa-1c18-4f6b-9033-6097de7e98da.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjA1NjgzNTEsIm5iZiI6MTc2MDU2ODA1MSwicGF0aCI6Ii8xNjY3MzY4NDUvNTAxNTI0ODU2LTdmOGNkOWFhLTFjMTgtNGY2Yi05MDMzLTYwOTdkZTdlOThkYS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMDE1JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTAxNVQyMjQwNTFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jNTJjMDc2ZDE0MWQ0MDEyMDhlZTBiNmUyODhmMTdiNDg0OTU3MjlmY2UzZTkxNDY5MjdiYTUzNGM3YjQ2NDYyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.fs2qQHvpQXFZFtKybhn56222pvcX_56NKn04apLlVkQ"
-        width={580}
-      />
+      <img src="/aaprops.svg" width={580} alt="Amino Acid Properties" />
     </div>
   );
 });

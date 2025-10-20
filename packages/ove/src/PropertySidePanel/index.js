@@ -15,7 +15,7 @@ export default ({ properties, setProperties, style }) => {
 
   const getSequenceInRegion = useCallback(() => {
     const seq = track?.alignmentData?.sequence ?? "";
-    if (!selection || selection.start == -1 || selection.end == -1) {
+    if (!selection || selection.start === -1 || selection.end === -1) {
       return seq;
     }
 
@@ -44,12 +44,12 @@ export default ({ properties, setProperties, style }) => {
       let count = 0;
 
       trackMismatches?.forEach(tm => {
-        if (tm == null || tm.start == null || tm.end == null) {
+        if (tm === null || tm.start === null || tm.end === null) {
           return;
         }
 
-        let overlapStart = Math.max(tm.start, selection.start);
-        let overlapEnd = Math.min(tm.end, selection.end);
+        const overlapStart = Math.max(tm.start, selection.start);
+        const overlapEnd = Math.min(tm.end, selection.end);
         if (overlapEnd >= overlapStart) {
           count += overlapEnd - overlapStart + 1;
         }
@@ -58,12 +58,12 @@ export default ({ properties, setProperties, style }) => {
     } else {
       let count = 0;
       trackMismatches?.forEach(tm => {
-        if (tm == null || tm.start == null || tm.end == null) {
+        if (tm === null || tm.start === null || tm.end === null) {
           return;
         }
 
-        let overlapStart = tm.start;
-        let overlapEnd = tm.end;
+        const overlapStart = tm.start;
+        const overlapEnd = tm.end;
         if (overlapEnd >= overlapStart) {
           count += overlapEnd - overlapStart + 1;
         }
@@ -72,9 +72,9 @@ export default ({ properties, setProperties, style }) => {
       setMismatchesCount(count);
       setMismatchesInRange(count);
     }
-  }, [isOpen, track, selection]);
+  }, [isOpen, track, selection, trackMismatches]);
 
-  let aminoFreq = useMemo(() => {
+  const aminoFreq = useMemo(() => {
     const seq = getSequenceInRegion();
     return calculateAminoAcidFrequency(seq ?? "");
   }, [getSequenceInRegion]);

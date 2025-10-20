@@ -30,7 +30,7 @@ function calculateIdentityMatrix(alignedSequences) {
     .fill(n)
     .map(() => Array(n).fill(0));
   const sequenceNames = Object.keys(alignedSequences);
-  let _identicalPositions = [];
+  const _identicalPositions = [];
 
   // Calculate pairwise identities
   for (let i = 0; i < n; i++) {
@@ -110,7 +110,7 @@ function getPropertyAnalysis(alignedSequences) {
       });
       const max = Math.max(...Object.values(freq), 0);
       const mostFrequentProps = Object.entries(freq)
-        .filter(([_, count]) => count === max)
+        .filter(([, count]) => count === max)
         .map(([prop]) => prop);
       return {
         props: mostFrequentProps,
@@ -131,7 +131,7 @@ function getPropertyAnalysis(alignedSequences) {
       );
       const topCount = sortedGroups[0][1].count;
       const topOrTiedGroups = sortedGroups.filter(
-        ([_, val]) => val.count === topCount
+        ([, val]) => val.count === topCount
       );
 
       const specificGroupEntry = topOrTiedGroups.find(
@@ -142,7 +142,7 @@ function getPropertyAnalysis(alignedSequences) {
         mostFreqGroup = specificGroupEntry[1].props.join(" ");
       } else {
         const allProps = [
-          ...new Set(topOrTiedGroups.flatMap(([_, val]) => val.props))
+          ...new Set(topOrTiedGroups.flatMap(([, val]) => val.props))
         ];
         mostFreqGroup = allProps.join(" ");
       }

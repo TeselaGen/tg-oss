@@ -1,3 +1,4 @@
+import Color from "color";
 import classnames from "classnames";
 import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
