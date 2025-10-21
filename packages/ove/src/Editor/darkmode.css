@@ -65,6 +65,13 @@
   fill: #f5f8fa !important;
 }
 
+.bp3-dark .rowViewTextContainer *::selection {
+  fill: #f5f8fa !important;
+}
+.bp3-dark .veRowViewAxis *::selection {
+  fill: #f5f8fa !important;
+}
+
 /* .bp3-dark .veRowViewAxis text {
   stroke: #f5f8fa !important;
 } */
