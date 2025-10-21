@@ -746,8 +746,9 @@ export const AlignmentView = props => {
       }));
 
     const trackIdentifier = track?.sequenceData.id ? "id" : "hash";
+    const selectedTrack = propertySidePanel?.track;
     const isTrackSelected =
-      propertySidePanel.track?.sequenceData[trackIdentifier] ===
+      selectedTrack?.sequenceData[trackIdentifier] ===
       track?.sequenceData[trackIdentifier];
 
     let aaIdentity;
@@ -789,6 +790,16 @@ export const AlignmentView = props => {
                 : null
         }}
         key={i}
+        onClick={() => {
+          setPropertySidePanel(prev => {
+            return {
+              ...prev,
+              selection: easyStore.current.selectionLayer,
+              track,
+              isPairwise
+            };
+          });
+        }}
       >
         <div
           className="alignmentTrackName"
@@ -815,16 +826,6 @@ export const AlignmentView = props => {
           }}
           data-title={name}
           key={i}
-          onClick={() => {
-            if (sequenceData.isProtein) {
-              setPropertySidePanel(() => ({
-                isOpen: true,
-                selection: easyStore.current.selectionLayer,
-                track,
-                isPairwise
-              }));
-            }
-          }}
         >
           <div
             {...provided?.dragHandleProps}
@@ -1547,7 +1548,12 @@ export const AlignmentView = props => {
     window.innerHeight || 0
   );
 
-  const tgDrawerWidth = document.querySelector(".tg-drawer")?.clientWidth;
+  const tgDrawerWidth = document.querySelector(".tg-drawer")?.clientWidth ?? 0;
+  const tgOptionContainerWidth =
+    document.querySelector(".tgOptionContainer")?.clientWidth ?? 0;
+
+  const tgDemoNavContainerWidth =
+    document.querySelector(".demo-nav-container")?.clientWidth ?? 0;
 
   /**
    * Parameters to be passed to our Pinch Handler component
@@ -1592,7 +1598,11 @@ export const AlignmentView = props => {
       <div
         style={{
           width: propertySidePanel.isOpen
-            ? viewportWidth - tgDrawerWidth - 350
+            ? viewportWidth -
+              (tgDrawerWidth +
+                tgOptionContainerWidth +
+                tgDemoNavContainerWidth) -
+              350
             : "100%"
         }}
       >
@@ -1801,11 +1811,23 @@ export const AlignmentView = props => {
                       style={{ marginLeft: "auto" }}
                       onClick={() => {
                         // tnw - this should toggle
-                        setPropertySidePanel({
-                          isOpen: true
+                        setPropertySidePanel(prev => {
+                          return {
+                            ...prev,
+                            isOpen: !!(
+                              propertySidePanel.track &&
+                              !propertySidePanel.isOpen
+                            )
+                          };
                         });
                       }}
-                      data-tip="Show Track Properties"
+                      data-tip={
+                        !propertySidePanel?.track
+                          ? "Click a track to view its properties"
+                          : !propertySidePanel.isOpen
+                            ? "Show Track Properties"
+                            : "Hide Track Properties"
+                      }
                     ></Button>
                   </div>
                   {hasTemplate ? (

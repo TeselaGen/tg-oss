@@ -33,11 +33,27 @@ export default ({ properties, setProperties, style }) => {
   }, [track, mismatchKey, isPairwise]);
 
   useEffect(() => {
-    if (!isOpen) {
+    if (!isOpen || sidebarRef.current === null || !track) {
       return;
     }
 
     sidebarRef.current.focus();
+    let mismatchCount = 0;
+
+    trackMismatches?.forEach(tm => {
+      if (tm === null || tm.start === null || tm.end === null) {
+        return;
+      }
+
+      const overlapStart = tm.start;
+      const overlapEnd = tm.end;
+      if (overlapEnd >= overlapStart) {
+        mismatchCount += overlapEnd - overlapStart + 1;
+      }
+    });
+
+    setMismatchesCount(mismatchCount);
+    setMismatchesInRange(mismatchCount);
 
     if (selection && selection.start > -1 && selection.end > -1) {
       let count = 0;
@@ -54,35 +70,32 @@ export default ({ properties, setProperties, style }) => {
         }
       });
       setMismatchesInRange(count);
-    } else {
-      let count = 0;
-      trackMismatches?.forEach(tm => {
-        if (tm === null || tm.start === null || tm.end === null) {
-          return;
-        }
-
-        const overlapStart = tm.start;
-        const overlapEnd = tm.end;
-        if (overlapEnd >= overlapStart) {
-          count += overlapEnd - overlapStart + 1;
-        }
-      });
-
-      setMismatchesCount(count);
-      setMismatchesInRange(count);
     }
   }, [isOpen, track, selection, trackMismatches]);
 
   const aminoFreq = useMemo(() => {
     const seq = getSequenceInRegion();
-    return calculateAminoAcidFrequency(seq ?? "");
-  }, [getSequenceInRegion]);
+    return calculateAminoAcidFrequency(
+      seq,
+      track?.sequenceData?.isProtein ?? false
+    );
+  }, [getSequenceInRegion, track]);
 
   if (!isOpen || !track) {
     return null;
   }
 
-  const aaEntries = Object.entries(aminoFreq.frequencies);
+  const {
+    name,
+    isProtein,
+    proteinSize,
+    size,
+    molecularWeight,
+    isoPoint,
+    extinctionCoefficient
+  } = track.sequenceData;
+
+  const frequencyEntries = Object.entries(aminoFreq.frequencies);
 
   return (
     <div
@@ -99,7 +112,7 @@ export default ({ properties, setProperties, style }) => {
       tabIndex={0}
       onKeyDown={e => {
         if (e.key === "Escape") {
-          setProperties({ isOpen: false, track: null });
+          setProperties({ isOpen: false });
         }
       }}
     >
@@ -114,67 +127,51 @@ export default ({ properties, setProperties, style }) => {
       ></div>
       <h5>Properties</h5>
       <div className="bp3-tab-panel">
-        <div className="ve-flex-row property-name">
-          <div className="ve-column-left">Name</div>
-          <div className="ve-column-right">{track.sequenceData.name}</div>
-        </div>
-        <div className="ve-flex-row property-length">
-          <div className="ve-column-left">Length</div>
-          <div className="ve-column-right">
-            {track.sequenceData.proteinSize}
-          </div>
-        </div>
-        {track.sequenceData.name !== "Consensus" && (
+        <RowItem item={name} title="Name" />
+        <RowItem item={isProtein ? proteinSize : size} title="Length" />
+        <RowItem
+          item={molecularWeight?.toFixed(2)}
+          title="Molecular Weight"
+          units={isProtein ? "Da" : "g/mol"}
+        />
+        {name !== "Consensus" && isProtein && (
           <>
-            <div className="ve-flex-row property-molecular-weight">
-              <div className="ve-column-left">Molecular Weight</div>
-              <div className="ve-column-right">
-                {track.sequenceData.molecularWeight?.toFixed(2)} Da
-              </div>
-            </div>
-            <div className="ve-flex-row property-isoelectric-point">
-              <div className="ve-column-left">Isoelectric Point</div>
-              <div className="ve-column-right">
-                {track.sequenceData?.isoPoint}
-              </div>
-            </div>
-            <div className="ve-flex-row property-extinction-coefficient">
-              <div className="ve-column-left">Extinction Coefficient</div>
-              <div className="ve-column-right">
-                {track.sequenceData.extinctionCoefficient}
-              </div>
-            </div>
+            <RowItem item={isoPoint} title="Isoelectric Point" />
+            <RowItem
+              item={extinctionCoefficient}
+              title="Extinction Coefficient"
+            />
           </>
         )}
-        <div className="ve-flex-row property-mismatches">
-          <div className="ve-column-left">Mismatches</div>
-          <div className="ve-column-right">{`${mismatchesInRange}/${mismatchesCount}`}</div>
-        </div>
-        <div className="ve-flex-row property-region">
-          <div className="ve-column-left">Region</div>
-          <div className="ve-column-right">
-            {selection && selection.start > -1 ? (
+        <RowItem
+          item={`${mismatchesInRange}/${mismatchesCount}`}
+          title="Mismatches"
+        />
+        <RowItem
+          item={
+            selection && selection.start > -1 ? (
               <span>
                 {selection.start + 1} - {selection.end + 1}
               </span>
             ) : (
-              <span>1 - {track.sequenceData.proteinSize}</span>
-            )}
-          </div>
-        </div>
+              <span>1 - {isProtein ? proteinSize : size}</span>
+            )
+          }
+          title="Region"
+        />
       </div>
-      <h5>Amino Acid Frequencies</h5>
+      <h5>{isProtein ? "Amino Acid" : "Base Pair"} Frequencies</h5>
       <div className="sidebar-table">
         <div className="sidebar-row">
           <div className="sidebar-cell">Amino Acid</div>
           <div className="sidebar-cell">Count</div>
           <div className="sidebar-cell">Percentage</div>
         </div>
-        {aaEntries.map(([aa, data], idx) => {
+        {frequencyEntries.map(([aa, data], idx) => {
           return (
             <div className={`sidebar-row property-amino-acid-${idx}`}>
               <div className="sidebar-cell">
-                {aa} ({aminoAcidShortNames[aa]})
+                {aa} {isProtein ? `(${aminoAcidShortNames[aa]})` : ""}
               </div>
               <div className="sidebar-cell">{data.count}</div>
               <div className="sidebar-cell">{data.percentage.toFixed(1)}%</div>
@@ -185,3 +182,17 @@ export default ({ properties, setProperties, style }) => {
     </div>
   );
 };
+
+function RowItem({ item, title, units }) {
+  if (!item) return;
+
+  const propertyClass = title.split(" ").join("-").toLowerCase();
+  return (
+    <div className={`ve-flex-row property-${propertyClass}`}>
+      <div className="ve-column-left">{title}</div>
+      <div className="ve-column-right">
+        {item} {units ?? ""}
+      </div>
+    </div>
+  );
+}

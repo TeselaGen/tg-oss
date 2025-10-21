@@ -2,30 +2,32 @@
  * Calculates detailed amino acid frequency, including counts and percentages for
  * all 20 standard amino acids.
  *
- * @param {string} aminoAcidSequence The protein sequence.
+ * @param {string} sequence The protein sequence.
  * @returns {{
  *   totalCount: number,
  *   frequencies: Object<string, {count: number, percentage: number}>,
  *   nonStandard: Object<string, number>
  * }} A comprehensive analysis object.
  */
-export function calculateAminoAcidFrequency(aminoAcidSequence) {
+export function calculateAminoAcidFrequency(sequence, isProtein) {
   // 1. Validate input
-  if (!aminoAcidSequence || typeof aminoAcidSequence !== "string") {
+  if (!sequence || typeof sequence !== "string") {
     console.warn("Invalid or empty amino acid sequence provided.");
   }
 
-  const standardAAs = "ACDEFGHIKLMNPQRSTVWY-".split("");
+  const standards = isProtein
+    ? "ACDEFGHIKLMNPQRSTVWY-".split("")
+    : "ATCG-".split("");
   const frequencies = {};
-  standardAAs.forEach(aa => {
-    frequencies[aa] = { count: 0, percentage: 0 };
+  standards.forEach(a => {
+    frequencies[a] = { count: 0, percentage: 0 };
   });
 
   const nonStandard = {}; // For gaps '-', 'X', 'B', 'Z', etc.
   let totalCount = 0;
 
   // 2. Iterate and count
-  for (const char of aminoAcidSequence.toUpperCase()) {
+  for (const char of sequence.toUpperCase()) {
     if (frequencies[char]) {
       frequencies[char].count++;
       totalCount++;
@@ -37,14 +39,14 @@ export function calculateAminoAcidFrequency(aminoAcidSequence) {
 
   // 3. Calculate percentages
   if (totalCount > 0) {
-    for (const aa of standardAAs) {
-      frequencies[aa].percentage = (frequencies[aa].count / totalCount) * 100;
+    for (const a of standards) {
+      frequencies[a].percentage = (frequencies[a].count / totalCount) * 100;
     }
   }
 
   return {
-    totalStandardAAs: totalCount, // Total count of the 20 standard AAs
-    totalLength: aminoAcidSequence.length, // Total length including non-standard
+    totalStandards: totalCount, // Total count of elements
+    totalLength: sequence.length, // Total length including non-standard
     frequencies,
     nonStandard
   };
