@@ -101,6 +101,7 @@ const schema = {
     {
       type: "lookup",
       displayName: "User Status",
+      description: 'I have a field."description" prop set',
       path: "user.status.name"
     },
     {
