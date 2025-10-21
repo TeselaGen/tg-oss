@@ -30,6 +30,7 @@ describe("Amino Acid MSA", function () {
       `[data-alignment-track-index="1"] .alignmentTrackName`,
       "Chicken Hemoglobin Alpha"
     ).click();
+    cy.get(`.showTrackPropertiesBtn`).click();
     cy.contains(".ove-sidebar-container", "Properties");
     cy.contains("Name").should("exist");
     cy.contains(

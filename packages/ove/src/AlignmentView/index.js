@@ -1787,6 +1787,7 @@ export const AlignmentView = props => {
                       <Button
                         small
                         minimal
+                        className={"showTrackPropertiesBtn"}
                         icon={"menu-closed"}
                         intent="primary"
                         style={{ marginLeft: "auto" }}
