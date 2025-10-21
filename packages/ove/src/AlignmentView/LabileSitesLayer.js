@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * Draws vertical lines at specified libile site position.
+ * Draws vertical lines at specified labile site position.
  *
  * @param {Object} props
  * @param {number} leftMargin - Width of the name column.

@@ -43,7 +43,7 @@ function calculateIdentityMatrix(alignedSequences) {
         const { validPositions, identicalPositions } =
           calculatePairwiseIdentity(seq1, seq2, true);
 
-        const identityPorcentage =
+        const identityPercentage =
           validPositions > 0 ? (identicalPositions / validPositions) * 100 : 0;
 
         _identicalPositions.push({
@@ -51,8 +51,8 @@ function calculateIdentityMatrix(alignedSequences) {
           seqs: [sequenceNames[i], sequenceNames[j]]
         });
 
-        identityMatrix[i][j] = identityPorcentage;
-        identityMatrix[j][i] = identityPorcentage;
+        identityMatrix[i][j] = identityPercentage;
+        identityMatrix[j][i] = identityPercentage;
       }
     }
   }

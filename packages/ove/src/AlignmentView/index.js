@@ -1552,9 +1552,6 @@ export const AlignmentView = props => {
   const tgOptionContainerWidth =
     document.querySelector(".tgOptionContainer")?.clientWidth ?? 0;
 
-  const tgDemoNavContainerWidth =
-    document.querySelector(".demo-nav-container")?.clientWidth ?? 0;
-
   /**
    * Parameters to be passed to our Pinch Handler component
    * OnPinch is the method to be executed when the pinch gesture is registered
@@ -1598,11 +1595,7 @@ export const AlignmentView = props => {
       <div
         style={{
           width: propertySidePanel.isOpen
-            ? viewportWidth -
-              (tgDrawerWidth +
-                tgOptionContainerWidth +
-                tgDemoNavContainerWidth) -
-              350
+            ? viewportWidth - (tgDrawerWidth + tgOptionContainerWidth) - 350
             : "100%"
         }}
       >

@@ -269,7 +269,7 @@ export default function RowItem(props) {
             })
           )
         : [],
-      null,
+      isProteinAlignmentView,
       filterOpts
     );
     if (!ranges.length) return null;

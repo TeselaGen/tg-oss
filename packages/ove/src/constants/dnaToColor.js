@@ -44,23 +44,24 @@ export const hydrophobicityColor = {
   r: "#4B4CFF" // arginine
 };
 
+const mainHighlighter = "#4B91B8";
 export const polarColors = {
-  s: "#4B91B8",
-  t: "#4B91B8",
-  n: "#4B91B8",
-  c: "#4B91B8",
-  q: "#4B91B8",
-  y: "#4B91B8"
+  s: mainHighlighter,
+  t: mainHighlighter,
+  n: mainHighlighter,
+  c: mainHighlighter,
+  q: mainHighlighter,
+  y: mainHighlighter
 };
 
 export const negativeColors = {
-  e: "#4B91B8",
-  d: "#4B91B8"
+  e: mainHighlighter,
+  d: mainHighlighter
 };
 export const positiveColors = {
-  k: "#4B91B8",
-  r: "#4B91B8",
-  h: "#4B91B8"
+  k: mainHighlighter,
+  r: mainHighlighter,
+  h: mainHighlighter
 };
 
 export const chargedColors = {
@@ -69,20 +70,20 @@ export const chargedColors = {
 };
 
 export const aliphaticColors = {
-  g: "#4B91B8",
-  a: "#4B91B8",
-  v: "#4B91B8",
-  l: "#4B91B8",
-  i: "#4B91B8",
-  p: "#4B91B8",
-  m: "#4B91B8"
+  g: mainHighlighter,
+  a: mainHighlighter,
+  v: mainHighlighter,
+  l: mainHighlighter,
+  i: mainHighlighter,
+  p: mainHighlighter,
+  m: mainHighlighter
 };
 
 export const aromaticColors = {
-  f: "#4B91B8",
-  y: "#4B91B8",
-  w: "#4B91B8",
-  h: "#4B91B8"
+  f: mainHighlighter,
+  y: mainHighlighter,
+  w: mainHighlighter,
+  h: mainHighlighter
 };
 
 export const colorScheme = {
@@ -106,7 +107,7 @@ export const colorScheme = {
   w: "#B45AB4", // tryptophan
   y: "#3232AA", // tyrosine
   v: "#0F820F", // valine
-  x: "BEA06E"
+  x: "#BEA06E"
 };
 
 function hexToRgba(hex) {
