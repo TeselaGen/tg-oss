@@ -1759,31 +1759,25 @@ export const AlignmentView = props => {
                       {saveMessage}
                     </div>
                   )}
-                  <Button
-                    small
-                    minimal
-                    icon="menu-open"
-                    intent="primary"
-                    style={{ marginLeft: "auto" }}
-                    onClick={() => {
-                      // tnw - this should toggle
-                      setPropertySidePanel(prev => {
-                        return {
-                          ...prev,
-                          isOpen: !!(
-                            propertySidePanel.track && !propertySidePanel.isOpen
-                          )
-                        };
-                      });
-                    }}
-                    data-tip={
-                      !propertySidePanel?.track
-                        ? "Click a track to view its properties"
-                        : !propertySidePanel.isOpen
-                          ? "Show Track Properties"
-                          : "Hide Track Properties"
-                    }
-                  ></Button>
+                  {!propertySidePanel.isOpen && (
+                    <Button
+                      small
+                      minimal
+                      className={"showTrackPropertiesBtn"}
+                      icon={"menu-closed"}
+                      intent="primary"
+                      style={{ marginLeft: "auto" }}
+                      onClick={() => {
+                        setPropertySidePanel(prev => {
+                          return {
+                            ...prev,
+                            isOpen: true
+                          };
+                        });
+                      }}
+                      data-tip={"Show Track Properties"}
+                    ></Button>
+                  )}
                 </div>
                 {hasTemplate ? (
                   <>
