@@ -4,6 +4,7 @@ import {
   calculateAminoAcidFrequency,
   aminoAcidShortNames
 } from "./calculateAminoAcidFrequency";
+import { Button } from "@blueprintjs/core";
 
 export default ({ properties, setProperties, style }) => {
   const sidebarRef = React.useRef(null);
@@ -81,21 +82,106 @@ export default ({ properties, setProperties, style }) => {
     );
   }, [getSequenceInRegion, track]);
 
-  if (!isOpen || !track) {
+  if (!isOpen) {
     return null;
   }
+  let trackInner;
 
-  const {
-    name,
-    isProtein,
-    proteinSize,
-    size,
-    molecularWeight,
-    isoPoint,
-    extinctionCoefficient
-  } = track.sequenceData;
+  if (track) {
+    const {
+      name,
+      isProtein,
+      proteinSize,
+      size,
+      molecularWeight,
+      isoPoint,
+      extinctionCoefficient
+    } = track.sequenceData;
 
-  const frequencyEntries = Object.entries(aminoFreq.frequencies);
+    const frequencyEntries = Object.entries(aminoFreq.frequencies);
+    trackInner = (
+      <>
+        <div
+          style={{
+            display: "flex",
+            padding: 4,
+            paddingTop: 11,
+            paddingBottom: 11,
+            width: "100%"
+          }}
+        ></div>
+        <h5>Track Properties</h5>
+
+        <div className="bp3-tab-panel">
+          <RowItem item={name} title="Name" />
+          <RowItem item={isProtein ? proteinSize : size} title="Length" />
+          <RowItem
+            item={molecularWeight?.toFixed(2)}
+            title="Molecular Weight"
+            units={isProtein ? "Da" : "g/mol"}
+          />
+          {name !== "Consensus" && isProtein && (
+            <>
+              <RowItem item={isoPoint} title="Isoelectric Point" />
+              <RowItem
+                item={extinctionCoefficient}
+                title="Extinction Coefficient"
+              />
+            </>
+          )}
+          <RowItem
+            item={`${mismatchesInRange}/${mismatchesCount}`}
+            title="Mismatches"
+          />
+          <RowItem
+            item={
+              selection && selection.start > -1 ? (
+                <span>
+                  {selection.start + 1} - {selection.end + 1}
+                </span>
+              ) : (
+                <span>1 - {isProtein ? proteinSize : size}</span>
+              )
+            }
+            title="Region"
+          />
+        </div>
+        <h5>{isProtein ? "Amino Acid" : "Base Pair"} Frequencies</h5>
+        <div className="sidebar-table">
+          <div className="sidebar-row">
+            <div className="sidebar-cell">Amino Acid</div>
+            <div className="sidebar-cell">Count</div>
+            <div className="sidebar-cell">Percentage</div>
+          </div>
+          {frequencyEntries.map(([aa, data], idx) => {
+            return (
+              <div className={`sidebar-row property-amino-acid-${idx}`}>
+                <div className="sidebar-cell">
+                  {aa} {isProtein ? `(${aminoAcidShortNames[aa]})` : ""}
+                </div>
+                <div className="sidebar-cell">{data.count}</div>
+                <div className="sidebar-cell">
+                  {data.percentage.toFixed(1)}%
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </>
+    );
+  } else {
+    trackInner = (
+      <div
+        style={{
+          marginTop: 20,
+          fontStyle: "italic",
+          fontSize: 16
+        }}
+      >
+        Click on a track to view its properties
+      </div>
+    );
+  }
 
   return (
     <div
@@ -108,7 +194,7 @@ export default ({ properties, setProperties, style }) => {
         paddingRight: 20,
         ...style
       }}
-      className="sidebar-container"
+      className="ove-sidebar-container"
       tabIndex={0}
       onKeyDown={e => {
         if (e.key === "Escape") {
@@ -116,69 +202,21 @@ export default ({ properties, setProperties, style }) => {
         }
       }}
     >
-      <div
+      <Button
         style={{
-          display: "flex",
-          padding: 4,
-          paddingTop: 11,
-          paddingBottom: 11,
-          width: "100%"
+          position: "absolute",
+          top: 5,
+          right: 10,
+          zIndex: 1,
+          cursor: "pointer"
         }}
-      ></div>
-      <h5>Properties</h5>
-      <div className="bp3-tab-panel">
-        <RowItem item={name} title="Name" />
-        <RowItem item={isProtein ? proteinSize : size} title="Length" />
-        <RowItem
-          item={molecularWeight?.toFixed(2)}
-          title="Molecular Weight"
-          units={isProtein ? "Da" : "g/mol"}
-        />
-        {name !== "Consensus" && isProtein && (
-          <>
-            <RowItem item={isoPoint} title="Isoelectric Point" />
-            <RowItem
-              item={extinctionCoefficient}
-              title="Extinction Coefficient"
-            />
-          </>
-        )}
-        <RowItem
-          item={`${mismatchesInRange}/${mismatchesCount}`}
-          title="Mismatches"
-        />
-        <RowItem
-          item={
-            selection && selection.start > -1 ? (
-              <span>
-                {selection.start + 1} - {selection.end + 1}
-              </span>
-            ) : (
-              <span>1 - {isProtein ? proteinSize : size}</span>
-            )
-          }
-          title="Region"
-        />
-      </div>
-      <h5>{isProtein ? "Amino Acid" : "Base Pair"} Frequencies</h5>
-      <div className="sidebar-table">
-        <div className="sidebar-row">
-          <div className="sidebar-cell">Amino Acid</div>
-          <div className="sidebar-cell">Count</div>
-          <div className="sidebar-cell">Percentage</div>
-        </div>
-        {frequencyEntries.map(([aa, data], idx) => {
-          return (
-            <div className={`sidebar-row property-amino-acid-${idx}`}>
-              <div className="sidebar-cell">
-                {aa} {isProtein ? `(${aminoAcidShortNames[aa]})` : ""}
-              </div>
-              <div className="sidebar-cell">{data.count}</div>
-              <div className="sidebar-cell">{data.percentage.toFixed(1)}%</div>
-            </div>
-          );
-        })}
-      </div>
+        minimal
+        intent="primary"
+        data-tip="Hide Track Properties"
+        icon="cross"
+        onClick={() => setProperties({ isOpen: false })}
+      ></Button>
+      {trackInner}
     </div>
   );
 };

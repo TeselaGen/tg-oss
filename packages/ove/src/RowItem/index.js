@@ -623,7 +623,8 @@ export default function RowItem(props) {
                   style={{
                     left: startOffset * charWidth,
                     height: sequenceHeight,
-                    position: "absolute"
+                    position: "absolute",
+                    userSelect: "none"
                   }}
                   onClick={function (event) {
                     replacementLayerClicked({

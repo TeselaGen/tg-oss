@@ -255,8 +255,6 @@ export const AlignmentView = props => {
     };
   }, []);
 
-  const isDarkMode = store?.getState()?.platform?.ui?.theme.dark ?? false;
-
   const {
     alignmentAnnotationVisibility,
     togglableAlignmentAnnotationSettings
@@ -766,7 +764,8 @@ export const AlignmentView = props => {
         ref={provided?.innerRef}
         {...provided?.draggableProps}
         className={classNames("alignmentViewTrackContainer", {
-          isDragDisabled
+          isDragDisabled,
+          isTrackSelected
         })}
         data-alignment-track-index={i}
         style={{
@@ -775,13 +774,7 @@ export const AlignmentView = props => {
             : "0px -1px 0px 0px inset",
           display: "flex",
           ...provided?.draggableProps?.style,
-          ...(snapshot?.isDragging && { left: unset }),
-          background:
-            isTrackSelected && isDarkMode
-              ? "#003330"
-              : isTrackSelected
-                ? "#E2F1FC"
-                : null
+          ...(snapshot?.isDragging && { left: unset })
         }}
         key={i}
         onClick={() => {
@@ -810,13 +803,7 @@ export const AlignmentView = props => {
             minWidth: nameDivWidth - 3,
             overflow: "hidden",
             scrollbarWidth: "none",
-            whiteSpace: "nowrap",
-            background:
-              isTrackSelected && isDarkMode
-                ? "#003330"
-                : isTrackSelected
-                  ? "#E2F1FC"
-                  : null
+            whiteSpace: "nowrap"
           }}
           data-title={name}
           key={i}
@@ -1901,8 +1888,7 @@ export const AlignmentView = props => {
             properties={propertySidePanel}
             setProperties={setPropertySidePanel}
             style={{
-              height: viewportHeight * 0.88,
-              background: isDarkMode ? "#293742" : null
+              height: viewportHeight * 0.88
             }}
           />
         )}

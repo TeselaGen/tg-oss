@@ -30,24 +30,31 @@ describe("Amino Acid MSA", function () {
       `[data-alignment-track-index="1"] .alignmentTrackName`,
       "Chicken Hemoglobin Alpha"
     ).click();
-    cy.contains(".sidebar-container", "Properties");
+    cy.get(`.showTrackPropertiesBtn`).click();
+    cy.contains(".ove-sidebar-container", "Properties");
     cy.contains("Name").should("exist");
     cy.contains(
-      ".sidebar-container .property-name",
+      ".ove-sidebar-container .property-name",
       "Chicken Hemoglobin Alpha"
     );
     cy.contains("Length").should("exist");
-    cy.contains(".sidebar-container .property-length", "142");
+    cy.contains(".ove-sidebar-container .property-length", "142");
     cy.contains("Molecular Weight").should("exist");
-    cy.contains(".sidebar-container .property-molecular-weight", "15160.40 Da");
+    cy.contains(
+      ".ove-sidebar-container .property-molecular-weight",
+      "15160.40 Da"
+    );
     cy.contains("Isoelectric Point").should("exist");
-    cy.contains(".sidebar-container .property-isoelectric-point", "8.63");
+    cy.contains(".ove-sidebar-container .property-isoelectric-point", "8.63");
     cy.contains("Extinction Coefficient").should("exist");
-    cy.contains(".sidebar-container .property-extinction-coefficient", "9970");
+    cy.contains(
+      ".ove-sidebar-container .property-extinction-coefficient",
+      "9970"
+    );
     cy.contains("Mismatches").should("exist");
-    cy.contains(".sidebar-container .property-mismatches", "7/7");
+    cy.contains(".ove-sidebar-container .property-mismatches", "7/7");
     cy.contains("Region").should("exist");
-    cy.contains(".sidebar-container .property-region", "1 - 142");
+    cy.contains(".ove-sidebar-container .property-region", "1 - 142");
 
     // Check amino acid frequencies are displayed
     cy.contains("Amino Acid Frequencies").should("exist");
@@ -75,7 +82,7 @@ describe("Amino Acid MSA", function () {
     ];
     aminoAcids.forEach((aa, i) => {
       cy.contains(
-        `.sidebar-container .sidebar-table .property-amino-acid-${i}`,
+        `.ove-sidebar-container .sidebar-table .property-amino-acid-${i}`,
         aa
       );
     });

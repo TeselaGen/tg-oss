@@ -16,8 +16,8 @@
   font-family: Menlo, Monaco, monospace;
   font-size: 10px;
 }
-.rowViewTextContainer text {
-  user-select: none;
+.rowViewTextContainer text::selection {
+  background: transparent;
 }
 .translationLayer text,
 .tg-prime-direction,

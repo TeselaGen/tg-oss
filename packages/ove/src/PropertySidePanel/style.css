@@ -1,11 +1,8 @@
-.sidebar-container {
+.ove-sidebar-container {
   display: flex;
   flex-direction: column;
-  background: #fbfbfb;
-  box-shadow: 0 0 rgb(17 20 24 / 15%);
+  box-shadow: 0 0px 1px var(--reversed);
   overflow-y: scroll;
-  border-right: 1px solid #f1f1f1;
-  border-left: 1px solid #f1f1f1;
 }
 
 .sidebar-table {
