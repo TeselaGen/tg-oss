@@ -320,7 +320,8 @@ const DataTableDemo = () => {
   });
   const [selectedIds, setSelectedIds] = useState(undefined);
   const [showCount, showCountSwitch] = useToggle({
-    type: "showCount"
+    type: "showCount",
+    defaultValue: true
   });
   const [withCheckboxes, withCheckboxesSwitch] = useToggle({
     type: "withCheckboxes",

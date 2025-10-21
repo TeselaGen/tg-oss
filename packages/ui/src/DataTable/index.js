@@ -460,7 +460,7 @@ const DataTable = ({
     setPageSize = noop,
     setSearchTerm = noop,
     shouldShowSubComponent,
-    showCount = false,
+    showCount = true,
     style = {},
     SubComponent,
     subHeader,
