@@ -11,6 +11,12 @@
 .alignmentViewTrackContainer {
   position: relative;
 }
+.alignmentViewTrackContainer.isTrackSelected {
+  background-color: #c0e2f5;
+}
+.bp3-dark .alignmentViewTrackContainer.isTrackSelected {
+  background-color: #2277a9;
+}
 .alignmentViewTrackContainer,
 .alignmentViewTrackContainer .veVectorInteractionWrapper,
 .alignmentViewTrackContainer .veVectorInteractionWrapper > div {
