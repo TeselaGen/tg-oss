@@ -97,6 +97,11 @@
 .minimapLane.lane-hovered .miniBluePath {
   fill: rgb(169, 169, 245) !important;
 }
+.minimapLane.isTrackSelected .miniBluePath {
+  fill: rgb(137, 168, 255) !important;
+  stroke: rgb(0, 0, 0);
+  stroke-width: 0.5px;
+}
 
 .veAlignmentName {
   padding-top: 1px;

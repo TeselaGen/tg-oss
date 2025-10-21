@@ -1870,6 +1870,16 @@ export const AlignmentView = props => {
                       </>
                     }
                     alignmentTracks={alignmentTracks}
+                    isTrackSelected={alignmentTracks.map(track => {
+                      const trackIdentifier = track?.sequenceData.id
+                        ? "id"
+                        : "hash";
+                      const selectedTrack = propertySidePanel?.track;
+                      return (
+                        selectedTrack?.sequenceData[trackIdentifier] ===
+                        track?.sequenceData[trackIdentifier]
+                      );
+                    })}
                     dimensions={{
                       width: Math.max(width, 10) || 10
                     }}

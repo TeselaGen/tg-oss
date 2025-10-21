@@ -22,7 +22,8 @@ export default class Minimap extends React.Component {
         "numBpsShownInLinearView",
         "scrollAlignmentView",
         "laneHeight",
-        "laneSpacing"
+        "laneSpacing",
+        "isTrackSelected"
       ].some(key => props[key] !== newProps[key])
     )
       return true;
@@ -183,7 +184,8 @@ export default class Minimap extends React.Component {
       alignmentTracks = [],
       dimensions: { width = 200 },
       laneHeight,
-      laneSpacing = 1
+      laneSpacing = 1,
+      isTrackSelected = []
     } = this.props;
     const charWidth = this.getCharWidth();
 
@@ -233,7 +235,7 @@ export default class Minimap extends React.Component {
     return (
       <div
         key={i + "-lane"}
-        className="minimapLane"
+        className={`minimapLane ${isTrackSelected[i] ? "isTrackSelected" : ""}`}
         data-lane-index={i}
         style={{ height: laneHeight, maxHeight: laneHeight }}
       >
