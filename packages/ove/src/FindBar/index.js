@@ -269,9 +269,8 @@ export class FindBar extends React.Component {
                 minWidth: 300
               }
             : {
-                position: "fixed",
-                top: 120,
-                right: 25,
+                position: "relative",
+                top: 100,
                 padding: 10,
                 display: "flex",
                 alignItems: "start",

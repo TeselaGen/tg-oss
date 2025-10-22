@@ -11,6 +11,12 @@
 .alignmentViewTrackContainer {
   position: relative;
 }
+.alignmentViewTrackContainer.isTrackSelected {
+  background-color: #c0e2f5;
+}
+.bp3-dark .alignmentViewTrackContainer.isTrackSelected {
+  background-color: #2277a9;
+}
 .alignmentViewTrackContainer,
 .alignmentViewTrackContainer .veVectorInteractionWrapper,
 .alignmentViewTrackContainer .veVectorInteractionWrapper > div {
@@ -91,6 +97,11 @@
 .minimapLane.lane-hovered .miniBluePath {
   fill: rgb(169, 169, 245) !important;
 }
+.minimapLane.isTrackSelected .miniBluePath {
+  fill: rgb(137, 168, 255) !important;
+  stroke: rgb(0, 0, 0);
+  stroke-width: 0.5px;
+}
 
 .veAlignmentName {
   padding-top: 1px;
@@ -104,4 +115,20 @@
   /* overflow: hidden; */
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.veLabileSites {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  z-index: 10;
+}
+
+.veAlignmentViewLabileSiteLine {
+  position: absolute;
+  height: 100%;
+  width: 4px;
+  background: #1585c5;
+  opacity: 0.5;
+  top: 0;
 }

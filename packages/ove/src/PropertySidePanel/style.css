@@ -1,0 +1,39 @@
+.ove-sidebar-container {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0px 1px var(--reversed);
+  overflow-y: scroll;
+}
+
+.sidebar-table {
+  display: grid;
+  /* Define 3 columns with equal width */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px; /* Optional: adds a small gap between cells */
+  border: 1px solid #f1f1f1;
+  margin: 10px;
+  border-radius: 4px;
+}
+
+.sidebar-row {
+  display: contents; /* Makes children participate in the grid layout of the parent */
+}
+
+.sidebar-cell {
+  padding: 5px;
+  border: 1px solid #f1f1f1;
+  text-align: center;
+  /* Flexbox can be used within cells for content alignment if needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #f1f1f1;
+}

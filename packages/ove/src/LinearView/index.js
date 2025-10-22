@@ -28,6 +28,7 @@ import {
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
 import { store } from "@risingstack/react-easy-state";
+import { BarPlot, AminoAcidCirclePlot } from "../BarPlot";
 
 const defaultMarginWidth = 10;
 
@@ -304,6 +305,24 @@ class _LinearView extends React.Component {
             <VeTopRightContainer>{this.paredDownMessages}</VeTopRightContainer>
           )}
           <PinchHelperToUse {...(linearZoomEnabled && pinchHandler)}>
+            {sequenceData.isProtein && sequenceData.name === "Consensus" && (
+              <>
+                {annotationVisibilityOverrides.conservation && (
+                  <BarPlot
+                    className="ve-linear-view-conservation-plot"
+                    data={sequenceData?.aminoAcidProperties?.frequencies}
+                    width={width}
+                  />
+                )}
+                {annotationVisibilityOverrides.properties && (
+                  <AminoAcidCirclePlot
+                    className="ve-linear-view-property-analysis-plot"
+                    data={sequenceData?.aminoAcidProperties?.propertyAnalysis}
+                    width={width}
+                  />
+                )}
+              </>
+            )}
             <RowItem
               {...{
                 ...rest,

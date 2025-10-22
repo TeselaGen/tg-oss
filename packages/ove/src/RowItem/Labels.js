@@ -99,7 +99,7 @@ function Labels(props) {
       annotation = annotationRange;
     }
     const annotationLength =
-    getTextLengthWithCollapseSpace(
+      getTextLengthWithCollapseSpace(
         annotation.name ||
           (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name) ||
           ""

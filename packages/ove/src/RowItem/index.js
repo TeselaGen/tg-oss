@@ -32,7 +32,7 @@ import { filter } from "lodash-es";
 import { defaultCharWidth } from "../constants/rowviewContants";
 import { CutsiteSelectionLayers } from "./CutsiteSelectionLayers";
 
-function filterRanges(ranges, extraProps = {}) {
+function filterRanges(ranges, isProteinAlignmentView, extraProps = {}) {
   if (!ranges) return ranges;
   if (extraProps.onlyForward) {
     ranges = filter(ranges, a => a.annotation.forward);
@@ -40,11 +40,39 @@ function filterRanges(ranges, extraProps = {}) {
   if (extraProps.onlyReverse) {
     ranges = filter(ranges, a => !a.annotation.forward);
   }
+
+  if (isProteinAlignmentView) {
+    ranges = map(ranges, range => {
+      const start = (range.start + 3) / 3 - 1;
+      const end = (range.end + 1) / 3 - 1;
+      return {
+        ...range,
+        start,
+        end,
+        annotation: {
+          ...range.annotation,
+          start,
+          end
+        }
+      };
+    });
+  }
   return ranges;
 }
-function getPropsForType(props, type, pluralType, extraProps) {
+function getPropsForType(
+  props,
+  isProteinAlignmentView,
+  type,
+  pluralType,
+  extraProps
+) {
   const upperPluralType = startCase(pluralType);
-  const annotationRanges = filterRanges(props.row[pluralType], extraProps);
+
+  const annotationRanges = filterRanges(
+    props.row[pluralType],
+    isProteinAlignmentView,
+    extraProps
+  );
 
   const toRet = {
     annotationColor: props[pluralType + "Color"],
@@ -140,6 +168,15 @@ export default function RowItem(props) {
     // yellowAxis: showYellowAxis,
     aminoAcidNumbers: showAminoAcidNumbers,
     dnaColors: showDnaColors,
+    serineThreonine: showSerineThreonine,
+    hydrophobicity: showHydrophobicity,
+    polar: showPolar,
+    negative: showNegative,
+    positive: showPositive,
+    charged: showCharged,
+    aliphatic: showAliphatic,
+    aromatic: showAromatic,
+    colorScheme: showColorScheme,
     fivePrimeThreePrimeHints,
     reverseSequence: showReverseSequence,
     sequence: showSequence,
@@ -199,17 +236,22 @@ export default function RowItem(props) {
     width: width + "px"
   };
 
+  const isProteinAlignmentView = !!(props.isProtein && props.alignmentData);
+
   const annotationCommonProps = {
     noRedux,
     editorName,
     charWidth,
     bpsPerRow,
     getGaps,
-    isProtein,
+    isProtein: isProteinAlignmentView ? false : isProtein,
     readOnly,
     sequenceLength,
     isRowView,
-    row: { start: row.start, end: row.end }
+    row: {
+      start: row.start,
+      end: isProteinAlignmentView ? sequenceLength - 1 : row.end
+    }
   };
 
   const drawLabels = (type, noDraw, { filterOpts, ...extraProps } = {}) => {
@@ -227,6 +269,7 @@ export default function RowItem(props) {
             })
           )
         : [],
+      isProteinAlignmentView,
       filterOpts
     );
     if (!ranges.length) return null;
@@ -262,6 +305,13 @@ export default function RowItem(props) {
     ) {
       return null;
     }
+    const propsForType = getPropsForType(
+      props,
+      isProteinAlignmentView,
+      type,
+      pluralType,
+      extraProps
+    );
     const CompToUse = CompOverride || StackedAnnotations;
     return (
       <CompToUse
@@ -272,7 +322,7 @@ export default function RowItem(props) {
         containerClassName={camelCase("veRowView-" + pluralType + "Container")}
         alignmentType={alignmentType}
         {...annotationCommonProps}
-        {...getPropsForType(props, type, pluralType, extraProps)}
+        {...propsForType}
         {...otherExtraProps}
       />
     );
@@ -430,6 +480,16 @@ export default function RowItem(props) {
               sequenceLength={sequenceLength}
               cutsites={cutsites} //pass this in order to get children cutsites to re-render
               showDnaColors={showDnaColors}
+              showSerineThreonine={showSerineThreonine}
+              showHydrophobicity={showHydrophobicity}
+              showPolar={showPolar}
+              showNegative={showNegative}
+              showPositive={showPositive}
+              showCharged={showCharged}
+              showAliphatic={showAliphatic}
+              showAromatic={showAromatic}
+              showColorScheme={showColorScheme}
+              showPhysicalProperties={isProteinAlignmentView}
               fivePrimeThreePrimeHints={fivePrimeThreePrimeHints}
               scrollData={scrollData}
               hideBps={charWidth < 7}
@@ -563,7 +623,8 @@ export default function RowItem(props) {
                   style={{
                     left: startOffset * charWidth,
                     height: sequenceHeight,
-                    position: "absolute"
+                    position: "absolute",
+                    userSelect: "none"
                   }}
                   onClick={function (event) {
                     replacementLayerClicked({

@@ -17,7 +17,11 @@ export default function PinchHelper({ children, onPinch }) {
     }
   );
   return (
-    <div ref={target} className="tg-pinch-helper">
+    <div
+      ref={target}
+      style={{ overflowX: "hidden" }}
+      className="tg-pinch-helper"
+    >
       {children}
     </div>
   );

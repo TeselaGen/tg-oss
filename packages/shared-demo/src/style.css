@@ -97,20 +97,13 @@ h6 {
 }
 
 .demo-area-container {
-  background: #f6f7f9;
   height: 100%;
   overflow: auto;
 }
-
-.bp3-dark .demo-area-container,
-.bp3-dark .demo-header {
-  background: #2f343c;
-}
-
 .demo-nav-container {
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 rgb(17 20 24 / 15%);
+  box-shadow: 0 0px 1px var(--reversed);
   height: 100%;
   overflow-y: auto;
 }

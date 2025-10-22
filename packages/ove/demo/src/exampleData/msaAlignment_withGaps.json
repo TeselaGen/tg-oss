@@ -3,6 +3,7 @@
   "alignmentTracks": [
     {
       "sequenceData": {
+        "id": "1",
         "features": [
           {
             "start": 2,
@@ -53,6 +54,7 @@
     },
     {
       "sequenceData": {
+        "id": "2",
         "features": [],
         "name": "F08887",
         "sequence": "CGGCTGAAAGCGAAACGTTCCTTATCATCTGGCGAATCGGACCCACAAGAGCACTGCTGATCCTTCAACTCAGCAAAAGTTCGATTTATT",
@@ -69,6 +71,7 @@
     },
     {
       "sequenceData": {
+        "id": "3",
         "features": [
           {
             "start": 22,

@@ -72,6 +72,9 @@ import { isTargetWithinEl } from "./isTargetWithinEl";
 import { EditTrackNameDialog } from "./EditTrackNameDialog";
 import { coerceInitialValue } from "./coerceInitialValue";
 import { tabHeight } from "../constants";
+import LabileSitesLayer from "./LabileSitesLayer";
+import PropertySidePanel from "../PropertySidePanel";
+import { getAlignedAminoAcidSequenceProps } from "../utils/getAlignedAminoAcidSequenceProps";
 
 let charWidthInLinearViewDefault = 12;
 try {
@@ -173,6 +176,13 @@ export const AlignmentView = props => {
     })
   );
 
+  const [propertySidePanel, setPropertySidePanel] = useState({
+    isOpen: false,
+    selection: null,
+    track: null,
+    isPairwise: false
+  });
+
   const getAllAlignmentsFastaText = useCallback(() => {
     const selectionLayer =
       store.getState().VectorEditor.__allEditorsOptions.alignments[id]
@@ -244,6 +254,67 @@ export const AlignmentView = props => {
       if (window.Cypress) delete window.Cypress.scrollAlignmentToPercent;
     };
   }, []);
+
+  const {
+    alignmentAnnotationVisibility,
+    togglableAlignmentAnnotationSettings
+  } = alignmentVisibilityToolOptions;
+
+  useEffect(() => {
+    const dnaAnnotations = [
+      "chromatogram",
+      "reverseSequence",
+      "cdsFeatureTranslations",
+      "dnaColors",
+      "translations",
+      "compactNames"
+    ];
+
+    const aminoAcidAnnotations = [
+      "physicalProperties",
+      "serineThreonine",
+      "labileSites",
+      "colorScheme",
+      "plot",
+      "conservation",
+      "properties",
+      "hydrophobicity",
+      "polar",
+      "negative",
+      "positive",
+      "charged",
+      "aliphatic",
+      "aromatic",
+      "compactNames"
+    ];
+
+    const noNeededAnnotationsForPairwise = ["plot", "labileSites"];
+
+    if (alignmentTracks[0].sequenceData.isProtein) {
+      dnaAnnotations.forEach(key => {
+        delete alignmentAnnotationVisibility[key];
+        delete togglableAlignmentAnnotationSettings[key];
+      });
+
+      aminoAcidAnnotations.forEach(key => {
+        alignmentAnnotationVisibility[key] = false;
+        togglableAlignmentAnnotationSettings[key] = false;
+      });
+
+      if (isPairwise) {
+        noNeededAnnotationsForPairwise.forEach(key => {
+          delete alignmentAnnotationVisibility[key];
+          delete togglableAlignmentAnnotationSettings[key];
+        });
+      }
+    } else {
+      aminoAcidAnnotations.forEach(key => {
+        delete alignmentAnnotationVisibility[key];
+        delete togglableAlignmentAnnotationSettings[key];
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alignmentTracks, isPairwise]);
 
   const maxLength = useMemo(() => {
     const { sequenceData = { sequence: "" }, alignmentData } =
@@ -393,6 +464,13 @@ export const AlignmentView = props => {
         )
       };
       callback(callbackVals);
+
+      setPropertySidePanel(prev => {
+        return {
+          ...prev,
+          selection: easyStore.current.selectionLayer
+        };
+      });
     },
     [
       caretPositionUpdate,
@@ -606,7 +684,12 @@ export const AlignmentView = props => {
     });
   };
 
-  const renderItem = (_i, key, isTemplate, cloneProps) => {
+  const aminoAcidAlignmentProperties = useMemo(() => {
+    if (isPairwise || !alignmentTracks[0].sequenceData.isProtein) return;
+    return getAlignedAminoAcidSequenceProps(alignmentTracks);
+  }, [alignmentTracks, isPairwise]);
+
+  const renderItem = (_i, _key, isTemplate, cloneProps) => {
     const isDragDisabled = !allowTrackRearrange || isPairwise;
     let i;
     if (isTemplate) {
@@ -653,12 +736,36 @@ export const AlignmentView = props => {
         className: "tg-trimmed-region",
         color: "gray"
       }));
+
+    const trackIdentifier = track?.sequenceData.id ? "id" : "hash";
+    const selectedTrack = propertySidePanel?.track;
+    const isTrackSelected =
+      selectedTrack?.sequenceData[trackIdentifier] ===
+      track?.sequenceData[trackIdentifier];
+
+    let aaIdentity;
+    let aaIdenticalPosition;
+    if (sequenceData.isProtein && !isPairwise) {
+      aaIdentity = aminoAcidAlignmentProperties?.matrix?.[0]?.[i]?.toFixed(1);
+      aaIdenticalPosition =
+        aminoAcidAlignmentProperties?.identicalPositions?.[i - 1]
+          ?.identicalPositions;
+
+      if (sequenceData.name === "Consensus") {
+        sequenceData.aminoAcidProperties =
+          isPairwise || !sequenceData.isProtein
+            ? null
+            : aminoAcidAlignmentProperties;
+      }
+    }
+
     const innerRenderItem = (provided = {}, snapshot) => (
       <div
         ref={provided?.innerRef}
         {...provided?.draggableProps}
         className={classNames("alignmentViewTrackContainer", {
-          isDragDisabled
+          isDragDisabled,
+          isTrackSelected
         })}
         data-alignment-track-index={i}
         style={{
@@ -670,6 +777,16 @@ export const AlignmentView = props => {
           ...(snapshot?.isDragging && { left: unset })
         }}
         key={i}
+        onClick={() => {
+          setPropertySidePanel(prev => {
+            return {
+              ...prev,
+              selection: easyStore.current.selectionLayer,
+              track,
+              isPairwise
+            };
+          });
+        }}
       >
         <div
           className="alignmentTrackName"
@@ -792,7 +909,21 @@ export const AlignmentView = props => {
                   TRIMMED
                 </span>
               )}
-              {sequenceData.sequence.length} bps
+              {sequenceData.isProtein ? (
+                <>
+                  <span>{sequenceData.proteinSequence.length} AAs</span>
+                  {!compactNames && i > 0 && !isPairwise && (
+                    <>
+                      <br />
+                      <span>Identical Positions: {aaIdenticalPosition}</span>
+                      <br />
+                      <span>Identity: {aaIdentity}%</span>
+                    </>
+                  )}
+                </>
+              ) : (
+                <span>{sequenceData.sequence.length} bps</span>
+              )}
             </div>
           </div>
           <HorizontalPanelDragHandle
@@ -801,7 +932,6 @@ export const AlignmentView = props => {
             }}
           />
         </div>
-
         {handleSelectTrack && !isTemplate && (
           <div
             onClick={() => {
@@ -1111,7 +1241,16 @@ export const AlignmentView = props => {
     return "corrupted data!";
   }
 
-  const getTrackVis = (alignmentTracks, isTemplate, allTracks) => {
+  const getTrackVis = (
+    alignmentTracks,
+    isTemplate,
+    allTracks,
+    aminoAcidAlignmentProperties,
+    labileSites
+  ) => {
+    const labilePositions =
+      aminoAcidAlignmentProperties?.labileSites.sites.map(ls => ls.position) ||
+      [];
     const rowData = {};
     const innerTrackVis = (drop_provided, drop_snapshot) => {
       return (
@@ -1324,6 +1463,13 @@ export const AlignmentView = props => {
                   row={{ start: 0, end: maxLength - 1 }}
                   easyStore={easyStore.current}
                 />
+                {labileSites && labilePositions.length > 0 && (
+                  <LabileSitesLayer
+                    leftMargin={nameDivWidth}
+                    charWidth={charWidth}
+                    positionsToMark={labilePositions}
+                  />
+                )}
                 {isTemplate ? (
                   renderItem(0, 0, isTemplate)
                 ) : (
@@ -1409,279 +1555,338 @@ export const AlignmentView = props => {
       updateLabelsForInViewFeatures();
     }
   };
+
+  const { labileSites } =
+    alignmentVisibilityToolOptions.alignmentAnnotationVisibility;
+
   return (
     <PinchHelper {...pinchHandler}>
-      <ResizeSensor onResize={handleResize}>
-        <div
-          style={{
-            height: height || (isPairwise ? "auto" : viewportHeight * 0.88),
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            position: "relative",
-            overflowY: "auto",
-            ...style
-            // borderTop: "1px solid black"
-          }}
-          className="alignmentView"
-        >
-          <DragDropContext
-            onDragStart={onTrackDragStart}
-            onDragEnd={onTrackDragEnd}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row"
+        }}
+      >
+        <ResizeSensor onResize={handleResize}>
+          <div
+            style={{
+              height: height || (isPairwise ? "auto" : viewportHeight * 0.88),
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              position: "relative",
+              overflowY: "auto",
+              ...style
+              // borderTop: "1px solid black"
+            }}
+            className="alignmentView"
           >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                position: "relative",
-                overflowY: "auto"
-              }}
-              className="alignmentView-top-container"
+            <DragDropContext
+              onDragStart={onTrackDragStart}
+              onDragEnd={onTrackDragEnd}
             >
               <div
                 style={{
-                  paddingTop: "3px",
-                  paddingBottom: "5px",
-                  borderBottom: "1px solid",
                   display: "flex",
-                  minHeight: "32px",
+                  flexDirection: "column",
+                  position: "relative",
                   width: "100%",
-                  flexWrap: "nowrap",
-                  flexDirection: "row",
-                  flex: "0 0 auto"
+                  overflowY: "auto"
                 }}
-                className="ve-alignment-top-bar"
+                className="alignmentView-top-container"
               >
-                {additionalTopLeftEl}
-                {handleBackButtonClicked && (
-                  <Tooltip content="Back to Pairwise Alignment Overview">
-                    <Button
-                      icon="arrow-left"
-                      onClick={() => {
-                        handleBackButtonClicked();
-                        caretPositionUpdate(-1);
+                <div
+                  style={{
+                    paddingTop: "3px",
+                    paddingBottom: "5px",
+                    borderBottom: "1px solid",
+                    display: "flex",
+                    minHeight: "32px",
+                    width: "100%",
+                    flexWrap: "nowrap",
+                    flexDirection: "row",
+                    flex: "0 0 auto"
+                  }}
+                  className="ve-alignment-top-bar"
+                >
+                  {additionalTopLeftEl}
+                  {handleBackButtonClicked && (
+                    <Tooltip content="Back to Pairwise Alignment Overview">
+                      <Button
+                        icon="arrow-left"
+                        onClick={() => {
+                          handleBackButtonClicked();
+                          caretPositionUpdate(-1);
+                        }}
+                        small
+                        intent={Intent.PRIMARY}
+                        minimal
+                        style={{ marginRight: 10 }}
+                        className="alignmentViewBackButton"
+                      />
+                    </Tooltip>
+                  )}
+
+                  <div style={{ display: "flex" }}>
+                    <EditableText
+                      disabled={!handleAlignmentRename}
+                      onChange={v => {
+                        setAlignmentName(v);
                       }}
-                      small
-                      intent={Intent.PRIMARY}
-                      minimal
-                      style={{ marginRight: 10 }}
-                      className="alignmentViewBackButton"
-                    />
-                  </Tooltip>
-                )}
-
-                <div style={{ display: "flex" }}>
-                  <EditableText
-                    disabled={!handleAlignmentRename}
-                    onChange={v => {
-                      setAlignmentName(v);
-                    }}
-                    maxLength={399} //stop the name from being tooo long
-                    value={alignmentName}
-                    onConfirm={async v => {
-                      if (!v) {
-                        setAlignmentName(_alignmentName);
-                        return;
-                      }
-                      if (v === _alignmentName) {
-                        return; //already saved this name
-                      }
-                      setSaveMessage("Alignment Renaming..");
-                      setSaveMessageLoading(true);
-                      await handleAlignmentRename(v, props);
-                      setSaveMessage("Rename Successful");
-                      setSaveMessageLoading(false);
-                      setTimeout(() => {
-                        setSaveMessage(undefined);
+                      maxLength={399} //stop the name from being tooo long
+                      value={alignmentName}
+                      onConfirm={async v => {
+                        if (!v) {
+                          setAlignmentName(_alignmentName);
+                          return;
+                        }
+                        if (v === _alignmentName) {
+                          return; //already saved this name
+                        }
+                        setSaveMessage("Alignment Renaming..");
+                        setSaveMessageLoading(true);
+                        await handleAlignmentRename(v, props);
+                        setSaveMessage("Rename Successful");
                         setSaveMessageLoading(false);
-                      }, 5000);
-                    }}
-                    selectAllOnFocus={true}
-                    className="veAlignmentName"
-                  />
-                  &nbsp;&nbsp;&nbsp;
-                  <div
-                    className="veAlignmentType"
-                    style={{
-                      paddingTop: "3px",
-                      fontSize: "14px",
-                      color: "grey",
-                      maxWidth: "300px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap"
-                    }}
-                    data-title={alignmentType || "Unknown Alignment Type"}
-                  >
-                    {alignmentType || "Unknown Alignment Type"}
+                        setTimeout(() => {
+                          setSaveMessage(undefined);
+                          setSaveMessageLoading(false);
+                        }, 5000);
+                      }}
+                      selectAllOnFocus={true}
+                      className="veAlignmentName"
+                    />
+                    &nbsp;&nbsp;&nbsp;
+                    <div
+                      className="veAlignmentType"
+                      style={{
+                        paddingTop: "3px",
+                        fontSize: "14px",
+                        color: "grey",
+                        maxWidth: "300px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}
+                      data-title={alignmentType || "Unknown Alignment Type"}
+                    >
+                      {alignmentType || "Unknown Alignment Type"}
+                    </div>
                   </div>
-                </div>
 
-                {unmappedSeqs && (
-                  <InfoHelper
-                    size={20}
-                    content={
-                      <div>
-                        This alignment had sequences that did not map to the
-                        template sequence:
-                        {unmappedSeqs.map(({ sequenceData }, i) => (
-                          <div key={i}>{sequenceData.name}</div>
-                        ))}
-                      </div>
-                    }
-                    intent="warning"
-                    icon="warning-sign"
-                  />
-                )}
-                {!isInPairwiseOverviewView && (
-                  <UncontrolledSliderWithPlusMinusBtns
-                    noWraparound
-                    bindOutsideChangeHelper={bindOutsideChangeHelper.current}
-                    onClick={() => {
-                      setTimeout(scrollToCaret, 0);
-                    }}
-                    minCharWidth={getMinCharWidth()}
-                    onChange={async zoomLvl => {
-                      isZooming.current = true;
-                      setTimeout(() => {
-                        isZooming.current = false;
-                      }, 10);
-                      // zoomLvl is in the range of 0 to 10
-                      const minCharWidth = getMinCharWidth();
-                      const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
-                      const newCharWidth =
-                        minCharWidth * Math.pow(scaleFactor, zoomLvl);
-                      await setCharWidthInLinearView({
-                        charWidthInLinearView: newCharWidth
-                      });
-                      await scrollToCaret();
-                      await updateLabelsForInViewFeatures({
-                        rectElement: ".alignmentHolder"
-                      });
-                    }}
-                    coerceInitialValue={coerceInitialValue}
-                    title="Adjust Zoom Level"
-                    style={{ paddingTop: "4px", width: 100 }}
-                    className="veZoomAlignmentSlider ove-slider"
-                    labelRenderer={false}
-                    initialValue={charWidth}
-                    stepSize={0.05} //was 0.01
-                    max={10}
-                    min={0}
-                    clickStepSize={0.5}
-                  />
-                )}
-                {!noVisibilityOptions && !isInPairwiseOverviewView && (
-                  <AlignmentVisibilityTool
-                    currentPairwiseAlignmentIndex={
-                      currentPairwiseAlignmentIndex
-                    }
-                    {...alignmentVisibilityToolOptions}
-                  />
-                )}
-                {additionalTopEl}
-                {saveMessage && (
-                  <div
-                    className="ove-menu-toast"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginLeft: "auto",
-                      marginRight: 10
-                    }}
-                  >
-                    {saveMessageLoading ? (
-                      <div>
-                        <Spinner size={15}></Spinner>
-                      </div>
-                    ) : (
-                      <Icon icon="tick-circle" intent="success"></Icon>
-                    )}{" "}
-                    &nbsp;
-                    {saveMessage}
-                  </div>
+                  {unmappedSeqs && (
+                    <InfoHelper
+                      size={20}
+                      content={
+                        <div>
+                          This alignment had sequences that did not map to the
+                          template sequence:
+                          {unmappedSeqs.map(({ sequenceData }, i) => (
+                            <div key={i}>{sequenceData.name}</div>
+                          ))}
+                        </div>
+                      }
+                      intent="warning"
+                      icon="warning-sign"
+                    />
+                  )}
+                  {!isInPairwiseOverviewView && (
+                    <UncontrolledSliderWithPlusMinusBtns
+                      noWraparound
+                      bindOutsideChangeHelper={bindOutsideChangeHelper.current}
+                      onClick={() => {
+                        setTimeout(scrollToCaret, 0);
+                      }}
+                      minCharWidth={getMinCharWidth()}
+                      onChange={async zoomLvl => {
+                        isZooming.current = true;
+                        setTimeout(() => {
+                          isZooming.current = false;
+                        }, 10);
+                        // zoomLvl is in the range of 0 to 10
+                        const minCharWidth = getMinCharWidth();
+                        const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
+                        const newCharWidth =
+                          minCharWidth * Math.pow(scaleFactor, zoomLvl);
+                        await setCharWidthInLinearView({
+                          charWidthInLinearView: newCharWidth
+                        });
+                        await scrollToCaret();
+                        await updateLabelsForInViewFeatures({
+                          rectElement: ".alignmentHolder"
+                        });
+                      }}
+                      coerceInitialValue={coerceInitialValue}
+                      title="Adjust Zoom Level"
+                      style={{ paddingTop: "4px", width: 100 }}
+                      className="veZoomAlignmentSlider ove-slider"
+                      labelRenderer={false}
+                      initialValue={charWidth}
+                      stepSize={0.05} //was 0.01
+                      max={10}
+                      min={0}
+                      clickStepSize={0.5}
+                    />
+                  )}
+                  {!noVisibilityOptions && !isInPairwiseOverviewView && (
+                    <AlignmentVisibilityTool
+                      currentPairwiseAlignmentIndex={
+                        currentPairwiseAlignmentIndex
+                      }
+                      {...alignmentVisibilityToolOptions}
+                    />
+                  )}
+                  {additionalTopEl}
+                  {saveMessage && (
+                    <div
+                      className="ove-menu-toast"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginLeft: "auto",
+                        marginRight: 10
+                      }}
+                    >
+                      {saveMessageLoading ? (
+                        <div>
+                          <Spinner size={15}></Spinner>
+                        </div>
+                      ) : (
+                        <Icon icon="tick-circle" intent="success"></Icon>
+                      )}{" "}
+                      &nbsp;
+                      {saveMessage}
+                    </div>
+                  )}
+                  {!propertySidePanel.isOpen && (
+                    <Button
+                      small
+                      minimal
+                      className={"showTrackPropertiesBtn"}
+                      icon={"menu-closed"}
+                      intent="primary"
+                      style={{ marginLeft: "auto" }}
+                      onClick={() => {
+                        setPropertySidePanel(prev => {
+                          return {
+                            ...prev,
+                            isOpen: true
+                          };
+                        });
+                      }}
+                      data-tip={"Show Track Properties"}
+                    ></Button>
+                  )}
+                </div>
+                {hasTemplate ? (
+                  <>
+                    <div className="alignmentTrackFixedToTop">
+                      {getTrackVis(
+                        [firstTrack],
+                        true,
+                        alignmentTracks,
+                        aminoAcidAlignmentProperties,
+                        labileSites
+                      )}
+                    </div>
+                    {getTrackVis(
+                      otherTracks,
+                      false,
+                      alignmentTracks,
+                      aminoAcidAlignmentProperties,
+                      labileSites
+                    )}
+                  </>
+                ) : (
+                  getTrackVis(
+                    alignmentTracks,
+                    false,
+                    alignmentTracks,
+                    aminoAcidAlignmentProperties,
+                    labileSites
+                  )
                 )}
               </div>
-              {hasTemplate ? (
-                <>
-                  <div className="alignmentTrackFixedToTop">
-                    {getTrackVis([firstTrack], true, alignmentTracks)}
-                  </div>
-                  {getTrackVis(otherTracks, false, alignmentTracks)}
-                </>
-              ) : (
-                getTrackVis(alignmentTracks, false, alignmentTracks)
-              )}
-            </div>
-          </DragDropContext>
-          {!isInPairwiseOverviewView && (
-            <div
-              className="alignmentViewBottomBar"
-              style={{
-                // flexGrow: 1,
-                // minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
-                maxHeight: 210,
-                marginTop: 4,
-                paddingTop: 4,
-                borderTop: "1px solid lightgrey",
-                display: "flex"
-              }}
-            >
-              <Minimap
-                selectionLayerComp={
-                  <>
-                    <PerformantSelectionLayer
-                      is
-                      hideCarets
-                      className="veAlignmentSelectionLayer veMinimapSelectionLayer"
-                      easyStore={easyStore.current}
-                      sequenceLength={maxLength}
-                      charWidth={getMinCharWidth(true)}
-                      row={{ start: 0, end: maxLength - 1 }}
-                    />
-                    <PerformantCaret
-                      style={{
-                        opacity: 0.2
-                      }}
-                      className="veAlignmentSelectionLayer veMinimapSelectionLayer"
-                      sequenceLength={maxLength}
-                      charWidth={getMinCharWidth(true)}
-                      row={{ start: 0, end: maxLength - 1 }}
-                      easyStore={easyStore.current}
-                    />
-                  </>
-                }
-                alignmentTracks={alignmentTracks}
-                dimensions={{
-                  width: Math.max(width, 10) || 10
+            </DragDropContext>
+            {!isInPairwiseOverviewView && (
+              <div
+                className="alignmentViewBottomBar"
+                style={{
+                  // flexGrow: 1,
+                  // minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
+                  maxHeight: 210,
+                  marginTop: 4,
+                  paddingTop: 4,
+                  borderTop: "1px solid lightgrey",
+                  display: "flex"
                 }}
-                nameDivOffsetPercent={0}
-                scrollYToTrack={scrollYToTrack}
-                onSizeAdjust={onMinimapSizeAdjust}
-                minSliderSize={minSliderSize}
-                laneHeight={
-                  minimapLaneHeight || (alignmentTracks.length > 5 ? 10 : 17)
-                }
-                laneSpacing={
-                  minimapLaneSpacing || (alignmentTracks.length > 5 ? 2 : 1)
-                }
-                easyStore={easyStore.current}
-                numBpsShownInLinearView={getNumBpsShownInLinearView()}
-                scrollAlignmentView={false}
-                onMinimapScrollX={scrollAlignmentToPercent}
-              />
-            </div>
-          )}
-          <GlobalDialog
-          // {...pickedUserDefinedHandlersAndOpts}
-          // dialogOverrides={pick(this.props, [
-          //   "AddOrEditFeatureDialogOverride",
-          //   "AddOrEditPartDialogOverride",
-          //   "AddOrEditPrimerDialogOverride"
-          // ])}
+              >
+                <Minimap
+                  selectionLayerComp={
+                    <>
+                      <PerformantSelectionLayer
+                        is
+                        hideCarets
+                        className="veAlignmentSelectionLayer veMinimapSelectionLayer"
+                        easyStore={easyStore.current}
+                        sequenceLength={maxLength}
+                        charWidth={getMinCharWidth(true)}
+                        row={{ start: 0, end: maxLength - 1 }}
+                      />
+                      <PerformantCaret
+                        style={{
+                          opacity: 0.2
+                        }}
+                        className="veAlignmentSelectionLayer veMinimapSelectionLayer"
+                        sequenceLength={maxLength}
+                        charWidth={getMinCharWidth(true)}
+                        row={{ start: 0, end: maxLength - 1 }}
+                        easyStore={easyStore.current}
+                      />
+                    </>
+                  }
+                  alignmentTracks={alignmentTracks}
+                  dimensions={{
+                    width: Math.max(width, 10) || 10
+                  }}
+                  nameDivOffsetPercent={0}
+                  scrollYToTrack={scrollYToTrack}
+                  onSizeAdjust={onMinimapSizeAdjust}
+                  minSliderSize={minSliderSize}
+                  laneHeight={
+                    minimapLaneHeight || (alignmentTracks.length > 5 ? 10 : 17)
+                  }
+                  laneSpacing={
+                    minimapLaneSpacing || (alignmentTracks.length > 5 ? 2 : 1)
+                  }
+                  easyStore={easyStore.current}
+                  numBpsShownInLinearView={getNumBpsShownInLinearView()}
+                  scrollAlignmentView={false}
+                  onMinimapScrollX={scrollAlignmentToPercent}
+                />
+              </div>
+            )}
+            <GlobalDialog
+            // {...pickedUserDefinedHandlersAndOpts}
+            // dialogOverrides={pick(this.props, [
+            //   "AddOrEditFeatureDialogOverride",
+            //   "AddOrEditPartDialogOverride",
+            //   "AddOrEditPrimerDialogOverride"
+            // ])}
+            />
+          </div>
+        </ResizeSensor>
+        {propertySidePanel.isOpen && (
+          <PropertySidePanel
+            properties={propertySidePanel}
+            setProperties={setPropertySidePanel}
+            style={{
+              height: viewportHeight * 0.88
+            }}
           />
-        </div>
-      </ResizeSensor>
+        )}
+      </div>
     </PinchHelper>
   );
 };
@@ -1737,6 +1942,20 @@ export default compose(
         "cdsFeatureTranslations",
         "chromatogram",
         "dnaColors",
+        "physicalProperties",
+        "serineThreonine",
+        "labileSites",
+        "colorScheme",
+        "plot",
+        "conservation",
+        "properties",
+        "hydrophobicity",
+        "polar",
+        "negative",
+        "positive",
+        "charged",
+        "aliphatic",
+        "aromatic",
         "compactNames"
       ];
       const togglableAlignmentAnnotationSettings = {};

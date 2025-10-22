@@ -42,7 +42,7 @@
       },
       {
         "sequenceData": {
-          "id": 1,
+          "id": 2,
           "name": "GFPvv_60_2010-04-29_G01_003 (1).ab1",
           "features": [
             {
@@ -70,7 +70,7 @@
     [
       {
         "sequenceData": {
-          "id": 2,
+          "id": 3,
           "name": "pnjh00010",
           "features": [
             {
@@ -107,7 +107,7 @@
       },
       {
         "sequenceData": {
-          "id": 2,
+          "id": 4,
           "name": "GFPvv_50_2010-04-29_F01_005 (1).ab1",
           "sequence": "ttgtacacttttttgttgatatgtcattcttgttgattacatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacacaatctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatcccggcttcagccggg"
         },
