@@ -16,11 +16,12 @@ import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndO
 import { pick } from "lodash-es";
 
 const PropertiesContainer = Comp => props => {
-  const { additionalFooterEls, additionalHeaderEls, ...rest } = props;
+  const { additionalFooterEls, additionalHeaderEls, overrideEl, ...rest } =
+    props;
   return (
     <>
       {additionalHeaderEls}
-      <Comp {...rest} />
+      {overrideEl || <Comp {...rest} />}
       {additionalFooterEls}
     </>
   );
