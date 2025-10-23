@@ -114,6 +114,7 @@ export const PropertiesDialog = props => {
               showAvailability,
               disableSetReadOnly,
               selectedAnnotationId,
+              PropertiesProps: props.PropertiesProps,
               ...(nameOrOverride.name && nameOrOverride)
             }}
           />
