@@ -6,6 +6,7 @@
  * @param {number} [props.height=150]
  * @param {string[]} [props.barColors]
  */
+import React from "react";
 export function BarPlot({
   data,
   width = 300,

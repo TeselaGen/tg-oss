@@ -1,7 +1,6 @@
 import React from "react";
-import { compose } from "redux";
-import { Tab, Tabs } from "@blueprintjs/core";
-import { flatMap, startCase } from "lodash-es";
+import { Tab, Tabs, Tag } from "@blueprintjs/core";
+import { flatMap, isNumber, startCase } from "lodash-es";
 import FeatureProperties from "./FeatureProperties";
 import GeneralProperties from "./GeneralProperties";
 import CutsiteProperties from "./CutsiteProperties";
@@ -10,7 +9,7 @@ import GenbankView from "./GenbankView";
 import TranslationProperties from "./TranslationProperties";
 import PrimerProperties from "./PrimerProperties";
 import PartProperties from "./PartProperties";
-import { connectToEditor } from "../../withEditorProps";
+import withEditorProps from "../../withEditorProps";
 import "./style.css";
 import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
 import { pick } from "lodash-es";
@@ -74,6 +73,26 @@ export const PropertiesDialog = props => {
     tabId = propertiesList[0].name || propertiesList[0];
   }
 
+  // Helper to get count for each annotation type
+  const getAnnotationCount = name => {
+    // Try to get from props, fallback to 0 if not found or not array
+    const annotations = props[name] || props.sequenceData[name];
+    let count;
+    if (Array.isArray(annotations)) {
+      count = annotations.length;
+    } else if (annotations && typeof annotations === "object") {
+      count = Object.keys(annotations).length;
+    }
+    if (isNumber(count)) {
+      return (
+        <Tag className="tg-smallTag" round style={{ marginLeft: 1 }}>
+          {count}
+        </Tag>
+      );
+    }
+    return null;
+  };
+
   const propertiesTabs = flatMap(propertiesList, nameOrOverride => {
     if (annotationsToSupport[nameOrOverride] === false) {
       return [];
@@ -91,12 +110,21 @@ export const PropertiesDialog = props => {
         return null;
       }
     }
-    const title = (() => {
+    const count = getAnnotationCount(name);
+    let title = (() => {
       if (nameOrOverride.Comp) return name; //just use the user supplied name because this is a custom panel
       if (name === "orfs") return "ORFs";
       if (name === "cutsites") return "Cut Sites";
       return startCase(name);
     })();
+    if (count) {
+      title = (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {title}
+          {count}
+        </div>
+      );
+    }
 
     return (
       <Tab
@@ -162,8 +190,4 @@ export const PropertiesDialog = props => {
   );
 };
 
-export default compose(
-  connectToEditor(({ propertiesTool, annotationsToSupport }) => {
-    return { propertiesTool, annotationsToSupport };
-  })
-)(PropertiesDialog);
+export default withEditorProps(PropertiesDialog);
