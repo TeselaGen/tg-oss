@@ -68,7 +68,9 @@ export default ({ name, dir }: { name: string; dir: string }) =>
           tsconfigPath: joinPathFragments(dir, "tsconfig.json")
           // skipDiagnostics: true,
         }),
-        react(),
+        react({
+          jsxRuntime: "automatic"
+        }),
         libCss(),
         viteTsConfigPaths({
           root: "../../"
