@@ -77,7 +77,7 @@ const _panelMap = {
   pcrTool: PCRTool,
   properties: {
     comp: Properties,
-    panelSpecificPropsToSpread: ["PropertiesProps"]
+    panelSpecificProps: ["PropertiesProps"]
   },
   mismatches: Mismatches
 };

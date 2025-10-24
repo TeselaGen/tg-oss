@@ -68,7 +68,8 @@ const genericAnnotationProperties = ({
         allPartTags,
         annotationPropertiesSelectedEntities:
           _annotationPropertiesSelectedEntities,
-        selectedAnnotationId
+        selectedAnnotationId,
+        PropertiesProps
       } = this.props;
       const annotationPropertiesSelectedEntities =
         _annotationPropertiesSelectedEntities.filter(a => annotations[a.id]);
@@ -86,6 +87,9 @@ const genericAnnotationProperties = ({
       });
 
       const keyedPartTags = getKeyedTagsAndTagOptions(allPartTags) ?? {};
+
+      const additionalColumns =
+        PropertiesProps?.[annotationType]?.additionalColumns || [];
 
       this.schema = {
         fields: [
@@ -194,7 +198,8 @@ const genericAnnotationProperties = ({
                 }
               ]
             : []),
-          { path: "strand", type: "number" }
+          { path: "strand", type: "number" },
+          ...additionalColumns
         ]
       };
 
@@ -351,15 +356,19 @@ const genericAnnotationProperties = ({
 
   return compose(
     connectToEditor(
-      ({
-        readOnly,
-        annotationVisibility = {},
-        sequenceData,
-        selectionLayer,
-        featureLengthsToHide,
-        primerLengthsToHide,
-        partLengthsToHide
-      }) => {
+      (
+        {
+          readOnly,
+          annotationVisibility = {},
+          sequenceData,
+          selectionLayer,
+          featureLengthsToHide,
+          primerLengthsToHide,
+          partLengthsToHide,
+          PropertiesProps
+        },
+        ownProps
+      ) => {
         return {
           annotationVisibility,
           selectionLayer,
@@ -371,7 +380,8 @@ const genericAnnotationProperties = ({
           sequence: sequenceData.sequence,
           annotations: sequenceData[annotationType + "s"],
           [annotationType + "s"]: sequenceData[annotationType + "s"],
-          sequenceLength: sequenceData.sequence.length
+          sequenceLength: sequenceData.sequence.length,
+          PropertiesProps: ownProps.PropertiesProps || PropertiesProps
         };
       }
     ),
