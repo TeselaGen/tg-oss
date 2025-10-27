@@ -11,6 +11,8 @@ export const userDefinedHandlersAndOpts = [
   "allowPrimerBasesToBeEdited",
   "truncateLabelsThatDoNotFit",
   "smartCircViewLabelRender",
+  "on_setPanelAsActive",
+  "on_propertiesViewTabUpdate",
   "onConfigureFeatureTypesClick",
   "allPartTags",
   "bpLimit",

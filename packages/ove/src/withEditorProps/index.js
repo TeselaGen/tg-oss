@@ -677,7 +677,8 @@ export function mapDispatchToActions(dispatch, ownProps) {
     editorName,
     actions,
     actionOverrides,
-    dispatch
+    dispatch,
+    ownProps
   );
   const updateSel =
     ownProps.selectionLayerUpdate || actionsToPass.selectionLayerUpdate;
@@ -717,7 +718,8 @@ export function getCombinedActions(
   editorName,
   actions,
   actionOverrides,
-  dispatch
+  dispatch,
+  ownProps
 ) {
   const meta = { editorName };
 
@@ -758,6 +760,21 @@ export function getCombinedActions(
     ...metaActions
     // ...metaOverrides
   };
+  function addGenericHook(hookName) {
+    const oldHook = actionsToPass[hookName];
+    actionsToPass[hookName] = (...args) => {
+      const toRet = oldHook(...args);
+      const newHookName = `on_${hookName}`;
+      if (ownProps[newHookName]) {
+        setTimeout(() => {
+          ownProps[newHookName](...args);
+        }, 0);
+      }
+      return toRet;
+    };
+  }
+  ["setPanelAsActive", "propertiesViewTabUpdate"].forEach(addGenericHook);
+
   return bindActionCreators(actionsToPass, dispatch);
 }
 

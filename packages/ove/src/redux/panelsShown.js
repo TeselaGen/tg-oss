@@ -17,7 +17,7 @@ export const togglePanelFullScreen = createAction("togglePanelFullScreen");
 export const collapsePanel = createAction("collapsePanel");
 export const closePanel = createAction("closePanel");
 export const _collapseSplitScreen = createAction("_collapseSplitScreen");
-export const setPanelAsActive = createAction("setPanelAsActive");
+export const setPanelAsActive = createAction("SET_PANEL_AS_ACTIVE");
 export const flipActiveTabFromLinearOrCircularIfNecessary = createAction(
   "flipActiveTabFromLinearOrCircularIfNecessary"
 );

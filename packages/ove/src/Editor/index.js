@@ -41,7 +41,7 @@ import LinearView from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
 import DropHandler from "./DropHandler";
-import Properties from "../helperComponents/PropertiesDialog";
+import PropertiesDialog from "../helperComponents/PropertiesDialog";
 import "./style.css";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import DigestTool from "../DigestTool/DigestTool";
@@ -76,7 +76,7 @@ const _panelMap = {
   digestTool: DigestTool,
   pcrTool: PCRTool,
   properties: {
-    comp: Properties,
+    comp: PropertiesDialog,
     panelSpecificProps: ["PropertiesProps"]
   },
   mismatches: Mismatches
