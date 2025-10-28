@@ -2730,7 +2730,7 @@ doubleClickOverrides: {
             })}
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
-            {...(addMaxInsertSize && { maxInsertSize: 100 })}
+            {...(addMaxInsertSize && { maxInsertSize: 50 })}
             {...(showAminoAcidUnitAsCodon && {
               showAminoAcidUnitAsCodon: true
             })}
