@@ -206,7 +206,7 @@ export default ({ properties, setProperties, style }) => {
       <Button
         style={{
           position: "absolute",
-          top: 10,
+          top: 0,
           right: 10,
           zIndex: 1,
           cursor: "pointer"
