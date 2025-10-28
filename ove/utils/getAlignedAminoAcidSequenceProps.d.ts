@@ -1,3 +1,15 @@
+export function getLabileSites(alignedSequences: any, threshold?: number): {
+    sites: {
+        position: number;
+        conservationScore: number;
+        residueVariation: string[];
+        frequencies: {};
+    }[];
+    conservationScores: (number | null)[];
+    totalLabileSites: number;
+    percentageLabile: number;
+};
+export function parseTracks(tracks: any): {};
 export function getAlignedAminoAcidSequenceProps(tracks: any): {
     overallIdentity: number;
     frequencies: number[];
