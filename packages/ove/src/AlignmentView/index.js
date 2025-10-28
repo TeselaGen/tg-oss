@@ -1988,7 +1988,7 @@ export default compose(
         annotationsWithCounts.push({
           features: totalNumOfFeatures,
           parts: totalNumOfParts,
-          labileSites: labileSites.sites.length ?? 0
+          labileSites: labileSites.sites?.length ?? 0
         });
       } else if (pairwiseAlignments) {
         pairwiseAlignments.forEach(pairwise => {
