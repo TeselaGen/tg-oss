@@ -74,7 +74,11 @@ import { coerceInitialValue } from "./coerceInitialValue";
 import { tabHeight } from "../constants";
 import LabileSitesLayer from "./LabileSitesLayer";
 import PropertySidePanel from "../PropertySidePanel";
-import { getAlignedAminoAcidSequenceProps } from "../utils/getAlignedAminoAcidSequenceProps";
+import {
+  getAlignedAminoAcidSequenceProps,
+  getLabileSites,
+  parseTracks
+} from "../utils/getAlignedAminoAcidSequenceProps";
 
 let charWidthInLinearViewDefault = 12;
 try {
@@ -243,6 +247,11 @@ export const AlignmentView = props => {
           alignmentHolderTop.current.clientWidth);
     }
   };
+
+  const aminoAcidAlignmentProperties = useMemo(() => {
+    if (isPairwise || !alignmentTracks[0].sequenceData.isProtein) return;
+    return getAlignedAminoAcidSequenceProps(alignmentTracks);
+  }, [alignmentTracks, isPairwise]);
 
   useEffect(() => {
     window.scrollAlignmentToPercent = scrollAlignmentToPercent;
@@ -683,11 +692,6 @@ export const AlignmentView = props => {
         alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility
     });
   };
-
-  const aminoAcidAlignmentProperties = useMemo(() => {
-    if (isPairwise || !alignmentTracks[0].sequenceData.isProtein) return;
-    return getAlignedAminoAcidSequenceProps(alignmentTracks);
-  }, [alignmentTracks, isPairwise]);
 
   const renderItem = (_i, _key, isTemplate, cloneProps) => {
     const isDragDisabled = !allowTrackRearrange || isPairwise;
@@ -1966,6 +1970,9 @@ export default compose(
         }
       });
 
+      const tracks = parseTracks(alignmentTracks);
+      const labileSites = getLabileSites(tracks, 0.5);
+
       const annotationsWithCounts = [];
       if (alignmentTracks) {
         let totalNumOfFeatures = 0;
@@ -1980,7 +1987,8 @@ export default compose(
         });
         annotationsWithCounts.push({
           features: totalNumOfFeatures,
-          parts: totalNumOfParts
+          parts: totalNumOfParts,
+          labileSites: labileSites.sites?.length ?? 0
         });
       } else if (pairwiseAlignments) {
         pairwiseAlignments.forEach(pairwise => {

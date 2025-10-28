@@ -187,6 +187,7 @@ export default ({ properties, setProperties, style }) => {
     <div
       ref={sidebarRef}
       style={{
+        position: "relative",
         width: isOpen ? 350 : 0,
         minWidth: isOpen ? 350 : 0,
         maxWidth: isOpen ? 350 : 0,
@@ -205,7 +206,7 @@ export default ({ properties, setProperties, style }) => {
       <Button
         style={{
           position: "absolute",
-          top: 5,
+          top: 0,
           right: 10,
           zIndex: 1,
           cursor: "pointer"

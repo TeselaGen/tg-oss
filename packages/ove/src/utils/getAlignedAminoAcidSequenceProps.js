@@ -214,7 +214,7 @@ function getIdentityAndFrequencies(alignedSequences) {
   };
 }
 
-function getLabileSites(alignedSequences, threshold = 0.5) {
+export function getLabileSites(alignedSequences, threshold = 0.5) {
   const sequences = Object.values(alignedSequences);
   const alignmentLength = sequences[0].length;
 
@@ -261,7 +261,7 @@ function getLabileSites(alignedSequences, threshold = 0.5) {
   };
 }
 
-export const getAlignedAminoAcidSequenceProps = tracks => {
+export function parseTracks(tracks) {
   let sequences = {};
 
   tracks.forEach(at => {
@@ -270,6 +270,12 @@ export const getAlignedAminoAcidSequenceProps = tracks => {
       [at.alignmentData.name]: at.alignmentData.sequence
     };
   });
+
+  return sequences;
+}
+
+export const getAlignedAminoAcidSequenceProps = tracks => {
+  const sequences = parseTracks(tracks);
 
   const identity = calculateIdentityMatrix(sequences);
   const { overallIdentity, frequencies } = getIdentityAndFrequencies(sequences);
