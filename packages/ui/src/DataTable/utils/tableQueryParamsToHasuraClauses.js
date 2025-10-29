@@ -141,6 +141,9 @@ export function tableQueryParamsToHasuraClauses({
       } else {
         if (path) {
           const allPaths = [path, ...additionalSearchPaths];
+          if (allPaths.length > 1) {
+            return { _or: allPaths.map(p => addColumnFilters(p)) };
+          }
           return allPaths.map(p => addColumnFilters(p));
         } else {
           return addColumnFilters(filterOn);
