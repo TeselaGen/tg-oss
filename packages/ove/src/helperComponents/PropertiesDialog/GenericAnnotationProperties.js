@@ -347,6 +347,7 @@ const genericAnnotationProperties = ({
           isProtein={isProtein}
           compact
           isInfinite
+          withDisplayOptions
           schema={this.schema}
           entities={annotationsToUse}
         />
