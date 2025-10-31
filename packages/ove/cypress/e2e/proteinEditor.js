@@ -74,7 +74,7 @@ describe("proteinEditor", function () {
       .type(
         "aaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggaaaaaaaaaaggggggggggc{enter}"
       );
-    cy.contains("Sorry, your insert is greater than 100");
+    cy.contains("Sorry, your insert is greater than 50");
   });
 
   it(`should be able to insert AAs correctly via typing in the editor`, () => {

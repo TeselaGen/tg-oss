@@ -69,7 +69,7 @@ describe("copyPaste", function () {
     });
 
     cy.contains(
-      "Sorry, the pasted sequence exceeds the maximum allowed length of 100"
+      "Sorry, the pasted sequence exceeds the maximum allowed length of 50"
     );
   });
 

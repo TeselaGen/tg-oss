@@ -1207,8 +1207,8 @@ rightClickOverrides: {
               {renderToggle({
                 that: this,
                 type: "addMaxInsertSize",
-                label: "Add Max Insert Size 100",
-                info: "You can change the max size for insert/paste for the editor by passing `maxInsertSize:100`"
+                label: "Add Max Insert Size 50",
+                info: "You can change the max size for insert/paste for the editor by passing `maxInsertSize:50`"
               })}
               {renderToggle({
                 that: this,
