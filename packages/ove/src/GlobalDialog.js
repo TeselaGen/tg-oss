@@ -41,12 +41,20 @@ const Dialogs = {
 export function GlobalDialog(props) {
   const { dialogOverrides = {}, editorName } = props;
   const [uniqKey, setUniqKeyToForceRerender] = useState();
+
   useEffect(() => {
     //on unmount, clear the global dialog state..
     return () => {
       hideDialog();
     };
   }, []);
+
+  useEffect(() => {
+    if (!editorName) return;
+    const slot = (dialogHolder[editorName] = dialogHolder[editorName] || {});
+    slot.setUniqKeyToForceRerender = setUniqKeyToForceRerender;
+  }, [editorName]);
+
   if (
     dialogHolder.editorName &&
     editorName &&
@@ -54,7 +62,6 @@ export function GlobalDialog(props) {
   ) {
     return null;
   }
-  dialogHolder.setUniqKeyToForceRerender = setUniqKeyToForceRerender;
   const Comp =
     dialogHolder.CustomModalComponent ||
     dialogOverrides[dialogHolder.overrideName] ||

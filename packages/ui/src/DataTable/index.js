@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useContext
 } from "react";
+import { createSelector } from "reselect";
 import {
   invert,
   toNumber,
@@ -114,6 +115,30 @@ const itemSizeEstimators = {
   comfortable: () => 41.34
 };
 
+function omitId(obj) {
+  if (Array.isArray(obj)) {
+    return obj.map(omitId);
+  } else if (obj && typeof obj === "object") {
+    const newObj = {};
+    for (const key in obj) {
+      if (key === "id") continue;
+      newObj[key] = omitId(obj[key]);
+    }
+    return newObj;
+  }
+  return obj;
+}
+
+function useDeepCompareMemoizeIgnoreId(value) {
+  const ref = React.useRef();
+  const valueWithoutId = omitId(cloneDeep(value));
+  const refWithoutId = omitId(cloneDeep(ref.current));
+  if (!isEqual(valueWithoutId, refWithoutId)) {
+    ref.current = value;
+  }
+  return ref.current;
+}
+
 const DataTable = ({
   controlled_pageSize,
   formName = "tgDataTable",
@@ -168,21 +193,29 @@ const DataTable = ({
     return false;
   });
 
+  const dtFormParamsSelector = useMemo(
+    () =>
+      createSelector(
+        state =>
+          formValueSelector(formName)(
+            state,
+            "reduxFormCellValidation",
+            "reduxFormEntities",
+            "reduxFormQueryParams",
+            "reduxFormSelectedEntityIdMap"
+          ),
+        result => result // identity, but memoized
+      ),
+    [formName]
+  );
+
   const {
     reduxFormCellValidation: _reduxFormCellValidation,
     reduxFormEditingCell,
     reduxFormEntities,
     reduxFormQueryParams: _reduxFormQueryParams = {},
     reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
-  } = useSelector(function dtFormParamsSelector(state) {
-    return formValueSelector(formName)(
-      state,
-      "reduxFormCellValidation",
-      "reduxFormEntities",
-      "reduxFormQueryParams",
-      "reduxFormSelectedEntityIdMap"
-    );
-  });
+  } = useSelector(dtFormParamsSelector);
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
@@ -206,7 +239,8 @@ const DataTable = ({
     };
   }
 
-  const convertedSchema = useMemo(() => convertSchema(_schema), [_schema]);
+  const _convertedSchema = useMemo(() => convertSchema(_schema), [_schema]);
+  const convertedSchema = useDeepEqualMemo(_convertedSchema);
 
   if (isLocalCall) {
     if (!noForm && (!formName || formName === "tgDataTable")) {
@@ -484,9 +518,10 @@ const DataTable = ({
     () => (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || [],
     [_origEntities, reduxFormEntities]
   );
-  const entities = useDeepEqualMemo(_entities);
+  const entities = useDeepCompareMemoizeIgnoreId(_entities);
 
-  const entitiesAcrossPages = useDeepEqualMemo(_entitiesAcrossPages);
+  const entitiesAcrossPages =
+    useDeepCompareMemoizeIgnoreId(_entitiesAcrossPages);
 
   // This is because we need to maintain the reduxFormSelectedEntityIdMap and
   // allOrderedEntities updated
@@ -540,11 +575,9 @@ const DataTable = ({
           newTableConfig = {
             fieldOptions: []
           };
-          if (isEqual(prev, newTableConfig)) {
-            return prev;
-          } else {
-            return newTableConfig;
-          }
+        }
+        if (isEqual(prev, newTableConfig)) {
+          return prev;
         } else {
           return newTableConfig;
         }

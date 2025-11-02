@@ -39,6 +39,7 @@ import { createSelector, defaultMemoize } from "reselect";
 import domtoimage from "dom-to-image";
 import {
   hideDialog,
+  dialogHolder,
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
@@ -570,6 +571,9 @@ function mapStateToProps(state, ownProps) {
   const editorState = getEditorState(state, editorName);
   const meta = { editorName };
   const { VectorEditor } = state;
+  const editorSize = Object.values(state.VectorEditor).filter(
+    editorItem => editorItem.sequenceData
+  ).length;
   const { __allEditorsOptions } = VectorEditor;
   const { uppercaseSequenceMapFont } = __allEditorsOptions;
 
@@ -588,13 +592,10 @@ function mapStateToProps(state, ownProps) {
   ].forEach(([n, type, annotationTypePlural]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
-      annotationToAdd = getAnnToAdd(
-        vals,
-        n,
-        type,
-        annotationTypePlural,
-        sequenceLength
-      );
+      annotationToAdd =
+        dialogHolder.editorName && dialogHolder.editorName === editorName
+          ? getAnnToAdd(vals, n, type, annotationTypePlural, sequenceLength)
+          : undefined;
     }
   });
 
@@ -613,7 +614,8 @@ function mapStateToProps(state, ownProps) {
   const filteredCutsites = s.filteredCutsitesSelector(
     editorState,
     ownProps.additionalEnzymes,
-    ownProps.enzymeGroupsOverride
+    ownProps.enzymeGroupsOverride,
+    editorSize
   );
   const cutsites = filteredCutsites.cutsitesArray;
   const filteredRestrictionEnzymes =
@@ -623,7 +625,9 @@ function mapStateToProps(state, ownProps) {
   const selectedCutsites = s.selectedCutsitesSelector(editorState);
   const allCutsites = s.cutsitesSelector(
     editorState,
-    ownProps.additionalEnzymes
+    ownProps.additionalEnzymes,
+    undefined,
+    editorSize
   );
 
   const { matchedSearchLayer, searchLayers, matchesTotal } =

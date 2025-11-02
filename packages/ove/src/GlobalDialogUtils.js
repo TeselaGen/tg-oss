@@ -36,15 +36,17 @@ export function showDialog({
   dialogHolder.CustomModalComponent = ModalComponent;
   dialogHolder.props = props;
   dialogHolder.overrideName = overrideName;
-  dialogHolder.setUniqKeyToForceRerender(shortid());
+  dialogHolder?.[dialogHolder.editorName]?.setUniqKeyToForceRerender?.(
+    shortid()
+  );
 }
 export function hideDialog() {
   delete dialogHolder.dialogType;
   delete dialogHolder.CustomModalComponent;
   delete dialogHolder.props;
   delete dialogHolder.overrideName;
+  dialogHolder?.[dialogHolder.editorName]?.setUniqKeyToForceRerender?.();
   delete dialogHolder.editorName;
-  dialogHolder.setUniqKeyToForceRerender();
 }
 
 const typeToDialogType = {
