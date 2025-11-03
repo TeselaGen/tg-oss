@@ -15,6 +15,8 @@ export function showDialog({
   if (!dialogHolder.dialogType && ModalComponent) {
     dialogHolder.dialogType = "TGCustomModal";
   }
+
+  dialogHolder.editorName = props?.editorName;
   // check if focused element in the dom is within a given editor and add an editor prop to the dialog
   if (document.activeElement && document.activeElement.closest(".veEditor")) {
     let editorName;
@@ -36,16 +38,24 @@ export function showDialog({
   dialogHolder.CustomModalComponent = ModalComponent;
   dialogHolder.props = props;
   dialogHolder.overrideName = overrideName;
-  dialogHolder?.[dialogHolder.editorName]?.setUniqKeyToForceRerender?.(
-    shortid()
-  );
+  if (dialogHolder.editorName && dialogHolder?.[dialogHolder.editorName]) {
+    dialogHolder?.[dialogHolder.editorName]?.setUniqKeyToForceRerender?.(
+      shortid()
+    );
+  } else {
+    dialogHolder?.setUniqKeyToForceRerender?.(shortid());
+  }
 }
 export function hideDialog() {
   delete dialogHolder.dialogType;
   delete dialogHolder.CustomModalComponent;
   delete dialogHolder.props;
   delete dialogHolder.overrideName;
-  dialogHolder?.[dialogHolder.editorName]?.setUniqKeyToForceRerender?.();
+  if (dialogHolder.editorName && dialogHolder?.[dialogHolder.editorName]) {
+    dialogHolder?.[dialogHolder.editorName]?.setUniqKeyToForceRerender?.();
+  } else {
+    dialogHolder?.setUniqKeyToForceRerender?.();
+  }
   delete dialogHolder.editorName;
 }
 

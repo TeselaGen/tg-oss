@@ -50,9 +50,12 @@ export function GlobalDialog(props) {
   }, []);
 
   useEffect(() => {
-    if (!editorName) return;
-    const slot = (dialogHolder[editorName] = dialogHolder[editorName] || {});
-    slot.setUniqKeyToForceRerender = setUniqKeyToForceRerender;
+    dialogHolder.setUniqKeyToForceRerender = setUniqKeyToForceRerender;
+
+    if (editorName) {
+      const slot = (dialogHolder[editorName] = dialogHolder[editorName] || {});
+      slot.setUniqKeyToForceRerender = setUniqKeyToForceRerender;
+    }
   }, [editorName]);
 
   if (
