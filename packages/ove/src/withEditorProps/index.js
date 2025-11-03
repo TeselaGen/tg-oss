@@ -592,10 +592,17 @@ function mapStateToProps(state, ownProps) {
   ].forEach(([n, type, annotationTypePlural]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
-      annotationToAdd =
-        dialogHolder.editorName && dialogHolder.editorName === editorName
-          ? getAnnToAdd(vals, n, type, annotationTypePlural, sequenceLength)
-          : undefined;
+      annotationToAdd = getAnnToAdd(
+        vals,
+        n,
+        type,
+        annotationTypePlural,
+        sequenceLength
+      );
+      if (dialogHolder.editorName) {
+        annotationToAdd =
+          dialogHolder.editorName === editorName ? annotationToAdd : undefined;
+      }
     }
   });
 
