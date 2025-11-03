@@ -405,9 +405,6 @@ function VectorInteractionHOC(Component /* options */) {
         disableBpEditing,
         maxInsertSize,
         showAminoAcidUnitAsCodon
-        // updateSequenceData,
-        // wrappedInsertSequenceDataAtPositionOrRange
-        // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       const isReplace = selectionLayer.start > -1;
