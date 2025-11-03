@@ -56,6 +56,6 @@
     "@dnd-kit/utilities": "3.2.2",
     "@teselagen/file-utils": "file:../file-utils",
     "@blueprintjs/icons": "3.33.0",
-    "reselect": "4.1.8"
+    "reselect": "^4.1.7"
   }
 }
