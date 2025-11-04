@@ -9,6 +9,7 @@ export default createSelector(
   circularSelector,
   minimumOrfSizeSelector,
   state => state.useAdditionalOrfStartCodons,
+  editorState => editorState.editorSize,
   findOrfsInPlasmid
 );
 

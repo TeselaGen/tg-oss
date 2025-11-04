@@ -13,14 +13,11 @@ import { getLowerCaseObj } from "../utils/arrayUtils";
 // [{ args: {sequence,circular,enzymeList,cutsiteLabelColors}, result }]
 const cutsitesCache = [];
 
-function getCachedResult(sequence, circular, enzymeList, cutsiteLabelColors) {
+function getCachedResult(argsObj) {
   const idx = cutsitesCache.findIndex(
     entry =>
       entry &&
-      entry.args.sequence === sequence &&
-      entry.args.circular === circular &&
-      isEqual(entry.args.enzymeList, enzymeList) &&
-      isEqual(entry.args.cutsiteLabelColors, cutsiteLabelColors)
+      isEqual(entry.args, argsObj)
   );
   if (idx === -1) return;
   const hit = cutsitesCache[idx];
@@ -28,15 +25,12 @@ function getCachedResult(sequence, circular, enzymeList, cutsiteLabelColors) {
 }
 
 function setCachedResult(
-  sequence,
-  circular,
-  enzymeList,
-  cutsiteLabelColors,
+  argsObj,
   result,
   cacheSize = 1
 ) {
   cutsitesCache.push({
-    args: { sequence, circular, enzymeList: enzymeList, cutsiteLabelColors },
+    args: argsObj,
     result
   });
   //keep cache size manageable
@@ -50,12 +44,12 @@ function cutsitesSelector(
   cutsiteLabelColors,
   editorSize = 1
 ) {
-  const cachedResult = getCachedResult(
+  const cachedResult = getCachedResult({
     sequence,
     circular,
     enzymeList,
     cutsiteLabelColors
-  );
+  });
   if (cachedResult) {
     return cachedResult;
   }
@@ -100,10 +94,12 @@ function cutsitesSelector(
     cutsitesArray
   };
   setCachedResult(
-    sequence,
-    circular,
-    enzymeList,
-    cutsiteLabelColors,
+    {
+      sequence,
+      circular,
+      enzymeList,
+      cutsiteLabelColors
+    },
     result,
     editorSize
   );
@@ -115,7 +111,6 @@ export default createSelector(
   circularSelector,
   restrictionEnzymesSelector,
   cutsiteLabelColorSelector,
-  (editorState, _additionalEnzymes, _enzymeGroupsOverride, _editorSize) =>
-    _editorSize,
+  editorState => editorState.editorSize,
   cutsitesSelector
 );
