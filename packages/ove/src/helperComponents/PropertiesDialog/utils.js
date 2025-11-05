@@ -47,8 +47,12 @@ export const getMemoOrfs = (() => {
       minimumOrfSize,
       useAdditionalOrfStartCodons
     } = editorState;
+
+    const { sequence, circular } = sequenceData;
+
     const deps = {
-      sequenceData,
+      sequence,
+      circular,
       minimumOrfSize,
       useAdditionalOrfStartCodons
     };
