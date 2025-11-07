@@ -1970,11 +1970,10 @@ export default compose(
         }
       });
 
-      const tracks = parseTracks(alignmentTracks);
-      const labileSites = getLabileSites(tracks, 0.5);
-
       const annotationsWithCounts = [];
       if (alignmentTracks) {
+        const tracks = parseTracks(alignmentTracks);
+        const labileSites = getLabileSites(tracks, 0.5);
         let totalNumOfFeatures = 0;
         let totalNumOfParts = 0;
         alignmentTracks.forEach(seq => {
