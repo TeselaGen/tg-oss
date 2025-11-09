@@ -73,6 +73,25 @@ describe("copyPaste", function () {
     );
   });
 
+  it("should show warning when inserting sequence not in the allowed insert chars", () => {
+     cy.get(`[data-test="moleculeType"]`).select("Protein");
+     cy.tgToggle("addAcceptedInsertChars");
+    cy.contains("Part - pj5_00001 - Start: 1 End: 1384");
+    cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
+      force: true
+    });
+
+    cy.focused().type("{rightarrow}{rightarrow}");
+
+    cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Insert").click();
+    cy.contains("Press ENTER to insert 0 AAs after AA 2");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
+    cy.get(".sequenceInputBubble input").type("u");
+    cy.contains('Invalid character(s) detected and removed: u');
+  });
+
   it(`should be able to copy reverse complement`, () => {
     cy.selectRange(10, 12); //select some random range (we were seeing an error where the selection layer wasn't getting updated correctly)
     //right click a feature

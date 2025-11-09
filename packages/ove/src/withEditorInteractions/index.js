@@ -404,6 +404,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         disableBpEditing,
         maxInsertSize,
+        getAcceptedInsertChars,
         showAminoAcidUnitAsCodon
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
@@ -423,6 +424,7 @@ function VectorInteractionHOC(Component /* options */) {
           sequenceLength,
           caretPosition,
           maxInsertSize,
+          getAcceptedInsertChars,
           showAminoAcidUnitAsCodon,
           handleInsert: async seqDataToInsert => {
             await insertAndSelectHelper({
