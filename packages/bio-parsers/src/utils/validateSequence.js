@@ -346,7 +346,10 @@ export default function validateSequence(sequence, options = {}) {
         if (!sequence[type]) {
           sequence[type] = []; //initialize an empty array if necessary
         }
-        feature.type = type.slice(0, -1); //set the type before pushing it onto the array
+        if (type !== "parts") {
+          // we want to keep the type info from feature
+          feature.type = type.slice(0, -1); //set the type before pushing it onto the array
+        }
         delete feature.notes.pragma;
         sequence[type].push(feature);
         return false; //don't include the features
