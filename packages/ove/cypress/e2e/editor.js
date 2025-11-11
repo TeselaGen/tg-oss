@@ -201,7 +201,11 @@ describe("editor", function () {
     cy.contains(".veLabelText", "Part 0").rightclick();
     cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
     cy.contains(".bp3-menu-item", "New Primer").click();
-    cy.focused().type("new primer", { force: true });
+    cy.get('.bp3-dialog input[label="Name"]')
+      .should('exist')
+      .click()
+      .type('new primer', { delay: 20 });
+    // cy.focused().type("new primer", { force: true});
     cy.contains(".bp3-dialog button", "Save").click();
     cy.contains("beforeAnnotationCreate callback triggered for primers");
   });
@@ -271,7 +275,7 @@ describe("editor", function () {
     // if (Cypress.browser !== "")
     cy.tgToggle("menuOverrideExample");
     cy.get(".tg-menu-bar").contains("Custom").click();
-    cy.get(".bp3-menu-item").contains("Copy").click();
+    cy.get(".bp3-menu-item").contains("Copy").realClick();
     cy.get(".bp3-toast").contains("No Sequence Selected To Copy");
     cy.get(".tg-menu-bar").contains("File").click();
     cy.get(".bp3-menu-item").contains("Export Sequence").trigger("mouseover");
