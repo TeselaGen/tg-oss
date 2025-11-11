@@ -14,6 +14,7 @@ import selectors from "../../selectors";
 import { getMassOfAaString } from "@teselagen/sequence-utils";
 import { translationsSubmenu } from "../../MenuBar/viewSubmenu";
 import { getVisFilter } from "./GenericAnnotationProperties";
+import { getMemoOrfs } from "./utils";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -140,7 +141,7 @@ export default compose(
     return {
       readOnly,
       translations: selectors.translationsSelector(editorState),
-      orfs: selectors.orfsSelector(editorState),
+      orfs: getMemoOrfs(editorState),
       annotationVisibility,
       sequenceLength: (sequenceData.sequence || "").length,
       sequenceData
