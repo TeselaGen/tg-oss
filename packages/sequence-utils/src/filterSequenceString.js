@@ -31,9 +31,9 @@ export default function filterSequenceString(
     name,
     isProtein,
     isRna,
-    isMixedRnaAndDna
+    isMixedRnaAndDna,
+    getAcceptedInsertChars
   } = {},
-  getAcceptedInsertChars
 ) {
   const sequenceTypeInfo = {
     isOligo,

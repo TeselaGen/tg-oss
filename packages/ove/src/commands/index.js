@@ -284,7 +284,7 @@ const fileCommandDefs = {
   },
   exportSequenceAsTeselagenJson: {
     name: "Download Teselagen JSON File",
-    handler: props => props.exportSequenceToFile("teselagenJson")
+    handler: props => props.exportSequenceToFile("teselagenJson", { getAcceptedInsertChars: props.getAcceptedInsertChars})
   },
 
   viewProperties: {
