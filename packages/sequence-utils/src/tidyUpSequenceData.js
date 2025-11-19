@@ -9,6 +9,7 @@ import tidyUpAnnotation from "./tidyUpAnnotation";
 import getDegenerateDnaStringFromAaString from "./getDegenerateDnaStringFromAAString";
 import { getFeatureTypes } from "./featureTypesAndColors";
 import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
+import { expandOrContractRangeByLength } from "@teselagen/range-utils";
 
 export default function tidyUpSequenceData(pSeqData, options = {}) {
   const {
@@ -137,14 +138,21 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
         //filter off cds translations
         return [];
       }
-      if (!translation.aminoAcids && !seqData.noSequence) {
-        translation.aminoAcids = getAminoAcidDataForEachBaseOfDna(
+      const codonStart = translation?.notes?.codon_start?.[0] - 1 || 0;
+      const expandedRange = expandOrContractRangeByLength(
+        translation,
+        -codonStart,
+        true,
+        seqData.sequence.length
+      );
+      if (!expandedRange.aminoAcids && !seqData.noSequence) {
+        expandedRange.aminoAcids = getAminoAcidDataForEachBaseOfDna(
           seqData.sequence,
-          translation.forward,
-          translation
+          expandedRange.forward,
+          expandedRange
         );
       }
-      return translation;
+      return expandedRange;
     });
   }
 

@@ -1,14 +1,16 @@
-import { reduce } from "lodash-es";
+import { reduce, mapValues } from "lodash-es";
 import uuid from "shortid";
 import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
 
 import { getAminoAcidDataForEachBaseOfDna } from "@teselagen/sequence-utils";
-import each from "lodash/each";
 import translationsRawSelector from "./translationsRawSelector";
 import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
-import { normalizePositionByRangeLength } from "@teselagen/range-utils";
+import {
+  expandOrContractRangeByLength,
+  normalizePositionByRangeLength
+} from "@teselagen/range-utils";
 import cdsFeaturesSelector from "./cdsFeaturesSelector";
 import circularSelector from "./circularSelector";
 
@@ -109,14 +111,21 @@ function translationsSelector(
       {}
     )
   };
-  each(translationsToPass, function (translation) {
-    translation.aminoAcids = getAminoAcidDataForEachBaseOfDna(
-      sequence,
-      translation.forward,
-      translation
+  return mapValues(translationsToPass, translation => {
+    const codonStart = translation?.notes?.codon_start?.[0] - 1 || 0;
+    const expandedRange = expandOrContractRangeByLength(
+      translation,
+      -codonStart,
+      true,
+      sequence.length
     );
+    expandedRange.aminoAcids = getAminoAcidDataForEachBaseOfDna(
+      sequence,
+      expandedRange.forward,
+      expandedRange
+    );
+    return expandedRange;
   });
-  return translationsToPass;
 }
 
 export default createSelector(
