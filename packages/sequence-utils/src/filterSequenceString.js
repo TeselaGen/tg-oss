@@ -4,6 +4,7 @@ import {
   ambiguous_rna_letters,
   extended_protein_letters
 } from "./bioData";
+import {isFunction} from "lodash-es";
 
 let allWarnings = [];
 
@@ -30,15 +31,17 @@ export default function filterSequenceString(
     name,
     isProtein,
     isRna,
-    isMixedRnaAndDna
-  } = {}
+    isMixedRnaAndDna,
+    getAcceptedInsertChars
+  } = {},
 ) {
-  const acceptedChars = getAcceptedChars({
+  const sequenceTypeInfo = {
     isOligo,
     isProtein,
     isRna,
     isMixedRnaAndDna
-  });
+  };
+  const acceptedChars = isFunction(getAcceptedInsertChars) ? getAcceptedInsertChars(sequenceTypeInfo) : getAcceptedChars(sequenceTypeInfo);
   const replaceChars = getReplaceChars({
     isOligo,
     isProtein,

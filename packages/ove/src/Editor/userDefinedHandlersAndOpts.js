@@ -51,6 +51,8 @@ export const userDefinedHandlersAndOpts = [
   "enzymeManageOverride",
   "enzymeGroupsOverride",
   "additionalEnzymes",
+  "getAcceptedInsertChars",
+  "maxInsertSize",
   "onDelete",
   "onCopy",
   "autoAnnotateFeatures",

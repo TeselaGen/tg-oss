@@ -82,6 +82,7 @@ class SequenceInputNoHotkeys extends React.Component {
       caretPosition,
       sequenceData,
       maxInsertSize,
+      getAcceptedInsertChars,
       showAminoAcidUnitAsCodon
     } = this.props;
     const { charsToInsert, hasTempError } = this.state;
@@ -151,8 +152,9 @@ class SequenceInputNoHotkeys extends React.Component {
               e.target.value,
               {
                 ...sequenceData,
-                name: undefined
-              }
+                name: undefined,
+                getAcceptedInsertChars
+              },
             );
             if (warnings.length) {
               this.setState({
