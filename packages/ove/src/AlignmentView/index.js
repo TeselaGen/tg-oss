@@ -211,6 +211,9 @@ export const AlignmentView = props => {
         !event.shiftKey &&
         (event.metaKey === true || event.ctrlKey === true)
       ) {
+        if (!document.activeElement?.classList.contains("alignmentView")) {
+          return; //stop early if we're not focused on the alignment view
+        }
         const input = document.createElement("textarea");
         document.body.appendChild(input);
         const seqDataToCopy = getAllAlignmentsFastaText();
@@ -224,6 +227,8 @@ export const AlignmentView = props => {
         }
         document.body.removeChild(input);
         event.preventDefault();
+        document.activeElement?.blur();
+        document.querySelector(".alignmentView")?.focus();
       }
     };
 
@@ -1584,6 +1589,7 @@ export const AlignmentView = props => {
               ...style
               // borderTop: "1px solid black"
             }}
+            tabIndex={0}
             className="alignmentView"
           >
             <DragDropContext

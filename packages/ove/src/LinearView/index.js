@@ -327,6 +327,7 @@ class _LinearView extends React.Component {
               {...{
                 ...rest,
                 editorName,
+                showAminoAcidUnitAsCodon,
                 onScroll: () => {
                   this.easyStore.viewportWidth = width;
                   const row =

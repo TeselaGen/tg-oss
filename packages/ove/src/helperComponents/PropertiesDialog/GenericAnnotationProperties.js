@@ -20,6 +20,7 @@ import {
   Tooltip
 } from "@blueprintjs/core";
 import { getRangeLength } from "@teselagen/range-utils";
+import pluralize from "pluralize";
 // import { Popover } from "@blueprintjs/core";
 // import ColorPicker from "./ColorPicker";
 import { connectToEditor } from "../../withEditorProps";
@@ -87,9 +88,10 @@ const genericAnnotationProperties = ({
       });
 
       const keyedPartTags = getKeyedTagsAndTagOptions(allPartTags) ?? {};
-
       const additionalColumns =
-        PropertiesProps?.[annotationType]?.additionalColumns || [];
+        PropertiesProps?.propertiesList?.find(
+          p => (p.name || p) === (pluralize(annotationType) || "")
+        )?.additionalColumns || [];
 
       this.schema = {
         fields: [

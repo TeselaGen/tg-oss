@@ -149,7 +149,9 @@ export default ({ properties, setProperties, style }) => {
         <h5>{isProtein ? "Amino Acid" : "Base Pair"} Frequencies</h5>
         <div className="sidebar-table">
           <div className="sidebar-row">
-            <div className="sidebar-cell">Amino Acid</div>
+            <div className="sidebar-cell">
+              {isProtein ? "Amino Acid" : "Base"}
+            </div>
             <div className="sidebar-cell">Count</div>
             <div className="sidebar-cell">Percentage</div>
           </div>
