@@ -17,10 +17,11 @@ import {
  *
  * @param {string} sequence - DNA sequence (5' to 3')
  * @returns {number} - Delta G (kcal/mol) for the last 5 bases at 3' end
+ * @throws {Error} Invalid sequence or too short.
  */
 export default function calculateEndStability(sequence) {
   try {
-    sequence = sequence.toUpperCase().trim();
+    sequence = sequence?.toUpperCase().trim();
 
     if (!isValidSequence(sequence)) {
       throw new Error("Invalid sequence: contains non-DNA characters");
@@ -78,7 +79,7 @@ export default function calculateEndStability(sequence) {
     const T = 310.15; // 37°C in Kelvin
     const deltaG = deltaH - (T * deltaS) / 1000; // Result in kcal/mol
 
-    return Math.abs(deltaG).toFixed(2);
+    return Math.round(Math.abs(deltaG) * 100) / 100;
   } catch (e) {
     return `Error calculating end stability for sequence ${sequence}. ${e}`;
   }

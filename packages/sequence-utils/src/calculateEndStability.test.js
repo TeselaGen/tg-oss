@@ -1,9 +1,8 @@
 import assert from "assert";
 import calculateEndStability from "./calculateEndStability";
-// import calculateTm from "./calculateTm";
 
-describe("calculate Tm based on SantaLucia 1998", () => {
-  it("should return the melting temperature of a given sequence, if no degenerate bases are present", () => {
+describe("Calculate the stability of the primer ends.", () => {
+  it("should return the end stability score of a given primer sequence", () => {
     assert.equal(calculateEndStability("AGCGGATAACAATTTCACACAGGA"), 3.89);
     assert.equal(calculateEndStability("AGCGGATAACAATTTCAC"), 3.24);
     assert.equal(calculateEndStability("AGCGGATAACAATTTcac"), 3.24);

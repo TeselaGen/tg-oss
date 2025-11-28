@@ -105,6 +105,7 @@ export function isValidSequence(sequence) {
  *
  * @param {string} sequence - DNA sequence (5' to 3')
  * @returns {number} - Melting temperature in Celsius
+ * @throws {Error} Invalid sequence or too short.
  */
 export default function calculateSantaLuciaTm(sequence) {
   // Convert to uppercase and validate

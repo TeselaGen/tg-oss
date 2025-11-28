@@ -1,6 +1,5 @@
 import assert from "assert";
 import calculateSantaLuciaTm from "./calculateSantaLuciaTm";
-// import calculateTm from "./calculateTm";
 
 describe("calculate Tm based on SantaLucia 1998", () => {
   it("should return the melting temperature of a given sequence, if no degenerate bases are present", () => {

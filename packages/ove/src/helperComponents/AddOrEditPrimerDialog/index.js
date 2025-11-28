@@ -303,7 +303,7 @@ const RenderBases = props => {
             GC content: {bases && calculatePercentGC(bases).toFixed(1)}%
           </TextInnerWrapper>
           <TextInnerWrapper>
-            3' Stability: {bases && calculateEndStability(bases)} Kcal/mol
+            3' Stability: {bases && calculateEndStability(bases)} kcal/mol
           </TextInnerWrapper>
         </div>
       )}
