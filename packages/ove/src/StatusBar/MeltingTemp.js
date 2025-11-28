@@ -1,7 +1,11 @@
 import React from "react";
 import { Button, Icon, Popover, RadioGroup } from "@blueprintjs/core";
 
-import { calculateTm, calculateNebTm } from "@teselagen/sequence-utils";
+import {
+  calculateTm,
+  calculateNebTm,
+  calculateSantaLuciaTm
+} from "@teselagen/sequence-utils";
 
 import { isNumber, isString } from "lodash-es";
 import { popoverOverflowModifiers } from "@teselagen/ui";
@@ -20,7 +24,13 @@ export default function MeltingTemp({
   const [monovalentCationConc /* , setMonovalentCationConc */] =
     React.useState(0.05);
   const [tmType, setTmType] = useTmType();
-  let tm = (tmType === "neb_tm" ? calculateNebTm : calculateTm)(sequence, {
+  let tm = (
+    tmType === "neb_tm"
+      ? calculateNebTm
+      : tmType === "default"
+        ? calculateSantaLuciaTm
+        : calculateTm
+  )(sequence, {
     monovalentCationConc,
     primerConc
   });
@@ -47,8 +57,9 @@ export default function MeltingTemp({
             <RadioGroup
               label="Choose Tm Type:"
               options={[
-                { value: "default", label: "Default Tm (Breslauer)" },
-                { value: "neb_tm", label: "NEB Tm (SantaLucia)" }
+                { value: "default", label: "Santa Lucia (Default)" },
+                { value: "breslauer", label: "Breslauer" },
+                { value: "neb_tm", label: "NEB Tm" }
               ]}
               onChange={e => setTmType(e.target.value)}
               selectedValue={tmType}
@@ -70,7 +81,7 @@ export default function MeltingTemp({
         }
       >
         <React.Fragment>
-          <InnerWrapper>Melting Temp: {Number(tm) || 0} </InnerWrapper>
+          <InnerWrapper>Melting Temp: {Number(tm) || 0}°C</InnerWrapper>
           {hasWarning && (
             <Icon
               style={{ marginLeft: 5, marginRight: 5 }}
