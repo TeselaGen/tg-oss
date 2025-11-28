@@ -8,7 +8,9 @@ import {
 } from "@teselagen/ui";
 import {
   filterSequenceString,
-  getReverseComplementSequenceString
+  getReverseComplementSequenceString,
+  calculatePercentGC,
+  calculateEndStability
 } from "@teselagen/sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
@@ -294,14 +296,33 @@ const RenderBases = props => {
           </AdvancedOptions>
 
           <MeltingTemp
-            InnerWrapper={InnerWrapperMeltingTemp}
+            InnerWrapper={TextInnerWrapper}
             sequence={bases}
           ></MeltingTemp>
+          <TextInnerWrapper>
+            GC content: {bases && calculatePercentGC(bases).toFixed(1)}%
+          </TextInnerWrapper>
+          <TextInnerWrapper>
+            3' Stability: {bases && calculateEndStability(bases)} Kcal/mol
+          </TextInnerWrapper>
         </div>
       )}
     </div>
   );
 };
+
+const TextInnerWrapper = p => (
+  <div
+    className="bp3-text-muted bp3-text-small"
+    style={{
+      marginBottom: 15,
+      marginTop: -5,
+      fontStyle: "italic"
+    }}
+  >
+    {p.children}
+  </div>
+);
 
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditPrimerDialog",
@@ -311,12 +332,3 @@ export default AddOrEditAnnotationDialog({
     RenderBases
   })
 });
-
-const InnerWrapperMeltingTemp = p => (
-  <div
-    className="bp3-text-muted bp3-text-small"
-    style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
-  >
-    {p.children}
-  </div>
-);

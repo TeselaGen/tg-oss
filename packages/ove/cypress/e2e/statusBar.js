@@ -26,7 +26,7 @@ describe("statusBar", function () {
     cy.contains("Melting Temp: 62.7").should("not.exist");
     cy.contains("Melting Temp: 64.6");
   });
-  it(`if viewing a linear sequence in the circular view, there should be a little warning 
+  it(`if viewing a linear sequence in the circular view, there should be a little warning
   on the circular view telling the user that the sequence is linear`, () => {
     cy.visit("");
     cy.contains(`[data-test="ve-warning-circular-to-linear"]`).should(
