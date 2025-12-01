@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/sequence-utils",
-  "version": "0.3.35",
+  "version": "0.3.36",
   "type": "module",
   "dependencies": {
     "escape-string-regexp": "5.0.0",
