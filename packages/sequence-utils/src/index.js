@@ -96,6 +96,8 @@ export { default as condensePairwiseAlignmentDifferences } from "./condensePairw
 export { default as addGapsToSeqReads } from "./addGapsToSeqReads";
 export { default as calculateNebTm } from "./calculateNebTm";
 export { default as calculateNebTa } from "./calculateNebTa";
+export { default as calculateSantaLuciaTm } from "./calculateSantaLuciaTm";
+export { default as calculateEndStability } from "./calculateEndStability";
 export { default as getDigestFragmentsForCutsites } from "./getDigestFragmentsForCutsites";
 export { default as getDigestFragmentsForRestrictionEnzymes } from "./getDigestFragmentsForRestrictionEnzymes";
 export { default as convertDnaCaretPositionOrRangeToAA } from "./convertDnaCaretPositionOrRangeToAA";

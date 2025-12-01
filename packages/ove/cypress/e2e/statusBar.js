@@ -20,13 +20,13 @@ describe("statusBar", function () {
     cy.contains("Melting Temp").should("not.exist");
     cy.get(".tg-menu-bar").contains("View").click();
     cy.get(".bp3-menu-item").contains("Melting Temp").click();
-    cy.contains("Melting Temp: 62.7").click();
+    cy.contains("Melting Temp: 58.3").click();
     cy.get(`[value="default"][checked]`);
     cy.contains(`NEB Tm`).click();
-    cy.contains("Melting Temp: 62.7").should("not.exist");
+    cy.contains("Melting Temp: 58.3").should("not.exist");
     cy.contains("Melting Temp: 64.6");
   });
-  it(`if viewing a linear sequence in the circular view, there should be a little warning 
+  it(`if viewing a linear sequence in the circular view, there should be a little warning
   on the circular view telling the user that the sequence is linear`, () => {
     cy.visit("");
     cy.contains(`[data-test="ve-warning-circular-to-linear"]`).should(
