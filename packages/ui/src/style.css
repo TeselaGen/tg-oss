@@ -1,12 +1,14 @@
 :root {
   --base1: #ffffff;
   --base2: #cdcdcd;
+  --base3: #a1a3a5;
   --reversed: #293742;
 }
 
 body.bp3-dark {
   --base1: #393a3a;
   --base2: #293742;
+  --base3: #7a7c7e;
   --reversed: #cdcdcd;
 }
 

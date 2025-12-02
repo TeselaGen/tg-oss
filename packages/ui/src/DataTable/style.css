@@ -145,6 +145,37 @@
   border-bottom: none;
 }
 
+.react-draggable .bp3-dialog {
+  /* add little chevrons in the bottom corners of the dialog to show its draggable */
+  position: relative;
+}
+
+.react-draggable .bp3-dialog::before,
+.react-draggable .bp3-dialog::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  width: 6px;
+  height: 6px;
+  border-style: solid;
+  border-color: var(--base3);
+  border-width: 0;
+  border-bottom-width: 2px;
+  pointer-events: none;
+}
+
+.react-draggable .bp3-dialog::before {
+  left: 3px;
+  border-left-width: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.react-draggable .bp3-dialog::after {
+  right: 3px;
+  border-right-width: 2px;
+  border-bottom-right-radius: 2px;
+}
+
 .bp3-dark .ReactTable.ReactTable .rt-tbody .rt-tr-group {
   border-bottom-color: rgba(16, 22, 26, 0.15);
 }
