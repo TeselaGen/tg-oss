@@ -141,6 +141,10 @@
   border: none;
 }
 
+.ReactTable.ReactTable .rt-tbody .rt-tr-group.no-group-border {
+  border-bottom: none;
+}
+
 .bp3-dark .ReactTable.ReactTable .rt-tbody .rt-tr-group {
   border-bottom-color: rgba(16, 22, 26, 0.15);
 }
