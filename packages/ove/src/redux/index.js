@@ -34,6 +34,7 @@ import * as featureLengthsToHide from "./featureLengthsToHide";
 import * as primerLengthsToHide from "./primerLengthsToHide";
 import * as partLengthsToHide from "./partLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
+import * as temporaryAnnotations from "./temporaryAnnotations";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
 export { default as vectorEditorMiddleware } from "./middleware";
@@ -72,7 +73,8 @@ const subReducers = {
   partLengthsToHide,
   primerLengthsToHide,
   featureLengthsToHide,
-  selectedPartTags
+  selectedPartTags,
+  temporaryAnnotations
 };
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");

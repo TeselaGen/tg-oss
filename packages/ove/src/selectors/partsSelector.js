@@ -1,8 +1,14 @@
 import { createSelector } from "reselect";
 import sequenceDataSelector from "./sequenceDataSelector";
 
-function partsRawSelector(sequenceData) {
-  return sequenceData.parts;
+import temporaryAnnotationsSelector from "./temporaryAnnotationsSelector";
+
+function partsRawSelector(sequenceData, temporaryAnnotations) {
+  return { ...sequenceData.parts, ...temporaryAnnotations?.parts };
 }
 
-export default createSelector(sequenceDataSelector, partsRawSelector);
+export default createSelector(
+  sequenceDataSelector,
+  temporaryAnnotationsSelector,
+  partsRawSelector
+);

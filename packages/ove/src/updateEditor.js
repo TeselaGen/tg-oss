@@ -14,7 +14,8 @@ export default function updateEditor(
     annotationVisibility,
     annotationsToSupport,
     findTool,
-    justPassingPartialSeqData
+    justPassingPartialSeqData,
+    temporaryAnnotations
   } = initialValues;
   const currentEditor = store.getState().VectorEditor[editorName] || {};
   const isAlreadyProteinEditor =
@@ -174,6 +175,9 @@ export default function updateEditor(
           //if we have sequence data coming in make sure to tidy it up for the user :)
           annotationsAsObjects: true
         })
+      }),
+      ...(temporaryAnnotations && {
+        temporaryAnnotations
       })
     };
   }
