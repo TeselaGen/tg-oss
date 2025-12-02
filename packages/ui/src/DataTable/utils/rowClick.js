@@ -19,7 +19,8 @@ export default function rowClick(
     onMultiRowSelect,
     noDeselectAll,
     onRowSelect,
-    change
+    change,
+    getCheckboxGroupId
   }
 ) {
   const entity = rowInfo.original;
@@ -108,6 +109,44 @@ export default function rowClick(
           newIdMap[rowId].time = Date.now() + 1;
         }
       }
+    }
+  }
+
+  if (getCheckboxGroupId) {
+    const clickedRowId = rowId;
+    const clickedEntity = entity;
+    const clickedGroupId = getCheckboxGroupId(clickedEntity, rowInfo.index);
+
+    // 1. Handle Deselection of the clicked group
+    if (!newIdMap[clickedRowId] && clickedGroupId) {
+      entities.forEach((e, i) => {
+        if (getCheckboxGroupId(e, i) === clickedGroupId) {
+          const id = getIdOrCodeOrIndex(e, i);
+          delete newIdMap[id];
+        }
+      });
+    }
+
+    // 2. Expand selection to include full groups for all selected items
+    const selectedGroupIds = new Set();
+    entities.forEach((e, i) => {
+      const id = getIdOrCodeOrIndex(e, i);
+      if (newIdMap[id]) {
+        const gid = getCheckboxGroupId(e, i);
+        if (gid) selectedGroupIds.add(gid);
+      }
+    });
+
+    if (selectedGroupIds.size > 0) {
+      entities.forEach((e, i) => {
+        const gid = getCheckboxGroupId(e, i);
+        if (gid && selectedGroupIds.has(gid)) {
+          const id = getIdOrCodeOrIndex(e, i);
+          if (!newIdMap[id]) {
+            newIdMap[id] = { entity: e, time: Date.now() };
+          }
+        }
+      });
     }
   }
 

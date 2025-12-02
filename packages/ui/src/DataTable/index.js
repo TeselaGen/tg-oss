@@ -479,7 +479,8 @@ const DataTable = ({
     withSort,
     withTitle = !isSimple,
     noExcessiveCheck,
-    isEntityCountLoading
+    isEntityCountLoading,
+    getCheckboxGroupId
   } = props;
 
   const _entities = useMemo(
@@ -2237,6 +2238,17 @@ const DataTable = ({
       const isExpanded = expandedEntityIdMap[rowId];
       const rowDisabled = isEntityDisabled(entity);
       const dataId = entity.id || entity.code;
+      let noGroupBorder = false;
+      if (getCheckboxGroupId) {
+        const currentGroupId = getCheckboxGroupId(entity, rowInfo.index);
+        const nextEntity = entities[rowInfo.index + 1];
+        const nextGroupId = nextEntity
+          ? getCheckboxGroupId(nextEntity, rowInfo.index + 1)
+          : undefined;
+        if (currentGroupId && currentGroupId === nextGroupId) {
+          noGroupBorder = true;
+        }
+      }
       return {
         onClick: e => {
           if (isCellEditable) return;
@@ -2266,7 +2278,8 @@ const DataTable = ({
             onMultiRowSelect,
             noDeselectAll,
             onRowSelect,
-            change
+            change,
+            getCheckboxGroupId
           });
         },
         //row right click
@@ -2312,9 +2325,11 @@ const DataTable = ({
           {
             disabled: rowDisabled,
             selected: rowSelected && !withCheckboxes,
-            "rt-tr-last-row": rowInfo.index === entities.length - 1
+            "rt-tr-last-row": rowInfo.index === entities.length - 1,
+            "no-group-border": noGroupBorder
           }
         ),
+        "data-test-selected": !!rowSelected,
         "data-test-id": dataId === undefined ? rowInfo.index : dataId,
         "data-index": rowInfo.index,
         "data-tip": typeof rowDisabled === "string" ? rowDisabled : undefined,
@@ -2346,7 +2361,8 @@ const DataTable = ({
       reduxFormSelectedEntityIdMap,
       selectedCells,
       showContextMenu,
-      withCheckboxes
+      withCheckboxes,
+      getCheckboxGroupId
     ]
   );
 
@@ -2746,6 +2762,7 @@ const DataTable = ({
     withFilter,
     withSort,
     recordIdToIsVisibleMap,
+    getCheckboxGroupId,
     setRecordIdToIsVisibleMap
   });
 
