@@ -109,6 +109,7 @@ export default class ResizableDraggableDialog extends React.Component {
             topLeft: true,
             topRight: true
           }}
+          resizeHandleWrapperClass="tg-dialog-resize-handle"
           maxHeight={windowHeight}
           maxWidth={windowWidth}
           bounds="window"
