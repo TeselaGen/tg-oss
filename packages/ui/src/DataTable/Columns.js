@@ -406,6 +406,7 @@ export const useColumns = ({
   resetDefaultVisibility,
   currentParams,
   compact,
+  hideExpandSubCompColumn,
   editingCell,
   editingCellSelectAll,
   entities,
@@ -866,13 +867,14 @@ export const useColumns = ({
           );
         }
       }),
+      show: !hideExpandSubCompColumn,
       expander: true,
       Expander: ({ isExpanded, original: record }) => {
         let shouldShow = true;
         if (shouldShowSubComponent) {
           shouldShow = shouldShowSubComponent(record);
         }
-        if (!shouldShow) return null;
+        if (!shouldShow || hideExpandSubCompColumn) return null;
         return (
           <Button
             className={classNames(
@@ -1050,6 +1052,5 @@ export const useColumns = ({
     );
     return tableColumn;
   });
-
   return columnsToRender.concat(tableColumns);
 };

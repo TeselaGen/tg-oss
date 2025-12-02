@@ -354,6 +354,9 @@ const DataTableDemo = () => {
   const [withSubComponent, withSubComponentSwitch] = useToggle({
     type: "withSubComponent"
   });
+  const [hideExpandSubCompColumn, hideExpandSubCompColumnSwitch] = useToggle({
+    type: "hideExpandSubCompColumn"
+  });
   const [withTitle, withTitleSwitch] = useToggle({
     type: "withTitle",
     defaultValue: true
@@ -483,6 +486,7 @@ const DataTableDemo = () => {
             <div className={"wrappingdiv"}>
               <DataTable
                 {...tableParams}
+                hideExpandSubCompColumn={hideExpandSubCompColumn}
                 additionalFilters={additionalFilters}
                 cellRenderer={{
                   isShared: value => {
@@ -628,6 +632,7 @@ const DataTableDemo = () => {
       entities,
       expandAllByDefault,
       extraCompact,
+      hideExpandSubCompColumn,
       forceNoNextPage,
       getRowClassName,
       hideDisplayOptionsIcon,
@@ -747,6 +752,7 @@ withQuery(
           {withTitleSwitch}
           {noSelectSwitch}
           {withSubComponentSwitch}
+          {hideExpandSubCompColumnSwitch}
           {withSearchSwitch}
           {disableSetPageSizeSwitch}
           {keepSelectionOnPageChangeSwitch}
