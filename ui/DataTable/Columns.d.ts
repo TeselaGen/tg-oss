@@ -1,10 +1,11 @@
-export function useColumns({ addFilters, cellRenderer, columns, resetDefaultVisibility, currentParams, compact, editingCell, editingCellSelectAll, entities, expandedEntityIdMap, extraCompact, filters, formName, getCellHoverText, isCellEditable, isEntityDisabled, isLocalCall, isSimple, isSingleSelect, isSelectionARectangle, noDeselectAll, noSelect, noUserSelect, onDeselect, onMultiRowSelect, onRowClick, onRowSelect, onSingleRowSelect, order, primarySelectedCellId, reduxFormCellValidation, reduxFormSelectedEntityIdMap, refocusTable, removeSingleFilter, schema, selectedCells, setExpandedEntityIdMap, setNewParams, updateColumnVisibility, setOrder, setSelectedCells, shouldShowSubComponent, startCellEdit, SubComponent, tableRef, updateEntitiesHelper, updateValidation, withCheckboxes, withExpandAndCollapseAllButton, withFilter: _withFilter, withSort, recordIdToIsVisibleMap, setRecordIdToIsVisibleMap, withDisplayOptions }: {
+export function useColumns({ addFilters, cellRenderer, columns, resetDefaultVisibility, currentParams, compact, hideExpandSubCompColumn, editingCell, editingCellSelectAll, entities, expandedEntityIdMap, extraCompact, filters, formName, getCellHoverText, isCellEditable, isEntityDisabled, isLocalCall, isSimple, isSingleSelect, isSelectionARectangle, noDeselectAll, noSelect, noUserSelect, onDeselect, onMultiRowSelect, onRowClick, onRowSelect, onSingleRowSelect, order, primarySelectedCellId, reduxFormCellValidation, reduxFormSelectedEntityIdMap, refocusTable, removeSingleFilter, schema, selectedCells, setExpandedEntityIdMap, setNewParams, updateColumnVisibility, setOrder, setSelectedCells, shouldShowSubComponent, startCellEdit, SubComponent, tableRef, updateEntitiesHelper, updateValidation, withCheckboxes, withExpandAndCollapseAllButton, withFilter: _withFilter, withSort, recordIdToIsVisibleMap, setRecordIdToIsVisibleMap, withDisplayOptions, getCheckboxGroupId }: {
     addFilters: any;
     cellRenderer: any;
     columns: any;
     resetDefaultVisibility: any;
     currentParams: any;
     compact: any;
+    hideExpandSubCompColumn: any;
     editingCell: any;
     editingCellSelectAll: any;
     entities: any;
@@ -53,4 +54,5 @@ export function useColumns({ addFilters, cellRenderer, columns, resetDefaultVisi
     recordIdToIsVisibleMap: any;
     setRecordIdToIsVisibleMap: any;
     withDisplayOptions: any;
+    getCheckboxGroupId: any;
 }): any;
