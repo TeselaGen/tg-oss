@@ -15,10 +15,12 @@ function searchLayersSelector(
   dnaOrAA,
   isProtein,
   proteinSequence,
-  mismatchesAllowed
+  mismatchesAllowed,
+  tempSearchLayers = []
 ) {
+  const toReturn = [...tempSearchLayers];
   if (!searchString || !isOpen) {
-    return [];
+    return toReturn;
   }
   if (isProtein) {
     const searchingDna = dnaOrAA === "DNA";
@@ -35,7 +37,7 @@ function searchLayersSelector(
     ).sort(({ start }, { start: start2 }) => {
       return start - start2;
     });
-    return searchingDna
+    const r = searchingDna
       ? matches
       : matches.map(({ start, end, ...rest }) => ({
           ...rest,
@@ -43,6 +45,7 @@ function searchLayersSelector(
           start: start * 3,
           end: end * 3 + 2
         }));
+    return [...toReturn, ...r];
   }
 
   // Use findApproxMatches when literal matching DNA with mismatches allowed
@@ -69,11 +72,13 @@ function searchLayersSelector(
         forward: true
       }))
       .sort((a, b) => a.start - b.start);
-
-    return matches.map(match => ({
-      ...match,
-      className: "veSearchLayer"
-    }));
+    return [
+      ...toReturn,
+      ...matches.map(match => ({
+        ...match,
+        className: "veSearchLayer"
+      }))
+    ];
   }
 
   // Use regular findSequenceMatches for all other cases
@@ -85,14 +90,17 @@ function searchLayersSelector(
   }).sort(({ start }, { start: start2 }) => {
     return start - start2;
   });
-  return matches.map(match => ({
-    ...match,
-    forward: !match.bottomStrand,
-    className:
-      "veSearchLayer " +
-      (match.bottomStrand ? " veSearchLayerBottomStrand" : ""),
-    isSearchLayer: true
-  }));
+  return [
+    ...toReturn,
+    ...matches.map(match => ({
+      ...match,
+      forward: !match.bottomStrand,
+      className:
+        "veSearchLayer " +
+        (match.bottomStrand ? " veSearchLayerBottomStrand" : ""),
+      isSearchLayer: true
+    }))
+  ];
 }
 
 export default createSelector(
@@ -105,5 +113,6 @@ export default createSelector(
   state => state.sequenceData.isProtein,
   state => state.sequenceData.proteinSequence,
   state => state.findTool && state.findTool.mismatchesAllowed,
+  state => state.temporaryAnnotations.searchLayers,
   searchLayersSelector
 );

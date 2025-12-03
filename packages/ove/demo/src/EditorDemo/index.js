@@ -820,6 +820,13 @@ certain dna specific tools and annotations are automatically disabled when isPro
                   onClick={() => {
                     updateEditor(store, "DemoEditor", {
                       temporaryAnnotations: {
+                        searchLayers: [
+                          {
+                            start: 10,
+                            end: 20,
+                            customTitle: "Temp Search Layer"
+                          }
+                        ],
                         features: {
                           temp1: {
                             id: "temp1",

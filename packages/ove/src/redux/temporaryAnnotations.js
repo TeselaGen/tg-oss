@@ -17,6 +17,7 @@ export default createMergedDefaultStateReducer(
   {
     features: {},
     primers: {},
-    parts: {}
+    parts: {},
+    searchLayers: []
   }
 );
