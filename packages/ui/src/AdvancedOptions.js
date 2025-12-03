@@ -32,14 +32,19 @@ export default function AdvancedOptions({
             window.localStorage.setItem(localStorageKey, newIsOpen);
           }
         }}
-        style={{ cursor: "pointer", display: "flex", alignItems: "flex-end" }}
-        className="tg-toggle-advanced-options"
+        style={{
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          userSelect: "none"
+        }}
+        className={`tg-toggle-advanced-options`}
       >
-        {label || "Advanced"}{" "}
         <Icon
           icon={isOpen ? "caret-down" : "caret-right"}
-          style={{ marginLeft: 5 }}
-        ></Icon>
+          style={{ marginRight: 5 }}
+        />
+        <strong>{label || "Advanced"}</strong>
       </div>
       {isOpen && <div style={{ marginTop: 10 }}>{content || children}</div>}
     </div>
