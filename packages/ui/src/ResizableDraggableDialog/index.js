@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog, Classes } from "@blueprintjs/core";
+import { Dialog, Classes, Icon } from "@blueprintjs/core";
 import { Rnd } from "react-rnd";
 import { debounce } from "lodash-es";
 import "./style.css";
@@ -134,6 +134,16 @@ export default class ResizableDraggableDialog extends React.Component {
             usePortal={false}
             canEscapeKeyClose={true}
             {...rest}
+            title={
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Icon
+                  size="14"
+                  data-tip="I'm a resizable draggable dialog!"
+                  icon="move"
+                ></Icon>
+                {rest.title}
+              </div>
+            }
           />
         </Rnd>
       </div>
