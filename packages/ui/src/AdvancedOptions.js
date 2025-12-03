@@ -6,9 +6,19 @@ export default function AdvancedOptions({
   content,
   label,
   style,
-  isOpenByDefault
+  isOpenByDefault,
+  localStorageKey
 }) {
-  const [isOpen, setOpen] = useState(isOpenByDefault);
+  const [isOpen, setOpen] = useState(() => {
+    if (localStorageKey) {
+      if (window.localStorage.getItem(localStorageKey) === "true") {
+        return true;
+      } else if (window.localStorage.getItem(localStorageKey) === "false") {
+        return false;
+      }
+    }
+    return isOpenByDefault;
+  });
   if (!(content || children)) {
     return null;
   }
@@ -16,7 +26,11 @@ export default function AdvancedOptions({
     <div style={{ marginTop: 5, ...style }}>
       <div
         onClick={() => {
-          setOpen(!isOpen);
+          const newIsOpen = !isOpen;
+          setOpen(newIsOpen);
+          if (localStorageKey) {
+            window.localStorage.setItem(localStorageKey, newIsOpen);
+          }
         }}
         style={{ cursor: "pointer", display: "flex", alignItems: "flex-end" }}
         className="tg-toggle-advanced-options"

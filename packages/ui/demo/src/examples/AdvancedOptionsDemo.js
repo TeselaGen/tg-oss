@@ -13,16 +13,30 @@ export default function AdvancedOptionsDemo() {
       <br />
       <br />
       <br />
-      <WrappedCode>isOpenByDefault:</WrappedCode>
-      <AdvancedOptions isOpenByDefault>
-        I'm some more advanced options{" "}
-      </AdvancedOptions>
+      <div>
+        <WrappedCode>isOpenByDefault:</WrappedCode>
+        <AdvancedOptions isOpenByDefault>
+          I'm some more advanced options{" "}
+        </AdvancedOptions>
+      </div>
       <br />
       <br />
-      custom label (<WrappedCode>label="lalal"</WrappedCode>):
-      <AdvancedOptions label="lalal">
-        I'm some more advanced options{" "}
-      </AdvancedOptions>
+      <div>
+        custom label (<WrappedCode>label="lalal"</WrappedCode>):
+        <AdvancedOptions label="lalal">
+          I'm some more advanced options{" "}
+        </AdvancedOptions>
+      </div>
+      <br />
+      <br />
+      <div>
+        With localStorageKey (
+        <WrappedCode>localStorageKey="advanced-options-demo-key"</WrappedCode>):
+        <AdvancedOptions localStorageKey="advanced-options-demo-key">
+          I'm some more advanced options that should persist their open/closed
+          state
+        </AdvancedOptions>
+      </div>
     </DemoWrapper>
   );
 }
