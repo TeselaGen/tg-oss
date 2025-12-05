@@ -22,6 +22,7 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
     doNotProvideIdsForAnnotations,
     noCdsTranslations,
     convertAnnotationsFromAAIndices,
+    getAcceptedInsertChars,
     topLevelSeqData
   } = options;
   let seqData = cloneDeep(pSeqData); //sequence is usually immutable, so we clone it and return it
@@ -59,13 +60,15 @@ export default function tidyUpSequenceData(pSeqData, options = {}) {
     if (seqData.isProtein) {
       const [newSeq] = filterSequenceString(seqData.proteinSequence, {
         ...(topLevelSeqData || seqData),
-        isProtein: true
+        isProtein: true,
+        getAcceptedInsertChars
       });
       seqData.proteinSequence = newSeq;
     } else {
       const [newSeq] = filterSequenceString(seqData.sequence, {
         additionalValidChars,
-        ...(topLevelSeqData || seqData)
+        ...(topLevelSeqData || seqData),
+        getAcceptedInsertChars
       });
       seqData.sequence = newSeq;
     }
