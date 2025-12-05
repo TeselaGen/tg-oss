@@ -4,7 +4,7 @@ export default function addMetaToActionCreators(actions, meta) {
     metaActions[actionName] = function (firstArg, additionalMeta) {
       return actions[actionName](firstArg, {
         ...meta,
-        ...(additionalMeta || {})
+        ...additionalMeta
       });
     };
   });

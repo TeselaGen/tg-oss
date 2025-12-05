@@ -61,3 +61,9 @@ Cypress e2e tests can be run locally via the following commands:
 `nx run ui:launch-e2e`
 
 CI is run via GitHub Actions on every push and pull request and runs a suite of Cypress e2e tests
+
+# Linting
+
+yarn lint
+
+linting happens via oxlint

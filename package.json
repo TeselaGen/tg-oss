@@ -6,7 +6,8 @@
     "postinstall": "patch-package",
     "prepare": "husky",
     "e2e": "nx affected --base=master --head=HEAD -t e2e",
-    "test": "nx affected -t test"
+    "test": "nx affected -t test",
+    "lint": "oxlint"
   },
   "type": "module",
   "private": true,
@@ -18,8 +19,6 @@
     "@jscutlery/semver": "^5.2.2",
     "@nx/cypress": "20.4.6",
     "@nx/esbuild": "20.4.6",
-    "@nx/eslint": "^20.4.6",
-    "@nx/eslint-plugin": "^20.4.6",
     "@nx/js": "20.4.6",
     "@nx/react": "20.4.6",
     "@nx/vite": "20.4.6",
@@ -36,8 +35,6 @@
     "@types/react-dom": "18.2.15",
     "@types/react-router-dom": "^5",
     "@types/redux-form": "^8.3.9",
-    "@typescript-eslint/eslint-plugin": "^5.60.1",
-    "@typescript-eslint/parser": "^5.60.1",
     "@vitejs/plugin-react": "^4.3.4",
     "auto-changelog": "^2.4.0",
     "biomsa": "^0.2.4",
@@ -50,30 +47,20 @@
     "cypress-real-events": "^1.14.0",
     "cypress-vite": "^1.6.0",
     "esbuild": "^0.25.0",
-    "eslint": "~8.53.0",
-    "eslint-config-prettier": "9.0.0",
-    "eslint-plugin-cypress": "^2.15.1",
-    "eslint-plugin-import": "2.29.0",
-    "eslint-plugin-jsonc": "^2.19.1",
-    "eslint-plugin-jsx-a11y": "6.8.0",
-    "eslint-plugin-no-only-tests": "^3.1.0",
-    "eslint-plugin-react": "7.33.2",
-    "eslint-plugin-react-hooks": "4.6.0",
     "gh-pages": "^6.0.0",
     "husky": "^9.0.11",
     "jest-environment-jsdom": "^29.7.0",
     "jsdom": "~24.0.0",
-    "jsonc-eslint-parser": "^2.4.0",
     "lint-staged": "^15.2.4",
     "million": "^3.1.5",
     "nx": "20.4.6",
     "nx-cloud": "19.1.0",
+    "oxlint": "^1.31.0",
     "patch-package": "^8.0.0",
     "prettier": "^3.5.2",
     "typescript": "~5.7.3",
     "vite": "^6.2.0",
     "vite-plugin-dts": "~4.5.0",
-    "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-libcss": "^1.1.1",
     "vite-plugin-static-copy": "^2.2.0",
     "vite-tsconfig-paths": "^5.1.4"
@@ -82,7 +69,10 @@
     "packages/*"
   ],
   "volta": {
-    "node": "18.18.0",
+    "node": "22.12.0",
     "yarn": "1.22.21"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

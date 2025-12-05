@@ -5,7 +5,7 @@ interface waitForOptions {
 }
 
 declare namespace Cypress {
-  interface Chainable<> {
+  interface Chainable {
     // /**
     //  * login
     //  * creates a new user and lab, logs in with the user and sets

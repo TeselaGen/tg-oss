@@ -92,19 +92,17 @@ export function showAddOrEditAnnotationDialog({
         title:
           annotation && annotation.id ? `Edit ${nameUpper}` : `New ${nameUpper}`
       },
-      initialValues: {
-        ...(annotation
-          ? {
-              ...convertRangeTo1Based(annotation),
-              forward,
-              arrowheadType:
-                annotation.arrowheadType || (!forward ? "BOTTOM" : "TOP"),
-              ...(annotation.locations && {
-                locations: annotation.locations.map(convertRangeTo1Based)
-              })
-            }
-          : {})
-      }
+      initialValues: annotation
+        ? {
+            ...convertRangeTo1Based(annotation),
+            forward,
+            arrowheadType:
+              annotation.arrowheadType || (!forward ? "BOTTOM" : "TOP"),
+            ...(annotation.locations && {
+              locations: annotation.locations.map(convertRangeTo1Based)
+            })
+          }
+        : {}
     }
   });
 }

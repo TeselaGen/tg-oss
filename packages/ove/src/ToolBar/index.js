@@ -142,8 +142,8 @@ export function ToolBar(props) {
     <div className="veToolbar-outer" style={{ display: "flex" }}>
       {contentLeft}
       <div
-        style={{
-          ...(displayMenuBarAboveTools && showMenuBar
+        style={
+          displayMenuBarAboveTools && showMenuBar
             ? {
                 display: "flex",
                 width: "100%",
@@ -155,8 +155,8 @@ export function ToolBar(props) {
                 width: "100%",
                 justifyContent: "center",
                 flexWrap: "wrap"
-              })
-        }}
+              }
+        }
         className="veToolbar"
       >
         {showMenuBar && (

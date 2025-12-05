@@ -19,19 +19,10 @@
       }
     },
     "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore"
-      ],
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "inputs": ["default"],
+      "executor": "nx:run-commands",
       "options": {
-        "maxWarnings": 0,
-        "lintFilePatterns": [
-          "{projectRoot}/**/*.{ts,tsx,js,jsx}",
-          "{projectRoot}/package.json"
-        ]
+        "command": "node node_modules/oxlint/dist/cli.js --ignore-path .gitignore {projectRoot}"
       }
     },
     "test": {
@@ -94,7 +85,6 @@
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
-      "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)"

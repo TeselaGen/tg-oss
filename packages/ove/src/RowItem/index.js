@@ -685,7 +685,10 @@ export default function RowItem(props) {
             caretPosition={caretPosition}
             isProtein={isProtein}
             showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
-            {...{ ...annotationCommonProps, ...{ getGaps: undefined } }}
+            {...{
+              ...annotationCommonProps,
+              getGaps: undefined
+            }}
             row={
               alignmentData
                 ? { start: 0, end: alignmentData.sequence.length - 1 }

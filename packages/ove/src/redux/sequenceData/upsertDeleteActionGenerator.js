@@ -13,7 +13,7 @@ export default function upsertDeleteActionGenerator(
       const idToUse = payload.id || uuid();
       return {
         ...state,
-        [idToUse]: { ...(state[idToUse] || {}), ...payload, id: idToUse }
+        [idToUse]: { ...state[idToUse], ...payload, id: idToUse }
       };
     },
     [deleteAction]: (state, payload) => {
