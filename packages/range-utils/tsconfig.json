@@ -1,4 +1,17 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": ["src/**/*.ts", "src/**/*.js"]
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+    "types": ["bun", "chai", "node", "jest"]
+  },
+  "include": ["src"]
 }
