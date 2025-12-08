@@ -3803,8 +3803,8 @@
   version "0.4.32"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-e2829449-300f-418e-8dba-116d39eba21f-1764974478839/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-e2829449-300f-418e-8dba-116d39eba21f-1764974478839/node_modules/@teselagen/sequence-utils"
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-f5e292af-2a4f-49ec-bb7a-231054935109-1765220256333/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-f5e292af-2a4f-49ec-bb7a-231054935109-1765220256333/node_modules/@teselagen/sequence-utils"
     bufferpack "^0.0.6"
     color "3.2.1"
     fast-xml-parser "^4.2.5"
@@ -3843,7 +3843,7 @@
 "@teselagen/sequence-utils@file:packages/sequence-utils":
   version "0.3.36"
   dependencies:
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.36-5f4c94d9-ef22-4d05-a0bc-12a9ae5f80b2-1764974478836/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.36-5169f9e0-ec71-415a-b763-74a6868377ad-1765220256333/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.7.3"
     lodash-es "^4.17.21"
@@ -3861,7 +3861,7 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.10.11-cac926c8-ae8d-4986-9374-cf240871cad4-1764974478836/node_modules/@teselagen/file-utils"
+    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.10.11-19fbca2d-b9e0-498d-890f-1d30a639241c-1765220256330/node_modules/@teselagen/file-utils"
     "@teselagen/react-table" "6.10.18"
     chance "1.1.11"
     classnames "^2.3.2"
@@ -4018,6 +4018,11 @@
   integrity sha512-ogrKbJ2X5N0kWLLFKeytG0eHDleBYtngtlbu9cyBKFtNL3cnpDZkNdQj8flVf6WTZUX5ulI9AY1oa7ljhSrp+g==
   dependencies:
     bun-types "1.3.3"
+
+"@types/chai-subset@^1.3.6":
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/@types/chai-subset/-/chai-subset-1.3.6.tgz#fc50f637ebd038ed58700f826d7bab2caa8a8d7e"
+  integrity sha512-m8lERkkQj+uek18hXOZuec3W/fCRTrU4hrnXjH3qhHy96ytuPaPiWGgu7sJb7tZxZonO75vYAjCvpe/e4VUwRw==
 
 "@types/chai@^5.2.3":
   version "5.2.3"
@@ -4193,13 +4198,6 @@
   version "20.11.26"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.11.26.tgz"
   integrity sha512-YwOMmyhNnAWijOBQweOJnQPl068Oqd4K3OFbTc6AHJwzweUwwWG3GIFY74OKks2PJUDkQPeddOQES9mLn1CTEQ==
-  dependencies:
-    undici-types "~5.26.4"
-
-"@types/node@20.9.0":
-  version "20.9.0"
-  resolved "https://registry.npmjs.org/@types/node/-/node-20.9.0.tgz"
-  integrity sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==
   dependencies:
     undici-types "~5.26.4"
 

@@ -2,8 +2,9 @@ import assert from "assert";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import * as chai from "chai";
 import chaiSubset from "chai-subset";
+import "chai/register-should"; // This registers the 'should' interface globally
+
 chai.use(chaiSubset);
-chai.should();
 describe("tidyUpSequenceData", () => {
   it("should remove invalid chars by default, while handling annotation start,end (and location start,end) truncation correctly", () => {
     const res = tidyUpSequenceData({
