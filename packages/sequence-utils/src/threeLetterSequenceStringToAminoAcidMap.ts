@@ -128,26 +128,33 @@ const IUPAC = {
   X: ["A", "C", "G", "T", "U"]
 };
 
-
 function expandAndResolve(threeLetterCodon) {
   const chars = threeLetterCodon.toUpperCase().split("");
-  const picks = chars.map((c) => IUPAC[c] || [c]);
+  const picks = chars.map(c => IUPAC[c] || [c]);
 
   let allPossibleThreeLetterCodons = [""];
   for (const set of picks) {
     const next = [];
-    for (const prefix of allPossibleThreeLetterCodons) for (const b of set) next.push(prefix + b);
+    for (const prefix of allPossibleThreeLetterCodons)
+      for (const b of set) next.push(prefix + b);
     allPossibleThreeLetterCodons = next;
   }
   let foundAminoAcid = null;
   for (const codon of allPossibleThreeLetterCodons) {
     const lowerCodon = codon.toLowerCase();
-    const aminoAcidObj = initThreeLetterSequenceStringToAminoAcidMap[lowerCodon] ?? initThreeLetterSequenceStringToAminoAcidMap[lowerCodon.replace(/u/g, "t")] ?? initThreeLetterSequenceStringToAminoAcidMap[lowerCodon.replace(/t/g, "u")];
+    const aminoAcidObj =
+      initThreeLetterSequenceStringToAminoAcidMap[lowerCodon] ??
+      initThreeLetterSequenceStringToAminoAcidMap[
+        lowerCodon.replace(/u/g, "t")
+      ] ??
+      initThreeLetterSequenceStringToAminoAcidMap[
+        lowerCodon.replace(/t/g, "u")
+      ];
     if (aminoAcidObj) {
       if (!foundAminoAcid) {
         foundAminoAcid = aminoAcidObj;
-      } else if (foundAminoAcid.value !== aminoAcidObj.value ) {
-        return null
+      } else if (foundAminoAcid.value !== aminoAcidObj.value) {
+        return null;
       }
     } else {
       return null;

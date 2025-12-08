@@ -11,7 +11,25 @@ import { getFeatureTypes } from "./featureTypesAndColors";
 import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
 import { expandOrContractRangeByLength } from "@teselagen/range-utils";
 
-export default function tidyUpSequenceData(pSeqData, options = {}) {
+import { SequenceData } from "./types";
+
+export interface TidyUpSequenceDataOptions {
+  annotationsAsObjects?: boolean;
+  logMessages?: boolean;
+  doNotRemoveInvalidChars?: boolean;
+  additionalValidChars?: string;
+  noTranslationData?: boolean;
+  includeProteinSequence?: boolean;
+  doNotProvideIdsForAnnotations?: boolean;
+  noCdsTranslations?: boolean;
+  convertAnnotationsFromAAIndices?: boolean;
+  topLevelSeqData?: Partial<SequenceData>;
+}
+
+export default function tidyUpSequenceData(
+  pSeqData: SequenceData,
+  options: TidyUpSequenceDataOptions = {}
+) {
   const {
     annotationsAsObjects,
     logMessages,

@@ -1,9 +1,22 @@
 import { cloneDeep, get, some } from "lodash-es";
 import { getFeatureToColorMap, getFeatureTypes } from "./featureTypesAndColors";
 import shortid from "shortid";
+import { Annotation, SequenceData } from "./types";
+
+export interface TidyUpAnnotationOptions {
+  sequenceData?: Partial<SequenceData>;
+  convertAnnotationsFromAAIndices?: boolean;
+  annotationType?: string;
+  provideNewIdsForAnnotations?: boolean;
+  doNotProvideIdsForAnnotations?: boolean;
+  messages?: string[];
+  mutative?: boolean;
+  allowNonStandardGenbankTypes?: boolean;
+  featureTypes?: string[];
+}
 
 export default function tidyUpAnnotation(
-  _annotation,
+  _annotation: Annotation,
   {
     sequenceData = {},
     convertAnnotationsFromAAIndices,
@@ -14,7 +27,7 @@ export default function tidyUpAnnotation(
     mutative,
     allowNonStandardGenbankTypes,
     featureTypes
-  }
+  }: TidyUpAnnotationOptions
 ) {
   const { size, circular, isProtein } = sequenceData;
   if (!_annotation || typeof _annotation !== "object") {
@@ -136,19 +149,23 @@ function coerceLocation({
   messages,
   circular,
   name
+}: {
+  location: Annotation;
+  convertAnnotationsFromAAIndices?: boolean;
+  size?: number;
+  isProtein?: boolean;
+  messages: string[];
+  circular?: boolean;
+  name?: string;
 }) {
-  location.start = parseInt(location.start, 10);
-  location.end = parseInt(location.end, 10);
+  location.start = parseInt(String(location.start), 10);
+  location.end = parseInt(String(location.end), 10);
 
   if (convertAnnotationsFromAAIndices) {
     location.start = location.start * 3;
     location.end = location.end * 3 + 2;
   }
-  if (
-    location.start < 0 ||
-    !(location.start <= size - 1) ||
-    location.start > size - 1
-  ) {
+  if (size !== undefined && (location.start < 0 || location.start > size - 1)) {
     messages.push(
       "Invalid annotation start: " +
         location.start +
@@ -159,11 +176,7 @@ function coerceLocation({
     ); //setting it to 0 internally, but users will see it as 1
     location.start = Math.max(0, size - (isProtein ? 3 : 1));
   }
-  if (
-    location.end < 0 ||
-    !(location.end <= size - 1) ||
-    location.end > size - 1
-  ) {
+  if (size !== undefined && (location.end < 0 || location.end > size - 1)) {
     messages.push(
       "Invalid annotation end:  " +
         location.end +
@@ -174,7 +187,11 @@ function coerceLocation({
     ); //setting it to 0 internally, but users will see it as 1
     location.end = Math.max(0, size - 1);
   }
-  if (location.start > location.end && circular === false) {
+  if (
+    size !== undefined &&
+    location.start > location.end &&
+    circular === false
+  ) {
     messages.push(
       "Invalid circular annotation detected for " + name + ". end set to 1"
     ); //setting it to 0 internally, but users will see it as 1
