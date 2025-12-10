@@ -14,14 +14,11 @@ import { joinPathFragments } from "nx/src/devkit-exports";
 // import million from "million/compiler";
 //vite config for react packages
 
-const justSrc = [
-  /\/src\/.*\.js$/,
-  /\/src\/.*\.jsx$/,
-  /\/src\/.*\.ts$/,
-  /\/src\/.*\.tsx$/
-];
+const justSrc = [/\/src\/.*\.js$/, /\/src\/.*\.jsx$/];
 const sourceJSPattern = [
   ...justSrc,
+  /\/src\/.*\.ts$/,
+  /\/src\/.*\.tsx$/,
   /\/demo\/.*\.js$/,
   /\/helperUtils\/.*\.js$/
 ];
@@ -98,7 +95,7 @@ export default ({ name, dir }: { name: string; dir: string }) =>
           : [])
       ],
       esbuild: {
-        loader: "jsx",
+        loader: "tsx",
         include: sourceJSPattern,
         exclude: [],
         keepNames: true,
