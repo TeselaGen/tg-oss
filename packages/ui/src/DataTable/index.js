@@ -205,9 +205,7 @@ const DataTable = ({
       entities: normalizedEntities
     };
   }
-  const __schema = useDeepEqualMemo(_schema);
-
-  const convertedSchema = useMemo(() => convertSchema(__schema), [__schema]);
+  const convertedSchema = useMemo(() => convertSchema(_schema), [_schema]);
 
   if (isLocalCall) {
     if (!noForm && (!formName || formName === "tgDataTable")) {
