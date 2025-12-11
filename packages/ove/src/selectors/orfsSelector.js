@@ -9,6 +9,7 @@ export default createSelector(
   circularSelector,
   minimumOrfSizeSelector,
   state => state.useAdditionalOrfStartCodons,
+  state => state.sequenceData?.isProtein || state.sequenceData?.isOligo,
   findOrfsInPlasmid
 );
 
