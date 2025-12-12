@@ -70,7 +70,6 @@ import {
   PRIMARY_SELECTED_VAL,
   removeCleanRows
 } from "./utils";
-import { useDeepEqualMemoIgnoreFns, useDeepEqualMemo } from "../utils/hooks";
 import rowClick, {
   changeSelectedEntities,
   finalizeSelection
@@ -104,6 +103,10 @@ import { throwFormError } from "../throwFormError";
 import { isObservableArray, toJS } from "mobx";
 import { isBeingCalledExcessively } from "../utils/isBeingCalledExcessively";
 import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
+import {
+  useDeepEqualMemo,
+  useDeepEqualMemoIgnoreFns
+} from "../utils/hooks/useDeepEqualMemoIgnoreFns";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;

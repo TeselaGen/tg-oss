@@ -11,7 +11,6 @@ import { some } from "lodash-es";
 import { times } from "lodash-es";
 import DialogFooter from "./DialogFooter";
 import DataTable from "./DataTable";
-import { useDeepEqualMemoIgnoreFns } from "./utils/hooks";
 import { removeCleanRows } from "./DataTable/utils";
 import wrapDialog from "./wrapDialog";
 import { omit } from "lodash-es";
@@ -21,6 +20,7 @@ import { isEmpty } from "lodash-es";
 import { addSpecialPropToAsyncErrs } from "./FormComponents/tryToMatchSchemas";
 import { cloneDeep } from "lodash-es";
 import { InputField } from "./FormComponents";
+import { useDeepEqualMemoIgnoreFns } from "./utils/hooks/useDeepEqualMemoIgnoreFns";
 
 const asyncValidateHelper = async (
   validateAgainstSchema,

@@ -23,7 +23,6 @@ export {
 } from "./DataTable";
 export { removeCleanRows, useTableEntities } from "./DataTable/utils";
 
-export { useDeepEqualMemoIgnoreFns } from "./utils/hooks";
 export { getIdOrCodeOrIndex } from "./DataTable/utils";
 export { default as convertSchema } from "./DataTable/utils/convertSchema";
 export { default as Loading } from "./Loading";
@@ -79,6 +78,7 @@ export * from "./utils/commandUtils";
 export * from "./utils/commandControls";
 export * from "./utils/useTraceUpdate";
 export * from "./utils/hooks/useStableReference";
+export * from "./utils/hooks/useDeepEqualMemoIgnoreFns";
 export { default as AsyncValidateFieldSpinner } from "./AsyncValidateFieldSpinner";
 export { default as showProgressToast } from "./utils/showProgressToast";
 export { default as getTextFromEl } from "./utils/getTextFromEl";
