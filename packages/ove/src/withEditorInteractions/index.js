@@ -212,7 +212,8 @@ function VectorInteractionHOC(Component /* options */) {
         onPaste,
         disableBpEditing,
         sequenceData,
-        maxInsertSize
+        maxInsertSize,
+        getAcceptedInsertChars
       } = this.props;
 
       if (disableBpEditing) {
@@ -260,7 +261,8 @@ function VectorInteractionHOC(Component /* options */) {
         topLevelSeqData: sequenceData,
         provideNewIdsForAnnotations: true,
         annotationsAsObjects: true,
-        noCdsTranslations: true
+        noCdsTranslations: true,
+        getAcceptedInsertChars
       });
       if (!seqDataToInsert.sequence.length)
         return window.toastr.warning("Sorry no valid base pairs to paste");
@@ -283,7 +285,8 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer,
         copyOptions,
         disableBpEditing,
-        readOnly
+        readOnly,
+        getAcceptedInsertChars,
       } = this.props;
       const onCut = this.props.onCut || this.props.onCopy || noop;
       const seqData = tidyUpSequenceData(
@@ -308,7 +311,8 @@ function VectorInteractionHOC(Component /* options */) {
         {
           doNotRemoveInvalidChars: true,
           annotationsAsObjects: true,
-          includeProteinSequence: true
+          includeProteinSequence: true,
+          getAcceptedInsertChars
         }
       );
 
@@ -340,7 +344,8 @@ function VectorInteractionHOC(Component /* options */) {
           e,
           tidyUpSequenceData(seqData, {
             doNotRemoveInvalidChars: true,
-            annotationsAsObjects: true
+            annotationsAsObjects: true,
+            getAcceptedInsertChars
           }),
           this.props
         );
@@ -404,6 +409,7 @@ function VectorInteractionHOC(Component /* options */) {
         readOnly,
         disableBpEditing,
         maxInsertSize,
+        getAcceptedInsertChars,
         showAminoAcidUnitAsCodon
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
@@ -423,6 +429,7 @@ function VectorInteractionHOC(Component /* options */) {
           sequenceLength,
           caretPosition,
           maxInsertSize,
+          getAcceptedInsertChars,
           showAminoAcidUnitAsCodon,
           handleInsert: async seqDataToInsert => {
             await insertAndSelectHelper({

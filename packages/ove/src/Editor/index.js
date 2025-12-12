@@ -361,6 +361,7 @@ export class Editor extends React.Component {
       hoveredId,
       isFullscreen,
       maxInsertSize,
+      getAcceptedInsertChars,
       showAminoAcidUnitAsCodon,
       maxAnnotationsToDisplay,
       minHeight = 400,
@@ -595,6 +596,7 @@ export class Editor extends React.Component {
           {...panelPropsToSpread}
           editorName={editorName}
           maxInsertSize={maxInsertSize}
+          getAcceptedInsertChars={getAcceptedInsertChars}
           showAminoAcidUnitAsCodon={showAminoAcidUnitAsCodon}
           isProtein={sequenceData.isProtein}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
