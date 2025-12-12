@@ -23,7 +23,7 @@ export {
 } from "./DataTable";
 export { removeCleanRows, useTableEntities } from "./DataTable/utils";
 
-export { useDeepEqualMemo } from "./utils/hooks";
+export { useDeepEqualMemoIgnoreFns } from "./utils/hooks";
 export { getIdOrCodeOrIndex } from "./DataTable/utils";
 export { default as convertSchema } from "./DataTable/utils/convertSchema";
 export { default as Loading } from "./Loading";

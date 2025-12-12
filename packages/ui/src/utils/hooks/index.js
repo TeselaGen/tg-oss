@@ -1,1 +1,4 @@
-export { useDeepEqualMemo } from "./useDeepEqualMemo";
+export {
+  useDeepEqualMemoIgnoreFns,
+  useDeepEqualMemo
+} from "./useDeepEqualMemoIgnoreFns";
