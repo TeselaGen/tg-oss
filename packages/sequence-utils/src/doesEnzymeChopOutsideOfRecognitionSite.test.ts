@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import doesEnzymeChopOutsideOfRecognitionSite from "./doesEnzymeChopOutsideOfRecognitionSite.js";
+import doesEnzymeChopOutsideOfRecognitionSite from "./doesEnzymeChopOutsideOfRecognitionSite";
 import enzymeList from "./aliasedEnzymesByName";
 
 chai.should();

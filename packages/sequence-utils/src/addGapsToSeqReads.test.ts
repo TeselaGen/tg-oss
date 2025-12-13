@@ -1,4 +1,4 @@
-import addGapsToSeqReads from "./addGapsToSeqReads.js";
+import addGapsToSeqReads from "./addGapsToSeqReads";
 
 describe("cigar strings to gapped alignments", () => {
   it("adds gaps into sequencing reads before starting bp pos and from own deletions & other seq reads' insertions", () => {

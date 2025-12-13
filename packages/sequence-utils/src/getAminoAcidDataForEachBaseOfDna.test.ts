@@ -1,4 +1,4 @@
-import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna.js";
+import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
 
 import getAA from "./getAminoAcidFromSequenceTriplet";
 

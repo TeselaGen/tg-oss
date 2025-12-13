@@ -30,7 +30,7 @@ export default ({
 
       //   // return require("./cypress/plugins/index.js")(on, config);
       // },
-      supportFile: "cypress/support/index.js",
+      supportFile: "cypress/support/index.ts",
       // We've imported your old cypress plugins here.
       // You may want to clean this up later by importing these.
       // setupNodeEvents(on, config) {

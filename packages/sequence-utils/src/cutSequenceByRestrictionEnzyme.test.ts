@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 
 import * as chai from "chai";
-import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme.js";
+import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme";
 import enzymeList from "./aliasedEnzymesByName";
 
 const should = chai.should();

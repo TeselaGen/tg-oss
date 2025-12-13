@@ -2,7 +2,7 @@ import * as chai from "chai";
 
 import { expect } from "chai";
 import chaiSubset from "chai-subset";
-import mapAnnotationsToRows from "./mapAnnotationsToRows.js";
+import mapAnnotationsToRows from "./mapAnnotationsToRows";
 chai.use(chaiSubset);
 describe("mapAnnotationsToRows", () => {
   it("maps overlapsSelf=true annotations to the same y-offset correctly", () => {

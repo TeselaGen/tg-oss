@@ -1,4 +1,4 @@
-import getAllInsertionsInSeqReads from "./getAllInsertionsInSeqReads.js";
+import getAllInsertionsInSeqReads from "./getAllInsertionsInSeqReads";
 
 // seqReads should be an array of objects [{name, seq, pos, cigar}, {name, seq, pos, cigar}, ...]
 // add gaps in reference sequence where there are insertions

@@ -2,7 +2,7 @@ import {
   isValidSequence,
   SANTA_LUCIA_NN,
   SANTA_LUCIA_INIT
-} from "./calculateSantaLuciaTm.js";
+} from "./calculateSantaLuciaTm";
 
 /**
  * Calculate End Stability (3' end stability) of a primer

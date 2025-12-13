@@ -1,4 +1,4 @@
-import getOrfsFromSequence from "./getOrfsFromSequence.js";
+import getOrfsFromSequence from "./getOrfsFromSequence";
 
 export default function findOrfsInPlasmid(
   sequence,

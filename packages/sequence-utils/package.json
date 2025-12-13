@@ -12,8 +12,8 @@
   },
   "exports": {
     ".": {
-      "import": "./index.js",
-      "require": "./index.cjs"
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
     }
   },
   "devDependencies": {

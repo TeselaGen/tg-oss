@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import mapAnnotationsToRows from "./mapAnnotationsToRows.js";
+import mapAnnotationsToRows from "./mapAnnotationsToRows";
 describe("prepareCircularViewData", () => {
   it("maps overlapping annotations to rows correctly", () => {
     const annotation1 = {

@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 // cypress/support/index.js
 import "cypress-real-events";
-const { isString } = require("lodash-es");
+import { isString } from "cypress/types/lodash";
 
 Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
   return cy

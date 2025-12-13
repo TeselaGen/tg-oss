@@ -1,5 +1,5 @@
-import { getDigestFragsForSeqAndEnzymes } from "./computeDigestFragments.js";
-import aliasedEnzymesByName from "./aliasedEnzymesByName.js";
+import { getDigestFragsForSeqAndEnzymes } from "./computeDigestFragments";
+import aliasedEnzymesByName from "./aliasedEnzymesByName";
 
 describe("computeDigestFragments", () => {
   it("it should correctly generate fragments for bamhi cutting once in a circular sequence with includeOverAndUnderHangs=true", () => {

@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme.js";
+import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme";
 import enzymeList from "./aliasedEnzymesByName";
 import getLeftAndRightOfSequenceInRangeGivenPosition from "./getLeftAndRightOfSequenceInRangeGivenPosition";
 

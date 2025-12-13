@@ -1,4 +1,4 @@
-import insertGapsIntoRefSeq from "./insertGapsIntoRefSeq.js";
+import insertGapsIntoRefSeq from "./insertGapsIntoRefSeq";
 
 import { cloneDeep } from "lodash-es";
 
