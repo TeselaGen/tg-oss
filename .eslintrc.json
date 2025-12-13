@@ -15,6 +15,7 @@
           "error",
           {
             "ignoredDependencies": [
+              "cypress",
               "recompose",
               "buffer",
               "chance",
