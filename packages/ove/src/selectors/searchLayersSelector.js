@@ -113,6 +113,6 @@ export default createSelector(
   state => state.sequenceData.isProtein,
   state => state.sequenceData.proteinSequence,
   state => state.findTool && state.findTool.mismatchesAllowed,
-  state => state.temporaryAnnotations.searchLayers,
+  state => state.temporaryAnnotations?.searchLayers,
   searchLayersSelector
 );

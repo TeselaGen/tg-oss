@@ -24,14 +24,9 @@
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore"
       ],
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "nx:run-commands",
       "options": {
-        "maxWarnings": 0,
-        "lintFilePatterns": [
-          "{projectRoot}/**/*.{ts,tsx,js,jsx}",
-          "{projectRoot}/package.json"
-        ]
+        "command": "eslint \"{projectRoot}/**/*.{ts,tsx,js,jsx}\" \"{projectRoot}/package.json\" --max-warnings=0"
       }
     },
     "test": {

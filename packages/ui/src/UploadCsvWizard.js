@@ -11,7 +11,6 @@ import { some } from "lodash-es";
 import { times } from "lodash-es";
 import DialogFooter from "./DialogFooter";
 import DataTable from "./DataTable";
-import { useDeepEqualMemo } from "./utils/hooks";
 import { removeCleanRows } from "./DataTable/utils";
 import wrapDialog from "./wrapDialog";
 import { omit } from "lodash-es";
@@ -21,6 +20,7 @@ import { isEmpty } from "lodash-es";
 import { addSpecialPropToAsyncErrs } from "./FormComponents/tryToMatchSchemas";
 import { cloneDeep } from "lodash-es";
 import { InputField } from "./FormComponents";
+import { useDeepEqualMemoIgnoreFns } from "./utils/hooks/useDeepEqualMemoIgnoreFns";
 
 const asyncValidateHelper = async (
   validateAgainstSchema,
@@ -179,7 +179,7 @@ export const SimpleInsertDataDialog = compose(
   const _reduxFormEntities = useSelector(
     state => state.form?.[dataTableForm]?.values.reduxFormEntities
   );
-  const reduxFormEntities = useDeepEqualMemo(_reduxFormEntities);
+  const reduxFormEntities = useDeepEqualMemoIgnoreFns(_reduxFormEntities);
   useEffect(() => {
     return () => dispatch(destroy(dataTableForm));
   }, [dataTableForm, dispatch]);
@@ -189,7 +189,9 @@ export const SimpleInsertDataDialog = compose(
       return state.form?.[dataTableForm]?.values.reduxFormCellValidation;
     }
   );
-  const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
+  const reduxFormCellValidation = useDeepEqualMemoIgnoreFns(
+    _reduxFormCellValidation
+  );
 
   const { entsToUse, validationToUse } = useMemo(
     () => removeCleanRows(reduxFormEntities, reduxFormCellValidation),
@@ -282,8 +284,10 @@ const UploadCsvWizardDialogInner = reduxForm()(({
     );
   });
 
-  const reduxFormEntities = useDeepEqualMemo(_reduxFormEntities);
-  const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
+  const reduxFormEntities = useDeepEqualMemoIgnoreFns(_reduxFormEntities);
+  const reduxFormCellValidation = useDeepEqualMemoIgnoreFns(
+    _reduxFormCellValidation
+  );
 
   let inner;
   if (hasSubmitted) {
@@ -660,8 +664,10 @@ const UploadCsvWizardDialog = compose(
       };
     }
   });
-  const reduxFormEntitiesArray = useDeepEqualMemo(_reduxFormEntitiesArray);
-  const finishedFiles = useDeepEqualMemo(_finishedFiles);
+  const reduxFormEntitiesArray = useDeepEqualMemoIgnoreFns(
+    _reduxFormEntitiesArray
+  );
+  const finishedFiles = useDeepEqualMemoIgnoreFns(_finishedFiles);
 
   const [hasSubmittedOuter, setSubmittedOuter] = useState();
   const [steps, setSteps] = useState(getInitialSteps(true));
