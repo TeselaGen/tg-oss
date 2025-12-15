@@ -24,10 +24,11 @@ export interface TidyUpSequenceDataOptions {
   noCdsTranslations?: boolean;
   convertAnnotationsFromAAIndices?: boolean;
   topLevelSeqData?: Partial<SequenceData>;
+  allowNonStandardGenbankTypes?: boolean;
 }
 
 export default function tidyUpSequenceData(
-  pSeqData: SequenceData,
+  pSeqData: Partial<SequenceData>,
   options: TidyUpSequenceDataOptions = {}
 ) {
   const {
@@ -42,12 +43,12 @@ export default function tidyUpSequenceData(
     convertAnnotationsFromAAIndices,
     topLevelSeqData
   } = options;
-  let seqData = cloneDeep(pSeqData); //sequence is usually immutable, so we clone it and return it
+  let seqData = cloneDeep(pSeqData) as SequenceData; //sequence is usually immutable, so we clone it and return it
   const response = {
     messages: []
   };
   if (!seqData) {
-    seqData = {};
+    seqData = { sequence: "" } as SequenceData;
   }
   if (!seqData.sequence) {
     seqData.sequence = "";
@@ -112,10 +113,10 @@ export default function tidyUpSequenceData(
     ? seqData.proteinSize
     : seqData.proteinSequence.length;
   if (
-    seqData.circular === "false" ||
+    seqData.circular === ("false" as unknown) ||
     /* eslint-disable eqeqeq*/
 
-    seqData.circular == -1 ||
+    seqData.circular == (-1 as unknown) ||
     /* eslint-enable eqeqeq*/
     seqData.circular === false ||
     (!seqData.circular && seqData.sequenceTypeCode !== "CIRCULAR_DNA")
@@ -128,26 +129,30 @@ export default function tidyUpSequenceData(
 
   annotationTypes.forEach(annotationType => {
     if (!Array.isArray(seqData[annotationType])) {
-      if (typeof seqData[annotationType] === "object") {
-        seqData[annotationType] = Object.keys(seqData[annotationType]).map(
-          key => {
-            return seqData[annotationType][key];
-          }
-        );
+      if (
+        seqData[annotationType] &&
+        typeof seqData[annotationType] === "object"
+      ) {
+        seqData[annotationType] = Object.keys(
+          seqData[annotationType] as object
+        ).map(key => {
+          return (seqData[annotationType] as any)[key];
+        });
       } else {
         seqData[annotationType] = [];
       }
     }
-    seqData[annotationType] = seqData[annotationType].filter(annotation => {
-      return tidyUpAnnotation(annotation, {
-        ...options,
-        featureTypes,
-        sequenceData: seqData,
-        convertAnnotationsFromAAIndices,
-        mutative: true,
-        annotationType
+    seqData[annotationType] = (seqData[annotationType] as any[]).filter(
+      annotation => {
+        return tidyUpAnnotation(annotation, {
+          ...options,
+          featureTypes,
+          sequenceData: seqData,
+          convertAnnotationsFromAAIndices,
+          mutative: true,
+          annotationType
+        });
       });
-    });
   });
 
   if (!noTranslationData) {
@@ -156,7 +161,7 @@ export default function tidyUpSequenceData(
         //filter off cds translations
         return [];
       }
-      const codonStart = translation?.notes?.codon_start?.[0] - 1 || 0;
+      const codonStart = (translation?.notes as any)?.codon_start?.[0] - 1 || 0;
       const expandedRange = expandOrContractRangeByLength(
         translation,
         -codonStart,
@@ -166,8 +171,9 @@ export default function tidyUpSequenceData(
       if (!expandedRange.aminoAcids && !seqData.noSequence) {
         expandedRange.aminoAcids = getAminoAcidDataForEachBaseOfDna(
           seqData.sequence,
-          expandedRange.forward,
-          expandedRange
+          expandedRange.forward!,
+          expandedRange,
+          false
         );
       }
       return expandedRange;
@@ -176,7 +182,7 @@ export default function tidyUpSequenceData(
 
   if (annotationsAsObjects) {
     annotationTypes.forEach(name => {
-      seqData[name] = seqData[name].reduce((acc, item) => {
+      seqData[name] = (seqData[name] as any[]).reduce((acc: any, item: any) => {
         let itemId;
         if (item.id || item.id === 0) {
           itemId = item.id;

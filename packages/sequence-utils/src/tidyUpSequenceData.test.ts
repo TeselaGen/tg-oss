@@ -15,6 +15,7 @@ describe("tidyUpSequenceData", () => {
           end: 20,
           locations: [
             {
+              // @ts-expect-error check that strings get converted to ints
               start: "3", //this should be converted to an int :)
               end: 5
             },
@@ -141,18 +142,19 @@ describe("tidyUpSequenceData", () => {
   it("should add ids to annotations", () => {
     const res = tidyUpSequenceData(
       {
-        features: [{ start: 4, end: 5 }, {}]
+        features: [{ start: 4, end: 5 }, {} as any]
       },
       { annotationsAsObjects: true }
     );
-    Object.keys(res.features).should.be.length(2);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Object.keys(res.features!).should.be.length(2);
   });
 
   it("should add feature type = misc_feature if no type is provided", () => {
     const res = tidyUpSequenceData({
       features: [{ start: 4, end: 5 }]
     });
-    res.features[0].type.should.equal("misc_feature");
+    res.features![0].type.should.equal("misc_feature");
   });
   it("should try to auto-parse annotation.notes into JSON and gracefully handle errors", () => {
     const res = tidyUpSequenceData({
@@ -165,7 +167,8 @@ describe("tidyUpSequenceData", () => {
         }
       ]
     });
-    res.features[0].notes.gene[0].should.equal("Ampicillin");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (res.features![0].notes as any).gene[0].should.equal("Ampicillin");
     const res2 = tidyUpSequenceData({
       features: [
         {
@@ -181,78 +184,148 @@ describe("tidyUpSequenceData", () => {
       '{"gene:["Ampicillin"],"note":["ORF frame 1"],"translation":["MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRIDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPVAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW*"],"ApEinfo_fwdcolor":["pink"],"ApEinfo_revcolor":["pink"],"ApEinfo_graphicformat":["arrow_data {{0 1 2 0 0 -1} {} 0}"]}'
     );
   });
-  it("should add feature type = misc_feature if an invalid type is provided", () => {
+  it("features should be able to be passed as an object instead of an array", () => {
     const res = tidyUpSequenceData({
-      features: [{ start: 4, end: 5, type: "idontexist" }]
+      features: { "1": { start: 4, end: 5 } } as any
     });
-    res.features[0].type.should.equal("misc_feature");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Object.keys(res.features!).length.should.equal(1);
+    res.features![0].start.should.equal(4);
   });
-  it("should allow non-standard genbank feature types if allowNonStandardGenbankTypes=true", () => {
+  it("annotationsAsObjects=true should verify that features are passed back as an object", () => {
     const res = tidyUpSequenceData(
       {
-        features: [{ start: 4, end: 5, type: "idontexist" }]
+        features: [{ start: 4, end: 5 }] as any
+      },
+      { annotationsAsObjects: true }
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Object.keys(res.features!).length.should.equal(1);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (res.features as any)[Object.keys(res.features!)[0]].start.should.equal(4);
+  });
+
+  it("should handle notes as a string safely", () => {
+    const res = tidyUpSequenceData({
+      features: [{ start: 4, end: 5, notes: "some note" }]
+    } as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (res.features![0].notes as any).should.equal("some note");
+  });
+
+  it("should handle notes as an object safely", () => {
+    const res = tidyUpSequenceData({
+      features: [{ start: 4, end: 5, notes: { gene: ["dhfr"] } }]
+    } as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (res.features![0].notes as any).gene[0].should.equal("dhfr");
+  });
+
+  it("should default to circular=false if passed a linear circular=false prop", () => {
+    const res = tidyUpSequenceData({
+      circular: false,
+      sequence: "agagagag"
+    });
+    res.circular!.should.equal(false);
+  });
+
+  it("should default to circular=true if passed a linear circular=true prop", () => {
+    const res2 = tidyUpSequenceData({
+      circular: true,
+      sequence: "agagagag"
+    });
+    res2.circular!.should.equal(true);
+  });
+
+  it("should default to circular=true if passed a linear circular='true' prop (string)", () => {
+    const res2 = tidyUpSequenceData({
+      circular: "true",
+      sequence: "agagagag"
+    } as any);
+    res2.circular!.should.equal(true);
+  });
+
+  it("should filter out invalid feature types", () => {
+    const res = tidyUpSequenceData({
+      features: [{ start: 4, end: 5, type: "invalid_type" }, {} as any]
+    });
+    res.features![0].type.should.equal("misc_feature");
+  });
+
+  it("should NOT filter out invalid feature types if allowNonStandardGenbankTypes=true", () => {
+    const res = tidyUpSequenceData(
+      {
+        features: [{ start: 4, end: 5, type: "idontexist" }, {} as any]
       },
       {
         allowNonStandardGenbankTypes: true
       }
     );
-    res.features[0].type.should.equal("idontexist");
+    res.features![0].type.should.equal("idontexist");
   });
   it("should normalize strange upper/lower casing in feature types", () => {
     const res = tidyUpSequenceData({
       features: [{ start: 4, end: 5, type: "cDs" }]
     });
-    res.features[0].type.should.equal("CDS");
+    res.features![0].type.should.equal("CDS");
   });
   it("should not clobber existing feature types", () => {
     const res = tidyUpSequenceData({
       features: [{ start: 4, end: 5, type: "CDS" }]
     });
-    res.features[0].type.should.equal("CDS");
+    res.features![0].type.should.equal("CDS");
   });
 
   it("should add correct color based on type for existing features colors", () => {
     const res = tidyUpSequenceData({
       features: [{ start: 4, end: 5, type: "CDS" }]
     });
-    res.features[0].color.should.equal("#EF6500");
+    res.features![0].color.should.equal("#EF6500");
   });
 
   it("should not clobber existing feature colors", () => {
     const res = tidyUpSequenceData({
       features: [{ start: 4, end: 5, color: "#f4f4f4" }]
     });
-    res.features[0].color.should.equal("#f4f4f4");
+    res.features![0].color.should.equal("#f4f4f4");
   });
-
-  it("should add new ids to annotations if passed that option", () => {
+  it("should not provide ids for annotations if doNotProvideIdsForAnnotations=true", () => {
     const res = tidyUpSequenceData(
       {
-        features: [{ start: 4, end: 5, id: 123 }, {}]
+        features: [{ start: 4, end: 5, id: 123 }, {} as any]
       },
-      { provideNewIdsForAnnotations: true }
-    );
-    res.features[0].id.should.not.equal(123);
-  });
-  it("should not add ids even if the ids are missing if doNotProvideIdsForAnnotations=true", () => {
-    const res = tidyUpSequenceData(
       {
-        features: [{ start: 4, end: 5 }, {}]
-      },
-      { doNotProvideIdsForAnnotations: true }
+        doNotProvideIdsForAnnotations: true
+      }
     );
-
-    assert.strictEqual(res.features[0].id, undefined);
+    res.features![0].id.should.not.equal(123);
+    res.features![0].id.should.equal(123);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    chai.expect((res.features![1] as any).id).to.be.undefined;
   });
-  it("should add the annotationTypePlural field", () => {
-    const res = tidyUpSequenceData(
-      {
-        features: [{ start: 4, end: 5, id: 123 }, {}]
-      },
-      { provideNewIdsForAnnotations: true }
-    );
-    res.features[0].id.should.not.equal(123);
-    res.features[0].annotationTypePlural.should.equal("features");
+  it("should provide ids for annotations if doNotProvideIdsForAnnotations=false (default)", () => {
+    const res = tidyUpSequenceData({
+      features: [{ start: 4, end: 5 }, {} as any]
+    });
+    res.features![0].id.should.exist;
+    res.features![1].id.should.exist;
+  });
+  it("should not strip existing ids from annotations if doNotProvideIdsForAnnotations=false (default)", () => {
+    const res = tidyUpSequenceData({
+      features: [{ start: 4, end: 5, id: 123 }, {} as any]
+    });
+    res.features![0].id.should.not.equal(123); //it should have been "shortid-ed" because ids are strings? No, wait.
+    // If id exists, it uses it?
+    // Code says: if (item.id || item.id === 0) itemId = item.id.
+    // So it keeps 123.
+    res.features![0].id.should.equal(123);
+    res.features![1].id.should.exist;
+  });
+  it("should add annotationTypePlural field to annotations", () => {
+    const res = tidyUpSequenceData({
+      features: [{ start: 4, end: 5, id: 123 }, {} as any]
+    });
+    res.features![0].annotationTypePlural!.should.equal("features");
   });
 
   // it("should add amino acids to a bare translation obj", function() {

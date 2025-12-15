@@ -5,7 +5,7 @@ export default function doesRangeSpanEntireSequence(
   range: Range,
   sequenceLength: number
 ) {
-  if (getRangeLength(range) === sequenceLength) {
+  if (getRangeLength(range, sequenceLength) === sequenceLength) {
     return true;
   }
   return false;

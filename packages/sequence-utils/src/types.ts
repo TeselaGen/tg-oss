@@ -7,6 +7,7 @@ export interface Range {
   locations?: Range[];
   overlapsSelf?: boolean;
   yOffset?: number;
+  aminoAcids?: unknown[];
   [key: string]: unknown;
 }
 
@@ -19,6 +20,7 @@ export interface Annotation extends Range {
   color?: string;
   notes?: Record<string, unknown> | string;
   annotationTypePlural?: string;
+  translationType?: string;
   [key: string]: unknown;
 }
 

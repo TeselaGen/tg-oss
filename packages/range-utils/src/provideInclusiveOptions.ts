@@ -1,15 +1,23 @@
 import { assign } from "lodash-es";
 
-export default function provideInclusiveOptions(
-  funToWrap: (...args: unknown[]) => unknown
-): unknown {
-  return function (this: unknown, ...args: unknown[]) {
-    const options = args[args.length - 1] as
-      | {
-          inclusive1BasedEnd?: boolean;
-          inclusive1BasedStart?: boolean;
-        }
-      | undefined;
+type Options = {
+  inclusive1BasedEnd?: boolean;
+  inclusive1BasedStart?: boolean;
+};
+
+export default function provideInclusiveOptions<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  T extends (...args: any[]) => any
+>(
+  funToWrap: T
+): (
+  ...args: [...Parameters<T>, options?: Options]
+) => ReturnType<T> {
+  return function (
+    this: unknown,
+    ...args: [...Parameters<T>, options?: Options]
+  ): ReturnType<T> {
+    const options = args[args.length - 1] as Options | undefined;
     if (
       options &&
       (options.inclusive1BasedEnd || options.inclusive1BasedStart)
@@ -66,6 +74,6 @@ export default function provideInclusiveOptions(
     ) {
       returnVal = assign(potentialReturn, { end: potentialReturn.end + 1 });
     }
-    return returnVal;
+    return returnVal as ReturnType<T>;
   };
 }

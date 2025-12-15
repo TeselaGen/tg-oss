@@ -2,7 +2,8 @@ import {
   translateRange,
   getSequenceWithinRange,
   flipContainedRange,
-  isPositionWithinRange
+  isPositionWithinRange,
+  Range
 } from "@teselagen/range-utils";
 import revComp from "./getReverseComplementSequenceString";
 import getAA from "./getAminoAcidFromSequenceTriplet";
@@ -21,7 +22,11 @@ import proteinAlphabet from "./proteinAlphabet";
  * @property {Number} basesRead The number of bases read
  * @property {Number[]} codonPositions The positions of the codon bases in the sequenceString
  */
-function getNextTriplet(index, sequenceString, exonRange) {
+function getNextTriplet(
+  index: number,
+  sequenceString: string,
+  exonRange: Range[]
+) {
   let triplet = "";
   let internalIndex;
   // Positions of codons relative to the coding sequence start
@@ -29,7 +34,7 @@ function getNextTriplet(index, sequenceString, exonRange) {
   const codonPositions = [];
 
   // A function to check if a base is within an exon
-  const isBaseInExon = baseIndex =>
+  const isBaseInExon = (baseIndex: number) =>
     exonRange.some(r =>
       isPositionWithinRange(baseIndex, r, sequenceString.length, true, false)
     );
@@ -74,10 +79,10 @@ function getNextTriplet(index, sequenceString, exonRange) {
   * @property {Object[]} exonRange Array of ranges of the sequenceString that contains the positions of bases corresponding to exons.
 */
 function getTranslatedSequenceProperties(
-  originalSequenceString,
-  forward,
-  optionalSubrangeRange,
-  isProteinSequence
+  originalSequenceString: string,
+  forward: boolean,
+  optionalSubrangeRange: Range | null,
+  isProteinSequence: boolean
 ) {
   const originalSequenceStringLength = isProteinSequence
     ? originalSequenceString.length * 3
@@ -90,7 +95,7 @@ function getTranslatedSequenceProperties(
     sequenceString = getSequenceWithinRange(
       optionalSubrangeRange,
       originalSequenceString
-    );
+    ) as string;
     translationRange.start = optionalSubrangeRange.start;
     translationRange.end = optionalSubrangeRange.end;
   }
@@ -106,8 +111,8 @@ function getTranslatedSequenceProperties(
   // TODO: what to do with protein if this is true?
   const absoluteExonRange =
     !isProteinSequence &&
-    optionalSubrangeRange &&
-    optionalSubrangeRange.locations
+      optionalSubrangeRange &&
+      optionalSubrangeRange.locations
       ? optionalSubrangeRange.locations
       : [translationRange];
   const exonRange = absoluteExonRange.map(range => {
@@ -148,10 +153,10 @@ function getTranslatedSequenceProperties(
  *
  */
 function positionInCdsToPositionInMainSequence(
-  index,
-  forward,
-  translationRange,
-  mainSequenceLength
+  index: number,
+  forward: boolean,
+  translationRange: Range,
+  mainSequenceLength: number
 ) {
   let outputRange = translateRange(
     { start: index, end: index },
@@ -181,10 +186,10 @@ function positionInCdsToPositionInMainSequence(
       }]
  */
 export default function getAminoAcidDataForEachBaseOfDna(
-  originalSequenceString,
-  forward,
-  optionalSubrangeRange,
-  isProteinSequence
+  originalSequenceString: string,
+  forward: boolean,
+  optionalSubrangeRange: Range | null,
+  isProteinSequence: boolean
 ) {
   if (!originalSequenceString) {
     return [];
@@ -215,7 +220,8 @@ export default function getAminoAcidDataForEachBaseOfDna(
     if (isProteinSequence) {
       codonPositionsInCDS = [0, 1, 2].map(i => index + i);
       basesRead = 3;
-      aminoAcid = proteinAlphabet[sequenceString[index / 3].toUpperCase()];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      aminoAcid = (proteinAlphabet as any)[sequenceString[index / 3].toUpperCase()];
     } else {
       // Get the triplet of DNA bases
       const {
@@ -241,13 +247,13 @@ export default function getAminoAcidDataForEachBaseOfDna(
     // What should the codon range be if it comprises intron bases?
     const codonRange = forward
       ? {
-          start: absoluteCodonPositions[0],
-          end: absoluteCodonPositions[codonPositionsInCDS.length - 1]
-        }
+        start: absoluteCodonPositions[0],
+        end: absoluteCodonPositions[codonPositionsInCDS.length - 1]
+      }
       : {
-          start: absoluteCodonPositions[codonPositionsInCDS.length - 1],
-          end: absoluteCodonPositions[0]
-        };
+        start: absoluteCodonPositions[codonPositionsInCDS.length - 1],
+        end: absoluteCodonPositions[0]
+      };
 
     // Iterate over the positions read
     let positionInCodon = 0;
@@ -256,11 +262,11 @@ export default function getAminoAcidDataForEachBaseOfDna(
       const sequenceIndex = codonPositionsInCDS.includes(posInCds)
         ? absoluteCodonPositions[codonPositionsInCDS.indexOf(posInCds)]
         : positionInCdsToPositionInMainSequence(
-            posInCds,
-            forward,
-            translationRange,
-            originalSequenceStringLength
-          );
+          posInCds,
+          forward,
+          translationRange,
+          originalSequenceStringLength
+        );
       if (codonPositionsInCDS.includes(posInCds)) {
         aminoAcidDataForEachBaseOfDNA.push({
           aminoAcid,

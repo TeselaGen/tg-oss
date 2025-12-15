@@ -28,13 +28,14 @@ describe("getRangeAngles", function () {
     // console.log('angles: ' + JSON.stringify(angles,null,4));
     const anglesInRadians: Record<string, number> = {};
     Object.keys(angles).forEach(function (key) {
-      anglesInRadians[key] = (angles[key] * 360) / Math.PI / 2;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      anglesInRadians[key] = ((angles as any)[key] * 360) / Math.PI / 2;
     });
 
     // console.log('anglesInRadians: ' + JSON.stringify(anglesInRadians,null,4));
-    assert(anglesInRadians.startAngle === 36);
-    assert(anglesInRadians.endAngle === 252);
-    assert(anglesInRadians.totalAngle === 216);
+    assert(anglesInRadians["startAngle"] === 36);
+    assert(anglesInRadians["endAngle"] === 252);
+    assert(anglesInRadians["totalAngle"] === 216);
     angles.locationAngles &&
       angles.locationAngles.forEach((locAngles: RangeAngles, i: number) => {
         const anglesInRadians: Record<string, number> = {};
@@ -47,9 +48,9 @@ describe("getRangeAngles", function () {
         // console.log('anglesInRadians:',anglesInRadians)
 
         // console.log('anglesInRadians: ' + JSON.stringify(anglesInRadians,null,4));
-        assert(anglesInRadians.startAngle === (i === 0 ? 36 : 108));
-        assert(anglesInRadians.endAngle === (i === 0 ? 108 : 252));
-        assert(anglesInRadians.totalAngle === (i === 0 ? 72 : 144));
+        assert(anglesInRadians["startAngle"] === (i === 0 ? 36 : 108));
+        assert(anglesInRadians["endAngle"] === (i === 0 ? 108 : 252));
+        assert(anglesInRadians["totalAngle"] === (i === 0 ? 72 : 144));
       });
   });
   it("should return the correct angles for ranges that cross the origin", function () {
@@ -58,11 +59,12 @@ describe("getRangeAngles", function () {
     // console.log('angles: ' + JSON.stringify(angles,null,4));
     const anglesInRadians: Record<string, number> = {};
     Object.keys(angles).forEach(function (key) {
-      anglesInRadians[key] = (angles[key] * 360) / Math.PI / 2;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      anglesInRadians[key] = ((angles as any)[key] * 360) / Math.PI / 2;
     });
-    assert(anglesInRadians.startAngle === 324);
-    assert(anglesInRadians.endAngle === 36);
-    assert(anglesInRadians.totalAngle === 72);
+    assert(anglesInRadians["startAngle"] === 324);
+    assert(anglesInRadians["endAngle"] === 36);
+    assert(anglesInRadians["totalAngle"] === 72);
     // console.log('anglesInRadians: ' + JSON.stringify(anglesInRadians,null,4));
   });
   it("should return the correct angles for ranges that do not cross the origin", function () {
@@ -70,12 +72,13 @@ describe("getRangeAngles", function () {
     // console.log('angles: ' + JSON.stringify(angles,null,4));
     const anglesInRadians: Record<string, number> = {};
     Object.keys(angles).forEach(function (key) {
-      anglesInRadians[key] = (angles[key] * 360) / Math.PI / 2;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      anglesInRadians[key] = ((angles as any)[key] * 360) / Math.PI / 2;
     });
     // console.log('anglesInRadians: ' + JSON.stringify(anglesInRadians,null,4));
-    assert(anglesInRadians.startAngle === 36);
-    assert(anglesInRadians.centerAngle === 72); //even if overlapsSelf=true the center angle should still be 72
-    assert(anglesInRadians.endAngle === 108);
-    assert(anglesInRadians.totalAngle === 72);
+    assert(anglesInRadians["startAngle"] === 36);
+    assert(anglesInRadians["centerAngle"] === 72); //even if overlapsSelf=true the center angle should still be 72
+    assert(anglesInRadians["endAngle"] === 108);
+    assert(anglesInRadians["totalAngle"] === 72);
   });
 });

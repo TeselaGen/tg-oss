@@ -5,21 +5,36 @@ import {
   extended_protein_letters
 } from "./bioData";
 
-let allWarnings = [];
+let allWarnings: string[] = [];
 
 let makeToast = () => {
-  if (typeof window !== "undefined" && window.toastr && allWarnings.length) {
-    window.toastr.warning(uniq(allWarnings).join("\n"));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (typeof window !== "undefined" && (window as any).toastr && allWarnings.length) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).toastr.warning(uniq(allWarnings).join("\n"));
   }
   allWarnings = [];
 };
 
-makeToast = debounce(makeToast, 200);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(makeToast as any) = debounce(makeToast, 200);
 
-function showWarnings(warnings) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function showWarnings(warnings: any) {
   allWarnings = allWarnings.concat(warnings);
-  makeToast.cancel();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (makeToast as any).cancel();
   makeToast();
+}
+
+interface FilterSequenceStringOptions {
+  additionalValidChars?: string;
+  isOligo?: boolean;
+  name?: string;
+  isProtein?: boolean;
+  isRna?: boolean;
+  isMixedRnaAndDna?: boolean;
+  [key: string]: unknown;
 }
 
 export default function filterSequenceString(
@@ -31,8 +46,8 @@ export default function filterSequenceString(
     isProtein,
     isRna,
     isMixedRnaAndDna
-  } = {}
-) {
+  }: FilterSequenceStringOptions = {}
+): [string, string[]] {
   const acceptedChars = getAcceptedChars({
     isOligo,
     isProtein,
@@ -47,10 +62,10 @@ export default function filterSequenceString(
   });
 
   let sanitizedVal = "";
-  const invalidChars = [];
+  const invalidChars: string[] = [];
   const chars = `${acceptedChars}${additionalValidChars.split("").join("\\")}`;
-  const warnings = [];
-  const replaceCount = {};
+  const warnings: string[] = [];
+  const replaceCount: Record<string, number> = {};
   sequenceString.split("").forEach(letter => {
     const lowerLetter = letter.toLowerCase();
     if (replaceChars && replaceChars[lowerLetter]) {
@@ -71,15 +86,13 @@ export default function filterSequenceString(
   //add replace count warnings
   Object.keys(replaceCount).forEach(letter => {
     warnings.push(
-      `Replaced "${letter}" with "${replaceChars[letter]}"${
-        replaceCount[letter] > 1 ? ` ${replaceCount[letter]} times` : ""
+      `Replaced "${letter}" with "${replaceChars[letter]}"${replaceCount[letter] > 1 ? ` ${replaceCount[letter]} times` : ""
       }`
     );
   });
   if (sequenceString.length !== sanitizedVal.length) {
     warnings.push(
-      `${
-        name ? `Sequence ${name}: ` : ""
+      `${name ? `Sequence ${name}: ` : ""
       }Invalid character(s) detected and removed: ${uniq(invalidChars)
         .map(c => {
           if (c === " ") {
@@ -101,7 +114,7 @@ export function getAcceptedChars({
   isProtein,
   isRna,
   isMixedRnaAndDna
-} = {}) {
+}: FilterSequenceStringOptions = {}) {
   return isProtein
     ? `${extended_protein_letters.toLowerCase()}`
     : isOligo
@@ -110,29 +123,31 @@ export function getAcceptedChars({
         ? ambiguous_rna_letters.toLowerCase() + "t"
         : isMixedRnaAndDna
           ? ambiguous_rna_letters.toLowerCase() +
-            ambiguous_dna_letters.toLowerCase()
+          ambiguous_dna_letters.toLowerCase()
           : //just plain old dna
-            ambiguous_rna_letters.toLowerCase() +
-            ambiguous_dna_letters.toLowerCase();
+          ambiguous_rna_letters.toLowerCase() +
+          ambiguous_dna_letters.toLowerCase();
 }
 export function getReplaceChars({
   isOligo,
   isProtein,
   isRna,
   isMixedRnaAndDna
-} = {}) {
+}: FilterSequenceStringOptions = {}): Record<string, string> {
   return isProtein
     ? {}
     : // {".": "*"}
-      isOligo
+    isOligo
       ? {}
       : isRna
         ? { t: "u" }
         : isMixedRnaAndDna
           ? {}
           : //just plain old dna
-            {};
+          {};
 }
 
-export const filterRnaString = (s, o) =>
-  filterSequenceString(s, { ...o, isRna: true })[0];
+export const filterRnaString = (
+  s: string,
+  o: FilterSequenceStringOptions
+): string => filterSequenceString(s, { ...o, isRna: true })[0];

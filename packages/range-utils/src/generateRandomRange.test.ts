@@ -13,9 +13,9 @@ describe("generateRandomRange", function () {
   it("should generate random ranges between a start and end and with length less than maxLength", function () {
     for (let i = 0; i < 1000; i++) {
       const range = generateRandomRange(0, 10, 5);
-      const length = getRangeLength(range);
+      const length = getRangeLength(range, 10);
       if (length > -1) {
-        length.should.be.below(6);
+        chai.expect(length).to.be.below(6);
       }
     }
   });
