@@ -6,10 +6,6 @@ import {
 } from "./featureTypesAndColors";
 
 describe("getFeatureToColorMap", () => {
-  afterEach(() => {
-    delete global.tg_featureTypeOverrides;
-  });
-
   it("should pass back feature colors by default ", () => {
     expect(getFeatureToColorMap().proprotein).toEqual("#F39A9D");
   });
@@ -41,10 +37,6 @@ describe("getFeatureToColorMap", () => {
   });
 });
 describe("getMergedFeatureMap", () => {
-  afterEach(() => {
-    delete global.tg_featureTypeOverrides;
-  });
-
   it("should maintain the genbankEquivalentType", () => {
     global.tg_featureTypeOverrides = [
       { name: "proprotein", isHidden: true },

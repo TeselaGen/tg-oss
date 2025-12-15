@@ -14,9 +14,6 @@ describe("getAminoAcidStringFromSequenceString", () => {
     assert.equal("MM", getAminoAcidStringFromSequenceString("atgatg"));
     assert.equal("M--", getAminoAcidStringFromSequenceString("atg------"));
     assert.equal("", getAminoAcidStringFromSequenceString("at"));
-    assert.equal(
-      "MTNYNQKNEN",
-      getAminoAcidStringFromSequenceString("atgactaattataatcaaaaaaatgaaaattaa")
-    );
+    assert.equal("MTNYNQKNEN", getAminoAcidStringFromSequenceString("atgactaattataatcaaaaaaatgaaaattaa"));
   });
 });

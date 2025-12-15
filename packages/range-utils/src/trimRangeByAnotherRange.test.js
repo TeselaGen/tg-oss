@@ -1,18 +1,19 @@
 import trimRangeByAnotherRange from "./trimRangeByAnotherRange.js";
 import assert from "assert";
-import { Range } from "./types";
 
 describe("trimRangeByAnotherRange", function () {
-  it("returns nothing if invalid inputs are sent in", function () {
-    const trimmed = trimRangeByAnotherRange(
-      {} as unknown as Range,
-      {
-        start: 10,
-        end: 20
-      },
-      10
+  it(`returns nothing if invalid inputs are sent in`, () => {
+    assert.equal(
+      null,
+      trimRangeByAnotherRange(
+        null,
+        {
+          start: 2,
+          end: 2
+        },
+        10
+      )
     );
-    assert.equal(trimmed, undefined);
   });
   it("trims non circular ranges that dont fully overlap", function () {
     assert.deepEqual(

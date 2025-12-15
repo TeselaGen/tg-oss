@@ -1,4 +1,4 @@
-import insertGapsIntoRefSeq from "./insertGapsIntoRefSeq";
+import insertGapsIntoRefSeq from "./insertGapsIntoRefSeq.js";
 
 describe("insert gaps into ref seq from seq reads' insertions", () => {
   it("ref seq with all insertions", () => {

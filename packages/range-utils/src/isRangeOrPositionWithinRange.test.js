@@ -1,42 +1,41 @@
 import isRangeOrPositionWithinRange from "./isRangeOrPositionWithinRange";
 import { expect } from "chai";
-import { Range } from "./types";
 
 describe("isRangeOrPositionWithinRange", function () {
   it("should correctly determine whether a position is within a range", function () {
-    expect(isRangeOrPositionWithinRange(1, { start: 1, end: 1 }, 100)).to.equal(
+    expect(isRangeOrPositionWithinRange(1, { start: 1, end: 1 })).to.equal(
       false
     );
-    expect(
-      isRangeOrPositionWithinRange(0, { start: 1, end: 10 }, 100)
-    ).to.equal(false);
-    expect(
-      isRangeOrPositionWithinRange(1, { start: 0, end: 10 }, 100)
-    ).to.equal(true);
-    expect(
-      isRangeOrPositionWithinRange(11, { start: 1, end: 10 }, 100)
-    ).to.equal(false);
-    expect(
-      isRangeOrPositionWithinRange(0, { start: 0, end: 10 }, 100)
-    ).to.equal(false);
-    expect(
-      isRangeOrPositionWithinRange(10, { start: 0, end: 10 }, 100)
-    ).to.equal(true);
-    expect(
-      isRangeOrPositionWithinRange(10, { start: 10, end: 5 }, 100)
-    ).to.equal(false);
-    expect(
-      isRangeOrPositionWithinRange(11, { start: 10, end: 5 }, 100)
-    ).to.equal(true);
-    expect(
-      isRangeOrPositionWithinRange(4, { start: 10, end: 5 }, 100)
-    ).to.equal(true);
-    expect(
-      isRangeOrPositionWithinRange(5, { start: 10, end: 5 }, 100)
-    ).to.equal(true);
-    expect(
-      isRangeOrPositionWithinRange(6, { start: 10, end: 5 }, 100)
-    ).to.equal(false);
+    expect(isRangeOrPositionWithinRange(0, { start: 1, end: 10 })).to.equal(
+      false
+    );
+    expect(isRangeOrPositionWithinRange(1, { start: 0, end: 10 })).to.equal(
+      true
+    );
+    expect(isRangeOrPositionWithinRange(11, { start: 1, end: 10 })).to.equal(
+      false
+    );
+    expect(isRangeOrPositionWithinRange(0, { start: 0, end: 10 })).to.equal(
+      false
+    );
+    expect(isRangeOrPositionWithinRange(10, { start: 0, end: 10 })).to.equal(
+      true
+    );
+    expect(isRangeOrPositionWithinRange(10, { start: 10, end: 5 })).to.equal(
+      false
+    );
+    expect(isRangeOrPositionWithinRange(11, { start: 10, end: 5 })).to.equal(
+      true
+    );
+    expect(isRangeOrPositionWithinRange(4, { start: 10, end: 5 })).to.equal(
+      true
+    );
+    expect(isRangeOrPositionWithinRange(5, { start: 10, end: 5 })).to.equal(
+      true
+    );
+    expect(isRangeOrPositionWithinRange(6, { start: 10, end: 5 })).to.equal(
+      false
+    );
   });
 
   it("should correctly determine whether a position is within a range when includeStartEdge/includeEndEdge is set to true", function () {
@@ -59,33 +58,17 @@ describe("isRangeOrPositionWithinRange", function () {
   });
   it("should correctly determine whether a position is within a range", function () {
     expect(
-      isRangeOrPositionWithinRange(
-        null as unknown as Range,
-        { start: 1, end: 10 },
-        100
-      )
+      isRangeOrPositionWithinRange(null, { start: 1, end: 10 }, 100)
     ).to.equal(false);
     expect(
-      isRangeOrPositionWithinRange(
-        {} as unknown as Range,
-        { start: 1, end: 10 },
-        100
-      )
+      isRangeOrPositionWithinRange({}, { start: 1, end: 10 }, 100)
     ).to.equal(false);
     expect(
-      isRangeOrPositionWithinRange(
-        { start: 5, end: 10 },
-        undefined as unknown as Range,
-        100
-      )
+      isRangeOrPositionWithinRange({ start: 5, end: 10 }, undefined, 100)
     ).to.equal(false);
-    expect(
-      isRangeOrPositionWithinRange(
-        undefined as unknown as Range,
-        undefined as unknown as Range,
-        100
-      )
-    ).to.equal(false);
+    expect(isRangeOrPositionWithinRange(undefined, undefined, 100)).to.equal(
+      false
+    );
     expect(
       isRangeOrPositionWithinRange(
         { start: 5, end: 10 },

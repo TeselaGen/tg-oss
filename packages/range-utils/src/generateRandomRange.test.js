@@ -5,17 +5,19 @@ chai.should();
 
 describe("generateRandomRange", function () {
   it("should generate random ranges between a start and end", function () {
-    const range = generateRandomRange(0, 10, 100);
-    chai.expect(range.start).to.be.below(11);
-    chai.expect(range.end).to.be.below(11);
+    for (let i = 0; i < 1000; i++) {
+      const range = generateRandomRange(0, 10);
+      range.start.should.be.below(11);
+      range.end.should.be.below(11);
+    }
   });
 
   it("should generate random ranges between a start and end and with length less than maxLength", function () {
     for (let i = 0; i < 1000; i++) {
       const range = generateRandomRange(0, 10, 5);
-      const length = getRangeLength(range, 10);
+      const length = getRangeLength(range);
       if (length > -1) {
-        chai.expect(length).to.be.below(6);
+        length.should.be.below(6);
       }
     }
   });

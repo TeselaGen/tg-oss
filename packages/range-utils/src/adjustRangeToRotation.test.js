@@ -10,7 +10,7 @@ describe("adjustRangeToRotation", function () {
           start: 1,
           end: 2
         },
-        undefined, // Changed from null as any
+        null,
         10
       ),
       {
@@ -48,7 +48,6 @@ describe("adjustRangeToRotation", function () {
       }
     );
   });
-
   it("defaults to an infinite length if no length is passed", () => {
     assert.deepEqual(
       adjustRangeToRotation(
@@ -57,7 +56,7 @@ describe("adjustRangeToRotation", function () {
           end: 2
         },
         1,
-        undefined
+        null
       ),
       {
         start: 0,

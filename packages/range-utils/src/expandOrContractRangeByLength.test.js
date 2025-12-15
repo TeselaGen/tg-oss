@@ -10,7 +10,7 @@ describe("expandOrContractRangeByLength", function () {
       true,
       10
     );
-    chai.expect(expandedRange).to.deep.equal({
+    expandedRange.should.deep.equal({
       start: 2,
       end: 4
     });
@@ -22,7 +22,7 @@ describe("expandOrContractRangeByLength", function () {
       false,
       10
     );
-    chai.expect(expandedRange).to.deep.equal({
+    expandedRange.should.deep.equal({
       start: 3,
       end: 5
     });
@@ -34,7 +34,7 @@ describe("expandOrContractRangeByLength", function () {
       false,
       10
     );
-    chai.expect(expandedRange).to.deep.equal({
+    expandedRange.should.deep.equal({
       start: 3,
       end: 0
     });
@@ -47,7 +47,7 @@ describe("expandOrContractRangeByLength", function () {
       false,
       10
     );
-    chai.expect(expandedRange).to.deep.equal({
+    expandedRange.should.deep.equal({
       start: 6,
       end: 5
     });
@@ -59,7 +59,7 @@ describe("expandOrContractRangeByLength", function () {
       true,
       10
     );
-    chai.expect(expandedRange).to.deep.equal({
+    expandedRange.should.deep.equal({
       start: 5,
       end: 4
     });
@@ -71,7 +71,7 @@ describe("expandOrContractRangeByLength", function () {
       true,
       10
     );
-    chai.expect(expandedRange).to.deep.equal({
+    expandedRange.should.deep.equal({
       start: 5,
       end: 4
     });
@@ -84,7 +84,7 @@ describe("expandOrContractRangeByLength", function () {
       true,
       10
     );
-    chai.expect(expandedRange).to.deep.equal({
+    expandedRange.should.deep.equal({
       start: 7,
       end: 4
     });
@@ -96,9 +96,20 @@ describe("expandOrContractRangeByLength", function () {
       false,
       10
     );
-    chai.expect(expandedRange).to.deep.equal({
+    expandedRange.should.deep.equal({
       start: 6,
       end: 3
     });
   });
+
+  // it('should error if trying to expand more than possible', function () {
+  // 	var error = false;
+  // 	try {
+  // 		var range = expandOrContractRangeByLength({start: 6,end:4}, 10, false, 10)
+  // 		console.log('range:', range)
+  // 	} catch (e) {
+  // 	    error = true;
+  // 	}
+  // 	expect(error).to.be.true;
+  // });
 });

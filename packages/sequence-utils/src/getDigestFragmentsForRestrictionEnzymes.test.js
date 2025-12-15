@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import * as chai from "chai";
-import getDigestFragmentsForRestrictionEnzymes from "./getDigestFragmentsForRestrictionEnzymes";
+import getDigestFragmentsForRestrictionEnzymes from "./getDigestFragmentsForRestrictionEnzymes.js";
 import enzymeList from "./aliasedEnzymesByName";
 
 chai.should();

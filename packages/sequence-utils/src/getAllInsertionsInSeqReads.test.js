@@ -1,4 +1,4 @@
-import getAllInsertionsInSeqReads from "./getAllInsertionsInSeqReads";
+import getAllInsertionsInSeqReads from "./getAllInsertionsInSeqReads.js";
 
 describe("get bp pos of all insertions in seq reads after bowtie2 alignment", () => {
   it("allInsertionsInSeqReads should be an array of objects [{bpPos: bp pos of insertion, number: # of insertions}, {bpPos, number}, ...]", () => {

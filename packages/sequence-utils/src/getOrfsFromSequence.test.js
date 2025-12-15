@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import getOrfsFromSequence from "./getOrfsFromSequence";
+import getOrfsFromSequence from "./getOrfsFromSequence.js";
 // getOrfsFromSequence(frame, sequence, minimumOrfSize, forward, circular)
 describe("getOrfsFromSequence", () => {
   it("finds correct orfs in reverse direction in slightly more complex sequence", () => {

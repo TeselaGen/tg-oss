@@ -20,7 +20,7 @@ describe("flipContainedRange", function () {
       outerRange,
       sequenceLength
     );
-    chai.expect(flippedInnerRange).to.deep.equal({
+    flippedInnerRange.should.deep.equal({
       start: 7,
       end: 15
     });
@@ -40,7 +40,7 @@ describe("flipContainedRange", function () {
       outerRange,
       sequenceLength
     );
-    chai.expect(flippedInnerRange).to.deep.equal({
+    flippedInnerRange.should.deep.equal({
       start: 2,
       end: 0
     });
@@ -60,7 +60,7 @@ describe("flipContainedRange", function () {
       outerRange,
       sequenceLength
     );
-    chai.expect(flippedInnerRange).to.deep.equal({
+    flippedInnerRange.should.deep.equal({
       start: 0,
       end: 2
     });
@@ -80,7 +80,7 @@ describe("flipContainedRange", function () {
       outerRange,
       sequenceLength
     );
-    chai.expect(flippedInnerRange).to.deep.equal({
+    flippedInnerRange.should.deep.equal({
       start: 5,
       end: 8
     });
@@ -100,7 +100,7 @@ describe("flipContainedRange", function () {
       outerRange,
       sequenceLength
     );
-    chai.expect(flippedInnerRange).to.deep.equal({
+    flippedInnerRange.should.deep.equal({
       start: 5,
       end: 3
     });
@@ -121,7 +121,7 @@ describe("flipContainedRange", function () {
       outerRange,
       sequenceLength
     );
-    chai.expect(flippedInnerRange).to.deep.equal({
+    flippedInnerRange.should.deep.equal({
       start: 0,
       end: 6
     });
@@ -142,7 +142,7 @@ describe("flipContainedRange", function () {
       outerRange,
       sequenceLength
     );
-    chai.expect(flippedInnerRange).to.deep.equal({
+    flippedInnerRange.should.deep.equal({
       start: 5,
       end: 3
     });
