@@ -1,6 +1,7 @@
 import {
   modulateRangeBySequenceLength,
-  flipContainedRange
+  flipContainedRange,
+  Range
 } from "@teselagen/range-utils";
 import { reduce, uniqBy } from "lodash-es";
 import escapeStringRegexp from "escape-string-regexp";
@@ -8,11 +9,19 @@ import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequen
 import { ambiguous_dna_values, extended_protein_values } from "./bioData";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
+export interface FindSequenceMatchesOptions {
+  searchReverseStrand?: boolean;
+  isCircular?: boolean;
+  isAmbiguous?: boolean;
+  isProteinSequence?: boolean;
+  isProteinSearch?: boolean;
+}
+
 export default function findSequenceMatches(
-  sequence,
-  searchString,
-  options = {}
-) {
+  sequence: string,
+  searchString: string,
+  options: FindSequenceMatchesOptions = {}
+): (Range & { bottomStrand?: boolean })[] {
   let matches = findSequenceMatchesTopStrand(sequence, searchString, options);
   const { searchReverseStrand } = options;
 
@@ -39,7 +48,11 @@ export default function findSequenceMatches(
   return matches;
 }
 
-function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
+function findSequenceMatchesTopStrand(
+  sequence: string,
+  searchString: string,
+  options: FindSequenceMatchesOptions = {}
+): Range[] {
   const { isCircular, isAmbiguous, isProteinSequence, isProteinSearch } =
     options;
   let searchStringToUse = escapeStringRegexp(searchString);
@@ -51,7 +64,10 @@ function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
       );
     } else {
       //we're searching DNA
-      searchStringToUse = convertAmbiguousStringToRegex(searchStringToUse);
+      searchStringToUse = convertAmbiguousStringToRegex(
+        searchStringToUse,
+        false
+      );
     }
   }
   if (!searchStringToUse) return []; //short circuit if nothing is actually being searched for (eg searching for "%%"")
@@ -86,11 +102,11 @@ function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
     ];
   }
 
-  const ranges = [];
+  const ranges: Range[] = [];
   sequencesToCheck.forEach(({ seqToCheck, offset }) => {
     const reg = new RegExp(searchStringToUse, "ig");
-    let match;
-    let range;
+    let match: RegExpExecArray | null;
+    let range: Range;
     /* eslint-disable no-cond-assign*/
 
     while ((match = reg.exec(seqToCheck)) !== null) {
@@ -113,7 +129,7 @@ function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
   });
 }
 
-function convertAmbiguousStringToRegex(string, isProtein) {
+function convertAmbiguousStringToRegex(string: string, isProtein: boolean) {
   // Search for a DNA subseq in sequence.
   // use ambiguous values (like N = A or T or C or G, R = A or G etc.)
   // searches only on forward strand
@@ -121,8 +137,10 @@ function convertAmbiguousStringToRegex(string, isProtein) {
     string,
     (acc, char) => {
       const value = isProtein
-        ? extended_protein_values[char.toUpperCase()]
-        : ambiguous_dna_values[char.toUpperCase()];
+        ? (extended_protein_values as Record<string, string>)[
+            char.toUpperCase()
+          ]
+        : (ambiguous_dna_values as Record<string, string>)[char.toUpperCase()];
       if (!value) return acc;
       if (value.length === 1) {
         acc += value;

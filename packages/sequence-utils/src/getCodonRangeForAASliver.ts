@@ -1,9 +1,12 @@
+import { AminoAcidData } from "./types";
+import { Range } from "@teselagen/range-utils";
+
 export default function getCodonRangeForAASliver(
-  aminoAcidPositionInSequence,
-  aminoAcidSliver,
-  AARepresentationOfTranslation,
-  relativeAAPositionInTranslation
-) {
+  aminoAcidPositionInSequence: number,
+  aminoAcidSliver: AminoAcidData,
+  AARepresentationOfTranslation: AminoAcidData[],
+  relativeAAPositionInTranslation: number
+): Range {
   const AASliverOneBefore =
     AARepresentationOfTranslation[relativeAAPositionInTranslation - 1];
   if (
@@ -43,7 +46,14 @@ export default function getCodonRangeForAASliver(
       };
     } else {
       const AASliverOneAhead =
-        AARepresentationOfTranslation[relativeAAPositionInTranslation - 2];
+        AARepresentationOfTranslation[relativeAAPositionInTranslation - 2]; // Original logic logic seems to check "ahead" but uses -2 index??
+      // Wait, AASliverOneAhead should likely access +1 or +2?
+      // Line 46 in original: AARepresentationOfTranslation[relativeAAPositionInTranslation - 2]
+      // This is weird for "OneAhead".
+      // But I shouldn't change logic unless I'm sure it's a bug fix.
+      // Assuming original code logic is intentional or I should preserve it.
+      // I will preserve the index access but add types.
+
       if (
         AASliverOneAhead &&
         AASliverOneAhead.aminoAcidIndex === aminoAcidSliver.aminoAcidIndex

@@ -1,9 +1,26 @@
 // seqReads should be an array of objects [{name, seq, pos, cigar}, {name, seq, pos, cigar}, ...]
-export default function getAllInsertionsInSeqReads(seqReads) {
-  const allInsertionsInSeqReads = [];
+
+interface SeqRead {
+  name: string;
+  seq: string;
+  pos: number;
+  cigar: string;
+}
+
+interface InsertionInfo {
+  bpPos: number;
+  number: number;
+}
+
+export default function getAllInsertionsInSeqReads(
+  seqReads: SeqRead[]
+): InsertionInfo[] {
+  const allInsertionsInSeqReads: InsertionInfo[] = [];
   seqReads.forEach(seqRead => {
     // split cigar string at M, D, or I (match, deletion, or insertion), e.g. ["2M", "3I", "39M", "3D"...]
     const splitSeqRead = seqRead.cigar.match(/([0-9]*[MDI])/g);
+
+    if (!splitSeqRead) return;
 
     for (let componentI = 0; componentI < splitSeqRead.length; componentI++) {
       if (splitSeqRead[componentI].slice(-1) === "I") {

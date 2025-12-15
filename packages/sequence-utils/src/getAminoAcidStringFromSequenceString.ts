@@ -1,16 +1,20 @@
 import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
+import { AminoAcidData } from "./types";
 
 export default function getAminoAcidStringFromSequenceString(
-  sequenceString,
-  { doNotExcludeAsterisk } = {}
-) {
+  sequenceString: string,
+  options: { doNotExcludeAsterisk?: boolean } = {}
+): string {
+  const { doNotExcludeAsterisk } = options;
   const aminoAcidsPerBase = getAminoAcidDataForEachBaseOfDna(
     sequenceString,
-    true
+    true,
+    null,
+    false
   );
-  const aaArray = [];
+  const aaArray: string[] = [];
   let aaString = "";
-  aminoAcidsPerBase.forEach((aa, index) => {
+  aminoAcidsPerBase.forEach((aa: AminoAcidData, index: number) => {
     if (!aa.fullCodon) {
       return;
     }
@@ -18,8 +22,11 @@ export default function getAminoAcidStringFromSequenceString(
     if (
       !doNotExcludeAsterisk &&
       index >= aminoAcidsPerBase.length - 3 &&
-      aa.aminoAcid.value === "*"
+      aa.aminoAcid?.value === "*"
     ) {
+      return;
+    }
+    if (aa.aminoAcidIndex === null || !aa.aminoAcid) {
       return;
     }
     aaArray[aa.aminoAcidIndex] = aa.aminoAcid.value;

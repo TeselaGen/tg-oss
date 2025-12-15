@@ -1,4 +1,4 @@
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength, Range } from "@teselagen/range-utils";
 import { map, cloneDeep } from "lodash-es";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import rotateSequenceDataToPosition from "./rotateSequenceDataToPosition";
@@ -7,13 +7,21 @@ import tidyUpSequenceData from "./tidyUpSequenceData";
 import { modifiableTypes } from "./annotationTypes";
 import adjustBpsToReplaceOrInsert from "./adjustBpsToReplaceOrInsert";
 import adjustAnnotationsToInsert from "./adjustAnnotationsToInsert";
+import { Annotation, ChromatogramData, SequenceData } from "./types";
+
+interface InsertSequenceDataOptions {
+  maintainOriginSplit?: boolean;
+  doNotRemoveInvalidChars?: boolean;
+  topLevelSeqData?: SequenceData;
+  [key: string]: unknown;
+}
 
 export default function insertSequenceDataAtPositionOrRange(
-  _sequenceDataToInsert,
-  _existingSequenceData,
-  caretPositionOrRange,
-  options = {}
-) {
+  _sequenceDataToInsert: SequenceData,
+  _existingSequenceData: SequenceData,
+  caretPositionOrRange: number | Range,
+  options: InsertSequenceDataOptions = {}
+): SequenceData {
   //maintainOriginSplit means that if you're inserting around the origin with n bps selected before the origin
   //when inserting new seq, n bps of the new seq should go in before the origin and the rest should be
   //inserted at the sequence start
@@ -31,13 +39,21 @@ export default function insertSequenceDataAtPositionOrRange(
     sequenceDataToInsert.isProtein && sequenceDataToInsert.proteinSequence
       ? sequenceDataToInsert.proteinSequence.length * 3
       : sequenceDataToInsert.sequence.length;
-  let caretPosition = caretPositionOrRange;
+  let caretPosition =
+    typeof caretPositionOrRange === "number"
+      ? caretPositionOrRange
+      : caretPositionOrRange.start;
 
   const isInsertSameLengthAsSelection =
+    typeof caretPositionOrRange !== "number" &&
     sequenceDataToInsert.sequence.length ===
-    getRangeLength(caretPositionOrRange, existingSequenceData.sequence.length);
+      getRangeLength(
+        caretPositionOrRange,
+        existingSequenceData.sequence.length
+      );
 
   if (
+    typeof caretPositionOrRange !== "number" &&
     caretPositionOrRange.start > -1 &&
     getRangeLength(
       caretPositionOrRange,
@@ -45,12 +61,18 @@ export default function insertSequenceDataAtPositionOrRange(
     ) === existingSequenceData.sequence.length
   ) {
     //handle the case where we're deleting everything!
+    const emptyAnnotations = modifiableTypes.reduce(
+      (acc, type) => {
+        acc[type] = [];
+        return acc;
+      },
+      {} as Record<string, Annotation[]>
+    );
+
     existingSequenceData = tidyUpSequenceData(
       {
         ...existingSequenceData,
-        ...modifiableTypes.reduce((acc, type) => {
-          return (acc[type] = []);
-        }, {}),
+        ...emptyAnnotations,
         sequence: "",
         doNotRemoveInvalidChars: true,
         proteinSequence: "",
@@ -64,7 +86,10 @@ export default function insertSequenceDataAtPositionOrRange(
     newSequenceData.chromatogramData.baseTraces
   ) {
     //handle chromatogramData updates
-    if (caretPositionOrRange && caretPositionOrRange.start > -1) {
+    if (
+      typeof caretPositionOrRange !== "number" &&
+      caretPositionOrRange.start > -1
+    ) {
       if (caretPositionOrRange.start > caretPositionOrRange.end) {
         newSequenceData.chromatogramData = trimChromatogram({
           chromatogramData: newSequenceData.chromatogramData,
@@ -74,14 +99,16 @@ export default function insertSequenceDataAtPositionOrRange(
           },
           justBaseCalls: isInsertSameLengthAsSelection
         });
-        newSequenceData.chromatogramData = trimChromatogram({
-          chromatogramData: newSequenceData.chromatogramData,
-          range: {
-            start: 0,
-            end: caretPositionOrRange.end
-          },
-          justBaseCalls: isInsertSameLengthAsSelection
-        });
+        if (newSequenceData.chromatogramData) {
+          newSequenceData.chromatogramData = trimChromatogram({
+            chromatogramData: newSequenceData.chromatogramData,
+            range: {
+              start: 0,
+              end: caretPositionOrRange.end
+            },
+            justBaseCalls: isInsertSameLengthAsSelection
+          });
+        }
       } else {
         newSequenceData.chromatogramData = trimChromatogram({
           chromatogramData: newSequenceData.chromatogramData,
@@ -93,13 +120,14 @@ export default function insertSequenceDataAtPositionOrRange(
         });
       }
     }
-    if (sequenceDataToInsert.sequence) {
+    if (sequenceDataToInsert.sequence && newSequenceData.chromatogramData) {
       insertIntoChromatogram({
         chromatogramData: newSequenceData.chromatogramData,
         caretPosition:
+          typeof caretPositionOrRange !== "number" &&
           caretPositionOrRange.start > -1
             ? caretPositionOrRange.start
-            : caretPositionOrRange,
+            : (caretPositionOrRange as number),
         seqToInsert: sequenceDataToInsert.sequence,
         justBaseCalls: isInsertSameLengthAsSelection
       });
@@ -114,18 +142,25 @@ export default function insertSequenceDataAtPositionOrRange(
   );
   newSequenceData.size = newSequenceData.sequence.length;
   newSequenceData.proteinSequence = adjustBpsToReplaceOrInsert(
-    existingSequenceData.proteinSequence,
-    sequenceDataToInsert.proteinSequence,
+    existingSequenceData.proteinSequence || "",
+    sequenceDataToInsert.proteinSequence || "",
     convertDnaCaretPositionOrRangeToAa(caretPositionOrRange)
   );
-  newSequenceData.proteinSize = newSequenceData.proteinSequence.length;
+  newSequenceData.proteinSize = (newSequenceData.proteinSequence || "").length;
 
   //handle the insert
   modifiableTypes.forEach(annotationType => {
-    let existingAnnotations = existingSequenceData[annotationType];
+    let existingAnnotations = existingSequenceData[
+      annotationType
+    ] as Annotation[];
+    if (!existingAnnotations) return;
+
     //update the annotations:
     //handle the delete if necessary
-    if (caretPositionOrRange && caretPositionOrRange.start > -1) {
+    if (
+      typeof caretPositionOrRange !== "number" &&
+      caretPositionOrRange.start > -1
+    ) {
       //we have a range! so let's delete it!
       const range = caretPositionOrRange;
       caretPosition = range.start > range.end ? 0 : range.start;
@@ -138,25 +173,35 @@ export default function insertSequenceDataAtPositionOrRange(
     }
     //first clear the newSequenceData's annotations
     newSequenceData[annotationType] = [];
+    const annotationsToInsert = sequenceDataToInsert[
+      annotationType
+    ] as Annotation[];
     //in two steps adjust the annotations to the insert
-    newSequenceData[annotationType] = newSequenceData[annotationType].concat(
-      adjustAnnotationsToInsert(
-        existingAnnotations,
-        caretPosition,
-        insertLength
-      )
-    );
-    newSequenceData[annotationType] = newSequenceData[annotationType].concat(
-      adjustAnnotationsToInsert(
-        sequenceDataToInsert[annotationType],
-        0,
-        caretPosition
-      )
-    );
+    if (newSequenceData[annotationType]) {
+      // Explicitly cast to unknown array inside concat to avoid TS errors with specific Annotation types if they diverge slightly,
+      // though strictly they should be Annotation[]
+      (newSequenceData[annotationType] as Annotation[]) = (
+        newSequenceData[annotationType] as Annotation[]
+      ).concat(
+        adjustAnnotationsToInsert(
+          existingAnnotations,
+          caretPosition,
+          insertLength
+        )
+      );
+      if (annotationsToInsert) {
+        (newSequenceData[annotationType] as Annotation[]) = (
+          newSequenceData[annotationType] as Annotation[]
+        ).concat(
+          adjustAnnotationsToInsert(annotationsToInsert, 0, caretPosition)
+        );
+      }
+    }
   });
+
   if (
     maintainOriginSplit &&
-    caretPositionOrRange &&
+    typeof caretPositionOrRange !== "number" &&
     caretPositionOrRange.start > caretPositionOrRange.end
   ) {
     //we're replacing around the origin and maintainOriginSplit=true
@@ -171,7 +216,11 @@ export default function insertSequenceDataAtPositionOrRange(
   return newSequenceData;
 }
 
-function adjustAnnotationsToDelete(annotationsToBeAdjusted, range, maxLength) {
+function adjustAnnotationsToDelete(
+  annotationsToBeAdjusted: Annotation[],
+  range: Range,
+  maxLength: number
+): Annotation[] {
   return map(annotationsToBeAdjusted, annotation => {
     const newRange = adjustRangeToDeletionOfAnotherRange(
       annotation,
@@ -183,6 +232,10 @@ function adjustAnnotationsToDelete(annotationsToBeAdjusted, range, maxLength) {
       annotation.locations
         .map(loc => adjustRangeToDeletionOfAnotherRange(loc, range, maxLength))
         .filter(range => !!range);
+
+    // Check if newRange is valid (start/end exist) before returning
+    if (!newRange) return null;
+
     if (newLocations && newLocations.length) {
       return {
         ...newRange,
@@ -193,7 +246,7 @@ function adjustAnnotationsToDelete(annotationsToBeAdjusted, range, maxLength) {
     } else {
       return newRange;
     }
-  }).filter(range => !!range); //filter any fully deleted ranges
+  }).filter((range): range is Annotation => !!range); //filter any fully deleted ranges
 }
 
 function insertIntoChromatogram({
@@ -201,22 +254,28 @@ function insertIntoChromatogram({
   caretPosition,
   seqToInsert,
   justBaseCalls
-}) {
+}: {
+  chromatogramData: ChromatogramData;
+  caretPosition: number;
+  seqToInsert: string;
+  justBaseCalls?: boolean;
+}): ChromatogramData | void {
   if (!seqToInsert.length) return;
 
-  chromatogramData.baseCalls &&
-    chromatogramData.baseCalls.splice(
+  if (chromatogramData.baseCalls) {
+    (chromatogramData.baseCalls as unknown[]).splice(
       caretPosition,
       0,
       ...seqToInsert.split("")
     );
+  }
   if (justBaseCalls) {
     //return early if just base calls
     return chromatogramData;
   }
 
-  const baseTracesToInsert = [];
-  const qualNumsToInsert = [];
+  const baseTracesToInsert: unknown[] = [];
+  const qualNumsToInsert: number[] = [];
 
   for (let index = 0; index < seqToInsert.length; index++) {
     qualNumsToInsert.push(0);
@@ -229,10 +288,20 @@ function insertIntoChromatogram({
     });
   }
 
-  chromatogramData.baseTraces &&
-    chromatogramData.baseTraces.splice(caretPosition, 0, ...baseTracesToInsert);
-  chromatogramData.qualNums &&
-    chromatogramData.qualNums.splice(caretPosition, 0, ...qualNumsToInsert);
+  if (chromatogramData.baseTraces) {
+    (chromatogramData.baseTraces as unknown[]).splice(
+      caretPosition,
+      0,
+      ...baseTracesToInsert
+    );
+  }
+  if (chromatogramData.qualNums) {
+    (chromatogramData.qualNums as unknown[]).splice(
+      caretPosition,
+      0,
+      ...qualNumsToInsert
+    );
+  }
 
   return chromatogramData;
 }
@@ -241,13 +310,18 @@ function trimChromatogram({
   chromatogramData,
   range: { start, end },
   justBaseCalls
-}) {
+}: {
+  chromatogramData: ChromatogramData;
+  range: { start: number; end: number };
+  justBaseCalls?: boolean;
+}): ChromatogramData {
   [
     "baseCalls",
     ...(justBaseCalls ? [] : ["qualNums", "baseTraces", "basePos"])
   ].forEach(type => {
-    chromatogramData[type] &&
-      chromatogramData[type].splice(start, end - start + 1);
+    if (chromatogramData[type]) {
+      (chromatogramData[type] as unknown[]).splice(start, end - start + 1);
+    }
   });
 
   return chromatogramData;

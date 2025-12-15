@@ -5,8 +5,26 @@ import {
   getRangeLength
 } from "@teselagen/range-utils";
 import getCutsitesFromSequence from "./getCutsitesFromSequence";
+import { CutSite, DigestFragment, RestrictionEnzyme } from "./types";
 
-function computeDigestFragments({
+// Explicitly define the params interface
+export interface ComputeDigestFragmentsParams {
+  cutsites: CutSite[];
+  sequenceLength: number;
+  circular: boolean;
+  includeOverAndUnderHangs?: boolean;
+  computePartialDigest?: boolean;
+  computeDigestDisabled?: boolean;
+  computePartialDigestDisabled?: boolean;
+  selectionLayerUpdate?: (params: {
+    start: number;
+    end: number;
+    name: string;
+  }) => void;
+  updateSelectedFragment?: (id: string) => void;
+}
+
+export function computeDigestFragments({
   cutsites,
   sequenceLength,
   circular,
@@ -17,10 +35,10 @@ function computeDigestFragments({
   computePartialDigestDisabled,
   selectionLayerUpdate,
   updateSelectedFragment
-}) {
-  const fragments = [];
-  const overlappingEnzymes = [];
-  const pairs = [];
+}: ComputeDigestFragmentsParams) {
+  const fragments: DigestFragment[] = [];
+  const overlappingEnzymes: DigestFragment[] = [];
+  const pairs: CutSite[][] = [];
 
   const sortedCutsites = cutsites.sort((a, b) => {
     return a.topSnipPosition - b.topSnipPosition;
@@ -33,6 +51,7 @@ function computeDigestFragments({
       overhangBps: "",
       topSnipPosition: 0,
       bottomSnipPosition: 0,
+      overhangSize: 0, // Added to satisfy CutSite
       upstreamTopSnip: 0,
       upstreamBottomSnip: 0,
       upstreamTopBeforeBottom: false,
@@ -44,7 +63,10 @@ function computeDigestFragments({
       forward: true,
       name: "Sequence_Terminus",
       restrictionEnzyme: {
-        name: "Sequence_Terminus"
+        name: "Sequence_Terminus",
+        site: "",
+        forwardRegex: "",
+        reverseRegex: ""
       }
     });
   }
@@ -71,9 +93,9 @@ function computeDigestFragments({
   pairs.forEach(r => {
     let [cut1, cut2] = r;
 
-    let start;
-    let end;
-    let size;
+    let start: number;
+    let end: number;
+    let size: number;
     start = normalizePositionByRangeLength(
       cut1.topSnipPosition,
       sequenceLength
@@ -83,7 +105,7 @@ function computeDigestFragments({
       sequenceLength
     );
     size = getRangeLength({ start, end }, sequenceLength);
-    let overlapsSelf;
+    let overlapsSelf: boolean | undefined;
     if (includeOverAndUnderHangs) {
       const oldSize = size;
       start = normalizePositionByRangeLength(
@@ -106,7 +128,7 @@ function computeDigestFragments({
       }
     }
 
-    let isFormedFromLinearEnd;
+    let isFormedFromLinearEnd: boolean | undefined;
     if (cut1.name === "Sequence_Terminus") {
       cut1 = cloneDeep(cut1);
       isFormedFromLinearEnd = true;
@@ -121,7 +143,7 @@ function computeDigestFragments({
 
     const id = start + "-" + end + "-" + size + "-";
     const name = `${cut1.restrictionEnzyme.name} -- ${cut2.restrictionEnzyme.name} ${size} bps`;
-    getRangeLength({ start, end }, sequenceLength);
+    // getRangeLength({ start, end }, sequenceLength);
 
     fragments.push({
       isFormedFromLinearEnd,
@@ -163,20 +185,22 @@ function computeDigestFragments({
   };
 }
 
-function getDigestFragsForSeqAndEnzymes({
+export function getDigestFragsForSeqAndEnzymes({
   sequence,
   circular,
   enzymes,
   includeOverAndUnderHangs
+}: {
+  sequence: string;
+  circular: boolean;
+  enzymes: RestrictionEnzyme[];
+  includeOverAndUnderHangs?: boolean;
 }) {
   const cutsitesByName = getCutsitesFromSequence(sequence, circular, enzymes);
   return computeDigestFragments({
     includeOverAndUnderHangs,
-    cutsites: flatMap(cutsitesByName),
+    cutsites: flatMap(cutsitesByName) as CutSite[],
     sequenceLength: sequence.length,
     circular
   });
 }
-
-export { computeDigestFragments };
-export { getDigestFragsForSeqAndEnzymes };

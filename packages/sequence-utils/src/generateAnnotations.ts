@@ -1,21 +1,26 @@
 import { generateRandomRange } from "@teselagen/range-utils";
 import shortid from "shortid";
+import { Annotation } from "./types";
 
 function generateAnnotations(
-  numberOfAnnotationsToGenerate,
-  start,
-  end,
-  maxLength
-) {
-  const result = {};
+  numberOfAnnotationsToGenerate: number,
+  start: number,
+  end: number,
+  maxLength: number
+): Annotation[] {
+  const result: Annotation[] = [];
   for (let i = 0; i < numberOfAnnotationsToGenerate; i++) {
     const annotation = generateAnnotation(start, end, maxLength);
-    result[annotation.id] = annotation;
+    result.push(annotation);
   }
   return result;
 }
 
-function generateAnnotation(start, end, maxLength) {
+function generateAnnotation(
+  start: number,
+  end: number,
+  maxLength: number
+): Annotation {
   const range = generateRandomRange(start, end, maxLength);
   return {
     ...range,
@@ -27,7 +32,7 @@ function generateAnnotation(start, end, maxLength) {
   };
 }
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 

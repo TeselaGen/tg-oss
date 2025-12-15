@@ -4,10 +4,19 @@
  * @author Nick Elsbree
  * @author Zinovii Dmytriv (original author)
  */
+
+interface CalculateTemperatureOptions {
+  type?: "breslauer" | "sugimoto" | "unified";
+  A?: number;
+  R?: number;
+  primerConc?: number;
+  monovalentCationConc?: number;
+}
+
 const calcTmMethods = {
-  TABLE_BRESLAUER: "breslauer",
-  TABLE_SUGIMOTO: "sugimoto",
-  TABLE_UNIFIED: "unified",
+  TABLE_BRESLAUER: "breslauer" as const,
+  TABLE_SUGIMOTO: "sugimoto" as const,
+  TABLE_UNIFIED: "unified" as const,
 
   A: -10.8, // Helix initiation for deltaS
   R: 1.987, // Gas constant (cal/(K*mol)).
@@ -24,22 +33,29 @@ const calcTmMethods = {
    * return - Temperature for the given sequence, in Celsius.
    */
   calculateTemperature: function (
-    _sequence,
-    { type, A, R, primerConc, monovalentCationConc } = {}
-  ) {
+    _sequence: string,
+    {
+      type,
+      A,
+      R,
+      primerConc,
+      monovalentCationConc
+    }: CalculateTemperatureOptions = {}
+  ): number {
     const sequence = (_sequence || "").toLowerCase();
     if (typeof type === "undefined") {
       // type = this.TABLE_SUGIMOTO  ;
       // type = this.TABLE_UNIFIED;
       type = this.TABLE_BRESLAUER;
     } else if (
-      type != this.TABLE_BRESLAUER &&
-      type != this.TABLE_UNIFIED &&
-      type != this.TABLE_SUGIMOTO
+      type !== this.TABLE_BRESLAUER &&
+      type !== this.TABLE_UNIFIED &&
+      type !== this.TABLE_SUGIMOTO
     ) {
       throw new Error("Invalid table type!");
     }
 
+    /* eslint-disable no-param-reassign */
     if (!A) {
       A = this.A;
     }
@@ -52,17 +68,23 @@ const calcTmMethods = {
     if (!monovalentCationConc) {
       monovalentCationConc = this.monovalentCationConc;
     }
+    /* eslint-enable no-param-reassign */
 
     const sequenceLength = sequence.length;
 
-    if (sequenceLength == 0) {
+    if (sequenceLength === 0) {
       return 0;
     }
 
     const deltaHTable = this.getDeltaHTable(type);
     const deltaSTable = this.getDeltaSTable(type);
 
-    const neighbors = []; // List goes in order: aa, at, ac, ag, tt, ta, tc, tg, cc, ca, ct, cg, gg, ga, gt, gc
+    if (!deltaHTable || !deltaSTable) {
+      // Should not happen if type validation passes
+      return 0;
+    }
+
+    const neighbors: number[] = []; // List goes in order: aa, at, ac, ag, tt, ta, tc, tg, cc, ca, ct, cg, gg, ga, gt, gc
 
     neighbors.push(this.calculateReps(sequence, "aa"));
     neighbors.push(this.calculateNumberOfOccurrences(sequence, "at"));
@@ -88,6 +110,7 @@ const calcTmMethods = {
     let sumDeltaS = 0.0;
 
     for (let i = 0; i < 16; i++) {
+      // Safe access as neighbors and tables are 16-length
       sumDeltaH = sumDeltaH + neighbors[i] * deltaHTable[i];
       sumDeltaS = sumDeltaS + neighbors[i] * deltaSTable[i];
     }
@@ -107,18 +130,18 @@ const calcTmMethods = {
    * @param {String} type Algorithm to get table for.
    * @return {Number[]} deltaH table for given algorithm.
    */
-  getDeltaHTable: function (type) {
-    if (type == this.TABLE_BRESLAUER) {
+  getDeltaHTable: function (type: string): number[] | null {
+    if (type === this.TABLE_BRESLAUER) {
       return [
         9.1, 8.6, 6.5, 7.8, 9.1, 6.0, 5.6, 5.8, 11.0, 5.8, 7.8, 11.9, 11.0, 5.6,
         6.5, 11.1
       ];
-    } else if (type == this.TABLE_SUGIMOTO) {
+    } else if (type === this.TABLE_SUGIMOTO) {
       return [
         8.0, 5.6, 6.5, 7.8, 8.0, 5.6, 5.6, 5.8, 10.9, 8.2, 6.6, 11.8, 10.9, 6.6,
         9.4, 11.9
       ];
-    } else if (type == this.TABLE_UNIFIED) {
+    } else if (type === this.TABLE_UNIFIED) {
       return [
         7.9, 7.2, 8.4, 7.8, 7.9, 7.2, 8.2, 8.5, 8.0, 8.5, 7.8, 10.6, 8.0, 8.2,
         8.4, 9.8
@@ -127,41 +150,6 @@ const calcTmMethods = {
       return null;
     }
   },
-  // "AA/TT": -7.9, 7.9
-  // "AT/TA": -7.2, 7.2
-  // "AC/TG": -8.4, 8.4
-  // "AG/TC": -7.8, 7.8
-  // "TT/AA": -7.9, 7.9
-  // "TA/AT": -7.2, 7.2
-  // "TG/AC": -8.5, 8.2
-  // "TC/AG": -8.2, 8.5
-  // "CC/GG": -8.0, 8.0
-  // "CA/GT": -8.5, 8.5
-  // "CT/GA": -7.8, 7.8
-  // "CG/GC": -10.6, 10.6
-  // "GG/CC": -8.0, 8.0
-  // "GA/CT": -8.2, 8.2,
-  // "GT/CA": -8.4, 8.4
-  // "GC/CG": -9.8, 9.8
-
-  // aa, at, ac, ag, tt, ta, tc, tg, cc, ca, ct, cg, gg, ga, gt, gc
-
-  // "AA/TT": -22.2,22.2,
-  // "AT/TA": -20.4,20.4,
-  // "AC/TG": -22.4,22.4,
-  // "AG/TC": -21.0,21.0,
-  // "TT/AA": -22.2,22.2,
-  // "TA/AT": -21.3,21.3,
-  // "TC/AG": -22.2,22.2,
-  // "TG/AC": -22.7,22.7,
-  // "CC/GG": -19.9,19.9,
-  // "CA/GT": -22.7,22.7,
-  // "CT/GA": -21.0,21.0,
-  // "CG/GC": -27.2,27.2,
-  // "GG/CC": -19.9,19.9,
-  // "GT/CA": -22.4,22.2,
-  // "GA/CT": -22.2,22.4,
-  // "GC/CG": -24.4,24.4
 
   /**
    * @private
@@ -169,18 +157,18 @@ const calcTmMethods = {
    * @param {String} type Algorithm to get table for.
    * @return {Number[]} deltaS table for given algorithm.
    */
-  getDeltaSTable: function (type) {
-    if (type == this.TABLE_BRESLAUER) {
+  getDeltaSTable: function (type: string): number[] | null {
+    if (type === this.TABLE_BRESLAUER) {
       return [
         24.0, 23.9, 17.3, 20.8, 24.0, 16.9, 13.5, 12.9, 26.6, 12.9, 20.8, 27.8,
         26.6, 13.5, 17.3, 26.7
       ];
-    } else if (type == this.TABLE_SUGIMOTO) {
+    } else if (type === this.TABLE_SUGIMOTO) {
       return [
         21.9, 15.2, 17.3, 20.8, 21.9, 15.2, 13.5, 12.9, 28.4, 25.5, 23.5, 29.0,
         28.4, 16.4, 25.5, 29.0
       ];
-    } else if (type == this.TABLE_UNIFIED) {
+    } else if (type === this.TABLE_UNIFIED) {
       return [
         22.2, 20.4, 22.4, 21.0, 22.2, 21.3, 22.2, 22.7, 19.9, 22.7, 21.0, 27.2,
         19.9, 22.2, 22.4, 24.4
@@ -199,10 +187,10 @@ const calcTmMethods = {
    * @param  {String} target   The string to search for.
    * @return {Int} Number of occurrences of target in sequence, with repeats.
    */
-  calculateReps: function (sequence, target) {
+  calculateReps: function (sequence: string, target: string): number {
     const sequenceLength = sequence.length;
 
-    if (sequenceLength == 0) {
+    if (sequenceLength === 0) {
       return 0;
     }
 
@@ -213,7 +201,7 @@ const calcTmMethods = {
     while (true) {
       const foundSeq = sequence.indexOf(target, seqOffset);
 
-      if (foundSeq == -1) {
+      if (foundSeq === -1) {
         break;
       }
 
@@ -235,10 +223,13 @@ const calcTmMethods = {
    * @param  {String} target   The string to search for.
    * @return {Int} Number of occurrences of target in sequence.
    */
-  calculateNumberOfOccurrences: function (sequence, target) {
+  calculateNumberOfOccurrences: function (
+    sequence: string,
+    target: string
+  ): number {
     const sequenceLength = sequence.length;
 
-    if (sequenceLength == 0) {
+    if (sequenceLength === 0) {
       return 0;
     }
 

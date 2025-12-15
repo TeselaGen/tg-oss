@@ -1,8 +1,5 @@
-// this is throwing a weird eslint error
-
-//
-
 import generateAnnotations from "./generateAnnotations";
+import { SequenceData } from "./types";
 
 export default function generateSequenceData({
   isProtein,
@@ -11,19 +8,28 @@ export default function generateSequenceData({
   numParts,
   numPrimers,
   numTranslations
-} = {}) {
-  const proteinSequence = isProtein && generateSequence(sequenceLength, true);
-  const sequence = !isProtein && generateSequence(sequenceLength);
+}: {
+  isProtein?: boolean;
+  sequenceLength?: number;
+  numFeatures?: number;
+  numParts?: number;
+  numPrimers?: number;
+  numTranslations?: number;
+} = {}): SequenceData {
+  const proteinSequence = isProtein
+    ? generateSequence(sequenceLength, true)
+    : "";
+  const sequence = !isProtein ? generateSequence(sequenceLength) : "";
 
   return {
     circular: isProtein ? false : Math.random() > 0.5,
-    name: "p-" + Math.floor(Math.random * 100),
+    name: "p-" + Math.floor(Math.random() * 100),
     description: "",
-    isProtein,
+    isProtein: !!isProtein,
     sequence,
     proteinSequence,
     translations: isProtein
-      ? undefined
+      ? []
       : generateAnnotations(
           numTranslations || 5,
           0,
@@ -37,7 +43,7 @@ export default function generateSequenceData({
       sequenceLength / 3
     ),
     primers: isProtein
-      ? undefined
+      ? []
       : generateAnnotations(numPrimers || 10, 0, sequenceLength - 1, 50),
     parts: generateAnnotations(
       numParts || 10,
@@ -50,9 +56,9 @@ export default function generateSequenceData({
 
 // export default tidyUpSequenceData(exampleData)
 
-function generateSequence(m = 9, isProtein) {
+function generateSequence(m = 9, isProtein?: boolean): string {
   let s = "";
-  const r = isProtein ? "" : "gatc";
+  const r = isProtein ? "ACDEFGHIKLMNPQRSTVWY" : "gatc"; // Added explicit protein string instead of empty string default behavior
   for (let i = 0; i < m; i++) {
     s += r.charAt(Math.floor(Math.random() * r.length));
   }

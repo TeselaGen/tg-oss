@@ -7,20 +7,24 @@ import {
   normalizePositionByRangeLength,
   reversePositionInRange
 } from "@teselagen/range-utils";
+import { CutSite, RestrictionEnzyme } from "./types";
 
 export default function cutSequenceByRestrictionEnzyme(
-  pSequence,
-  circular,
-  restrictionEnzyme
-) {
+  pSequence: string,
+  circular: boolean,
+  restrictionEnzyme: RestrictionEnzyme
+): CutSite[] {
   if (
     restrictionEnzyme.forwardRegex.length === 0 ||
     restrictionEnzyme.reverseRegex.length === 0
   ) {
-    const returnArray = [];
-    returnArray.error =
-      "Cannot cut sequence. Enzyme restriction site must be at least 1 bp long.";
-    return returnArray;
+    // strict check: previously this returned an array with an error property
+    // throwing error or returning empty array + console warning might be better
+    // but preserving return type signature CutSite[]
+    console.warn(
+      "Cannot cut sequence. Enzyme restriction site must be at least 1 bp long."
+    );
+    return [];
   }
   const forwardRegExpPattern = new RegExp(restrictionEnzyme.forwardRegex, "ig");
   const sequence = pSequence;
@@ -31,7 +35,7 @@ export default function cutSequenceByRestrictionEnzyme(
     sequence,
     circular
   );
-  let cutsitesReverse = [];
+  let cutsitesReverse: CutSite[] = [];
   if (restrictionEnzyme.forwardRegex !== restrictionEnzyme.reverseRegex) {
     const revSequence = getReverseComplementSequenceString(sequence);
     cutsitesReverse = cutSequence(
@@ -46,7 +50,11 @@ export default function cutSequenceByRestrictionEnzyme(
   }
   return cutsitesForward.concat(cutsitesReverse);
 
-  function reverseAllPositionsOfCutsite(cutsite, rangeLength) {
+  function reverseAllPositionsOfCutsite(
+    cutsite: CutSite,
+    rangeLength: number
+  ): CutSite {
+    cutsite = assign({}, cutsite); // copy first
     cutsite.start = reversePositionInRange(cutsite.start, rangeLength, false);
     cutsite.end = reversePositionInRange(cutsite.end, rangeLength, false);
     cutsite.topSnipPosition = reversePositionInRange(
@@ -59,61 +67,87 @@ export default function cutSequenceByRestrictionEnzyme(
       rangeLength,
       true
     );
-    if (cutsite.cutsTwice) {
-      cutsite.upstreamTopSnip = reversePositionInRange(
-        cutsite.upstreamTopSnip,
+    if (cutsite.cutType === 1 && cutsite.cutsTwice) {
+      // Assuming cutsTwice is a custom property or inferred from cutType
+      if (
+        cutsite.upstreamTopSnip != null &&
+        cutsite.upstreamBottomSnip != null
+      ) {
+        cutsite.upstreamTopSnip = reversePositionInRange(
+          cutsite.upstreamTopSnip,
+          rangeLength,
+          true
+        );
+        cutsite.upstreamBottomSnip = reversePositionInRange(
+          cutsite.upstreamBottomSnip,
+          rangeLength,
+          true
+        );
+      }
+    }
+    if (cutsite.recognitionSiteRange) {
+      cutsite.recognitionSiteRange = { ...cutsite.recognitionSiteRange };
+      cutsite.recognitionSiteRange.start = reversePositionInRange(
+        cutsite.recognitionSiteRange.start,
         rangeLength,
-        true
+        false
       );
-      cutsite.upstreamBottomSnip = reversePositionInRange(
-        cutsite.upstreamBottomSnip,
+      cutsite.recognitionSiteRange.end = reversePositionInRange(
+        cutsite.recognitionSiteRange.end,
         rangeLength,
-        true
+        false
       );
     }
-    cutsite.recognitionSiteRange.start = reversePositionInRange(
-      cutsite.recognitionSiteRange.start,
-      rangeLength,
-      false
-    );
-    cutsite.recognitionSiteRange.end = reversePositionInRange(
-      cutsite.recognitionSiteRange.end,
-      rangeLength,
-      false
-    );
-    return assign({}, cutsite, {
+
+    return {
+      ...cutsite,
       start: cutsite.end,
       end: cutsite.start,
-      overhangBps: getReverseComplementSequenceString(cutsite.overhangBps),
+      overhangBps: getReverseComplementSequenceString(
+        (cutsite.overhangBps as unknown as string) || ""
+      ),
       topSnipPosition: cutsite.bottomSnipPosition,
       bottomSnipPosition: cutsite.topSnipPosition,
       upstreamTopSnip: cutsite.upstreamBottomSnip,
       upstreamBottomSnip: cutsite.upstreamTopSnip,
       upstreamTopBeforeBottom: !!cutsite.upstreamTopBeforeBottom,
       topSnipBeforeBottom: !!cutsite.topSnipBeforeBottom,
-      recognitionSiteRange: {
-        start: cutsite.recognitionSiteRange.end,
-        end: cutsite.recognitionSiteRange.start
-      },
+      recognitionSiteRange: cutsite.recognitionSiteRange
+        ? {
+            start: cutsite.recognitionSiteRange.end,
+            end: cutsite.recognitionSiteRange.start
+          }
+        : undefined,
       forward: false
-    });
+    };
   }
 }
 
 function cutSequence(
-  forwardRegExpPattern,
-  restrictionEnzyme,
-  sequence,
-  circular
-) {
-  const restrictionCutSites = [];
-  let restrictionCutSite;
+  forwardRegExpPattern: RegExp,
+  restrictionEnzyme: RestrictionEnzyme,
+  sequence: string,
+  circular: boolean
+): CutSite[] {
+  const restrictionCutSites: CutSite[] = [];
+  let restrictionCutSite: CutSite;
   const recognitionSiteLength = restrictionEnzyme.site.length;
-  const originalSequence = sequence;
-  const originalSequenceLength = sequence.length;
+  // const originalSequenceLength =
+  //   sequence.length / (circular && sequence.length > 0 ? 2 : 1); // rough access if already doublified?
+  // Wait, existing code passed pSequence. Then if circular, sequence += sequence.
+  // So argument `sequence` to this function `cutSequence` is passed PSequence inside the main function?
+  // No, main function passes `sequence` which is `pSequence`.
+  // Check main function:
+  // const sequence = pSequence;
+  // const cutsitesForward = cutSequence(..., sequence, circular)
+  // Inside cutSequence:
+  // const originalSequence = sequence;
+  // if (circular) sequence += sequence;
+  // So input `sequence` to this function `cutSequence` is passed PSequence inside the main function?
+
+  const originalSequence = sequence; // this is single length
+  const originalSequenceLengthVal = sequence.length;
   if (circular) {
-    //if the sequence is circular, we send in double the sequence
-    //we'll deduplicate the results afterwards!
     sequence += sequence;
   }
   const currentSequenceLength = sequence.length;
@@ -123,70 +157,72 @@ function cutSequence(
   let subSequence = sequence;
 
   while (matchIndex !== -1) {
-    const recognitionSiteRange = {};
-    let start; //start and end should fully enclose the enzyme snips and the recognition site!
-    let end;
-    let upstreamTopSnip = null; //upstream top snip position
-    let upstreamBottomSnip = null; //upstream bottom snip position
+    const recognitionSiteRange: { start: number; end: number } = {
+      start: 0,
+      end: 0
+    };
+    let start: number;
+    let end: number;
+    let upstreamTopSnip: number | null = null;
+    let upstreamBottomSnip: number | null = null;
     let upstreamTopBeforeBottom = false;
-    let topSnipPosition = null; //downstream top snip position
-    let bottomSnipPosition = null; //downstream bottom snip position
+    let topSnipPosition: number | null = null;
+    let bottomSnipPosition: number | null = null;
     let topSnipBeforeBottom = false;
 
     let fitsWithinSequence = false;
-    // if (matchIndex + startIndex + recognitionSiteLength - 1 >= sequence.length) { // subSequence is too short
-    //     break;
-    // }
 
     recognitionSiteRange.start = matchIndex + startIndex;
-    start = recognitionSiteRange.start; //this might change later on!
+    start = recognitionSiteRange.start;
 
     recognitionSiteRange.end =
       matchIndex + recognitionSiteLength - 1 + startIndex;
-    end = recognitionSiteRange.end; //this might change later on!
+    end = recognitionSiteRange.end;
 
-    //we need to get the snip sites, top and bottom for each of these cut sites
-    //as well as all of the bp's between the snip sites
-
-    //if the cutsite is type 1, it cuts both upstream and downstream of its recognition site (cutsite type 0's cut only downstream)
     if (restrictionEnzyme.cutType === 1) {
-      //double cutter, add upstream cutsite here
-      upstreamTopSnip = recognitionSiteRange.end - restrictionEnzyme.usForward;
-      upstreamBottomSnip =
-        recognitionSiteRange.end - restrictionEnzyme.usReverse;
-      if (upstreamTopSnip >= 0 && upstreamBottomSnip >= 0) {
-        fitsWithinSequence = true;
-        if (upstreamTopSnip < upstreamBottomSnip) {
-          if (start > upstreamTopSnip) {
-            start = upstreamTopSnip + 1;
+      if (
+        restrictionEnzyme.usForward != null &&
+        restrictionEnzyme.usReverse != null
+      ) {
+        upstreamTopSnip =
+          recognitionSiteRange.end - restrictionEnzyme.usForward;
+        upstreamBottomSnip =
+          recognitionSiteRange.end - restrictionEnzyme.usReverse;
+
+        if (upstreamTopSnip >= 0 && upstreamBottomSnip >= 0) {
+          fitsWithinSequence = true;
+          if (upstreamTopSnip < upstreamBottomSnip) {
+            if (start > upstreamTopSnip) {
+              start = upstreamTopSnip + 1;
+            }
+            upstreamTopBeforeBottom = true;
+          } else {
+            if (start > upstreamBottomSnip) {
+              start = upstreamBottomSnip + 1;
+            }
           }
-          upstreamTopBeforeBottom = true;
+          upstreamTopSnip = normalizePositionByRangeLength(
+            upstreamTopSnip,
+            originalSequenceLengthVal,
+            true
+          );
+          upstreamBottomSnip = normalizePositionByRangeLength(
+            upstreamBottomSnip,
+            originalSequenceLengthVal,
+            true
+          );
         } else {
-          if (start > upstreamBottomSnip) {
-            start = upstreamBottomSnip + 1;
-          }
+          upstreamTopSnip = null;
+          upstreamBottomSnip = null;
         }
-        upstreamTopSnip = normalizePositionByRangeLength(
-          upstreamTopSnip,
-          originalSequenceLength,
-          true
-        );
-        upstreamBottomSnip = normalizePositionByRangeLength(
-          upstreamBottomSnip,
-          originalSequenceLength,
-          true
-        );
-      } else {
-        upstreamTopSnip = null;
-        upstreamBottomSnip = null;
       }
     }
 
     //add downstream cutsite here
     topSnipPosition =
-      recognitionSiteRange.start + restrictionEnzyme.topSnipOffset;
+      recognitionSiteRange.start + (restrictionEnzyme.topSnipOffset || 0);
     bottomSnipPosition =
-      recognitionSiteRange.start + restrictionEnzyme.bottomSnipOffset;
+      recognitionSiteRange.start + (restrictionEnzyme.bottomSnipOffset || 0);
     if (
       bottomSnipPosition <= currentSequenceLength &&
       topSnipPosition <= currentSequenceLength
@@ -204,12 +240,12 @@ function cutSequence(
       }
       topSnipPosition = normalizePositionByRangeLength(
         topSnipPosition,
-        originalSequenceLength,
+        originalSequenceLengthVal,
         true
       );
       bottomSnipPosition = normalizePositionByRangeLength(
         bottomSnipPosition,
-        originalSequenceLength,
+        originalSequenceLengthVal,
         true
       );
     } else {
@@ -221,25 +257,27 @@ function cutSequence(
       fitsWithinSequence &&
       start >= 0 &&
       end >= 0 &&
-      start < originalSequenceLength &&
+      start < originalSequenceLengthVal &&
       end < currentSequenceLength
     ) {
-      //only push cutsites onto the array if they are fully contained within the boundaries of the sequence!
-      //and they aren't duplicated
       start = normalizePositionByRangeLength(
         start,
-        originalSequenceLength,
+        originalSequenceLengthVal,
         false
       );
-      end = normalizePositionByRangeLength(end, originalSequenceLength, false);
+      end = normalizePositionByRangeLength(
+        end,
+        originalSequenceLengthVal,
+        false
+      );
       recognitionSiteRange.start = normalizePositionByRangeLength(
         recognitionSiteRange.start,
-        originalSequenceLength,
+        originalSequenceLengthVal,
         false
       );
       recognitionSiteRange.end = normalizePositionByRangeLength(
         recognitionSiteRange.end,
-        originalSequenceLength,
+        originalSequenceLengthVal,
         false
       );
       let cutRange = {
@@ -247,32 +285,38 @@ function cutSequence(
         end: -1
       };
 
-      if (topSnipPosition !== bottomSnipPosition) {
-        //there is only a cut range if the snips don't snip at the exact same spot on top and bottom
+      if (
+        topSnipPosition !== null &&
+        bottomSnipPosition !== null &&
+        topSnipPosition !== bottomSnipPosition
+      ) {
         cutRange = topSnipBeforeBottom
           ? {
               start: topSnipPosition,
               end: normalizePositionByRangeLength(
                 bottomSnipPosition - 1,
-                originalSequenceLength
+                originalSequenceLengthVal
               )
             }
           : {
               start: bottomSnipPosition,
               end: normalizePositionByRangeLength(
                 topSnipPosition - 1,
-                originalSequenceLength
+                originalSequenceLengthVal
               )
             };
       }
-      const overhangBps = getSequenceWithinRange(cutRange, originalSequence);
+      const overhangBps = getSequenceWithinRange(
+        cutRange,
+        originalSequence
+      ) as string;
 
       restrictionCutSite = {
         id: shortid(),
         start,
         end,
-        topSnipPosition,
-        bottomSnipPosition,
+        topSnipPosition: topSnipPosition || 0, // Fallback if null, though logic implies validity
+        bottomSnipPosition: bottomSnipPosition || 0,
         topSnipBeforeBottom,
         overhangBps,
         overhangSize: overhangBps.length,
@@ -288,12 +332,8 @@ function cutSequence(
       restrictionCutSites.push(restrictionCutSite);
     }
 
-    // Make sure that we always store the previous match index to ensure
-    // that we are always storing indices relative to the whole sequence,
-    // not just the subSequence.
     startIndex = startIndex + matchIndex + 1;
 
-    // Search again on subSequence, starting from the index of the last match + 1.
     subSequence = sequence.substring(startIndex, sequence.length);
     matchIndex = subSequence.search(forwardRegExpPattern);
   }

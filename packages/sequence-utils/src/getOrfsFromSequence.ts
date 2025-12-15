@@ -1,5 +1,23 @@
 import shortid from "shortid";
+import { Annotation } from "./types";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
+
+interface GetOrfsOptions {
+  sequence: string;
+  minimumOrfSize: number;
+  forward: boolean;
+  circular?: boolean;
+  useAdditionalOrfStartCodons?: boolean;
+}
+
+export interface Orf extends Annotation {
+  internalStartCodonIndices: number[];
+  frame: number;
+  // annotationTypePlural: string; // Annotation might already have this or it's extra
+  isOrf: boolean;
+  remove?: boolean;
+  length: number;
+}
 
 /**
  * @private
@@ -10,7 +28,7 @@ import getReverseComplementSequenceString from "./getReverseComplementSequenceSt
  * forward - Should we find forward facing orfs or reverse facing orfs
  * return - The list of ORFs found.
  */
-export default function getOrfsFromSequence(options) {
+export default function getOrfsFromSequence(options: GetOrfsOptions): Orf[] {
   let sequence = options.sequence;
   const minimumOrfSize = options.minimumOrfSize;
   const forward = options.forward;
@@ -30,8 +48,8 @@ export default function getOrfsFromSequence(options) {
   const re = useAdditionalOrfStartCodons
     ? /(?=((?:A[TU]G|G[TU]G|C[TU]G)(?:.{3})*?(?:[TU]AG|[TU]AA|[TU]GA)))/gi
     : /(?=((?:A[TU]G)(?:.{3})*?(?:[TU]AG|[TU]AA|[TU]GA)))/gi;
-  let m;
-  const orfRanges = [];
+  let m: RegExpExecArray | null;
+  const orfRanges: Orf[] = [];
   //loop through orf hits!
   /* eslint-disable no-cond-assign*/
 
@@ -59,16 +77,18 @@ export default function getOrfsFromSequence(options) {
           internalStartCodonIndices: [],
           frame: start % 3,
           forward: forward,
-          annotationTypePlural: "orfs",
+          // annotationTypePlural: "orfs",
           isOrf: true,
-          id: shortid()
-        });
+          id: shortid(),
+          type: "orf",
+          name: "ORF"
+        } as Orf);
       }
     }
   }
   // pair down the orfs to remove duplicates
   // and deal with revComp orfs
-  const orfEnds = {};
+  const orfEnds: Record<number, number> = {};
   orfRanges.forEach((orf, index) => {
     const indexOfAlreadyExistingOrf = orfEnds[orf.end];
 

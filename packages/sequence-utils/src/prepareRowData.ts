@@ -1,9 +1,17 @@
 // ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
-import mapAnnotationsToRows from "./mapAnnotationsToRows";
+import mapAnnotationsToRows, { MappedAnnotation } from "./mapAnnotationsToRows";
 
 import { annotationTypes } from "./annotationTypes";
 
 import { SequenceData, Annotation } from "./types";
+
+export interface RowData {
+  rowNumber: number;
+  start: number;
+  end: number;
+  sequence: string;
+  [key: string]: MappedAnnotation[] | number | string;
+}
 
 export default function prepareRowData(
   sequenceData: SequenceData,
@@ -12,11 +20,14 @@ export default function prepareRowData(
   // ac.throw([ac.sequenceData, ac.posInt], arguments);
   const sequenceLength = sequenceData.sequence.length;
   const totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
-  const rows = [];
-  const rowMap: Record<string, Record<string | number, Annotation[]>> = {};
+  const rows: RowData[] = [];
+  const rowMap: Record<
+    string,
+    Record<string | number, MappedAnnotation[]>
+  > = {};
   annotationTypes.forEach(type => {
     rowMap[type] = mapAnnotationsToRows(
-      sequenceData[type],
+      (sequenceData[type] as Annotation[]) || [],
       sequenceLength,
       bpsPerRow,
       { splitForwardReverse: type === "primers" }
@@ -47,12 +58,4 @@ export default function prepareRowData(
     rows[rowNumber] = row;
   }
   return rows;
-}
-
-interface RowData {
-  rowNumber: number;
-  start: number;
-  end: number;
-  sequence: string;
-  [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

@@ -1,27 +1,28 @@
-import getDigestFragmentsForCutsites from "./getDigestFragmentsForCutsites";
-import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme";
+import { computeDigestFragments } from "./computeDigestFragments";
+import getCutsitesFromSequence from "./getCutsitesFromSequence";
+import { CutSite, RestrictionEnzyme } from "./types";
 import { flatMap } from "lodash-es";
 
 export default function getDigestFragmentsForRestrictionEnzymes(
-  sequence,
-  circular,
-  restrictionEnzymeOrEnzymes,
-  opts
+  sequence: string,
+  circular: boolean,
+  contextEnzymes: RestrictionEnzyme[],
+  options?: {
+    computePartialDigest?: boolean;
+    computeDigestDisabled?: boolean;
+    computePartialDigestDisabled?: boolean;
+    includeOverAndUnderHangs?: boolean;
+  }
 ) {
-  const restrictionEnzymes = Array.isArray(restrictionEnzymeOrEnzymes)
-    ? restrictionEnzymeOrEnzymes
-    : [restrictionEnzymeOrEnzymes];
-  const cutsites = flatMap(restrictionEnzymes, restrictionEnzyme => {
-    return cutSequenceByRestrictionEnzyme(
-      sequence,
-      circular,
-      restrictionEnzyme
-    );
-  });
-  return getDigestFragmentsForCutsites(
-    sequence.length,
+  const cutsitesByName = getCutsitesFromSequence(
+    sequence,
     circular,
-    cutsites,
-    opts
+    contextEnzymes
   );
+  return computeDigestFragments({
+    cutsites: flatMap(cutsitesByName) as CutSite[],
+    sequenceLength: sequence.length,
+    circular,
+    ...options
+  });
 }

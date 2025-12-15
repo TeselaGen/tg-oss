@@ -1,21 +1,30 @@
 import { cloneDeep, forEach } from "lodash-es";
-import { diff, patch, reverse } from "jsondiffpatch";
+import { diff, patch, reverse, Delta } from "jsondiffpatch";
+import { SequenceData } from "./types";
 
 import tidyUpSequenceData from "./tidyUpSequenceData";
 
-const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
-  oldData = tidyUpSequenceData(oldData, {
+interface DiffOptions {
+  ignoreKeys?: string[];
+}
+
+const getDiffFromSeqs = (
+  oldData: SequenceData,
+  newData: SequenceData,
+  { ignoreKeys = [] }: DiffOptions = {}
+): Delta | undefined => {
+  let cleanedOldData: any = tidyUpSequenceData(oldData, {
     annotationsAsObjects: true,
     noTranslationData: true,
     doNotRemoveInvalidChars: true
   });
-  newData = tidyUpSequenceData(newData, {
+  let cleanedNewData: any = tidyUpSequenceData(newData, {
     annotationsAsObjects: true,
     noTranslationData: true,
     doNotRemoveInvalidChars: true
   });
 
-  [oldData, newData].forEach(d => {
+  [cleanedOldData, cleanedNewData].forEach(d => {
     [
       "cutsites",
       "orfs",
@@ -42,22 +51,28 @@ const getDiffFromSeqs = (oldData, newData, { ignoreKeys = [] } = {}) => {
     }
   });
 
-  return diff(oldData, newData);
+  return diff(cleanedOldData, cleanedNewData);
 };
-const patchSeqWithDiff = (oldData, diff, { ignoreKeys = [] } = {}) => {
+
+const patchSeqWithDiff = (
+  oldData: SequenceData,
+  diffData: Delta,
+  { ignoreKeys = [] }: DiffOptions = {}
+): SequenceData => {
   ignoreKeys.forEach(k => {
-    delete diff[k];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (diffData as any)[k];
   });
-  return patch(
-    tidyUpSequenceData(cloneDeep(oldData), {
-      annotationsAsObjects: true,
-      doNotRemoveInvalidChars: true
-    }),
-    diff
-  );
+  const tidyOld = tidyUpSequenceData(cloneDeep(oldData), {
+    annotationsAsObjects: true,
+    doNotRemoveInvalidChars: true
+  });
+
+  return patch(tidyOld, diffData) as SequenceData;
 };
-const reverseSeqDiff = diff => {
-  return reverse(diff);
+
+const reverseSeqDiff = (diffData: Delta): Delta | undefined => {
+  return reverse(diffData);
 };
 
 export { getDiffFromSeqs, patchSeqWithDiff, reverseSeqDiff };

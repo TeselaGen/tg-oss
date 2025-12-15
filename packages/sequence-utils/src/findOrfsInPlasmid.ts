@@ -1,12 +1,12 @@
-import getOrfsFromSequence from "./getOrfsFromSequence";
+import getOrfsFromSequence, { Orf } from "./getOrfsFromSequence";
 
 export default function findOrfsInPlasmid(
-  sequence,
-  circular,
-  minimumOrfSize,
-  useAdditionalOrfStartCodons,
-  isProteinOrOligo
-) {
+  sequence: string,
+  circular: boolean,
+  minimumOrfSize: number,
+  useAdditionalOrfStartCodons: boolean,
+  isProteinOrOligo: boolean
+): Orf[] {
   if (isProteinOrOligo) {
     // we do not find ORFs in protein/oligo sequences
     return [];

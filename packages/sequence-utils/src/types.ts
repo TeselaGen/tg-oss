@@ -55,3 +55,53 @@ export interface ChromatogramData {
   basePos?: unknown[];
   [key: string]: unknown;
 }
+
+export interface RestrictionEnzyme {
+  name: string;
+  site: string;
+  forwardRegex: string;
+  reverseRegex: string;
+  topSnipOffset?: number;
+  bottomSnipOffset?: number;
+  cutType?: number; // 0 or 1
+  usForward?: number; // upstream forward
+  usReverse?: number;
+  [key: string]: unknown;
+}
+
+export interface CutSite extends Annotation {
+  topSnipPosition: number;
+  bottomSnipPosition: number;
+  overhangSize: number;
+  overhangBps?: string;
+  restrictionEnzyme: RestrictionEnzyme;
+  upstreamTopSnip?: number | null;
+  upstreamBottomSnip?: number | null;
+  topSnipBeforeBottom?: boolean;
+  upstreamTopBeforeBottom?: boolean;
+  cutType?: number;
+  cutsTwice?: boolean;
+  recognitionSiteRange?: Range;
+  [key: string]: unknown;
+}
+
+export interface DigestFragment extends Range {
+  isFormedFromLinearEnd?: boolean;
+  madeFromOneCutsite?: boolean;
+  size: number;
+  cut1: CutSite;
+  cut2: CutSite;
+  id: string;
+  name: string;
+  onFragmentSelect?: () => void;
+  [key: string]: unknown;
+}
+
+export interface AminoAcidData {
+  fullCodon: boolean | null;
+  aminoAcid: { value: string } | null;
+  aminoAcidIndex: number | null;
+  positionInCodon?: number | null;
+  sequenceIndex?: number | null;
+  codonRange?: { start: number; end: number } | null;
+}

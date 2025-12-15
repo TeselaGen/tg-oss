@@ -7,13 +7,21 @@
  * @param {boolean} circular - Whether to treat the target sequence as circular (default: false)
  * @returns {Array} - Array of objects containing { index, match, mismatchPositions }
  */
+
+export interface ApproxMatch {
+  index: number;
+  match: string;
+  mismatchPositions: number[];
+  numMismatches: number;
+}
+
 export default function findApproxMatches(
-  searchSeq,
-  targetSeq,
-  maxMismatches,
+  searchSeq: string,
+  targetSeq: string,
+  maxMismatches: number,
   circular = false
-) {
-  const matches = [];
+): ApproxMatch[] {
+  const matches: ApproxMatch[] = [];
   const lenA = searchSeq.length;
   const lenB = targetSeq.length;
 
@@ -26,7 +34,7 @@ export default function findApproxMatches(
   for (let i = 0; i < limit; i++) {
     const window = targetSeqExtended.slice(i, i + lenA);
     let mismatchCount = 0;
-    const mismatchPositions = [];
+    const mismatchPositions: number[] = [];
 
     for (let j = 0; j < lenA; j++) {
       if (searchSeq[j] !== window[j]) {

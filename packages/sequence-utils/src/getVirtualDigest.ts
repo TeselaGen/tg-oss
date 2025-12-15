@@ -6,6 +6,7 @@ import {
   normalizePositionByRangeLength,
   getRangeLength
 } from "@teselagen/range-utils";
+import { CutSite, DigestFragment } from "./types";
 
 export default function getVirtualDigest({
   cutsites,
@@ -14,10 +15,17 @@ export default function getVirtualDigest({
   computePartialDigest,
   computePartialDigestDisabled,
   computeDigestDisabled
+}: {
+  cutsites: CutSite[];
+  sequenceLength: number;
+  isCircular: boolean;
+  computePartialDigest?: boolean;
+  computePartialDigestDisabled?: boolean;
+  computeDigestDisabled?: boolean;
 }) {
-  let fragments = [];
-  const overlappingEnzymes = [];
-  const pairs = [];
+  let fragments: DigestFragment[] = [];
+  const overlappingEnzymes: DigestFragment[] = [];
+  const pairs: CutSite[][] = [];
 
   const sortedCutsites = cutsites.sort((a, b) => {
     return a.topSnipPosition - b.topSnipPosition;
@@ -63,7 +71,7 @@ export default function getVirtualDigest({
           restrictionEnzyme: {
             name: "End Of Seq"
           }
-        }
+        } as unknown as CutSite // Cast to CutSite as it's a mock
       };
       const frag2 = {
         start: 0,
@@ -73,7 +81,7 @@ export default function getVirtualDigest({
           restrictionEnzyme: {
             name: "Start Of Seq"
           }
-        },
+        } as unknown as CutSite, // Cast
         cut2: cut2
       };
 
@@ -104,7 +112,10 @@ export default function getVirtualDigest({
   };
 }
 
-function addSizeIdName(frag, sequenceLength) {
+function addSizeIdName(
+  frag: { start: number; end: number; cut1: CutSite; cut2: CutSite },
+  sequenceLength: number
+): DigestFragment {
   const size = getRangeLength(
     { start: frag.start, end: frag.end },
     sequenceLength

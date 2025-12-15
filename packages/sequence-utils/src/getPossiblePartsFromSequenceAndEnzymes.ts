@@ -1,11 +1,29 @@
 import getComplementSequenceString from "./getComplementSequenceString";
 import { normalizePositionByRangeLength } from "@teselagen/range-utils";
 import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme";
+import { CutSite, RestrictionEnzyme, SequenceData } from "./types";
 
-export default function getPossiblePartsFromSequenceAndEnzyme(
-  seqData,
-  restrictionEnzymes
-) {
+export interface PartBetweenEnzymes {
+  start: number;
+  start1Based: number;
+  end: number;
+  end1Based: number;
+  firstCut: CutSite;
+  firstCutOffset: number;
+  firstCutOverhang: string;
+  firstCutOverhangTop: string;
+  firstCutOverhangBottom: string;
+  secondCut: CutSite;
+  secondCutOffset: number;
+  secondCutOverhang: string;
+  secondCutOverhangTop: string;
+  secondCutOverhangBottom: string;
+}
+
+export default function getPossiblePartsFromSequenceAndEnzymes(
+  seqData: SequenceData,
+  restrictionEnzymes: RestrictionEnzyme | RestrictionEnzyme[]
+): PartBetweenEnzymes[] {
   // ac.throw([
   //     ac.string,
   //     ac.bool,
@@ -18,18 +36,19 @@ export default function getPossiblePartsFromSequenceAndEnzyme(
   //         "bottomSnipOffset": ac.number
   //     })
   // ], arguments);
-  restrictionEnzymes = restrictionEnzymes.length
+  const enzymes = Array.isArray(restrictionEnzymes)
     ? restrictionEnzymes
     : [restrictionEnzymes];
+
   const bps = seqData.sequence;
   const seqLen = bps.length;
-  const circular = seqData.circular;
-  let cutsites = [];
-  restrictionEnzymes.forEach(enzyme => {
+  const circular = seqData.circular || false;
+  let cutsites: CutSite[] = [];
+  enzymes.forEach(enzyme => {
     const newCutsites = cutSequenceByRestrictionEnzyme(bps, circular, enzyme);
     cutsites = cutsites.concat(newCutsites);
   });
-  const parts = [];
+  const parts: PartBetweenEnzymes[] = [];
   if (cutsites.length < 1) {
     return parts;
   } else if (cutsites.length === 1) {
@@ -69,7 +88,11 @@ export default function getPossiblePartsFromSequenceAndEnzyme(
   }
 }
 
-function getPartBetweenEnzymesWithInclusiveOverhangs(cut1, cut2, seqLen) {
+function getPartBetweenEnzymesWithInclusiveOverhangs(
+  cut1: CutSite,
+  cut2: CutSite,
+  seqLen: number
+): PartBetweenEnzymes {
   const firstCutOffset = getEnzymeRelativeOffset(cut1.restrictionEnzyme);
   const secondCutOffset = getEnzymeRelativeOffset(cut2.restrictionEnzyme);
   const start = cut1.topSnipBeforeBottom
@@ -89,26 +112,30 @@ function getPartBetweenEnzymesWithInclusiveOverhangs(cut1, cut2, seqLen) {
     firstCut: cut1,
     //the offset is always counting with 0 being at the top snip position
     firstCutOffset,
-    firstCutOverhang: cut1.overhangBps,
-    firstCutOverhangTop: firstCutOffset > 0 ? cut1.overhangBps : "",
+    firstCutOverhang: cut1.overhangBps || "",
+    firstCutOverhangTop: firstCutOffset > 0 ? cut1.overhangBps || "" : "",
     firstCutOverhangBottom:
-      firstCutOffset < 0 ? getComplementSequenceString(cut1.overhangBps) : "",
+      firstCutOffset < 0
+        ? getComplementSequenceString(cut1.overhangBps || "")
+        : "",
     secondCut: cut2,
     //the offset is always counting with 0 being at the top snip position
     secondCutOffset,
-    secondCutOverhang: cut2.overhangBps,
-    secondCutOverhangTop: secondCutOffset < 0 ? cut2.overhangBps : "",
+    secondCutOverhang: cut2.overhangBps || "",
+    secondCutOverhangTop: secondCutOffset < 0 ? cut2.overhangBps || "" : "",
     secondCutOverhangBottom:
-      secondCutOffset > 0 ? getComplementSequenceString(cut2.overhangBps) : ""
+      secondCutOffset > 0
+        ? getComplementSequenceString(cut2.overhangBps || "")
+        : ""
   };
 }
 
-function getEnzymeRelativeOffset(enzyme) {
+function getEnzymeRelativeOffset(enzyme: RestrictionEnzyme) {
   //the offset is always counting with 0 being at the top snip position
-  return enzyme.bottomSnipOffset - enzyme.topSnipOffset;
+  return (enzyme.bottomSnipOffset || 0) - (enzyme.topSnipOffset || 0);
 }
 
-function pairwise(list) {
+function pairwise<T>(list: T[]): T[][] {
   if (list.length < 2) {
     return [];
   }

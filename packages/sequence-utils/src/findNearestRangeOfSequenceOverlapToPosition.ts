@@ -1,17 +1,16 @@
-import { normalizeRange } from "@teselagen/range-utils";
+import { normalizeRange, Range } from "@teselagen/range-utils";
 function findNearestRangeOfSequenceOverlapToPosition(
-  sequenceToSearch,
-  overlapSequence,
-  positionStart,
-  isLinear
-) {
-  if (!positionStart) positionStart = 0;
+  sequenceToSearch: string,
+  overlapSequence: string,
+  positionStart = 0,
+  isLinear?: boolean
+): Range | null {
   if (sequenceToSearch.length < overlapSequence.length) {
     return null;
   }
   const regex = new RegExp(overlapSequence, "ig");
-  let result;
-  let index;
+  let result: RegExpExecArray | null;
+  let index: number | undefined;
   let distance = Infinity;
   while (
     (result = regex.exec(sequenceToSearch + (isLinear ? "" : sequenceToSearch)))
@@ -27,6 +26,11 @@ function findNearestRangeOfSequenceOverlapToPosition(
     index = result.index;
     distance = newDistance;
   }
+
+  if (index === undefined) {
+    return null;
+  }
+
   //index is the closest range start
   return normalizeRange(
     {

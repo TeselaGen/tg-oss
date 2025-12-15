@@ -1,5 +1,5 @@
 import { flatMap, extend, forEach, startCase } from "lodash-es";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength, Range } from "@teselagen/range-utils";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import insertSequenceDataAtPosition from "./insertSequenceDataAtPosition";
 import {
@@ -8,12 +8,19 @@ import {
 } from "@teselagen/range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import { annotationTypes } from "./annotationTypes";
+import { Annotation, SequenceData } from "./types";
+
+interface GetSequenceDataBetweenRangeOptions {
+  exclude?: Record<string, boolean>;
+  excludePartial?: Record<string, boolean>;
+  [key: string]: unknown;
+}
 
 export default function getSequenceDataBetweenRange(
-  seqData,
-  range,
-  options = {}
-) {
+  seqData: SequenceData,
+  range: Range | null,
+  options: GetSequenceDataBetweenRangeOptions = {}
+): SequenceData {
   if (!range) return seqData;
   const { exclude = {}, excludePartial = {} } = options;
   const seqDataToUse = tidyUpSequenceData(seqData, {
@@ -21,7 +28,8 @@ export default function getSequenceDataBetweenRange(
     ...options
   });
   annotationTypes.forEach(type => {
-    delete seqDataToUse[`filtered${startCase(type)}`];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (seqDataToUse as any)[`filtered${startCase(type)}`];
   });
   const seqDataToReturn = extend(
     {},
@@ -35,26 +43,29 @@ export default function getSequenceDataBetweenRange(
       sequence: getSequenceWithinRange(range, seqDataToUse.sequence),
       proteinSequence: getSequenceWithinRange(
         convertDnaCaretPositionOrRangeToAa(range),
-        seqDataToUse.proteinSequence
+        seqDataToUse.proteinSequence || ""
       )
     },
-    annotationTypes.reduce((acc, type) => {
-      if (exclude[type]) {
-        acc[type] = [];
-        return acc; //return early cause we're not interested in these annotations
-      }
-      acc[type] = getAnnotationsBetweenRange(
-        seqDataToUse[type],
-        range,
-        seqDataToUse.sequence.length,
-        excludePartial[type]
-      );
-      return acc;
-    }, {})
+    annotationTypes.reduce(
+      (acc, type) => {
+        if (exclude[type]) {
+          acc[type] = [];
+          return acc; //return early cause we're not interested in these annotations
+        }
+        acc[type] = getAnnotationsBetweenRange(
+          seqDataToUse[type] as Annotation[],
+          range,
+          seqDataToUse.sequence.length,
+          excludePartial[type]
+        );
+        return acc;
+      },
+      {} as Record<string, Annotation[]>
+    )
   );
   if (range.overlapsSelf) {
     const extendedSeqData = insertSequenceDataAtPosition(
-      { sequence: seqDataToReturn.sequence },
+      { sequence: (seqDataToReturn as SequenceData).sequence }, // Wrapping in object as per assumed signature
       seqDataToUse,
       range.start
     );
@@ -69,7 +80,7 @@ export default function getSequenceDataBetweenRange(
     );
     annotationTypes.forEach(type => {
       //we need to go through and adjust any anns where overlapsSelf=true to no longer overlap themselves if they match the range completely
-      forEach(toRet[type], ann => {
+      forEach(toRet[type] as Annotation[], ann => {
         if (
           ann.overlapsSelf &&
           ann.start === 0 &&
@@ -94,11 +105,11 @@ export default function getSequenceDataBetweenRange(
 }
 
 function getAnnotationsBetweenRange(
-  annotationsToBeAdjusted,
-  range,
-  maxLength,
-  shouldExcludePartial
-) {
+  annotationsToBeAdjusted: Annotation[],
+  range: Range,
+  maxLength: number,
+  shouldExcludePartial?: boolean
+): Annotation[] {
   return flatMap(annotationsToBeAdjusted, annotation => {
     if (annotation.locations && annotation.locations.length) {
       annotation.locations = getAnnotationsBetweenRange(

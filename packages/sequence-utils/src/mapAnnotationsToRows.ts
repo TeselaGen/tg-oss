@@ -1,29 +1,39 @@
 import { each, forEach, startsWith, filter } from "lodash-es";
-
 import {
   getYOffsetForPotentiallyCircularRange,
   splitRangeIntoTwoPartsIfItIsCircular
 } from "@teselagen/range-utils";
+import { Annotation } from "./types";
+
+export interface MappedAnnotation extends Annotation {
+  yOffset?: number;
+  enclosingRangeType?: "beginning" | "end" | "beginningAndEnd";
+  annotation?: Annotation;
+}
 
 export default function mapAnnotationsToRows(
-  annotations,
-  sequenceLength,
-  bpsPerRow,
-  { splitForwardReverse } = {}
+  annotations: Annotation[],
+  sequenceLength: number,
+  bpsPerRow: number,
+  { splitForwardReverse }: { splitForwardReverse?: boolean } = {}
 ) {
-  const annotationsToRowsMap = {};
-  const yOffsetLevelMap = {};
-  const wrappedAnnotations = {};
+  const annotationsToRowsMap: Record<number | string, MappedAnnotation[]> = {};
+  const yOffsetLevelMap: Record<
+    string | number,
+    { start: number; end: number }[][]
+  > = {};
+  const wrappedAnnotations: Record<string, boolean> = {};
+
   each(annotations, annotation => {
     const containsLocations = !!(
       annotation.locations && annotation.locations.length
     );
     if (annotation.overlapsSelf) {
-      //if the annotation overlaps itself, first send a fake full spanning annotation thru the mapping function
-      if (!wrappedAnnotations[annotation.id]) {
+      if (!wrappedAnnotations[annotation.id as string]) {
         mapAnnotationToRows({
           wrappedAnnotations,
           annotation: {
+            ...annotation,
             start: 0,
             end: sequenceLength - 1,
             id: `__tempAnnRemoveMe__${annotation.id}`
@@ -35,8 +45,7 @@ export default function mapAnnotationsToRows(
           containsLocations,
           splitForwardReverse
         });
-        wrappedAnnotations[annotation.id] = true;
-        // annotation.yOffset = wrappedAnnotations[annotation.id];
+        wrappedAnnotations[annotation.id as string] = true;
       }
     }
 
@@ -50,8 +59,9 @@ export default function mapAnnotationsToRows(
       containsLocations,
       splitForwardReverse
     });
+
     if (containsLocations) {
-      annotation.locations.forEach(location => {
+      annotation.locations?.forEach(location => {
         mapAnnotationToRows({
           wrappedAnnotations,
           annotation,
@@ -59,19 +69,32 @@ export default function mapAnnotationsToRows(
           bpsPerRow,
           annotationsToRowsMap,
           yOffsetLevelMap,
-          location,
+          location: location as Annotation,
           splitForwardReverse
         });
       });
     }
   });
+
   forEach(annotationsToRowsMap, (annotationsForRow, i) => {
     annotationsToRowsMap[i] = filter(
       annotationsForRow,
-      ann => !startsWith(ann.id, "__tempAnnRemoveMe__")
+      ann => !startsWith(String(ann.id), "__tempAnnRemoveMe__")
     );
   });
   return annotationsToRowsMap;
+}
+
+interface MapAnnotationToRowsParams {
+  wrappedAnnotations: Record<string, boolean>;
+  annotation: Annotation;
+  sequenceLength: number;
+  bpsPerRow: number;
+  annotationsToRowsMap: Record<number | string, MappedAnnotation[]>;
+  yOffsetLevelMap: Record<string | number, { start: number; end: number }[][]>;
+  location?: Annotation;
+  containsLocations?: boolean;
+  splitForwardReverse?: boolean;
 }
 
 function mapAnnotationToRows({
@@ -83,16 +106,15 @@ function mapAnnotationToRows({
   location,
   containsLocations,
   splitForwardReverse
-}) {
+}: MapAnnotationToRowsParams) {
   const ranges = splitRangeIntoTwoPartsIfItIsCircular(
     location || annotation,
     sequenceLength
   );
   ranges.forEach((range, index) => {
-    // if (!isPositiveInteger(range.start)) {}
     const startingRow = Math.floor(range.start / bpsPerRow);
     const endingRow = Math.floor(range.end / bpsPerRow);
-    // const numberOfRows = endingRow - startingRow + 1;
+
     for (let rowNumber = startingRow; rowNumber <= endingRow; rowNumber++) {
       if (!annotationsToRowsMap[rowNumber]) {
         annotationsToRowsMap[rowNumber] = [];
@@ -108,7 +130,7 @@ function mapAnnotationToRows({
         yOffsetLevelMap[key] = [];
       }
 
-      let yOffset;
+      let yOffset: number | undefined;
       const yOffsetsForRow = yOffsetLevelMap[key];
       const start =
         rowNumber === startingRow ? range.start : rowNumber * bpsPerRow;
@@ -116,6 +138,7 @@ function mapAnnotationToRows({
         rowNumber === endingRow
           ? range.end
           : rowNumber * bpsPerRow + bpsPerRow - 1;
+
       if (annotation.overlapsSelf) {
         annotationsForRow.forEach(ann => {
           if (ann.id === `__tempAnnRemoveMe__${annotation.id}`) {
@@ -124,41 +147,38 @@ function mapAnnotationToRows({
         });
       } else {
         if (location) {
-          //if there's a location then we will just use the previous yOffset for its parent annotation
           annotationsForRow.forEach(ann => {
             if (ann.id === annotation.id) {
               yOffset = ann.yOffset;
             }
           });
         } else {
-          //we need to pass both ranges into this function so that we can correctly
-          //get the y-offset for circular features that start and end on the same row
-          //we pass the entire annotation range here and compare it only with ranges that have already been added to the row
           if (
-            index > 0 && //second half of an annotation range
-            annotationsForRow.length && //there are already annotations within the row
+            index > 0 &&
+            annotationsForRow.length &&
             annotationsForRow[annotationsForRow.length - 1].annotation ===
               annotation
           ) {
-            //the first chunk of the annotation has already been pushed into the row,
-            //so set the yOffset for the range chunk to the already calculated yOffset
             yOffset = annotationsForRow[annotationsForRow.length - 1].yOffset;
           } else {
             yOffset = getYOffsetForPotentiallyCircularRange(
               annotation,
-              yOffsetsForRow
+              yOffsetsForRow,
+              false
             );
           }
-          //add the new yOffset to the yOffset array
-          if (!yOffsetsForRow[yOffset]) yOffsetsForRow[yOffset] = [];
-          yOffsetsForRow[yOffset].push({
-            start: start,
-            end: end
-          });
+          if (yOffset !== undefined) {
+            if (!yOffsetsForRow[yOffset]) yOffsetsForRow[yOffset] = [];
+            yOffsetsForRow[yOffset].push({
+              start: start,
+              end: end
+            });
+          }
         }
       }
 
       annotationsForRow.push({
+        ...annotation,
         id: annotation.id,
         annotation: annotation,
         start: start,
@@ -166,9 +186,11 @@ function mapAnnotationToRows({
         ...(containsLocations && { containsLocations }),
         ...(location && { isJoinedLocation: !!location }),
         yOffset: yOffset,
-        enclosingRangeType: range.type //either "beginning", "end" or "beginningAndEnd"
+        enclosingRangeType: range.type as
+          | "beginning"
+          | "end"
+          | "beginningAndEnd"
       });
     }
   });
-  // return annotationsToRowsMap;
 }

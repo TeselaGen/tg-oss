@@ -1,6 +1,15 @@
 import { get, keyBy, filter } from "lodash-es";
 
-const genbankFeatureTypes = [
+interface FeatureType {
+  name: string;
+  color: string;
+  isHidden?: boolean;
+  isGenbankStandardType?: boolean;
+  isOverridden?: boolean;
+  isCustomType?: boolean;
+}
+
+const genbankFeatureTypes: FeatureType[] = [
   { name: "-10_signal", color: "#4ECDC4" },
   { name: "-35_signal", color: "#F7FFF7" },
   { name: "3'clip", color: "#FF6B6B" },
@@ -93,7 +102,7 @@ const genbankFeatureTypes = [
   { name: "variation", color: "#2EE455" }
 ];
 
-const getMergedFeatureMap = () => {
+const getMergedFeatureMap = (): Record<string, FeatureType> => {
   const keyedGBFeats = keyBy(
     genbankFeatureTypes.map(f => ({
       ...f,
@@ -101,12 +110,14 @@ const getMergedFeatureMap = () => {
     })),
     "name"
   );
-  let featureOverrides =
-    (typeof window !== "undefined" && get(window, "tg_featureTypeOverrides")) ||
-    (typeof global !== "undefined" && get(global, "tg_featureTypeOverrides"));
+  let featureOverrides: FeatureType[] =
+    ((typeof window !== "undefined" &&
+      get(window, "tg_featureTypeOverrides")) as unknown as FeatureType[]) ||
+    ((typeof global !== "undefined" &&
+      get(global, "tg_featureTypeOverrides")) as unknown as FeatureType[]) ||
+    [];
 
-  featureOverrides = featureOverrides || [];
-  featureOverrides = featureOverrides.map(fo => {
+  const mappedOverrides = featureOverrides.map(fo => {
     const originalGenbankFeat = keyedGBFeats[fo.name];
     return {
       ...originalGenbankFeat,
@@ -114,16 +125,18 @@ const getMergedFeatureMap = () => {
       ...(originalGenbankFeat ? { isOverridden: true } : { isCustomType: true })
     };
   });
-  featureOverrides = keyBy(featureOverrides, "name");
+  const keyedOverrides = keyBy(mappedOverrides, "name");
 
   return {
     ...keyedGBFeats,
-    ...featureOverrides
+    ...keyedOverrides
   };
 };
 
-const getFeatureToColorMap = ({ includeHidden } = {}) => {
-  const toRet = {};
+const getFeatureToColorMap = ({
+  includeHidden
+}: { includeHidden?: boolean } = {}): Record<string, string> => {
+  const toRet: Record<string, string> = {};
   filter(getMergedFeatureMap(), f =>
     includeHidden ? true : !f.isHidden
   ).forEach(f => {
@@ -132,15 +145,17 @@ const getFeatureToColorMap = ({ includeHidden } = {}) => {
   return toRet;
 };
 
-const getFeatureTypes = ({ includeHidden } = {}) =>
+const getFeatureTypes = ({
+  includeHidden
+}: { includeHidden?: boolean } = {}): string[] =>
   filter(getMergedFeatureMap(), f => (includeHidden ? true : !f.isHidden)).map(
     f => f.name
   );
 
 export { genbankFeatureTypes };
 
-export function getGenbankFeatureToColorMap() {
-  const toRet = {};
+export function getGenbankFeatureToColorMap(): Record<string, string> {
+  const toRet: Record<string, string> = {};
   genbankFeatureTypes.forEach(({ name, color }) => {
     toRet[name] = color;
   });

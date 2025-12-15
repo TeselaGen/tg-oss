@@ -1,17 +1,22 @@
+import { flatMap } from "lodash-es";
 import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme";
+import { CutSite, RestrictionEnzyme } from "./types";
 
 export default function getCutsitesFromSequence(
-  sequence,
-  circular,
-  restrictionEnzymes
-) {
-  const cutsitesByName = {};
-  for (let i = 0; i < restrictionEnzymes.length; i++) {
-    const re = restrictionEnzymes[i];
-    const cutsites = cutSequenceByRestrictionEnzyme(sequence, circular, re);
-    if (cutsites.length) {
-      cutsitesByName[re.name] = cutsites;
+  sequence: string,
+  circular: boolean,
+  contextEnzymes: RestrictionEnzyme[]
+): Record<string, CutSite[]> {
+  const cutsites = flatMap(contextEnzymes, enzyme => {
+    return cutSequenceByRestrictionEnzyme(sequence, circular, enzyme);
+  });
+  const cutsitesByNameMap: Record<string, CutSite[]> = {};
+  cutsites.forEach(cutsite => {
+    const name = cutsite.name || "";
+    if (!cutsitesByNameMap[name]) {
+      cutsitesByNameMap[name] = [];
     }
-  }
-  return cutsitesByName;
+    cutsitesByNameMap[name].push(cutsite);
+  });
+  return cutsitesByNameMap;
 }

@@ -2,16 +2,17 @@ import {
   normalizePositionByRangeLength,
   getRangeLength
 } from "@teselagen/range-utils";
+import { CutSite, DigestFragment } from "./types";
 
 export default function getDigestFragmentsForCutsites(
-  sequenceLength,
-  circular,
-  cutsites,
-  opts = {}
-) {
-  const fragments = [];
-  const overlappingEnzymes = [];
-  const pairs = [];
+  sequenceLength: number,
+  circular: boolean,
+  cutsites: CutSite[],
+  opts: { computePartialDigests?: boolean } = {}
+): DigestFragment[] {
+  const fragments: DigestFragment[] = [];
+  const overlappingEnzymes: DigestFragment[] = [];
+  const pairs: CutSite[][] = [];
   if (!cutsites.length) return [];
   let sortedCutsites = cutsites.sort((a, b) => {
     return a.topSnipPosition - b.topSnipPosition;
@@ -21,19 +22,35 @@ export default function getDigestFragmentsForCutsites(
     //if linear, add 2 fake cutsites for the start and end of the seq
     sortedCutsites = [
       {
+        start: 0,
+        end: 0,
         topSnipPosition: 0,
         bottomSnipPosition: 0,
         overhangSize: 0,
         type: "START_OR_END_OF_SEQ",
-        name: "START_OF_SEQ"
+        name: "START_OF_SEQ",
+        restrictionEnzyme: {
+          name: "START_OF_SEQ",
+          site: "",
+          forwardRegex: "",
+          reverseRegex: ""
+        }
       },
       ...sortedCutsites,
       {
+        start: sequenceLength,
+        end: sequenceLength,
         topSnipPosition: sequenceLength,
         bottomSnipPosition: sequenceLength,
         overhangSize: 0,
         type: "START_OR_END_OF_SEQ",
-        name: "END_OF_SEQ"
+        name: "END_OF_SEQ",
+        restrictionEnzyme: {
+          name: "END_OF_SEQ",
+          site: "",
+          forwardRegex: "",
+          reverseRegex: ""
+        }
       }
     ];
   }
@@ -93,7 +110,8 @@ export default function getDigestFragmentsForCutsites(
       },
       ...fragmentRange,
       size,
-      id
+      id,
+      name: `${cut1.restrictionEnzyme.name} -- ${cut2.restrictionEnzyme.name} ${size} bps` // Add missing name property
     });
   });
 
