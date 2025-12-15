@@ -7,6 +7,7 @@ import {
   reversePositionInRange
 } from "@teselagen/range-utils";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
+import { Annotation } from "./types";
 
 //seqsToAnnotateById must not be length = 0
 function autoAnnotate({
@@ -14,17 +15,33 @@ function autoAnnotate({
   annotationsToCheckById,
   compareName,
   warnIfMoreThan
+}: {
+  seqsToAnnotateById: Record<
+    string,
+    { sequence: string; annotations: Annotation[]; circular?: boolean }
+  >;
+  annotationsToCheckById: Record<string, { sequence: string; id: string }>;
+  compareName?: boolean;
+  warnIfMoreThan?: number;
 }) {
-  const annotationsToAddBySeqId = {};
+  const annotationsToAddBySeqId: Record<string, Annotation[]> = {};
 
   forEach(annotationsToCheckById, ann => {
     const reg = new RegExp(ann.sequence, "gi");
     forEach(
       omitBy(seqsToAnnotateById, s => !s.sequence.length),
       ({ circular, sequence }, id) => {
-        function getMatches({ seqToMatchAgainst, isReverse, seqLen }) {
+        function getMatches({
+          seqToMatchAgainst,
+          isReverse,
+          seqLen
+        }: {
+          seqToMatchAgainst: string;
+          isReverse?: boolean;
+          seqLen: number;
+        }) {
           let match;
-          let lastMatch;
+          let lastMatch: { start: number; end: number } | undefined;
           // const matches = []
           try {
             while ((match = reg.exec(seqToMatchAgainst))) {
@@ -43,15 +60,15 @@ function autoAnnotate({
               };
               const range = {
                 start: matchStart,
-                end: normalizePositionByRangeLength(matchEnd - 1, seqLen)
+                end: normalizePositionByRangeLength(matchEnd - 1, seqLen, false)
               };
               if (!annotationsToAddBySeqId[id])
                 annotationsToAddBySeqId[id] = [];
               annotationsToAddBySeqId[id].push({
                 ...(isReverse
                   ? {
-                      start: reversePositionInRange(range.end, seqLen),
-                      end: reversePositionInRange(range.start, seqLen)
+                      start: reversePositionInRange(range.end, seqLen, false),
+                      end: reversePositionInRange(range.start, seqLen, false)
                     }
                   : range),
                 strand: isReverse ? -1 : 1,
@@ -82,22 +99,36 @@ function autoAnnotate({
 
   //loop through all patterns and get all matches
 
-  const toReturn = {};
+  const toReturn: Record<string, Annotation[] | Record<string, string[]>> = {};
 
   forEach(annotationsToAddBySeqId, (anns, id) => {
     const origSeq = seqsToAnnotateById[id];
-    const alreadyExistingAnnsByStartEnd = {};
+    const alreadyExistingAnnsByStartEnd: Record<string, Annotation> = {};
     forEach(origSeq.annotations, ann => {
-      alreadyExistingAnnsByStartEnd[getStartEndStr(ann, { compareName })] = ann;
+      alreadyExistingAnnsByStartEnd[
+        getStartEndStr(
+          { ...ann, strand: typeof ann.strand === "string" ? 1 : ann.strand },
+          { compareName }
+        )
+      ] = ann;
     });
-    const warningCounter = {};
+    const warningCounter: Record<string, number> = {};
     const toAdd = anns
       .filter(ann => {
         const alreadyExistingAnn =
-          alreadyExistingAnnsByStartEnd[getStartEndStr(ann, { compareName })];
+          alreadyExistingAnnsByStartEnd[
+            getStartEndStr(
+              {
+                ...ann,
+                strand: typeof ann.strand === "string" ? 1 : ann.strand
+              },
+              { compareName }
+            )
+          ];
         if (alreadyExistingAnn) return false;
-        if (warnIfMoreThan) {
-          warningCounter[ann.id] = (warningCounter[ann.id] || 0) + 1;
+        if (warnIfMoreThan && ann.id !== undefined) {
+          warningCounter[String(ann.id)] =
+            (warningCounter[String(ann.id)] || 0) + 1;
         }
         return true;
       })
@@ -108,10 +139,12 @@ function autoAnnotate({
     warnIfMoreThan &&
       forEach(warningCounter, (num, annId) => {
         if (num > warnIfMoreThan) {
-          toReturn.__more_than_warnings = toReturn.__more_than_warnings || {};
-          toReturn.__more_than_warnings[id] =
-            toReturn.__more_than_warnings[id] || [];
-          toReturn.__more_than_warnings[id].push(annId);
+          const warnings =
+            (toReturn["__more_than_warnings"] as Record<string, string[]>) ||
+            {};
+          warnings[id] = warnings[id] || [];
+          warnings[id].push(annId);
+          toReturn["__more_than_warnings"] = warnings;
         }
       });
   });
@@ -119,8 +152,20 @@ function autoAnnotate({
 }
 
 function getStartEndStr(
-  { start, end, name, strand, forward },
-  { compareName }
+  {
+    start,
+    end,
+    name,
+    strand,
+    forward
+  }: {
+    start: number;
+    end: number;
+    name?: string;
+    strand?: number;
+    forward?: boolean;
+  },
+  { compareName }: { compareName: boolean | undefined }
 ) {
   const isReverse = strand === -1 || forward === false;
   return `${start}-${end}-${isReverse ? "rev" : "for"}-${
@@ -133,15 +178,15 @@ function convertApELikeRegexToRegex(regString = "") {
   let rightOfCaretHolder = "";
   let afterRightCaretHolder = "";
   let beforeRightCaret = "";
-  let prevBp;
-  let hitLeftCaret;
-  let hitRightCaret;
+  let prevBp: string | undefined;
+  let hitLeftCaret: boolean | undefined;
+  let hitRightCaret: boolean | undefined;
 
   // eslint-disable-next-line no-unused-vars
   for (const bp of regString.replace("(", "").replace(")", "")) {
     /* eslint-disable no-loop-func*/
     /* eslint-disable no-inner-declarations*/
-    function maybeHandleRightCaret(justAdded) {
+    function maybeHandleRightCaret(justAdded: string) {
       if (hitRightCaret) {
         rightOfCaretHolder += justAdded;
         afterRightCaretHolder = `${rightOfCaretHolder}${
@@ -223,7 +268,7 @@ function convertApELikeRegexToRegex(regString = "") {
   }
   return newstr;
 }
-function convertProteinSeqToDNAIupac(sequence) {
+function convertProteinSeqToDNAIupac(sequence: string) {
   let toRet = "";
   let l;
   for (l of sequence) {

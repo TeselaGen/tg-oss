@@ -1,13 +1,16 @@
 import { map } from "lodash-es";
 import { adjustRangeToRotation } from "@teselagen/range-utils";
-import tidyUpSequenceData from "./tidyUpSequenceData";
+import tidyUpSequenceData, {
+  TidyUpSequenceDataOptions
+} from "./tidyUpSequenceData";
 import { modifiableTypes } from "./annotationTypes";
 import rotateBpsToPosition from "./rotateBpsToPosition";
+import { SequenceData, Annotation } from "./types";
 
 export default function rotateSequenceDataToPosition(
-  sequenceData,
-  caretPosition,
-  options
+  sequenceData: SequenceData,
+  caretPosition: number,
+  options: TidyUpSequenceDataOptions = {}
 ) {
   const newSequenceData = tidyUpSequenceData(sequenceData, {
     doNotRemoveInvalidChars: true,
@@ -25,7 +28,7 @@ export default function rotateSequenceDataToPosition(
     //update the annotations:
     //handle the delete if necessary
     newSequenceData[annotationType] = adjustAnnotationsToRotation(
-      newSequenceData[annotationType],
+      newSequenceData[annotationType] as Annotation[],
       caretPosition,
       newSequenceData.sequence.length
     );
@@ -34,9 +37,9 @@ export default function rotateSequenceDataToPosition(
 }
 
 function adjustAnnotationsToRotation(
-  annotationsToBeAdjusted,
-  positionToRotateTo,
-  maxLength
+  annotationsToBeAdjusted: Annotation[],
+  positionToRotateTo: number,
+  maxLength: number
 ) {
   return map(annotationsToBeAdjusted, annotation => {
     return {

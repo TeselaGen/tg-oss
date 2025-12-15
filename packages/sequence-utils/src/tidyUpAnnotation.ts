@@ -83,7 +83,7 @@ export default function tidyUpAnnotation(
   if (
     isProtein ||
     annotation.forward === true ||
-    annotation.forward === "true" ||
+    (annotation.forward as unknown) === "true" ||
     annotation.strand === 1 ||
     annotation.strand === "1" ||
     annotation.strand === "+"
@@ -98,7 +98,9 @@ export default function tidyUpAnnotation(
     !annotation.type ||
     typeof annotation.type !== "string" ||
     !some(featureTypes || getFeatureTypes(), featureType => {
-      if (featureType.toLowerCase() === annotation.type.toLowerCase()) {
+      if (
+        featureType.toLowerCase() === (annotation.type as string).toLowerCase()
+      ) {
         annotation.type = featureType; //this makes sure the annotation.type is being set to the exact value of the accepted featureType
         return true;
       }
@@ -136,7 +138,10 @@ export default function tidyUpAnnotation(
   }
 
   if (!annotation.color) {
-    annotation.color = getFeatureToColorMap()[annotation.type];
+    annotation.color =
+      getFeatureToColorMap()[
+        annotation.type as keyof ReturnType<typeof getFeatureToColorMap>
+      ];
   }
   return annotation;
 }

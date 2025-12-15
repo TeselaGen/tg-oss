@@ -9,7 +9,7 @@ export const ambiguous_rna_letters = "GAUCRYWSMKHBVDN";
 export const unambiguous_rna_letters = "GAUC";
 export const extended_dna_letters = "GATCBDSW";
 
-export const ambiguous_dna_values = {
+export const ambiguous_dna_values: Record<string, string> = {
   ".": ".",
   A: "A",
   C: "C",
@@ -29,7 +29,7 @@ export const ambiguous_dna_values = {
   N: "GATC"
 };
 
-export const extended_protein_values = {
+export const extended_protein_values: Record<string, string> = {
   A: "A",
   B: "ND",
   C: "C",

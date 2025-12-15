@@ -44,5 +44,14 @@ export interface SequenceData {
   noSequence?: boolean;
   sequenceTypeCode?: string;
   aminoAcidDataForEachBaseOfDNA?: unknown[];
+  chromatogramData?: ChromatogramData;
+  [key: string]: unknown;
+}
+
+export interface ChromatogramData {
+  baseTraces?: unknown[];
+  baseCalls?: unknown[];
+  qualNums?: unknown[];
+  basePos?: unknown[];
   [key: string]: unknown;
 }

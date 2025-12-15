@@ -3,12 +3,17 @@ import mapAnnotationsToRows from "./mapAnnotationsToRows";
 
 import { annotationTypes } from "./annotationTypes";
 
-export default function prepareRowData(sequenceData, bpsPerRow) {
+import { SequenceData, Annotation } from "./types";
+
+export default function prepareRowData(
+  sequenceData: SequenceData,
+  bpsPerRow: number
+) {
   // ac.throw([ac.sequenceData, ac.posInt], arguments);
   const sequenceLength = sequenceData.sequence.length;
   const totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
   const rows = [];
-  const rowMap = {};
+  const rowMap: Record<string, Record<string | number, Annotation[]>> = {};
   annotationTypes.forEach(type => {
     rowMap[type] = mapAnnotationsToRows(
       sequenceData[type],
@@ -19,7 +24,12 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
   });
 
   for (let rowNumber = 0; rowNumber < totalRows; rowNumber++) {
-    const row = {};
+    const row: RowData = {
+      rowNumber,
+      start: 0,
+      end: 0,
+      sequence: ""
+    };
     row.rowNumber = rowNumber;
     row.start = rowNumber * bpsPerRow;
     row.end =
@@ -37,4 +47,12 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     rows[rowNumber] = row;
   }
   return rows;
+}
+
+interface RowData {
+  rowNumber: number;
+  start: number;
+  end: number;
+  sequence: string;
+  [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

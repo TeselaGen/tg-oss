@@ -11,7 +11,7 @@ import { getFeatureTypes } from "./featureTypesAndColors";
 import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
 import { expandOrContractRangeByLength } from "@teselagen/range-utils";
 
-import { SequenceData } from "./types";
+import { SequenceData, Annotation } from "./types";
 
 export interface TidyUpSequenceDataOptions {
   annotationsAsObjects?: boolean;
@@ -136,13 +136,13 @@ export default function tidyUpSequenceData(
         seqData[annotationType] = Object.keys(
           seqData[annotationType] as object
         ).map(key => {
-          return (seqData[annotationType] as any)[key];
+          return (seqData[annotationType] as Record<string, unknown>)[key];
         });
       } else {
         seqData[annotationType] = [];
       }
     }
-    seqData[annotationType] = (seqData[annotationType] as any[]).filter(
+    seqData[annotationType] = (seqData[annotationType] as Annotation[]).filter(
       annotation => {
         return tidyUpAnnotation(annotation, {
           ...options,
@@ -152,7 +152,8 @@ export default function tidyUpSequenceData(
           mutative: true,
           annotationType
         });
-      });
+      }
+    );
   });
 
   if (!noTranslationData) {
@@ -161,7 +162,12 @@ export default function tidyUpSequenceData(
         //filter off cds translations
         return [];
       }
-      const codonStart = (translation?.notes as any)?.codon_start?.[0] - 1 || 0;
+      const codonStart =
+        (
+          (translation?.notes as Record<string, unknown>)?.[
+            "codon_start"
+          ] as number[]
+        )?.[0] - 1 || 0;
       const expandedRange = expandOrContractRangeByLength(
         translation,
         -codonStart,
@@ -171,7 +177,7 @@ export default function tidyUpSequenceData(
       if (!expandedRange.aminoAcids && !seqData.noSequence) {
         expandedRange.aminoAcids = getAminoAcidDataForEachBaseOfDna(
           seqData.sequence,
-          expandedRange.forward!,
+          expandedRange.forward || false,
           expandedRange,
           false
         );
@@ -182,19 +188,22 @@ export default function tidyUpSequenceData(
 
   if (annotationsAsObjects) {
     annotationTypes.forEach(name => {
-      seqData[name] = (seqData[name] as any[]).reduce((acc: any, item: any) => {
-        let itemId;
-        if (item.id || item.id === 0) {
-          itemId = item.id;
-        } else {
-          itemId = shortid();
-          if (!doNotProvideIdsForAnnotations) {
-            item.id = itemId; //assign the newly created id to the item
+      seqData[name] = (seqData[name] as Annotation[]).reduce(
+        (acc: Record<string, Annotation>, item: Annotation) => {
+          let itemId;
+          if (item.id || item.id === 0) {
+            itemId = item.id;
+          } else {
+            itemId = shortid();
+            if (!doNotProvideIdsForAnnotations) {
+              item.id = itemId; //assign the newly created id to the item
+            }
           }
-        }
-        acc[itemId] = item;
-        return acc;
-      }, {});
+          acc[itemId] = item;
+          return acc;
+        },
+        {}
+      );
     });
   }
   if (logMessages && response.messages.length > 0) {

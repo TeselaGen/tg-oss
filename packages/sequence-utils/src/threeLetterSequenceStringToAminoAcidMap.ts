@@ -1,6 +1,19 @@
 import proteinAlphabet from "./proteinAlphabet";
 
-const initThreeLetterSequenceStringToAminoAcidMap = {
+const initThreeLetterSequenceStringToAminoAcidMap: Record<
+  string,
+  {
+    value: string;
+    name: string;
+    threeLettersName: string;
+    hydrophobicity?: number;
+    colorByFamily: string;
+    color: string;
+    mass: number;
+    isAmbiguous?: boolean;
+    aliases?: string;
+  }
+> = {
   gct: proteinAlphabet.A,
   gcc: proteinAlphabet.A,
   gca: proteinAlphabet.A,
@@ -107,7 +120,7 @@ const initThreeLetterSequenceStringToAminoAcidMap = {
 };
 
 // IUPAC nucleotide codes (DNA/RNA) with U awareness
-const IUPAC = {
+const IUPAC: Record<string, string[]> = {
   A: ["A"],
   C: ["C"],
   G: ["G"],
@@ -128,7 +141,7 @@ const IUPAC = {
   X: ["A", "C", "G", "T", "U"]
 };
 
-function expandAndResolve(threeLetterCodon) {
+function expandAndResolve(threeLetterCodon: string) {
   const chars = threeLetterCodon.toUpperCase().split("");
   const picks = chars.map(c => IUPAC[c] || [c]);
 

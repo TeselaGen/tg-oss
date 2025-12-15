@@ -1,4 +1,4 @@
-const aminoAcidToDegenerateDnaMap = {
+const aminoAcidToDegenerateDnaMap: Record<string, string> = {
   "-": "---",
   ".": "...",
   "*": "trr",
