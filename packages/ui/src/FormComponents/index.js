@@ -403,7 +403,7 @@ export const RenderBlueprintInput = ({
                 onKeyDown(...args);
                 const e = args[0];
                 if (e.key === "Enter") {
-                  input.onChange(value);
+                  input.onChange(e.target.value);
                   onFieldSubmit(e.target.value, { enter: true }, e);
                 }
               },
@@ -622,6 +622,7 @@ export const RenderBlueprintTextarea = ({
           const e = args[0];
           (onKeyDown || noop)(...args);
           if (e.keyCode === 13 && (e.metaKey || e.ctrlKey)) {
+            input.onChange(value);
             onFieldSubmit(e.target.value, { cmdEnter: true }, e);
           }
         }}
