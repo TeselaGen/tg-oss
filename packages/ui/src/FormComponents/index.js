@@ -344,6 +344,12 @@ export const RenderBlueprintInput = ({
 }) => {
   const [isOpen, setOpen] = useState(false);
   const [value, setVal] = useState(null);
+  const [internalValue, setInternalValue] = useState(input.value);
+
+  useEffect(() => {
+    setInternalValue(input.value);
+  }, [input.value]);
+
   const toSpread = {};
   if (clickToEdit) {
     const isDisabled = clickToEdit && !isOpen;
@@ -389,21 +395,24 @@ export const RenderBlueprintInput = ({
               }
             }
           : {
+              value: internalValue,
+              onChange: e => {
+                setInternalValue(e.target.value);
+              },
               onKeyDown: function (...args) {
                 onKeyDown(...args);
                 const e = args[0];
                 if (e.key === "Enter") {
+                  input.onChange(value);
                   onFieldSubmit(e.target.value, { enter: true }, e);
                 }
               },
               onBlur: function (e, val) {
                 if (rest.readOnly) return;
+                const value = e.target ? e.target.value : val;
+                input.onChange(value);
                 input.onBlur(e, val);
-                onFieldSubmit(
-                  e.target ? e.target.value : val,
-                  { blur: true },
-                  e
-                );
+                onFieldSubmit(value, { blur: true }, e);
               }
             })}
       />
@@ -522,6 +531,11 @@ export const RenderBlueprintTextarea = ({
 }) => {
   const [value, setValue] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [internalValue, setInternalValue] = useState(input.value);
+
+  useEffect(() => {
+    setInternalValue(input.value);
+  }, [input.value]);
 
   const stopEdit = () => {
     setIsOpen(false);
@@ -593,10 +607,16 @@ export const RenderBlueprintTextarea = ({
           Classes.FILL
         )}
         {...input}
+        value={internalValue}
+        onChange={e => {
+          setInternalValue(e.target.value);
+        }}
         onBlur={function (e, val) {
           if (rest.readOnly) return;
+          const value = e.target ? e.target.value : val;
+          input.onChange(value);
           input.onBlur(e, val);
-          onFieldSubmit(e.target ? e.target.value : val, { blur: true }, e);
+          onFieldSubmit(value, { blur: true }, e);
         }}
         onKeyDown={(...args) => {
           const e = args[0];
