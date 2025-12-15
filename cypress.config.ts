@@ -1,7 +1,7 @@
 import { defineConfig } from "cypress";
 import { getPort } from "./getPort";
-// import vitePreprocessor from "cypress-vite";
-// import path from "path";
+import vitePreprocessor from "cypress-vite";
+import path from "path";
 
 export default ({
   name = "pass_the_package_name_here",
@@ -18,18 +18,18 @@ export default ({
         runMode: 3,
         openMode: 0
       },
-      // setupNodeEvents(on, config) {
-      //   on(
-      //     "file:preprocessor",
-      //     vitePreprocessor({
-      //       // configFile: "./vite.config.js",
-      //       configFile: path.resolve(__dirname, "./vite.config.js"),
-      //       mode: "development"
-      //     })
-      //   );
+      setupNodeEvents(on, config) {
+        on(
+          "file:preprocessor",
+          vitePreprocessor({
+            // configFile: "./vite.config.js",
+            configFile: path.resolve(config.projectRoot, "vite.config.ts"),
+            mode: "development"
+          })
+        );
 
-      //   // return require("./cypress/plugins/index.js")(on, config);
-      // },
+        // return require("./cypress/plugins/index.js")(on, config);
+      },
       supportFile: "cypress/support/index.ts",
       // We've imported your old cypress plugins here.
       // You may want to clean this up later by importing these.
