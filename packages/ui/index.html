@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>ui demo</title>
+    <script>
+      if (window.Cypress) {
+        window["__REDUX_DEVTOOLS_EXTENSION__"] =
+          window.parent["__REDUX_DEVTOOLS_EXTENSION__"];
+        window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] =
+          window.parent["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"];
+      }
+    </script>
     <script src="./demo/index.js" type="module"></script>
   </head>
   <body>
