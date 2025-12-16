@@ -403,14 +403,14 @@ export const RenderBlueprintInput = ({
                 onKeyDown(...args);
                 const e = args[0];
                 if (e.key === "Enter") {
-                  input.onChange(e.target.value);
+                  input.onChange(e);
                   onFieldSubmit(e.target.value, { enter: true }, e);
                 }
               },
               onBlur: function (e, val) {
                 if (rest.readOnly) return;
                 const value = e.target ? e.target.value : val;
-                input.onChange(value);
+                input.onChange(e, value);
                 input.onBlur(e, val);
                 onFieldSubmit(value, { blur: true }, e);
               }
