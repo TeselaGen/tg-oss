@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/sequence-utils",
-  "version": "0.3.37",
+  "version": "0.3.38-beta.3",
   "type": "module",
   "dependencies": {
     "@teselagen/range-utils": "file:../range-utils",
