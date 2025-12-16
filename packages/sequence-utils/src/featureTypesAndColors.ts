@@ -110,7 +110,7 @@ const getMergedFeatureMap = (): Record<string, FeatureType> => {
     })),
     "name"
   );
-  let featureOverrides: FeatureType[] =
+  const featureOverrides: FeatureType[] =
     ((typeof window !== "undefined" &&
       get(window, "tg_featureTypeOverrides")) as unknown as FeatureType[]) ||
     ((typeof global !== "undefined" &&

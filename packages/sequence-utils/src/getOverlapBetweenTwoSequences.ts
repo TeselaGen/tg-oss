@@ -1,4 +1,4 @@
-import { modulatePositionByRange } from "@teselagen/range-utils";
+import { modulatePositionByRange, Range } from "@teselagen/range-utils";
 
 /**
  * This function gets the overlapping of one sequence to another based on sequence equality.
@@ -9,9 +9,9 @@ import { modulatePositionByRange } from "@teselagen/range-utils";
  * @return {object || null}            null if no overlap exists or a range object with .start and .end properties
  */
 export default function getOverlapBetweenTwoSequences(
-  sequenceToFind,
-  sequenceToSearchIn
-) {
+  sequenceToFind: string,
+  sequenceToSearchIn: string
+): Range | null {
   sequenceToSearchIn = sequenceToSearchIn.toLowerCase();
   sequenceToFind = sequenceToFind.toLowerCase();
   const lengthenedSeqToSearch = sequenceToSearchIn + sequenceToSearchIn;

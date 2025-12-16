@@ -1,7 +1,8 @@
 import {
   isValidSequence,
   SANTA_LUCIA_NN,
-  SANTA_LUCIA_INIT
+  SANTA_LUCIA_INIT,
+  SantaLuciaParams
 } from "./calculateSantaLuciaTm";
 
 /**
@@ -19,21 +20,23 @@ import {
  * @returns {number} - Delta G (kcal/mol) for the last 5 bases at 3' end
  * @throws {Error} Invalid sequence or too short.
  */
-export default function calculateEndStability(sequence) {
+export default function calculateEndStability(
+  sequence: string
+): number | string {
   try {
-    sequence = sequence?.toUpperCase().trim();
+    const seq = sequence?.toUpperCase().trim();
 
-    if (!isValidSequence(sequence)) {
+    if (!isValidSequence(seq)) {
       throw new Error("Invalid sequence: contains non-DNA characters");
     }
 
-    if (sequence.length < 5) {
+    if (seq.length < 5) {
       throw new Error(
         "Sequence too short: minimum length is 5 bases for end stability calculation"
       );
     }
 
-    const last5Bases = sequence.substring(sequence.length - 5);
+    const last5Bases = seq.substring(seq.length - 5);
 
     let deltaH = 0; // kcal/mol
     let deltaS = 0; // cal/K·mol
@@ -46,7 +49,9 @@ export default function calculateEndStability(sequence) {
         continue;
       }
 
-      const params = SANTA_LUCIA_NN[dinucleotide];
+      const params = (SANTA_LUCIA_NN as Record<string, SantaLuciaParams>)[
+        dinucleotide
+      ];
       if (params) {
         deltaH += params.dH;
         deltaS += params.dS;
@@ -59,19 +64,19 @@ export default function calculateEndStability(sequence) {
 
     // Terminal GC or AT initiation
     if (firstBase === "G" || firstBase === "C") {
-      deltaH += SANTA_LUCIA_INIT.GC.dH;
-      deltaS += SANTA_LUCIA_INIT.GC.dS;
+      deltaH += SANTA_LUCIA_INIT["GC"].dH;
+      deltaS += SANTA_LUCIA_INIT["GC"].dS;
     } else {
-      deltaH += SANTA_LUCIA_INIT.AT.dH;
-      deltaS += SANTA_LUCIA_INIT.AT.dS;
+      deltaH += SANTA_LUCIA_INIT["AT"].dH;
+      deltaS += SANTA_LUCIA_INIT["AT"].dS;
     }
 
     if (lastBase === "G" || lastBase === "C") {
-      deltaH += SANTA_LUCIA_INIT.GC.dH;
-      deltaS += SANTA_LUCIA_INIT.GC.dS;
+      deltaH += SANTA_LUCIA_INIT["GC"].dH;
+      deltaS += SANTA_LUCIA_INIT["GC"].dS;
     } else {
-      deltaH += SANTA_LUCIA_INIT.AT.dH;
-      deltaS += SANTA_LUCIA_INIT.AT.dS;
+      deltaH += SANTA_LUCIA_INIT["AT"].dH;
+      deltaS += SANTA_LUCIA_INIT["AT"].dS;
     }
 
     // Calculate deltaG at 37°C (310.15 K)

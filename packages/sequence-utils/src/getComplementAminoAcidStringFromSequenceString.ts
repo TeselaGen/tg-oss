@@ -1,8 +1,10 @@
 import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
 
 export default function getComplementAminoAcidStringFromSequenceString(
-  sequenceString
-) {
-  const aaString = getAminoAcidStringFromSequenceString(sequenceString, true);
+  sequenceString: string
+): string {
+  const aaString = getAminoAcidStringFromSequenceString(sequenceString, {
+    doNotExcludeAsterisk: true
+  });
   return aaString.split("").reverse().join("");
 }

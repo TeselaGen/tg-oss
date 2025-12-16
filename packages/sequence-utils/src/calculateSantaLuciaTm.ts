@@ -19,6 +19,11 @@
  *   Proc Natl Acad Sci 95:1460-65
  */
 
+export interface SantaLuciaParams {
+  dH: number;
+  dS: number;
+}
+
 // Primer3 custom parameters (fixed)
 const PRIMER3_PARAMS = {
   saltMonovalent: 50.0, // mM
@@ -30,7 +35,7 @@ const PRIMER3_PARAMS = {
 
 // SantaLucia (1998) nearest-neighbor parameters
 // dH in kcal/mol, dS in cal/K·mol
-export const SANTA_LUCIA_NN = {
+export const SANTA_LUCIA_NN: Record<string, SantaLuciaParams> = {
   AA: { dH: -7.9, dS: -22.2 },
   TT: { dH: -7.9, dS: -22.2 },
   AT: { dH: -7.2, dS: -20.4 },
@@ -50,7 +55,7 @@ export const SANTA_LUCIA_NN = {
 };
 
 // Initiation parameters (SantaLucia 1998)
-export const SANTA_LUCIA_INIT = {
+export const SANTA_LUCIA_INIT: Record<string, SantaLuciaParams> = {
   GC: { dH: 0.1, dS: -2.8 }, // initiation with terminal GC
   AT: { dH: 2.3, dS: 4.1 } // initiation with terminal AT
 };
@@ -62,7 +67,7 @@ export const SANTA_LUCIA_INIT = {
  *
  * @returns {number} - Effective monovalent concentration in mM
  */
-function getEffectiveMonovalentConc() {
+function getEffectiveMonovalentConc(): number {
   let effectiveMono = PRIMER3_PARAMS.saltMonovalent;
 
   // Adjust for divalent cations
@@ -84,7 +89,7 @@ function getEffectiveMonovalentConc() {
  * @param {number} nnPairs - Number of nearest-neighbor pairs
  * @returns {number} - Corrected entropy in cal/K·mol
  */
-function applySaltCorrection(deltaS, nnPairs) {
+function applySaltCorrection(deltaS: number, nnPairs: number): number {
   const effectiveMono = getEffectiveMonovalentConc();
   // SantaLucia (1998) salt correction
   return deltaS + 0.368 * nnPairs * Math.log(effectiveMono / 1000);
@@ -96,7 +101,7 @@ function applySaltCorrection(deltaS, nnPairs) {
  * @param {string} sequence - DNA sequence
  * @returns {boolean} - True if valid
  */
-export function isValidSequence(sequence) {
+export function isValidSequence(sequence: string): boolean {
   return /^[ATGCN]+$/.test(sequence);
 }
 
@@ -107,16 +112,18 @@ export function isValidSequence(sequence) {
  * @returns {number} - Melting temperature in Celsius
  * @throws {Error} Invalid sequence or too short.
  */
-export default function calculateSantaLuciaTm(sequence) {
+export default function calculateSantaLuciaTm(
+  sequence: string
+): number | string {
   // Convert to uppercase and validate
   try {
-    sequence = sequence?.toUpperCase().trim();
+    const seq = sequence?.toUpperCase().trim();
 
-    if (!isValidSequence(sequence)) {
+    if (!isValidSequence(seq)) {
       throw new Error("Invalid sequence: contains non-DNA characters");
     }
 
-    if (sequence.length < 2) {
+    if (seq.length < 2) {
       throw new Error("Sequence too short: minimum length is 2 bases");
     }
 
@@ -124,8 +131,8 @@ export default function calculateSantaLuciaTm(sequence) {
     let deltaS = 0; // cal/K·mol
 
     // Calculate nearest-neighbor contributions
-    for (let i = 0; i < sequence.length - 1; i++) {
-      const dinucleotide = sequence.substring(i, i + 2);
+    for (let i = 0; i < seq.length - 1; i++) {
+      const dinucleotide = seq.substring(i, i + 2);
 
       // Skip if contains N
       if (dinucleotide.includes("N")) {
@@ -140,28 +147,28 @@ export default function calculateSantaLuciaTm(sequence) {
     }
 
     // Add initiation parameters
-    const firstBase = sequence[0];
-    const lastBase = sequence[sequence.length - 1];
+    const firstBase = seq[0];
+    const lastBase = seq[seq.length - 1];
 
     // Terminal GC or AT initiation
     if (firstBase === "G" || firstBase === "C") {
-      deltaH += SANTA_LUCIA_INIT.GC.dH;
-      deltaS += SANTA_LUCIA_INIT.GC.dS;
+      deltaH += SANTA_LUCIA_INIT["GC"].dH;
+      deltaS += SANTA_LUCIA_INIT["GC"].dS;
     } else {
-      deltaH += SANTA_LUCIA_INIT.AT.dH;
-      deltaS += SANTA_LUCIA_INIT.AT.dS;
+      deltaH += SANTA_LUCIA_INIT["AT"].dH;
+      deltaS += SANTA_LUCIA_INIT["AT"].dS;
     }
 
     if (lastBase === "G" || lastBase === "C") {
-      deltaH += SANTA_LUCIA_INIT.GC.dH;
-      deltaS += SANTA_LUCIA_INIT.GC.dS;
+      deltaH += SANTA_LUCIA_INIT["GC"].dH;
+      deltaS += SANTA_LUCIA_INIT["GC"].dS;
     } else {
-      deltaH += SANTA_LUCIA_INIT.AT.dH;
-      deltaS += SANTA_LUCIA_INIT.AT.dS;
+      deltaH += SANTA_LUCIA_INIT["AT"].dH;
+      deltaS += SANTA_LUCIA_INIT["AT"].dS;
     }
 
     // Apply salt correction
-    const nnPairs = sequence.length - 1;
+    const nnPairs = seq.length - 1;
     deltaS = applySaltCorrection(deltaS, nnPairs);
 
     // Calculate Tm using: Tm = deltaH / (deltaS + R * ln(C/4))

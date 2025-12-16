@@ -130,7 +130,7 @@ function getPartBetweenEnzymesWithInclusiveOverhangs(
   };
 }
 
-function getEnzymeRelativeOffset(enzyme: RestrictionEnzyme) {
+function getEnzymeRelativeOffset(enzyme: RestrictionEnzyme): number {
   //the offset is always counting with 0 being at the top snip position
   return (enzyme.bottomSnipOffset || 0) - (enzyme.topSnipOffset || 0);
 }

@@ -70,8 +70,8 @@ export interface RestrictionEnzyme {
 }
 
 export interface CutSite extends Annotation {
-  topSnipPosition: number;
-  bottomSnipPosition: number;
+  topSnipPosition: number | null;
+  bottomSnipPosition: number | null;
   overhangSize: number;
   overhangBps?: string;
   restrictionEnzyme: RestrictionEnzyme;
@@ -82,6 +82,7 @@ export interface CutSite extends Annotation {
   cutType?: number;
   cutsTwice?: boolean;
   recognitionSiteRange?: Range;
+  isOverhangIncludedInFragmentSize?: boolean;
   [key: string]: unknown;
 }
 

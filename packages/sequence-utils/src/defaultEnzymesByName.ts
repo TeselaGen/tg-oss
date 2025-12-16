@@ -1,4 +1,5 @@
 import aliasedEnzymesByName from "./aliasedEnzymesByName";
+import { RestrictionEnzyme } from "./types";
 
 const defaultEnzymes = [
   "aari",
@@ -270,7 +271,7 @@ const defaultEnzymes = [
   "xspi"
 ];
 
-const defaultEnzymesByName = {};
+const defaultEnzymesByName: Record<string, RestrictionEnzyme> = {};
 
 defaultEnzymes.forEach(name => {
   defaultEnzymesByName[name] = aliasedEnzymesByName[name];

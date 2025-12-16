@@ -40,9 +40,12 @@ export function computeDigestFragments({
   const overlappingEnzymes: DigestFragment[] = [];
   const pairs: CutSite[][] = [];
 
-  const sortedCutsites = cutsites.sort((a, b) => {
-    return a.topSnipPosition - b.topSnipPosition;
-  });
+  const sortedCutsites = cutsites.filter(
+    (
+      c
+    ): c is CutSite & { topSnipPosition: number; bottomSnipPosition: number } =>
+      c.topSnipPosition != null && c.bottomSnipPosition != null
+  );
   if (!circular && cutsites.length) {
     sortedCutsites.push({
       id: "seqTerm_" + shortid(),
@@ -62,6 +65,7 @@ export function computeDigestFragments({
       },
       forward: true,
       name: "Sequence_Terminus",
+      type: "START_OR_END_OF_SEQ",
       restrictionEnzyme: {
         name: "Sequence_Terminus",
         site: "",
@@ -71,15 +75,11 @@ export function computeDigestFragments({
     });
   }
 
+  sortedCutsites.sort((a, b) => {
+    return a.topSnipPosition - b.topSnipPosition;
+  });
+
   sortedCutsites.forEach((cutsite1, index) => {
-    if (computePartialDigest && !computePartialDigestDisabled) {
-      sortedCutsites.forEach((cs, index2) => {
-        if (index2 === index + 1 || index2 === 0) {
-          return;
-        }
-        pairs.push([cutsite1, sortedCutsites[index2]]);
-      });
-    }
     if (!computeDigestDisabled) {
       pairs.push([
         cutsite1,
@@ -87,6 +87,18 @@ export function computeDigestFragments({
           ? sortedCutsites[index + 1]
           : sortedCutsites[0]
       ]);
+    }
+    if (computePartialDigest && !computePartialDigestDisabled) {
+      sortedCutsites.forEach((cs, index2) => {
+        // Filter out adjacent cutsites (standard digest handles these)
+        const isAdjacent =
+          index2 === index + 1 ||
+          (index === sortedCutsites.length - 1 && index2 === 0);
+        if (isAdjacent) {
+          return;
+        }
+        pairs.push([cutsite1, sortedCutsites[index2]]);
+      });
     }
   });
 
@@ -97,11 +109,11 @@ export function computeDigestFragments({
     let end: number;
     let size: number;
     start = normalizePositionByRangeLength(
-      cut1.topSnipPosition,
+      cut1.topSnipPosition!,
       sequenceLength
     );
     end = normalizePositionByRangeLength(
-      cut2.topSnipPosition - 1,
+      cut2.topSnipPosition! - 1,
       sequenceLength
     );
     size = getRangeLength({ start, end }, sequenceLength);
@@ -110,14 +122,14 @@ export function computeDigestFragments({
       const oldSize = size;
       start = normalizePositionByRangeLength(
         cut1.topSnipBeforeBottom
-          ? cut1.topSnipPosition
-          : cut1.bottomSnipPosition,
+          ? cut1.topSnipPosition!
+          : cut1.bottomSnipPosition!,
         sequenceLength
       );
       end = normalizePositionByRangeLength(
         cut2.topSnipBeforeBottom
-          ? cut2.bottomSnipPosition - 1
-          : cut2.topSnipPosition - 1,
+          ? cut2.bottomSnipPosition! - 1
+          : cut2.topSnipPosition! - 1,
         sequenceLength
       );
       size = getRangeLength({ start, end }, sequenceLength);
@@ -141,13 +153,31 @@ export function computeDigestFragments({
       cut2.restrictionEnzyme.name = "Linear_Sequence_End";
     }
 
+    // Add isOverhangIncludedInFragmentSize logic
+    cut1 = {
+      ...cut1,
+      isOverhangIncludedInFragmentSize:
+        cut1.name !== "Linear_Sequence_Start" &&
+        cut1.name !== "Sequence_Terminus" &&
+        (cut1.overhangSize || 0) > 0 &&
+        !!cut1.topSnipBeforeBottom
+    };
+    cut2 = {
+      ...cut2,
+      isOverhangIncludedInFragmentSize:
+        cut2.name !== "Linear_Sequence_End" &&
+        cut2.name !== "Sequence_Terminus" &&
+        (cut2.overhangSize || 0) > 0 &&
+        !cut2.topSnipBeforeBottom
+    };
+
     const id = start + "-" + end + "-" + size + "-";
     const name = `${cut1.restrictionEnzyme.name} -- ${cut2.restrictionEnzyme.name} ${size} bps`;
     // getRangeLength({ start, end }, sequenceLength);
 
     fragments.push({
       isFormedFromLinearEnd,
-      madeFromOneCutsite: cut1 === cut2,
+      madeFromOneCutsite: cut1.id === cut2.id,
       start,
       end,
       size,
@@ -197,10 +227,12 @@ export function getDigestFragsForSeqAndEnzymes({
   includeOverAndUnderHangs?: boolean;
 }) {
   const cutsitesByName = getCutsitesFromSequence(sequence, circular, enzymes);
-  return computeDigestFragments({
+  const digest = computeDigestFragments({
     includeOverAndUnderHangs,
     cutsites: flatMap(cutsitesByName) as CutSite[],
     sequenceLength: sequence.length,
     circular
   });
+  digest.fragments.sort((a, b) => b.size - a.size);
+  return digest;
 }

@@ -7,10 +7,16 @@ import calculatePercentGc from "./calculatePercentGC";
 // - salt correction (for monovalent cations): Owczarzy (2004) Biochem 43:3537-54
 
 // primer concentration & monovalent cation concentration in M
+
+interface NebTmOptions {
+  monovalentCationConc?: number;
+  primerConc?: number;
+}
+
 export default function calculateNebTm(
-  sequence,
-  { monovalentCationConc = 0.05, primerConc = 0.0000005 } = {}
-) {
+  sequence: string,
+  { monovalentCationConc = 0.05, primerConc = 0.0000005 }: NebTmOptions = {}
+): number | string {
   try {
     const checkForDegenerateBases = /[^atgc]/i.test(sequence);
     if (checkForDegenerateBases) {
@@ -32,7 +38,7 @@ export default function calculateNebTm(
     const celsiusToKelvin = 273.15;
     // to convert the units of enthalpy from kilocal/mol to cal/mol
     const kilocalToCal = 1000;
-    const sequenceToEnthalpyMap = {
+    const sequenceToEnthalpyMap: Record<string, number> = {
       "AA/TT": -7.9,
       "AT/TA": -7.2,
       "TA/AT": -7.2,
@@ -52,7 +58,7 @@ export default function calculateNebTm(
       initiationWithTerminalGC: 0.1,
       initiationWithTerminalAT: 2.3
     };
-    const sequenceToEntropyMap = {
+    const sequenceToEntropyMap: Record<string, number> = {
       "AA/TT": -22.2,
       "AT/TA": -20.4,
       "TA/AT": -21.3,
@@ -76,11 +82,11 @@ export default function calculateNebTm(
       if (i === 0 || i === seq.length - 1) {
         // first or last nucleotide
         if (seq[i] === "G" || seq[i] === "C") {
-          hi += sequenceToEnthalpyMap.initiationWithTerminalGC;
-          si += sequenceToEntropyMap.initiationWithTerminalGC;
+          hi += sequenceToEnthalpyMap["initiationWithTerminalGC"];
+          si += sequenceToEntropyMap["initiationWithTerminalGC"];
         } else if (seq[i] === "A" || seq[i] === "T") {
-          hi += sequenceToEnthalpyMap.initiationWithTerminalAT;
-          si += sequenceToEntropyMap.initiationWithTerminalAT;
+          hi += sequenceToEnthalpyMap["initiationWithTerminalAT"];
+          si += sequenceToEntropyMap["initiationWithTerminalAT"];
         }
       }
       if (i < seq.length - 1) {

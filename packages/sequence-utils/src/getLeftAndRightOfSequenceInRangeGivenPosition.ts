@@ -2,14 +2,15 @@ import {
   isPositionWithinRange,
   getSequenceWithinRange,
   normalizePositionByRangeLength,
-  isPositionCloserToRangeStartThanRangeEnd
+  isPositionCloserToRangeStartThanRangeEnd,
+  Range
 } from "@teselagen/range-utils";
 
 export default function getLeftAndRightOfSequenceInRangeGivenPosition(
-  range,
-  position,
-  sequence
-) {
+  range: Range,
+  position: number,
+  sequence: string
+): { leftHandSide: string; rightHandSide: string } {
   const result = {
     leftHandSide: "",
     rightHandSide: ""
@@ -21,18 +22,18 @@ export default function getLeftAndRightOfSequenceInRangeGivenPosition(
         end: normalizePositionByRangeLength(position - 1, sequence.length)
       },
       sequence
-    );
+    ) as string;
     result.rightHandSide = getSequenceWithinRange(
       { start: position, end: range.end },
       sequence
-    );
+    ) as string;
   } else {
     if (
       isPositionCloserToRangeStartThanRangeEnd(position, range, sequence.length)
     ) {
-      result.rightHandSide = getSequenceWithinRange(range, sequence);
+      result.rightHandSide = getSequenceWithinRange(range, sequence) as string;
     } else {
-      result.leftHandSide = getSequenceWithinRange(range, sequence);
+      result.leftHandSide = getSequenceWithinRange(range, sequence) as string;
     }
   }
   return result;

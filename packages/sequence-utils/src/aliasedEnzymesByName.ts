@@ -7352,7 +7352,10 @@ const aliasedEnzymes = [
 //   }
 // });
 
-const aliasedEnzymesByName = {};
+const aliasedEnzymesByName: Record<
+  string,
+  (typeof aliasedEnzymes)[number] & { name: string }
+> = {};
 
 aliasedEnzymes.forEach(enz => {
   enz.aliases.forEach(name => {

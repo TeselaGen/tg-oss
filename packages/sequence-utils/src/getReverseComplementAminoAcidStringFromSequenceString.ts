@@ -2,8 +2,8 @@ import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequen
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 export default function getReverseComplementAminoAcidStringFromSequenceString(
-  sequenceString
-) {
+  sequenceString: string
+): string {
   return getAminoAcidStringFromSequenceString(
     getReverseComplementSequenceString(sequenceString)
   );

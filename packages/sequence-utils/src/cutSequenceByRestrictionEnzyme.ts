@@ -15,6 +15,8 @@ export default function cutSequenceByRestrictionEnzyme(
   restrictionEnzyme: RestrictionEnzyme
 ): CutSite[] {
   if (
+    !restrictionEnzyme.forwardRegex || // Add check for undefined
+    !restrictionEnzyme.reverseRegex || // Add check for undefined
     restrictionEnzyme.forwardRegex.length === 0 ||
     restrictionEnzyme.reverseRegex.length === 0
   ) {
@@ -24,7 +26,11 @@ export default function cutSequenceByRestrictionEnzyme(
     console.warn(
       "Cannot cut sequence. Enzyme restriction site must be at least 1 bp long."
     );
-    return [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const returnVal: any = [];
+    returnVal.error =
+      "Cannot cut sequence. Enzyme restriction site must be at least 1 bp long.";
+    return returnVal;
   }
   const forwardRegExpPattern = new RegExp(restrictionEnzyme.forwardRegex, "ig");
   const sequence = pSequence;
@@ -57,16 +63,14 @@ export default function cutSequenceByRestrictionEnzyme(
     cutsite = assign({}, cutsite); // copy first
     cutsite.start = reversePositionInRange(cutsite.start, rangeLength, false);
     cutsite.end = reversePositionInRange(cutsite.end, rangeLength, false);
-    cutsite.topSnipPosition = reversePositionInRange(
-      cutsite.topSnipPosition,
-      rangeLength,
-      true
-    );
-    cutsite.bottomSnipPosition = reversePositionInRange(
-      cutsite.bottomSnipPosition,
-      rangeLength,
-      true
-    );
+    cutsite.topSnipPosition =
+      cutsite.topSnipPosition != null
+        ? reversePositionInRange(cutsite.topSnipPosition, rangeLength, true)
+        : null;
+    cutsite.bottomSnipPosition =
+      cutsite.bottomSnipPosition != null
+        ? reversePositionInRange(cutsite.bottomSnipPosition, rangeLength, true)
+        : null;
     if (cutsite.cutType === 1 && cutsite.cutsTwice) {
       // Assuming cutsTwice is a custom property or inferred from cutType
       if (
@@ -315,8 +319,8 @@ function cutSequence(
         id: shortid(),
         start,
         end,
-        topSnipPosition: topSnipPosition || 0, // Fallback if null, though logic implies validity
-        bottomSnipPosition: bottomSnipPosition || 0,
+        topSnipPosition: topSnipPosition, // Allow null
+        bottomSnipPosition: bottomSnipPosition, // Allow null
         topSnipBeforeBottom,
         overhangBps,
         overhangSize: overhangBps.length,

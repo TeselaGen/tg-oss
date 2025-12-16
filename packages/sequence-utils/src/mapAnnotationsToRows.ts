@@ -1,7 +1,8 @@
 import { each, forEach, startsWith, filter } from "lodash-es";
 import {
   getYOffsetForPotentiallyCircularRange,
-  splitRangeIntoTwoPartsIfItIsCircular
+  splitRangeIntoTwoPartsIfItIsCircular,
+  checkIfPotentiallyCircularRangesOverlap
 } from "@teselagen/range-utils";
 import { Annotation } from "./types";
 
@@ -36,7 +37,8 @@ export default function mapAnnotationsToRows(
             ...annotation,
             start: 0,
             end: sequenceLength - 1,
-            id: `__tempAnnRemoveMe__${annotation.id}`
+            id: `__tempAnnRemoveMe__${annotation.id}`,
+            overlapsSelf: false
           },
           sequenceLength,
           bpsPerRow,
@@ -111,6 +113,7 @@ function mapAnnotationToRows({
     location || annotation,
     sequenceLength
   );
+
   ranges.forEach((range, index) => {
     const startingRow = Math.floor(range.start / bpsPerRow);
     const endingRow = Math.floor(range.end / bpsPerRow);
@@ -145,6 +148,13 @@ function mapAnnotationToRows({
             yOffset = ann.yOffset;
           }
         });
+        if (yOffset === undefined) {
+          annotationsForRow.forEach(ann => {
+            if (ann.id === annotation.id) {
+              yOffset = ann.yOffset;
+            }
+          });
+        }
       } else {
         if (location) {
           annotationsForRow.forEach(ann => {
@@ -161,11 +171,61 @@ function mapAnnotationToRows({
           ) {
             yOffset = annotationsForRow[annotationsForRow.length - 1].yOffset;
           } else {
-            yOffset = getYOffsetForPotentiallyCircularRange(
-              annotation,
-              yOffsetsForRow,
-              false
-            );
+            const siblingRangesOnThisRow = ranges.slice(index + 1).filter(r => {
+              const rStartRow = Math.floor(r.start / bpsPerRow);
+              const rEndRow = Math.floor(r.end / bpsPerRow);
+              return rowNumber >= rStartRow && rowNumber <= rEndRow;
+            });
+
+            if (siblingRangesOnThisRow.length > 0) {
+              // We have future ranges for this annotation on this row.
+              // We must choose a yOffset that works for the current range AND all future ranges.
+              let foundYOffset = -1;
+              yOffsetsForRow.some((rangesAlreadyAddedToYOffset, levelIndex) => {
+                const rangeBlocked = rangesAlreadyAddedToYOffset.some(
+                  comparisonRange => {
+                    return checkIfPotentiallyCircularRangesOverlap(
+                      range,
+                      comparisonRange
+                    );
+                  }
+                );
+                if (rangeBlocked) return false;
+
+                // Check siblings
+                const siblingBlocked = siblingRangesOnThisRow.some(
+                  siblingRange => {
+                    return rangesAlreadyAddedToYOffset.some(comparisonRange => {
+                      return checkIfPotentiallyCircularRangesOverlap(
+                        siblingRange,
+                        comparisonRange
+                      );
+                    });
+                  }
+                );
+
+                if (!siblingBlocked) {
+                  foundYOffset = levelIndex;
+                  return true;
+                }
+                return false;
+              });
+
+              if (foundYOffset > -1) {
+                yOffset = foundYOffset;
+                yOffsetsForRow[foundYOffset].push(range);
+              } else {
+                // Create new level
+                yOffset = yOffsetsForRow.length;
+                yOffsetsForRow.push([range]);
+              }
+            } else {
+              yOffset = getYOffsetForPotentiallyCircularRange(
+                range,
+                yOffsetsForRow,
+                false
+              );
+            }
           }
           if (yOffset !== undefined) {
             if (!yOffsetsForRow[yOffset]) yOffsetsForRow[yOffset] = [];

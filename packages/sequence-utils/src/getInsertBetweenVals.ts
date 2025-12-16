@@ -1,10 +1,13 @@
-import { normalizePositionByRangeLength1Based } from "@teselagen/range-utils";
+import {
+  normalizePositionByRangeLength1Based,
+  Range
+} from "@teselagen/range-utils";
 
 export default function getInsertBetweenVals(
-  caretPosition,
-  selectionLayer,
-  sequenceLength
-) {
+  caretPosition: number,
+  selectionLayer: Range,
+  sequenceLength: number
+): [number, number] {
   if (selectionLayer.start > -1) {
     //selection layer
     return [

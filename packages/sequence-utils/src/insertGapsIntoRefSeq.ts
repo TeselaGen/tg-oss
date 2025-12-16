@@ -1,8 +1,13 @@
-import getAllInsertionsInSeqReads from "./getAllInsertionsInSeqReads";
+import getAllInsertionsInSeqReads, {
+  SeqRead
+} from "./getAllInsertionsInSeqReads";
 
 // seqReads should be an array of objects [{name, seq, pos, cigar}, {name, seq, pos, cigar}, ...]
 // add gaps in reference sequence where there are insertions
-export default function insertGapsIntoRefSeq(refSeq, seqReads) {
+export default function insertGapsIntoRefSeq(
+  refSeq: string,
+  seqReads: SeqRead[]
+): string {
   // turn ref seq into an array ["A", "T", "C", "G"...]
   const refSeqWithGaps = refSeq.split("");
   const allInsertionsInSeqReads = getAllInsertionsInSeqReads(seqReads);

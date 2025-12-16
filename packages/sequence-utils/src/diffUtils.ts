@@ -13,12 +13,14 @@ const getDiffFromSeqs = (
   newData: SequenceData,
   { ignoreKeys = [] }: DiffOptions = {}
 ): Delta | undefined => {
-  let cleanedOldData: any = tidyUpSequenceData(oldData, {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  const cleanedOldData: any = tidyUpSequenceData(oldData, {
     annotationsAsObjects: true,
     noTranslationData: true,
     doNotRemoveInvalidChars: true
   });
-  let cleanedNewData: any = tidyUpSequenceData(newData, {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  const cleanedNewData: any = tidyUpSequenceData(newData, {
     annotationsAsObjects: true,
     noTranslationData: true,
     doNotRemoveInvalidChars: true

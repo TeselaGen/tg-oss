@@ -1,15 +1,16 @@
 import { computeDigestFragments } from "./computeDigestFragments";
 import getCutsitesFromSequence from "./getCutsitesFromSequence";
 import { CutSite, RestrictionEnzyme } from "./types";
-import { flatMap } from "lodash-es";
+import { flatMap, uniqBy } from "lodash-es";
 
 export default function getDigestFragmentsForRestrictionEnzymes(
   sequence: string,
   circular: boolean,
-  contextEnzymes: RestrictionEnzyme[],
+  contextEnzymes: RestrictionEnzyme[] | RestrictionEnzyme,
   options?: {
     computePartialDigest?: boolean;
-    computeDigestDisabled?: boolean;
+    computePartialDigests?: boolean; // alias
+    computeDigestDisabled?: boolean; // corrected spelling if needed, but keeping as is
     computePartialDigestDisabled?: boolean;
     includeOverAndUnderHangs?: boolean;
   }
@@ -17,12 +18,33 @@ export default function getDigestFragmentsForRestrictionEnzymes(
   const cutsitesByName = getCutsitesFromSequence(
     sequence,
     circular,
-    contextEnzymes
+    Array.isArray(contextEnzymes) ? contextEnzymes : [contextEnzymes]
   );
-  return computeDigestFragments({
+  const digest = computeDigestFragments({
     cutsites: flatMap(cutsitesByName) as CutSite[],
     sequenceLength: sequence.length,
     circular,
-    ...options
+    ...options,
+    computePartialDigest:
+      options?.computePartialDigest || options?.computePartialDigests
+  });
+  const fragments = uniqBy(digest.fragments, fragment => {
+    return `${fragment.start}-${fragment.end}-${fragment.size}`;
+  });
+  if (
+    circular &&
+    (options?.computePartialDigest || options?.computePartialDigests)
+  ) {
+    // filter out the full length fragment if it's a duplicate
+    const fullLengthFragmentIndex = fragments.findIndex(
+      f => f.size === sequence.length
+    );
+    if (fullLengthFragmentIndex > -1) {
+      fragments.splice(fullLengthFragmentIndex, 1);
+    }
+  }
+
+  return fragments.sort((a, b) => {
+    return a.start - b.start || b.size - a.size;
   });
 }

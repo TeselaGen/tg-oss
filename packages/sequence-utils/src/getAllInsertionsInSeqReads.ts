@@ -1,13 +1,13 @@
 // seqReads should be an array of objects [{name, seq, pos, cigar}, {name, seq, pos, cigar}, ...]
 
-interface SeqRead {
+export interface SeqRead {
   name: string;
   seq: string;
   pos: number;
   cigar: string;
 }
 
-interface InsertionInfo {
+export interface InsertionInfo {
   bpPos: number;
   number: number;
 }
