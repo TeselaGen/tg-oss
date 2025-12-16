@@ -340,6 +340,7 @@ export const RenderBlueprintInput = ({
   asyncValidating,
   rightElement,
   clickToEdit,
+  onChangeOverride,
   ...rest
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -397,6 +398,7 @@ export const RenderBlueprintInput = ({
           : {
               value: internalValue,
               onChange: e => {
+                if (onChangeOverride) onChangeOverride(e);
                 setInternalValue(e.target.value);
               },
               onKeyDown: function (...args) {
@@ -1010,6 +1012,7 @@ export function generateField(component, opts) {
     const props = {
       onFieldSubmit,
       name,
+      onChangeOverride: rest.onChange,
       component: compWithDefaultVal,
       ...(isRequired && { validate: fieldRequired }),
       isRequired,
