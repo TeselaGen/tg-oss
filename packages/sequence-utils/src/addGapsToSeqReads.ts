@@ -11,7 +11,18 @@ import { cloneDeep } from "lodash-es";
 // refSeq should be an object { name, sequence }
 // seqReads should be an array of objects [{name, seq, pos, cigar}, {name, seq, pos, cigar}, ...]
 // add gaps into sequencing reads before starting bp pos and from own deletions & all seq reads' insertions, minus own insertions
-export default function addGapsToSeqReads(refSeq, seqReads) {
+interface SeqRead {
+  name: string;
+  seq: string;
+  pos: number;
+  cigar: string;
+  reversed?: boolean;
+}
+
+export default function addGapsToSeqReads(
+  refSeq: { name: string; sequence: string },
+  seqReads: SeqRead[]
+) {
   // remove unaligned seq reads for now
   for (let i = 0; i < seqReads.length; i++) {
     if (seqReads[i].cigar === null) {
@@ -21,21 +32,25 @@ export default function addGapsToSeqReads(refSeq, seqReads) {
 
   const refSeqWithGaps = insertGapsIntoRefSeq(refSeq.sequence, seqReads);
   // first object is reference sequence with gaps, to be followed by seq reads with gaps
-  const seqReadsWithGaps = [
-    { name: refSeq.name, sequence: refSeqWithGaps.toUpperCase() }
-  ];
-  seqReads.forEach(seqRead => {
+  const seqReadsWithGaps: {
+    name: string;
+    sequence: string;
+    reversed?: boolean;
+    cigar?: string;
+  }[] = [{ name: refSeq.name, sequence: refSeqWithGaps.toUpperCase() }];
+  seqReads.forEach((seqRead: SeqRead) => {
     // get all insertions in seq reads
-    const allInsertionsInSeqReads = [];
-    seqReads.forEach(seqRead => {
+    const allInsertionsInSeqReads: { bpPos: number; number: number }[] = [];
+    seqReads.forEach((seqRead: SeqRead) => {
       // split cigar string at S, M, D, or I (soft-clipped, match, deletion, or insertion), e.g. ["5S", "2M", "3I", "39M", "3D"..."9S"]
       const splitSeqRead = seqRead.cigar.match(/([0-9]*[SMDI])/g);
+      if (!splitSeqRead) return;
       // adjust seqRead.pos, aka bp pos where the seq read starts aligning to the ref seq, if bps have been soft-clipped from the beginning of the seq read
       let adjustedSeqReadPos = cloneDeep(seqRead.pos);
       if (splitSeqRead[0].slice(-1) === "S") {
         // # in #S at beginning of array, i.e. number of soft-clipped base pairs at beginning of the seq read
         const numOfBeginningSoftClipped = splitSeqRead[0].slice(0, -1);
-        adjustedSeqReadPos = seqRead.pos - numOfBeginningSoftClipped;
+        adjustedSeqReadPos = seqRead.pos - Number(numOfBeginningSoftClipped);
       }
       for (let componentI = 0; componentI < splitSeqRead.length; componentI++) {
         if (splitSeqRead[componentI].slice(-1) === "I") {
@@ -63,11 +78,12 @@ export default function addGapsToSeqReads(refSeq, seqReads) {
 
     // 1) add gaps before starting bp pos
     const splitSeqReadChunk = seqRead.cigar.match(/([0-9]*[SMDI])/g);
+    if (!splitSeqReadChunk) return;
     let adjustedSeqReadPos = cloneDeep(seqRead.pos);
     if (splitSeqReadChunk[0].slice(-1) === "S") {
       // # in #S at beginning of array, i.e. number of soft-clipped base pairs at beginning of the seq read
       const numOfBeginningSoftClipped = splitSeqReadChunk[0].slice(0, -1);
-      adjustedSeqReadPos = seqRead.pos - numOfBeginningSoftClipped;
+      adjustedSeqReadPos = seqRead.pos - Number(numOfBeginningSoftClipped);
     }
     let eachSeqReadWithGaps = seqRead.seq.split("");
     if (adjustedSeqReadPos > 0) {
@@ -322,14 +338,15 @@ export default function addGapsToSeqReads(refSeq, seqReads) {
   // 7) add gaps before starting bp pos
   // add gaps based on any seq reads that extend beyond beginning of the ref seq due to soft-clipped reads
   // a) get the lengths of bps that extend beyond the beginning of the ref seq among all seq reads
-  const seqReadLengthsBeforeRefSeqStart = [];
+  const seqReadLengthsBeforeRefSeqStart: number[] = [];
   seqReads.forEach(seq => {
     const splitSeqReadChunk = seq.cigar.match(/([0-9]*[SMDI])/g);
+    if (!splitSeqReadChunk) return;
     let adjustedSeqReadPos = cloneDeep(seq.pos);
     if (splitSeqReadChunk[0].slice(-1) === "S") {
       // # in #S at beginning of array, i.e. number of soft-clipped base pairs at beginning of the seq read
       const numOfBeginningSoftClipped = splitSeqReadChunk[0].slice(0, -1);
-      adjustedSeqReadPos = seq.pos - numOfBeginningSoftClipped;
+      adjustedSeqReadPos = seq.pos - Number(numOfBeginningSoftClipped);
       // number of gaps to add if soft-clipped reads extend beyond beginning of ref seq
       if (adjustedSeqReadPos < 0) {
         seqReadLengthsBeforeRefSeqStart.push(Math.abs(adjustedSeqReadPos));
@@ -345,7 +362,8 @@ export default function addGapsToSeqReads(refSeq, seqReads) {
   for (let i = 1; i < seqReadsWithGaps.length; i++) {
     // turn seq read into an array ["A", "T", "C", "G"...]
     const eachSeqReadWithGaps = seqReadsWithGaps[i].sequence.split("");
-    const splitSeqReadChunk = seqReads[i - 1].cigar.match(/([0-9]*[SMDI])/g);
+    const splitSeqReadChunk = seqReads[i - 1].cigar!.match(/([0-9]*[SMDI])/g);
+    if (!splitSeqReadChunk) continue;
     let adjustedSeqReadPos = cloneDeep(seqReads[i - 1].pos);
     // longest length of bps that extend beyond the beginning of the ref seq among all seq reads
     if (seqReadLengthsBeforeRefSeqStart.length > 0) {
@@ -354,7 +372,8 @@ export default function addGapsToSeqReads(refSeq, seqReads) {
     if (splitSeqReadChunk[0].slice(-1) === "S") {
       // # in #S at beginning of array, i.e. number of soft-clipped base pairs at beginning of the seq read
       const numOfBeginningSoftClipped = splitSeqReadChunk[0].slice(0, -1);
-      adjustedSeqReadPos = seqReads[i - 1].pos - numOfBeginningSoftClipped;
+      adjustedSeqReadPos =
+        seqReads[i - 1].pos - Number(numOfBeginningSoftClipped);
       if (adjustedSeqReadPos > 0) {
         if (longestSeqReadLength > 0) {
           eachSeqReadWithGaps.unshift("-".repeat(longestSeqReadLength + 1));

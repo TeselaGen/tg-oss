@@ -15,7 +15,7 @@ export default function getLeftAndRightOfSequenceInRangeGivenPosition(
     leftHandSide: "",
     rightHandSide: ""
   };
-  if (isPositionWithinRange(position, range)) {
+  if (isPositionWithinRange(position, range, sequence.length)) {
     result.leftHandSide = getSequenceWithinRange(
       {
         start: range.start,

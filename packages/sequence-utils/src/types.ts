@@ -25,6 +25,7 @@ export interface Annotation extends Range {
 }
 
 export interface SequenceData {
+  id?: string;
   sequence: string;
   proteinSequence?: string;
   circular?: boolean;

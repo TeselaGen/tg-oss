@@ -15,7 +15,7 @@ export default function getDigestFragmentsForCutsites(
   const pairs: CutSite[][] = [];
   if (!cutsites.length) return [];
   let sortedCutsites = cutsites.sort((a, b) => {
-    return a.topSnipPosition - b.topSnipPosition;
+    return (a.topSnipPosition || 0) - (b.topSnipPosition || 0);
   });
 
   if (!circular) {
@@ -75,11 +75,11 @@ export default function getDigestFragmentsForCutsites(
 
   pairs.forEach(([cut1, cut2]) => {
     const start = normalizePositionByRangeLength(
-      cut1.topSnipPosition,
+      cut1.topSnipPosition || 0,
       sequenceLength
     );
     const end = normalizePositionByRangeLength(
-      cut2.topSnipPosition - 1,
+      (cut2.topSnipPosition || 0) - 1,
       sequenceLength
     );
     const fragmentRange = { start, end };

@@ -28,7 +28,7 @@ export default function getVirtualDigest({
   const pairs: CutSite[][] = [];
 
   const sortedCutsites = cutsites.sort((a, b) => {
-    return a.topSnipPosition - b.topSnipPosition;
+    return (a.topSnipPosition || 0) - (b.topSnipPosition || 0);
   });
 
   sortedCutsites.forEach((cutsite1, index) => {
@@ -52,11 +52,11 @@ export default function getVirtualDigest({
 
   pairs.forEach(([cut1, cut2]) => {
     const start = normalizePositionByRangeLength(
-      cut1.topSnipPosition,
+      cut1.topSnipPosition || 0,
       sequenceLength
     );
     const end = normalizePositionByRangeLength(
-      cut2.topSnipPosition - 1,
+      (cut2.topSnipPosition || 0) - 1,
       sequenceLength
     );
 

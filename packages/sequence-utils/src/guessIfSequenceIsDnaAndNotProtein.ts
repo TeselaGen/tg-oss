@@ -1,6 +1,9 @@
 import { ambiguous_dna_letters } from "./bioData";
 
-export default function guessIfSequenceIsDnaAndNotProtein(seq, options = {}) {
+export default function guessIfSequenceIsDnaAndNotProtein(
+  seq: string,
+  options: { threshold?: number; loose?: boolean; dnaLetters?: string[] } = {}
+) {
   const { threshold = 0.9, loose } = options;
   const dnaLetters =
     options.dnaLetters || loose
@@ -12,10 +15,13 @@ export default function guessIfSequenceIsDnaAndNotProtein(seq, options = {}) {
   //   is configurable via the threshold parameter. dnaLetters can be used to configure
   //   which letters are considered DNA; for instance, adding N might be useful if
   //   you are expecting data with ambiguous bases.
-  const dnaLetterMap = dnaLetters.reduce((acc, letter) => {
-    acc[letter.toUpperCase()] = true;
-    return acc;
-  }, {});
+  const dnaLetterMap = dnaLetters.reduce(
+    (acc, letter) => {
+      acc[letter.toUpperCase()] = true;
+      return acc;
+    },
+    {} as Record<string, boolean>
+  );
   let count = 0;
   if (!seq || !seq.length) return true;
 

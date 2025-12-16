@@ -3,24 +3,33 @@ import {
   getSequenceWithinRange,
   getRangeLength,
   invertRange,
-  isPositionWithinRange
+  isPositionWithinRange,
+  Range
 } from "@teselagen/range-utils";
 
 export default function adjustBpsToReplaceOrInsert(
-  bpString,
+  bpString: string,
   insertString = "",
-  caretPositionOrRange
+  caretPositionOrRange: number | Range
 ) {
   let stringToReturn = bpString;
 
-  if (caretPositionOrRange && caretPositionOrRange.start > -1) {
+  if (
+    typeof caretPositionOrRange !== "number" &&
+    caretPositionOrRange &&
+    caretPositionOrRange.start > -1
+  ) {
     if (
       getRangeLength(caretPositionOrRange, bpString.length) === bpString.length
     ) {
       return insertString;
     }
     const ranges = splitRangeIntoTwoPartsIfItIsCircular(
-      invertRange(caretPositionOrRange, bpString.length)
+      invertRange(
+        caretPositionOrRange as unknown as Range,
+        bpString.length
+      ) as Range,
+      bpString.length
     );
     stringToReturn = "";
     ranges.forEach((range, index) => {
@@ -39,7 +48,7 @@ export default function adjustBpsToReplaceOrInsert(
     //caretPosition Passed
     stringToReturn = spliceString(
       bpString,
-      caretPositionOrRange,
+      caretPositionOrRange as number,
       0,
       insertString
     );
@@ -47,7 +56,12 @@ export default function adjustBpsToReplaceOrInsert(
   return stringToReturn;
 }
 
-const spliceString = (str, index, count, add) => {
+const spliceString = (
+  str: string,
+  index: number,
+  count: number,
+  add: string
+) => {
   let i = index;
   if (i < 0) {
     i = str.length + i;

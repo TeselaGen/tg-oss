@@ -1,13 +1,15 @@
 import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
 
 export default function getReverseAminoAcidStringFromSequenceString(
-  sequenceString
+  sequenceString: string
 ) {
   const aminoAcidsPerBase = getAminoAcidDataForEachBaseOfDna(
     sequenceString,
+    false,
+    null,
     false
   );
-  const aaArray = [];
+  const aaArray: string[] = [];
   let aaString = "";
   aminoAcidsPerBase.forEach(aa => {
     if (!aa.fullCodon) {

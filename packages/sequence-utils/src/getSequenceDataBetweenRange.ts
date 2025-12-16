@@ -42,7 +42,7 @@ export default function getSequenceDataBetweenRange(
           : false,
       sequence: getSequenceWithinRange(range, seqDataToUse.sequence),
       proteinSequence: getSequenceWithinRange(
-        convertDnaCaretPositionOrRangeToAa(range),
+        convertDnaCaretPositionOrRangeToAa(range) as Range,
         seqDataToUse.proteinSequence || ""
       )
     },

@@ -95,13 +95,14 @@ function getPartBetweenEnzymesWithInclusiveOverhangs(
 ): PartBetweenEnzymes {
   const firstCutOffset = getEnzymeRelativeOffset(cut1.restrictionEnzyme);
   const secondCutOffset = getEnzymeRelativeOffset(cut2.restrictionEnzyme);
-  const start = cut1.topSnipBeforeBottom
-    ? cut1.topSnipPosition
-    : cut1.bottomSnipPosition;
+  const start =
+    (cut1.topSnipBeforeBottom
+      ? cut1.topSnipPosition
+      : cut1.bottomSnipPosition) || 0;
   const end = normalizePositionByRangeLength(
     (cut2.topSnipBeforeBottom
-      ? cut2.bottomSnipPosition
-      : cut2.topSnipPosition) - 1,
+      ? cut2.bottomSnipPosition || 0
+      : cut2.topSnipPosition || 0) - 1,
     seqLen
   );
   return {

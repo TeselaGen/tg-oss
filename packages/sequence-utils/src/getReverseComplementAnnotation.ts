@@ -1,6 +1,8 @@
+import { Annotation } from "./types";
+
 export default function getReverseComplementAnnotation(
-  annotation,
-  sequenceLength
+  annotation: Annotation,
+  sequenceLength: number
 ) {
   //note this function assumes that the entire sequence (or subsequence) is being reverse complemented
   //TNR: this is what is happening:

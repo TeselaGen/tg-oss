@@ -9,13 +9,15 @@ import proteinAlphabet from "./proteinAlphabet";
  * @returns The sum of the mass of all amino acids in the string
  */
 export default function getMassOfAaString(
-  aaString,
+  aaString: string,
   numsAfterDecimal = 2,
   divideByThree = false
 ) {
   let sumMass = 0;
   for (let i = 0; i < aaString.length; i++) {
-    sumMass += proteinAlphabet[aaString[i]].mass;
+    sumMass += (proteinAlphabet as Record<string, { mass: number }>)[
+      aaString[i]
+    ].mass;
   }
   if (divideByThree) {
     sumMass /= 3;
