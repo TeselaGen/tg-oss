@@ -3803,8 +3803,8 @@
   version "0.4.32"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-50719581-5ebf-4fd3-bd6a-50334d80abc6-1765830016627/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-50719581-5ebf-4fd3-bd6a-50334d80abc6-1765830016627/node_modules/@teselagen/sequence-utils"
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-73dd76c0-0732-4478-8f5b-d0b752eda05d-1765917004724/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-73dd76c0-0732-4478-8f5b-d0b752eda05d-1765917004724/node_modules/@teselagen/sequence-utils"
     bufferpack "^0.0.6"
     color "3.2.1"
     fast-xml-parser "^4.2.5"
@@ -3843,7 +3843,7 @@
 "@teselagen/sequence-utils@file:packages/sequence-utils":
   version "0.3.37"
   dependencies:
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.37-f5c68624-6e5f-41fa-8de5-c653ff4d32eb-1765830016623/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.37-2fba8eae-6e35-46f3-844e-1eaf6d474ecd-1765917004723/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.7.3"
     lodash-es "^4.17.21"
@@ -3860,7 +3860,7 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.10.15-8869223e-7711-4969-8a9c-127089398d62-1765830016624/node_modules/@teselagen/file-utils"
+    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.10.15-62d910aa-bba5-4301-90fb-1f67c5d8297d-1765917004721/node_modules/@teselagen/file-utils"
     "@teselagen/react-table" "6.10.18"
     chance "1.1.11"
     classnames "^2.3.2"

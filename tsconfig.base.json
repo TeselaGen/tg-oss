@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -14,15 +15,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@teselagen/bio-parsers": ["packages/bio-parsers/src/index.ts"],
-      "@teselagen/bounce-loader": ["packages/bounce-loader/src/index.ts"],
-      "@teselagen/file-utils": ["packages/file-utils/src/index.ts"],
-      "@teselagen/ove": ["packages/ove/src/index.ts"],
+      "@teselagen/bio-parsers": ["packages/bio-parsers/src/index.js"],
+      "@teselagen/bounce-loader": ["packages/bounce-loader/src/index.js"],
+      "@teselagen/file-utils": ["packages/file-utils/src/index.js"],
+      "@teselagen/ove": ["packages/ove/src/index.js"],
       "@teselagen/range-utils": ["packages/range-utils/src/index.ts"],
       "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.ts"],
-      "@teselagen/shared-demo": ["packages/shared-demo/src/index.ts"],
-      "@teselagen/ui": ["packages/ui/src/index.ts"],
-      "@teselagen/uploader": ["packages/uploader/src/index.ts"]
+      "@teselagen/shared-demo": ["packages/shared-demo/src/index.js"],
+      "@teselagen/ui": ["packages/ui/src/index.js"],
+      "@teselagen/uploader": ["packages/uploader/src/index.js"]
     },
     "module": "ES6",
     "allowJs": true,
