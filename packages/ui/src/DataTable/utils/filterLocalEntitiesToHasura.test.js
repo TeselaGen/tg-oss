@@ -1369,6 +1369,20 @@ describe("filterLocalEntitiesToHasura", () => {
       }
     );
     expect(result_not_in_list.entities).toEqual([proteinFeatureEntities[2]]);
+
+    const result_regex = filterLocalEntitiesToHasura(proteinFeatureEntities, {
+      where: {
+        _and: [
+          {
+            name: {
+              _regex: "^signal_"
+            }
+          }
+        ]
+      },
+      ownProps: { isProtein: true }
+    });
+    expect(result_regex.entities).toEqual([proteinFeatureEntities[2]]);
   });
 
   it("should filter DNA features correctly", () => {
