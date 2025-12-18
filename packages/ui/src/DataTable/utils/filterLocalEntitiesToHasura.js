@@ -225,10 +225,15 @@ function applyWhereClause(records, where, ownProps) {
               if (some(conditionValue, item => isEqual(value, item)))
                 return false;
               break;
-            case "_regex":
-              if (!isString(value) || !new RegExp(conditionValue).test(value))
+            case "_regex": {
+              try {
+                if (!isString(value) || !new RegExp(conditionValue).test(value))
+                  return false;
+              } catch (e) {
                 return false;
+              }
               break;
+            }
             default:
               if (operator.startsWith("_")) {
                 console.warn(`Unsupported operator: ${operator}`);
