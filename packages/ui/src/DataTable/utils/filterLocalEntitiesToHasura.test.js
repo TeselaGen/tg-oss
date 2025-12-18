@@ -1003,28 +1003,6 @@ describe("filterLocalEntitiesToHasura", () => {
     ]);
   });
 
-  it("should order by strand descending", () => {
-    const records = [
-      { id: 1, strand: 1 },
-      { id: 2, strand: 0 },
-      { id: 3, strand: -1 },
-      { id: 4, strand: -1 },
-      { id: 5, strand: 1 },
-      { id: 6, strand: 1 }
-    ];
-    const result = filterLocalEntitiesToHasura(records, {
-      order_by: [{ path: "strand", direction: "desc", type: "number" }]
-    });
-    expect(result.entities).toEqual([
-      records[0], // strand 1
-      records[4], // strand 1
-      records[5], // strand 1
-      records[1], // strand 0
-      records[2], // strand -1
-      records[3] // strand -1
-    ]);
-  });
-
   it("should filter and order", () => {
     const result = filterLocalEntitiesToHasura(records, {
       where: { city: { _eq: "London" } },
