@@ -369,7 +369,7 @@ export function getQueryParams({
           limit,
           offset,
           isInfinite,
-          ownProps
+          getRecordValue: ownProps?.getRecordValue
         }
       );
 

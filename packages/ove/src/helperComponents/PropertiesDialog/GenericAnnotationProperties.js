@@ -11,7 +11,15 @@ import {
   removeDuplicatesIcon,
   useMemoDeepEqual
 } from "@teselagen/ui";
-import { map, upperFirst, pick, startCase, isFunction } from "lodash-es";
+import {
+  map,
+  upperFirst,
+  pick,
+  startCase,
+  isFunction,
+  round,
+  get
+} from "lodash-es";
 import {
   AnchorButton,
   ButtonGroup,
@@ -77,6 +85,22 @@ const genericAnnotationProperties = ({
         });
       },
       [dispatch, editorName]
+    );
+
+    const getRecordValueForFiltering = React.useCallback(
+      (record, key) => {
+        if (
+          isProtein &&
+          ["features", "parts", "primers"].includes(
+            record.annotationTypePlural
+          ) &&
+          ["size"].includes(key)
+        ) {
+          return round(get(record, key) / 3);
+        }
+        return get(record, key);
+      },
+      [isProtein]
     );
 
     const annotationPropertiesSelectedEntities =
@@ -238,6 +262,7 @@ const genericAnnotationProperties = ({
         annotationPropertiesSelectedEntities={
           annotationPropertiesSelectedEntities
         }
+        getRecordValue={getRecordValueForFiltering}
         leftOfSearchBarItems={
           <>
             {!readOnly && (
