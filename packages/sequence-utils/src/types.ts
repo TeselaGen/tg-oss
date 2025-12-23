@@ -1,15 +1,4 @@
-// import { Range } from "@teselagen/range-utils";
-// Temp fix:
-export interface Range {
-  start: number;
-  end: number;
-  type?: string;
-  locations?: Range[];
-  overlapsSelf?: boolean;
-  yOffset?: number;
-  aminoAcids?: unknown[];
-  [key: string]: unknown;
-}
+import type { Range } from "@teselagen/range-utils";
 
 export interface Annotation extends Range {
   id?: string | number;

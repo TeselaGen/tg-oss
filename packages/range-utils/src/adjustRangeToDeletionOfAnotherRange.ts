@@ -9,10 +9,6 @@ export default function adjustRangeToDeletionOfAnotherRange(
   anotherRange: Range,
   maxLength: number
 ) {
-  // ac.throw(ac.range, rangeToBeAdjusted)
-  // ac.throw(ac.range, anotherRange)
-  // ac.throw(ac.posInt, maxLength)
-
   const trimmedRange = trimRangeByAnotherRange(
     rangeToBeAdjusted,
     anotherRange,

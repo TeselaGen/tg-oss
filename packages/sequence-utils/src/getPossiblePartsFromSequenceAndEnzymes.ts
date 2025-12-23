@@ -24,7 +24,6 @@ export default function getPossiblePartsFromSequenceAndEnzymes(
   seqData: SequenceData,
   restrictionEnzymes: RestrictionEnzyme | RestrictionEnzyme[]
 ): PartBetweenEnzymes[] {
-  // ac.throw([
   //     ac.string,
   //     ac.bool,
   //     ac.shape({

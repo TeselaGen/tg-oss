@@ -6,7 +6,6 @@ export default function adjustRangeToInsert(
   insertStart: number,
   insertLength: number
 ) {
-  // ac.throw([ac.range, ac.posInt, ac.posInt], arguments);
   const newRange = assign({}, rangeToBeAdjusted);
   if (rangeToBeAdjusted.start > rangeToBeAdjusted.end) {
     //circular range

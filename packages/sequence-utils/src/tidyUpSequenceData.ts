@@ -25,6 +25,7 @@ export interface TidyUpSequenceDataOptions {
   convertAnnotationsFromAAIndices?: boolean;
   topLevelSeqData?: Partial<SequenceData>;
   allowNonStandardGenbankTypes?: boolean;
+  isMixedRnaAndDna?: boolean;
 }
 
 export default function tidyUpSequenceData(
@@ -41,7 +42,8 @@ export default function tidyUpSequenceData(
     doNotProvideIdsForAnnotations,
     noCdsTranslations,
     convertAnnotationsFromAAIndices,
-    topLevelSeqData
+    topLevelSeqData,
+    isMixedRnaAndDna
   } = options;
   let seqData = cloneDeep(pSeqData) as SequenceData; //sequence is usually immutable, so we clone it and return it
   const response = {
@@ -77,6 +79,8 @@ export default function tidyUpSequenceData(
   if (!doNotRemoveInvalidChars) {
     if (seqData.isProtein) {
       const [newSeq] = filterSequenceString(seqData.proteinSequence, {
+        isMixedRnaAndDna,
+        additionalValidChars,
         ...(topLevelSeqData || seqData),
         isProtein: true
       });
@@ -84,6 +88,7 @@ export default function tidyUpSequenceData(
     } else {
       const [newSeq] = filterSequenceString(seqData.sequence, {
         additionalValidChars,
+        isMixedRnaAndDna,
         ...(topLevelSeqData || seqData)
       });
       seqData.sequence = newSeq;

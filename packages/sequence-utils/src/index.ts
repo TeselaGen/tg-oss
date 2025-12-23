@@ -14,6 +14,7 @@ import {
 export * from "./computeDigestFragments";
 export * from "./diffUtils";
 export * from "./annotationTypes";
+export * as types from "./types";
 
 /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
 //tnr: these are deprecated exports and should no longer be used!

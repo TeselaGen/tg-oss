@@ -1,13 +1,12 @@
 import { Range } from "./types";
 
 //
-// ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
+
 //takes a potentially circular range and returns an array containing the range split on the origin
 export default function splitRangeIntoTwoPartsIfItIsCircular(
   range: Range,
   sequenceLength: number
 ) {
-  // ac.throw([ac.range, ac.number], arguments);
   if (sequenceLength !== 0) {
     sequenceLength = sequenceLength || Infinity;
   }

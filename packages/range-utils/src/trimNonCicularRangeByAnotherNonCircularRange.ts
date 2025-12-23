@@ -6,7 +6,6 @@ export default function trimNonCicularRangeByAnotherNonCircularRange(
   rangeToBeTrimmed: Range,
   trimmingRange: Range
 ): Range | undefined {
-  // ac.throw([ac.range, ac.range], arguments);
   let outputTrimmedRange;
   if (!rangeToBeTrimmed) {
     return outputTrimmedRange;

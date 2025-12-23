@@ -2,12 +2,11 @@ import { assign } from "lodash-es";
 
 import { Range } from "./types";
 
-export default function adjustRangeToRotation(
-  rangeToBeAdjusted: Range,
+export default function adjustRangeToRotation<T extends Range>(
+  rangeToBeAdjusted: T,
   rotateTo = 0,
   rangeLength?: number
-) {
-  // ac.throw([ac.range, ac.posInt, ac.posInt], arguments);
+): T {
   const mod = (n: number) => (rangeLength ? modulo(n, rangeLength) : n);
 
   const newRange = assign({}, rangeToBeAdjusted, {
@@ -15,7 +14,7 @@ export default function adjustRangeToRotation(
     end: mod(rangeToBeAdjusted.end - (rotateTo || 0))
   });
 
-  return newRange;
+  return newRange as T;
 }
 
 function modulo(n: number, m: number) {

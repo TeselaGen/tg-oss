@@ -1,5 +1,5 @@
 import { AminoAcidData } from "./types";
-import { Range } from "@teselagen/range-utils";
+import type { Range } from "@teselagen/range-utils";
 
 export default function getCodonRangeForAASliver(
   aminoAcidPositionInSequence: number,

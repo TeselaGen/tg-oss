@@ -1,4 +1,3 @@
-// ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
 import mapAnnotationsToRows, { MappedAnnotation } from "./mapAnnotationsToRows";
 
 import { annotationTypes } from "./annotationTypes";
@@ -17,7 +16,6 @@ export default function prepareRowData(
   sequenceData: SequenceData,
   bpsPerRow: number
 ) {
-  // ac.throw([ac.sequenceData, ac.posInt], arguments);
   const sequenceLength = sequenceData.sequence.length;
   const totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
   const rows: RowData[] = [];

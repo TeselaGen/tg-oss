@@ -1,12 +1,11 @@
 import { Range } from "./types";
 
 //
-// ac.throw([ac.posInt, ac.posInt, ac.bool], arguments);
+
 export default function checkIfNonCircularRangesOverlap(
   range: Range,
   comparisonRange: Range
 ) {
-  // ac.throw([ac.range, ac.range], arguments);
   if (range.start < comparisonRange.start) {
     if (range.end < comparisonRange.start) {
       //----llll

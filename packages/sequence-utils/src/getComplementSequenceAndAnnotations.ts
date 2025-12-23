@@ -4,7 +4,6 @@ import tidyUpSequenceData from "./tidyUpSequenceData";
 import getSequenceDataBetweenRange from "./getSequenceDataBetweenRange";
 import { SequenceData, Range } from "./types";
 
-// ac.throw([ac.string,ac.bool],arguments);
 export default function getComplementSequenceAndAnnotations(
   pSeqObj: SequenceData,
   options: { range?: Range; [key: string]: unknown } = {}

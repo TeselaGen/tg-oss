@@ -1,10 +1,8 @@
 import DNAComplementMap from "./DNAComplementMap";
 
-// ac.throw([ac.string,ac.bool],arguments);
 export default function getReverseComplementSequenceString(
   sequence: string
 ): string {
-  // ac.throw([ac.string],arguments);
   let reverseComplementSequenceString = "";
   for (let i = sequence.length - 1; i >= 0; i--) {
     let revChar = (DNAComplementMap as Record<string, string>)[sequence[i]];
