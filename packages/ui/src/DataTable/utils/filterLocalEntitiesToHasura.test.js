@@ -1,4 +1,5 @@
 import { filterLocalEntitiesToHasura } from "./filterLocalEntitiesToHasura";
+import { round, get } from "lodash-es";
 
 describe("filterLocalEntitiesToHasura", () => {
   const records = [
@@ -1281,5 +1282,222 @@ describe("filterLocalEntitiesToHasura", () => {
       gridRecords[3]
     ]);
     expect(result.entityCount).toBe(5);
+  });
+
+  function getRecordValue(record, key) {
+    if (
+      ["features", "parts", "primers"].includes(record.annotationTypePlural) &&
+      ["size"].includes(key)
+    ) {
+      return round(get(record, key) / 3);
+    }
+    return get(record, key);
+  }
+
+  it("should filter protein features correctly", () => {
+    const proteinFeatureEntities = [
+      {
+        type: "CDS",
+        strand: 1,
+        name: "araC",
+        start: 3,
+        end: 5,
+        annotationTypePlural: "features",
+        id: "WWBalzQw01Oq",
+        forward: true,
+        color: "#EF6500",
+        size: 3
+      },
+      {
+        type: "protein_bind",
+        strand: 1,
+        name: "Operator I2 and I1",
+        start: 3,
+        end: 8,
+        annotationTypePlural: "features",
+        id: "yOsnjK_GkeAv",
+        forward: true,
+        color: "#2E2E2E",
+        size: 6
+      },
+      {
+        type: "CDS",
+        strand: 1,
+        name: "signal_peptide",
+        start: 3,
+        end: 11,
+        annotationTypePlural: "features",
+        id: "aPKESKXj0qUR",
+        forward: true,
+        color: "#EF6500",
+        size: 9
+      }
+    ];
+    const result_equal = filterLocalEntitiesToHasura(proteinFeatureEntities, {
+      where: {
+        _and: [
+          {
+            size: {
+              _eq: 1
+            }
+          }
+        ]
+      },
+      getRecordValue
+    });
+    expect(result_equal.entities).toEqual([proteinFeatureEntities[0]]);
+
+    const result_in_list = filterLocalEntitiesToHasura(proteinFeatureEntities, {
+      where: {
+        _and: [
+          {
+            size: {
+              _in: [1, 2]
+            }
+          }
+        ]
+      },
+      getRecordValue
+    });
+    expect(result_in_list.entities).toEqual([
+      proteinFeatureEntities[0],
+      proteinFeatureEntities[1]
+    ]);
+
+    const result_not_in_list = filterLocalEntitiesToHasura(
+      proteinFeatureEntities,
+      {
+        where: {
+          _and: [
+            {
+              size: {
+                _nin: [1, 2]
+              }
+            }
+          ]
+        },
+        getRecordValue
+      }
+    );
+    expect(result_not_in_list.entities).toEqual([proteinFeatureEntities[2]]);
+
+    const result_valid_regex = filterLocalEntitiesToHasura(
+      proteinFeatureEntities,
+      {
+        where: {
+          _and: [
+            {
+              name: {
+                _regex: "^signal_"
+              }
+            }
+          ]
+        },
+        getRecordValue
+      }
+    );
+    expect(result_valid_regex.entities).toEqual([proteinFeatureEntities[2]]);
+
+    const result_invalid_regex = filterLocalEntitiesToHasura(
+      proteinFeatureEntities,
+      {
+        where: {
+          _and: [
+            {
+              name: {
+                _regex: "["
+              }
+            }
+          ]
+        },
+        getRecordValue
+      }
+    );
+    expect(result_invalid_regex.entities).toEqual([]);
+  });
+
+  it("should filter DNA features correctly", () => {
+    const dnaFeatureEntities = [
+      {
+        type: "CDS",
+        strand: 1,
+        name: "araC",
+        start: 3,
+        end: 5,
+        annotationTypePlural: "features",
+        id: "WWBalzQw01Oq",
+        forward: true,
+        color: "#EF6500",
+        size: 3
+      },
+      {
+        type: "protein_bind",
+        strand: 1,
+        name: "Operator I2 and I1",
+        start: 3,
+        end: 8,
+        annotationTypePlural: "features",
+        id: "yOsnjK_GkeAv",
+        forward: true,
+        color: "#2E2E2E",
+        size: 6
+      },
+      {
+        type: "CDS",
+        strand: 1,
+        name: "signal_peptide",
+        start: 3,
+        end: 11,
+        annotationTypePlural: "features",
+        id: "aPKESKXj0qUR",
+        forward: true,
+        color: "#EF6500",
+        size: 9
+      }
+    ];
+    const result_equal = filterLocalEntitiesToHasura(dnaFeatureEntities, {
+      where: {
+        _and: [
+          {
+            size: {
+              _eq: 3
+            }
+          }
+        ]
+      },
+      ownProps: { isDNA: true }
+    });
+    expect(result_equal.entities).toEqual([dnaFeatureEntities[0]]);
+
+    const result_in_list = filterLocalEntitiesToHasura(dnaFeatureEntities, {
+      where: {
+        _and: [
+          {
+            size: {
+              _in: [3, 6]
+            }
+          }
+        ]
+      },
+      ownProps: { isDNA: true }
+    });
+    expect(result_in_list.entities).toEqual([
+      dnaFeatureEntities[0],
+      dnaFeatureEntities[1]
+    ]);
+
+    const result_not_in_list = filterLocalEntitiesToHasura(dnaFeatureEntities, {
+      where: {
+        _and: [
+          {
+            size: {
+              _nin: [3, 6]
+            }
+          }
+        ]
+      },
+      ownProps: { isDNA: true }
+    });
+    expect(result_not_in_list.entities).toEqual([dnaFeatureEntities[2]]);
   });
 });
