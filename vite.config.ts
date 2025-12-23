@@ -21,7 +21,12 @@ const conf = ({
     cacheDir: `../../node_modules/.vite/${name}`,
     plugins: [
       dts({
-        exclude: ["**/*.test.ts", "**/*.spec.ts"],
+        exclude: [
+          "**/*.test.ts",
+          "**/*.spec.ts",
+          "**/*.test.js",
+          "**/*.spec.js"
+        ],
         entryRoot: "src",
         tsconfigPath: joinPathFragments(dir, "tsconfig.json")
       }),

@@ -15,6 +15,7 @@
           "error",
           {
             "ignoredDependencies": [
+              "cypress",
               "recompose",
               "buffer",
               "chance",
@@ -29,10 +30,25 @@
       }
     },
     {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx", "*.mjs"],
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {}
+    },
+    {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.mjs"],
       "rules": {
         "no-var": 2,
-        "no-console": [1, { "allow": ["warn", "error", "info"] }],
+        "no-console": [
+          1,
+          {
+            "allow": ["warn", "error", "info"]
+          }
+        ],
         "no-debugger": 2,
         "no-empty": [2],
         "no-extra-boolean-cast": 2,
@@ -41,13 +57,21 @@
         "no-undef": 2,
         "no-unneeded-ternary": 1,
         "no-unsafe-negation": 2,
-        "prefer-const": [1, { "destructuring": "all" }],
+        "prefer-const": [
+          1,
+          {
+            "destructuring": "all"
+          }
+        ],
         "no-unused-vars": 0,
         "@typescript-eslint/no-unused-vars": [
           1,
-          { "ignoreRestSiblings": true }
+          {
+            "ignoreRestSiblings": true
+          }
         ],
         "no-use-before-define": 0,
+        "@typescript-eslint/no-non-null-assertion": 0,
         "@typescript-eslint/no-use-before-define": [
           "error",
           {
@@ -70,16 +94,6 @@
           }
         ]
       }
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx", "*.mjs"],
-      "extends": ["plugin:@nx/javascript"],
-      "rules": {}
     },
     {
       "files": [

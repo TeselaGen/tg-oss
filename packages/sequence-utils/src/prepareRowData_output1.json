@@ -138,6 +138,7 @@
         },
         "start": 1,
         "end": 3,
+        "forward": true,
         "yOffset": 0,
         "enclosingRangeType": "beginningAndEnd"
       }
