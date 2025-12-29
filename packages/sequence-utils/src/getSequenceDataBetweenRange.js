@@ -1,5 +1,5 @@
 import { flatMap, extend, forEach, startCase } from "lodash-es";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength, isRangeWithinRange } from "@teselagen/range-utils";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import insertSequenceDataAtPosition from "./insertSequenceDataAtPosition";
 import {
@@ -112,7 +112,16 @@ function getAnnotationsBetweenRange(
     const overlaps = getZeroedRangeOverlaps(annotation, range, maxLength).map(
       overlap => {
         //we get back 1 or more overlaps here
-
+        const allLocations = annotation.locations;
+        if (allLocations && allLocations.length) {
+          // Filter the 'allLocations' that in this overlap
+          const newLocations = allLocations.filter(loc => {
+            return isRangeWithinRange(loc, overlap, maxLength);
+          })
+          return extend({}, annotation, overlap, {
+            locations: newLocations
+          });
+        }
         return extend({}, annotation, overlap);
       }
     );
