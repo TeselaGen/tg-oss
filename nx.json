@@ -8,6 +8,12 @@
       }
     }
   },
+  "release": {
+    "projects": ["packages/*"],
+    "version": {
+      "conventionalCommits": true
+    }
+  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
