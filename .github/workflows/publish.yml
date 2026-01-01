@@ -47,7 +47,7 @@ jobs:
 
           # 1. Versioning
           # Use nx release version to update package.json files and changelogs
-          npx nx release version --yes --first-release --exclude shared-demo $VERSION_FLAGS
+          npx nx release version --first-release $VERSION_FLAGS
 
           # 2. Build
           # Rebuild to ensure artifacts in dist/ contain the new version
