@@ -32,17 +32,14 @@ jobs:
 
       - name: Release and Publish
         run: |
-          yarn config set registry https://registry.npmjs.org/
-          # Yarn v1 does not support env var substitution in .npmrc, so we write the token explicitly
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           # The --yes flag bypasses interactive prompts in CI
           # If on beta branch, it will use the 'beta' tag automatically
           if [[ "${{ github.ref_name }}" == "beta" ]]; then
-            yarn nx release publish --yes --preid beta --first-release
+            npx nx release publish --yes --preid beta --first-release
           else
-            yarn nx release publish --yes --first-release
+            npx nx release publish --yes --first-release
           fi
 
           # Push the version changes and tags back to the repository
