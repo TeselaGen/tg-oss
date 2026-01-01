@@ -68,7 +68,3 @@ jobs:
 
           # Push the version changes and tags back to the repository
           git push --follow-tags origin HEAD:${{ github.ref_name }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
