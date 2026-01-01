@@ -60,12 +60,12 @@ jobs:
           for PROJECT in $PROJECTS; do
             echo "Publishing $PROJECT to tag $RELEASE_TAG..."
             # Navigate to the build output directory
-            if [ -d "dist/packages/$PROJECT" ]; then
-              cd dist/packages/$PROJECT
+            if [ -d "dist/$PROJECT" ]; then
+              cd dist/$PROJECT
               npm publish --access public --tag $RELEASE_TAG
               cd - > /dev/null
             else
-              echo "Warning: dist/packages/$PROJECT not found, skipping..."
+              echo "Warning: dist/$PROJECT not found, skipping..."
             fi
           done
 
