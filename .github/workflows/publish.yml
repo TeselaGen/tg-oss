@@ -33,7 +33,10 @@ jobs:
           # The --yes flag bypasses interactive prompts in CI
           # If on beta branch, it will use the 'beta' tag automatically
           if [[ "${{ github.ref_name }}" == "beta" ]]; then
-            yarn nx release --yes --preid beta --tag beta --access public --provenance
+            yarn nx release --yes --preid beta
           else
-            yarn nx release --yes --access public --provenance
+            yarn nx release --yes
           fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
