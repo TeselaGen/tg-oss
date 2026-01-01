@@ -7,7 +7,7 @@ on:
 
 # Required for OIDC Trusted Publishing
 permissions:
-  contents: write
+  contents: read
   id-token: write
 
 jobs:
