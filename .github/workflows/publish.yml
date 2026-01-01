@@ -75,4 +75,3 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NX_PKG_MANAGER: npm
