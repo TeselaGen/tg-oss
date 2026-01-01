@@ -32,6 +32,10 @@ jobs:
 
       - name: Release and Publish
         run: |
+          # Create .npmrc to authenticate yarn with the registry
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
+          echo "registry=https://registry.npmjs.org/" >> .npmrc
+
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           # The --yes flag bypasses interactive prompts in CI
