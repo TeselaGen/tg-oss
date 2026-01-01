@@ -73,7 +73,7 @@
         "testingType": "e2e"
       }
     },
-    "build-all": {
+    "publish": {
       "dependsOn": ["build", "build_umd"],
       "executor": "nx:run-commands",
       "options": {

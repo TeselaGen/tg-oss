@@ -51,7 +51,7 @@ jobs:
 
           # 2. Build
           # Rebuild to ensure artifacts in dist/ contain the new version
-          yarn nx run-many --target=build-all --skip-nx-cache
+          yarn nx run-many --target=publish --skip-nx-cache
 
           # 3. Publish
           # Manually publish each package using npm to avoid yarn/nx issues
