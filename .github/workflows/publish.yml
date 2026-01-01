@@ -32,6 +32,7 @@ jobs:
 
       - name: Release and Publish
         run: |
+          yarn config set registry https://registry.npmjs.org/
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           # The --yes flag bypasses interactive prompts in CI
