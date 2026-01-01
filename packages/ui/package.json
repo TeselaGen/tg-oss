@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.10.15",
+  "version": "0.4.0",
   "main": "./src/index.js",
   "type": "module",
   "exports": {
@@ -54,7 +54,7 @@
     "use-deep-compare-effect": "^1.6.1",
     "write-excel-file": "^1.4.25",
     "@dnd-kit/utilities": "3.2.2",
-    "@teselagen/file-utils": "file:../file-utils",
+    "@teselagen/file-utils": "0.4.0",
     "@blueprintjs/icons": "3.33.0"
   }
 }
