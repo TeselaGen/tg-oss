@@ -33,6 +33,8 @@ jobs:
       - name: Release and Publish
         run: |
           yarn config set registry https://registry.npmjs.org/
+          # Yarn v1 does not support env var substitution in .npmrc, so we write the token explicitly
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           # The --yes flag bypasses interactive prompts in CI
