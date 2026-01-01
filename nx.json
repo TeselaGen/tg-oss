@@ -11,7 +11,10 @@
   "release": {
     "projects": ["packages/*"],
     "version": {
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "generatorOptions": {
+        "fallbackCurrentVersionResolver": "disk"
+      }
     }
   },
   "targetDefaults": {
