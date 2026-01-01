@@ -26,21 +26,48 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
-      - name: Build Packages
-        run: yarn nx run-many --target=build-all --all
 
       - name: Release and Publish
         run: |
+          # Create .npmrc to authenticate npm with the registry
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
+          echo "registry=https://registry.npmjs.org/" >> .npmrc
 
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          # The --yes flag bypasses interactive prompts in CI
-          # If on beta branch, it will use the 'beta' tag automatically
+
+          # Determine release type and flags
           if [[ "${{ github.ref_name }}" == "beta" ]]; then
-            npx nx release publish --yes --preid beta --first-release --exclude shared-demo
+            RELEASE_TAG="beta"
+            VERSION_FLAGS="--preid beta"
           else
-            npx nx release publish --yes --first-release --exclude shared-demo
+            RELEASE_TAG="latest"
+            VERSION_FLAGS=""
           fi
+
+          # 1. Versioning
+          # Use nx release version to update package.json files and changelogs
+          npx nx release version --yes --first-release --exclude shared-demo $VERSION_FLAGS
+
+          # 2. Build
+          # Rebuild to ensure artifacts in dist/ contain the new version
+          yarn nx run-many --target=build-all --all
+
+          # 3. Publish
+          # Manually publish each package using npm to avoid yarn/nx issues
+          PROJECTS="sequence-utils bounce-loader bio-parsers range-utils file-utils uploader ove ui"
+
+          for PROJECT in $PROJECTS; do
+            echo "Publishing $PROJECT to tag $RELEASE_TAG..."
+            # Navigate to the build output directory
+            if [ -d "dist/packages/$PROJECT" ]; then
+              cd dist/packages/$PROJECT
+              npm publish --access public --tag $RELEASE_TAG
+              cd - > /dev/null
+            else
+              echo "Warning: dist/packages/$PROJECT not found, skipping..."
+            fi
+          done
 
           # Push the version changes and tags back to the repository
           git push --follow-tags origin HEAD:${{ github.ref_name }}
