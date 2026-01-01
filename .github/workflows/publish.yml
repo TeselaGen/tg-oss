@@ -23,7 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22 # Use the current LTS
-          registry-url: "https://registry.npmjs.org"
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -32,9 +31,6 @@ jobs:
 
       - name: Release and Publish
         run: |
-          # Create .npmrc to authenticate yarn with the registry
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
-          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
 
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
@@ -52,3 +48,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NX_PKG_MANAGER: npm
