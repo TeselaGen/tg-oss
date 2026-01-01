@@ -28,7 +28,7 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Build Packages
-        run: yarn nx affected --target=build-all
+        run: yarn nx run-many --target=build-all
 
       - name: Release and Publish
         run: |
