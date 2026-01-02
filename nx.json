@@ -73,13 +73,6 @@
         "testingType": "e2e"
       }
     },
-    "publish": {
-      "dependsOn": ["build", "build_umd"],
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "echo 'Releasing {projectName}'"
-      }
-    },
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {

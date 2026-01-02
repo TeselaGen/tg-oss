@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22 # Use the current LTS
+          node-version: 24 # Use the current LTS
           registry-url: "https://registry.npmjs.org"
 
       - name: Install Dependencies
@@ -48,11 +48,15 @@ jobs:
 
           # 2. Build
           # Rebuild to ensure artifacts in dist/ contain the new version
-          yarn nx run-many --target=publish --skip-nx-cache
+          yarn nx run-many --target=build --skip-nx-cache --projects="range-utils"
+          yarn nx run-many --target=build_umd --skip-nx-cache --projects="range-utils"
+          # yarn nx run-many --target=build --skip-nx-cache
+          # yarn nx run-many --target=build_umd --skip-nx-cache
 
           # 3. Publish
           # Manually publish each package using npm to avoid yarn/nx issues
-          PROJECTS="sequence-utils bounce-loader bio-parsers range-utils file-utils uploader ove ui"
+          PROJECTS="range-utils"
+          # PROJECTS="sequence-utils bounce-loader bio-parsers range-utils file-utils uploader ove ui"
 
           for PROJECT in $PROJECTS; do
             echo "Publishing $PROJECT to tag $RELEASE_TAG..."
