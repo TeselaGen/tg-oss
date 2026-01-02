@@ -2,6 +2,7 @@
   "name": "@teselagen/range-utils",
   "version": "0.4.0",
   "type": "module",
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "dependencies": {
     "lodash-es": "^4.17.21"
   }

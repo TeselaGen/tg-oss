@@ -9,7 +9,7 @@
     "test": "nx affected -t test"
   },
   "type": "module",
-  "private": true,
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "dependencies": {},
   "devDependencies": {
     "@babel/preset-react": "^7.24.6",
