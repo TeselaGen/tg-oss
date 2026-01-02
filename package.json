@@ -10,6 +10,7 @@
   },
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
+  "private": true,
   "dependencies": {},
   "devDependencies": {
     "@babel/preset-react": "^7.24.6",
