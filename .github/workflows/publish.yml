@@ -34,7 +34,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
 
           # Determine release type and flags
-          if [[ "${{ github.ref_name }}" == "beta" ]]; then
+          if [[ "${{ github.ref_name }}" == "beta2" ]]; then
             RELEASE_TAG="beta"
             VERSION_FLAGS="--preid beta"
           else
