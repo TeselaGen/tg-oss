@@ -23,7 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24 # Use the current LTS
-          registry-url: "https://registry.npmjs.org"
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -63,7 +62,7 @@ jobs:
             # Navigate to the build output directory
             if [ -d "dist/$PROJECT" ]; then
               cd dist/$PROJECT
-              npm publish --access public --tag $RELEASE_TAG
+              npm publish --access public --tag $RELEASE_TAG --provenance
               cd - > /dev/null
             else
               echo "Warning: dist/$PROJECT not found, skipping..."
