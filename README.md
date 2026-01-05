@@ -40,6 +40,13 @@ All code from this repository is placed under the [MIT License](./LICENSE).
 
 Simply bump the version in the package.json file and push to master. The GitHub Action will handle the rest.
 
+Note you will need to manually add an entry to the CHANGELOG.md file for the package you are publishing.
+New entries should be in the format:
+
+## 0.1.0 (2025-01-05)
+
+- <description of change>
+
 ## Publishing a beta version (for use when linking to a branch in another project)
 
 Bump the version and add a "-beta" suffix to the version. Push to the beta branch. The GitHub Action will handle the rest.
