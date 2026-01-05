@@ -1,8 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+bun tools/scripts/changelogCheck.js
 yarn lint-staged --relative
 
 bun test
-
-# yarn auto-changelog -p && git add CHANGELOG.md #tnw - trying to run this only on version bumps
