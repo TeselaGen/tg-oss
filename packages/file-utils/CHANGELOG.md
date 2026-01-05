@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.22 (2025-01-05)
+## 0.3.23 (2025-01-05)
 
 - bump due to publishing issue
 

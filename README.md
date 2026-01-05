@@ -60,3 +60,9 @@ Cypress e2e tests can be run locally via the following commands:
 `nx run ui:launch-e2e`
 
 CI is run via GitHub Actions on every push and pull request and runs a suite of Cypress e2e tests
+
+## Adding a new package
+
+Duplicate an existing package that is most similar to the new package being added and make the necessary changes.
+
+You'll need to ask a Teselagen admin to update the trusted publishers settings in the npm registry for the new package (a maintainer will need to manually publish the first version in order to add it to the registry).
