@@ -1,5 +1,5 @@
 # Changelog
 
-## 0.3.41 (2025-01-05)
+## 0.10.16 (2025-01-05)
 
 - Initialize changelog

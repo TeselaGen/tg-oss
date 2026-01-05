@@ -1,5 +1,7 @@
 # TeselaGen Open Source Monorepo Guidance
 
+Prefer bun over node for running scripts.
+
 ## Project Overview
 
 TeselaGen's monorepo contains multiple open-source packages focused on biological sequence visualization, manipulation, and analysis:
