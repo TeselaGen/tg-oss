@@ -30,7 +30,7 @@ jobs:
         id: check_versions
         run: |
           # Define the list of packages to check
-          PACKAGES="range-utils file-utils sequence-utils bio-parsers bounce-loader uploader ui ove"
+          PACKAGES="range-utils file-utils sequence-utils bio-parsers ui ove"
           TO_PUBLISH=""
 
           for PKG in $PACKAGES; do
