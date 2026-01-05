@@ -21,10 +21,9 @@ function getAnnotationTextOffset({
 }) {
   return (
     width / 2 -
-    getAnnotationTextWidth(nameToDisplay) / 2 -
-    (hasAPoint
-      ? (pointiness / 2 - ANNOTATION_LABEL_FONT_WIDTH / 2) * (forward ? 1 : -1)
-      : 0)
+    getAnnotationTextWidth(nameToDisplay) / 2 +
+    pointiness -
+    (hasAPoint ? (pointiness / 2) * (forward ? 1 : -1) : 0)
   );
 }
 
@@ -40,6 +39,7 @@ function getAnnotationNameInfo({
   annotation
 }) {
   let nameToDisplay = name;
+  // The width available for the label is reduced if there is a arrow point
   const width = originalWidth - (hasAPoint ? ANNOTATION_LABEL_FONT_WIDTH : 0);
   let textOffset = getAnnotationTextOffset({
     width,
@@ -49,19 +49,37 @@ function getAnnotationNameInfo({
     forward
   });
   if (
-    !doesLabelFitInAnnotation(name, { width, hasAPoint }, charWidth) ||
+    !doesLabelFitInAnnotation(name, { width }, charWidth) ||
     (!onlyShowLabelsThatDoNotFit &&
       ["parts", "features"].includes(annotation.annotationTypePlural))
   ) {
     if (truncateLabelsThatDoNotFit) {
-      const fractionToDisplay = width / getAnnotationTextWidth(nameToDisplay);
-      const numLetters = Math.floor(fractionToDisplay * name.length);
-      nameToDisplay = name.slice(0, numLetters);
-      if (nameToDisplay.length > 3) {
-        if (nameToDisplay.length !== name.length) {
-          nameToDisplay = nameToDisplay.slice(0, nameToDisplay.length - 2);
-          nameToDisplay += "..";
+      // Binary search for max fitting substring
+      let left = 0;
+      let right = name.length;
+      let bestFit = "";
+
+      while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        const candidate = name.slice(0, mid) + (mid < name.length ? ".." : "");
+        const candidateWidth = getAnnotationTextWidth(candidate);
+
+        if (candidateWidth <= width) {
+          if (candidate.length > bestFit.length) {
+            bestFit = candidate;
+          }
+          left = mid + 1;
+        } else {
+          right = mid - 1;
         }
+      }
+
+      nameToDisplay = bestFit;
+
+      if (nameToDisplay.length <= 3) {
+        textOffset = 0;
+        nameToDisplay = "";
+      } else {
         textOffset = getAnnotationTextOffset({
           width,
           nameToDisplay,
@@ -69,9 +87,6 @@ function getAnnotationNameInfo({
           pointiness,
           forward
         });
-      } else {
-        textOffset = 0;
-        nameToDisplay = "";
       }
     } else {
       textOffset = 0;
