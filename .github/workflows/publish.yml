@@ -1,3 +1,7 @@
+# this workflow compares the version of each package in the monorepo to the version on npm
+# if a package has a new version, it will be published
+# if no packages have new versions, the workflow will exit successfully
+
 name: Publish Packages
 on:
   push:

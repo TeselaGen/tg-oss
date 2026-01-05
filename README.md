@@ -38,19 +38,11 @@ All code from this repository is placed under the [MIT License](./LICENSE).
 
 ## Publishing (works the same for all packages)
 
-```
-nx run ui:publish
-nx run ove:publish
-nx run-many --target=publish --projects=bio-parsers,ove,sequence-utils,ui
-```
+Simply bump the version in the package.json file and push to master. The GitHub Action will handle the rest.
 
 ## Publishing a beta version (for use when linking to a branch in another project)
 
-```
-nx run ui:publish-beta
-nx run ove:publish-beta
-nx run-many --target=publish-beta --projects=bio-parsers,ove,sequence-utils,ui
-```
+Bump the version and add a "-beta" suffix to the version. Push to the beta branch. The GitHub Action will handle the rest.
 
 # Running tests
 

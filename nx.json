@@ -8,15 +8,6 @@
       }
     }
   },
-  "release": {
-    "projects": ["packages/*"],
-    "version": {
-      "conventionalCommits": true,
-      "generatorOptions": {
-        "fallbackCurrentVersionResolver": "disk"
-      }
-    }
-  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
@@ -24,7 +15,7 @@
       "outputs": ["{options.outDir}"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "(rm -rf dist/{projectRoot} && cd {projectRoot} && yarn vite build --config vite.config.ts) && node tools/scripts/updatePkgDeps.mjs {projectRoot}"
+        "command": "(rm -rf dist/{projectRoot} && cd {projectRoot} && yarn vite build --config vite.config.ts) && bun tools/scripts/updatePkgDeps.mjs {projectRoot}"
       }
     },
     "lint": {
