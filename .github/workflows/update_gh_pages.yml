@@ -1,7 +1,8 @@
 name: Update gh-pages
-on: [push]
-branches:
-  - master
+on:
+  push:
+    branches:
+      - master
 jobs:
   update-gh-pages:
     strategy:
