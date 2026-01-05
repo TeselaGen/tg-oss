@@ -1,0 +1,51 @@
+name: Update gh-pages
+on: [push]
+jobs:
+  update-gh-pages:
+    strategy:
+      matrix:
+        package_name: [ove, ui]
+    name: Update gh-pages
+    runs-on: ubuntu-latest
+    if: contains(github.ref, 'master') # Publish it only if the push comes from the master branch
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Check version changes
+        uses: EndBug/version-check@v2 # You can choose the version/branch you prefer.
+        id: check
+        with:
+          file-name: ./packages/${{ matrix.package_name }}/package.json
+          diff-search: true
+      - name: Version update detected
+        if: steps.check.outputs.changed == 'true'
+        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+
+      - uses: bahmutov/npm-install@v1
+        if: steps.check.outputs.changed == 'true'
+        with:
+          install-command: yarn
+
+      - run: yarn nx run ${{ matrix.package_name }}:build --configuration=demo
+        if: steps.check.outputs.changed == 'true'
+
+      - name: Deploy Version  🚀
+        if: steps.check.outputs.changed == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ./demo-dist/${{ matrix.package_name }} # The folder the action should deploy.
+          target-folder: ${{ matrix.package_name }}/version/${{steps.check.outputs.version}}
+      - name: Deploy Main App  🚀
+        if: steps.check.outputs.changed == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ./demo-dist/${{ matrix.package_name }} # The folder the action should deploy.
+          target-folder: ${{ matrix.package_name }}/
+          clean: true # Automatically remove deleted files from the deploy branch
+          clean-exclude: version
