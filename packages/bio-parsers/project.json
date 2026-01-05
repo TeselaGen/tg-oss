@@ -6,8 +6,7 @@
   "targets": {
     "version": {},
     "build": {},
-    "publish": {},
-    "publish-beta": {},
+
     "lint": {},
     "test": {}
   },

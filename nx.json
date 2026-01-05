@@ -15,7 +15,7 @@
       "outputs": ["{options.outDir}"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "rm -rf dist/{projectRoot} && cd {projectRoot} && yarn vite build --config vite.config.ts"
+        "command": "(rm -rf dist/{projectRoot} && cd {projectRoot} && yarn vite build --config vite.config.ts) && node tools/scripts/updatePkgDeps.mjs {projectRoot}"
       }
     },
     "lint": {
@@ -62,20 +62,6 @@
         "cypressConfig": "{projectRoot}/cypress.config.ts",
         "devServerTarget": "{projectName}:start:ci",
         "testingType": "e2e"
-      }
-    },
-    "publish": {
-      "dependsOn": ["test", "build", "build_umd"],
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node tools/scripts/publish.mjs {projectName} latest"
-      }
-    },
-    "publish-beta": {
-      "dependsOn": ["test", "build", "build_umd"],
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node tools/scripts/publish.mjs {projectName} beta"
       }
     },
     "version": {

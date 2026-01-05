@@ -9,6 +9,7 @@
     "test": "nx affected -t test"
   },
   "type": "module",
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "private": true,
   "dependencies": {},
   "devDependencies": {

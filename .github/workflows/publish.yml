@@ -1,0 +1,111 @@
+# this workflow compares the version of each package in the monorepo to the version on npm
+# if a package has a new version, it will be published
+# if no packages have new versions, the workflow will exit successfully
+
+name: Publish Packages
+on:
+  push:
+    branches:
+      - master
+      - beta
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Check for New Versions
+        id: check_versions
+        run: |
+          # Define the list of packages to check
+          PACKAGES="range-utils file-utils sequence-utils bio-parsers ui ove"
+          TO_PUBLISH=""
+
+          for PKG in $PACKAGES; do
+            PKG_DIR="packages/$PKG"
+            
+            # Get package name and version from package.json
+            PKG_NAME=$(npm pkg get name --prefix "$PKG_DIR" | tr -d '"')
+            LOCAL_VERSION=$(npm pkg get version --prefix "$PKG_DIR" | tr -d '"')
+            
+            echo "Checking $PKG_NAME ($PKG)... Local: $LOCAL_VERSION"
+            
+            # Check if this version already exists on NPM
+            # If npm view fails (package doesn't exist) or returns empty, we should publish
+            if npm view "$PKG_NAME@$LOCAL_VERSION" version > /dev/null 2>&1; then
+              echo "  - Version $LOCAL_VERSION already exists on NPM. Skipping."
+            else
+              echo "  - New version detected: $LOCAL_VERSION. Adding to publish list."
+              TO_PUBLISH="$TO_PUBLISH $PKG"
+            fi
+          done
+
+          # Clean up leading space and export
+          TO_PUBLISH=$(echo $TO_PUBLISH | xargs)
+          echo "packages_to_publish=$TO_PUBLISH" >> $GITHUB_OUTPUT
+
+          if [ -z "$TO_PUBLISH" ]; then
+            echo "No new versions detected."
+          else
+            echo "Packages to publish: $TO_PUBLISH"
+          fi
+
+      - name: Install Dependencies
+        if: steps.check_versions.outputs.packages_to_publish != ''
+        run: yarn install --frozen-lockfile
+
+      - name: Build and Publish
+        if: steps.check_versions.outputs.packages_to_publish != ''
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          PACKAGES="${{ steps.check_versions.outputs.packages_to_publish }}"
+          # Convert space-separated list to comma-separated for nx
+          PROJECTS_CSV=$(echo "$PACKAGES" | tr ' ' ',')
+
+          echo "Building packages: $PACKAGES"
+
+          # Build standard. Using --projects to only build what's needed.
+          yarn nx run-many --target=build --projects="$PROJECTS_CSV" --skip-nx-cache
+
+          # Attempt build_umd, allowing failure if target doesn't exist for some packages
+          yarn nx run-many --target=build_umd --projects="$PROJECTS_CSV" --skip-nx-cache || echo "build_umd failed or not found for some projects, continuing..."
+
+          # Determine tag based on branch
+          if [[ "${{ github.ref_name }}" == "beta" ]]; then
+            TAG="beta"
+          else
+            TAG="latest"
+          fi
+
+          echo "Publishing with tag: $TAG"
+
+          for PKG in $PACKAGES; do
+            echo "Publishing $PKG..."
+            # Check widely for build output location
+            if [ -d "dist/packages/$PKG" ]; then
+                CD_PATH="dist/packages/$PKG"
+            elif [ -d "dist/$PKG" ]; then
+                CD_PATH="dist/$PKG"
+            else
+                echo "Error: Could not find build output for $PKG"
+                exit 1
+            fi
+            
+            cd "$CD_PATH"
+            npm publish --access public --tag "$TAG" --provenance
+            cd - > /dev/null
+          done

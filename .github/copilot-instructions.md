@@ -74,20 +74,6 @@ nx run-many --target=build
 - **E2E tests**: Run with `nx run [package]:launch-e2e`
 - **CI**: Runs on GitHub Actions on push/PR
 
-### Publishing
-
-```bash
-# Publish a single package
-nx run ui:publish
-nx run ove:publish
-
-# Publish multiple packages
-nx run-many --target=publish --projects=bio-parsers,ove,sequence-utils,ui
-
-# Publish beta versions
-nx run ui:publish-beta
-```
-
 ## Key Concepts
 
 ### OVE Data Model

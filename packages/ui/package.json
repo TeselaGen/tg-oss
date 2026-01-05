@@ -3,6 +3,7 @@
   "version": "0.10.15",
   "main": "./src/index.js",
   "type": "module",
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "exports": {
     ".": {
       "import": "./index.es.js",
