@@ -55,7 +55,7 @@
     "use-deep-compare-effect": "^1.6.1",
     "write-excel-file": "^1.4.25",
     "@dnd-kit/utilities": "3.2.2",
-    "@teselagen/file-utils": "0.4.0",
+    "@teselagen/file-utils": "file:../file-utils",
     "@blueprintjs/icons": "3.33.0"
   }
 }

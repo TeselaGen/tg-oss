@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/file-utils",
-  "version": "0.4.0",
+  "version": "0.3.20",
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
   "dependencies": {

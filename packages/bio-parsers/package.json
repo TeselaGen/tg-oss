@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/bio-parsers",
-  "version": "0.4.0",
+  "version": "0.4.32",
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
   "dependencies": {
@@ -11,8 +11,8 @@
     "fflate": "^0.8.0",
     "lodash-es": "^4.17.21",
     "validate.io-nonnegative-integer-array": "^1.0.1",
-    "@teselagen/sequence-utils": "0.4.0",
-    "@teselagen/range-utils": "0.4.0"
+    "@teselagen/sequence-utils": "file:../sequence-utils",
+    "@teselagen/range-utils": "file:../range-utils"
   },
   "exports": {
     ".": {
