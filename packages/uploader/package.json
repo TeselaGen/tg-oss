@@ -1,6 +1,7 @@
 {
   "name": "@teselagen/uploader",
-  "version": "0.4.0",
+  "version": "0.2.0",
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "main": "./src/index.js",
   "types": "./index.d.ts",
   "type": "module",
