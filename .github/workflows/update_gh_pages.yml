@@ -18,15 +18,28 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Check version changes
-        uses: EndBug/version-check@v2 # You can choose the version/branch you prefer.
+      - name: Check if version already deployed
         id: check
-        with:
-          file-name: ./packages/${{ matrix.package_name }}/package.json
-          diff-search: true
+        run: |
+          PACKAGE_NAME=${{ matrix.package_name }}
+          VERSION=$(node -p "require('./packages/$PACKAGE_NAME/package.json').version")
+          echo "Checking if $PACKAGE_NAME v$VERSION is already deployed..."
+
+          # Fetch gh-pages branch to check for existence
+          git fetch origin gh-pages --depth=1
+
+          if git ls-tree -d origin/gh-pages:$PACKAGE_NAME/version/$VERSION >/dev/null 2>&1; then
+            echo "Version $VERSION already exists on gh-pages."
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Version $VERSION not found. Proceeding with deployment."
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
       - name: Version update detected
         if: steps.check.outputs.changed == 'true'
-        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }}"'
 
       - uses: bahmutov/npm-install@v1
         if: steps.check.outputs.changed == 'true'
