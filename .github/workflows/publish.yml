@@ -64,6 +64,7 @@ jobs:
           fi
 
       - name: Install Dependencies
+        if: steps.check_versions.outputs.packages_to_publish != ''
         run: yarn install --frozen-lockfile
 
       - name: Build and Publish
