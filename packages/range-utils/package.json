@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/range-utils",
-  "version": "0.3.14",
+  "version": "0.3.18",
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
   "dependencies": {
