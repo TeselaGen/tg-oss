@@ -15,6 +15,7 @@
         }
       }
     },
+    "build_umd": {},
     "pushToGhPages": {
       //tnw: waiting for https://github.com/nrwl/nx/issues/15064 to be able to work with "build:demo"
       // "dependsOn": ["build:demo"],

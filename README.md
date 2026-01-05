@@ -38,7 +38,7 @@ All code from this repository is placed under the [MIT License](./LICENSE).
 
 ## Publishing (works the same for all packages)
 
-Simply bump the version in the package.json file and push to master. The GitHub Action will handle the rest.
+Simply bump the version in the package.json file and push to master. The GitHub Actions will handle the rest (updating dependencies, building, and pushing to gh-pages)
 
 Note you will need to manually add an entry to the CHANGELOG.md file for the package you are publishing.
 New entries should be in the format:

@@ -16,10 +16,7 @@
         }
       }
     },
-
-    "build_umd": {
-      "command": "nx run ove:build --mode=umd"
-    },
+    "build_umd": {},
     "build": {
       "configurations": {
         "umd": {

@@ -1,5 +1,7 @@
 name: Update gh-pages
 on: [push]
+branches:
+  - master
 jobs:
   update-gh-pages:
     strategy:
@@ -7,11 +9,10 @@ jobs:
         package_name: [ove, ui]
     name: Update gh-pages
     runs-on: ubuntu-latest
-    if: contains(github.ref, 'master') # Publish it only if the push comes from the master branch
     steps:
       # https://github.com/actions/checkout
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - uses: actions/setup-node@v3
         with:
           node-version: 18
