@@ -40,7 +40,13 @@ try {
 
 /**
  * 5. Update package dependencies
+ * Skip if building in demo mode (no package.json to update)
  */
+if (args.some(arg => arg.includes("mode=demo"))) {
+  console.info("Demo build detected. Skipping dependency updates.");
+  process.exit(0);
+}
+
 try {
   const updateDepsScript = path.resolve(
     workspaceRoot,
