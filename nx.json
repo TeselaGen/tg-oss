@@ -15,7 +15,13 @@
       "outputs": ["{options.outDir}"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "rm -rf dist/{projectRoot} && cd {projectRoot} && yarn vite build --config vite.config.ts"
+        "command": "bun tools/scripts/build.mjs {projectRoot}"
+      }
+    },
+    "build_umd": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nx run {projectName}:build --mode=umd"
       }
     },
     "lint": {
@@ -24,14 +30,9 @@
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore"
       ],
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "nx:run-commands",
       "options": {
-        "maxWarnings": 0,
-        "lintFilePatterns": [
-          "{projectRoot}/**/*.{ts,tsx,js,jsx}",
-          "{projectRoot}/package.json"
-        ]
+        "command": "eslint \"{projectRoot}/**/*.{ts,tsx,js,jsx}\" \"{projectRoot}/package.json\" --max-warnings=0"
       }
     },
     "test": {
@@ -67,20 +68,6 @@
         "cypressConfig": "{projectRoot}/cypress.config.ts",
         "devServerTarget": "{projectName}:start:ci",
         "testingType": "e2e"
-      }
-    },
-    "publish": {
-      "dependsOn": ["test", "build", "build_umd"],
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node tools/scripts/publish.mjs {projectName} latest"
-      }
-    },
-    "publish-beta": {
-      "dependsOn": ["test", "build", "build_umd"],
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node tools/scripts/publish.mjs {projectName} beta"
       }
     },
     "version": {

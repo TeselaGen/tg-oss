@@ -763,7 +763,7 @@ ORIGIN
       name: "pS8c-gfpuv_sig_pep_vector_backbone",
       start: 1238,
       end: 1234,
-      type: "part",
+      type: "misc_feature",
       strand: 1,
       forward: true
     });
@@ -819,7 +819,7 @@ ORIGIN
       name: "pS8c-gfpuv",
       start: 1238,
       end: 1234,
-      type: "part",
+      type: "misc_feature",
       strand: 1,
       forward: true
     });
@@ -832,7 +832,7 @@ ORIGIN
       name: "pS8c-gfpuv_sig_pep_vector_backbone",
       start: 1238,
       end: 1234,
-      type: "part",
+      type: "misc_feature",
       strand: 1,
       forward: true
     });
@@ -870,7 +870,7 @@ ORIGIN
       name: "pS8c-gfpuv_sig_pep_vector_backbone",
       start: 1238,
       end: 1234,
-      type: "part",
+      type: "misc_feature",
       strand: 1,
       forward: true
     });

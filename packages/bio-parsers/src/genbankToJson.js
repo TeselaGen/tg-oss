@@ -739,6 +739,16 @@ function genbankToJson(string, options = {}) {
             : undefined;
       delete feat.notes.direction;
     }
+    if (
+      feat.locations &&
+      feat.locations.length > 1 &&
+      feat.locations[0].start > feat.locations[feat.locations.length - 1].end
+    ) {
+      if (parsedSequence.circular === undefined) {
+        //if the circularity hasn't been explicitly defined, and we have a feature that wraps the origin, we can assume the sequence is circular
+        parsedSequence.circular = true;
+      }
+    }
     if (parsedSequence.circular) {
       const { inclusive1BasedStart, inclusive1BasedEnd } = options;
       feat.locations = wrapOriginSpanningFeatures(
@@ -747,6 +757,9 @@ function genbankToJson(string, options = {}) {
         inclusive1BasedStart,
         inclusive1BasedEnd
       );
+    } else if (feat.locations && feat.locations.length > 1) {
+      // Sort locations for linear sequences
+      feat.locations.sort((a, b) => a.start - b.start);
     }
 
     return feat;

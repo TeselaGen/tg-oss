@@ -1,8 +1,14 @@
 import { createSelector } from "reselect";
 import sequenceDataSelector from "./sequenceDataSelector";
 
-function primersRawSelector(sequenceData) {
-  return sequenceData.primers;
+import temporaryAnnotationsSelector from "./temporaryAnnotationsSelector";
+
+function primersRawSelector(sequenceData, temporaryAnnotations) {
+  return { ...sequenceData.primers, ...temporaryAnnotations?.primers };
 }
 
-export default createSelector(sequenceDataSelector, primersRawSelector);
+export default createSelector(
+  sequenceDataSelector,
+  temporaryAnnotationsSelector,
+  primersRawSelector
+);

@@ -807,6 +807,81 @@ certain dna specific tools and annotations are automatically disabled when isPro
                   });
                 }
               })}
+              <div
+                style={{
+                  marginTop: 10,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 5
+                }}
+              >
+                <div style={{ fontWeight: "bold" }}>Temporary Annotations:</div>
+                <Button
+                  onClick={() => {
+                    updateEditor(store, "DemoEditor", {
+                      temporaryAnnotations: {
+                        searchLayers: [
+                          {
+                            start: 10,
+                            end: 20,
+                            customTitle: "Temp Search Layer"
+                          }
+                        ],
+                        features: {
+                          temp1: {
+                            id: "temp1",
+                            start: 10,
+                            end: 30,
+                            name: "Temp Feature",
+                            color: "orange"
+                          },
+                          temp2: {
+                            id: "temp2",
+                            start: 100,
+                            end: 3000,
+                            name: "Another Temp Feature",
+                            color: "orange"
+                          }
+                        }
+                      }
+                    });
+                  }}
+                >
+                  Add Temp Features
+                </Button>
+                <Button
+                  onClick={() => {
+                    updateEditor(store, "DemoEditor", {
+                      temporaryAnnotations: {
+                        primers: {
+                          tempPrimer1: {
+                            id: "tempPrimer1",
+                            start: 50,
+                            end: 70,
+                            name: "Temp Primer",
+                            color: "purple",
+                            forward: true
+                          }
+                        }
+                      }
+                    });
+                  }}
+                >
+                  Add Temp Primer
+                </Button>
+                <Button
+                  onClick={() => {
+                    updateEditor(store, "DemoEditor", {
+                      temporaryAnnotations: {
+                        features: {},
+                        primers: {}
+                      }
+                    });
+                  }}
+                >
+                  Clear Temp Annotations
+                </Button>
+              </div>
 
               {renderToggle({
                 that: this,

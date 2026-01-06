@@ -406,6 +406,7 @@ export const useColumns = ({
   resetDefaultVisibility,
   currentParams,
   compact,
+  hideExpandSubCompColumn,
   editingCell,
   editingCellSelectAll,
   entities,
@@ -453,7 +454,8 @@ export const useColumns = ({
   withSort = true,
   recordIdToIsVisibleMap,
   setRecordIdToIsVisibleMap,
-  withDisplayOptions
+  withDisplayOptions,
+  getCheckboxGroupId
 }) => {
   const dispatch = useDispatch();
   const change = useCallback(
@@ -743,6 +745,16 @@ export const useColumns = ({
         return <div />;
       }
       const entity = entities[rowIndex];
+      if (getCheckboxGroupId) {
+        const currentGroupId = getCheckboxGroupId(entity, rowIndex);
+        const previousEntity = entities[rowIndex - 1];
+        const previousGroupId = previousEntity
+          ? getCheckboxGroupId(previousEntity, rowIndex - 1)
+          : undefined;
+        if (currentGroupId && currentGroupId === previousGroupId) {
+          return <div />;
+        }
+      }
       return (
         <Checkbox
           name={`${getIdOrCodeOrIndex(entity, rowIndex)}-checkbox`}
@@ -760,7 +772,8 @@ export const useColumns = ({
               onMultiRowSelect,
               noDeselectAll,
               onRowSelect,
-              change
+              change,
+              getCheckboxGroupId
             });
           }}
           checked={isSelected}
@@ -781,7 +794,8 @@ export const useColumns = ({
       onRowSelect,
       onSingleRowSelect,
       reduxFormSelectedEntityIdMap,
-      withCheckboxes
+      withCheckboxes,
+      getCheckboxGroupId
     ]
   );
 
@@ -866,13 +880,14 @@ export const useColumns = ({
           );
         }
       }),
+      show: !hideExpandSubCompColumn,
       expander: true,
       Expander: ({ isExpanded, original: record }) => {
         let shouldShow = true;
         if (shouldShowSubComponent) {
           shouldShow = shouldShowSubComponent(record);
         }
-        if (!shouldShow) return null;
+        if (!shouldShow || hideExpandSubCompColumn) return null;
         return (
           <Button
             className={classNames(
@@ -1050,6 +1065,5 @@ export const useColumns = ({
     );
     return tableColumn;
   });
-
   return columnsToRender.concat(tableColumns);
 };
