@@ -1,10 +1,6 @@
 import classnames from "classnames";
-import { compose } from "redux";
-import { connect } from "react-redux";
 import React from "react";
-import { store } from "@risingstack/react-easy-state";
-import * as hoveredAnnotationActions from "../redux/hoveredAnnotation";
-import { withHandlers, branch } from "recompose";
+import { store, view } from "@risingstack/react-easy-state";
 import { modifiableTypes } from "@teselagen/sequence-utils";
 
 export const HoveredIdContext = React.createContext({
@@ -20,57 +16,37 @@ export function withHoveredIdFromContext(Component) {
     );
   };
 }
+
+// Easy state store for hover state management (replaces Redux)
 export const hoveredAnnEasyStore = store({
   hoveredAnn: undefined,
-  selectedAnn: undefined
+  selectedAnn: undefined,
+  // Per-editor hovered annotation IDs
+  hoveredIds: {}
 });
 
-export default compose(
-  withHoveredIdFromContext,
-  branch(
-    ({ noRedux }) => !noRedux,
-    connect(function (
-      state,
-      {
-        id,
-        editorName = "StandaloneEditor",
-        className,
-        hoveredId: hoveredIdFromContext,
-        passHoveredId
-      }
-    ) {
-      if (!editorName) {
-        console.warn(
-          "please pass an editorName to the withHover() wrapped component"
-        );
-      }
-      const editorState = state.VectorEditor[editorName] || {};
-      const hoveredId = editorState.hoveredAnnotation || hoveredIdFromContext; //we can pass a hoveredId from context in order to still use the hover functionality without being connected to redux! see http://localhost:3344/#/SimpleCircularOrLinearView for an example
-      const isIdHashmap = typeof id === "object";
+// Helper functions to update/clear hovered annotation (replaces Redux actions)
+export function hoveredAnnotationUpdate(
+  id,
+  { editorName = "StandaloneEditor" } = {}
+) {
+  hoveredAnnEasyStore.hoveredIds[editorName] = id;
+}
 
-      const hovered = !!(isIdHashmap ? id[hoveredId] : hoveredId === id);
-      const newClassName = classnames(className, "hoverHelper", {
-        veAnnotationHovered: hovered
-      });
-      const toReturn = {
-        hovered,
-        className: newClassName
-      };
-      if (hovered && passHoveredId) {
-        //only pass hoveredId if it is hovered
-        toReturn.hoveredId = hoveredId;
-      }
-      return toReturn;
-    }, hoveredAnnotationActions)
-  ),
-  withHandlers({
-    onMouseOver: props =>
-      function (e) {
-        // loop through the target element and the parents and see if any of them have the hoverHelper class
-        // if they do, then we don't want to trigger the hover event
-        // if they don't, then we do want to trigger the hover event
-        // we should stop the loop if the target element is implementing this onMouseOver event
-        // e.stopPropagation(); //this is important otherwise hovering labels inside circular view label groups won't work
+export function hoveredAnnotationClear(
+  clear,
+  { editorName = "StandaloneEditor" } = {}
+) {
+  hoveredAnnEasyStore.hoveredIds[editorName] = "";
+}
+
+// HOC that provides hover functionality using react-easy-state
+export default function withHover(WrappedComponent) {
+  const HoverComponent = view(
+    class extends React.Component {
+      static contextType = HoveredIdContext;
+
+      handleMouseOver = e => {
         const target = e.target;
         let alreadyHandled = false;
         let currentElement = target;
@@ -78,8 +54,6 @@ export default compose(
           if (currentElement === e.currentTarget) {
             break;
           }
-          // console.log(`currentElement:`, currentElement)
-
           if (currentElement.classList.contains("hoverHelper")) {
             alreadyHandled = true;
             break;
@@ -88,26 +62,76 @@ export default compose(
         }
         if (alreadyHandled) return;
 
-        // const alreadyHandled = e.target.classList.contains("hoverHelper");
-        const { editorName, id, hoveredAnnotationUpdate } = props;
+        const {
+          editorName = "StandaloneEditor",
+          id,
+          annotation,
+          label
+        } = this.props;
         const isIdHashmap = typeof id === "object";
         const idToPass = isIdHashmap ? Object.keys(id)[0] : id;
-        const annot = props?.annotation || props?.label?.annotation;
+        const annot = annotation || label?.annotation;
         if (modifiableTypes.includes(annot?.annotationTypePlural)) {
           hoveredAnnEasyStore.hoveredAnn = annot;
         }
-        //because the calling onHover can slow things down, we disable it if dragging or scrolling
+        // Disable hover during dragging or scrolling
         if (window.__veDragging || window.__veScrolling) return;
 
-        hoveredAnnotationUpdate &&
-          hoveredAnnotationUpdate(idToPass, { editorName });
-      },
-    onMouseLeave: props => e => {
-      hoveredAnnEasyStore.hoveredAnn = undefined;
-      const { editorName, hoveredAnnotationClear } = props;
-      e.stopPropagation();
-      if (window.__veDragging || window.__veScrolling) return;
-      hoveredAnnotationClear && hoveredAnnotationClear(true, { editorName });
+        hoveredAnnotationUpdate(idToPass, { editorName });
+      };
+
+      handleMouseLeave = e => {
+        hoveredAnnEasyStore.hoveredAnn = undefined;
+        const { editorName = "StandaloneEditor" } = this.props;
+        e.stopPropagation();
+        if (window.__veDragging || window.__veScrolling) return;
+        hoveredAnnotationClear(true, { editorName });
+      };
+
+      render() {
+        const {
+          id,
+          editorName = "StandaloneEditor",
+          className,
+          passHoveredId,
+          noRedux, // eslint-disable-line no-unused-vars
+          ...restProps
+        } = this.props;
+
+        const hoveredIdFromContext = this.context?.hoveredId;
+        const hoveredId =
+          hoveredAnnEasyStore.hoveredIds[editorName] ||
+          hoveredIdFromContext ||
+          "";
+        const isIdHashmap = typeof id === "object";
+        const hovered = !!(isIdHashmap ? id[hoveredId] : hoveredId === id);
+
+        const newClassName = classnames(className, "hoverHelper", {
+          veAnnotationHovered: hovered
+        });
+
+        const passedProps = {
+          ...restProps,
+          id,
+          editorName,
+          hovered,
+          className: newClassName,
+          onMouseOver: this.handleMouseOver,
+          onMouseLeave: this.handleMouseLeave
+        };
+
+        if (hovered && passHoveredId) {
+          passedProps.hoveredId = hoveredId;
+        }
+
+        return <WrappedComponent {...passedProps} />;
+      }
     }
-  })
-);
+  );
+
+  HoverComponent.displayName = `withHover(${
+    WrappedComponent.displayName || WrappedComponent.name || "Component"
+  })`;
+
+  return HoverComponent;
+}

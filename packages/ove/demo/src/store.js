@@ -15,7 +15,7 @@ import { reducer as form } from "redux-form";
 const composeEnhancer =
   (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      actionsDenylist: ["HOVEREDANNOTATIONUPDATE", "HOVEREDANNOTATIONCLEAR"],
+      actionsDenylist: [],
       // actionSanitizer,
       latency: 1000,
       name: "openVE"

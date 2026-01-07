@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.27 (2026-06-10)
+
+- fix: scroll hover jank resulting from withHover redux actions by making hoveredAnnotation track purely thru easyState
+
 ## 0.8.26 (2026-01-05)
 
 - republish to fix build_umd
