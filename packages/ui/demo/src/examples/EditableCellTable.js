@@ -4,130 +4,149 @@ import { nanoid } from "nanoid";
 import React, { useMemo, useState } from "react";
 import DataTable from "../../../src/DataTable";
 import DemoWrapper from "../DemoWrapper";
-import { useToggle } from "../useToggle";
-import OptionsSection from "../OptionsSection";
-import { toNumber } from "lodash-es";
+import { Classes, Dialog } from "@blueprintjs/core";
+import { DialogFooter, SelectField } from "@teselagen/ui";
+import { reduxForm } from "redux-form";
 
 const chance = new Chance();
+
+// 1. Define a list of mock materials
+const materialOptions = [
+  "Plasmid-pBR322", "Genomic-E-coli", "Primer-M13F", "Enzyme-BsaI",
+  "Buffer-CutSmart", "DNA-Ladder-1kb", "RNA-Polymerase", "Ligase-T4",
+  "dNTP-Mix", "PCR-Master-Mix", "SYBR-Green", "Loading-Dye",
+  "Proteinase-K", "RNase-A", "Ethanol-70", "Isopropanol",
+  "HEPES-Buffer", "Tris-EDTA", "Agarose-Powder", "Ethidium-Bromide"
+];
+
+// 2. Update the generator to assign a different material to each row
 const getEnts = num =>
-  times(num).map(i => ({
-    name:
-      i < 20
-        ? "Tom" + (88 + i) + (i % 5 !== 0 ? " a" : "")
-        : i < 25
-          ? "Nancy" + (88 + i)
-          : chance.name(),
-    id: nanoid(),
-    type:
-      i === 0
-        ? "fail"
-        : i === 1 || i === 22
-          ? "too old"
-          : chance.pickone(["new", "old"]),
-    howMany:
-      i === 0 ? "fail" : i === 1 ? "15" : chance.pickone(["3", 40, 2, 5]),
-    isProtein: true,
-    weather:
-      i === 0 ? "WAY TOO HOT" : chance.pickone(["rainy", "cloudy", "HOT"])
-  }));
+  times(num).map(i => {
+    const linkedMaterial = materialOptions[i % materialOptions.length];
+    return {
+      id: nanoid(),
+      sampleName: linkedMaterial,
+      aliquotType: "sample-aliquot",
+      // Use modulo to cycle through materials so each row is unique
+      linkedMaterial,
+      isDry: false,
+      volume: "",
+      concentration: ""
+    };
+  });
 
-const defaultValAsFuncOptions = {
-  type: "defaultValAsFunc"
-};
-
-export default function EditableCellTable(props) {
-  const [entities, setEnts] = useState([]);
-  const toggleOptions = useMemo(
-    () => ({
-      type: "num",
-      label: "Number of Entities",
-      isSelect: true,
-      defaultValue: 50,
-      controlledValue: props.entities?.length,
-      setControlledValue: v => {
-        setEnts(getEnts(toNumber(v)));
-      },
-      options: [20, 50, 100]
-    }),
-    [props.entities?.length]
-  );
-
-  const [, numComp] = useToggle(toggleOptions);
-
-  const [defaultValAsFunc, defaultValAsFuncComp] = useToggle(
-    defaultValAsFuncOptions
-  );
+function EditableCellTable(props) {
+  const [entities] = useState(getEnts(20));
+  
+  const [volUnit, setVolUnit] = useState("uL");
+  const [measureType, setMeasureType] = useState("Concentration");
+  const [concUnit, setConcUnit] = useState("ng/uL");
 
   const schema = useMemo(
     () => ({
       fields: [
         {
-          path: "name",
-          validate: newVal => {
-            if (!newVal || !newVal.includes("a"))
-              return "Must include the letter 'a'";
-          },
-          format: newVal => {
-            return newVal?.toLowerCase();
-          }
+          path: "sampleName",
+          displayName: "Aliquot Name",
+          isRequired: true
         },
+        // 3. The Searchable Dropdown Schema
         {
-          path: "type",
+          path: "linkedMaterial",
+          displayName: "Linked Material",
           type: "dropdown",
-          isRequired: true,
-          values: ["old", "new"]
+          values: materialOptions,
+          placeholder: "Search materials..."
         },
         {
-          path: "tags",
-          type: "dropdownMulti",
-          isRequired: true,
-          values: ["tag1", "tag2", "color:blue", "color:red", "color:green"]
-        },
-        {
-          path: "weather",
-          //should auto validate against list of accepted values, should auto format to try to coerce input values into accepted
+          path: "aliquotType",
+          displayName: "Aliquot Type",
           type: "dropdown",
-          description: "What it's like outside",
-          defaultValue: "sunny",
-          values: ["cloudy", "rainy", "sunny", "overcast"]
+          values: ["sample-aliquot", "reagent-aliquot"]
         },
         {
-          path: "howMany",
-          //should auto validate to make sure the type is number, should auto format (I think this already works..) to try to coerce input values into accepted
+          path: "isDry",
+          displayName: "Dry Aliquot",
+          type: "boolean"
+        },
+        {
+          path: "volume",
+          displayName: `Volume (${volUnit})`,
           type: "number",
-          defaultValue: defaultValAsFunc ? () => 4 : 1,
-          //should be able to pass additional validation/formatting
-          validate: newVal => {
-            if (newVal > 20) return "This val is toooo high";
-          }
+          isRequired: true
         },
         {
-          path: "isProtein",
-          //should auto validate to coerce Yes -> true "true"->true, should auto format to try to coerce input values into accepted
-          type: "boolean",
-          defaultValue: true
+          path: "concentration",
+          displayName: measureType === "Concentration" ? `Conc (${concUnit})` : `Molarity (${concUnit})`,
+          type: "number"
         }
       ]
     }),
-    [defaultValAsFunc]
+    [volUnit, measureType, concUnit]
   );
 
   return (
     <div>
-      <OptionsSection>
-        {numComp}
-        {defaultValAsFuncComp}
-      </OptionsSection>
       <DemoWrapper>
-        <DataTable
-          {...props}
-          formName="editableCellTable"
-          isSimple
-          isCellEditable
-          entities={entities}
-          schema={schema}
-        />
+        <Dialog 
+          title="Bulk Create Aliquots" 
+          isOpen={true} 
+          style={{ width: "90vw", height: "85vh" }}
+        >
+          <div className={Classes.DIALOG_BODY}>
+            <div style={{ 
+              display: "flex", 
+              gap: "20px", 
+              padding: "10px", 
+              marginBottom: "15px",
+              alignItems: "flex-end"
+            }}>
+              <SelectField
+                label="Volume Unit"
+                name="volumeUnit"
+                inlineLabel
+                options={["uL", "mL", "nL"]}
+                onFieldSubmit={(v) => setVolUnit(v)}
+                defaultValue={volUnit}
+              />
+              <SelectField
+                label="Measurement Type"
+                name="measurementType"
+                inlineLabel
+                options={["Concentration", "Molarity"]}
+                onFieldSubmit={(v) => setMeasureType(v)}
+                defaultValue={measureType}
+              />
+              <SelectField
+                label="Concentration Unit"
+                name="concUnit"
+                inlineLabel
+                options={measureType === "Concentration" ? ["ng/uL", "ug/uL"] : ["nM", "uM"]}
+                onFieldSubmit={(v) => setConcUnit(v)}
+                defaultValue={concUnit}
+              />
+            </div>
+
+            <DataTable
+              {...props}
+              formName="aliquotBulkTable"
+              isSimple
+              isCellEditable
+              entities={entities}
+              schema={schema}
+              maxHeight={400}
+            />
+          </div>
+          <DialogFooter 
+            secondaryText="Cancel" 
+            text="Create 15 Aliquots"
+          />
+        </Dialog>
       </DemoWrapper>
     </div>
   );
 }
+
+export default reduxForm({
+  form: "aliquotBulkTable"
+})(EditableCellTable);
