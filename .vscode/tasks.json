@@ -4,26 +4,6 @@
     {
       "type": "nx",
       "project": "",
-      "command": "run-many",
-      "flags": [
-        "--target=publish",
-        "--projects=bio-parsers,ove,sequence-utils,ui"
-      ],
-      "problemMatcher": [],
-      "label": "nx: nx run-many --target=publish --projects=bio-parsers,ove,sequence-utils,ui"
-    },
-    {
-      "type": "nx",
-      "project": "",
-      "command": "run",
-      "positional": "ui:publish",
-      "flags": [],
-      "problemMatcher": [],
-      "label": "nx: nx run ui:publish"
-    },
-    {
-      "type": "nx",
-      "project": "",
       "command": "run",
       "positional": "ove:launch-e2e",
       "flags": [],

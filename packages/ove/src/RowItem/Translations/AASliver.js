@@ -168,11 +168,11 @@ function AASliver(props) {
       {showAminoAcidNumbers && (aminoAcidIndex + 1) % 5 === 0 && (
         <text
           fontSize={25}
-          stroke="black"
+          className={"aminoAcidNumber"}
           strokeWidth={2}
-          transform={`scale(${(3 / width) * 10},3) translate(${
+          transform={`scale(${(3 / width) * 10},${37.5 / height}) translate(${
             ((forward ? 45 : 55) * width) / 10
-          },51)`}
+          },${4.4 * height - 4})`}
           x="0"
           y="4"
           style={{ textAnchor: "middle" }}

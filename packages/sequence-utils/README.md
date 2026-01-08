@@ -64,15 +64,9 @@ Make sure they pass by running `npm test`
 
 Commit and push all changes first (make sure tests are passing!)
 
-### Teselagen collaborators:
+# Publishing
 
-Commit and push all changes
-Sign into npm using the teselagen npm account (npm whoami)
-
-```
-npm version patch|minor|major
-npm publish
-```
+See the [README](../README.md)
 
 ### Outside collaborators:
 

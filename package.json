@@ -9,6 +9,7 @@
     "test": "nx affected -t test"
   },
   "type": "module",
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "private": true,
   "dependencies": {},
   "devDependencies": {
@@ -38,7 +39,6 @@
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "auto-changelog": "^2.4.0",
     "biomsa": "^0.2.4",
     "chai": "^5.2.0",
     "chai-dom": "^1.12.1",

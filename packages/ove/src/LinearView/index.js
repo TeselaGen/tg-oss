@@ -104,32 +104,34 @@ class _LinearView extends React.Component {
     } = this.props;
     // if (!isEqual(sequenceData, this.oldSeqData)) {
     this.paredDownMessages = [];
-    const paredDownSeqData = ["parts", "features", "cutsites"].reduce(
-      (acc, type) => {
-        const nameUpper = startCase(type);
-        const maxToShow =
-          (maxAnnotationsToDisplay
-            ? maxAnnotationsToDisplay[type]
-            : limits[type]) || 50;
-        const [annotations, paredDown] = pareDownAnnotations(
-          sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
-          maxToShow
-        );
+    const paredDownSeqData = [
+      "parts",
+      "features",
+      "cutsites",
+      "primers"
+    ].reduce((acc, type) => {
+      const nameUpper = startCase(type);
+      const maxToShow =
+        (maxAnnotationsToDisplay
+          ? maxAnnotationsToDisplay[type]
+          : limits[type]) || 50;
+      const [annotations, paredDown] = pareDownAnnotations(
+        sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
+        maxToShow
+      );
 
-        if (paredDown) {
-          this.paredDownMessages.push(
-            getParedDownWarning({
-              nameUpper,
-              isAdjustable: !maxAnnotationsToDisplay,
-              maxToShow
-            })
-          );
-        }
-        acc[type] = annotations;
-        return acc;
-      },
-      {}
-    );
+      if (paredDown) {
+        this.paredDownMessages.push(
+          getParedDownWarning({
+            nameUpper,
+            isAdjustable: !maxAnnotationsToDisplay,
+            maxToShow
+          })
+        );
+      }
+      acc[type] = annotations;
+      return acc;
+    }, {});
     this.rowData = prepareRowData(
       {
         ...sequenceData,

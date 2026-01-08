@@ -38,19 +38,18 @@ All code from this repository is placed under the [MIT License](./LICENSE).
 
 ## Publishing (works the same for all packages)
 
-```
-nx run ui:publish
-nx run ove:publish
-nx run-many --target=publish --projects=bio-parsers,ove,sequence-utils,ui
-```
+Simply bump the version in the package.json file and push to master. The GitHub Actions will handle the rest (updating dependencies, building, and pushing to gh-pages)
+
+Note you will need to manually add an entry to the CHANGELOG.md file for the package you are publishing.
+New entries should be in the format:
+
+## 0.1.0 (2025-01-05)
+
+- <description of change>
 
 ## Publishing a beta version (for use when linking to a branch in another project)
 
-```
-nx run ui:publish-beta
-nx run ove:publish-beta
-nx run-many --target=publish-beta --projects=bio-parsers,ove,sequence-utils,ui
-```
+Bump the version and add a "-beta" suffix to the version. Push to the beta branch. The GitHub Action will handle the rest.
 
 # Running tests
 
@@ -61,3 +60,9 @@ Cypress e2e tests can be run locally via the following commands:
 `nx run ui:launch-e2e`
 
 CI is run via GitHub Actions on every push and pull request and runs a suite of Cypress e2e tests
+
+## Adding a new package
+
+Duplicate an existing package that is most similar to the new package being added and make the necessary changes.
+
+You'll need to ask a Teselagen admin to update the trusted publishers settings in the npm registry for the new package (a maintainer will need to manually publish the first version in order to add it to the registry).

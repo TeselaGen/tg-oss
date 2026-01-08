@@ -1,5 +1,7 @@
 # TeselaGen Open Source Monorepo Guidance
 
+Prefer bun over node for running scripts.
+
 ## Project Overview
 
 TeselaGen's monorepo contains multiple open-source packages focused on biological sequence visualization, manipulation, and analysis:
@@ -73,20 +75,6 @@ nx run-many --target=build
 - **Unit tests**: Run with `bun test` from root
 - **E2E tests**: Run with `nx run [package]:launch-e2e`
 - **CI**: Runs on GitHub Actions on push/PR
-
-### Publishing
-
-```bash
-# Publish a single package
-nx run ui:publish
-nx run ove:publish
-
-# Publish multiple packages
-nx run-many --target=publish --projects=bio-parsers,ove,sequence-utils,ui
-
-# Publish beta versions
-nx run ui:publish-beta
-```
 
 ## Key Concepts
 
