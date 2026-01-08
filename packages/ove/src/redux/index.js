@@ -11,7 +11,6 @@ import * as digestTool from "./digestTool";
 import * as findTool from "./findTool";
 import * as toolBar from "./toolBar";
 import * as frameTranslations from "./frameTranslations";
-import * as hoveredAnnotation from "./hoveredAnnotation";
 import * as minimumOrfSize from "./minimumOrfSize";
 import * as alignments from "./alignments";
 import * as panelsShown from "./panelsShown";
@@ -51,7 +50,6 @@ const subReducers = {
   toolBar,
   findTool,
   frameTranslations,
-  hoveredAnnotation,
   minimumOrfSize,
   panelsShown,
   propertiesTool,

@@ -1,8 +1,9 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.8.24",
+  "version": "0.8.28",
   "main": "./src/index.js",
   "type": "module",
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "exports": {
     ".": {
       "import": "./index.es.js",
