@@ -32,7 +32,7 @@ describe("autoAnnotate", function () {
     cy.contains("button", "OK").click();
     cy.contains("1 Selected");
     cy.contains('.rt-tr:contains("I cover the full")', "5299");
-    cy.contains("button", "Add").click();
+    cy.contains(".bp3-dialog button", "Add").click();
     cy.contains(
       `Feature (misc_feature) - I cover the full Seq - Start: 1 End: 5299`
     );
@@ -51,7 +51,7 @@ describe("autoAnnotate", function () {
     );
     cy.contains("button", "OK").click();
     cy.contains("19 Selected");
-    cy.contains("button", "Add").click();
+    cy.contains(".bp3-dialog button", "Add").click();
     cy.contains(`T7 - Start: 217 End: 335`);
   });
   it(`auto annotating parts should work when the csv file has a 'type' column `, () => {
@@ -68,7 +68,7 @@ describe("autoAnnotate", function () {
     cy.contains(`csvAnnotationList.csv`);
     cy.contains(".bp3-dialog button", "Annotate").click();
     cy.contains("11 Selected");
-    cy.contains("button", "Add").click();
+    cy.contains(".bp3-dialog button", "Add").click();
     cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
   });
   it(`auto annotating parts should work when the csv file doesn't have a 'type' column `, () => {
@@ -86,7 +86,7 @@ describe("autoAnnotate", function () {
     cy.contains(".bp3-dialog button", "Annotate").click();
     cy.contains("10 Selected");
 
-    cy.contains("button", "Add").click();
+    cy.contains(".bp3-dialog button", "Add").click();
     cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
   });
   it(`the auto annotation csv upload addon should work`, () => {
@@ -110,7 +110,7 @@ describe("autoAnnotate", function () {
     cy.get(`.rt-tr:contains(Example Feature 3):contains(1)`);
     cy.get(`.rt-tr:contains(Reverse Feature):contains(-1)`);
 
-    cy.contains("button", "Add").click();
+    cy.contains(".bp3-dialog button", "Add").click();
     cy.contains(".veCircularViewLabelText", "Example Feature 2");
     cy.contains("Feature (CDS) - Example Feature 2 - Start: 135 End: 165");
 

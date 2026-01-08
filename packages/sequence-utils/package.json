@@ -1,6 +1,7 @@
 {
   "name": "@teselagen/sequence-utils",
-  "version": "0.3.35",
+  "version": "0.3.41",
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "type": "module",
   "dependencies": {
     "escape-string-regexp": "5.0.0",

@@ -11,7 +11,6 @@ import * as digestTool from "./digestTool";
 import * as findTool from "./findTool";
 import * as toolBar from "./toolBar";
 import * as frameTranslations from "./frameTranslations";
-import * as hoveredAnnotation from "./hoveredAnnotation";
 import * as minimumOrfSize from "./minimumOrfSize";
 import * as alignments from "./alignments";
 import * as panelsShown from "./panelsShown";
@@ -34,6 +33,7 @@ import * as featureLengthsToHide from "./featureLengthsToHide";
 import * as primerLengthsToHide from "./primerLengthsToHide";
 import * as partLengthsToHide from "./partLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
+import * as temporaryAnnotations from "./temporaryAnnotations";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
 export { default as vectorEditorMiddleware } from "./middleware";
@@ -50,7 +50,6 @@ const subReducers = {
   toolBar,
   findTool,
   frameTranslations,
-  hoveredAnnotation,
   minimumOrfSize,
   panelsShown,
   propertiesTool,
@@ -72,7 +71,8 @@ const subReducers = {
   partLengthsToHide,
   primerLengthsToHide,
   featureLengthsToHide,
-  selectedPartTags
+  selectedPartTags,
+  temporaryAnnotations
 };
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");

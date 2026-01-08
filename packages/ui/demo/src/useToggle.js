@@ -107,7 +107,7 @@ const useToggle = ({
   const setVal = newVal => {
     const demoState = getDemoState();
     demoState[type] = newVal;
-    setCurrentParamsOnUrl({ [type]: newVal }, undefined, true);
+    setCurrentParamsOnUrl(demoState, undefined, true);
     if (setControlledValue) setControlledValue(newVal);
     _setVal(newVal);
   };

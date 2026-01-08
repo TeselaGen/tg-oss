@@ -354,9 +354,16 @@ const DataTableDemo = () => {
   const [withSubComponent, withSubComponentSwitch] = useToggle({
     type: "withSubComponent"
   });
+  const [hideExpandSubCompColumn, hideExpandSubCompColumnSwitch] = useToggle({
+    type: "hideExpandSubCompColumn"
+  });
   const [withTitle, withTitleSwitch] = useToggle({
     type: "withTitle",
     defaultValue: true
+  });
+  const [groupRows, groupRowsSwitch] = useToggle({
+    type: "groupRows",
+    description: "Group every 2 rows together"
   });
 
   const [entities, setEntities] = useState(
@@ -483,6 +490,7 @@ const DataTableDemo = () => {
             <div className={"wrappingdiv"}>
               <DataTable
                 {...tableParams}
+                hideExpandSubCompColumn={hideExpandSubCompColumn}
                 additionalFilters={additionalFilters}
                 cellRenderer={{
                   isShared: value => {
@@ -610,6 +618,14 @@ const DataTableDemo = () => {
                 withSearch={withSearch}
                 withSort={withSort}
                 withTitle={withTitle}
+                getCheckboxGroupId={
+                  groupRows
+                    ? (row, index) => {
+                        const r = Math.floor(index / 2);
+                        return `group-${r}`;
+                      }
+                    : undefined
+                }
               />
             </div>
           </DemoWrapper>
@@ -619,30 +635,33 @@ const DataTableDemo = () => {
       );
     },
     [
+      isInfinite,
       _additionalFilters,
-      compact,
-      controlledPaging,
+      entities,
       disableSetPageSize,
+      hideSetPageSize,
+      hideTotalPages,
+      forceNoNextPage,
+      hideExpandSubCompColumn,
+      compact,
       disabled,
       doNotShowEmptyRows,
-      entities,
       expandAllByDefault,
       extraCompact,
-      forceNoNextPage,
       getRowClassName,
+      controlledPaging,
       hideDisplayOptionsIcon,
       hidePageSizeWhenPossible,
       hideSelectedCount,
-      hideSetPageSize,
-      hideTotalPages,
       isCopyable,
-      isInfinite,
       isLoading,
+      isEntityDisabled,
       isOpenable,
       isSimple,
       isSingleSelect,
       isViewable,
       isMultiViewable,
+      recordIdToIsVisibleMap,
       keepSelectionOnPageChange,
       maxHeight,
       minimalStyle,
@@ -658,6 +677,7 @@ const DataTableDemo = () => {
       selectAllByDefault,
       selectedIds,
       showCount,
+      withSubComponent,
       withCheckboxes,
       withDisplayOptions,
       withExpandAndCollapseAllButton,
@@ -665,10 +685,8 @@ const DataTableDemo = () => {
       withPaging,
       withSearch,
       withSort,
-      withSubComponent,
       withTitle,
-      recordIdToIsVisibleMap,
-      isEntityDisabled
+      groupRows
     ]
   );
 
@@ -747,6 +765,7 @@ withQuery(
           {withTitleSwitch}
           {noSelectSwitch}
           {withSubComponentSwitch}
+          {hideExpandSubCompColumnSwitch}
           {withSearchSwitch}
           {disableSetPageSizeSwitch}
           {keepSelectionOnPageChangeSwitch}
@@ -789,6 +808,8 @@ withQuery(
           {isCopyableSwitch}
           {mustClickCheckboxToSelectSwitch}
           {maxHeightSwitch}
+          {maxHeightSwitch}
+          {groupRowsSwitch}
           {updateSelectedAndChangeNumEntsButton}
         </OptionsSection>
         <br />

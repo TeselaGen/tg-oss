@@ -10,7 +10,7 @@ import {
 } from "./queryParams";
 import { withRouter } from "react-router-dom";
 import getTableConfigFromStorage from "./getTableConfigFromStorage";
-import { useDeepEqualMemo } from "../../utils/hooks/useDeepEqualMemo";
+import { useDeepEqualMemoIgnoreFns } from "../../utils/hooks/useDeepEqualMemoIgnoreFns";
 import { branch, compose } from "recompose";
 import { getCCDisplayName } from "./tableQueryParamsToHasuraClauses";
 
@@ -131,8 +131,8 @@ export const useTableParams = props => {
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
-  const reduxFormQueryParams = useDeepEqualMemo(_reduxFormQueryParams);
-  const reduxFormSelectedEntityIdMap = useDeepEqualMemo(
+  const reduxFormQueryParams = useDeepEqualMemoIgnoreFns(_reduxFormQueryParams);
+  const reduxFormSelectedEntityIdMap = useDeepEqualMemoIgnoreFns(
     _reduxFormSelectedEntityIdMap
   );
 
@@ -155,7 +155,7 @@ export const useTableParams = props => {
     [reduxFormSelectedEntityIdMap, withSelectedEntities]
   );
 
-  const currentParams = useDeepEqualMemo(_currentParams);
+  const currentParams = useDeepEqualMemoIgnoreFns(_currentParams);
 
   const defaultsToUse = useMemo(() => {
     const _tableConfig = getTableConfigFromStorage(formName);

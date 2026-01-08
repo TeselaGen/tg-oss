@@ -462,4 +462,46 @@ describe("getSequenceDataBetweenRange", () => {
       ]
     });
   });
+  it("feature with locations, circular sequence, non-fully enclosing range range that cross the origin", () =>{
+    const res = getSequenceDataBetweenRange(
+      {
+        circular: true,
+        sequence: "gggatgcatgca",
+        features: [
+          {
+            start: 5,
+            end: 3,
+            locations: [
+              { start: 5, end: 6 },
+              { start: 7, end: 8 },
+              { start: 9, end: 1 },
+              { start: 2, end: 3 }
+            ],
+            name: "testing"
+          }
+        ]
+      },
+      {
+        start: 2,
+        end: 7
+      }
+    );
+    res.should.containSubset({
+      sequence: "gatgca",
+      features: [
+        {
+          start: 0,
+          end: 1,
+          name: "testing",
+          locations: undefined
+        },
+        {
+          start: 3,
+          end: 5,
+          name: "testing",
+          locations: [{start:3, end:4}, {start:5, end:5}]
+        }
+      ]
+    });
+  })
 });

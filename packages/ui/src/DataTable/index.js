@@ -70,7 +70,6 @@ import {
   PRIMARY_SELECTED_VAL,
   removeCleanRows
 } from "./utils";
-import { useDeepEqualMemo } from "../utils/hooks";
 import rowClick, {
   changeSelectedEntities,
   finalizeSelection
@@ -104,6 +103,10 @@ import { throwFormError } from "../throwFormError";
 import { isObservableArray, toJS } from "mobx";
 import { isBeingCalledExcessively } from "../utils/isBeingCalledExcessively";
 import { getCCDisplayName } from "./utils/tableQueryParamsToHasuraClauses";
+import {
+  useDeepEqualMemo,
+  useDeepEqualMemoIgnoreFns
+} from "../utils/hooks/useDeepEqualMemoIgnoreFns";
 
 enablePatches();
 const IS_LINUX = window.navigator.platform.toLowerCase().search("linux") > -1;
@@ -186,9 +189,11 @@ const DataTable = ({
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
-  const reduxFormCellValidation = useDeepEqualMemo(_reduxFormCellValidation);
-  const reduxFormQueryParams = useDeepEqualMemo(_reduxFormQueryParams);
-  const reduxFormSelectedEntityIdMap = useDeepEqualMemo(
+  const reduxFormCellValidation = useDeepEqualMemoIgnoreFns(
+    _reduxFormCellValidation
+  );
+  const reduxFormQueryParams = useDeepEqualMemoIgnoreFns(_reduxFormQueryParams);
+  const reduxFormSelectedEntityIdMap = useDeepEqualMemoIgnoreFns(
     _reduxFormSelectedEntityIdMap
   );
 
@@ -205,8 +210,7 @@ const DataTable = ({
       entities: normalizedEntities
     };
   }
-  const __schema = useDeepEqualMemo(_schema);
-
+  const __schema = useDeepEqualMemo(_schema, true);
   const convertedSchema = useMemo(() => convertSchema(__schema), [__schema]);
 
   if (isLocalCall) {
@@ -289,7 +293,7 @@ const DataTable = ({
     return tmp;
   }, [history, reduxFormQueryParams, urlConnected]);
 
-  const currentParams = useDeepEqualMemo(_currentParams);
+  const currentParams = useDeepEqualMemoIgnoreFns(_currentParams);
 
   const tableParams = useMemo(() => {
     if (!isTableParamsConnected) {
@@ -431,6 +435,7 @@ const DataTable = ({
     minimalStyle,
     mustClickCheckboxToSelect,
     noDeselectAll,
+    hideExpandSubCompColumn,
     noFooter = isSimple ? !withPaging : false,
     noFullscreenButton = isSimple,
     noHeader = false,
@@ -478,16 +483,17 @@ const DataTable = ({
     withSort,
     withTitle = !isSimple,
     noExcessiveCheck,
-    isEntityCountLoading
+    isEntityCountLoading,
+    getCheckboxGroupId
   } = props;
 
   const _entities = useMemo(
     () => (reduxFormEntities?.length ? reduxFormEntities : _origEntities) || [],
     [_origEntities, reduxFormEntities]
   );
-  const entities = useDeepEqualMemo(_entities);
+  const entities = useDeepEqualMemoIgnoreFns(_entities);
 
-  const entitiesAcrossPages = useDeepEqualMemo(_entitiesAcrossPages);
+  const entitiesAcrossPages = useDeepEqualMemoIgnoreFns(_entitiesAcrossPages);
 
   // This is because we need to maintain the reduxFormSelectedEntityIdMap and
   // allOrderedEntities updated
@@ -2236,6 +2242,17 @@ const DataTable = ({
       const isExpanded = expandedEntityIdMap[rowId];
       const rowDisabled = isEntityDisabled(entity);
       const dataId = entity.id || entity.code;
+      let noGroupBorder = false;
+      if (getCheckboxGroupId) {
+        const currentGroupId = getCheckboxGroupId(entity, rowInfo.index);
+        const nextEntity = entities[rowInfo.index + 1];
+        const nextGroupId = nextEntity
+          ? getCheckboxGroupId(nextEntity, rowInfo.index + 1)
+          : undefined;
+        if (currentGroupId && currentGroupId === nextGroupId) {
+          noGroupBorder = true;
+        }
+      }
       return {
         onClick: e => {
           if (isCellEditable) return;
@@ -2265,7 +2282,8 @@ const DataTable = ({
             onMultiRowSelect,
             noDeselectAll,
             onRowSelect,
-            change
+            change,
+            getCheckboxGroupId
           });
         },
         //row right click
@@ -2311,9 +2329,11 @@ const DataTable = ({
           {
             disabled: rowDisabled,
             selected: rowSelected && !withCheckboxes,
-            "rt-tr-last-row": rowInfo.index === entities.length - 1
+            "rt-tr-last-row": rowInfo.index === entities.length - 1,
+            "no-group-border": noGroupBorder
           }
         ),
+        "data-test-selected": !!rowSelected,
         "data-test-id": dataId === undefined ? rowInfo.index : dataId,
         "data-index": rowInfo.index,
         "data-tip": typeof rowDisabled === "string" ? rowDisabled : undefined,
@@ -2345,7 +2365,8 @@ const DataTable = ({
       reduxFormSelectedEntityIdMap,
       selectedCells,
       showContextMenu,
-      withCheckboxes
+      withCheckboxes,
+      getCheckboxGroupId
     ]
   );
 
@@ -2713,6 +2734,7 @@ const DataTable = ({
     isSingleSelect,
     isSelectionARectangle,
     noDeselectAll,
+    hideExpandSubCompColumn,
     noSelect,
     noUserSelect,
     onDeselect,
@@ -2744,6 +2766,7 @@ const DataTable = ({
     withFilter,
     withSort,
     recordIdToIsVisibleMap,
+    getCheckboxGroupId,
     setRecordIdToIsVisibleMap
   });
 

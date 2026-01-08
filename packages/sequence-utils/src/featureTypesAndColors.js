@@ -17,7 +17,7 @@ const genbankFeatureTypes = [
   { name: "regulatory", color: "#3F6C51" },
   { name: "SecStr", color: "#7B4B94" },
   { name: "Site", color: "#7D82B8" },
-  { name: "telomere", color: "DE9151" },
+  { name: "telomere", color: "#DE9151" },
   { name: "tmRNA", color: "#B7E3CC" },
   { name: "unsure", color: "#C4FFB2" },
   { name: "V_segment", color: "#D6F7A3" },

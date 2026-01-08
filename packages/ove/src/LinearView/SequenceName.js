@@ -9,7 +9,7 @@ export function SequenceName({
   const proteinUnits = showAminoAcidUnitAsCodon ? "codons" : "AAs";
   return (
     <div key="sequenceNameText" className="sequenceNameText">
-      <span>{sequenceName} </span>
+      <span title={sequenceName}>{sequenceName} </span>
       <br />
       <span>
         {isProtein
