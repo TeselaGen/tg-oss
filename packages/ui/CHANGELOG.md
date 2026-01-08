@@ -7,3 +7,7 @@
 ## 0.10.16 (2025-01-05)
 
 - Initialize changelog
+
+## 0.10.18 (2026-01-05)
+
+- fix cutsites and performance issue for multiple Editor
