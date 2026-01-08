@@ -10,7 +10,8 @@
   background: #293742 !important;
 }
 
-.veLabelLine {
+.veLabelLine,
+.aminoAcidNumber {
   stroke: black;
   background: black;
 }
@@ -19,7 +20,8 @@
   stroke: white;
   background: white;
 }
-.bp3-dark .veLabelLine {
+.bp3-dark .veLabelLine,
+.bp3-dark .aminoAcidNumber {
   stroke: #f5f8fa !important;
   background: #f5f8fa !important;
 }

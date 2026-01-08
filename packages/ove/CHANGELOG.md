@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.28 (2026-01-07)
+
+- fix: improve AASliver text appearance by correcting svg transform
+
 ## 0.8.27 (2026-06-10)
 
 - fix: scroll hover jank resulting from withHover redux actions by making hoveredAnnotation track purely thru easyState
