@@ -1,5 +1,4 @@
 import { filterLocalEntitiesToHasura } from "./filterLocalEntitiesToHasura";
-import { round, get } from "lodash-es";
 
 describe("filterLocalEntitiesToHasura", () => {
   const records = [
@@ -1284,16 +1283,6 @@ describe("filterLocalEntitiesToHasura", () => {
     expect(result.entityCount).toBe(5);
   });
 
-  function getRecordValue(record, key) {
-    if (
-      ["features", "parts", "primers"].includes(record.annotationTypePlural) &&
-      ["size"].includes(key)
-    ) {
-      return round(get(record, key) / 3);
-    }
-    return get(record, key);
-  }
-
   it("should filter protein features correctly", () => {
     const proteinFeatureEntities = [
       {
@@ -1343,7 +1332,7 @@ describe("filterLocalEntitiesToHasura", () => {
           }
         ]
       },
-      getRecordValue
+      ownProps: { isProtein: true }
     });
     expect(result_equal.entities).toEqual([proteinFeatureEntities[0]]);
 
@@ -1357,7 +1346,7 @@ describe("filterLocalEntitiesToHasura", () => {
           }
         ]
       },
-      getRecordValue
+      ownProps: { isProtein: true }
     });
     expect(result_in_list.entities).toEqual([
       proteinFeatureEntities[0],
@@ -1376,7 +1365,7 @@ describe("filterLocalEntitiesToHasura", () => {
             }
           ]
         },
-        getRecordValue
+        ownProps: { isProtein: true }
       }
     );
     expect(result_not_in_list.entities).toEqual([proteinFeatureEntities[2]]);
@@ -1393,7 +1382,7 @@ describe("filterLocalEntitiesToHasura", () => {
             }
           ]
         },
-        getRecordValue
+        ownProps: { isProtein: true }
       }
     );
     expect(result_valid_regex.entities).toEqual([proteinFeatureEntities[2]]);
@@ -1410,7 +1399,7 @@ describe("filterLocalEntitiesToHasura", () => {
             }
           ]
         },
-        getRecordValue
+        ownProps: { isProtein: true }
       }
     );
     expect(result_invalid_regex.entities).toEqual([]);
