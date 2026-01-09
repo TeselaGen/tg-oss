@@ -10,10 +10,9 @@ import { getRangeLength } from "@teselagen/range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
-import selectors from "../../selectors";
 
 import getCommands from "../../commands";
-import { sizeSchema } from "./utils";
+import { sizeSchema, getMemoOrfs } from "./utils";
 import { orfsSubmenu } from "../../MenuBar/viewSubmenu";
 import { getVisFilter } from "./GenericAnnotationProperties";
 
@@ -107,7 +106,7 @@ export default compose(
       readOnly,
       annotationVisibility,
       useAdditionalOrfStartCodons,
-      orfs: selectors.orfsSelector(editorState),
+      orfs: getMemoOrfs(editorState),
       sequenceLength: sequence.length,
       sequenceData,
       minimumOrfSize

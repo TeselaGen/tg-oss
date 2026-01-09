@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.18 (2026-01-05)
+
+- fix cutsites and performance issue for multiple Editor
+
 ## 0.10.17 (2026-01-05)
 
 - republish to fix build_umd

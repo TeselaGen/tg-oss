@@ -20,10 +20,10 @@ describe("simpleCircularOrLinearView", function () {
   it(`withCaretEnabled should work`, () => {
     cy.visit("/#/SimpleCircularOrLinearView");
     cy.get(".veCaret").should("not.exist");
-    cy.get(".veLabelText:contains(Part 2)").click();
+    cy.get(".veLabelText:contains(Part 2)").last().click();
     cy.get(".veCaret").should("not.exist");
     cy.tgToggle("withCaretEnabled");
-    cy.get(".veLabelText:contains(Part 2)").click({force: true});
+    cy.get(".veLabelText:contains(Part 2)").last().click({ force: true });
     cy.get(".veCaret").should("exist");
   });
   it(`withZoomLinearView should work`, () => {

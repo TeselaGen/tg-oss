@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.29 (2026-01-08)
+
+- fix cutsites and performance issue for multiple Editor
+
 ## 0.8.28 (2026-01-07)
 
 - fix: improve AASliver text appearance by correcting svg transform

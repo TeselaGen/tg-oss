@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useContext
 } from "react";
+import { createSelector } from "reselect";
 import {
   invert,
   toNumber,
@@ -171,21 +172,29 @@ const DataTable = ({
     return false;
   });
 
+  const dtFormParamsSelector = useMemo(
+    () =>
+      createSelector(
+        state =>
+          formValueSelector(formName)(
+            state,
+            "reduxFormCellValidation",
+            "reduxFormEntities",
+            "reduxFormQueryParams",
+            "reduxFormSelectedEntityIdMap"
+          ),
+        result => result // identity, but memoized
+      ),
+    [formName]
+  );
+
   const {
     reduxFormCellValidation: _reduxFormCellValidation,
     reduxFormEditingCell,
     reduxFormEntities,
     reduxFormQueryParams: _reduxFormQueryParams = {},
     reduxFormSelectedEntityIdMap: _reduxFormSelectedEntityIdMap = {}
-  } = useSelector(function dtFormParamsSelector(state) {
-    return formValueSelector(formName)(
-      state,
-      "reduxFormCellValidation",
-      "reduxFormEntities",
-      "reduxFormQueryParams",
-      "reduxFormSelectedEntityIdMap"
-    );
-  });
+  } = useSelector(dtFormParamsSelector);
 
   // We want to make sure we don't rerender everything unnecessary
   // with redux-forms we tend to do unnecessary renders
@@ -547,11 +556,9 @@ const DataTable = ({
           newTableConfig = {
             fieldOptions: []
           };
-          if (isEqual(prev, newTableConfig)) {
-            return prev;
-          } else {
-            return newTableConfig;
-          }
+        }
+        if (isEqual(prev, newTableConfig)) {
+          return prev;
         } else {
           return newTableConfig;
         }

@@ -3,7 +3,7 @@ import path from "path";
 
 function getStagedFiles() {
   try {
-    return execSync("git diff --cached --name-only", { encoding: "utf8" })
+    return execSync("git diff --cached --name-only --diff-filter=ACMRT", { encoding: "utf8" })
       .trim()
       .split("\n")
       .filter(Boolean);
