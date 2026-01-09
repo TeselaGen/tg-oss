@@ -52,8 +52,9 @@ class _LinearView extends React.Component {
           this.charWidth
       );
       nearestCaretPos = numberOfBPsInFromRowStart + 0;
-      if (nearestCaretPos > maxEnd + 1) {
-        nearestCaretPos = maxEnd + 1;
+      const isProtein = this.props.sequenceData?.isProtein;
+      if (nearestCaretPos > maxEnd) {
+        nearestCaretPos = isProtein ? maxEnd + 1 : maxEnd;
       }
     }
     if (this.props.sequenceData && this.props.sequenceData.isProtein) {
