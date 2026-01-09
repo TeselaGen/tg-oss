@@ -21,15 +21,16 @@ function getAnnotationTextOffset({
 }) {
   return (
     width / 2 -
-    getAnnotationTextWidth(nameToDisplay) / 2 +
-    pointiness -
-    (hasAPoint ? (pointiness / 2) * (forward ? 1 : -1) : 0)
+    getAnnotationTextWidth(nameToDisplay) / 2 -
+    (hasAPoint
+      ? (pointiness / 2 + ANNOTATION_LABEL_FONT_WIDTH / 2) * (forward ? 1 : -1)
+      : 0)
   );
 }
 
 function getAnnotationNameInfo({
   name,
-  width: originalWidth,
+  width,
   hasAPoint,
   pointiness,
   forward,
@@ -39,8 +40,6 @@ function getAnnotationNameInfo({
   annotation
 }) {
   let nameToDisplay = name;
-  // The width available for the label is reduced if there is a arrow point
-  const width = originalWidth - (hasAPoint ? ANNOTATION_LABEL_FONT_WIDTH : 0);
   let textOffset = getAnnotationTextOffset({
     width,
     nameToDisplay,
@@ -48,6 +47,7 @@ function getAnnotationNameInfo({
     pointiness,
     forward
   });
+  const widthAvailableForText = width - ANNOTATION_LABEL_FONT_WIDTH * 2;
   if (
     !doesLabelFitInAnnotation(name, { width }, charWidth) ||
     (!onlyShowLabelsThatDoNotFit &&
@@ -61,10 +61,10 @@ function getAnnotationNameInfo({
 
       while (left <= right) {
         const mid = Math.floor((left + right) / 2);
-        const candidate = name.slice(0, mid) + (mid < name.length ? ".." : "");
+        const candidate = name.slice(0, mid);
         const candidateWidth = getAnnotationTextWidth(candidate);
 
-        if (candidateWidth <= width) {
+        if (candidateWidth <= widthAvailableForText) {
           if (candidate.length > bestFit.length) {
             bestFit = candidate;
           }
@@ -72,6 +72,9 @@ function getAnnotationNameInfo({
         } else {
           right = mid - 1;
         }
+      }
+      if (bestFit.length < name.length) {
+        bestFit = bestFit.slice(0, -2) + "..";
       }
 
       nameToDisplay = bestFit;

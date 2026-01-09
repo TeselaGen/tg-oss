@@ -22,8 +22,9 @@ export const doesLabelFitInAnnotation = (
   charWidth
 ) => {
   const textLength = getAnnotationTextWidth(text);
-  const widthMinusOne =
-    (range ? getWidth(range, charWidth, 0) : width) - charWidth;
+  const widthMinusOne = range
+    ? getWidth(range, charWidth, 0) - ANNOTATION_LABEL_FONT_WIDTH * 2
+    : width - ANNOTATION_LABEL_FONT_WIDTH * 2;
   return widthMinusOne > textLength;
 };
 
