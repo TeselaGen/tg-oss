@@ -37,6 +37,7 @@ class _LinearView extends React.Component {
   bindOutsideChangeHelper = {};
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     //loop through all the rendered rows to see if the click event lands in one of them
+    const isProtein = this.props.sequenceData?.isProtein;
     let nearestCaretPos = 0;
     let rowDomNode = this.linearView;
     rowDomNode = rowDomNode.querySelector(".veRowItem");
@@ -52,11 +53,11 @@ class _LinearView extends React.Component {
           this.charWidth
       );
       nearestCaretPos = numberOfBPsInFromRowStart + 0;
-      if (nearestCaretPos > maxEnd + 1) {
-        nearestCaretPos = maxEnd + 1;
+      if (nearestCaretPos > maxEnd) {
+        nearestCaretPos = isProtein ? maxEnd + 1 : maxEnd;
       }
     }
-    if (this.props.sequenceData && this.props.sequenceData.isProtein) {
+    if (isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
     if (maxEnd === 0) nearestCaretPos = 0;
