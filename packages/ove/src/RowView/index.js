@@ -46,6 +46,42 @@ class _RowView extends React.Component {
     RowItemProps: {}
   };
 
+  shouldComponentUpdate(nextProps) {
+    const {
+      caretPosition,
+      selectionLayer,
+      matchedSearchLayer,
+      searchLayers,
+      width,
+      height,
+      marginWidth,
+      bpsPerRow,
+      sequenceData,
+      rowData,
+      annotationVisibility,
+      RowItemProps,
+      className
+    } = this.props;
+    if (
+      nextProps.caretPosition !== caretPosition ||
+      nextProps.selectionLayer !== selectionLayer ||
+      nextProps.matchedSearchLayer !== matchedSearchLayer ||
+      nextProps.searchLayers !== searchLayers ||
+      nextProps.width !== width ||
+      nextProps.height !== height ||
+      nextProps.marginWidth !== marginWidth ||
+      nextProps.bpsPerRow !== bpsPerRow ||
+      nextProps.sequenceData !== sequenceData ||
+      nextProps.rowData !== rowData ||
+      nextProps.annotationVisibility !== annotationVisibility ||
+      nextProps.RowItemProps !== RowItemProps ||
+      nextProps.className !== className
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
   estimateRowHeight = (index, cache) => {
     const { annotationVisibility, annotationLabelVisibility, sequenceData } =
