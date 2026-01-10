@@ -368,7 +368,8 @@ export function getQueryParams({
           ),
           limit,
           offset,
-          isInfinite
+          isInfinite,
+          ownProps
         }
       );
 

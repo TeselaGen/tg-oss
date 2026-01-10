@@ -106,7 +106,7 @@ const FilterAndSortMenu = ({
       if (dataType === "number") {
         filterValToUse =
           filterValue &&
-          filterValue.map(val => parseFloat(val.replaceAll(",", "")));
+          filterValue.map(val => parseFloat(`${val}`.replaceAll(",", "")));
       }
     }
 
@@ -234,7 +234,7 @@ const FilterInput = ({
             multi={true}
             creatable={true}
             value={(filterValue || []).map(val => ({
-              label: val,
+              label: `${val}`,
               value: val
             }))}
             onChange={selectedOptions => {
