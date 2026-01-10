@@ -11,25 +11,35 @@ describe("label tests", () => {
   });
   it(`the truncateLabelsThatDoNotFit should function correctly`, () => {
     cy.visit("/#/Editor?focusLinearView=true");
-    cy.contains(".veLabelText", "pS8c-vector..");
+    cy.contains(".veLabelText", "pS8c-vector_b..");
     cy.tgToggle("truncateLabelsThatDoNotFit", false);
     cy.contains(".veLabelText", "GFPuv");
-    cy.contains("veLabelText", "pS8c-vector..").should("not.exist");
+    cy.contains("veLabelText", "pS8c-vector_b..").should("not.exist");
   });
-  it (`getTextLengthWithCollapseSpace function should work correctly`, () => {
+  it(`getTextLengthWithCollapseSpace function should work correctly`, () => {
     cy.visit("#/Editor?showCicularViewInternalLabels=false");
     cy.get(".tg-menu-bar").contains("Edit").click();
 
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Part").click({ force: true });
-    cy.get(".tg-test-name input").clear().type("测试 テスト 테스트한국어 тестированиерусский!@#￥%&*()_+{❤|:abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    cy.get(".tg-test-name input")
+      .clear()
+      .type(
+        "测试 テスト 테스트한국어 тестированиерусский!@#￥%&*()_+{❤|:abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      );
     cy.get(".tg-test-start input").clear().type("100");
     cy.get(".tg-test-end input").clear().type("120");
     cy.get(".tg-upsert-annotation").contains("Save").click();
-    cy.get(`.veLabelText:contains(测试 テスト 테스트한국어)`).first().trigger("mouseover", {force: true});
-    cy.get(`.veLabelText.veAnnotationHovered:contains('测试 テスト 테스트한국어 тестированиерусский!@#￥%&*()_+{❤|:abcdefghijkl..')`);
-    cy.get(`.veRowItemWrapper .veLabelText:contains('测试 テスト 테스트한국어 тестированиерусский!@#￥%&*()_+{❤|:abcdefghij..')`);
-  })
+    cy.get(`.veLabelText:contains(测试 テスト 테스트한국어)`)
+      .first()
+      .trigger("mouseover", { force: true });
+    cy.get(
+      `.veLabelText.veAnnotationHovered:contains('测试 テスト 테스트한국어 тестированиерусский!@#￥%&*()_+{❤|:abcdefghijkl..')`
+    );
+    cy.get(
+      `.veRowItemWrapper .veLabelText:contains('测试 テスト 테스트한국어 тестированиерусский!@#￥%&*()_+{❤|:abcdefghij..')`
+    );
+  });
   it(`should show/hide a checkmark when toggling feature label visibility`, function () {
     cy.visit("#/Editor?showCicularViewInternalLabels=false");
     cy.contains(".veCircularViewLabelText", "araC");
