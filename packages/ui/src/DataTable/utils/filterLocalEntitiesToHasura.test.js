@@ -1295,7 +1295,8 @@ describe("filterLocalEntitiesToHasura", () => {
         id: "WWBalzQw01Oq",
         forward: true,
         color: "#EF6500",
-        size: 3
+        size: 3,
+        displaySize: 1
       },
       {
         type: "protein_bind",
@@ -1307,7 +1308,8 @@ describe("filterLocalEntitiesToHasura", () => {
         id: "yOsnjK_GkeAv",
         forward: true,
         color: "#2E2E2E",
-        size: 6
+        size: 6,
+        displaySize: 2
       },
       {
         type: "CDS",
@@ -1319,7 +1321,8 @@ describe("filterLocalEntitiesToHasura", () => {
         id: "aPKESKXj0qUR",
         forward: true,
         color: "#EF6500",
-        size: 9
+        size: 9,
+        displaySize: 3
       }
     ];
     const result_equal = filterLocalEntitiesToHasura(proteinFeatureEntities, {
@@ -1331,8 +1334,7 @@ describe("filterLocalEntitiesToHasura", () => {
             }
           }
         ]
-      },
-      ownProps: { isProtein: true }
+      }
     });
     expect(result_equal.entities).toEqual([proteinFeatureEntities[0]]);
 
@@ -1345,8 +1347,7 @@ describe("filterLocalEntitiesToHasura", () => {
             }
           }
         ]
-      },
-      ownProps: { isProtein: true }
+      }
     });
     expect(result_in_list.entities).toEqual([
       proteinFeatureEntities[0],
@@ -1364,8 +1365,7 @@ describe("filterLocalEntitiesToHasura", () => {
               }
             }
           ]
-        },
-        ownProps: { isProtein: true }
+        }
       }
     );
     expect(result_not_in_list.entities).toEqual([proteinFeatureEntities[2]]);
@@ -1381,8 +1381,7 @@ describe("filterLocalEntitiesToHasura", () => {
               }
             }
           ]
-        },
-        ownProps: { isProtein: true }
+        }
       }
     );
     expect(result_valid_regex.entities).toEqual([proteinFeatureEntities[2]]);
@@ -1398,8 +1397,7 @@ describe("filterLocalEntitiesToHasura", () => {
               }
             }
           ]
-        },
-        ownProps: { isProtein: true }
+        }
       }
     );
     expect(result_invalid_regex.entities).toEqual([]);
@@ -1453,8 +1451,7 @@ describe("filterLocalEntitiesToHasura", () => {
             }
           }
         ]
-      },
-      ownProps: { isDNA: true }
+      }
     });
     expect(result_equal.entities).toEqual([dnaFeatureEntities[0]]);
 
@@ -1467,8 +1464,7 @@ describe("filterLocalEntitiesToHasura", () => {
             }
           }
         ]
-      },
-      ownProps: { isDNA: true }
+      }
     });
     expect(result_in_list.entities).toEqual([
       dnaFeatureEntities[0],
@@ -1484,8 +1480,7 @@ describe("filterLocalEntitiesToHasura", () => {
             }
           }
         ]
-      },
-      ownProps: { isDNA: true }
+      }
     });
     expect(result_not_in_list.entities).toEqual([dnaFeatureEntities[2]]);
   });

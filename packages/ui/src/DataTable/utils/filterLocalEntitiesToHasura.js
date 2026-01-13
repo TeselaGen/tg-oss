@@ -12,19 +12,18 @@ import {
   orderBy,
   endsWith,
   get,
-  round,
   forEach
 } from "lodash-es";
 
 export function filterLocalEntitiesToHasura(
   records,
-  { where, order_by, limit, offset, isInfinite, ownProps } = {}
+  { where, order_by, limit, offset, isInfinite } = {}
 ) {
   let filteredRecords = [...records];
 
   // Apply where clause if it exists
   if (where) {
-    filteredRecords = applyWhereClause(filteredRecords, where, ownProps);
+    filteredRecords = applyWhereClause(filteredRecords, where);
   }
 
   // Apply order_by if it exists
@@ -53,18 +52,13 @@ export function filterLocalEntitiesToHasura(
   };
 }
 
-const getDisplayRecordValue = (record, key, ownProps) => {
-  if (
-    ownProps?.isProtein &&
-    ["features", "parts", "primers"].includes(record.annotationTypePlural) &&
-    ["size"].includes(key)
-  ) {
-    return round(get(record, key) / 3);
-  }
-  return get(record, key);
+const getDisplayRecordValue = (record, key) => {
+  const fixedKey =
+    key === "size" && record.displaySize !== undefined ? "displaySize" : key;
+  return get(record, fixedKey);
 };
 
-function applyWhereClause(records, where, ownProps) {
+function applyWhereClause(records, where) {
   function applyFilter(record, filter) {
     if (isEmpty(filter)) {
       return true; // No filter, all records pass
@@ -90,7 +84,7 @@ function applyWhereClause(records, where, ownProps) {
           return false;
         }
       } else {
-        const value = getDisplayRecordValue(record, key, ownProps);
+        const value = getDisplayRecordValue(record, key);
         const conditions = filter[key];
 
         // Handle nested object properties

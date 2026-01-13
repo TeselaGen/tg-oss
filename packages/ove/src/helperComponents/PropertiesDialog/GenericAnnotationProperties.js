@@ -87,15 +87,17 @@ const genericAnnotationProperties = ({
     const annotationsToUse = React.useMemo(
       () =>
         map(annotations, annotation => {
+          const baseSize = getRangeLength(annotation, sequenceLength);
           return {
             ...annotation,
             ...(annotation.strand === undefined && {
               strand: annotation.forward ? 1 : -1
             }),
-            size: getRangeLength(annotation, sequenceLength)
+            size: baseSize,
+            displaySize: isProtein ? Math.round(baseSize / 3) : baseSize
           };
         }),
-      [annotations, sequenceLength]
+      [annotations, sequenceLength, isProtein]
     );
 
     const keyedPartTags = getKeyedTagsAndTagOptions(allPartTags) ?? {};
