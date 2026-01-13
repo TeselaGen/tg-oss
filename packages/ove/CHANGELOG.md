@@ -23,3 +23,7 @@
 ## 0.8.25 (2025-01-05)
 
 - Initialize changelog
+
+## 0.8.29 (2026-01-08)
+
+- fix annotation lable for non-english characters

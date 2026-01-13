@@ -4,13 +4,100 @@ import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
 import React, { useState } from "react";
-import { doesLabelFitInAnnotation } from "../utils";
+import { doesLabelFitInAnnotation, getAnnotationTextWidth } from "../utils";
 import { noop } from "lodash-es";
 import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
-import { getStripedPattern } from "../../utils/editorUtils";
 import { ANNOTATION_LABEL_FONT_WIDTH } from "../constants";
+import { getStripedPattern } from "../../utils/editorUtils";
 import { partOverhangs } from "../partOverhangs";
 import { Tooltip } from "@blueprintjs/core";
+
+function getAnnotationTextOffset({
+  width,
+  nameToDisplay,
+  hasAPoint,
+  pointiness,
+  forward
+}) {
+  return (
+    width / 2 -
+    getAnnotationTextWidth(nameToDisplay) / 2 -
+    (hasAPoint
+      ? (pointiness / 2 + ANNOTATION_LABEL_FONT_WIDTH / 2) * (forward ? 1 : -1)
+      : 0)
+  );
+}
+
+function getAnnotationNameInfo({
+  name,
+  width,
+  hasAPoint,
+  pointiness,
+  forward,
+  charWidth,
+  truncateLabelsThatDoNotFit,
+  onlyShowLabelsThatDoNotFit,
+  annotation
+}) {
+  let nameToDisplay = name;
+  let textOffset = getAnnotationTextOffset({
+    width,
+    nameToDisplay,
+    hasAPoint,
+    pointiness,
+    forward
+  });
+  const widthAvailableForText = width - ANNOTATION_LABEL_FONT_WIDTH * 2;
+  if (
+    !doesLabelFitInAnnotation(name, { width }, charWidth) ||
+    (!onlyShowLabelsThatDoNotFit &&
+      ["parts", "features"].includes(annotation.annotationTypePlural))
+  ) {
+    if (truncateLabelsThatDoNotFit) {
+      // Binary search for max fitting substring
+      let left = 0;
+      let right = name.length;
+      let bestFit = "";
+
+      while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        const candidate = name.slice(0, mid);
+        const candidateWidth = getAnnotationTextWidth(candidate);
+
+        if (candidateWidth <= widthAvailableForText) {
+          if (candidate.length > bestFit.length) {
+            bestFit = candidate;
+          }
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+      if (bestFit.length < name.length) {
+        bestFit = bestFit.slice(0, -2) + "..";
+      }
+
+      nameToDisplay = bestFit;
+
+      if (nameToDisplay.length <= 3) {
+        textOffset = 0;
+        nameToDisplay = "";
+      } else {
+        textOffset = getAnnotationTextOffset({
+          width,
+          nameToDisplay,
+          hasAPoint,
+          pointiness,
+          forward
+        });
+      }
+    } else {
+      textOffset = 0;
+      nameToDisplay = "";
+    }
+  }
+  return { textOffset, nameToDisplay };
+}
 
 function PointedAnnotation(props) {
   const {
@@ -165,39 +252,19 @@ function PointedAnnotation(props) {
       Q ${pointiness},${height / 2} ${0},${0}
       z`;
   }
-  let nameToDisplay = name;
-  let textOffset =
-    width / 2 -
-    (name.length * 5) / 2 -
-    (hasAPoint ? (pointiness / 2) * (forward ? 1 : -1) : 0);
-  if (
-    !doesLabelFitInAnnotation(name, { width }, charWidth) ||
-    (!onlyShowLabelsThatDoNotFit &&
-      ["parts", "features"].includes(annotation.annotationTypePlural))
-  ) {
-    if (truncateLabelsThatDoNotFit) {
-      const fractionToDisplay =
-        width / (name.length * ANNOTATION_LABEL_FONT_WIDTH);
-      const numLetters = Math.floor(fractionToDisplay * name.length);
-      nameToDisplay = name.slice(0, numLetters);
-      if (nameToDisplay.length > 3) {
-        if (nameToDisplay.length !== name.length) {
-          nameToDisplay += "..";
-        }
 
-        textOffset =
-          width / 2 -
-          (nameToDisplay.length * 5) / 2 -
-          (hasAPoint ? (pointiness / 2) * (forward ? 1 : -1) : 0);
-      } else {
-        textOffset = 0;
-        nameToDisplay = "";
-      }
-    } else {
-      textOffset = 0;
-      nameToDisplay = "";
-    }
-  }
+  const { textOffset, nameToDisplay } = getAnnotationNameInfo({
+    name,
+    width,
+    hasAPoint,
+    pointiness,
+    forward,
+    charWidth,
+    truncateLabelsThatDoNotFit,
+    onlyShowLabelsThatDoNotFit,
+    annotation
+  });
+
   let _textColor = textColor;
   if (!textColor) {
     try {
