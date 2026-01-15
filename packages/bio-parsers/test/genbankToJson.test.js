@@ -121,10 +121,13 @@ ORIGIN
     ds_RNA_result[0].parsedSequence.isDoubleStrandedRNA.should.equal(true);
   });
 
-  it(`correctly handles a multi-line DEFINITION converting it to description`, () => {
+  it(`correctly handles a multi-line DEFINITION/DESCRIPTION converting it to definition`, () => {
     const string = `LOCUS       Tt2-PstI-SphI-rev(dna)        7628 bp    DNA     circular
     04-FEB-2021
 DEFINITION  [Heavy] lalalal
+            more description here
+            and still more
+DESCRIPTION  [Heavy] lalalal
             more description here
             and still more
 ACCESSION   Tt2-PstI-SphI-rev(dna)
@@ -157,6 +160,9 @@ ORIGIN
 `;
     const result = genbankToJson(string);
     result[0].parsedSequence.description.should.equal(
+      `[Heavy] lalalal more description here and still more`
+    );
+    result[0].parsedSequence.definition.should.equal(
       `[Heavy] lalalal more description here and still more`
     );
   });
@@ -310,7 +316,7 @@ ORIGIN
       }
     ]);
   });
-  it("parses the sequence definition field", function () {
+  it("parses the sequence definition field and description", function () {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/pRF127_GanBankStandard.gb"),
       "utf8"
@@ -318,7 +324,9 @@ ORIGIN
     const result = genbankToJson(string);
     result[0].parsedSequence.sequenceTypeFromLocus.should.equal("ds-DNA");
     result[0].parsedSequence.definition.should.equal("synthetic circular DNA");
+    result[0].parsedSequence.description.should.equal("this is a circular DNA");
   });
+
   it("does not give an erroneous feature name too long warning", function () {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/pRF127_GanBankStandard.gb"),

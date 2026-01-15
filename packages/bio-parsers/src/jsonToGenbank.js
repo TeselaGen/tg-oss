@@ -93,10 +93,15 @@ export default function (_serSeq, options) {
 
     let lines = [];
     lines.push(createGenbankLocus(serSeq, options));
-    if (serSeq.definition || serSeq.description) {
+    if (serSeq.definition) {
       lines.push(
-        "DEFINITION  " +
-          mangleOrStripUrls(serSeq.description ?? serSeq.definition, options)
+        "DEFINITION  " + mangleOrStripUrls(serSeq.definition, options)
+      );
+    }
+
+    if (serSeq.description) {
+      lines.push(
+        "DESCRIPTION  " + mangleOrStripUrls(serSeq.description, options)
       );
     }
 
