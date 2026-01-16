@@ -39,6 +39,7 @@ import { createSelector, defaultMemoize } from "reselect";
 import domtoimage from "dom-to-image";
 import {
   hideDialog,
+  dialogHolder,
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
@@ -557,7 +558,11 @@ const getEditorState = createSelector(
   state => state.VectorEditor,
   (state, editorName) => editorName,
   (VectorEditor, editorName) => {
-    return VectorEditor[editorName];
+    const editorState = VectorEditor[editorName];
+    editorState && (editorState.editorSize =  Object.values(VectorEditor).filter(
+    editorItem => editorItem?.sequenceData
+  ).length);
+  return editorState;
   }
 );
 
@@ -597,6 +602,10 @@ function mapStateToProps(state, ownProps) {
         annotationTypePlural,
         sequenceLength
       );
+      if (dialogHolder.editorName) {
+        annotationToAdd =
+          dialogHolder.editorName === editorName ? annotationToAdd : undefined;
+      }
     }
   });
 
@@ -625,7 +634,7 @@ function mapStateToProps(state, ownProps) {
   const selectedCutsites = s.selectedCutsitesSelector(editorState);
   const allCutsites = s.cutsitesSelector(
     editorState,
-    ownProps.additionalEnzymes
+    ownProps.additionalEnzymes,
   );
 
   const { matchedSearchLayer, searchLayers, matchesTotal } =
