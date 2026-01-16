@@ -23,3 +23,4 @@
 ## 0.8.29 (2026-01-08)
 
 - support custom function for insert string filtering
+- fix annotation lable for non-english characters
