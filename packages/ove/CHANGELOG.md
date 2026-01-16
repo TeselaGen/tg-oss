@@ -1,8 +1,12 @@
 # Changelog
 
-## 0.8.29 (2026-01-08)
+## 0.8.30 (2026-01-16)
 
 - fix cutsites and performance issue for multiple Editor
+
+## 0.8.29 (2026-01-09)
+
+- fix: show right caret position when clicking the rightest position of linear view
 
 ## 0.8.28 (2026-01-07)
 
