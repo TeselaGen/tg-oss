@@ -3,6 +3,8 @@
 ## 0.8.29 (2026-01-09)
 
 - fix: show right caret position when clicking the rightest position of linear view
+- support custom function for insert string filtering
+- fix annotation lable for non-english characters
 
 ## 0.8.28 (2026-01-07)
 
