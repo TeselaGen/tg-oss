@@ -142,7 +142,8 @@ export const handleSave =
       readOnly,
       alwaysAllowSave,
       sequenceData,
-      lastSavedIdUpdate
+      lastSavedIdUpdate,
+      getAcceptedInsertChars
     } = props;
     const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
 
@@ -163,7 +164,8 @@ export const handleSave =
         opts,
         tidyUpSequenceData(sequenceData, {
           doNotRemoveInvalidChars: true,
-          annotationsAsObjects: true
+          annotationsAsObjects: true,
+          getAcceptedInsertChars
         }),
         props,
         updateLastSavedIdToCurrent
@@ -368,8 +370,8 @@ export default compose(
           options
         } = props.beforeSequenceInsertOrDelete
           ? (await props.beforeSequenceInsertOrDelete(
-              tidyUpSequenceData(_sequenceDataToInsert),
-              tidyUpSequenceData(_existingSequenceData),
+              tidyUpSequenceData(_sequenceDataToInsert, { getAcceptedInsertChars: props.getAcceptedInsertChars }),
+              tidyUpSequenceData(_existingSequenceData, { getAcceptedInsertChars: props.getAcceptedInsertChars }),
               _caretPositionOrRange,
               _options
             )) || {}
@@ -896,13 +898,15 @@ export function getShowGCContent(state, ownProps) {
   return toRet;
 }
 
-function jsonToJson(incomingJson) {
+function jsonToJson(incomingJson, options) {
+  const {getAcceptedInsertChars} = options || {};
   return JSON.stringify(
     omit(
       cleanUpTeselagenJsonForExport(
         tidyUpSequenceData(incomingJson, {
           doNotRemoveInvalidChars: true,
-          annotationsAsObjects: false
+          annotationsAsObjects: false,
+          getAcceptedInsertChars
         })
       ),
       [
