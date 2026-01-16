@@ -4,8 +4,9 @@
 
 - fix cutsites and performance issue for multiple Editor
 
-## 0.8.29 (2026-01-09)
+## 0.8.29 (2026-01-08)
 
+- fix annotation lable for non-english characters
 - fix: show right caret position when clicking the rightest position of linear view
 
 ## 0.8.28 (2026-01-07)
