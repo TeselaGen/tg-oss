@@ -93,14 +93,14 @@ describe("genbank exporter/parser conversion", function () {
     });
     assert(string.indexOf("SYN ") === 65);
   });
-  it(`should convert the .description field into a //DEFINITION block in
+  it(`should convert the .description field into a //DESCRIPTION block in
   the genbank and then have it be parsed back out as a .description again`, () => {
     const description = "Hey I am a test description";
     const string = jsonToGenbank({
       sequence: "agagagagagag",
       description
     });
-    assert(string.indexOf("DEFINITION  " + description) !== -1);
+    assert(string.indexOf("DESCRIPTION  " + description) !== -1);
     const result = parseGenbank(string);
 
     result[0].parsedSequence.description.should.equal(description);

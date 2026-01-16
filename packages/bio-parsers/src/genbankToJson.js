@@ -124,6 +124,7 @@ function genbankToJson(string, options = {}) {
   const genbankAnnotationKey = {
     LOCUS_TAG: "LOCUS",
     DEFINITION_TAG: "DEFINITION",
+    DESCRIPTION_TAG: "DESCRIPTION",
     ACCESSION_TAG: "ACCESSION",
     VERSION_TAG: "VERSION",
     KEYWORDS_TAG: "KEYWORDS",
@@ -223,6 +224,21 @@ function genbankToJson(string, options = {}) {
         case genbankAnnotationKey.END_SEQUENCE_TAG:
           endSeq(options);
           break;
+        case genbankAnnotationKey.DESCRIPTION_TAG:
+          line = line.replace(/DESCRIPTION/, "");
+          line = line.trim();
+          if (result.parsedSequence) {
+            if (result.parsedSequence.description) {
+              result.parsedSequence.description += " " + line;
+            } else {
+              result.parsedSequence.description = line;
+            }
+          } else {
+            throw new Error(
+              "no sequence yet created upon which to extract an extra line!"
+            );
+          }
+          break;
         case genbankAnnotationKey.DEFINITION_TAG:
           line = line.replace(/DEFINITION/, "");
           line = line.trim();
@@ -231,11 +247,6 @@ function genbankToJson(string, options = {}) {
               result.parsedSequence.definition += " " + line;
             } else {
               result.parsedSequence.definition = line;
-            }
-            if (result.parsedSequence.description) {
-              result.parsedSequence.description += " " + line;
-            } else {
-              result.parsedSequence.description = line;
             }
           } else {
             throw new Error(

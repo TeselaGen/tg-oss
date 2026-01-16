@@ -43,7 +43,7 @@ describe("properties", function () {
     ).trigger("contextmenu", { force: true });
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(100);
-    cy.get(".bp3-menu-item:contains(Cut)").click();
+    cy.get(".bp3-menu-item:contains(Cut)").realClick();
     cy.get(".tgNewAnnBtn").should("have.class", "bp3-disabled");
   });
   it(`a custom properties tab should be able to be added`, () => {
@@ -69,12 +69,12 @@ describe("properties", function () {
       "Test description{cmd}{enter}"
     );
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("DEFINITION Test description");
+    cy.contains("DESCRIPTION Test description");
     cy.get(`[data-tab-id="general"]`).click();
     cy.get(`.tg-test-description`).contains("Edit").click();
     cy.get(`.tg-test-description`).contains("Ok").click();
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("DEFINITION Test description");
+    cy.contains("DESCRIPTION Test description");
     cy.get(`[data-tab-id="general"]`).click();
     // cy.pause()
 
@@ -82,7 +82,7 @@ describe("properties", function () {
     cy.get(`.tg-test-description textarea`).clear();
     cy.get(`.tg-test-description`).contains("Ok").click();
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("DEFINITION").should("not.exist");
+    cy.contains("DESCRIPTION").should("not.exist");
   });
   // it(`we should be able to edit a description in general properties, not make any changes, hit ok, and have the description not clear (bug! https://github.com/TeselaGen/lims/issues/5492)
   // and have that visible within the genbank view as well`, () => {

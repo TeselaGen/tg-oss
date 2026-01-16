@@ -1,5 +1,6 @@
 LOCUS       Exported                6033 bp ds-DNA     circular SYN 24-JUN-2017
 DEFINITION  synthetic circular DNA
+DESCRIPTION  this is a circular DNA
 ACCESSION   .
 VERSION     .
 KEYWORDS    .
@@ -63,7 +64,7 @@ FEATURES             Location/Qualifiers
                      /codon_start=1
                      /label=GFP11
                      /note="GFP11M4
-                     
+
                      Eurofins/Geneius optimized"
                      /translation="EKRDHMVLLEYVTAAGITDAS"
      primer_bind     1028..1057
@@ -72,28 +73,28 @@ FEATURES             Location/Qualifiers
      CDS             1091..1150
                      /codon_start=1
                      /label=L11
-                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D., 
-                     Koraichi, F., Chaudhary, A., Ganguly, K., … Waldo, G. S. 
-                     (2013). A New Protein-Protein Interaction Sensor Based on 
-                     Tripartite Split-GFP Association. Scientific Reports, 3, 
+                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D.,
+                     Koraichi, F., Chaudhary, A., Ganguly, K., ï¿½ Waldo, G. S.
+                     (2013). A New Protein-Protein Interaction Sensor Based on
+                     Tripartite Split-GFP Association. Scientific Reports, 3,
                      2854."
                      /translation="GSPGGGSGGSGSSASGGSTS"
      CDS             1091..1120
                      /codon_start=1
                      /label=L9
-                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D., 
-                     Koraichi, F., Chaudhary, A., Ganguly, K., … Waldo, G. S. 
-                     (2013). A New Protein-Protein Interaction Sensor Based on 
-                     Tripartite Split-GFP Association. Scientific Reports, 3, 
+                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D.,
+                     Koraichi, F., Chaudhary, A., Ganguly, K., ï¿½ Waldo, G. S.
+                     (2013). A New Protein-Protein Interaction Sensor Based on
+                     Tripartite Split-GFP Association. Scientific Reports, 3,
                      2854.  "
                      /translation="GSPGGGSGGS"
      CDS             1121..1150
                      /codon_start=1
                      /label=L10
-                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D., 
-                     Koraichi, F., Chaudhary, A., Ganguly, K., … Waldo, G. S. 
-                     (2013). A New Protein-Protein Interaction Sensor Based on 
-                     Tripartite Split-GFP Association. Scientific Reports, 3, 
+                     /note="Cabantous, S., Nguyen, H. B., Pedelacq, J.-D.,
+                     Koraichi, F., Chaudhary, A., Ganguly, K., ï¿½ Waldo, G. S.
+                     (2013). A New Protein-Protein Interaction Sensor Based on
+                     Tripartite Split-GFP Association. Scientific Reports, 3,
                      2854.  "
                      /translation="GSSASGGSTS"
      primer_bind     complement(1129..1149)
@@ -125,12 +126,12 @@ FEATURES             Location/Qualifiers
                      /codon_start=1
                      /label=eBFP2
                      /label=BFP
-                     /note="Ai, Hui-wang, Nathan C. Shaner, Zihao Cheng, Roger 
-                     Y. Tsien, and Robert E. Campbell. "Exploration of New 
-                     Chromophore Structures Leads to the Identification of 
-                     Improved Blue Fluorescent Proteins." Biochemistry 46, no. 
-                     20 (May 22, 2007): 5904–10.
-                     
+                     /note="Ai, Hui-wang, Nathan C. Shaner, Zihao Cheng, Roger
+                     Y. Tsien, and Robert E. Campbell. "Exploration of New
+                     Chromophore Structures Leads to the Identification of
+                     Improved Blue Fluorescent Proteins." Biochemistry 46, no.
+                     20 (May 22, 2007): 5904ï¿½10.
+
                      ABP88743.1"
                      /translation="MVSKGEELFTGVVPILVELDGDVNGHKFSVRGEGEGDATNGKLTL
                      KFICTTGKLPVPWPTLVTTLSHGVQCFARYPDHMKQHDFFKSAMPEGYVQERTIFFKDD

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.30 (2026-01-15)
+
+- fix: sync user changes in the description into genbank and parse description field
+
 ## 0.8.29 (2026-01-09)
 
 - fix: show right caret position when clicking the rightest position of linear view
