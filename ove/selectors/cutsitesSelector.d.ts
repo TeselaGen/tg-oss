@@ -1,12 +1,4 @@
-declare const _default: ((state: any) => {
-    cutsitesByName: {};
-    cutsitesById: {};
-    cutsitesArray: never[];
-}) & import('reselect').OutputSelectorFields<(...args: any) => {
-    cutsitesByName: {};
-    cutsitesById: {};
-    cutsitesArray: never[];
-}, {
+declare const _default: ((state: any, ...params: any[]) => any) & import('reselect').OutputSelectorFields<(...args: readonly unknown[]) => any, {
     clearCache: () => void;
 }> & {
     clearCache: () => void;

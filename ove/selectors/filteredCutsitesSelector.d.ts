@@ -1,4 +1,8 @@
-declare const _default: ((state: any, ...params: any[]) => any) & import('reselect').OutputSelectorFields<(...args: readonly unknown[]) => any, {
+declare const _default: ((state: any) => {
+    cutsitesByName: {};
+}) & import('reselect').OutputSelectorFields<(args_0: any, args_1: any, args_2: any, args_3: any) => {
+    cutsitesByName: {};
+}, {
     clearCache: () => void;
 }> & {
     clearCache: () => void;

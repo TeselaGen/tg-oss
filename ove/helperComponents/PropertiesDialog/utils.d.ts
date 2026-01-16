@@ -3,3 +3,4 @@ export function sizeSchema(isProtein: any): {
     type: string;
     render: (val: any, _record: any) => import("react/jsx-runtime").JSX.Element;
 };
+export function getMemoOrfs(editorState: any): any;
