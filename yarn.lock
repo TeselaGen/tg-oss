@@ -3800,11 +3800,11 @@
     tslib "^2.4.0"
 
 "@teselagen/bio-parsers@file:packages/bio-parsers":
-  version "0.4.32"
+  version "0.4.33"
   dependencies:
     "@gmod/gff" "^1.2.1"
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-73dd76c0-0732-4478-8f5b-d0b752eda05d-1765917004724/node_modules/@teselagen/range-utils"
-    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.32-73dd76c0-0732-4478-8f5b-d0b752eda05d-1765917004724/node_modules/@teselagen/sequence-utils"
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.33-729e9c92-ee9f-4567-b5bf-ab7e7b7e3fb9-1768608848945/node_modules/@teselagen/range-utils"
+    "@teselagen/sequence-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-bio-parsers-0.4.33-729e9c92-ee9f-4567-b5bf-ab7e7b7e3fb9-1768608848945/node_modules/@teselagen/sequence-utils"
     bufferpack "^0.0.6"
     color "3.2.1"
     fast-xml-parser "^4.2.5"
@@ -3813,7 +3813,7 @@
     validate.io-nonnegative-integer-array "^1.0.1"
 
 "@teselagen/file-utils@file:packages/file-utils":
-  version "0.3.20"
+  version "0.3.23"
   dependencies:
     buffer "5.7.1"
     jszip "^3.10.1"
@@ -3821,7 +3821,7 @@
     papaparse "5.3.2"
 
 "@teselagen/range-utils@file:packages/range-utils":
-  version "0.3.13"
+  version "0.3.20-beta.1"
   dependencies:
     lodash-es "^4.17.21"
 
@@ -3841,16 +3841,16 @@
     classnames "^2.2.5"
 
 "@teselagen/sequence-utils@file:packages/sequence-utils":
-  version "0.3.37"
+  version "0.3.42-beta.1"
   dependencies:
-    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.37-2fba8eae-6e35-46f3-844e-1eaf6d474ecd-1765917004723/node_modules/@teselagen/range-utils"
+    "@teselagen/range-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-sequence-utils-0.3.42-beta.1-6270d691-d7d8-4113-9d3b-5f86a00bb73f-1768608848946/node_modules/@teselagen/range-utils"
     escape-string-regexp "5.0.0"
     jsondiffpatch "0.7.3"
     lodash-es "^4.17.21"
     shortid "2.2.16"
 
 "@teselagen/ui@file:packages/ui":
-  version "0.10.15"
+  version "0.10.18"
   dependencies:
     "@blueprintjs/core" "3.54.0"
     "@blueprintjs/datetime" "^3.24.1"
@@ -3860,7 +3860,7 @@
     "@dnd-kit/modifiers" "^7.0.0"
     "@dnd-kit/sortable" "^8.0.0"
     "@dnd-kit/utilities" "3.2.2"
-    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.10.15-62d910aa-bba5-4301-90fb-1f67c5d8297d-1765917004721/node_modules/@teselagen/file-utils"
+    "@teselagen/file-utils" "file:../../Library/Caches/Yarn/v6/npm-@teselagen-ui-0.10.18-1d85e5db-599f-4c3b-a228-a37131a31d59-1768608848943/node_modules/@teselagen/file-utils"
     "@teselagen/react-table" "6.10.18"
     chance "1.1.11"
     classnames "^2.3.2"
@@ -3892,6 +3892,7 @@
     redux-form "^8.3.10"
     redux-thunk "2.4.1"
     remark-gfm "^4.0.0"
+    reselect "^4.1.7"
     tippy.js "^6.3.7"
     url-join "^4.0.1"
     use-deep-compare-effect "^1.6.1"
@@ -5225,17 +5226,6 @@ attr-accept@^2.2.2:
   version "2.2.2"
   resolved "https://registry.npmjs.org/attr-accept/-/attr-accept-2.2.2.tgz"
   integrity sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==
-
-auto-changelog@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.npmjs.org/auto-changelog/-/auto-changelog-2.4.0.tgz"
-  integrity sha512-vh17hko1c0ItsEcw6m7qPRf3m45u+XK5QyCrrBFViElZ8jnKrPC1roSznrd1fIB/0vR/zawdECCRJtTuqIXaJw==
-  dependencies:
-    commander "^7.2.0"
-    handlebars "^4.7.7"
-    node-fetch "^2.6.1"
-    parse-github-url "^1.0.2"
-    semver "^7.3.5"
 
 available-typed-arrays@^1.0.7:
   version "1.0.7"
@@ -10831,7 +10821,7 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
-node-fetch@2.7.0, node-fetch@^2.6.1:
+node-fetch@2.7.0:
   version "2.7.0"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.7.0.tgz"
   integrity sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==
@@ -11342,11 +11332,6 @@ parse-entities@^4.0.0:
     is-alphanumerical "^2.0.0"
     is-decimal "^2.0.0"
     is-hexadecimal "^2.0.0"
-
-parse-github-url@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/parse-github-url/-/parse-github-url-1.0.2.tgz"
-  integrity sha512-kgBf6avCbO3Cn6+RnzRGLkUsv4ZVqv/VfAYkRsyBcgkshNvVBkRn1FEZcW0Jb+npXQWm2vHPnnOqFteZxRRGNw==
 
 parse-json@^5.0.0, parse-json@^5.2.0:
   version "5.2.0"

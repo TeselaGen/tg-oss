@@ -69,16 +69,6 @@ Tests will automatically be run pre-commit.
 
 ## Updating this repo:
 
-### Teselagen collaborators:
-
-Commit and push all changes
-Sign into npm using the teselagen npm account (npm whoami)
-
-```
-npm version patch|minor|major
-npm publish
-```
-
 ### Outside collaborators:
 
 fork and pull request please :)

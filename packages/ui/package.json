@@ -1,8 +1,9 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.10.15",
+  "version": "0.10.18",
   "main": "./src/index.js",
   "type": "module",
+  "repository": "https://github.com/TeselaGen/tg-oss",
   "exports": {
     ".": {
       "import": "./index.es.js",
@@ -49,6 +50,7 @@
     "redux-form": "^8.3.10",
     "redux-thunk": "2.4.1",
     "remark-gfm": "^4.0.0",
+    "reselect": "^4.1.7",
     "tippy.js": "^6.3.7",
     "url-join": "^4.0.1",
     "use-deep-compare-effect": "^1.6.1",

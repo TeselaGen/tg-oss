@@ -42,8 +42,9 @@ export default function tidyUpSequenceData(
     doNotProvideIdsForAnnotations,
     noCdsTranslations,
     convertAnnotationsFromAAIndices,
-    topLevelSeqData,
-    isMixedRnaAndDna
+    isMixedRnaAndDna,
+    getAcceptedInsertChars,
+    topLevelSeqData
   } = options;
   let seqData = cloneDeep(pSeqData) as SequenceData; //sequence is usually immutable, so we clone it and return it
   const response = {
@@ -82,14 +83,16 @@ export default function tidyUpSequenceData(
         isMixedRnaAndDna,
         additionalValidChars,
         ...(topLevelSeqData || seqData),
-        isProtein: true
+        isProtein: true,
+        getAcceptedInsertChars
       });
       seqData.proteinSequence = newSeq;
     } else {
       const [newSeq] = filterSequenceString(seqData.sequence, {
         additionalValidChars,
         isMixedRnaAndDna,
-        ...(topLevelSeqData || seqData)
+        ...(topLevelSeqData || seqData),
+        getAcceptedInsertChars
       });
       seqData.sequence = newSeq;
     }

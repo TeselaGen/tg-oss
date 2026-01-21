@@ -73,6 +73,45 @@ describe("copyPaste", function () {
     );
   });
 
+  it("should show warning when inserting/paste sequence not in the allowed insert chars", () => {
+    cy.get(`[data-test="moleculeType"]`).select("Protein");
+    cy.tgToggle("addAcceptedInsertChars");
+    cy.contains("Part - pj5_00001 - Start: 1 End: 1384");
+    cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
+      force: true
+    });
+
+    cy.focused().type("{rightarrow}{rightarrow}");
+
+    cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
+    cy.contains(".bp3-menu-item", "Insert").click();
+    cy.contains("Press ENTER to insert 0 AAs after AA 2");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(0);
+    cy.get(".sequenceInputBubble input").type("u");
+    cy.contains("Invalid character(s) detected and removed: u");
+
+    cy.selectRange(10, 12); //select some random range (we were seeing an error where the selection layer wasn't getting updated correctly)
+    //right click a feature
+    cy.get(`.veCircularViewFeature:contains("CmR"):first`).realClick();
+    cy.get(`.veVectorInteractionWrapper:focused input`).trigger("paste", {
+      force: true,
+      clipboardData: {
+        // we have to mock the paste event cause cypress doesn't actually trigger a paste event when typing cmd+v
+        getData: type =>
+          type === "application/json"
+            ? JSON.stringify({
+                sequence: "abctu",
+                features: [],
+                translations: []
+              })
+            : "abctu",
+        types: ["application/json"]
+      }
+    });
+    cy.contains("Invalid character(s) detected and removed: b");
+  });
+
   it(`should be able to copy reverse complement`, () => {
     cy.selectRange(10, 12); //select some random range (we were seeing an error where the selection layer wasn't getting updated correctly)
     //right click a feature

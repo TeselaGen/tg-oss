@@ -21,15 +21,3 @@ yarn add @teselagen/ui react react-dom
 ```
 nx run ui:start
 ```
-
-## Publishing
-
-```
-nx run ui:publish
-```
-
-## Publishing a beta version (for use when linking to a branch in another project)
-
-```
-nx run ui:publish-beta
-```

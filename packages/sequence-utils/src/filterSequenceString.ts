@@ -4,12 +4,16 @@ import {
   ambiguous_rna_letters,
   extended_protein_letters
 } from "./bioData";
+import { isFunction } from "lodash-es";
 
 let allWarnings: string[] = [];
 
 let makeToast = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (typeof window !== "undefined" && (window as any).toastr && allWarnings.length) {
+  if (
+    typeof window !== "undefined" &&
+    (window as unknown as { toastr: unknown }).toastr &&
+    allWarnings.length
+  ) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).toastr.warning(uniq(allWarnings).join("\n"));
   }
@@ -45,15 +49,23 @@ export default function filterSequenceString(
     name,
     isProtein,
     isRna,
+    getAcceptedInsertChars,
     isMixedRnaAndDna
   }: FilterSequenceStringOptions = {}
 ): [string, string[]] {
-  const acceptedChars = getAcceptedChars({
-    isOligo,
-    isProtein,
-    isRna,
-    isMixedRnaAndDna
-  });
+  const acceptedChars = isFunction(getAcceptedInsertChars)
+    ? getAcceptedInsertChars({
+        isOligo,
+        isProtein,
+        isRna,
+        isMixedRnaAndDna
+      })
+    : getAcceptedChars({
+        isOligo,
+        isProtein,
+        isRna,
+        isMixedRnaAndDna
+      });
   const replaceChars = getReplaceChars({
     isOligo,
     isProtein,
@@ -86,13 +98,15 @@ export default function filterSequenceString(
   //add replace count warnings
   Object.keys(replaceCount).forEach(letter => {
     warnings.push(
-      `Replaced "${letter}" with "${replaceChars[letter]}"${replaceCount[letter] > 1 ? ` ${replaceCount[letter]} times` : ""
+      `Replaced "${letter}" with "${replaceChars[letter]}"${
+        replaceCount[letter] > 1 ? ` ${replaceCount[letter]} times` : ""
       }`
     );
   });
   if (sequenceString.length !== sanitizedVal.length) {
     warnings.push(
-      `${name ? `Sequence ${name}: ` : ""
+      `${
+        name ? `Sequence ${name}: ` : ""
       }Invalid character(s) detected and removed: ${uniq(invalidChars)
         .map(c => {
           if (c === " ") {
@@ -123,10 +137,10 @@ export function getAcceptedChars({
         ? ambiguous_rna_letters.toLowerCase() + "t"
         : isMixedRnaAndDna
           ? ambiguous_rna_letters.toLowerCase() +
-          ambiguous_dna_letters.toLowerCase()
+            ambiguous_dna_letters.toLowerCase()
           : //just plain old dna
-          ambiguous_rna_letters.toLowerCase() +
-          ambiguous_dna_letters.toLowerCase();
+            ambiguous_rna_letters.toLowerCase() +
+            ambiguous_dna_letters.toLowerCase();
 }
 export function getReplaceChars({
   isOligo,
@@ -137,14 +151,14 @@ export function getReplaceChars({
   return isProtein
     ? {}
     : // {".": "*"}
-    isOligo
+      isOligo
       ? {}
       : isRna
         ? { t: "u" }
         : isMixedRnaAndDna
           ? {}
           : //just plain old dna
-          {};
+            {};
 }
 
 export const filterRnaString = (
