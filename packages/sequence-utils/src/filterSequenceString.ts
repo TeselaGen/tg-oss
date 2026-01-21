@@ -31,12 +31,13 @@ function showWarnings(warnings: any) {
   makeToast();
 }
 
-interface FilterSequenceStringOptions {
+export interface FilterSequenceStringOptions {
   additionalValidChars?: string;
   isOligo?: boolean;
   name?: string;
   isProtein?: boolean;
   isRna?: boolean;
+  getAcceptedInsertChars?: (options: FilterSequenceStringOptions) => string;
   isMixedRnaAndDna?: boolean;
   [key: string]: unknown;
 }

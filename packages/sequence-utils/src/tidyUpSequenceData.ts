@@ -4,7 +4,9 @@ import shortid from "shortid";
 import getAminoAcidDataForEachBaseOfDna from "./getAminoAcidDataForEachBaseOfDna";
 import { cloneDeep, flatMap } from "lodash-es";
 import { annotationTypes } from "./annotationTypes";
-import filterSequenceString from "./filterSequenceString";
+import filterSequenceString, {
+  FilterSequenceStringOptions
+} from "./filterSequenceString";
 import tidyUpAnnotation from "./tidyUpAnnotation";
 import getDegenerateDnaStringFromAaString from "./getDegenerateDnaStringFromAAString";
 import { getFeatureTypes } from "./featureTypesAndColors";
@@ -19,6 +21,7 @@ export interface TidyUpSequenceDataOptions {
   doNotRemoveInvalidChars?: boolean;
   additionalValidChars?: string;
   noTranslationData?: boolean;
+  getAcceptedInsertChars?: (options: FilterSequenceStringOptions) => string;
   includeProteinSequence?: boolean;
   doNotProvideIdsForAnnotations?: boolean;
   noCdsTranslations?: boolean;
