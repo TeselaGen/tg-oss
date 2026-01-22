@@ -39,6 +39,7 @@ import { createSelector, defaultMemoize } from "reselect";
 import domtoimage from "dom-to-image";
 import {
   hideDialog,
+  dialogHolder,
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
@@ -141,7 +142,8 @@ export const handleSave =
       readOnly,
       alwaysAllowSave,
       sequenceData,
-      lastSavedIdUpdate
+      lastSavedIdUpdate,
+      getAcceptedInsertChars
     } = props;
     const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
 
@@ -162,7 +164,8 @@ export const handleSave =
         opts,
         tidyUpSequenceData(sequenceData, {
           doNotRemoveInvalidChars: true,
-          annotationsAsObjects: true
+          annotationsAsObjects: true,
+          getAcceptedInsertChars
         }),
         props,
         updateLastSavedIdToCurrent
@@ -367,8 +370,8 @@ export default compose(
           options
         } = props.beforeSequenceInsertOrDelete
           ? (await props.beforeSequenceInsertOrDelete(
-              tidyUpSequenceData(_sequenceDataToInsert),
-              tidyUpSequenceData(_existingSequenceData),
+              tidyUpSequenceData(_sequenceDataToInsert, { getAcceptedInsertChars: props.getAcceptedInsertChars }),
+              tidyUpSequenceData(_existingSequenceData, { getAcceptedInsertChars: props.getAcceptedInsertChars }),
               _caretPositionOrRange,
               _options
             )) || {}
@@ -555,7 +558,11 @@ const getEditorState = createSelector(
   state => state.VectorEditor,
   (state, editorName) => editorName,
   (VectorEditor, editorName) => {
-    return VectorEditor[editorName];
+    const editorState = VectorEditor[editorName];
+    editorState && (editorState.editorSize =  Object.values(VectorEditor).filter(
+    editorItem => editorItem?.sequenceData
+  ).length);
+  return editorState;
   }
 );
 
@@ -595,6 +602,10 @@ function mapStateToProps(state, ownProps) {
         annotationTypePlural,
         sequenceLength
       );
+      if (dialogHolder.editorName) {
+        annotationToAdd =
+          dialogHolder.editorName === editorName ? annotationToAdd : undefined;
+      }
     }
   });
 
@@ -623,7 +634,7 @@ function mapStateToProps(state, ownProps) {
   const selectedCutsites = s.selectedCutsitesSelector(editorState);
   const allCutsites = s.cutsitesSelector(
     editorState,
-    ownProps.additionalEnzymes
+    ownProps.additionalEnzymes,
   );
 
   const { matchedSearchLayer, searchLayers, matchesTotal } =
@@ -887,13 +898,15 @@ export function getShowGCContent(state, ownProps) {
   return toRet;
 }
 
-function jsonToJson(incomingJson) {
+function jsonToJson(incomingJson, options) {
+  const {getAcceptedInsertChars} = options || {};
   return JSON.stringify(
     omit(
       cleanUpTeselagenJsonForExport(
         tidyUpSequenceData(incomingJson, {
           doNotRemoveInvalidChars: true,
-          annotationsAsObjects: false
+          annotationsAsObjects: false,
+          getAcceptedInsertChars
         })
       ),
       [
