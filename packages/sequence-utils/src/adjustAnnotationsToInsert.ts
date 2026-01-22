@@ -1,13 +1,15 @@
 import { adjustRangeToInsert } from "@teselagen/range-utils";
-import { map } from "lodash-es";
 import { Annotation } from "./types";
 
 export default function adjustAnnotationsToInsert(
   annotationsToBeAdjusted: Record<string, Annotation> | Annotation[],
   insertStart: number,
   insertLength: number
-) {
-  return map(annotationsToBeAdjusted, (annotation: Annotation) => {
+): Annotation[] {
+  const annotations = Array.isArray(annotationsToBeAdjusted)
+    ? annotationsToBeAdjusted
+    : Object.values(annotationsToBeAdjusted);
+  return annotations.map((annotation: Annotation) => {
     return {
       ...adjustRangeToInsert(annotation, insertStart, insertLength),
       ...(annotation.locations && {

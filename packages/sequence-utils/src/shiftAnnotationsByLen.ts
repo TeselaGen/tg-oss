@@ -1,6 +1,6 @@
 import { modifiableTypes } from "./annotationTypes";
 import adjustAnnotationsToInsert from "./adjustAnnotationsToInsert";
-import { SequenceData } from "./types";
+import { SequenceData, Annotation } from "./types";
 
 export default function shiftAnnotationsByLen({
   seqData,
@@ -15,7 +15,7 @@ export default function shiftAnnotationsByLen({
     const existingAnnotations = seqData[annotationType];
     if (existingAnnotations) {
       seqData[annotationType] = adjustAnnotationsToInsert(
-        existingAnnotations,
+        existingAnnotations as Annotation[] | Record<string, Annotation>,
         caretPosition,
         insertLength
       );

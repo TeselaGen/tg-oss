@@ -1,4 +1,5 @@
 import type { Range } from "@teselagen/range-utils";
+export type { Range };
 
 export interface Annotation extends Range {
   id?: string | number;

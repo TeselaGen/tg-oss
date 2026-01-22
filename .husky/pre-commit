@@ -3,5 +3,7 @@
 
 bun tools/scripts/changelogCheck.js
 yarn lint-staged --relative
+bun nx affected -t typecheck
+
 
 bun test
