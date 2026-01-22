@@ -1,13 +1,19 @@
 # Changelog
 
-## 0.8.30 (2026-01-13)
+## 0.8.31 (2026-01-22)
 
 - fix: fix protein 'size' filter and support '\_in', '\_nin' and '\_regex' filter
 
-## 0.8.29 (2026-01-09)
+## 0.8.30 (2026-01-16)
+
+- fix cutsites and performance issue for multiple Editor
+
+## 0.8.29 (2026-01-08)
 
 - fix: show right caret position when clicking the rightest position of linear view
+- support custom function for insert string filtering
 - fix annotation lable for non-english characters
+
 
 ## 0.8.28 (2026-01-07)
 

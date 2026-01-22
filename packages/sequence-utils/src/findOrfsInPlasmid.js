@@ -27,5 +27,6 @@ export default function findOrfsInPlasmid(
     circular: circular,
     useAdditionalOrfStartCodons
   });
+
   return forwardOrfs.concat(reverseOrfs);
 }

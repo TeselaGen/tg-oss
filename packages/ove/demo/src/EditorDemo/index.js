@@ -90,6 +90,7 @@ const defaultState = {
   isProtein: false,
   forceHeightMode: false,
   addMaxInsertSize: false,
+  addAcceptedInsertChars: false,
   showAminoAcidUnitAsCodon: false,
   adjustCircularLabelSpacing: false,
   bpLimit: undefined,
@@ -344,6 +345,7 @@ export default class EditorDemo extends React.Component {
     const {
       forceHeightMode,
       addMaxInsertSize,
+      addAcceptedInsertChars,
       showAminoAcidUnitAsCodon,
       passAutoAnnotateHandlers,
       withAutoAnnotateAddon,
@@ -1284,6 +1286,12 @@ rightClickOverrides: {
                 type: "addMaxInsertSize",
                 label: "Add Max Insert Size 50",
                 info: "You can change the max size for insert/paste for the editor by passing `maxInsertSize:50`"
+              })}
+              {renderToggle({
+                that: this,
+                type: "addAcceptedInsertChars",
+                label: "Set the accepted insert characters to agct only",
+                info: "You can change the allowed insert chars for the editor by passing `getAcceptedInsertChars: ({isOligo, isProtein, isRna, isMixedRnaAndDna}) => 'agct'`"
               })}
               {renderToggle({
                 that: this,
@@ -2806,6 +2814,7 @@ doubleClickOverrides: {
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(addMaxInsertSize && { maxInsertSize: 50 })}
+            {...(addAcceptedInsertChars && {getAcceptedInsertChars: () => "acgtACGT"} )}
             {...(showAminoAcidUnitAsCodon && {
               showAminoAcidUnitAsCodon: true
             })}
