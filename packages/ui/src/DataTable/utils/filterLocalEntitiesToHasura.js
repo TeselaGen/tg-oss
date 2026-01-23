@@ -52,12 +52,6 @@ export function filterLocalEntitiesToHasura(
   };
 }
 
-const getDisplayRecordValue = (record, key) => {
-  const fixedKey =
-    key === "size" && record.displaySize !== undefined ? "displaySize" : key;
-  return get(record, fixedKey);
-};
-
 function applyWhereClause(records, where) {
   function applyFilter(record, filter) {
     if (isEmpty(filter)) {
@@ -84,7 +78,7 @@ function applyWhereClause(records, where) {
           return false;
         }
       } else {
-        const value = getDisplayRecordValue(record, key);
+        const value = get(record, key);
         const conditions = filter[key];
 
         // Handle nested object properties

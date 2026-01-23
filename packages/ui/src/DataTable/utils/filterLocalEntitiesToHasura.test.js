@@ -1295,8 +1295,7 @@ describe("filterLocalEntitiesToHasura", () => {
         id: "WWBalzQw01Oq",
         forward: true,
         color: "#EF6500",
-        size: 3,
-        displaySize: 1
+        size: 3
       },
       {
         type: "protein_bind",
@@ -1308,8 +1307,7 @@ describe("filterLocalEntitiesToHasura", () => {
         id: "yOsnjK_GkeAv",
         forward: true,
         color: "#2E2E2E",
-        size: 6,
-        displaySize: 2
+        size: 6
       },
       {
         type: "CDS",
@@ -1321,8 +1319,7 @@ describe("filterLocalEntitiesToHasura", () => {
         id: "aPKESKXj0qUR",
         forward: true,
         color: "#EF6500",
-        size: 9,
-        displaySize: 3
+        size: 9
       }
     ];
     const result_equal = filterLocalEntitiesToHasura(proteinFeatureEntities, {
@@ -1330,7 +1327,7 @@ describe("filterLocalEntitiesToHasura", () => {
         _and: [
           {
             size: {
-              _eq: 1
+              _eq: 3
             }
           }
         ]
@@ -1343,7 +1340,7 @@ describe("filterLocalEntitiesToHasura", () => {
         _and: [
           {
             size: {
-              _in: [1, 2]
+              _in: [3, 6]
             }
           }
         ]
@@ -1361,7 +1358,7 @@ describe("filterLocalEntitiesToHasura", () => {
           _and: [
             {
               size: {
-                _nin: [1, 2]
+                _nin: [3, 6]
               }
             }
           ]
