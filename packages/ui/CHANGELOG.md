@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.19 (2026-01-22)
+## 0.10.19 (2026-01-23)
 
 - fix protein 'size' filter and support '\_in', '\_nin' and '\_regex' filter
 
