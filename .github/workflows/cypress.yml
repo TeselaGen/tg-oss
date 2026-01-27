@@ -39,7 +39,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.machines }}
           path: result-${{ matrix.machines }}.txt
 
   report-results:
@@ -52,7 +52,8 @@ jobs:
       - name: Download all results
         uses: actions/download-artifact@v4
         with:
-          name: test-results
+          pattern: test-results-*
+          merge-multiple: true
           path: results
 
       - name: Check Overall Status
