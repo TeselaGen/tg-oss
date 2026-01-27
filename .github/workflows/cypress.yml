@@ -25,6 +25,59 @@ jobs:
           # just perform install
           runTests: false
       - uses: mansagroup/nrwl-nx-action@v3
+        id: nx
+        continue-on-error: true
         with:
           parallel: 1
           targets: e2e
+
+      - name: Save result
+        if: always()
+        run: echo "${{ steps.nx.outcome }}" > result-${{ matrix.machines }}.txt
+
+      - name: Upload result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: result-${{ matrix.machines }}.txt
+
+  report-results:
+    runs-on: ubuntu-latest
+    needs: cypress-run
+    if: always()
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Download all results
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: results
+
+      - name: Check Overall Status
+        id: check
+        run: |
+          if grep -q "failure" results/*.txt; then
+            echo "status=❌ Failed" >> $GITHUB_OUTPUT
+            echo "overall=fail" >> $GITHUB_OUTPUT
+          else
+            echo "status=✅ Passed" >> $GITHUB_OUTPUT
+            echo "overall=pass" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Post Single PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: cypress-parallel-results
+          message: |
+            ### Cypress Parallel Test Results
+            **Overall Status:** ${{ steps.check.outputs.status }}
+
+            Results from all machines:
+            - Machines completed.
+            - [View detailed logs here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+      - name: Fail workflow if tests failed
+        if: steps.check.outputs.overall == 'fail'
+        run: exit 1
