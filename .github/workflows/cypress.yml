@@ -59,13 +59,30 @@ jobs:
       - name: Check Overall Status
         id: check
         run: |
-          if grep -q "failure" results/*.txt; then
-            echo "status=❌ Failed" >> $GITHUB_OUTPUT
-            echo "overall=fail" >> $GITHUB_OUTPUT
-          else
-            echo "status=✅ Passed" >> $GITHUB_OUTPUT
-            echo "overall=pass" >> $GITHUB_OUTPUT
-          fi
+          echo "Checking results..."
+          ls -l results/
+
+          FINAL_STATUS="✅ Passed"
+          OVERALL="pass"
+          REPORT=""
+
+          for file in results/*.txt; do
+            filename=$(basename "$file")
+            content=$(cat "$file")
+            machine_num=$(echo "$filename" | sed -e 's/result-//' -e 's/.txt//')
+            
+            if [[ "$content" == *"failure"* ]]; then
+              FINAL_STATUS="❌ Failed"
+              OVERALL="fail"
+              REPORT+="- Machine ${machine_num}: ❌ Failed (Output: ${content})%0A"
+            else
+              REPORT+="- Machine ${machine_num}: ✅ Passed%0A"
+            fi
+          done
+
+          echo "status=$FINAL_STATUS" >> $GITHUB_OUTPUT
+          echo "overall=$OVERALL" >> $GITHUB_OUTPUT
+          echo "report=$REPORT" >> $GITHUB_OUTPUT
 
       - name: Post Single PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
@@ -75,9 +92,10 @@ jobs:
             ### Cypress Parallel Test Results
             **Overall Status:** ${{ steps.check.outputs.status }}
 
-            Results from all machines:
-            - Machines completed.
-            - [View detailed logs here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            **Machine Details:**
+            ${{ steps.check.outputs.report }}
+
+            [View detailed logs here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
       - name: Fail workflow if tests failed
         if: steps.check.outputs.overall == 'fail'
