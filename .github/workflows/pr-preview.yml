@@ -25,6 +25,8 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+        env:
+          CYPRESS_INSTALL_BINARY: 0
 
       - name: Build Demo
         run: yarn nx run ${{ matrix.package_name }}:build --configuration=demo
