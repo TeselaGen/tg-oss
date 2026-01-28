@@ -1,8 +1,12 @@
 # Changelog
 
-## 0.8.31 (2026-01-28)
+## 0.8.32 (2026-01-28)
 
 - fix: use right font size when calculating the annotation text position
+
+## 0.8.31 (2026-01-27)
+
+- fix: avoid autoTooltip.js offend non OVE related dom element
 
 ## 0.8.30 (2026-01-16)
 

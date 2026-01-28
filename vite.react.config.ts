@@ -11,7 +11,6 @@ import path from "node:path";
 import dts from "vite-plugin-dts";
 import { joinPathFragments } from "nx/src/devkit-exports";
 
-// import million from "million/compiler";
 //vite config for react packages
 
 const justSrc = [
