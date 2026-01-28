@@ -2814,7 +2814,9 @@ doubleClickOverrides: {
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(addMaxInsertSize && { maxInsertSize: 50 })}
-            {...(addAcceptedInsertChars && {getAcceptedInsertChars: () => "acgtACGT"} )}
+            {...(addAcceptedInsertChars && {
+              getAcceptedInsertChars: () => "acgtACGT"
+            })}
             {...(showAminoAcidUnitAsCodon && {
               showAminoAcidUnitAsCodon: true
             })}

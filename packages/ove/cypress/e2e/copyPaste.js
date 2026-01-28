@@ -89,23 +89,27 @@ describe("copyPaste", function () {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0);
     cy.get(".sequenceInputBubble input").type("u");
-    cy.contains('Invalid character(s) detected and removed: u');
+    cy.contains("Invalid character(s) detected and removed: u");
 
     cy.selectRange(10, 12); //select some random range (we were seeing an error where the selection layer wasn't getting updated correctly)
     //right click a feature
     cy.get(`.veCircularViewFeature:contains("CmR"):first`).realClick();
     cy.get(`.veVectorInteractionWrapper:focused input`).trigger("paste", {
-        force: true,
-        clipboardData: {
-          // we have to mock the paste event cause cypress doesn't actually trigger a paste event when typing cmd+v
-          getData: type =>
-            type === "application/json"
-              ? JSON.stringify({sequence: "abctu", features: [], translations: []})
-              : 'abctu',
-          types: ["application/json"]
-        }
-      });
-      cy.contains('Invalid character(s) detected and removed: b');
+      force: true,
+      clipboardData: {
+        // we have to mock the paste event cause cypress doesn't actually trigger a paste event when typing cmd+v
+        getData: type =>
+          type === "application/json"
+            ? JSON.stringify({
+                sequence: "abctu",
+                features: [],
+                translations: []
+              })
+            : "abctu",
+        types: ["application/json"]
+      }
+    });
+    cy.contains("Invalid character(s) detected and removed: b");
   });
 
   it(`should be able to copy reverse complement`, () => {

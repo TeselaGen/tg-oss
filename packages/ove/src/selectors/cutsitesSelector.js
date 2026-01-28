@@ -15,20 +15,14 @@ const cutsitesCache = [];
 
 function getCachedResult(argsObj) {
   const idx = cutsitesCache.findIndex(
-    entry =>
-      entry &&
-      isEqual(entry.args, argsObj)
+    entry => entry && isEqual(entry.args, argsObj)
   );
   if (idx === -1) return;
   const hit = cutsitesCache[idx];
   return hit.result;
 }
 
-function setCachedResult(
-  argsObj,
-  result,
-  cacheSize = 1
-) {
+function setCachedResult(argsObj, result, cacheSize = 1) {
   cutsitesCache.push({
     args: argsObj,
     result

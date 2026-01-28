@@ -154,7 +154,7 @@ class SequenceInputNoHotkeys extends React.Component {
                 ...sequenceData,
                 name: undefined,
                 getAcceptedInsertChars
-              },
+              }
             );
             if (warnings.length) {
               this.setState({

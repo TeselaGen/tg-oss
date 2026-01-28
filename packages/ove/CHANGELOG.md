@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## 0.8.30 (2026-01-16)
 
 - fix cutsites and performance issue for multiple Editor
@@ -10,7 +9,6 @@
 - fix: show right caret position when clicking the rightest position of linear view
 - support custom function for insert string filtering
 - fix annotation lable for non-english characters
-
 
 ## 0.8.28 (2026-01-07)
 

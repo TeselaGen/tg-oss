@@ -286,7 +286,7 @@ function VectorInteractionHOC(Component /* options */) {
         copyOptions,
         disableBpEditing,
         readOnly,
-        getAcceptedInsertChars,
+        getAcceptedInsertChars
       } = this.props;
       const onCut = this.props.onCut || this.props.onCopy || noop;
       const seqData = tidyUpSequenceData(

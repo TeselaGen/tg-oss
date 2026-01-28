@@ -41,12 +41,9 @@ export const sizeSchema = isProtein => ({
 export const getMemoOrfs = (() => {
   let lastDeps;
   let lastResult;
-  return (editorState) => {
-    const {
-      sequenceData,
-      minimumOrfSize,
-      useAdditionalOrfStartCodons
-    } = editorState;
+  return editorState => {
+    const { sequenceData, minimumOrfSize, useAdditionalOrfStartCodons } =
+      editorState;
 
     const { sequence, circular } = sequenceData;
 

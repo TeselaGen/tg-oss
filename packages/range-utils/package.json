@@ -1,9 +1,17 @@
 {
   "name": "@teselagen/range-utils",
-  "version": "0.3.20",
+  "version": "0.3.20-beta.1",
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
   "dependencies": {
     "lodash-es": "^4.17.21"
-  }
+  },
+  "main": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "types": "./src/index.ts"
 }

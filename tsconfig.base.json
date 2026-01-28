@@ -3,6 +3,8 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -16,8 +18,8 @@
       "@teselagen/bio-parsers": ["packages/bio-parsers/src/index.js"],
       "@teselagen/file-utils": ["packages/file-utils/src/index.js"],
       "@teselagen/ove": ["packages/ove/src/index.js"],
-      "@teselagen/range-utils": ["packages/range-utils/src/index.js"],
-      "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.js"],
+      "@teselagen/range-utils": ["packages/range-utils/src/index.ts"],
+      "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.ts"],
       "@teselagen/shared-demo": ["packages/shared-demo/src/index.js"],
       "@teselagen/ui": ["packages/ui/src/index.js"]
     },
@@ -29,7 +31,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node"],
+    "types": ["bun", "chai", "node", "jest"],
     "outDir": "./dist/out-tsc",
     "declaration": true
   },

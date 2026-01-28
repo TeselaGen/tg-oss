@@ -1,0 +1,32 @@
+import getOrfsFromSequence, { Orf } from "./getOrfsFromSequence";
+
+export default function findOrfsInPlasmid(
+  sequence: string,
+  circular: boolean,
+  minimumOrfSize: number,
+  useAdditionalOrfStartCodons: boolean,
+  isProteinOrOligo: boolean
+): Orf[] {
+  if (isProteinOrOligo) {
+    // we do not find ORFs in protein/oligo sequences
+    return [];
+  }
+  //tnr, we should do the parsing down of the orfs immediately after they're returned from this sequence
+  // const orfs1Forward = eliminateCircularOrfsThatOverlapWithNonCircularOrfs(getOrfsFromSequence(0, doubleForwardSequence, minimumOrfSize, true), maxLength);
+  const forwardOrfs = getOrfsFromSequence({
+    sequence: sequence,
+    minimumOrfSize: minimumOrfSize,
+    forward: true,
+    circular: circular,
+    useAdditionalOrfStartCodons
+  });
+  const reverseOrfs = getOrfsFromSequence({
+    sequence: sequence,
+    minimumOrfSize: minimumOrfSize,
+    forward: false,
+    circular: circular,
+    useAdditionalOrfStartCodons
+  });
+
+  return forwardOrfs.concat(reverseOrfs);
+}
