@@ -4,6 +4,7 @@ describe("miscellaneous tests that do not fit other categories", () => {
     cy.get("body").type("{meta}/");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(200);
+
     cy.get(`.tg-menu-bar-help-search input`)
       .type(
         "asdfasdf{selectall}{backspace}yyyyy{leftarrow}{leftarrow}{leftarrow}xxxx"
