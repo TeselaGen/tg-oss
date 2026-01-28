@@ -20,7 +20,10 @@ document.addEventListener("mouseup", () => {
 let tippys = [];
 
 function isInAllowedContainer(element) {
-  return element.closest(".veEditor") !== null;
+  if (window.__onlyAllowTooltipsInVeEditor) {
+    return element.closest(".veEditor") !== null;
+  }
+  return true;
 }
 
 let recentlyHidden = false;
