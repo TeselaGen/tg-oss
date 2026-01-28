@@ -1,22 +1,18 @@
 import React from "react";
 import { isEqual } from "lodash-es";
-import { convertDnaCaretPositionOrRangeToAA } from "@teselagen/sequence-utils";
 import { convertRangeTo1Based } from "@teselagen/range-utils";
 import selectors from "../../selectors";
 
-export const sizeSchema = isProtein => ({
+export const sizeSchema = () => ({
   path: "size",
   type: "number",
-  render: (val, _record) => {
-    const record = isProtein
-      ? convertDnaCaretPositionOrRangeToAA(_record)
-      : _record;
+  render: (val, record) => {
     const base1Range = convertRangeTo1Based(record);
     const hasJoinedLocations = record.locations && record.locations.length > 1;
 
     return (
       <span>
-        {isProtein ? Math.floor(val / 3) : val}{" "}
+        {val}{" "}
         <span style={{ fontSize: 10 }}>
           {hasJoinedLocations ? (
             record.locations.map((loc, i) => {
@@ -41,12 +37,9 @@ export const sizeSchema = isProtein => ({
 export const getMemoOrfs = (() => {
   let lastDeps;
   let lastResult;
-  return (editorState) => {
-    const {
-      sequenceData,
-      minimumOrfSize,
-      useAdditionalOrfStartCodons
-    } = editorState;
+  return editorState => {
+    const { sequenceData, minimumOrfSize, useAdditionalOrfStartCodons } =
+      editorState;
 
     const { sequence, circular } = sequenceData;
 
