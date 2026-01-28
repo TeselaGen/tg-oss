@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.19 (2026-01-27)
+
+- fix: avoid autoTooltip.js offend non OVE related dom element
+
 ## 0.10.18 (2026-01-05)
 
 - fix cutsites and performance issue for multiple Editor

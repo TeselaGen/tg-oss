@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ove",
-  "version": "0.8.30",
+  "version": "0.8.31",
   "main": "./src/index.js",
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",

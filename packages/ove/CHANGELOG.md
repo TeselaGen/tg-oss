@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.31 (2026-01-27)
+
+- fix: avoid autoTooltip.js offend non OVE related dom element
 
 ## 0.8.30 (2026-01-16)
 
@@ -10,7 +13,6 @@
 - fix: show right caret position when clicking the rightest position of linear view
 - support custom function for insert string filtering
 - fix annotation lable for non-english characters
-
 
 ## 0.8.28 (2026-01-07)
 

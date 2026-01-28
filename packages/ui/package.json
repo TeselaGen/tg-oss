@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.10.18",
+  "version": "0.10.19",
   "main": "./src/index.js",
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
