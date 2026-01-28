@@ -93,10 +93,15 @@ export default function (_serSeq, options) {
 
     let lines = [];
     lines.push(createGenbankLocus(serSeq, options));
-    if (serSeq.definition || serSeq.description) {
+    if (serSeq.definition) {
       lines.push(
-        "DEFINITION  " +
-          mangleOrStripUrls(serSeq.definition || serSeq.description, options)
+        "DEFINITION  " + mangleOrStripUrls(serSeq.definition, options)
+      );
+    }
+
+    if (serSeq.description) {
+      lines.push(
+        "DESCRIPTION  " + mangleOrStripUrls(serSeq.description, options)
       );
     }
 
@@ -206,11 +211,11 @@ function createGenbankLocus(serSeq, options) {
   } else if (serSeq.type === "RNA") {
     dnaType = serSeq?.doubleStranded
       ? "RNA"
-      : serSeq?.sequenceTypeFromLocus ?? "ss-RNA";
+      : (serSeq?.sequenceTypeFromLocus ?? "ss-RNA");
   } else {
     dnaType = serSeq?.doubleStranded
       ? "DNA"
-      : serSeq?.sequenceTypeFromLocus ?? "DNA";
+      : (serSeq?.sequenceTypeFromLocus ?? "DNA");
   }
   const date = getCurrentDateString();
 

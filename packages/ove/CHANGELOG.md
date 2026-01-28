@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.31 (2026-01-22)
+
+- fix: sync user changes in the description into genbank and parse description field
+
 
 ## 0.8.30 (2026-01-16)
 
