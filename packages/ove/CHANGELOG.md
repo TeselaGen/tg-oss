@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.32 (2026-01-30)
+
+- fix: support '=' in LOCUS, COMMENT, etc
+
 ## 0.8.31 (2026-01-27)
 
 - fix: avoid autoTooltip.js offend non OVE related dom element
