@@ -1126,6 +1126,15 @@ ORIGIN
     const result = genbankToJson(string);
     result[0].parsedSequence.sequence.should.equal("aaaggggy*yyy*");
   });
+
+  it("correctly parses '=' embed in the LOCUS line", async function () {
+    const string = fs.readFileSync(
+      path.join(__dirname, "./testData/genbank/gen_bank_with_equal_symbol.gb"),
+      "utf8"
+    );
+    const result = genbankToJson(string);
+    result[0].parsedSequence.sequence.length.should.equal(125);
+  });
 });
 
 // const string = fs.readFileSync(path.join(__dirname, '../../../..', './testData/genbank (JBEI Private)/46.gb'), "utf8");
