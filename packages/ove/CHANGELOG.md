@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.33 (2026-01-31)
+
+- fix: remove leaking CSS on H5 elements introduced in #198 (fix #257)
+
 ## 0.8.32 (2026-01-30)
 
 - fix: support '=' in LOCUS, COMMENT, etc
