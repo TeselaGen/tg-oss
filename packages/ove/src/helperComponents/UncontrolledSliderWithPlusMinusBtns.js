@@ -30,6 +30,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
 
   render() {
     const { value } = this.state;
+
     const {
       noWraparound,
       title,
