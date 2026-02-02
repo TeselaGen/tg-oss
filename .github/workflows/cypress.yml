@@ -25,6 +25,78 @@ jobs:
           # just perform install
           runTests: false
       - uses: mansagroup/nrwl-nx-action@v3
+        id: nx
+        continue-on-error: true
         with:
           parallel: 1
           targets: e2e
+
+      - name: Save result
+        if: always()
+        run: echo "${{ steps.nx.outcome }}" > result-${{ matrix.machines }}.txt
+
+      - name: Upload result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.machines }}
+          path: result-${{ matrix.machines }}.txt
+
+  report-results:
+    runs-on: ubuntu-latest
+    needs: cypress-run
+    if: always()
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Download all results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-results-*
+          merge-multiple: true
+          path: results
+
+      - name: Check Overall Status
+        id: check
+        run: |
+          echo "Checking results..."
+          ls -l results/
+
+          FINAL_STATUS="✅ Passed"
+          OVERALL="pass"
+          REPORT=""
+
+          for file in results/*.txt; do
+            filename=$(basename "$file")
+            content=$(cat "$file")
+            machine_num=$(echo "$filename" | sed -e 's/result-//' -e 's/.txt//')
+            
+            if [[ "$content" == *"failure"* ]]; then
+              FINAL_STATUS="❌ Failed"
+              OVERALL="fail"
+              REPORT+="- Machine ${machine_num}: ❌ Failed (Output: ${content})%0A"
+            else
+              REPORT+="- Machine ${machine_num}: ✅ Passed%0A"
+            fi
+          done
+
+          echo "status=$FINAL_STATUS" >> $GITHUB_OUTPUT
+          echo "overall=$OVERALL" >> $GITHUB_OUTPUT
+          echo "report=$REPORT" >> $GITHUB_OUTPUT
+
+      - name: Post Single PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: cypress-parallel-results
+          message: |
+            ### Cypress Parallel Test Results
+            **Overall Status:** ${{ steps.check.outputs.status }}
+
+            **Machine Details:**
+            ${{ steps.check.outputs.report }}
+
+            [View detailed logs here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+      - name: Fail workflow if tests failed
+        if: steps.check.outputs.overall == 'fail'
+        run: exit 1
