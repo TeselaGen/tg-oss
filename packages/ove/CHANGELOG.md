@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.34 (2026-02-01)
+
+- fix: improve mismatch visibility in alignment view
+
 ## 0.8.33 (2026-01-31)
 
 - fix: remove leaking CSS on H5 elements introduced in #198 (fix #257)

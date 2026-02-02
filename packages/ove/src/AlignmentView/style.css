@@ -73,6 +73,12 @@
   height: 100% !important;
   overflow: hidden;
 }
+.veAlignmentMismatch {
+  opacity: 0.9;
+}
+.veRowItem:has(.rowViewTextContainer) .veAlignmentMismatch {
+  opacity: 0.5;
+}
 .alignmentView .veAlignmentSelectionLayer.veRowViewSelectionLayer {
   background: gray;
 }
