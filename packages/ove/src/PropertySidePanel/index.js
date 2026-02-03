@@ -5,11 +5,15 @@ import {
   aminoAcidShortNames
 } from "./calculateAminoAcidFrequency";
 import { Button } from "@blueprintjs/core";
+import {
+  scrollToAlignmentSelection,
+  updateCaretPosition
+} from "../AlignmentView/utils";
+import { DataTable } from "@teselagen/ui";
 
 export default ({ properties, setProperties, style }) => {
   const sidebarRef = React.useRef(null);
   const [mismatchesCount, setMismatchesCount] = React.useState(0);
-  const [mismatchesInRange, setMismatchesInRange] = React.useState(0);
 
   const { track, isOpen, selection, isPairwise } = properties;
 
@@ -33,6 +37,33 @@ export default ({ properties, setProperties, style }) => {
     return isPairwise ? tr.filter(m => m?.color === "red") : tr;
   }, [track, mismatchKey, isPairwise]);
 
+  const mismatchSchema = useMemo(
+    () => ({
+      fields: [
+        {
+          path: "start",
+          type: "number",
+          displayName: "Start",
+          render: val => val + 1
+        },
+        {
+          path: "end",
+          type: "number",
+          displayName: "End",
+          render: val => val + 1
+        }
+      ]
+    }),
+    []
+  );
+
+  const mismatchEntities = useMemo(() => {
+    return (trackMismatches || []).map((m, i) => ({
+      ...m,
+      id: i.toString()
+    }));
+  }, [trackMismatches]);
+
   useEffect(() => {
     if (!isOpen || sidebarRef.current === null || !track) {
       return;
@@ -54,24 +85,6 @@ export default ({ properties, setProperties, style }) => {
     });
 
     setMismatchesCount(mismatchCount);
-    setMismatchesInRange(mismatchCount);
-
-    if (selection && selection.start > -1 && selection.end > -1) {
-      let count = 0;
-
-      trackMismatches?.forEach(tm => {
-        if (tm === null || tm.start === null || tm.end === null) {
-          return;
-        }
-
-        const overlapStart = Math.max(tm.start, selection.start);
-        const overlapEnd = Math.min(tm.end, selection.end);
-        if (overlapEnd >= overlapStart) {
-          count += overlapEnd - overlapStart + 1;
-        }
-      });
-      setMismatchesInRange(count);
-    }
   }, [isOpen, track, selection, trackMismatches]);
 
   const aminoFreq = useMemo(() => {
@@ -110,7 +123,7 @@ export default ({ properties, setProperties, style }) => {
             width: "100%"
           }}
         ></div>
-        <h5>Track Properties</h5>
+        <HeaderItem title="Track Properties" />
 
         <div className="bp3-tab-panel">
           <RowItem item={name} title="Name" />
@@ -130,10 +143,6 @@ export default ({ properties, setProperties, style }) => {
             </>
           )}
           <RowItem
-            item={`${mismatchesInRange}/${mismatchesCount}`}
-            title="Mismatches"
-          />
-          <RowItem
             item={
               selection && selection.start > -1 ? (
                 <span>
@@ -145,8 +154,38 @@ export default ({ properties, setProperties, style }) => {
             }
             title="Region"
           />
+          <HeaderItem title={`Mismatches (${mismatchesCount})`} />
+
+          {trackMismatches && trackMismatches.length > 0 && (
+            <div
+              style={{
+                margin: "0px 10px"
+              }}
+            >
+              <DataTable
+                formName="mismatchesTable"
+                isSimple
+                noHeader
+                noFooter
+                withSearch={false}
+                noPadding
+                compact
+                maxHeight={150}
+                entities={mismatchEntities}
+                schema={mismatchSchema}
+                onRowClick={(e, row) => {
+                  updateCaretPosition({ start: row.start, end: row.end });
+                  setTimeout(() => {
+                    scrollToAlignmentSelection();
+                  }, 0);
+                }}
+              />
+            </div>
+          )}
         </div>
-        <h5>{isProtein ? "Amino Acid" : "Base Pair"} Frequencies</h5>
+        <HeaderItem
+          title={`${isProtein ? "Amino Acid" : "Base Pair"} Frequencies`}
+        />
         <div className="sidebar-table">
           <div className="sidebar-row">
             <div className="sidebar-cell">
@@ -225,15 +264,32 @@ export default ({ properties, setProperties, style }) => {
 };
 
 function RowItem({ item, title, units }) {
-  if (!item) return;
-
   const propertyClass = title.split(" ").join("-").toLowerCase();
   return (
     <div className={`ve-flex-row property-${propertyClass}`}>
-      <div className="ve-column-left">{title}</div>
+      <div style={{ fontWeight: "bold" }} className="ve-column-left">
+        {title}
+      </div>
       <div className="ve-column-right">
         {item} {units ?? ""}
       </div>
     </div>
   );
 }
+
+const HeaderItem = ({ title }) => {
+  return (
+    <h5
+      style={{
+        margin: 0,
+        fontSize: 15,
+        fontWeight: "bold",
+        textAlign: "center",
+        padding: "5px 0",
+        borderBottom: "1px solid #f1f1f1"
+      }}
+    >
+      {title}
+    </h5>
+  );
+};

@@ -1,134 +1,202 @@
-import React from "react";
-import { DataTable, withSelectedEntities } from "@teselagen/ui";
+/* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Button } from "@blueprintjs/core";
+import { updateCaretPosition } from "./utils";
 
-class Mismatches extends React.Component {
-  UNSAFE_componentWillMount() {
-    const { alignmentData, mismatches } = this.props;
-    // const { alignmentId, alignments } = this.props;
-    const mismatchList = this.getMismatchList(alignmentData, mismatches);
-    // const mismatchListAll = this.getMismatchList(alignmentId, alignments);
-    const schema = {
-      fields: [{ path: "mismatches", type: "number" }]
-    };
-    this.setState({ mismatchList, schema });
-  }
+export function FindMismatches(props) {
+  const { alignmentJson, id } = props;
+  const alignedSeqs = alignmentJson.map(t => t.alignmentData?.sequence || "");
 
-  getGapMap = sequence => {
-    const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-    sequence.split("").forEach(char => {
-      if (char === "-") {
-        gapMap[Math.max(0, gapMap.length - 1)] =
-          (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
-      } else {
-        gapMap.push(gapMap[gapMap.length - 1] || 0);
-      }
-    });
-    return gapMap;
-  };
+  // Find mismatch positions
+  const mismatches = React.useMemo(() => {
+    const result = [{ position: 0, bases: [""] }];
 
-  getMismatchList = (alignmentData, mismatches) => {
-    // getMismatchList = (alignmentId, alignments) => {
-    // let mismatchListAll = [];
-    // skip first sequence/ref seq, since there will be no mismatches
-    // for (let trackI = 1; trackI < alignments[alignmentId].alignmentTracks.length; trackI++) {
-    const mismatchList = [];
-    // const trackName = alignmentData.name;
-    // const editedTrackName = trackName.slice(trackName.indexOf("_") + 1);
-
-    let getGaps = () => ({
-      gapsBefore: 0,
-      gapsInside: 0
-    });
-    const gapMap = this.getGapMap(alignmentData.sequence);
-    getGaps = rangeOrCaretPosition => {
-      if (typeof rangeOrCaretPosition !== "object") {
-        return {
-          gapsBefore: gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
-        };
-      }
-      const { start, end } = rangeOrCaretPosition;
-      const toReturn = {
-        gapsBefore: gapMap[start],
-        gapsInside:
-          gapMap[Math.min(end, gapMap.length - 1)] -
-          gapMap[Math.min(start, gapMap.length - 1)]
-      };
-      return toReturn;
-    };
-
-    const gapsBeforeSequence = getGaps(0).gapsBefore;
-    for (let mismatchI = 0; mismatchI < mismatches.length; mismatchI++) {
-      const mismatchEnd = mismatches[mismatchI].end;
-      const mismatchStart = mismatches[mismatchI].start;
-      const mismatchDifference = mismatchEnd - mismatchStart;
-      // display 'position' as 1-based but store 'start' & 'end' as 0-based
-      if (mismatchDifference === 0) {
-        mismatchList.push({
-          mismatches: mismatchStart + 1 - gapsBeforeSequence,
-          start: mismatchStart - gapsBeforeSequence,
-          end: mismatchStart - gapsBeforeSequence
-        });
-      } else {
-        for (let innerI = 0; innerI <= mismatchDifference; innerI++) {
-          mismatchList.push({
-            mismatches: mismatchStart + innerI + 1 - gapsBeforeSequence,
-            start: mismatchStart + innerI - gapsBeforeSequence,
-            end: mismatchStart + innerI - gapsBeforeSequence
-          });
+    if (alignedSeqs.length > 1 && alignedSeqs[0].length) {
+      for (let i = 0; i < alignedSeqs[0].length; i++) {
+        const bases = alignedSeqs.map(seq => seq[i]);
+        const uniqueBases = new Set(bases);
+        // Ignore gaps-only columns
+        if (uniqueBases.size > 1 && !uniqueBases.has("-")) {
+          result.push({ position: i, bases });
         }
       }
     }
-    return mismatchList;
-  };
+    return result;
+  }, [alignedSeqs]);
 
-  render() {
-    const { mismatchList, schema } = this.state;
-    let tableOfMismatches;
-    if (mismatchList.length === 0) {
-      tableOfMismatches = null;
-    } else {
-      tableOfMismatches = (
-        <DataTable
-          maxHeight={168}
-          formName={"mismatchesTable"}
-          isSimple
-          compact
-          noRouter
-          // onRowSelect={this.handleMismatchClick}
-          schema={schema}
-          entities={mismatchList}
-        />
-      );
+  const currentCaretPosition = useSelector(
+    state =>
+      state.VectorEditor.__allEditorsOptions.alignments[id]?.caretPosition
+  );
+
+  // State for navigation
+  const [currentIdx, setCurrentIdx] = React.useState(0);
+  const [disablePrev, setDisablePrev] = React.useState(true);
+  const [disableNext, setDisableNext] = React.useState(false);
+
+  // Current mismatch info
+  const currentMismatch = mismatches[currentIdx];
+
+  const handleButtonsState = React.useCallback(
+    caret => {
+      if (!mismatches.length) {
+        setDisablePrev(true);
+        setDisableNext(true);
+        return;
+      }
+
+      const firstMismatchPos = mismatches[1].position;
+      const lastMismatchPos = mismatches[mismatches.length - 1].position;
+
+      setDisablePrev(caret <= firstMismatchPos);
+      setDisableNext(caret >= lastMismatchPos);
+    },
+    [mismatches]
+  );
+
+  // Scroll to the current mismatch position when it changes
+  useEffect(() => {
+    if (mismatches.length === 1) {
+      setDisablePrev(true);
+      setDisableNext(true);
+      return;
     }
 
-    return (
-      <div style={{ maxHeight: 180.8, overflowY: "scroll" }}>
-        {/* <div style={{ fontSize: 15, textAlign: "center" }}><b>Positions of Mismatches</b></div> */}
-        <div
-          style={{
-            // margin: 10,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
-          }}
-        >
-          <div style={{ width: 100, margin: 4 }}>
-            {/* <div style={{
-                                    paddingBottom: 10,
-                                    textOverflow: "ellipsis",
-                                    overflowY: "auto",
-                                    whiteSpace: "nowrap",
-                                    fontSize: 13,
-                                    textAlign: "center"
-                                }}>
-                                    <b>{mismatchList[0].name}</b>
-                                </div> */}
-            {tableOfMismatches}
+    if (currentMismatch.position === 0) return;
+
+    if (currentCaretPosition !== -1) {
+      handleButtonsState(currentCaretPosition);
+      return;
+    }
+  }, [
+    currentIdx,
+    currentMismatch,
+    currentCaretPosition,
+    handleButtonsState,
+    mismatches
+  ]);
+
+  // Update currentIdx when caret moves to a mismatch
+  useEffect(() => {
+    if (currentCaretPosition !== -1) {
+      const mismatchIdx = mismatches.findIndex(
+        m =>
+          m.position === currentCaretPosition ||
+          m.position === currentCaretPosition - 1
+      );
+      if (mismatchIdx !== -1 && mismatchIdx !== currentIdx) {
+        setCurrentIdx(mismatchIdx);
+      }
+    }
+  }, [currentCaretPosition, mismatches, currentIdx]);
+
+  const updateView = mismatch => {
+    const idx = mismatches.indexOf(mismatch);
+    const position = mismatch.position;
+
+    handleButtonsState(position);
+
+    setCurrentIdx(idx);
+
+    updateCaretPosition({ start: position, end: position });
+  };
+
+  // Handle mismatch navigation
+  const prevMismatch = () => {
+    if (currentIdx > 1) {
+      const newIdx = Math.max(0, currentIdx - 1);
+      let prev = mismatches[newIdx];
+
+      if (currentCaretPosition > 0) {
+        prev = [...mismatches]
+          .reverse()
+          .find(m => m.position < currentCaretPosition);
+      }
+
+      if (prev) {
+        updateView(prev);
+      }
+    }
+  };
+
+  const nextMismatch = () => {
+    if (currentIdx < mismatches.length - 1) {
+      const newIdx = Math.min(mismatches.length - 1, currentIdx + 1);
+      let next = mismatches[newIdx];
+
+      if (currentCaretPosition > 0) {
+        next = mismatches.find(
+          m => m.position > currentCaretPosition && m.position > 1
+        );
+      }
+
+      if (next) {
+        updateView(next);
+      }
+    }
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 10
+      }}
+    >
+      {mismatches.length === 1 ? (
+        <span style={{ fontStyle: "italic", color: "grey" }}>
+          no mismatches
+        </span>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
+            <strong>Mismatches</strong>
+            <div style={{ display: "flex", gap: 2 }}>
+              <Button
+                intent="primary"
+                icon="arrow-left"
+                data-tip="Previous Mismatch"
+                onClick={prevMismatch}
+                disabled={disablePrev}
+                small
+                minimal
+              />
+              <Button
+                intent="primary"
+                icon="arrow-right"
+                data-tip="Next Mismatch"
+                onClick={nextMismatch}
+                disabled={disableNext}
+                small
+                minimal
+              />
+            </div>
           </div>
+          <span
+            style={{
+              fontSize: "0.8em",
+              color: "grey",
+              lineHeight: "0.8em"
+            }}
+          >
+            {currentMismatch.position > 1 && (
+              <span>Position: {currentMismatch.position + 1} | </span>
+            )}
+            ({currentIdx} of {mismatches.length - 1})
+          </span>
         </div>
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 }
 
-export default withSelectedEntities("mismatchesTable")(Mismatches);
+export default FindMismatches;

@@ -30,6 +30,7 @@ import ReactDOM from "react-dom";
 
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap, { getTrimmedRangesToDisplay } from "./Minimap";
+import FindMismatches from "./Mismatches";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
@@ -1748,6 +1749,7 @@ export const AlignmentView = props => {
                     />
                   )}
                   {additionalTopEl}
+                  <FindMismatches alignmentJson={alignmentTracks} id={id} />
                   {saveMessage && (
                     <div
                       className="ove-menu-toast"
