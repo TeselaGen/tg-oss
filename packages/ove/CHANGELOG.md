@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.35 (2026-02-04)
+
+- fix: get feature name from /region_name or /product
+
 ## 0.8.34 (2026-02-01)
 
 - fix: improve mismatch visibility in alignment view
