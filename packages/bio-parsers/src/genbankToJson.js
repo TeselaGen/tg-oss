@@ -708,14 +708,14 @@ function genbankToJson(string, options = {}) {
       feat.name = feat.notes.ApEinfo_label[0];
     } else if (feat.notes.name) {
       feat.name = feat.notes.name[0];
-    } else if (feat.notes.organism) {
-      feat.name = feat.notes.organism[0];
-    } else if (feat.notes.locus_tag) {
-      feat.name = feat.notes.locus_tag[0];
     } else if (feat.notes.product) {
       feat.name = feat.notes.product[0];
     } else if (feat.notes.region_name) {
       feat.name = feat.notes.region_name[0];
+    } else if (feat.notes.organism) {
+      feat.name = feat.notes.organism[0];
+    } else if (feat.notes.locus_tag) {
+      feat.name = feat.notes.locus_tag[0];
     } else if (feat.notes.note) {
       //if the name is coming from a note, shorten the name to 100 chars long
       feat.name = feat.notes.note[0].substr(0, 100);
