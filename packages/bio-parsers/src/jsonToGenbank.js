@@ -6,6 +6,7 @@ import pragmasAndTypes from "./utils/pragmasAndTypes.js";
 import { mangleOrStripUrls } from "./utils/unmangleUrls.js";
 import { reformatName } from "./utils/NameUtils.js";
 import { getFeatureToColorMap } from "@teselagen/sequence-utils";
+
 const StringUtil = {
   /** Trims white space at beginning and end of string
    * @param {string} line
@@ -206,11 +207,11 @@ function createGenbankLocus(serSeq, options) {
   } else if (serSeq.type === "RNA") {
     dnaType = serSeq?.doubleStranded
       ? "RNA"
-      : serSeq?.sequenceTypeFromLocus ?? "ss-RNA";
+      : (serSeq?.sequenceTypeFromLocus ?? "ss-RNA");
   } else {
     dnaType = serSeq?.doubleStranded
       ? "DNA"
-      : serSeq?.sequenceTypeFromLocus ?? "DNA";
+      : (serSeq?.sequenceTypeFromLocus ?? "DNA");
   }
   const date = getCurrentDateString();
 
@@ -257,7 +258,49 @@ function getCurrentDateString() {
   return day + "-" + month + "-" + year;
 }
 
+const standardLineLength = 80;
 function featureNoteInDataToGenbankString(name, value, options) {
+  const valueString = mangleOrStripUrls(value, options);
+  // if valueString.length is larger than standardLineLength - 22 - name.length, we need to split it up into multiple lines, to make sure each line has 21 spaces and a maximum of 59 characters of the valueString
+  if (valueString.length > standardLineLength - 22 - name.length) {
+    const lines = [];
+    let currentIndex = 0;
+    while (currentIndex < valueString.length) {
+      if (currentIndex === 0) {
+        // 24 is the length of '="' plus the closing '"' at the start of the line and the 21 spaces.
+        const chunk = valueString.substring(
+          currentIndex,
+          currentIndex + standardLineLength - 24 - name.length
+        );
+        lines.push(
+          StringUtil.lpad("/", " ", 22) +
+            name +
+            '="' +
+            chunk +
+            (currentIndex + standardLineLength - 22 - name.length >=
+            valueString.length
+              ? '"'
+              : "")
+        );
+        currentIndex += standardLineLength - 22 - name.length;
+      } else {
+        const chunk = valueString.substring(
+          currentIndex,
+          currentIndex + standardLineLength - 21
+        );
+        lines.push(
+          " ".repeat(21) +
+            chunk +
+            (currentIndex + standardLineLength - 21 >= valueString.length
+              ? '"'
+              : "")
+        );
+        currentIndex += standardLineLength - 21;
+      }
+    }
+    return lines.join("\r\n");
+  }
+
   return (
     StringUtil.lpad("/", " ", 22) +
     name +

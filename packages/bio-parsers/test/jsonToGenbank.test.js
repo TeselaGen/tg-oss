@@ -258,10 +258,7 @@ describe("genbank exporter/parser conversion", function () {
       }
     );
 
-    string.should.not.include("https://github.com/TeselaGen/fake/url");
-    string.should.not.include(
-      "https://github.com/TeselaGen/microbyre-support/issues/70"
-    );
+    string.should.not.include("https://github.com");
 
     const result = parseGenbank(string);
     result[0].parsedSequence.features.should.include.something.that.deep.equals(
