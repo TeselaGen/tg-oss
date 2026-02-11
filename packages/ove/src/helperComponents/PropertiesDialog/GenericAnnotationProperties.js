@@ -11,6 +11,7 @@ import {
   removeDuplicatesIcon,
   useMemoDeepEqual
 } from "@teselagen/ui";
+import { convertDnaCaretPositionOrRangeToAA } from "@teselagen/sequence-utils";
 import { map, upperFirst, pick, startCase, isFunction } from "lodash-es";
 import {
   AnchorButton,
@@ -86,7 +87,10 @@ const genericAnnotationProperties = ({
 
     const annotationsToUse = React.useMemo(
       () =>
-        map(annotations, annotation => {
+        map(annotations, _annotation => {
+          const annotation = isProtein
+            ? convertDnaCaretPositionOrRangeToAA(_annotation)
+            : _annotation;
           return {
             ...annotation,
             ...(annotation.strand === undefined && {
@@ -95,7 +99,7 @@ const genericAnnotationProperties = ({
             size: getRangeLength(annotation, sequenceLength)
           };
         }),
-      [annotations, sequenceLength]
+      [annotations, sequenceLength, isProtein]
     );
 
     const keyedPartTags = getKeyedTagsAndTagOptions(allPartTags) ?? {};
@@ -180,7 +184,7 @@ const genericAnnotationProperties = ({
                   }
                 }
               ]),
-          sizeSchema(isProtein),
+          sizeSchema(),
           ...(withTags && allPartTags
             ? [
                 {

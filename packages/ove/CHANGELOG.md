@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.37 (2026-01-23)
+
+- fix: fix protein 'size' filter and support '\_in', '\_nin' and '\_regex' filter
+
 ## 0.8.36 (2026-01-28)
 
 - fix: use right font size when calculating the annotation text position
@@ -50,7 +54,3 @@
 ## 0.8.25 (2025-01-05)
 
 - Initialize changelog
-
-## 0.8.29 (2026-01-08)
-
-- fix annotation lable for non-english characters
