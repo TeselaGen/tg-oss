@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Button } from "@blueprintjs/core";
-import { updateCaretPosition } from "./utils";
+import { scrollToAlignmentSelection, updateCaretPosition } from "./utils";
 
 export function FindMismatches(props) {
   const { alignmentJson, id } = props;
@@ -55,28 +55,6 @@ export function FindMismatches(props) {
     [mismatches]
   );
 
-  // Scroll to the current mismatch position when it changes
-  useEffect(() => {
-    if (mismatches.length === 1) {
-      setDisablePrev(true);
-      setDisableNext(true);
-      return;
-    }
-
-    if (currentMismatch.position === 0) return;
-
-    if (currentCaretPosition !== -1) {
-      handleButtonsState(currentCaretPosition);
-      return;
-    }
-  }, [
-    currentIdx,
-    currentMismatch,
-    currentCaretPosition,
-    handleButtonsState,
-    mismatches
-  ]);
-
   // Update currentIdx when caret moves to a mismatch
   useEffect(() => {
     if (currentCaretPosition !== -1) {
@@ -100,6 +78,9 @@ export function FindMismatches(props) {
     setCurrentIdx(idx);
 
     updateCaretPosition({ start: position, end: position });
+    setTimeout(() => {
+      scrollToAlignmentSelection(id, position);
+    }, 0);
   };
 
   // Handle mismatch navigation
