@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/bio-parsers",
-  "version": "0.4.33",
+  "version": "0.4.35",
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
   "dependencies": {
