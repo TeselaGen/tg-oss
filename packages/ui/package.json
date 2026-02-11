@@ -1,6 +1,6 @@
 {
   "name": "@teselagen/ui",
-  "version": "0.10.19",
+  "version": "0.10.20",
   "main": "./src/index.js",
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
@@ -11,7 +11,6 @@
     },
     "./style.css": "./style.css"
   },
-  "devDependencies": {},
   "dependencies": {
     "@blueprintjs/core": "3.54.0",
     "@blueprintjs/datetime": "^3.24.1",
@@ -20,7 +19,6 @@
     "@dnd-kit/modifiers": "^7.0.0",
     "@dnd-kit/sortable": "^8.0.0",
     "@teselagen/react-table": "6.10.18",
-    "chance": "1.1.11",
     "classnames": "^2.3.2",
     "color": "^3.2.1",
     "copy-to-clipboard": "^3.3.1",
@@ -48,7 +46,6 @@
     "recompose": "npm:react-recompose@0.31.1",
     "redux": "^4.1.2",
     "redux-form": "^8.3.10",
-    "redux-thunk": "2.4.1",
     "remark-gfm": "^4.0.0",
     "reselect": "^4.1.7",
     "tippy.js": "^6.3.7",
@@ -58,5 +55,9 @@
     "@dnd-kit/utilities": "3.2.2",
     "@teselagen/file-utils": "file:../file-utils",
     "@blueprintjs/icons": "3.33.0"
+  },
+  "devDependencies": {
+    "chance": "1.1.11",
+    "redux-thunk": "2.4.1"
   }
 }

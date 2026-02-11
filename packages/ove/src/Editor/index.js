@@ -1,5 +1,4 @@
 import { debounce, find, get, some, isArray } from "lodash-es";
-// import sizeMe from "react-sizeme";
 import { showContextMenu } from "@teselagen/ui";
 import {
   Button,
