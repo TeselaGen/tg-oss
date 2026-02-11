@@ -227,7 +227,7 @@ export const EditAvailabilityItem = connectToEditor(
   ) : null;
 });
 
-export function StatusBar({
+function StatusBar({
   disableSetReadOnly,
   disableBpEditing,
   onSave,

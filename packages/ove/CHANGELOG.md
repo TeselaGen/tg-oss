@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.36 (2026-01-28)
+
+- fix: use right font size when calculating the annotation text position
+- clean up unused deps
+
 ## 0.8.35 (2026-02-04)
 
 - fix: get feature name from /region_name or /product
