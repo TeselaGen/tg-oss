@@ -8,6 +8,7 @@ export { default as SimpleCircularOrLinearView } from './SimpleCircularOrLinearV
 export { default as RowView } from './RowView';
 export { default as RowItem } from './RowItem';
 export { ToolBar } from './ToolBar';
+export { default as StatusBar } from './StatusBar';
 export { default as withHover } from './helperComponents/withHover';
 export { default as updateEditor } from './updateEditor';
 export { default as addAlignment } from './addAlignment';
@@ -22,6 +23,5 @@ export { default as withEditorProps, connectToEditor } from './withEditorProps';
 export { default as Editor, Editor as EditorUnconnected } from './Editor';
 export { default as CutsiteFilter, CutsiteFilter as CutsiteFilterUnconnected } from './CutsiteFilter';
 export { default as LinearView, LinearView as LinearViewUnconnected } from './LinearView';
-export { default as StatusBar, StatusBar as StatusBarUnconnected } from './StatusBar';
 export { default as DigestTool, DigestTool as DigestToolUnconnected } from './DigestTool/DigestTool';
 export { default as vectorEditorReducer, vectorEditorMiddleware, actions } from './redux';
