@@ -258,10 +258,7 @@ describe("genbank exporter/parser conversion", function () {
       }
     );
 
-    string.should.not.include("https://github.com/TeselaGen/fake/url");
-    string.should.not.include(
-      "https://github.com/TeselaGen/microbyre-support/issues/70"
-    );
+    string.should.not.include("https://github.com");
 
     const result = parseGenbank(string);
     result[0].parsedSequence.features.should.include.something.that.deep.equals(
@@ -316,6 +313,48 @@ describe("genbank exporter/parser conversion", function () {
     );
     result[0].parsedSequence.description.should.include(
       `I include multiple URL`
+    );
+  });
+
+  it("should split long not into multiple lines", function () {
+    const longNote =
+      "MIASCLCYLLLPATRLFRALSDAFFTCRKNVLLANSSSPQVEGDFAMAPRGPEQEECEGLLQQWREEGLSQVLSTASEGPLIDKGLAQSSLALLMDNPGEEN";
+    const feat1 = {
+      notes: {
+        longNote: [longNote]
+      },
+      name: "araC",
+      start: 6,
+      end: 11,
+      type: "CDS",
+      strand: -1
+    };
+    const description = "some description";
+    const string = jsonToGenbank({
+      sequence: "agagagagagag",
+      features: [feat1],
+      description,
+      parts: [
+        {
+          id: "part1",
+          name: "overlapper",
+          overlapsSelf: true,
+          start: 2,
+          end: 6
+        }
+      ]
+    });
+    string.should.include(
+      '        /longNote="MIASCLCYLLLPATRLFRALSDAFFTCRKNVLLANSSSPQVEGDFAM'
+    );
+    string.should.include(
+      '        APRGPEQEECEGLLQQWREEGLSQVLSTASEGPLIDKGLAQSSLALLMDNPGEEN"'
+    );
+
+    const result = parseGenbank(string);
+    // Check the long note is the same after parsing back
+    result[0].parsedSequence.features[0].notes.longNote[0].should.equal(
+      longNote
     );
   });
 

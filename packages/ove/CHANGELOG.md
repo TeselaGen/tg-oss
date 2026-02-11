@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.35 (2026-02-11)
+
+- fix: format long note as multiple lines in Genbank string
+
 ## 0.8.34 (2026-02-01)
 
 - fix: improve mismatch visibility in alignment view
