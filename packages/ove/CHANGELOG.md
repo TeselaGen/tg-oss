@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.38 (2026-02-25)
+
+- fix: format long note as multiple lines in Genbank string
+
 ## 0.8.37 (2026-01-23)
 
 - fix: fix protein 'size' filter and support '\_in', '\_nin' and '\_regex' filter

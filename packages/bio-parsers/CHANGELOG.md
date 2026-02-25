@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.36 (2026-02-25)
+
+- fix: format long note as multiple lines in Genbank string
+
 ## 0.4.35 (2026-02-04)
 
 - fix: get feature name from /region_name or /product
