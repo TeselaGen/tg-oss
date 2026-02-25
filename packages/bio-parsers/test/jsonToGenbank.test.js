@@ -316,7 +316,7 @@ describe("genbank exporter/parser conversion", function () {
     );
   });
 
-  it("should split long not into multiple lines", function () {
+  it("should split long note into multiple lines", function () {
     const longNote =
       "MIASCLCYLLLPATRLFRALSDAFFTCRKNVLLANSSSPQVEGDFAMAPRGPEQEECEGLLQQWREEGLSQVLSTASEGPLIDKGLAQSSLALLMDNPGEEN";
     const feat1 = {

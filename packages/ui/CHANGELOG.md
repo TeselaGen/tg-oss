@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.20 (2026-01-23)
+
+- fix protein 'size' filter and support '\_in', '\_nin' and '\_regex' filter
+
 ## 0.10.19 (2026-01-27)
 
 - fix: avoid autoTooltip.js offend non OVE related dom element

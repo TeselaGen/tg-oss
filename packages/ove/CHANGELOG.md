@@ -1,8 +1,21 @@
 # Changelog
 
-## 0.8.35 (2026-02-11)
+## 0.8.38 (2026-02-25)
 
 - fix: format long note as multiple lines in Genbank string
+
+## 0.8.37 (2026-01-23)
+
+- fix: fix protein 'size' filter and support '\_in', '\_nin' and '\_regex' filter
+
+## 0.8.36 (2026-01-28)
+
+- fix: use right font size when calculating the annotation text position
+- clean up unused deps
+
+## 0.8.35 (2026-02-04)
+
+- fix: get feature name from /region_name or /product
 
 ## 0.8.34 (2026-02-01)
 
@@ -45,7 +58,3 @@
 ## 0.8.25 (2025-01-05)
 
 - Initialize changelog
-
-## 0.8.29 (2026-01-08)
-
-- fix annotation lable for non-english characters
