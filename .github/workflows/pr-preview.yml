@@ -1,0 +1,86 @@
+name: Deploy PR Preview
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write # for deploying to gh-pages
+  pull-requests: write # for commenting
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        package_name: [ove, ui]
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Build Demo
+        run: yarn nx run ${{ matrix.package_name }}:build --configuration=demo
+
+      - name: Deploy Preview 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: ./demo-dist/${{ matrix.package_name }}
+          target-folder: pr-previews/${{ github.event.number }}/${{ matrix.package_name }}
+          clean: true
+
+  comment-preview:
+    needs: deploy-preview
+    runs-on: ubuntu-latest
+    if: always() && needs.deploy-preview.result == 'success'
+    steps:
+      - name: Comment on PR
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prNumber = context.issue.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const packages = ['ove', 'ui'];
+
+            let body = '🚀 **PR Previews Deployed!**\n\n';
+            packages.forEach(pkg => {
+              const url = `https://${owner}.github.io/${repo}/pr-previews/${prNumber}/${pkg}/`;
+              body += `- [${pkg.toUpperCase()} Preview](${url})\n`;
+            });
+            body += '\n(Note: It might take a minute for GitHub Pages to update)';
+
+            // Check for existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: prNumber,
+            });
+
+            const existingComment = comments.find(c => c.body && c.body.includes('🚀 **PR Previews Deployed!**'));
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existingComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body,
+              });
+            }

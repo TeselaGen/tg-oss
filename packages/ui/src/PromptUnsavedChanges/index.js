@@ -17,10 +17,7 @@ const warnBeforeLeave = e => {
   return defaultMessagge; //Webkit, Safari, Chrome
 };
 
-export function PromptUnsavedChanges({
-  message = defaultMessagge,
-  when = false
-}) {
+function PromptUnsavedChanges({ message = defaultMessagge, when = false }) {
   useEffect(() => {
     if (when) {
       window.addEventListener("beforeunload", warnBeforeLeave);

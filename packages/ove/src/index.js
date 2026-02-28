@@ -28,10 +28,7 @@ export {
   default as LinearView,
   LinearView as LinearViewUnconnected
 } from "./LinearView";
-export {
-  default as StatusBar,
-  StatusBar as StatusBarUnconnected
-} from "./StatusBar";
+export { default as StatusBar } from "./StatusBar";
 export {
   default as DigestTool,
   DigestTool as DigestToolUnconnected

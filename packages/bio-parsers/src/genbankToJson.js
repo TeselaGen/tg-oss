@@ -159,8 +159,9 @@ function genbankToJson(string, options = {}) {
       if (line === null) {
         return true; //break the some loop
       }
-      const key = getLineKey(line);
-      const val = getLineVal(line);
+      const shouldUseSpaceAsDelimiter = !line.trim().startsWith("/");
+      const key = getLineKey(line, shouldUseSpaceAsDelimiter);
+      const val = getLineVal(line, shouldUseSpaceAsDelimiter);
       const isKeyRunon = isKeywordRunon(line);
       const isSubKey = isSubKeyword(line);
       const isKey = isKeyword(line);
@@ -658,11 +659,11 @@ function genbankToJson(string, options = {}) {
     currentFeatureNote = currentNotes[key];
   }
 
-  function getLineKey(line) {
+  function getLineKey(line, shouldUseSpaceAsDelimiter) {
     let arr;
     line = line.replace(/^[\s]*/, "");
 
-    if (line.indexOf("=") < 0) {
+    if (line.indexOf("=") < 0 || shouldUseSpaceAsDelimiter) {
       arr = line.split(/[\s]+/);
     } else {
       arr = line.split(/=/);
@@ -671,9 +672,9 @@ function genbankToJson(string, options = {}) {
     return arr[0];
   }
 
-  function getLineVal(line) {
+  function getLineVal(line, shouldUseSpaceAsDelimiter) {
     let arr;
-    if (line.indexOf("=") < 0) {
+    if (line.indexOf("=") < 0 || shouldUseSpaceAsDelimiter) {
       line = line.replace(/^[\s]*[\S]+[\s]+|[\s]+$/, "");
       line = line.trim();
       return line;
@@ -718,6 +719,10 @@ function genbankToJson(string, options = {}) {
       feat.name = feat.notes.ApEinfo_label[0];
     } else if (feat.notes.name) {
       feat.name = feat.notes.name[0];
+    } else if (feat.notes.product) {
+      feat.name = feat.notes.product[0];
+    } else if (feat.notes.region_name) {
+      feat.name = feat.notes.region_name[0];
     } else if (feat.notes.organism) {
       feat.name = feat.notes.organism[0];
     } else if (feat.notes.locus_tag) {

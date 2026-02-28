@@ -8,27 +8,6 @@
   },
   "overrides": [
     {
-      "files": ["**/*.json"],
-      "parser": "jsonc-eslint-parser",
-      "rules": {
-        "@nx/dependency-checks": [
-          "error",
-          {
-            "ignoredDependencies": [
-              "recompose",
-              "buffer",
-              "chance",
-              "string_decoder",
-              "@teselagen/react-table",
-              "deep-equal",
-              "cypress-real-events",
-              "clipboard"
-            ]
-          }
-        ]
-      }
-    },
-    {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.mjs"],
       "rules": {
         "no-var": 2,

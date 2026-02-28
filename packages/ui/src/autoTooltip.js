@@ -19,12 +19,22 @@ document.addEventListener("mouseup", () => {
 
 let tippys = [];
 
+function isInAllowedContainer(element) {
+  if (window.onlyAllowTooltipsInVeEditor) {
+    return element.closest(".veEditor") !== null;
+  }
+  return true;
+}
+
 let recentlyHidden = false;
 let clearMe;
 (function () {
   let lastMouseOverElement = null;
   document.addEventListener("mouseover", function (event) {
     const element = event.target;
+    if (!isInAllowedContainer(element)) {
+      return;
+    }
 
     if (element instanceof Element && element !== lastMouseOverElement) {
       lastMouseOverElement = element;

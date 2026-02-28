@@ -245,7 +245,7 @@ export default class Minimap extends React.Component {
           shapeRendering="geometricPrecision"
         >
           <path className="miniBluePath" d={bluePath} fill="#9abeff" />
-          <path className="miniRedPath" d={redPath} fill="red" />
+          <path className="miniRedPath" d={redPath} fill="#FF4444" />
         </svg>
       </div>
     );

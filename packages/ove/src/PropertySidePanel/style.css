@@ -28,12 +28,3 @@
   align-items: center;
   justify-content: center;
 }
-
-h5 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: bold;
-  text-align: center;
-  padding: 5px 0;
-  border-bottom: 1px solid #f1f1f1;
-}

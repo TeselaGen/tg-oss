@@ -151,6 +151,16 @@ describe("properties", function () {
     cy.get(".bp3-menu-item:contains(View Cut Site Properties)").click();
     cy.contains(".rt-tr-group.selected", "4730");
   });
+
+  it(`should be able to filter protein features correctly in the properties tab`, () => {
+    cy.visit("/#/Editor?moleculeType=Protein");
+    cy.get(".veTabProperties").click();
+    cy.get(`[data-tab-id="features"]`).click();
+    cy.get(".datatable-search-input").type("879{enter}");
+    cy.contains(".data-table-footer", "0 Selected / 2 Total");
+    cy.contains(".ReactTable", "araC");
+    cy.contains(".ReactTable", "araD");
+  });
 });
 
 // Cypress.on('uncaught:exception', (err, runnable) => {

@@ -44,7 +44,7 @@ export default function getAnnotationNameAndStartStopString(
   const interactionInstructions = readOnly
     ? ""
     : annotationTypePlural === "cutsites"
-      ? `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n  INTERACTIONS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n   click → top cut position\n   alt/option+click → bottom cut position\n   cmd/ctrl+click → recognition range`
+      ? `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n  INTERACTIONS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n   click → top cut position\n   alt/option+click → bottom cut position\n   cmd/ctrl+click → recognition range\n   double click → show info`
       : `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n  INTERACTIONS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n   alt/option+click → jump row view to start/end\n   double click → edit`;
 
   return `${startText ? startText : ""} ${typeToUse ? typeToUse + " -" : ""} ${

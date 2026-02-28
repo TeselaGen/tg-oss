@@ -1,9 +1,41 @@
 # Changelog
 
-## 0.8.31 (2026-01-22)
+## 0.8.39 (2026-02-28)
 
 - fix: sync user changes in the description into genbank and parse description field
 
+## 0.8.38 (2026-02-25)
+
+- fix: format long note as multiple lines in Genbank string
+
+## 0.8.37 (2026-01-23)
+
+- fix: fix protein 'size' filter and support '\_in', '\_nin' and '\_regex' filter
+
+## 0.8.36 (2026-01-28)
+
+- fix: use right font size when calculating the annotation text position
+- clean up unused deps
+
+## 0.8.35 (2026-02-04)
+
+- fix: get feature name from /region_name or /product
+
+## 0.8.34 (2026-02-01)
+
+- fix: improve mismatch visibility in alignment view
+
+## 0.8.33 (2026-01-31)
+
+- fix: remove leaking CSS on H5 elements introduced in #198 (fix #257)
+
+## 0.8.32 (2026-01-30)
+
+- fix: support '=' in LOCUS, COMMENT, etc
+
+## 0.8.31 (2026-01-27)
+
+- fix: avoid autoTooltip.js offend non OVE related dom element
 
 ## 0.8.30 (2026-01-16)
 
@@ -14,7 +46,6 @@
 - fix: show right caret position when clicking the rightest position of linear view
 - support custom function for insert string filtering
 - fix annotation lable for non-english characters
-
 
 ## 0.8.28 (2026-01-07)
 
@@ -31,7 +62,3 @@
 ## 0.8.25 (2025-01-05)
 
 - Initialize changelog
-
-## 0.8.29 (2026-01-08)
-
-- fix annotation lable for non-english characters

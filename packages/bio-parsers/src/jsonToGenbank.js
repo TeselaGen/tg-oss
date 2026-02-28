@@ -6,6 +6,7 @@ import pragmasAndTypes from "./utils/pragmasAndTypes.js";
 import { mangleOrStripUrls } from "./utils/unmangleUrls.js";
 import { reformatName } from "./utils/NameUtils.js";
 import { getFeatureToColorMap } from "@teselagen/sequence-utils";
+
 const StringUtil = {
   /** Trims white space at beginning and end of string
    * @param {string} line
@@ -262,7 +263,56 @@ function getCurrentDateString() {
   return day + "-" + month + "-" + year;
 }
 
+const standardLineLength = 79;
 function featureNoteInDataToGenbankString(name, value, options) {
+  const valueString = mangleOrStripUrls(value, options);
+  // if valueString.length is larger than standardLineLength - 25 - name.length,
+  // we need to split it up into multiple lines, to make sure each line has 21 spaces
+  // a maximum of 59 additional characters
+  // 25 is the length of '/', '=', two '"' and the 21 spaces.
+  if (valueString.length > standardLineLength - 25 - name.length) {
+    const lines = [];
+    let currentIndex = 0;
+    while (currentIndex < valueString.length) {
+      if (currentIndex === 0) {
+        const chunk = valueString.substring(
+          currentIndex,
+          currentIndex + standardLineLength - name.length - 24
+        );
+        lines.push(
+          StringUtil.lpad("/", " ", 22) +
+            name +
+            '="' +
+            chunk +
+            (currentIndex + standardLineLength - 22 - name.length >=
+            valueString.length
+              ? '"'
+              : "")
+        );
+        currentIndex += standardLineLength - name.length - 24;
+      } else {
+        const chunk = valueString.substring(
+          currentIndex,
+          currentIndex + standardLineLength - 21
+        );
+        if (currentIndex + standardLineLength - 21 >= valueString.length) {
+          const lineString = " ".repeat(21) + chunk;
+          if (lineString.length === standardLineLength) {
+            lines.push(lineString);
+            lines.push(" ".repeat(21) + '"');
+          } else {
+            lines.push(lineString + '"');
+          }
+        } else {
+          const lineString = " ".repeat(21) + chunk;
+          lines.push(lineString);
+        }
+        currentIndex += standardLineLength - 21;
+      }
+    }
+    return lines.join("\r\n");
+  }
+
   return (
     StringUtil.lpad("/", " ", 22) +
     name +

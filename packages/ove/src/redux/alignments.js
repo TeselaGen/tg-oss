@@ -95,7 +95,11 @@ function addHighlightedDifferences(alignmentTracks) {
       additionalSelectionLayers: matchHighlightRanges
         .filter(({ isMatch }) => !isMatch)
         .map(range => {
-          return { ...range, ...highlightRangeProps };
+          return {
+            ...range,
+            ...highlightRangeProps,
+            className: "veAlignmentMismatch"
+          };
         }),
       mismatches
     };
@@ -200,7 +204,8 @@ export default (state = {}, { payload = {}, type }) => {
           additionalSelectionLayers.push({
             start: match.index,
             end: match.index + match[0].length - 1,
-            ...highlightRangeProps
+            ...highlightRangeProps,
+            className: "veAlignmentMismatch"
           });
         }
         re = /g+/gi;
