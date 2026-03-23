@@ -118,7 +118,10 @@ class _LinearView extends React.Component {
           : limits[type]) || 50;
       const [annotations, paredDown] = pareDownAnnotations(
         sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
-        maxToShow
+        maxToShow,
+        sequenceData.sequence
+          ? sequenceData.sequence.length
+          : sequenceData.size || 0
       );
 
       if (paredDown) {
@@ -363,13 +366,14 @@ class _LinearView extends React.Component {
                 tickSpacing: tickSpacingToUse,
                 annotationVisibility: {
                   ...rest.annotationVisibility,
-                  ...((!isLinViewZoomed || this.charWidth < 5) && bpsPerRow >= 50 && {
-                    translations: false,
-                    primaryProteinSequence: false,
-                    reverseSequence: false,
-                    sequence: false,
-                    cutsitesInSequence: false
-                  }),
+                  ...((!isLinViewZoomed || this.charWidth < 5) &&
+                    bpsPerRow >= 50 && {
+                      translations: false,
+                      primaryProteinSequence: false,
+                      reverseSequence: false,
+                      sequence: false,
+                      cutsitesInSequence: false
+                    }),
                   ...annotationVisibilityOverrides
                 },
                 ...RowItemProps

@@ -241,7 +241,8 @@ export function CircularView(props) {
   }
   const innerRadius = radius - 10;
   const initialRadius = radius;
-  const showSeq = rangeToShowLength < 140 && (isZoomedIn || sequenceLength < 50);
+  const showSeq =
+    rangeToShowLength < 140 && (isZoomedIn || sequenceLength < 50);
   const showSeqText = rangeToShowLength < 80;
 
   //RENDERING CONCEPTS:
@@ -521,7 +522,7 @@ export function CircularView(props) {
             : limits[layerName]) ||
             50);
         const [trimmedAndParedAnns, paredDown] = maxToShow
-          ? pareDownAnnotations(trimmedAnnotations, maxToShow)
+          ? pareDownAnnotations(trimmedAnnotations, maxToShow, sequenceLength)
           : [trimmedAnnotations];
 
         if (paredDown) {
