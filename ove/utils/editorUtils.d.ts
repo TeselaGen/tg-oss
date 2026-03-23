@@ -21,7 +21,7 @@ export function getEmptyText({ sequenceData, caretPosition }: {
 export function tryToRefocusEditor(): void;
 export function getCustomEnzymes(): any;
 export function addCustomEnzyme(newEnz: any): void;
-export function pareDownAnnotations(annotations: any, max: any): any[];
+export function pareDownAnnotations(annotations: any, max: any, sequenceLength: any): any[];
 export function getParedDownWarning({ nameUpper, maxToShow, isAdjustable }: {
     nameUpper: any;
     maxToShow: any;
