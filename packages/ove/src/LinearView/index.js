@@ -363,7 +363,7 @@ class _LinearView extends React.Component {
                 tickSpacing: tickSpacingToUse,
                 annotationVisibility: {
                   ...rest.annotationVisibility,
-                  ...((!isLinViewZoomed || this.charWidth < 5) && {
+                  ...((!isLinViewZoomed || this.charWidth < 5) && bpsPerRow >= 50 && {
                     translations: false,
                     primaryProteinSequence: false,
                     reverseSequence: false,

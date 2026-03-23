@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Provider } from "react-redux";
 import wrapDialog from "../../../src/wrapDialog";
 import store from "../store";
-import { PromptUnsavedChanges } from "../../../src/PromptUnsavedChanges";
+import PromptUnsavedChanges from "../../../src/PromptUnsavedChanges";
 
 function DialogWithPrompt() {
   const [promptUnsavedChanges, setPromptUnsavedChanges] = useState(false);

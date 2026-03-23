@@ -205,6 +205,23 @@ function applyWhereClause(records, where) {
               )
                 return false;
               break;
+            case "_in":
+              if (!some(conditionValue, item => isEqual(value, item)))
+                return false;
+              break;
+            case "_nin":
+              if (some(conditionValue, item => isEqual(value, item)))
+                return false;
+              break;
+            case "_regex": {
+              try {
+                if (!isString(value) || !new RegExp(conditionValue).test(value))
+                  return false;
+              } catch (e) {
+                return false;
+              }
+              break;
+            }
             default:
               if (operator.startsWith("_")) {
                 console.warn(`Unsupported operator: ${operator}`);

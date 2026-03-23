@@ -69,12 +69,6 @@
         "devServerTarget": "{projectName}:start:ci",
         "testingType": "e2e"
       }
-    },
-    "version": {
-      "executor": "@jscutlery/semver:version",
-      "options": {
-        "preset": "conventional"
-      }
     }
   },
   "namedInputs": {

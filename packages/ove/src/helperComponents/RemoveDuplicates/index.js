@@ -14,6 +14,7 @@ import { forEach, camelCase, startCase } from "lodash-es";
 import { sizeSchema } from "../PropertiesDialog/utils";
 import { getRangeLength } from "@teselagen/range-utils";
 import { useFormValue } from "../../utils/useFormValue";
+import { convertDnaCaretPositionOrRangeToAA } from "@teselagen/sequence-utils";
 
 const dialogFormName = "RemoveDuplicatesDialog";
 const dataTableFormName = "duplicatesToRemove";
@@ -33,6 +34,7 @@ const RemoveDuplicatesDialog = props => {
   const ignoreName = useFormValue(dialogFormName, "ignoreName");
   const ignoreStartAndEnd = useFormValue(dialogFormName, "ignoreStartAndEnd");
   const ignoreStrand = useFormValue(dialogFormName, "ignoreStrand");
+  const isProteinSeq = isProtein || sequenceData.isProtein;
 
   const recomputeDups = useCallback(
     values => {
@@ -42,19 +44,25 @@ const RemoveDuplicatesDialog = props => {
       const annotations = sequenceData[type];
       const newDups = [];
       const seqsHashByStartEndStrandName = {};
-      forEach(annotations, a => {
-        const hash = `${ignoreStartAndEnd ? "" : a.start}&${
-          ignoreStartAndEnd ? "" : a.end
-        }&${ignoreStrand ? "" : a.strand}&${ignoreName ? "" : a.name}`;
+      forEach(annotations, _annotation => {
+        const annotation = isProteinSeq
+          ? convertDnaCaretPositionOrRangeToAA(_annotation)
+          : _annotation;
+        const hash = `${ignoreStartAndEnd ? "" : annotation.start}&${
+          ignoreStartAndEnd ? "" : annotation.end
+        }&${ignoreStrand ? "" : annotation.strand}&${ignoreName ? "" : annotation.name}`;
         if (seqsHashByStartEndStrandName[hash]) {
-          newDups.push({ ...a, size: getRangeLength(a, sequenceLength) });
+          newDups.push({
+            ...annotation,
+            size: getRangeLength(annotation, sequenceLength)
+          });
         } else {
           seqsHashByStartEndStrandName[hash] = true;
         }
       });
       return newDups;
     },
-    [sequenceData, sequenceLength, type]
+    [sequenceData, sequenceLength, type, isProteinSeq]
   );
 
   const [dups, setDups] = useState(recomputeDups);
@@ -79,11 +87,11 @@ const RemoveDuplicatesDialog = props => {
       fields: [
         { path: "name", type: "string" },
         // ...(noType ? [] : [{ path: "type", type: "string" }]),
-        sizeSchema(isProtein),
+        sizeSchema(),
         { path: "strand", type: "string" }
       ]
     }),
-    [isProtein]
+    []
   );
 
   return (
