@@ -1,0 +1,21 @@
+export const panelsShownUpdate: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const addPanelIfItDoesntAlreadyExist: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const togglePanelFullScreen: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const collapsePanel: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const closePanel: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const _collapseSplitScreen: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const setPanelAsActive: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const flipActiveTabFromLinearOrCircularIfNecessary: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const expandTabToSplitScreen: import('redux-act').ComplexActionCreator1<any, any, any>;
+export function propertiesViewOpen(unused: any, meta: any): import('redux-act').Action<any, any>;
+export function createNewDigest(unused: any, meta: any): (dispatch: any) => void;
+export function createNewPCR(unused: any, meta: any): (dispatch: any) => void;
+export function createNewAlignment(payload: any, meta: any): (dispatch: any) => void;
+export function createNewMismatchesList(payload: any, meta: any): (dispatch: any) => void;
+export function collapseSplitScreen(activePanelId: any, meta: any): (dispatch: any) => void;
+declare function _default(state: any, action: any): {
+    id: string;
+    name: string;
+    active: boolean;
+}[][];
+export default _default;
