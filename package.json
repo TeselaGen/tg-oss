@@ -3,7 +3,6 @@
   "version": "0.2.0",
   "license": "MIT",
   "scripts": {
-    "postinstall": "patch-package",
     "prepare": "husky",
     "e2e": "nx affected --base=master --head=HEAD -t e2e",
     "test": "nx affected -t test"
@@ -11,9 +10,13 @@
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "string_decoder": "^1.3.0"
+  },
   "devDependencies": {
     "@nx/cypress": "20.4.6",
+    "@nx/devkit": "^22.6.1",
     "@nx/eslint-plugin": "20.4.6",
     "@nx/js": "20.4.6",
     "@nx/react": "20.4.6",
@@ -30,13 +33,13 @@
     "@types/redux-form": "^8.3.9",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^6.0.1",
     "chai": "^5.2.0",
     "chai-subset": "^1.6.0",
     "chai-things": "0.2.0",
     "cypress": "^14.1.0",
     "cypress-real-events": "^1.14.0",
-    "cypress-vite": "^1.6.0",
+    "cypress-vite": "^1.8.0",
     "esbuild": "^0.25.0",
     "eslint": "~8.53.0",
     "eslint-config-prettier": "9.0.0",
@@ -54,21 +57,19 @@
     "lint-staged": "^15.2.4",
     "nx": "20.4.6",
     "nx-cloud": "19.1.0",
-    "patch-package": "^8.0.0",
     "prettier": "^3.5.2",
     "typescript": "~5.7.3",
-    "vite": "^6.2.0",
-    "vite-plugin-dts": "~4.5.0",
+    "vite": "^8.0.2",
+    "vite-plugin-dts": "^4.5.4",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-libcss": "^1.1.1",
-    "vite-plugin-static-copy": "^2.2.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-plugin-libcss": "^1.1.2",
+    "vite-plugin-static-copy": "^4.0.0"
   },
   "workspaces": [
     "packages/*"
   ],
   "volta": {
-    "node": "18.18.0",
-    "yarn": "1.22.21"
+    "node": "22.12.0",
+    "bun": "1.22.21"
   }
 }

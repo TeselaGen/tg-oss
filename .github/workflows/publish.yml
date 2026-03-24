@@ -66,7 +66,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.check_versions.outputs.packages_to_publish != ''
-        run: yarn install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Build and Publish
         if: steps.check_versions.outputs.packages_to_publish != ''
@@ -80,10 +80,10 @@ jobs:
           echo "Building packages: $PACKAGES"
 
           # Build standard. Using --projects to only build what's needed.
-          yarn nx run-many --target=build --projects="$PROJECTS_CSV" --skip-nx-cache
+          bun nx run-many --target=build --projects="$PROJECTS_CSV" --skip-nx-cache
 
           # Attempt build_umd, allowing failure if target doesn't exist for some packages
-          yarn nx run-many --target=build_umd --projects="$PROJECTS_CSV" --skip-nx-cache || echo "build_umd failed or not found for some projects, continuing..."
+          bun nx run-many --target=build_umd --projects="$PROJECTS_CSV" --skip-nx-cache || echo "build_umd failed or not found for some projects, continuing..."
 
           # Determine tag based on branch
           if [[ "${{ github.ref_name }}" == "beta" ]]; then

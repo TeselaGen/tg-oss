@@ -41,12 +41,11 @@ jobs:
         if: steps.check.outputs.changed == 'true'
         run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }}"'
 
-      - uses: bahmutov/npm-install@v1
+      - name: Install dependencies
         if: steps.check.outputs.changed == 'true'
-        with:
-          install-command: yarn
+        run: bun install
 
-      - run: yarn nx run ${{ matrix.package_name }}:build --configuration=demo
+      - run: bun nx run ${{ matrix.package_name }}:build --configuration=demo
         if: steps.check.outputs.changed == 'true'
 
       - name: Deploy Version  🚀

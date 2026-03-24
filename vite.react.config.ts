@@ -1,15 +1,15 @@
 import { defineConfig } from "vite";
 import fs from "node:fs";
 import react from "@vitejs/plugin-react";
-import viteTsConfigPaths from "vite-tsconfig-paths";
 import * as esbuild from "esbuild";
 import libCss from "vite-plugin-libcss";
-import { camelCase } from "lodash-es";
 import { getPort } from "./getPort";
 import { viteStaticCopy } from "vite-plugin-static-copy";
-import path from "node:path";
 import dts from "vite-plugin-dts";
 import { joinPathFragments } from "nx/src/devkit-exports";
+
+const camelCase = (str: string) =>
+  str.replace(/[-_ .]([a-z0-9])/gi, (_, letter) => letter.toUpperCase());
 
 //vite config for react packages
 
@@ -71,9 +71,6 @@ export default ({ name, dir }: { name: string; dir: string }) =>
           jsxRuntime: "automatic"
         }),
         libCss(),
-        viteTsConfigPaths({
-          root: "../../"
-        }),
         ...(command === "build" && !isDemo
           ? [
               // noBundlePlugin({ copy: "**/*.css" }),
@@ -94,22 +91,66 @@ export default ({ name, dir }: { name: string; dir: string }) =>
                 ]
               })
             ]
-          : [])
-      ],
-      esbuild: {
-        loader: "jsx",
-        include: sourceJSPattern,
-        exclude: [],
-        keepNames: true,
-        minifyIdentifiers: false,
-        minifySyntax: false
-      },
-      optimizeDeps: {
-        esbuildOptions: {
-          loader: {
-            ".js": "jsx",
-            ".ts": "tsx"
+          : []),
+        {
+          name: "transform-js-files-as-jsx",
+          enforce: "pre",
+          transform(code, id) {
+            const cleanId = id.split("?")[0].split("#")[0];
+            if (
+              sourceJSPattern.some(matcher => matcher.test(cleanId)) &&
+              !cleanId.includes("node_modules")
+            ) {
+              let transformed = esbuild.transformSync(code, {
+                loader: "jsx",
+                sourcefile: cleanId
+              }).code;
+              // Build-level interop for badly published CJS libraries breaking under Vite 8 / Native ESM
+              transformed = transformed.replace(
+                /import\s+(\w+)\s+from\s+['"]node-interval-tree['"]/g,
+                'import _$1 from "node-interval-tree";\nconst $1 = _$1.default || _$1;'
+              );
+              transformed = transformed.replace(
+                /import\s+(\w+)\s+from\s+['"]react-draggable['"]/g,
+                'import _$1 from "react-draggable";\nconst $1 = _$1.default || _$1;'
+              );
+              transformed = transformed.replace(
+                /import\s+(\w+)\s+from\s+['"]@teselagen\/react-list['"]/g,
+                'import _$1 from "@teselagen/react-list";\nconst $1 = _$1.default || _$1;'
+              );
+              return transformed;
+            }
+            return null;
           }
+        },
+        {
+          name: "resolve-buffer",
+          enforce: "pre",
+          resolveId(this: any, id: string) {
+            if (id === "buffer") {
+              return this.resolve("buffer/", undefined, { skipSelf: true });
+            }
+          }
+        } as any
+      ],
+      optimizeDeps: {
+        rolldownOptions: {
+          plugins: [
+            {
+              name: "load-js-files-as-jsx",
+              load(id: string) {
+                if (id.includes("node_modules")) return undefined;
+                if (sourceJSPattern.some(matcher => matcher.test(id))) {
+                  const file = fs.readFileSync(id, "utf-8");
+                  return esbuild.transformSync(file, {
+                    loader: "jsx",
+                    sourcefile: id
+                  }).code;
+                }
+                return undefined;
+              }
+            }
+          ]
         }
       },
       build: {
@@ -147,27 +188,18 @@ export default ({ name, dir }: { name: string; dir: string }) =>
                   "redux-form",
                   "@blueprintjs/core",
                   "@blueprintjs/select",
-                  "@blueprintjs/datetime"
+                  "@blueprintjs/datetime",
+                  "buffer",
+                  "string_decoder"
                 ]
         }
       },
       resolve: {
         alias: {
-          react: path.join(__dirname, "node_modules/react"),
-          "@blueprintjs/core": path.join(
-            __dirname,
-            "node_modules/@blueprintjs/core"
-          ),
-          "@blueprintjs/datetime": path.join(
-            __dirname,
-            "node_modules/@blueprintjs/datetime"
-          ),
-          // "@teselagen/react-table": path.join( "/Users/thomasrich/Sites/react-table"),
-          "react-dom": path.join(__dirname, "node_modules/react-dom"),
-          "react-redux": path.join(__dirname, "node_modules/react-redux"),
-          "redux-form": path.join(__dirname, "node_modules/redux-form"),
-          redux: path.join(__dirname, "node_modules/redux")
-        }
+          string_decoder: "string_decoder/",
+          buffer: "buffer/"
+        },
+        tsconfigPaths: true
       }
     };
   });

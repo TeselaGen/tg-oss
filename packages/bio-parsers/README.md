@@ -123,7 +123,7 @@ const generalizedJsonFormat = {
 
 or
 
-`yarn add @teselagen/bio-parsers`
+`bun add @teselagen/bio-parsers`
 
 or
 

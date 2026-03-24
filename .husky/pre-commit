@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 bun tools/scripts/changelogCheck.js
-yarn lint-staged --relative
+bun lint-staged --relative
 
 bun test

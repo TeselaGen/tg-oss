@@ -51,6 +51,12 @@ New entries should be in the format:
 
 Bump the version and add a "-beta" suffix to the version. Push to the beta branch. The GitHub Action will handle the rest.
 
+# Some helpful commands for local development
+
+`bun i` - install dependencies
+`nx run ove:start` - start the ove demo
+`nx run ui:start` - start the ui demo
+
 # Running tests
 
 Unit tests are run automatically via precommit hook that runs a `bun test` command at the top level

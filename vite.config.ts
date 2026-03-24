@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 
-import viteTsConfigPaths from "vite-tsconfig-paths";
 import dts from "vite-plugin-dts";
 import { joinPathFragments } from "@nx/devkit";
 import { camelCase } from "lodash-es";
@@ -24,9 +23,6 @@ const conf = ({
         exclude: ["**/*.test.ts", "**/*.spec.ts"],
         entryRoot: "src",
         tsconfigPath: joinPathFragments(dir, "tsconfig.json")
-      }),
-      viteTsConfigPaths({
-        root: "../../"
       }),
       ...(command === "build"
         ? [
@@ -59,9 +55,6 @@ const conf = ({
     // Uncomment this if you are using workers.
     // worker: {
     //  plugins: [
-    //    viteTsConfigPaths({
-    //      root: '../../',
-    //    }),
     //  ],
     // },
 
@@ -82,7 +75,7 @@ const conf = ({
       },
       rollupOptions: {
         // External packages that should not be bundled into your library.
-        external: [],
+        external: ["buffer", "string_decoder"],
         output: {
           name: camelCase(name)
         }
