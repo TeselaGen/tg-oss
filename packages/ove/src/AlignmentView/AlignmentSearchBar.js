@@ -15,15 +15,20 @@ import {
 import { InfoHelper, TgHTMLSelect } from "@teselagen/ui";
 import {
   findApproxMatches,
-  findSequenceMatches
+  findSequenceMatches,
+  getFeatureToColorMap
 } from "@teselagen/sequence-utils";
+import { getSingular } from "../utils/annotationTypes";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import { getGapMap } from "./getGapMap";
 import { scrollToAlignmentSelection, updateCaretPosition } from "./utils";
 import "./style.css";
+import "../FindBar/style.css";
 
 const MATCH_COLOR = "gold";
 const CURRENT_MATCH_COLOR = "green";
+const MISMATCH_COLOR = "red";
+const ANNOTATION_TYPES = ["features", "parts", "primers"];
 
 export function AlignmentSearchBar(props) {
   const { alignmentTracks = [], id, setSearchMatchLayers } = props;
@@ -32,6 +37,7 @@ export function AlignmentSearchBar(props) {
   const [matches, setMatches] = React.useState([]);
   const [currentMatchIndex, setCurrentMatchIndex] = React.useState(0);
   const [searched, setSearched] = React.useState(false);
+  const [featureMatches, setFeatureMatches] = React.useState([]);
   const [searchScope, setSearchScope] = React.useState("reference");
   const [dnaOrAA, setDnaOrAA] = React.useState("DNA");
   const [ambiguousOrLiteral, setAmbiguousOrLiteral] = React.useState("LITERAL");
@@ -45,6 +51,7 @@ export function AlignmentSearchBar(props) {
     setMatches([]);
     setCurrentMatchIndex(0);
     setSearched(false);
+    setFeatureMatches([]);
     setSearchMatchLayers([]);
   }, [setSearchMatchLayers]);
 
@@ -55,16 +62,30 @@ export function AlignmentSearchBar(props) {
         setSearchMatchLayers([]);
         return;
       }
+      const makeMismatchLayers = match =>
+        (match.mismatchAlignmentPositions || []).map(pos => ({
+          start: pos,
+          end: pos,
+          color: MISMATCH_COLOR,
+          className: "veSearchMismatch",
+          trackIndex: match.trackIndex,
+          ignoreGaps: true,
+          hideCarets: true
+        }));
+
       const layers = highlightAll
-        ? allMatches.map((match, i) => ({
-            start: match.alignmentStart,
-            end: match.alignmentEnd,
-            color: i === activeIndex ? CURRENT_MATCH_COLOR : MATCH_COLOR,
-            className:
-              i === activeIndex ? "veSearchLayerActive" : "veSearchLayer",
-            trackIndex: match.trackIndex,
-            ignoreGaps: true
-          }))
+        ? allMatches.flatMap((match, i) => [
+            {
+              start: match.alignmentStart,
+              end: match.alignmentEnd,
+              color: i === activeIndex ? CURRENT_MATCH_COLOR : MATCH_COLOR,
+              className:
+                i === activeIndex ? "veSearchLayerActive" : "veSearchLayer",
+              trackIndex: match.trackIndex,
+              ignoreGaps: true
+            },
+            ...makeMismatchLayers(match)
+          ])
         : [
             {
               start: allMatches[activeIndex].alignmentStart,
@@ -73,7 +94,8 @@ export function AlignmentSearchBar(props) {
               className: "veSearchLayerActive",
               trackIndex: allMatches[activeIndex].trackIndex,
               ignoreGaps: true
-            }
+            },
+            ...makeMismatchLayers(allMatches[activeIndex])
           ];
       setSearchMatchLayers(layers);
     },
@@ -133,7 +155,8 @@ export function AlignmentSearchBar(props) {
           );
           seqMatches = approxMatches.map(m => ({
             start: m.index,
-            end: m.index + m.match.length - 1
+            end: m.index + m.match.length - 1,
+            mismatchPositions: m.mismatchPositions
           }));
         } else {
           seqMatches = findSequenceMatches(rawSeq, query, {
@@ -146,10 +169,21 @@ export function AlignmentSearchBar(props) {
 
         const hitsToProcess =
           query.length < 2 ? seqMatches.slice(0, 1) : seqMatches;
-        hitsToProcess.forEach(({ start, end }) => {
+        hitsToProcess.forEach(({ start, end, mismatchPositions }) => {
           const alignmentStart = start + gapOffset(start);
           const alignmentEnd = end + gapOffset(end);
-          allMatches.push({ trackIndex, alignmentStart, alignmentEnd });
+          const mismatchAlignmentPositions = (mismatchPositions || []).map(
+            p => {
+              const absPos = start + p;
+              return absPos + gapOffset(absPos);
+            }
+          );
+          allMatches.push({
+            trackIndex,
+            alignmentStart,
+            alignmentEnd,
+            mismatchAlignmentPositions
+          });
         });
       });
 
@@ -176,6 +210,55 @@ export function AlignmentSearchBar(props) {
     ]
   );
 
+  const runFeatureSearch = useCallback(
+    text => {
+      const query = text.trim().toLowerCase();
+      if (!query) {
+        setFeatureMatches([]);
+        return;
+      }
+
+      const tracksToSearch =
+        searchScope === "reference"
+          ? alignmentTracks.slice(0, 1)
+          : alignmentTracks;
+
+      const allMatches = [];
+      tracksToSearch.forEach((track, trackIndex) => {
+        const { sequenceData, alignmentData } = track;
+        const alignedSeq = alignmentData?.sequence || "";
+        const gapMap = getGapMap(alignedSeq);
+        const gapOffset = n => gapMap[n] ?? gapMap[gapMap.length - 1] ?? 0;
+        const trackName =
+          alignmentData?.name || sequenceData?.name || sequenceData?.id || "";
+
+        ANNOTATION_TYPES.forEach(type => {
+          const anns = sequenceData?.[type];
+          if (!anns) return;
+          const annsArray = Array.isArray(anns) ? anns : Object.values(anns);
+          annsArray.forEach(ann => {
+            if (!ann.name) return;
+            if (ann.name.toLowerCase().includes(query)) {
+              const alignmentStart = ann.start + gapOffset(ann.start);
+              const alignmentEnd = ann.end + gapOffset(ann.end);
+              allMatches.push({
+                trackIndex,
+                trackName,
+                type,
+                annotation: ann,
+                alignmentStart,
+                alignmentEnd
+              });
+            }
+          });
+        });
+      });
+
+      setFeatureMatches(allMatches);
+    },
+    [alignmentTracks, searchScope]
+  );
+
   const handleKeyDown = useCallback(
     e => {
       if (e.key === "Escape") {
@@ -183,6 +266,7 @@ export function AlignmentSearchBar(props) {
         setMatches([]);
         setCurrentMatchIndex(0);
         setSearched(false);
+        setFeatureMatches([]);
         if (setSearchMatchLayers) setSearchMatchLayers([]);
       }
     },
@@ -205,9 +289,11 @@ export function AlignmentSearchBar(props) {
     navigateTo(matches, newIndex);
   }, [matches, currentMatchIndex, navigateTo]);
 
-  // Re-run search when search options change (only if a search has been performed)
+  // Re-run both searches when search options change (only if a search has been performed)
   useEffect(() => {
-    if (searched && searchText.trim()) runSearch(searchText);
+    if (!searched || !searchText.trim()) return;
+    runSearch(searchText);
+    runFeatureSearch(searchText);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchScope, dnaOrAA, ambiguousOrLiteral, mismatchesAllowed]);
 
@@ -229,8 +315,22 @@ export function AlignmentSearchBar(props) {
       const value = e.target.value;
       setSearchText(value);
       runSearch(value);
+      runFeatureSearch(value);
     },
-    [runSearch]
+    [runSearch, runFeatureSearch]
+  );
+
+  const handleFeatureClick = useCallback(
+    featureMatch => {
+      updateCaretPosition({
+        start: featureMatch.alignmentStart,
+        end: featureMatch.alignmentEnd
+      });
+      setTimeout(() => {
+        scrollToAlignmentSelection(id, featureMatch.alignmentStart);
+      }, 0);
+    },
+    [id]
   );
 
   const findOptionsEls = React.useMemo(
@@ -342,7 +442,7 @@ export function AlignmentSearchBar(props) {
         onChange={() => {
           setIsExpanded(v => {
             const next = !v;
-            if (!next) setIsPopoverOpen(true); // re-open popover when collapsing back to inline
+            if (!next) setIsPopoverOpen(true);
             return next;
           });
         }}
@@ -471,21 +571,44 @@ export function AlignmentSearchBar(props) {
     );
   }
 
+  // Annotation results popup: only shown when feature matches exist
+  const annotationPopoverOpen = searched && featureMatches.length > 0;
+
+  const inputEl = (
+    <InputGroup
+      className="tg-find-tool-input alignment-search-bar"
+      leftIcon="search"
+      placeholder="Search..."
+      type="search"
+      autoFocus
+      value={searchText}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      rightElement={inlineNavEl}
+    />
+  );
+
   return (
     <div style={{ position: "relative" }}>
       {!isExpanded && (
-        <InputGroup
-          className="tg-find-tool-input alignment-search-bar"
-          leftIcon="search"
-          placeholder="Search..."
-          type="search"
-          autoFocus
-          value={searchText}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          rightElement={inlineNavEl}
+        <Popover
+          autoFocus={false}
+          enforceFocus={false}
+          modifiers={{
+            arrow: false
+          }}
+          position={Position.BOTTOM}
+          isOpen={annotationPopoverOpen}
+          content={
+            <AnnotationResultsComp
+              featureMatches={featureMatches}
+              onClickMatch={handleFeatureClick}
+            />
+          }
+          target={inputEl}
         />
       )}
+
       {isExpanded && (
         <div
           style={{
@@ -503,14 +626,22 @@ export function AlignmentSearchBar(props) {
             borderRadius: 3
           }}
         >
-          <TextArea
-            autoFocus
-            placeholder="Search sequences..."
-            value={searchText}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            style={{ resize: "vertical", width: 350, height: 190 }}
-          />
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <TextArea
+              autoFocus
+              placeholder="Search sequences and annotations..."
+              value={searchText}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              style={{ resize: "vertical", width: 350, height: 190 }}
+            />
+            {annotationPopoverOpen && (
+              <AnnotationResultsComp
+                featureMatches={featureMatches}
+                onClickMatch={handleFeatureClick}
+              />
+            )}
+          </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
             {expandedNavEl}
             {findOptionsEls}
@@ -523,6 +654,70 @@ export function AlignmentSearchBar(props) {
           />
         </div>
       )}
+    </div>
+  );
+}
+
+function AnnotationResultsComp({ featureMatches, onClickMatch }) {
+  const byType = {};
+  ANNOTATION_TYPES.forEach(type => {
+    byType[type] = [];
+  });
+  featureMatches.forEach(match => {
+    if (byType[match.type]) {
+      byType[match.type].push(match);
+    }
+  });
+
+  const featureColorMap = getFeatureToColorMap({ includeHidden: true });
+
+  return (
+    <div className="veAnnotationFindMatches">
+      {ANNOTATION_TYPES.map(type => {
+        const anns = byType[type];
+        if (!anns.length) return null;
+        const showing = anns.slice(0, 10);
+        return (
+          <div key={type}>
+            <div className="veAnnotationFoundType">
+              {anns.length} {getSingular(type)} match
+              {anns.length > 1 ? "es" : null}
+              {anns.length > 10 ? ` (only showing 10)` : null}:
+            </div>
+            <div>
+              {showing.map((match, i) => {
+                const { annotation } = match;
+                const annotationColor =
+                  type === "parts"
+                    ? "#ac68cc"
+                    : annotation.color || featureColorMap[annotation.type];
+                return (
+                  <div
+                    key={i}
+                    onClick={() => onClickMatch(match)}
+                    className="veAnnotationFoundResult"
+                  >
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <div
+                        style={{
+                          background: annotationColor,
+                          height: 15,
+                          width: 15,
+                          marginRight: 3
+                        }}
+                      />
+                      {annotation.name}
+                    </div>
+                    <div className="veAnnotationFoundResultRange">
+                      {annotation.start + 1}-{annotation.end + 1}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
