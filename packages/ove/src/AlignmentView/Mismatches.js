@@ -1,15 +1,18 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Button } from "@blueprintjs/core";
 import { scrollToAlignmentSelection, updateCaretPosition } from "./utils";
 
 export function FindMismatches(props) {
   const { alignmentJson, id } = props;
-  const alignedSeqs = alignmentJson.map(t => t.alignmentData?.sequence || "");
+  const alignedSeqs = useMemo(
+    () => alignmentJson.map(t => t.alignmentData?.sequence || ""),
+    [alignmentJson]
+  );
 
   // Find mismatch positions
-  const mismatches = React.useMemo(() => {
+  const mismatches = useMemo(() => {
     const result = [{ position: 0, bases: [""] }];
 
     if (alignedSeqs.length > 1 && alignedSeqs[0].length) {
@@ -38,9 +41,9 @@ export function FindMismatches(props) {
   // Current mismatch info
   const currentMismatch = mismatches[currentIdx];
 
-  const handleButtonsState = React.useCallback(
+  const handleButtonsState = useCallback(
     caret => {
-      if (!mismatches.length) {
+      if (mismatches.length <= 1) {
         setDisablePrev(true);
         setDisableNext(true);
         return;
@@ -64,10 +67,11 @@ export function FindMismatches(props) {
           m.position === currentCaretPosition - 1
       );
       if (mismatchIdx !== -1 && mismatchIdx !== currentIdx) {
+        handleButtonsState(currentCaretPosition);
         setCurrentIdx(mismatchIdx);
       }
     }
-  }, [currentCaretPosition, mismatches, currentIdx]);
+  }, [currentCaretPosition, mismatches, currentIdx, handleButtonsState]);
 
   const updateView = mismatch => {
     const idx = mismatches.indexOf(mismatch);
