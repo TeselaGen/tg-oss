@@ -1,5 +1,11 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-import React, { useEffect, useCallback } from "react";
+import React, {
+  useEffect,
+  useCallback,
+  useReducer,
+  useRef,
+  useState
+} from "react";
 import {
   Button,
   InputGroup,
@@ -84,10 +90,7 @@ function searchReducer(state, action) {
 export function AlignmentSearchBar(props) {
   const { alignmentTracks = [], id, setSearchMatchLayers } = props;
 
-  const [searchState, dispatch] = React.useReducer(
-    searchReducer,
-    initialSearchState
-  );
+  const [searchState, dispatch] = useReducer(searchReducer, initialSearchState);
   const {
     searchText,
     matches,
@@ -100,7 +103,7 @@ export function AlignmentSearchBar(props) {
     mismatchesAllowed
   } = searchState;
 
-  const debouncedSearch = React.useRef(
+  const debouncedSearch = useRef(
     debounce((text, search, featureSearch) => {
       search(text);
       featureSearch(text);
@@ -113,10 +116,10 @@ export function AlignmentSearchBar(props) {
     };
   }, [debouncedSearch]);
 
-  const [highlightAll, setHighlightAll] = React.useState(false);
-  const [isExpanded, setIsExpanded] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+  const [highlightAll, setHighlightAll] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleToggleExpanded = useCallback(() => {
     setIsExpanded(prev => {
@@ -131,7 +134,7 @@ export function AlignmentSearchBar(props) {
     if (setSearchMatchLayers) setSearchMatchLayers([]);
   }, [setSearchMatchLayers]);
 
-  const buildMatchLayers = React.useCallback(
+  const buildMatchLayers = useCallback(
     (allMatches, activeIndex) => {
       if (!setSearchMatchLayers) return;
       if (!allMatches.length) {
@@ -385,7 +388,7 @@ export function AlignmentSearchBar(props) {
   }, [searchText]);
 
   // Rebuild layers when highlightAll toggles without re-searching
-  const prevHighlightAll = React.useRef(highlightAll);
+  const prevHighlightAll = useRef(highlightAll);
   useEffect(() => {
     if (prevHighlightAll.current !== highlightAll) {
       prevHighlightAll.current = highlightAll;
