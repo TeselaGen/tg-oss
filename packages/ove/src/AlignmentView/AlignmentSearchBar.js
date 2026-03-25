@@ -477,14 +477,14 @@ export function AlignmentSearchBar(props) {
       <Button
         minimal
         small
-        icon="caret-up"
+        icon="caret-left"
         disabled={!hasMatches}
         onClick={goToPrev}
       />
       <Button
         minimal
         small
-        icon="caret-down"
+        icon="caret-right"
         disabled={!hasMatches}
         onClick={goToNext}
       />

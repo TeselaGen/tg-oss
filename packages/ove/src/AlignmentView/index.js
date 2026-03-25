@@ -1620,7 +1620,7 @@ export const AlignmentView = props => {
                     display: "flex",
                     minHeight: "32px",
                     width: "100%",
-                    flexWrap: "nowrap",
+                    flexWrap: "wrap",
                     flexDirection: "row",
                     flex: "0 0 auto"
                   }}
