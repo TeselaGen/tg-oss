@@ -264,6 +264,11 @@ export default ({ properties, setProperties, style }) => {
 };
 
 function RowItem({ item, title, units }) {
+  // Skip rendering when the value is absent (null or undefined),
+  // but still allow 0 and other falsy-but-valid values.
+  if (item == null) {
+    return null;
+  }
   const propertyClass = title.split(" ").join("-").toLowerCase();
   return (
     <div className={`ve-flex-row property-${propertyClass}`}>
