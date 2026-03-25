@@ -1753,13 +1753,13 @@ export const AlignmentView = props => {
                       {...alignmentVisibilityToolOptions}
                     />
                   )}
-                  {additionalTopEl}
-                  <FindMismatches alignmentJson={alignmentTracks} id={id} />
                   <AlignmentSearchBar
                     alignmentTracks={alignmentTracks}
                     id={id}
                     setSearchMatchLayers={setSearchMatchLayers}
                   />
+                  <FindMismatches alignmentJson={alignmentTracks} id={id} />
+                  {additionalTopEl}
                   {saveMessage && (
                     <div
                       className="ove-menu-toast"

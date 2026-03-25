@@ -83,7 +83,7 @@ export function FindMismatches(props) {
 
     updateCaretPosition({ start: position, end: position });
     setTimeout(() => {
-      scrollToAlignmentSelection(id, position);
+      scrollToAlignmentSelection();
     }, 0);
   };
 

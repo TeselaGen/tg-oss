@@ -88,7 +88,7 @@ function searchReducer(state, action) {
 }
 
 export function AlignmentSearchBar(props) {
-  const { alignmentTracks = [], id, setSearchMatchLayers } = props;
+  const { alignmentTracks = [], setSearchMatchLayers } = props;
 
   const [searchState, dispatch] = useReducer(searchReducer, initialSearchState);
   const {
@@ -190,11 +190,11 @@ export function AlignmentSearchBar(props) {
         end: match.alignmentEnd
       });
       setTimeout(() => {
-        scrollToAlignmentSelection(id, match.alignmentStart);
+        scrollToAlignmentSelection();
       }, 0);
       buildMatchLayers(allMatches, index);
     },
-    [id, buildMatchLayers]
+    [buildMatchLayers]
   );
 
   const runSearch = useCallback(
@@ -340,16 +340,6 @@ export function AlignmentSearchBar(props) {
     [alignmentTracks, searchScope]
   );
 
-  const handleKeyDown = useCallback(
-    e => {
-      if (e.key === "Escape") {
-        dispatch({ type: "RESET" });
-        if (setSearchMatchLayers) setSearchMatchLayers([]);
-      }
-    },
-    [setSearchMatchLayers]
-  );
-
   const goToPrev = useCallback(() => {
     if (!matches.length) return;
     const newIndex =
@@ -365,7 +355,23 @@ export function AlignmentSearchBar(props) {
     dispatch({ type: "SET_CURRENT_MATCH_INDEX", payload: newIndex });
     navigateTo(matches, newIndex);
   }, [matches, currentMatchIndex, navigateTo]);
-
+  const handleKeyDown = useCallback(
+    e => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+      if (e.key === "Enter") {
+        if (e.shiftKey) {
+          goToPrev();
+        } else {
+          goToNext();
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    },
+    [goToPrev, goToNext]
+  );
   // Re-run both searches when search options change (only if a search has been performed)
   useEffect(() => {
     if (!searched || !searchText.trim()) return;
@@ -407,18 +413,15 @@ export function AlignmentSearchBar(props) {
     [debouncedSearch, runSearch, runFeatureSearch]
   );
 
-  const handleFeatureClick = useCallback(
-    featureMatch => {
-      updateCaretPosition({
-        start: featureMatch.alignmentStart,
-        end: featureMatch.alignmentEnd
-      });
-      setTimeout(() => {
-        scrollToAlignmentSelection(id, featureMatch.alignmentStart);
-      }, 0);
-    },
-    [id]
-  );
+  const handleFeatureClick = useCallback(featureMatch => {
+    updateCaretPosition({
+      start: featureMatch.alignmentStart,
+      end: featureMatch.alignmentEnd
+    });
+    setTimeout(() => {
+      scrollToAlignmentSelection();
+    }, 0);
+  }, []);
 
   const matchCounter = (
     <span
@@ -470,7 +473,7 @@ export function AlignmentSearchBar(props) {
               />
             </div>
           }
-          target={<Button minimal icon="wrench" />}
+          target={<Button minimal icon="wrench" data-tip="Options" />}
         />
       )}
       {matchCounter}
@@ -478,6 +481,7 @@ export function AlignmentSearchBar(props) {
         minimal
         small
         icon="caret-left"
+        data-tip="Previous"
         disabled={!hasMatches}
         onClick={goToPrev}
       />
@@ -485,12 +489,14 @@ export function AlignmentSearchBar(props) {
         minimal
         small
         icon="caret-right"
+        data-tip="Next"
         disabled={!hasMatches}
         onClick={goToNext}
       />
       <Button
         minimal
         small
+        data-tip="Close (Esc)"
         icon="small-cross"
         onClick={() => setIsOpen(false)}
       />
@@ -525,7 +531,7 @@ export function AlignmentSearchBar(props) {
         intent="primary"
         icon="search"
         rightIcon="caret-right"
-        data-tip="Search (Cmd+F)"
+        data-tip="Search"
         onClick={() => setIsOpen(true)}
       />
     );
@@ -539,7 +545,6 @@ export function AlignmentSearchBar(props) {
       className="tg-find-tool-input alignment-search-bar"
       leftIcon="search"
       placeholder="Search..."
-      type="search"
       autoFocus
       value={searchText}
       onChange={handleChange}
