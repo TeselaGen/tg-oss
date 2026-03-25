@@ -18,6 +18,7 @@ import {
   findSequenceMatches,
   getFeatureToColorMap
 } from "@teselagen/sequence-utils";
+import { debounce } from "lodash-es";
 import { getSingular } from "../utils/annotationTypes";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import { getGapMap } from "./getGapMap";
@@ -30,29 +31,104 @@ const CURRENT_MATCH_COLOR = "green";
 const MISMATCH_COLOR = "red";
 const ANNOTATION_TYPES = ["features", "parts", "primers"];
 
+const initialSearchState = {
+  searchText: "",
+  matches: [],
+  currentMatchIndex: 0,
+  searched: false,
+  featureMatches: [],
+  searchScope: "reference",
+  dnaOrAA: "DNA",
+  ambiguousOrLiteral: "LITERAL",
+  mismatchesAllowed: 0
+};
+
+function searchReducer(state, action) {
+  switch (action.type) {
+    case "SET_SEARCH_TEXT":
+      return { ...state, searchText: action.payload };
+    case "SET_MATCHES":
+      return {
+        ...state,
+        matches: action.payload.matches,
+        currentMatchIndex: action.payload.currentMatchIndex
+      };
+    case "SET_CURRENT_MATCH_INDEX":
+      return { ...state, currentMatchIndex: action.payload };
+    case "SET_SEARCHED":
+      return { ...state, searched: action.payload };
+    case "SEARCH_COMPLETE":
+      return {
+        ...state,
+        matches: action.payload.matches,
+        currentMatchIndex: action.payload.currentMatchIndex,
+        searched: action.payload.searched
+      };
+    case "SET_FEATURE_MATCHES":
+      return { ...state, featureMatches: action.payload };
+    case "SET_SCOPE":
+      return { ...state, searchScope: action.payload };
+    case "SET_DNA_OR_AA":
+      return { ...state, dnaOrAA: action.payload };
+    case "SET_AMBIGUOUS_OR_LITERAL":
+      return { ...state, ambiguousOrLiteral: action.payload };
+    case "SET_MISMATCHES_ALLOWED":
+      return { ...state, mismatchesAllowed: Math.max(0, action.payload) };
+    case "RESET":
+      return { ...initialSearchState };
+    default:
+      return state;
+  }
+}
+
 export function AlignmentSearchBar(props) {
   const { alignmentTracks = [], id, setSearchMatchLayers } = props;
 
-  const [searchText, setSearchText] = React.useState("");
-  const [matches, setMatches] = React.useState([]);
-  const [currentMatchIndex, setCurrentMatchIndex] = React.useState(0);
-  const [searched, setSearched] = React.useState(false);
-  const [featureMatches, setFeatureMatches] = React.useState([]);
-  const [searchScope, setSearchScope] = React.useState("reference");
-  const [dnaOrAA, setDnaOrAA] = React.useState("DNA");
-  const [ambiguousOrLiteral, setAmbiguousOrLiteral] = React.useState("LITERAL");
-  const [mismatchesAllowed, setMismatchesAllowed] = React.useState(0);
+  const [searchState, dispatch] = React.useReducer(
+    searchReducer,
+    initialSearchState
+  );
+  const {
+    searchText,
+    matches,
+    currentMatchIndex,
+    searched,
+    featureMatches,
+    searchScope,
+    dnaOrAA,
+    ambiguousOrLiteral,
+    mismatchesAllowed
+  } = searchState;
+
+  const debouncedSearch = React.useRef(
+    debounce((text, search, featureSearch) => {
+      search(text);
+      featureSearch(text);
+    }, 50)
+  ).current;
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
   const [highlightAll, setHighlightAll] = React.useState(false);
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
+  const handleToggleExpanded = useCallback(() => {
+    setIsExpanded(prev => {
+      const next = !prev;
+      if (!next) setIsPopoverOpen(true);
+      return next;
+    });
+  }, [setIsPopoverOpen]);
+
   useEffect(() => {
-    setMatches([]);
-    setCurrentMatchIndex(0);
-    setSearched(false);
-    setFeatureMatches([]);
-    setSearchMatchLayers([]);
+    dispatch({ type: "RESET" });
+    if (setSearchMatchLayers) setSearchMatchLayers([]);
   }, [setSearchMatchLayers]);
 
   const buildMatchLayers = React.useCallback(
@@ -122,9 +198,10 @@ export function AlignmentSearchBar(props) {
     text => {
       const query = text.trim();
       if (!query) {
-        setMatches([]);
-        setCurrentMatchIndex(0);
-        setSearched(false);
+        dispatch({
+          type: "SEARCH_COMPLETE",
+          payload: { matches: [], currentMatchIndex: 0, searched: false }
+        });
         if (setSearchMatchLayers) setSearchMatchLayers([]);
         return;
       }
@@ -189,9 +266,10 @@ export function AlignmentSearchBar(props) {
 
       const results = query.length < 2 ? allMatches.slice(0, 1) : allMatches;
 
-      setMatches(results);
-      setCurrentMatchIndex(0);
-      setSearched(true);
+      dispatch({
+        type: "SEARCH_COMPLETE",
+        payload: { matches: results, currentMatchIndex: 0, searched: true }
+      });
 
       if (results.length) {
         navigateTo(results, 0);
@@ -214,7 +292,7 @@ export function AlignmentSearchBar(props) {
     text => {
       const query = text.trim().toLowerCase();
       if (!query) {
-        setFeatureMatches([]);
+        dispatch({ type: "SET_FEATURE_MATCHES", payload: [] });
         return;
       }
 
@@ -254,7 +332,7 @@ export function AlignmentSearchBar(props) {
         });
       });
 
-      setFeatureMatches(allMatches);
+      dispatch({ type: "SET_FEATURE_MATCHES", payload: allMatches });
     },
     [alignmentTracks, searchScope]
   );
@@ -262,11 +340,7 @@ export function AlignmentSearchBar(props) {
   const handleKeyDown = useCallback(
     e => {
       if (e.key === "Escape") {
-        setSearchText("");
-        setMatches([]);
-        setCurrentMatchIndex(0);
-        setSearched(false);
-        setFeatureMatches([]);
+        dispatch({ type: "RESET" });
         if (setSearchMatchLayers) setSearchMatchLayers([]);
       }
     },
@@ -277,7 +351,7 @@ export function AlignmentSearchBar(props) {
     if (!matches.length) return;
     const newIndex =
       currentMatchIndex === 0 ? matches.length - 1 : currentMatchIndex - 1;
-    setCurrentMatchIndex(newIndex);
+    dispatch({ type: "SET_CURRENT_MATCH_INDEX", payload: newIndex });
     navigateTo(matches, newIndex);
   }, [matches, currentMatchIndex, navigateTo]);
 
@@ -285,7 +359,7 @@ export function AlignmentSearchBar(props) {
     if (!matches.length) return;
     const newIndex =
       currentMatchIndex === matches.length - 1 ? 0 : currentMatchIndex + 1;
-    setCurrentMatchIndex(newIndex);
+    dispatch({ type: "SET_CURRENT_MATCH_INDEX", payload: newIndex });
     navigateTo(matches, newIndex);
   }, [matches, currentMatchIndex, navigateTo]);
 
@@ -294,8 +368,16 @@ export function AlignmentSearchBar(props) {
     if (!searched || !searchText.trim()) return;
     runSearch(searchText);
     runFeatureSearch(searchText);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchScope, dnaOrAA, ambiguousOrLiteral, mismatchesAllowed]);
+  }, [
+    searchScope,
+    dnaOrAA,
+    ambiguousOrLiteral,
+    mismatchesAllowed,
+    runSearch,
+    runFeatureSearch,
+    searched,
+    searchText
+  ]);
 
   // Disable and reset highlightAll when query is too short
   useEffect(() => {
@@ -303,21 +385,23 @@ export function AlignmentSearchBar(props) {
   }, [searchText]);
 
   // Rebuild layers when highlightAll toggles without re-searching
+  const prevHighlightAll = React.useRef(highlightAll);
   useEffect(() => {
-    if (matches.length) buildMatchLayers(matches, currentMatchIndex);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [highlightAll]);
+    if (prevHighlightAll.current !== highlightAll) {
+      prevHighlightAll.current = highlightAll;
+      if (matches.length) buildMatchLayers(matches, currentMatchIndex);
+    }
+  }, [highlightAll, matches, currentMatchIndex, buildMatchLayers]);
 
   const hasMatches = matches.length > 0;
 
   const handleChange = useCallback(
     e => {
       const value = e.target.value;
-      setSearchText(value);
-      runSearch(value);
-      runFeatureSearch(value);
+      dispatch({ type: "SET_SEARCH_TEXT", payload: value });
+      debouncedSearch(value, runSearch, runFeatureSearch);
     },
-    [runSearch, runFeatureSearch]
+    [debouncedSearch, runSearch, runFeatureSearch]
   );
 
   const handleFeatureClick = useCallback(
@@ -331,145 +415,6 @@ export function AlignmentSearchBar(props) {
       }, 0);
     },
     [id]
-  );
-
-  const findOptionsEls = React.useMemo(
-    () => [
-      <TgHTMLSelect
-        key="dnaoraa"
-        options={[
-          { label: "DNA", value: "DNA" },
-          { label: "Amino Acids", value: "AA" }
-        ]}
-        value={dnaOrAA}
-        onChange={e => setDnaOrAA(e.target.value)}
-      />,
-      <div style={{ display: "flex" }} key="ambiguousorliteral">
-        <TgHTMLSelect
-          options={[
-            { label: "Literal", value: "LITERAL" },
-            { label: "Ambiguous", value: "AMBIGUOUS" }
-          ]}
-          value={ambiguousOrLiteral}
-          onChange={e => setAmbiguousOrLiteral(e.target.value)}
-        />
-        <InfoHelper style={{ marginLeft: 10 }}>
-          <div>
-            Ambiguous substitutions:
-            <div style={{ display: "flex", fontSize: 12 }}>
-              <div style={{ marginRight: 20 }}>
-                <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
-                  DNA:
-                </div>
-                <div>M: AC</div>
-                <div>R: AG</div>
-                <div>W: AT</div>
-                <div>S: CG</div>
-                <div>Y: CT</div>
-                <div>K: GT</div>
-                <div>V: ACG</div>
-                <div>H: ACT</div>
-                <div>D: AGT</div>
-                <div>B: CGT</div>
-                <div>X: GATC</div>
-                <div>N: GATC</div>
-                <div>*: any</div>
-              </div>
-              <div>
-                <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
-                  AA:
-                </div>
-                <div>B: ND</div>
-                <div>J: IL</div>
-                <div>X: ACDEFGHIKLMNPQRSTVWY</div>
-                <div>Z: QE</div>
-                <div>*: any</div>
-              </div>
-            </div>
-          </div>
-        </InfoHelper>
-      </div>,
-      <div
-        key="mismatchesAllowed"
-        style={{
-          marginTop: "8px",
-          display: "flex",
-          flexDirection: "row",
-          gap: "3px",
-          alignItems: "center"
-        }}
-      >
-        <label>Mismatches Allowed:</label>
-        <NumericInput
-          min={0}
-          max={10}
-          className="tg-mismatches-allowed-input"
-          style={{ width: "60px" }}
-          value={mismatchesAllowed}
-          disabled={dnaOrAA !== "DNA" || ambiguousOrLiteral !== "LITERAL"}
-          onValueChange={value => {
-            setMismatchesAllowed(Math.max(0, Number.parseInt(value, 10) || 0));
-          }}
-        />
-        <InfoHelper style={{ marginLeft: 10 }}>
-          <div>
-            Number of mismatches allowed when searching DNA sequences with
-            literal matching.
-            <br />
-            <br />
-            Higher values may slow down search performance.
-          </div>
-        </InfoHelper>
-      </div>,
-      <Switch
-        key="highlightall"
-        checked={highlightAll}
-        onChange={() => setHighlightAll(v => !v)}
-        disabled={
-          searchText.trim().length < 2 || matches.length > MAX_MATCHES_DISPLAYED
-        }
-      >
-        <Tooltip
-          disabled={matches.length <= MAX_MATCHES_DISPLAYED}
-          content={`Disabled because there are >${MAX_MATCHES_DISPLAYED} matches`}
-        >
-          Highlight All
-        </Tooltip>
-      </Switch>,
-      <Switch
-        key="expanded"
-        checked={isExpanded}
-        onChange={() => {
-          setIsExpanded(v => {
-            const next = !v;
-            if (!next) setIsPopoverOpen(true);
-            return next;
-          });
-        }}
-      >
-        Expanded
-      </Switch>,
-      <div key="searchscope" style={{ marginTop: 8 }}>
-        <RadioGroup
-          label="Search in"
-          selectedValue={searchScope}
-          onChange={e => setSearchScope(e.target.value)}
-        >
-          <Radio label="Reference sequence only" value="reference" />
-          <Radio label="All sequences" value="all" />
-        </RadioGroup>
-      </div>
-    ],
-    [
-      dnaOrAA,
-      ambiguousOrLiteral,
-      mismatchesAllowed,
-      highlightAll,
-      isExpanded,
-      searchText,
-      matches,
-      searchScope
-    ]
   );
 
   const matchCounter = (
@@ -507,7 +452,19 @@ export function AlignmentSearchBar(props) {
                 gap: 6
               }}
             >
-              {findOptionsEls}
+              <FindOptionsPanel
+                dnaOrAA={dnaOrAA}
+                ambiguousOrLiteral={ambiguousOrLiteral}
+                mismatchesAllowed={mismatchesAllowed}
+                searchScope={searchScope}
+                searchText={searchText}
+                matches={matches}
+                dispatch={dispatch}
+                highlightAll={highlightAll}
+                setHighlightAll={setHighlightAll}
+                isExpanded={isExpanded}
+                onToggleExpanded={handleToggleExpanded}
+              />
             </div>
           }
           target={<Button minimal icon="wrench" />}
@@ -644,7 +601,19 @@ export function AlignmentSearchBar(props) {
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
             {expandedNavEl}
-            {findOptionsEls}
+            <FindOptionsPanel
+              dnaOrAA={dnaOrAA}
+              ambiguousOrLiteral={ambiguousOrLiteral}
+              mismatchesAllowed={mismatchesAllowed}
+              searchScope={searchScope}
+              searchText={searchText}
+              matches={matches}
+              dispatch={dispatch}
+              highlightAll={highlightAll}
+              setHighlightAll={setHighlightAll}
+              isExpanded={isExpanded}
+              onToggleExpanded={handleToggleExpanded}
+            />
           </div>
           <Button
             minimal
@@ -719,6 +688,148 @@ function AnnotationResultsComp({ featureMatches, onClickMatch }) {
         );
       })}
     </div>
+  );
+}
+
+function FindOptionsPanel({
+  dnaOrAA,
+  ambiguousOrLiteral,
+  mismatchesAllowed,
+  searchScope,
+  searchText,
+  matches,
+  dispatch,
+  highlightAll,
+  setHighlightAll,
+  isExpanded,
+  onToggleExpanded
+}) {
+  return (
+    <>
+      <TgHTMLSelect
+        options={[
+          { label: "DNA", value: "DNA" },
+          { label: "Amino Acids", value: "AA" }
+        ]}
+        value={dnaOrAA}
+        onChange={e =>
+          dispatch({ type: "SET_DNA_OR_AA", payload: e.target.value })
+        }
+      />
+      <div style={{ display: "flex" }}>
+        <TgHTMLSelect
+          options={[
+            { label: "Literal", value: "LITERAL" },
+            { label: "Ambiguous", value: "AMBIGUOUS" }
+          ]}
+          value={ambiguousOrLiteral}
+          onChange={e =>
+            dispatch({
+              type: "SET_AMBIGUOUS_OR_LITERAL",
+              payload: e.target.value
+            })
+          }
+        />
+        <InfoHelper style={{ marginLeft: 10 }}>
+          <div>
+            Ambiguous substitutions:
+            <div style={{ display: "flex", fontSize: 12 }}>
+              <div style={{ marginRight: 20 }}>
+                <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
+                  DNA:
+                </div>
+                <div>M: AC</div>
+                <div>R: AG</div>
+                <div>W: AT</div>
+                <div>S: CG</div>
+                <div>Y: CT</div>
+                <div>K: GT</div>
+                <div>V: ACG</div>
+                <div>H: ACT</div>
+                <div>D: AGT</div>
+                <div>B: CGT</div>
+                <div>X: GATC</div>
+                <div>N: GATC</div>
+                <div>*: any</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 14, marginBottom: 4, marginTop: 5 }}>
+                  AA:
+                </div>
+                <div>B: ND</div>
+                <div>J: IL</div>
+                <div>X: ACDEFGHIKLMNPQRSTVWY</div>
+                <div>Z: QE</div>
+                <div>*: any</div>
+              </div>
+            </div>
+          </div>
+        </InfoHelper>
+      </div>
+      <div
+        style={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "row",
+          gap: "3px",
+          alignItems: "center"
+        }}
+      >
+        <label>Mismatches Allowed:</label>
+        <NumericInput
+          min={0}
+          max={10}
+          className="tg-mismatches-allowed-input"
+          style={{ width: "60px" }}
+          value={mismatchesAllowed}
+          disabled={dnaOrAA !== "DNA" || ambiguousOrLiteral !== "LITERAL"}
+          onValueChange={value =>
+            dispatch({
+              type: "SET_MISMATCHES_ALLOWED",
+              payload: Number.parseInt(value, 10) || 0
+            })
+          }
+        />
+        <InfoHelper style={{ marginLeft: 10 }}>
+          <div>
+            Number of mismatches allowed when searching DNA sequences with
+            literal matching.
+            <br />
+            <br />
+            Higher values may slow down search performance.
+          </div>
+        </InfoHelper>
+      </div>
+      <Switch
+        checked={highlightAll}
+        onChange={() => setHighlightAll(v => !v)}
+        disabled={
+          searchText.trim().length < 2 || matches.length > MAX_MATCHES_DISPLAYED
+        }
+      >
+        <Tooltip
+          disabled={matches.length <= MAX_MATCHES_DISPLAYED}
+          content={`Disabled because there are >${MAX_MATCHES_DISPLAYED} matches`}
+        >
+          Highlight All
+        </Tooltip>
+      </Switch>
+      <Switch checked={isExpanded} onChange={onToggleExpanded}>
+        Expanded
+      </Switch>
+      <div style={{ marginTop: 8 }}>
+        <RadioGroup
+          label="Search in"
+          selectedValue={searchScope}
+          onChange={e =>
+            dispatch({ type: "SET_SCOPE", payload: e.target.value })
+          }
+        >
+          <Radio label="Reference sequence only" value="reference" />
+          <Radio label="All sequences" value="all" />
+        </RadioGroup>
+      </div>
+    </>
   );
 }
 
