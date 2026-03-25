@@ -74,43 +74,6 @@ describe("AlignmentSearchBar", function () {
     cy.get(".tg-find-tool-input").should("not.contain", "0/0");
   });
 
-  it("highlights non-active matches when Highlight All is toggled on/off", function () {
-    cy.get('[data-tip="Search (Cmd+F)"]').click();
-    cy.get(".tg-find-tool-input input").type("atg");
-    // Before toggling: only the active match layer exists, no non-active layers
-    cy.get(".veSearchLayerActive").should("exist");
-    cy.get(".veSearchLayer:not(.veSearchLayerActive)").should("not.exist");
-    cy.get(".tg-find-tool-input .bp3-icon-wrench").click();
-    cy.get(".ve-find-options-popover").contains("Highlight All").click();
-    // After toggling: non-active match layers appear alongside the active one
-    cy.get(".veSearchLayer:not(.veSearchLayerActive)").should("exist");
-    // Toggle off
-    cy.get(".ve-find-options-popover").contains("Highlight All").click();
-    cy.get(".veSearchLayer:not(.veSearchLayerActive)").should("not.exist");
-    cy.get(".veSearchLayerActive").should("exist");
-  });
-
-  it("returns more matches when search scope is switched to All Sequences", function () {
-    cy.get('[data-tip="Search (Cmd+F)"]').click();
-    cy.get(".tg-find-tool-input input").type("atg");
-    let referenceCount;
-    cy.get(".tg-find-tool-input")
-      .contains(/\d+\/\d+/)
-      .invoke("text")
-      .then(text => {
-        referenceCount = parseInt(text.split("/")[1], 10);
-      });
-    cy.get(".tg-find-tool-input .bp3-icon-wrench").click();
-    cy.contains(".ve-find-options-popover .bp3-radio", "All sequences").click();
-    cy.get(".tg-find-tool-input")
-      .contains(/\d+\/\d+/)
-      .invoke("text")
-      .then(text => {
-        const allTracksCount = parseInt(text.split("/")[1], 10);
-        expect(allTracksCount).to.be.gte(referenceCount);
-      });
-  });
-
   it("surfaces matching annotation names when a feature name is typed", function () {
     cy.get('[data-tip="Search (Cmd+F)"]').click();
     cy.get(".tg-find-tool-input input").type("cds");

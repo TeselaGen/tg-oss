@@ -12,8 +12,6 @@ import {
   NumericInput,
   Popover,
   Position,
-  Radio,
-  RadioGroup,
   Switch,
   TextArea,
   Tooltip
@@ -43,7 +41,6 @@ const initialSearchState = {
   currentMatchIndex: 0,
   searched: false,
   featureMatches: [],
-  searchScope: "reference",
   dnaOrAA: "DNA",
   ambiguousOrLiteral: "LITERAL",
   mismatchesAllowed: 0
@@ -72,8 +69,6 @@ function searchReducer(state, action) {
       };
     case "SET_FEATURE_MATCHES":
       return { ...state, featureMatches: action.payload };
-    case "SET_SCOPE":
-      return { ...state, searchScope: action.payload };
     case "SET_DNA_OR_AA":
       return { ...state, dnaOrAA: action.payload };
     case "SET_AMBIGUOUS_OR_LITERAL":
@@ -97,7 +92,6 @@ export function AlignmentSearchBar(props) {
     currentMatchIndex,
     searched,
     featureMatches,
-    searchScope,
     dnaOrAA,
     ambiguousOrLiteral,
     mismatchesAllowed
@@ -147,7 +141,6 @@ export function AlignmentSearchBar(props) {
           end: pos,
           color: MISMATCH_COLOR,
           className: "veSearchMismatch",
-          trackIndex: match.trackIndex,
           ignoreGaps: true,
           hideCarets: true
         }));
@@ -160,7 +153,6 @@ export function AlignmentSearchBar(props) {
               color: i === activeIndex ? CURRENT_MATCH_COLOR : MATCH_COLOR,
               className:
                 i === activeIndex ? "veSearchLayerActive" : "veSearchLayer",
-              trackIndex: match.trackIndex,
               ignoreGaps: true
             },
             ...makeMismatchLayers(match)
@@ -171,7 +163,6 @@ export function AlignmentSearchBar(props) {
               end: allMatches[activeIndex].alignmentEnd,
               color: CURRENT_MATCH_COLOR,
               className: "veSearchLayerActive",
-              trackIndex: allMatches[activeIndex].trackIndex,
               ignoreGaps: true
             },
             ...makeMismatchLayers(allMatches[activeIndex])
@@ -209,13 +200,8 @@ export function AlignmentSearchBar(props) {
         return;
       }
 
-      const tracksToSearch =
-        searchScope === "reference"
-          ? alignmentTracks.slice(0, 1)
-          : alignmentTracks;
-
       const allMatches = [];
-      tracksToSearch.forEach((track, trackIndex) => {
+      alignmentTracks.slice(0, 1).forEach((track, trackIndex) => {
         const rawSeq = track.sequenceData?.sequence || "";
         const alignedSeq = track.alignmentData?.sequence || "";
         const gapMap = getGapMap(alignedSeq);
@@ -283,7 +269,6 @@ export function AlignmentSearchBar(props) {
     [
       alignmentTracks,
       navigateTo,
-      searchScope,
       dnaOrAA,
       ambiguousOrLiteral,
       mismatchesAllowed,
@@ -299,13 +284,8 @@ export function AlignmentSearchBar(props) {
         return;
       }
 
-      const tracksToSearch =
-        searchScope === "reference"
-          ? alignmentTracks.slice(0, 1)
-          : alignmentTracks;
-
       const allMatches = [];
-      tracksToSearch.forEach((track, trackIndex) => {
+      alignmentTracks.slice(0, 1).forEach((track, trackIndex) => {
         const { sequenceData, alignmentData } = track;
         const alignedSeq = alignmentData?.sequence || "";
         const gapMap = getGapMap(alignedSeq);
@@ -337,7 +317,7 @@ export function AlignmentSearchBar(props) {
 
       dispatch({ type: "SET_FEATURE_MATCHES", payload: allMatches });
     },
-    [alignmentTracks, searchScope]
+    [alignmentTracks]
   );
 
   const handleKeyDown = useCallback(
@@ -372,7 +352,6 @@ export function AlignmentSearchBar(props) {
     runSearch(searchText);
     runFeatureSearch(searchText);
   }, [
-    searchScope,
     dnaOrAA,
     ambiguousOrLiteral,
     mismatchesAllowed,
@@ -459,7 +438,6 @@ export function AlignmentSearchBar(props) {
                 dnaOrAA={dnaOrAA}
                 ambiguousOrLiteral={ambiguousOrLiteral}
                 mismatchesAllowed={mismatchesAllowed}
-                searchScope={searchScope}
                 searchText={searchText}
                 matches={matches}
                 dispatch={dispatch}
@@ -608,7 +586,6 @@ export function AlignmentSearchBar(props) {
               dnaOrAA={dnaOrAA}
               ambiguousOrLiteral={ambiguousOrLiteral}
               mismatchesAllowed={mismatchesAllowed}
-              searchScope={searchScope}
               searchText={searchText}
               matches={matches}
               dispatch={dispatch}
@@ -698,7 +675,6 @@ function FindOptionsPanel({
   dnaOrAA,
   ambiguousOrLiteral,
   mismatchesAllowed,
-  searchScope,
   searchText,
   matches,
   dispatch,
@@ -820,18 +796,6 @@ function FindOptionsPanel({
       <Switch checked={isExpanded} onChange={onToggleExpanded}>
         Expanded
       </Switch>
-      <div style={{ marginTop: 8 }}>
-        <RadioGroup
-          label="Search in"
-          selectedValue={searchScope}
-          onChange={e =>
-            dispatch({ type: "SET_SCOPE", payload: e.target.value })
-          }
-        >
-          <Radio label="Reference sequence only" value="reference" />
-          <Radio label="All sequences" value="all" />
-        </RadioGroup>
-      </div>
     </>
   );
 }
