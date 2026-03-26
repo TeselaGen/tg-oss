@@ -503,15 +503,17 @@ export function AlignmentSearchBar(props) {
 
   if (!isOpen) {
     return (
-      <Button
-        minimal
-        small
-        intent="primary"
-        icon="search"
-        rightIcon="caret-right"
-        data-tip="Search"
-        onClick={() => setIsOpen(true)}
-      />
+      <div>
+        <Button
+          minimal
+          small
+          intent="primary"
+          icon="search"
+          rightIcon="caret-right"
+          data-tip="Search"
+          onClick={() => setIsOpen(true)}
+        />
+      </div>
     );
   }
 
