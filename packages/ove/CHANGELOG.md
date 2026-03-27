@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.39 (2026-03-23)
+
+- feat: Pass sequence length to `pareDownAnnotations` for accurate range calculation
+
 ## 0.8.38 (2026-02-25)
 
 - fix: format long note as multiple lines in Genbank string

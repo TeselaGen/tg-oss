@@ -111,13 +111,13 @@ export function addCustomEnzyme(newEnz) {
   );
 }
 
-export function pareDownAnnotations(annotations, max) {
+export function pareDownAnnotations(annotations, max, sequenceLength) {
   let annotationsToPass = annotations;
   let paredDown = false;
   if (Object.keys(annotations).length > max) {
     paredDown = true;
     const sortedAnnotations = sortBy(annotations, function (annotation) {
-      return -getRangeLength(annotation);
+      return -getRangeLength(annotation, sequenceLength);
     });
     annotationsToPass = sortedAnnotations.slice(0, max).reduce(function (
       obj,
