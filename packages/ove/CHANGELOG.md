@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.40 (2026-03-27)
+
+- feat: Add mismatch visualization to alignment view and support mismatch filtering in search
+
 ## 0.8.39 (2026-03-23)
 
 - feat: Pass sequence length to `pareDownAnnotations` for accurate range calculation
