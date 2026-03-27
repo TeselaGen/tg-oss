@@ -1,0 +1,10 @@
+export default function _default(state: any, action: any): any;
+export * from './primers';
+export * from './features';
+export * from './parts';
+export * from './name';
+export * from './description';
+export * from './circular';
+export * from './materiallyAvailable';
+export * from './translations';
+export function updateSequenceData(seqData: any, ...rest: any[]): import('redux-act').Action<any, any>;
