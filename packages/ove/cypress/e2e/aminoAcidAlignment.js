@@ -51,8 +51,7 @@ describe("Amino Acid MSA", function () {
       ".ove-sidebar-container .property-extinction-coefficient",
       "9970"
     );
-    cy.contains("Mismatches").should("exist");
-    cy.contains(".ove-sidebar-container .property-mismatches", "7/7");
+    cy.contains(".ove-sidebar-container", "Mismatches (7)").should("exist");
     cy.contains("Region").should("exist");
     cy.contains(".ove-sidebar-container .property-region", "1 - 142");
 

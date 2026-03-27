@@ -30,6 +30,8 @@ import ReactDOM from "react-dom";
 
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap, { getTrimmedRangesToDisplay } from "./Minimap";
+import FindMismatches from "./Mismatches";
+import AlignmentSearchBar from "./AlignmentSearchBar";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
@@ -160,6 +162,7 @@ export const AlignmentView = props => {
   const [tempTrimBefore, setTempTrimBefore] = useState({});
   const [tempTrimAfter, setTempTrimAfter] = useState({});
   const [tempTrimmingCaret, setTempTrimmingCaret] = useState({});
+  const [searchMatchLayers, setSearchMatchLayers] = React.useState([]);
   const bindOutsideChangeHelper = useRef({});
   const alignmentHolder = useRef(null);
   const alignmentHolderTop = useRef(null);
@@ -1014,7 +1017,10 @@ export const AlignmentView = props => {
                   chromatogramData
                 })
               : linearViewOptions))}
-          additionalSelectionLayers={additionalSelectionLayers}
+          additionalSelectionLayers={[
+            ...(additionalSelectionLayers || []),
+            ...(searchMatchLayers || [])
+          ]}
           dimensions={{
             width: linearViewWidth
           }}
@@ -1614,7 +1620,7 @@ export const AlignmentView = props => {
                     display: "flex",
                     minHeight: "32px",
                     width: "100%",
-                    flexWrap: "nowrap",
+                    flexWrap: "wrap",
                     flexDirection: "row",
                     flex: "0 0 auto"
                   }}
@@ -1747,6 +1753,12 @@ export const AlignmentView = props => {
                       {...alignmentVisibilityToolOptions}
                     />
                   )}
+                  <AlignmentSearchBar
+                    alignmentTracks={alignmentTracks}
+                    id={id}
+                    setSearchMatchLayers={setSearchMatchLayers}
+                  />
+                  <FindMismatches alignmentJson={alignmentTracks} id={id} />
                   {additionalTopEl}
                   {saveMessage && (
                     <div
