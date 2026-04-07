@@ -1,3 +1,5 @@
+/* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
+
 import {
   Button,
   Intent,
@@ -8,8 +10,7 @@ import {
   Tag,
   Tooltip
 } from "@blueprintjs/core";
-/* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import {
   findAlignmentDifferences,
@@ -24,14 +25,6 @@ const FILTER_OPTIONS = [
   { value: "deletion", label: "Deletions" },
   { value: "gap", label: "Gaps" }
 ];
-
-const FILTER_COLORS = {
-  all: "#5c7080",
-  mismatch: "#c23030",
-  insertion: "#238551",
-  deletion: "#c87619",
-  gap: "#8a9ba8"
-};
 
 export function FindMismatches(props) {
   const { alignmentJson, id } = props;
@@ -70,31 +63,14 @@ export function FindMismatches(props) {
   );
 
   const [currentIdx, setCurrentIdx] = React.useState(0);
-  const [disablePrev, setDisablePrev] = React.useState(true);
-  const [disableNext, setDisableNext] = React.useState(false);
 
   const currentDiff = differences[currentIdx];
-
-  const handleButtonsState = useCallback(
-    caret => {
-      if (differences.length <= 1) {
-        setDisablePrev(true);
-        setDisableNext(true);
-        return;
-      }
-      const firstPos = differences[1].start;
-      const lastPos = differences[differences.length - 1].start;
-      setDisablePrev(caret <= firstPos);
-      setDisableNext(caret >= lastPos);
-    },
-    [differences]
-  );
+  const disablePrev = currentIdx <= 1;
+  const disableNext = currentIdx >= differences.length - 1;
 
   useEffect(() => {
     setCurrentIdx(0);
-    setDisablePrev(true);
-    setDisableNext(differences.length <= 1);
-  }, [differences.length]);
+  }, [activeFilter]);
 
   useEffect(() => {
     if (currentCaretPosition !== -1) {
@@ -103,16 +79,14 @@ export function FindMismatches(props) {
           currentCaretPosition >= d.start && currentCaretPosition <= d.end + 1
       );
       if (diffIdx !== -1 && diffIdx !== currentIdx) {
-        handleButtonsState(currentCaretPosition);
         setCurrentIdx(diffIdx);
       }
     }
-  }, [currentCaretPosition, differences, currentIdx, handleButtonsState]);
+  }, [currentCaretPosition, differences, currentIdx]);
 
   const updateView = diff => {
     const idx = differences.indexOf(diff);
     const { start, end } = diff;
-    handleButtonsState(start);
     setCurrentIdx(idx);
     updateCaretPosition({ start, end });
     setTimeout(() => {
@@ -122,43 +96,23 @@ export function FindMismatches(props) {
 
   const prevDifference = () => {
     if (currentIdx > 1) {
-      // Use index-based step as primary; override with caret-based search
-      // when the user has manually moved the caret to a specific position.
-      let prev = differences[Math.max(1, currentIdx - 1)];
-      if (currentCaretPosition > 0) {
-        const caretBased = [...differences]
-          .reverse()
-          .find(d => d.start < currentCaretPosition && d.start > 0);
-        if (caretBased) prev = caretBased;
-      }
-      if (prev) updateView(prev);
+      updateView(differences[currentIdx - 1]);
     }
   };
 
   const nextDifference = () => {
     if (currentIdx < differences.length - 1) {
-      // Use index-based step as primary; override with caret-based search
-      // when the user has manually moved the caret to a specific position.
-      let next = differences[Math.min(differences.length - 1, currentIdx + 1)];
-      if (currentCaretPosition > 0) {
-        const caretBased = differences.find(
-          d => d.start > currentCaretPosition && d.start > 1
-        );
-        if (caretBased) next = caretBased;
-      }
-      if (next) updateView(next);
+      updateView(differences[currentIdx + 1]);
     }
   };
 
   const noDifferences = differences.length <= 1;
   const activeOption = FILTER_OPTIONS.find(o => o.value === activeFilter);
   const activeLabel = activeOption?.label ?? "Differences";
-  const activeColor = FILTER_COLORS[activeFilter];
 
   const filterMenu = (
     <Menu>
       {FILTER_OPTIONS.map(({ value, label }) => {
-        const color = FILTER_COLORS[value];
         const count = countsByType[value] ?? 0;
         const isActive = activeFilter === value;
         return (
@@ -168,10 +122,6 @@ export function FindMismatches(props) {
             onClick={() => setActiveFilter(value)}
             text={
               <span className="veDiffMenuItem-inner">
-                <span
-                  className="veDiffMenuItem-dot"
-                  style={{ background: color }}
-                />
                 {label}
                 <Tag round minimal style={{ marginLeft: 6 }}>
                   {count}
@@ -199,13 +149,7 @@ export function FindMismatches(props) {
               rightIcon="caret-down"
               className="veDiffFilter-trigger"
             >
-              <span className="veDiffFilter-trigger-inner">
-                <span
-                  className="veDiffFilter-dot"
-                  style={{ background: activeColor }}
-                />
-                {activeLabel}
-              </span>
+              {activeLabel}
             </Button>
           </Tooltip>
         }
@@ -234,11 +178,7 @@ export function FindMismatches(props) {
               {differences.length - 1}
             </span>
             {currentDiff?.start > 1 && (
-              <span className="veDiffNav-pos">
-                :{currentDiff.start + 1}
-                {currentDiff.end > currentDiff.start &&
-                  `–${currentDiff.end + 1}`}
-              </span>
+              <span className="veDiffNav-pos">:{currentDiff.start + 1}</span>
             )}
           </div>
           <Button

@@ -81,26 +81,10 @@
   opacity: 0.9;
 }
 
-/* ── Difference navigator ──────────────────────────────────────────────── */
 .veDiffNavigator {
   display: flex;
   align-items: center;
   gap: 4px;
-}
-
-/* Filter dropdown trigger button content */
-.veDiffFilter-trigger-inner {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Colored dot — used in both trigger button and menu items */
-.veDiffFilter-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
 }
 
 /* Menu item content layout */
@@ -108,13 +92,6 @@
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.veDiffMenuItem-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
 }
 
 /* Navigation pill — groups prev/counter/next into one unit */
