@@ -157,7 +157,7 @@ export function FindMismatches(props) {
         target={
           <Button
             minimal
-            data-tip="Filter difference type"
+            data-tip="Filter Difference Type"
             small
             rightIcon="caret-down"
             className="veDiffFilter-trigger"
@@ -178,7 +178,7 @@ export function FindMismatches(props) {
           <Button
             minimal
             small
-            data-tip="Previous difference"
+            data-tip="Previous Difference"
             icon="arrow-left"
             intent={Intent.PRIMARY}
             onClick={prevDifference}
@@ -197,7 +197,7 @@ export function FindMismatches(props) {
           <Button
             minimal
             small
-            data-tip="Next difference"
+            data-tip="Next Difference"
             icon="arrow-right"
             intent={Intent.PRIMARY}
             onClick={nextDifference}
