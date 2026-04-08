@@ -54,7 +54,7 @@ export function FindMismatches(props) {
       activeFilter === "all"
         ? allDifferences
         : allDifferences.filter(d => d.type === activeFilter);
-    return [{ position: 0, start: 0, end: 0, bases: [""] }, ...filtered];
+    return [{ position: -1, start: -1, end: -1, bases: [""] }, ...filtered];
   }, [allDifferences, activeFilter]);
 
   const currentCaretPosition = useSelector(
@@ -75,8 +75,10 @@ export function FindMismatches(props) {
   useEffect(() => {
     if (currentCaretPosition !== -1) {
       const diffIdx = differences.findIndex(
-        d =>
-          currentCaretPosition >= d.start && currentCaretPosition <= d.end + 1
+        (d, i) =>
+          i > 0 &&
+          currentCaretPosition >= d.start &&
+          currentCaretPosition <= d.end + 1
       );
       if (diffIdx !== -1 && diffIdx !== currentIdx) {
         setCurrentIdx(diffIdx);
@@ -95,15 +97,23 @@ export function FindMismatches(props) {
   };
 
   const prevDifference = () => {
-    if (currentIdx > 1) {
-      updateView(differences[currentIdx - 1]);
-    }
+    const pivot =
+      currentCaretPosition >= 0
+        ? currentCaretPosition
+        : (differences[currentIdx]?.start ?? 0);
+    const prev = [...differences]
+      .reverse()
+      .find(d => d.start >= 0 && d.start < pivot);
+    if (prev) updateView(prev);
   };
 
   const nextDifference = () => {
-    if (currentIdx < differences.length - 1) {
-      updateView(differences[currentIdx + 1]);
-    }
+    const pivot =
+      currentCaretPosition >= 0
+        ? currentCaretPosition
+        : (differences[currentIdx]?.start ?? -1);
+    const next = differences.find(d => d.start > pivot && d.start >= 0);
+    if (next) updateView(next);
   };
 
   const noDifferences = differences.length <= 1;

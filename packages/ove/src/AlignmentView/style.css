@@ -140,12 +140,6 @@
   padding: 0 4px;
 }
 
-/* ── Dark mode overrides (bp3-dark applied to parent) ──────────────────── */
-.bp3-dark .veDiffFilter-badge {
-  background: rgba(167, 182, 194, 0.1);
-  color: #8a9ba8;
-}
-
 .bp3-dark .veDiffNav {
   background: rgba(167, 182, 194, 0.05);
   border-color: rgba(167, 182, 194, 0.14);
