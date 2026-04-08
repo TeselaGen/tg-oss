@@ -2,7 +2,6 @@ import {
   Button,
   Popover,
   Intent,
-  Tooltip,
   Tag,
   Menu,
   MenuItem
@@ -21,16 +20,15 @@ export default pureNoFunc(function AlignmentVisibilityTool(props) {
       position="bottom"
       content={<VisibilityOptions {...props} />}
       target={
-        <Tooltip content="Visibility Options">
-          <Button
-            className="tg-alignment-visibility-toggle"
-            small
-            rightIcon="caret-down"
-            intent={Intent.PRIMARY}
-            minimal
-            icon="eye-open"
-          />
-        </Tooltip>
+        <Button
+          className="tg-alignment-visibility-toggle"
+          small
+          data-tip="Visibility Options"
+          rightIcon="caret-down"
+          intent={Intent.PRIMARY}
+          minimal
+          icon="eye-open"
+        />
       }
     />
   );

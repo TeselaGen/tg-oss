@@ -88,19 +88,44 @@ function addHighlightedDifferences(alignmentTracks) {
     );
     // .filter by the user-specified mismatch overrides (initially [])
     const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
+
+    // Compute non-aligned (gap) regions from leading/trailing dashes
+    const alignedSeq = track.alignmentData.sequence;
+    const seqLen = alignedSeq.length;
+    const startIndex = seqLen - alignedSeq.replace(/^-+/, "").length;
+    const endIndex = alignedSeq.replace(/-+$/, "").length;
+    const gapRanges = [
+      startIndex > 0 && {
+        start: 0,
+        end: startIndex - 1,
+        differenceType: "gap"
+      },
+      endIndex < seqLen && {
+        start: endIndex,
+        end: seqLen - 1,
+        differenceType: "gap"
+      }
+    ].filter(Boolean);
+
     return {
       ...track,
       sequenceData,
       matchHighlightRanges,
-      additionalSelectionLayers: matchHighlightRanges
-        .filter(({ isMatch }) => !isMatch)
-        .map(range => {
-          return {
+      additionalSelectionLayers: [
+        ...matchHighlightRanges
+          .filter(({ isMatch }) => !isMatch)
+          .map(range => ({
             ...range,
             ...highlightRangeProps,
             className: "veAlignmentMismatch"
-          };
-        }),
+          })),
+        ...gapRanges.map(range => ({
+          ...range,
+          ...highlightRangeProps,
+          className: "veAlignmentMismatch"
+        }))
+      ],
+      gapRanges,
       mismatches
     };
   });
@@ -271,39 +296,52 @@ export default (state = {}, { payload = {}, type }) => {
   return state;
 };
 
-//returns an array like so: [{start: 0, end: 4, isMatch: false}, {start,end,isMatch} ... etc]
+//returns an array like so: [{start: 0, end: 4, isMatch: false, differenceType: "mismatch"}, ...]
+// differenceType is one of: "mismatch" | "insertion" | "deletion" | null (for match ranges)
 function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
   //assume all sequences are the same length (with gap characters "-" in some places)
   //loop through all non template sequences and compare them with the template
 
   const seqLength = nonTempSeq.length;
   const ranges = [];
-  // const startIndex = "".match/[-]/ Math.max(0, .indexOf("-"));
   const nonTempSeqWithoutLeadingDashes = nonTempSeq.replace(/^-+/g, "");
   const nonTempSeqWithoutTrailingDashes = nonTempSeq.replace(/-+$/g, "");
 
   const startIndex = seqLength - nonTempSeqWithoutLeadingDashes.length;
   const endIndex =
     seqLength - (seqLength - nonTempSeqWithoutTrailingDashes.length);
+
   for (let index = startIndex; index < endIndex; index++) {
-    const isMatch =
-      tempSeq[index].toLowerCase() === nonTempSeq[index].toLowerCase();
-    const previousRange = ranges[ranges.length - 1];
-    if (previousRange) {
-      if (previousRange.isMatch === isMatch) {
-        previousRange.end++;
+    const tempBase = tempSeq[index].toLowerCase();
+    const nonTempBase = nonTempSeq[index].toLowerCase();
+    const isMatch = tempBase === nonTempBase;
+
+    let differenceType = null;
+    if (!isMatch) {
+      if (tempBase === "-") {
+        differenceType = "insertion";
+      } else if (nonTempBase === "-") {
+        differenceType = "deletion";
       } else {
-        ranges.push({
-          start: index,
-          end: index,
-          isMatch
-        });
+        differenceType = "mismatch";
       }
+    }
+
+    const previousRange = ranges[ranges.length - 1];
+    if (
+      previousRange &&
+      previousRange.isMatch === isMatch &&
+      previousRange.differenceType === differenceType
+    ) {
+      previousRange.end++;
+    } else if (previousRange) {
+      ranges.push({ start: index, end: index, isMatch, differenceType });
     } else {
       ranges.push({
         start: startIndex,
         end: startIndex,
-        isMatch
+        isMatch,
+        differenceType
       });
     }
   }

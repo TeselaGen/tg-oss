@@ -163,6 +163,11 @@ export const AlignmentView = props => {
   const [tempTrimAfter, setTempTrimAfter] = useState({});
   const [tempTrimmingCaret, setTempTrimmingCaret] = useState({});
   const [searchMatchLayers, setSearchMatchLayers] = React.useState([]);
+  const [activeFilterType, setActiveFilterType] = useState("all");
+
+  const handleFilterChange = useCallback(({ activeFilter }) => {
+    setActiveFilterType(activeFilter);
+  }, []);
   const bindOutsideChangeHelper = useRef({});
   const alignmentHolder = useRef(null);
   const alignmentHolderTop = useRef(null);
@@ -1018,7 +1023,13 @@ export const AlignmentView = props => {
                 })
               : linearViewOptions))}
           additionalSelectionLayers={[
-            ...(additionalSelectionLayers || []),
+            ...(i !== 0
+              ? (additionalSelectionLayers || []).filter(layer =>
+                  activeFilterType === "all"
+                    ? layer.differenceType !== "gap"
+                    : layer.differenceType === activeFilterType
+                )
+              : additionalSelectionLayers || []),
             ...(searchMatchLayers || [])
           ]}
           dimensions={{
@@ -1758,7 +1769,11 @@ export const AlignmentView = props => {
                     id={id}
                     setSearchMatchLayers={setSearchMatchLayers}
                   />
-                  <FindMismatches alignmentJson={alignmentTracks} id={id} />
+                  <FindMismatches
+                    alignmentJson={alignmentTracks}
+                    id={id}
+                    onFilterChange={handleFilterChange}
+                  />
                   {additionalTopEl}
                   {saveMessage && (
                     <div
@@ -1869,6 +1884,7 @@ export const AlignmentView = props => {
                     </>
                   }
                   alignmentTracks={alignmentTracks}
+                  activeFilterType={activeFilterType}
                   dimensions={{
                     width: Math.max(width, 10) || 10
                   }}

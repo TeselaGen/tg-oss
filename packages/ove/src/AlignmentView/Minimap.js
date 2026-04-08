@@ -23,7 +23,8 @@ export default class Minimap extends React.Component {
         "scrollAlignmentView",
         "laneHeight",
         "laneSpacing",
-        "isTrackSelected"
+        "isTrackSelected",
+        "activeFilterType"
       ].some(key => props[key] !== newProps[key])
     )
       return true;
@@ -185,12 +186,14 @@ export default class Minimap extends React.Component {
       dimensions: { width = 200 },
       laneHeight,
       laneSpacing = 1,
-      isTrackSelected = []
+      isTrackSelected = [],
+      activeFilterType = "all"
     } = this.props;
     const charWidth = this.getCharWidth();
 
     const {
       matchHighlightRanges: _matchHighlightRanges,
+      gapRanges = [],
       alignmentData: { trimmedRange } = {}
     } = alignmentTracks[i];
     const matchHighlightRanges = !trimmedRange
@@ -228,10 +231,25 @@ export default class Minimap extends React.Component {
       const toAdd = `M${xStart},${y} L${xStart + width},${y} L${
         xStart + width
       },${y + height} L${xStart},${y + height}`;
-      if (!range.isMatch) {
+      if (
+        !range.isMatch &&
+        (activeFilterType === "all" ||
+          range.differenceType === activeFilterType)
+      ) {
         redPath += toAdd;
       }
     });
+    if (activeFilterType === "gap") {
+      gapRanges.forEach(range => {
+        const { xStart, width } = getXStartAndWidthFromNonCircularRange(
+          range,
+          charWidth
+        );
+        redPath += `M${xStart},${y} L${xStart + width},${y} L${
+          xStart + width
+        },${y + height} L${xStart},${y + height}`;
+      });
+    }
     return (
       <div
         key={i + "-lane"}

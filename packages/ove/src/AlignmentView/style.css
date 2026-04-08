@@ -64,6 +64,10 @@
 /* .alignmentViewTrackContainer:hover .alignmentTrackNameDiv {
   opacity: 1 !important;
 } */
+.ve-alignment-top-bar {
+  align-items: center;
+}
+
 .ve-alignment-top-bar > * {
   overflow-wrap: normal;
   flex: 0 0 auto;
@@ -79,6 +83,82 @@
 }
 .veAlignmentMismatch {
   opacity: 0.9;
+}
+
+.veDiffNavigator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Menu item content layout */
+.veDiffMenuItem-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Navigation pill — groups prev/counter/next into one unit */
+.veDiffNav {
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  background: rgba(92, 112, 128, 0.06);
+  border: 1px solid rgba(92, 112, 128, 0.18);
+}
+
+.veDiffNav-center {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 0 6px;
+  min-width: 64px;
+  justify-content: center;
+}
+
+.veDiffNav-fraction {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: #5c7080;
+  line-height: 1;
+}
+
+.veDiffNav-sep {
+  margin: 0 1px;
+  opacity: 0.45;
+}
+
+/* Position number — monospace fits sequence coordinates */
+.veDiffNav-pos {
+  font-size: 10px;
+  font-family: monospace;
+  font-variant-numeric: tabular-nums;
+  color: #a7b6c2;
+  line-height: 1;
+}
+
+.veDiffNav-empty {
+  font-size: 11px;
+  font-style: italic;
+  color: #a7b6c2;
+  padding: 0 4px;
+}
+
+.bp3-dark .veDiffNav {
+  background: rgba(167, 182, 194, 0.05);
+  border-color: rgba(167, 182, 194, 0.14);
+}
+
+.bp3-dark .veDiffNav-fraction {
+  color: #5c7080;
+}
+
+.bp3-dark .veDiffNav-pos {
+  color: #4f6272;
+}
+
+.bp3-dark .veDiffNav-empty {
+  color: #5c7080;
 }
 .veRowItem:has(.rowViewTextContainer) .veAlignmentMismatch {
   opacity: 0.5;
