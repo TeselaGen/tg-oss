@@ -7,21 +7,6 @@
  * @property {string[]} bases - bases at this column for each track (template first)
  */
 /**
- * Classify alignment columns into difference types relative to the template track.
- *
- * Template is alignedSeqs[0]. Non-template tracks are alignedSeqs[1+].
- *
- * Classification rules (per column):
- *  - "gap"       : position is in the leading or trailing non-aligned region of
- *                  any non-template track (track hasn't started or has ended)
- *  - "insertion" : template has '-', at least one non-template has a non-gap base
- *  - "deletion"  : template has a non-gap base, at least one non-template has '-'
- *  - "mismatch"  : no gaps in any track, unique base set has more than one member
- *
- * @param {string[]} alignedSeqs - Aligned sequence strings, all same length
- * @returns {AlignmentDifference[]}
- */
-/**
  * Group consecutive same-type differences into regions.
  * Mismatches are never grouped — each is its own entry.
  * Insertions, deletions, and gaps that are side-by-side are collapsed into
@@ -34,11 +19,25 @@ export function groupConsecutiveDifferences(differences: AlignmentDifference[]):
     start: number;
     end: number;
 }>;
-export function findAlignmentDifferences(alignedSeqs: any): {
-    position: number;
-    type: string;
-    bases: any[];
-}[];
+/**
+ * Classify alignment columns into difference types relative to the template track.
+ *
+ * Template is alignedSeqs[0]. Non-template tracks are alignedSeqs[1+].
+ *
+ * Classification rules (per column):
+ *  - "gap"       : no non-template track is in its aligned region at this position
+ *  - "insertion" : template has '-', at least one aligned non-template has a non-gap base
+ *  - "deletion"  : template has a non-gap base, at least one aligned non-template has '-'
+ *  - "mismatch"  : no gaps among aligned tracks, unique base set has more than one member
+ *
+ * Only tracks whose aligned region covers position i participate in classification.
+ * This correctly handles multi-read alignments (e.g. Sanger) where reads cover
+ * different sub-ranges of the full alignment.
+ *
+ * @param {string[]} alignedSeqs - Aligned sequence strings, all same length
+ * @returns {AlignmentDifference[]}
+ */
+export function findAlignmentDifferences(alignedSeqs: string[]): AlignmentDifference[];
 export default findAlignmentDifferences;
 export type DifferenceType = "mismatch" | "insertion" | "deletion" | "gap";
 export type AlignmentDifference = {
