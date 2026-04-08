@@ -7,8 +7,7 @@ import {
   MenuItem,
   Popover,
   Position,
-  Tag,
-  Tooltip
+  Tag
 } from "@blueprintjs/core";
 import React, { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
@@ -19,7 +18,7 @@ import {
 import { scrollToAlignmentSelection, updateCaretPosition } from "./utils";
 
 const FILTER_OPTIONS = [
-  { value: "all", label: "All Differences" },
+  { value: "all", label: "All" },
   { value: "mismatch", label: "Mismatches" },
   { value: "insertion", label: "Insertions" },
   { value: "deletion", label: "Deletions" },
@@ -156,16 +155,15 @@ export function FindMismatches(props) {
         position={Position.BOTTOM_LEFT}
         content={filterMenu}
         target={
-          <Tooltip content="Filter difference type">
-            <Button
-              minimal
-              small
-              rightIcon="caret-down"
-              className="veDiffFilter-trigger"
-            >
-              {activeLabel}
-            </Button>
-          </Tooltip>
+          <Button
+            minimal
+            data-tip="Filter difference type"
+            small
+            rightIcon="caret-down"
+            className="veDiffFilter-trigger"
+          >
+            {activeLabel}
+          </Button>
         }
       />
 
@@ -180,6 +178,7 @@ export function FindMismatches(props) {
           <Button
             minimal
             small
+            data-tip="Previous difference"
             icon="arrow-left"
             intent={Intent.PRIMARY}
             onClick={prevDifference}
@@ -191,13 +190,14 @@ export function FindMismatches(props) {
               <span className="veDiffNav-sep">/</span>
               {differences.length - 1}
             </span>
-            {currentDiff?.start > 1 && (
+            {currentDiff?.start > -1 && (
               <span className="veDiffNav-pos">:{currentDiff.start + 1}</span>
             )}
           </div>
           <Button
             minimal
             small
+            data-tip="Next difference"
             icon="arrow-right"
             intent={Intent.PRIMARY}
             onClick={nextDifference}
