@@ -64,6 +64,10 @@
 /* .alignmentViewTrackContainer:hover .alignmentTrackNameDiv {
   opacity: 1 !important;
 } */
+.ve-alignment-top-bar {
+  align-items: center;
+}
+
 .ve-alignment-top-bar > * {
   overflow-wrap: normal;
   flex: 0 0 auto;
