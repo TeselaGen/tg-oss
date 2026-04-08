@@ -27,7 +27,7 @@ const FILTER_OPTIONS = [
 ];
 
 export function FindMismatches(props) {
-  const { alignmentJson, id } = props;
+  const { alignmentJson, id, onFilterChange } = props;
   const alignedSeqs = useMemo(
     () => alignmentJson.map(t => t.alignmentData?.sequence || ""),
     [alignmentJson]
@@ -71,6 +71,10 @@ export function FindMismatches(props) {
   useEffect(() => {
     setCurrentIdx(0);
   }, [activeFilter]);
+
+  useEffect(() => {
+    onFilterChange?.({ activeFilter });
+  }, [activeFilter, onFilterChange]);
 
   useEffect(() => {
     if (currentCaretPosition !== -1) {

@@ -88,19 +88,44 @@ function addHighlightedDifferences(alignmentTracks) {
     );
     // .filter by the user-specified mismatch overrides (initially [])
     const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
+
+    // Compute non-aligned (gap) regions from leading/trailing dashes
+    const alignedSeq = track.alignmentData.sequence;
+    const seqLen = alignedSeq.length;
+    const startIndex = seqLen - alignedSeq.replace(/^-+/, "").length;
+    const endIndex = alignedSeq.replace(/-+$/, "").length;
+    const gapRanges = [
+      startIndex > 0 && {
+        start: 0,
+        end: startIndex - 1,
+        differenceType: "gap"
+      },
+      endIndex < seqLen && {
+        start: endIndex,
+        end: seqLen - 1,
+        differenceType: "gap"
+      }
+    ].filter(Boolean);
+
     return {
       ...track,
       sequenceData,
       matchHighlightRanges,
-      additionalSelectionLayers: matchHighlightRanges
-        .filter(({ isMatch }) => !isMatch)
-        .map(range => {
-          return {
+      additionalSelectionLayers: [
+        ...matchHighlightRanges
+          .filter(({ isMatch }) => !isMatch)
+          .map(range => ({
             ...range,
             ...highlightRangeProps,
             className: "veAlignmentMismatch"
-          };
-        }),
+          })),
+        ...gapRanges.map(range => ({
+          ...range,
+          ...highlightRangeProps,
+          className: "veAlignmentMismatch"
+        }))
+      ],
+      gapRanges,
       mismatches
     };
   });
