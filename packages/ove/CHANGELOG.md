@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.41 (2026-03-27)
+
+- fix: improve filter and navigation functionality in alignment view
+
 ## 0.8.40 (2026-03-27)
 
 - feat: Add mismatch visualization to alignment view and support mismatch filtering in search
