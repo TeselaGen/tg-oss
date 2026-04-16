@@ -113,13 +113,13 @@ async function snapgeneToJson(fileObj, options = {}) {
         const b = new XMLParser({
           ignoreAttributes: false,
           attributeNamePrefix: "",
-          isArray: name => name === "Feature" || name === "Segment"
+          isArray: name => ["Feature", "Segment", "Q", "V"].includes(name)
         }).parse(xml);
         const { Features: { Feature = [] } = {} } = b;
         data.features = [];
         Feature.forEach(feat => {
           const { directionality, Segment = [], name, type } = feat;
-          // let color;
+          let color;
           let maxStart = 0;
           let maxEnd = 0;
           const locations =
@@ -127,7 +127,7 @@ async function snapgeneToJson(fileObj, options = {}) {
             Segment.map(seg => {
               if (!seg) throw new Error("invalid feature definition");
               const { range } = seg;
-              // color = seg.color;
+              if (seg.color) color = seg.color;
               let { start, end } = getStartAndEndFromRangeString(range);
               start = isProtein ? start * 3 : start;
               end = isProtein ? end * 3 + 2 : end;
@@ -139,6 +139,11 @@ async function snapgeneToJson(fileObj, options = {}) {
               };
             });
 
+          const colorQual = feat.Q?.find(q => q.name === "color");
+          if (colorQual) {
+            color = colorQual.V?.[0]?.text || colorQual.V?.[0];
+          }
+
           data.features.push({
             name,
             type,
@@ -148,8 +153,8 @@ async function snapgeneToJson(fileObj, options = {}) {
               ? strand_dict[directionality][1]
               : "NONE",
             start: maxStart,
-            end: maxEnd
-            // color,
+            end: maxEnd,
+            color
           });
         });
       } else if (ord(next_byte) === 6) {

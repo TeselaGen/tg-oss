@@ -275,4 +275,26 @@ describe("snapgene file parser", function () {
       }
     ]);
   });
+  it("should parse colors correctly from comparison_output.dna", async function () {
+    const fileObj = fs.readFileSync(
+      path.join(__dirname, "./testData/dna/comparison_output.dna")
+    );
+    const result = await snapgeneToJson(fileObj, {
+      fileName: "comparison_output.dna"
+    });
+    result[0].parsedSequence.features.should.containSubset([
+      {
+        name: "ADH1 terminator",
+        color: "#00FF00"
+      },
+      {
+        name: "URA3",
+        color: "#00FF00"
+      },
+      {
+        name: "AmpR",
+        color: "#FF0000"
+      }
+    ]);
+  });
 });
