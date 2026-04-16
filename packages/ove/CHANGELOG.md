@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.42 (2026-04-16)
+
+- fix: better color parsing for snapgene files
+
 ## 0.8.41 (2026-03-27)
 
 - fix: improve filter and navigation functionality in alignment view
