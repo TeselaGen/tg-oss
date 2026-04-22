@@ -76,6 +76,47 @@ function cutUpStr(val, start, end) {
   return val.slice(start, end);
 }
 
+export function featureToGenbankLocationString(feat, options) {
+  const { inclusive1BasedStart, inclusive1BasedEnd, isProtein } = options;
+  let locStr = "";
+
+  if (feat.locations && feat.locations.length > 1) {
+    feat.locations.forEach((loc, i) => {
+      locStr +=
+        getProteinStart(
+          parseInt(loc.start, 10) + (inclusive1BasedStart ? 0 : 1),
+          isProtein
+        ) +
+        ".." +
+        getProteinEnd(
+          parseInt(loc.end, 10) + (inclusive1BasedEnd ? 0 : 1),
+          isProtein
+        );
+
+      if (i !== feat.locations.length - 1) {
+        locStr += ",";
+      }
+    });
+    locStr = "join(" + locStr + ")";
+  } else {
+    locStr +=
+      getProteinStart(
+        parseInt(feat.start, 10) + (inclusive1BasedStart ? 0 : 1),
+        isProtein
+      ) +
+      ".." +
+      getProteinEnd(
+        parseInt(feat.end, 10) + (inclusive1BasedEnd ? 0 : 1),
+        isProtein
+      );
+  }
+
+  if (feat.strand === -1) {
+    locStr = "complement(" + locStr + ")";
+  }
+  return locStr;
+}
+
 export default function (_serSeq, options) {
   options = options || {};
   options.reformatSeqName = options.reformatSeqName !== false;
@@ -325,49 +366,8 @@ function featureToGenbankString(feat, options) {
   const line =
     "     " +
     StringUtil.rpad(feat.type || "misc_feature", " ", options.featurePadLength);
-  let locStr = "";
 
-  //for(var i=0;i<feat.locations.length;i++) {
-  //	var loc = feat.locations[i];
-  //	locStr.push((loc.start+1) + '..' + loc.end);
-  //}
-
-  if (feat.locations && feat.locations.length > 1) {
-    feat.locations.forEach((loc, i) => {
-      locStr +=
-        getProteinStart(
-          parseInt(loc.start, 10) + (options.inclusive1BasedStart ? 0 : 1),
-          options.isProtein
-        ) +
-        ".." +
-        getProteinEnd(
-          parseInt(loc.end, 10) + (options.inclusive1BasedEnd ? 0 : 1),
-          options.isProtein
-        );
-
-      if (i !== feat.locations.length - 1) {
-        locStr += ",";
-      }
-    });
-    locStr = "join(" + locStr + ")";
-  } else {
-    locStr +=
-      getProteinStart(
-        parseInt(feat.start, 10) + (options.inclusive1BasedStart ? 0 : 1),
-        options.isProtein
-      ) +
-      ".." +
-      getProteinEnd(
-        parseInt(feat.end, 10) + (options.inclusive1BasedEnd ? 0 : 1),
-        options.isProtein
-      );
-  }
-
-  // locStr = locStr.join(",");
-
-  if (feat.strand === -1) {
-    locStr = "complement(" + locStr + ")";
-  }
+  const locStr = featureToGenbankLocationString(feat, options);
 
   lines.push(line + locStr);
 
