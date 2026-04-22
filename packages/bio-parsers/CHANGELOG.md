@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.38 (2026-04-22)
+
+- refactor: extract and export featureToLocationString for use in other places
+
 ## 0.4.37 (2026-04-16)
 
 - fix: better color parsing for snapgene files
