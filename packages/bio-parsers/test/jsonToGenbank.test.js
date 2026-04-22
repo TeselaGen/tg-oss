@@ -2,7 +2,9 @@
 import assert from "assert";
 
 import parseGenbank from "../src/genbankToJson";
-import jsonToGenbank, { featureToLocationString } from "../src/jsonToGenbank";
+import jsonToGenbank, {
+  featureToGenbankLocationString
+} from "../src/jsonToGenbank";
 import path from "path";
 import fs from "fs";
 import * as chai from "chai";
@@ -816,7 +818,7 @@ describe("genbank exporter/parser conversion", function () {
   });
 });
 
-describe("featureToLocationString", function () {
+describe("featureToGenbankLocationString", function () {
   const dna0BasedInclusive = {
     inclusive1BasedStart: false,
     inclusive1BasedEnd: false,
@@ -825,14 +827,14 @@ describe("featureToLocationString", function () {
 
   it("maps 0-based inclusive DNA coordinates to GenBank 1-based span", function () {
     assert.equal(
-      featureToLocationString({ start: 0, end: 5 }, dna0BasedInclusive),
+      featureToGenbankLocationString({ start: 0, end: 5 }, dna0BasedInclusive),
       "1..6"
     );
   });
 
   it("wraps reverse-strand features in complement(...)", function () {
     assert.equal(
-      featureToLocationString(
+      featureToGenbankLocationString(
         { start: 0, end: 5, strand: -1 },
         dna0BasedInclusive
       ),
@@ -842,7 +844,7 @@ describe("featureToLocationString", function () {
 
   it("formats multi-segment features as join(...)", function () {
     assert.equal(
-      featureToLocationString(
+      featureToGenbankLocationString(
         {
           start: 0,
           end: 99,
@@ -857,7 +859,7 @@ describe("featureToLocationString", function () {
     );
 
     assert.equal(
-      featureToLocationString(
+      featureToGenbankLocationString(
         {
           start: 0,
           end: 99,
@@ -875,7 +877,7 @@ describe("featureToLocationString", function () {
 
   it("respects inclusive1BasedStart and inclusive1BasedEnd (no +1 shift)", function () {
     assert.equal(
-      featureToLocationString(
+      featureToGenbankLocationString(
         { start: 1, end: 3 },
         {
           inclusive1BasedStart: true,
@@ -889,7 +891,7 @@ describe("featureToLocationString", function () {
 
   it("converts DNA indices to protein coordinates when isProtein is true", function () {
     assert.equal(
-      featureToLocationString(
+      featureToGenbankLocationString(
         { start: 0, end: 2 },
         {
           inclusive1BasedStart: false,

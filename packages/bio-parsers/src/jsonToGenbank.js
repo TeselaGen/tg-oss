@@ -76,7 +76,7 @@ function cutUpStr(val, start, end) {
   return val.slice(start, end);
 }
 
-export function featureToLocationString(feat, options) {
+export function featureToGenbankLocationString(feat, options) {
   const { inclusive1BasedStart, inclusive1BasedEnd, isProtein } = options;
   let locStr = "";
 
@@ -367,7 +367,7 @@ function featureToGenbankString(feat, options) {
     "     " +
     StringUtil.rpad(feat.type || "misc_feature", " ", options.featurePadLength);
 
-  const locStr = featureToLocationString(feat, options);
+  const locStr = featureToGenbankLocationString(feat, options);
 
   lines.push(line + locStr);
 
