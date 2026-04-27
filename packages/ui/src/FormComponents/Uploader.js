@@ -658,7 +658,10 @@ const Uploader = ({
                         <PopOrTooltip
                           key={i}
                           interactionKind="hover"
-                          disabled={disabled}
+                          disabled={
+                            disabled ||
+                            !!window.Cypress?.tg_disableDownloadExampleHover
+                          }
                           modifiers={popoverOverflowModifiers}
                           content={
                             acc.exampleFiles ? (

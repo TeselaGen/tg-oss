@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.21 (2026-04-27)
+
+- fix: add option to disable upload example links for tests
+
 ## 0.10.20 (2026-01-23)
 
 - fix protein 'size' filter and support '\_in', '\_nin' and '\_regex' filter
