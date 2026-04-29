@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.22 (2026-04-29)
+
+- feat: added tag input class name support to TgSelectMulti
+
 ## 0.10.21 (2026-04-27)
 
 - fix: add option to disable upload example links for tests

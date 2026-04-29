@@ -334,6 +334,7 @@ class TgSelect extends React.Component {
         opt => opt && opt.value === ((value && value.value) || value)
       );
     });
+    const inputClassname = `${multi ? "tg-multiselect-input" : "tg-single-select-input"} ${(tagInputProps && tagInputProps.inputProps?.className) || ""}`;
     const toRet = (
       <MultiSelect
         onActiveItemChange={this.handleActiveItemChange}
@@ -433,7 +434,8 @@ class TgSelect extends React.Component {
               name: "tg-multiselect-input",
               autoFocus: autoFocus || autoOpen,
               onBlur,
-              ...(tagInputProps && tagInputProps.inputProps)
+              ...(tagInputProps && tagInputProps.inputProps),
+              className: inputClassname
             }
           }
         }}
