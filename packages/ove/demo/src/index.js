@@ -21,6 +21,7 @@ import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 import EditorDemo from "./EditorDemo";
 import VersionHistoryViewDemo from "./VersionHistoryViewDemo";
+import ImportFeaturesDialogDemo from "./ImportFeaturesDialogDemo";
 
 import "./style.css";
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -110,6 +111,9 @@ const demos = {
         </WrapSimpleDemo>
       );
     }
+  },
+  ImportFeaturesDialog: {
+    demo: ImportFeaturesDialogDemo
   }
 };
 

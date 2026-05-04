@@ -133,7 +133,8 @@ export default [
           "autoAnnotateParts",
           "autoAnnotatePrimers"
         ]
-      }
+      },
+      "importFeatures"
     ]
   },
   // { isMenuSearch: true }

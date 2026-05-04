@@ -6,7 +6,8 @@
     "postinstall": "patch-package",
     "prepare": "husky",
     "e2e": "nx affected --base=master --head=HEAD -t e2e",
-    "test": "nx affected -t test"
+    "test": "nx affected -t test",
+    "ove-start": "nx run ove:start"
   },
   "type": "module",
   "repository": "https://github.com/TeselaGen/tg-oss",

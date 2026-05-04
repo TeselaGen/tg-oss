@@ -33,6 +33,10 @@ export {
   default as DigestTool,
   DigestTool as DigestToolUnconnected
 } from "./DigestTool/DigestTool";
+export {
+  default as ImportFeaturesDialog,
+  ImportFeaturesDialog as ImportFeaturesDialogUnconnected
+} from "./ImportFeaturesDialog";
 export { default as withHover } from "./helperComponents/withHover";
 
 export {

@@ -1,5 +1,6 @@
 import React from "react";
 import { Tag, Classes, NumericInput, Slider } from "@blueprintjs/core";
+import { anyToJson } from "@teselagen/bio-parsers";
 import {
   convertRangeTo0Based,
   getSequenceWithinRange
@@ -284,7 +285,10 @@ const fileCommandDefs = {
   },
   exportSequenceAsTeselagenJson: {
     name: "Download Teselagen JSON File",
-    handler: props => props.exportSequenceToFile("teselagenJson", { getAcceptedInsertChars: props.getAcceptedInsertChars})
+    handler: props =>
+      props.exportSequenceToFile("teselagenJson", {
+        getAcceptedInsertChars: props.getAcceptedInsertChars
+      })
   },
 
   viewProperties: {
@@ -1374,6 +1378,16 @@ const toolCommandDefs = {
       });
     },
     isHidden: props => props.overrideManageEnzymes
+  },
+  importFeatures: {
+    name: "Import Features from Another Sequence",
+    isDisabled: props => props.readOnly,
+    handler: props => {
+      showDialog({
+        dialogType: "ImportFeaturesDialog",
+        props: {}
+      });
+    }
   }
 };
 
