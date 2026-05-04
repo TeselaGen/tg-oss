@@ -67,7 +67,7 @@ export namespace commandDefs {
         let name_5: string;
         export { name_5 as name };
         export function isDisabled(props: any): any;
-        export function handler_5(props: any): void;
+        export function handler_5(): void;
         export { handler_5 as handler };
     }
     namespace toggleShowGCContent {
