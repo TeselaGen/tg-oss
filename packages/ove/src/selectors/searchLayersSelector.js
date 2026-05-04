@@ -5,6 +5,7 @@ import {
 import sequenceSelector from "./sequenceSelector";
 import { createSelector } from "reselect";
 import circularSelector from "./circularSelector";
+import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 
 function searchLayersSelector(
   sequence,
@@ -32,7 +33,8 @@ function searchLayersSelector(
         isProteinSequence: true,
         isAmbiguous: ambiguousOrLiteral === "AMBIGUOUS",
         // isProteinSearch: dnaOrAA !== "DNA",
-        searchReverseStrand: false
+        searchReverseStrand: false,
+        maxMatches: MAX_MATCHES_DISPLAYED
       }
     ).sort(({ start }, { start: start2 }) => {
       return start - start2;
@@ -58,7 +60,8 @@ function searchLayersSelector(
       searchString,
       sequence,
       mismatchesAllowed,
-      isCircular
+      isCircular,
+      MAX_MATCHES_DISPLAYED
     );
     // Convert approximate matches to the format expected by the application
     const matches = approxMatches
@@ -86,7 +89,8 @@ function searchLayersSelector(
     isCircular,
     isAmbiguous: ambiguousOrLiteral === "AMBIGUOUS",
     isProteinSearch: dnaOrAA !== "DNA",
-    searchReverseStrand: true
+    searchReverseStrand: true,
+    maxMatches: MAX_MATCHES_DISPLAYED
   }).sort(({ start }, { start: start2 }) => {
     return start - start2;
   });

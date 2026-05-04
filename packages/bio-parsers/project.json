@@ -1,5 +1,5 @@
 {
-  "name": "bio-parsers",
+  "name": "@teselagen/bio-parsers",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/bio-parsers/src",
   "projectType": "library",

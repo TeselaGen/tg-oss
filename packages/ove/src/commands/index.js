@@ -1,6 +1,5 @@
 import React from "react";
 import { Tag, Classes, NumericInput, Slider } from "@blueprintjs/core";
-import { anyToJson } from "@teselagen/bio-parsers";
 import {
   convertRangeTo0Based,
   getSequenceWithinRange
@@ -1382,7 +1381,7 @@ const toolCommandDefs = {
   importFeatures: {
     name: "Import Features from Another Sequence",
     isDisabled: props => props.readOnly,
-    handler: props => {
+    handler: () => {
       showDialog({
         dialogType: "ImportFeaturesDialog",
         props: {}

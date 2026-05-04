@@ -1,5 +1,13 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
@@ -8,8 +16,7 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "bun tools/scripts/build.mjs {projectRoot}"
-      },
-      "cache": true
+      }
     },
     "build_umd": {
       "executor": "nx:run-commands",
@@ -26,8 +33,7 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "eslint \"{projectRoot}/**/*.{ts,tsx,js,jsx}\" \"{projectRoot}/package.json\" --max-warnings=0"
-      },
-      "cache": true
+      }
     },
     "test": {
       "inputs": ["default", "^production"],
@@ -39,8 +45,7 @@
         "watch": {
           "args": ["--watch"]
         }
-      },
-      "cache": true
+      }
     },
     "e2e": {
       "inputs": ["default", "^production"],
@@ -51,8 +56,7 @@
         "cypressConfig": "{projectRoot}/cypress.config.ts",
         "devServerTarget": "{projectName}:start:ci",
         "testingType": "e2e"
-      },
-      "cache": true
+      }
     },
     "launch-e2e": {
       "inputs": ["default", "^production"],

@@ -19,6 +19,7 @@ export default function ImportFeaturesDialogDemo() {
           <ImportFeaturesDialogUnconnected
             editorName="DemoEditor"
             step={0}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             setStep={() => {}}
           />
         </div>
@@ -28,6 +29,7 @@ export default function ImportFeaturesDialogDemo() {
             editorName="DemoEditor"
             step={1}
             sequenceData={exampleSequenceData}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             setStep={() => {}}
             isFlexible={true}
             matchThreshold={90}

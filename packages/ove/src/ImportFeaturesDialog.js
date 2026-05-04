@@ -8,11 +8,10 @@ import {
   withSelectTableRecords
 } from "@teselagen/ui";
 import {
-  findApproxMatches,
-  getSequenceDataBetweenRange,
   tidyUpAnnotation,
   getFeatureToColorMap
 } from "@teselagen/sequence-utils";
+import getImportMatches from "./utils/getImportMatches";
 import {
   NumericInput,
   Tag,
@@ -25,13 +24,14 @@ import {
   Checkbox
 } from "@blueprintjs/core";
 import { startCase, forEach } from "lodash-es";
-import shortid from "shortid";
 import pluralize from "pluralize";
 import withEditorProps from "./withEditorProps";
 import { hideDialog } from "./GlobalDialogUtils";
 import { Uploader } from "@teselagen/ui";
 import { anyToJson } from "@teselagen/bio-parsers";
 import SimpleCircularOrLinearView from "./SimpleCircularOrLinearView";
+
+import { MAX_MATCHES_DISPLAYED } from "./constants/findToolConstants";
 
 const formName = "importFeaturesDialogForm";
 
@@ -178,104 +178,24 @@ export const ImportFeaturesDialog = compose(
   const [isParsing, setIsParsing] = useState(false);
   const [showExistingFeatures, setShowExistingFeatures] = useState(false);
   const [previewAnnotation, setPreviewAnnotation] = useState(null);
-  const [isExpanded, setIsExpanded] = useState(false);
 
-  const { newAnnotations, duplicateAnnotations } = useMemo(() => {
-    const newAnnotations = [];
-    const duplicateAnnotations = [];
-    if (!sourceSequences.length || !destinationSequenceData)
-      return { newAnnotations, duplicateAnnotations };
-
-    const typesToImport = ["features", "parts", "primers"];
-    const destSeq = destinationSequenceData.sequence;
-    const destIsCircular = destinationSequenceData.circular;
-
-    // Pre-calculate existing annotations to check for duplicates
-    const existingAnnotations = {};
-    forEach(typesToImport, type => {
-      existingAnnotations[type] = [];
-      forEach(destinationSequenceData[type], ann => {
-        existingAnnotations[type].push({
-          start: ann.start,
-          end: ann.end,
-          type: ann.type
-        });
-      });
-    });
-
-    forEach(sourceSequences, sourceSequenceData => {
-      forEach(typesToImport, type => {
-        const annotations = sourceSequenceData[type] || [];
-        forEach(annotations, ann => {
-          // Extract sequence for this annotation from source
-          const annSeqData = getSequenceDataBetweenRange(
-            sourceSequenceData,
-            ann
-          );
-          const annSeq = annSeqData.sequence;
-
-          if (!annSeq || annSeq.length < minImportSize) return;
-
-          const maxMismatches = isFlexible
-            ? Math.floor(annSeq.length * (1 - matchThreshold / 100))
-            : 0;
-
-          // Find matches in destination
-          const matches = findApproxMatches(
-            annSeq,
-            destSeq,
-            maxMismatches,
-            destIsCircular
-          );
-
-          forEach(matches, match => {
-            // Filter out features < 5 bps in length (and as mismatches increases, < 5bps - # mismatches)
-            // We want at least 5 base pairs to match
-            if (annSeq.length - match.numMismatches < 5) return;
-
-            const start = match.index;
-            const end = (match.index + annSeq.length - 1) % destSeq.length;
-
-            // Check for duplicates
-            const isDuplicate = existingAnnotations[type].some(
-              existing =>
-                existing.start === start &&
-                existing.end === end &&
-                (type !== "features" || existing.type === ann.type)
-            );
-
-            const result = {
-              ...ann,
-              id: shortid(),
-              sourceId: ann.id,
-              sourceName: sourceSequenceData.name,
-              start,
-              end,
-              annotationType: type.slice(0, -1), // singular: feature, part, primer
-              numMismatches: match.numMismatches,
-              matchPercent: Math.round(
-                ((annSeq.length - match.numMismatches) / annSeq.length) * 100
-              )
-            };
-
-            if (isDuplicate) {
-              duplicateAnnotations.push(result);
-            } else {
-              newAnnotations.push(result);
-            }
-          });
-        });
-      });
-    });
-
-    return { newAnnotations, duplicateAnnotations };
-  }, [
-    sourceSequences,
-    destinationSequenceData,
-    isFlexible,
-    matchThreshold,
-    minImportSize
-  ]);
+  const { newAnnotations, duplicateAnnotations } = useMemo(
+    () =>
+      getImportMatches({
+        sourceSequences,
+        destinationSequenceData,
+        isFlexible,
+        matchThreshold,
+        minImportSize
+      }),
+    [
+      sourceSequences,
+      destinationSequenceData,
+      isFlexible,
+      matchThreshold,
+      minImportSize
+    ]
+  );
 
   const rawSelectedEntities = props[formName + "SelectedEntities"];
   const selectedEntities = useMemo(
@@ -316,7 +236,6 @@ export const ImportFeaturesDialog = compose(
     });
     return seqData;
   }, [destinationSequenceData, showExistingFeatures, selectedEntities]);
-  console.log("previewSequenceData:", previewSequenceData);
   useEffect(() => {
     selectTableRecords(newAnnotations);
   }, [newAnnotations, selectTableRecords]);
@@ -635,217 +554,213 @@ export const ImportFeaturesDialog = compose(
           }
         }
       `}</style>
-      {!isExpanded && (
-        <div className="tg-import-features-container">
-          <div className="tg-import-features-left">
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Checkbox
-                checked={isFlexible}
-                onChange={e => setIsFlexible(e.target.checked)}
-                style={{ marginBottom: 0 }}
-              >
-                <span
-                  style={{
-                    fontSize: 13,
-                    color: "var(--reversed)",
-                    fontWeight: 500
-                  }}
-                >
-                  Use flexible feature detection with a DNA match threshold of
-                </span>
-              </Checkbox>
 
-              <NumericInput
-                disabled={!isFlexible}
-                style={{ width: 80 }}
-                value={matchThreshold}
-                onValueChange={val => setMatchThreshold(val)}
-                min={1}
-                max={100}
-                rightElement={
-                  <div
-                    style={{
-                      padding: "6px 8px",
-                      fontSize: 12,
-                      color: "var(--base3)",
-                      fontWeight: 600
-                    }}
-                  >
-                    %
-                  </div>
-                }
-              />
-            </div>
-            <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-              <div
+      <div className="tg-import-features-container">
+        <div className="tg-import-features-left">
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Checkbox
+              checked={isFlexible}
+              onChange={e => setIsFlexible(e.target.checked)}
+              style={{ marginBottom: 0 }}
+            >
+              <span
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  padding: "4px 12px",
-                  // background: "var(--base2)",
-                  borderRadius: 8,
-                  border: "1px solid var(--base3)"
+                  fontSize: 13,
+                  color: "var(--reversed)",
+                  fontWeight: 500
                 }}
               >
+                Use flexible feature detection with a DNA match threshold of
+              </span>
+            </Checkbox>
+
+            <NumericInput
+              disabled={!isFlexible}
+              style={{ width: 80 }}
+              value={matchThreshold}
+              onValueChange={val => setMatchThreshold(val)}
+              min={1}
+              max={100}
+              rightElement={
                 <div
                   style={{
-                    fontWeight: 600,
-                    color: "var(--reversed)",
-                    fontSize: 13
+                    padding: "6px 8px",
+                    fontSize: 12,
+                    color: "var(--base3)",
+                    fontWeight: 600
                   }}
                 >
-                  Min Feature Size:
+                  %
                 </div>
-                <NumericInput
-                  style={{ width: 70 }}
-                  value={minImportSize}
-                  onValueChange={val => setMinImportSize(val)}
-                  min={1}
-                  max={1000}
-                />
-                <div style={{ fontSize: 11, color: "var(--base3)" }}>bps</div>
-              </div>
-            </div>
+              }
+            />
+          </div>
+          <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
             <div
               style={{
-                fontSize: 13,
-                color: "var(--base3)",
                 display: "flex",
                 alignItems: "center",
-                padding: "4px 10px",
+                gap: 12,
+                padding: "4px 12px",
                 // background: "var(--base2)",
-                borderRadius: 20,
+                borderRadius: 8,
                 border: "1px solid var(--base3)"
               }}
             >
-              <Tag
-                round
-                minimal
-                intent={newAnnotations.length > 0 ? "success" : "none"}
-                style={{ fontWeight: 600, marginRight: 8 }}
+              <div
+                style={{
+                  fontWeight: 600,
+                  color: "var(--reversed)",
+                  fontSize: 13
+                }}
               >
-                {newAnnotations.length}
-              </Tag>
-              <span style={{ whiteSpace: "nowrap" }}>
-                {pluralize("new match", newAnnotations.length)} from{" "}
-                <b style={{ color: "var(--reversed)" }}>
-                  {sourceSequences.length}
-                </b>{" "}
-                {pluralize("sequence", sourceSequences.length)}
-              </span>
-            </div>
-          </div>
-          <div className="tg-import-features-right">
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                color: "var(--base3)",
-                textTransform: "uppercase",
-                letterSpacing: "0.5px",
-                marginBottom: 10,
-                textAlign: "center"
-              }}
-            >
-              Feature Preview
-            </div>
-            {previewSequenceData && (
-              <div style={{ flex: 1, position: "relative" }}>
-                <SimpleCircularOrLinearView
-                  sequenceData={previewSequenceData}
-                  annotationVisibility={{
-                    features: true,
-                    parts: false,
-                    cutsites: false,
-                    primers: false
-                  }}
-                  withVisibilityOptions
-                  // minimalPreviewTypeBtns
-                  withFullscreen
-                  withChoosePreviewType
-                  selectionLayer={
-                    previewAnnotation
-                      ? {
-                          start: previewAnnotation.start,
-                          end: previewAnnotation.end
-                        }
-                      : undefined
-                  }
-                />
+                Min Feature Size:
               </div>
-            )}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: 10
-              }}
-            >
-              <Checkbox
-                checked={showExistingFeatures}
-                onChange={e => setShowExistingFeatures(e.target.checked)}
-                style={{ marginBottom: 0 }}
-              >
-                <span style={{ fontSize: 12, color: "var(--base3)" }}>
-                  Show existing features
-                </span>
-              </Checkbox>
+              <NumericInput
+                style={{ width: 70 }}
+                value={minImportSize}
+                onValueChange={val => setMinImportSize(val)}
+                min={1}
+                max={1000}
+              />
+              <div style={{ fontSize: 11, color: "var(--base3)" }}>bps</div>
             </div>
           </div>
+          <div
+            style={{
+              fontSize: 13,
+              color: "var(--base3)",
+              display: "flex",
+              alignItems: "center",
+              padding: "4px 10px",
+              // background: "var(--base2)",
+              borderRadius: 20,
+              border: "1px solid var(--base3)"
+            }}
+          >
+            <Tag
+              round
+              minimal
+              intent={newAnnotations.length > 0 ? "success" : "none"}
+              style={{ fontWeight: 600, marginRight: 8 }}
+            >
+              {newAnnotations.length}
+            </Tag>
+            <span style={{ whiteSpace: "nowrap" }}>
+              {pluralize("new match", newAnnotations.length)} from{" "}
+              <b style={{ color: "var(--reversed)" }}>
+                {sourceSequences.length}
+              </b>{" "}
+              {pluralize("sequence", sourceSequences.length)}
+              {newAnnotations.length + duplicateAnnotations.length >=
+                MAX_MATCHES_DISPLAYED && (
+                <span style={{ color: Intent.DANGER, marginLeft: 10 }}>
+                  (Capped at {MAX_MATCHES_DISPLAYED})
+                </span>
+              )}
+            </span>
+          </div>
         </div>
-      )}
-
-      <div style={{ position: "relative" }}>
-        <div style={{ position: "absolute", right: 0, top: 0, zIndex: 10 }}>
-          <Button
-            minimal
-            icon={isExpanded ? "minimize" : "maximize"}
-            onClick={() => setIsExpanded(!isExpanded)}
-          />
+        <div className="tg-import-features-right">
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              color: "var(--base3)",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              marginBottom: 10,
+              textAlign: "center"
+            }}
+          >
+            Feature Preview
+          </div>
+          {previewSequenceData && (
+            <div style={{ flex: 1, position: "relative" }}>
+              <SimpleCircularOrLinearView
+                sequenceData={previewSequenceData}
+                annotationVisibility={{
+                  features: true,
+                  parts: false,
+                  cutsites: false,
+                  primers: false
+                }}
+                withVisibilityOptions
+                // minimalPreviewTypeBtns
+                withFullscreen
+                withChoosePreviewType
+                selectionLayer={
+                  previewAnnotation
+                    ? {
+                        start: previewAnnotation.start,
+                        end: previewAnnotation.end
+                      }
+                    : undefined
+                }
+              />
+            </div>
+          )}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: 10
+            }}
+          >
+            <Checkbox
+              checked={showExistingFeatures}
+              onChange={e => setShowExistingFeatures(e.target.checked)}
+              style={{ marginBottom: 0 }}
+            >
+              <span style={{ fontSize: 12, color: "var(--base3)" }}>
+                Show existing features
+              </span>
+            </Checkbox>
+          </div>
         </div>
-        <Tabs
-          id="ImportTabs"
-          selectedTabId={selectedTab}
-          onChange={setSelectedTab}
-          renderActiveTabPanelOnly
-        >
-          <Tab
-            id="new"
-            title={`New (${newAnnotations.length})`}
-            panel={
-              <DataTable
-                isInfinite
-                noPadding
-                noExcessiveCheck
-                formName={formName}
-                entities={newAnnotations}
-                withCheckboxes
-                schema={schema}
-                noRouter
-                onRowClick={record => setPreviewAnnotation(record)}
-                currentRowId={previewAnnotation && previewAnnotation.id}
-              />
-            }
-          />
-          <Tab
-            id="duplicates"
-            title={`Duplicates (${duplicateAnnotations.length})`}
-            panel={
-              <DataTable
-                isInfinite
-                formName={formName}
-                entities={duplicateAnnotations}
-                withCheckboxes
-                schema={schema}
-                noRouter
-                onRowClick={record => setPreviewAnnotation(record)}
-                currentRowId={previewAnnotation && previewAnnotation.id}
-              />
-            }
-          />
-        </Tabs>
       </div>
+
+      <Tabs
+        id="ImportTabs"
+        selectedTabId={selectedTab}
+        onChange={setSelectedTab}
+        renderActiveTabPanelOnly
+      >
+        <Tab
+          id="new"
+          title={`New (${newAnnotations.length})`}
+          panel={
+            <DataTable
+              isInfinite
+              noPadding
+              noExcessiveCheck
+              formName={formName}
+              entities={newAnnotations}
+              withCheckboxes
+              schema={schema}
+              noRouter
+              onRowClick={record => setPreviewAnnotation(record)}
+              currentRowId={previewAnnotation && previewAnnotation.id}
+            />
+          }
+        />
+        <Tab
+          id="duplicates"
+          title={`Duplicates (${duplicateAnnotations.length})`}
+          panel={
+            <DataTable
+              isInfinite
+              formName={formName}
+              entities={duplicateAnnotations}
+              withCheckboxes
+              schema={schema}
+              noRouter
+              onRowClick={record => setPreviewAnnotation(record)}
+              currentRowId={previewAnnotation && previewAnnotation.id}
+            />
+          }
+        />
+      </Tabs>
 
       <DialogFooter
         hideModal={hideDialog}

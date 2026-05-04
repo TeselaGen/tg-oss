@@ -13,16 +13,20 @@ export default function findSequenceMatches(
   searchString,
   options = {}
 ) {
+  const { maxMatches = 1000 } = options;
   let matches = findSequenceMatchesTopStrand(sequence, searchString, options);
   const { searchReverseStrand } = options;
 
-  if (searchReverseStrand) {
+  if (searchReverseStrand && matches.length < maxMatches) {
     const sequenceLength = sequence.length;
     const reverseSeq = getReverseComplementSequenceString(sequence);
     const reverseMatches = findSequenceMatchesTopStrand(
       reverseSeq,
       searchString,
-      options
+      {
+        ...options,
+        maxMatches: maxMatches - matches.length
+      }
     );
     const flippedReverseMatches = reverseMatches.map(range => {
       return {
@@ -40,8 +44,13 @@ export default function findSequenceMatches(
 }
 
 function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
-  const { isCircular, isAmbiguous, isProteinSequence, isProteinSearch } =
-    options;
+  const {
+    isCircular,
+    isAmbiguous,
+    isProteinSequence,
+    isProteinSearch,
+    maxMatches = 1000
+  } = options;
   let searchStringToUse = escapeStringRegexp(searchString);
   if (isAmbiguous) {
     if (isProteinSearch || isProteinSequence) {
@@ -94,6 +103,7 @@ function findSequenceMatchesTopStrand(sequence, searchString, options = {}) {
     /* eslint-disable no-cond-assign*/
 
     while ((match = reg.exec(seqToCheck)) !== null) {
+      if (ranges.length >= maxMatches) break;
       range = {
         start: match.index,
         end: match.index + searchString.length - 1 //this should be the original searchString here j

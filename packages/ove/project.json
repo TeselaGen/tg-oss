@@ -1,5 +1,5 @@
 {
-  "name": "ove",
+  "name": "@teselagen/ove",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/ove/src",
   "projectType": "library",
