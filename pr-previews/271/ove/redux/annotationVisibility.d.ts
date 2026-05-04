@@ -1,0 +1,45 @@
+export namespace visibilityDefaultValues {
+    let featureTypesToHide: {};
+    let featureIndividualToHide: {};
+    let partIndividualToHide: {};
+    let primerIndividualToHide: {};
+    let features: boolean;
+    let warnings: boolean;
+    let assemblyPieces: boolean;
+    let chromatogram: boolean;
+    let lineageAnnotations: boolean;
+    let translations: boolean;
+    let parts: boolean;
+    let orfs: boolean;
+    let orfTranslations: boolean;
+    let cdsFeatureTranslations: boolean;
+    let axis: boolean;
+    let cutsites: boolean;
+    let cutsitesInSequence: boolean;
+    let primers: boolean;
+    let dnaColors: boolean;
+    let sequence: boolean;
+    let reverseSequence: boolean;
+    let fivePrimeThreePrimeHints: boolean;
+    let axisNumbers: boolean;
+}
+export const annotationVisibilityToggle: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const annotationVisibilityHide: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const annotationVisibilityShow: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const hideFeatureTypes: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const showFeatureTypes: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const resetFeatureTypesToHide: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const hideFeatureIndividual: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const showFeatureIndividual: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const resetFeatureIndividualToHide: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const hidePrimerIndividual: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const showPrimerIndividual: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const resetPrimerIndividualToHide: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const hidePartIndividual: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const showPartIndividual: import('redux-act').ComplexActionCreator1<any, any, any>;
+export const resetPartIndividualToHide: import('redux-act').ComplexActionCreator1<any, any, any>;
+export default annotationVisibility;
+declare const annotationVisibility: {
+    (newState: {} | undefined, action: any): any;
+    __shouldUseMergedState: boolean;
+};
