@@ -1,5 +1,5 @@
 {
-  "name": "sequence-utils",
+  "name": "@teselagen/sequence-utils",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/sequence-utils/src",
   "projectType": "library",

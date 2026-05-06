@@ -11,7 +11,8 @@ export default function findApproxMatches(
   searchSeq,
   targetSeq,
   maxMismatches,
-  circular = false
+  circular = false,
+  maxMatches = 1000
 ) {
   const matches = [];
   const lenA = searchSeq.length;
@@ -24,6 +25,7 @@ export default function findApproxMatches(
   const limit = circular ? lenB : lenB - lenA + 1;
 
   for (let i = 0; i < limit; i++) {
+    if (matches.length >= maxMatches) break;
     const window = targetSeqExtended.slice(i, i + lenA);
     let mismatchCount = 0;
     const mismatchPositions = [];

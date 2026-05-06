@@ -7,11 +7,11 @@ export function getAllSelectionLayers({
     ...additionalSelectionLayers,
     ...searchLayers,
     ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
-  ];
+  ].filter(l => !!l);
   const doubleWrappedColor = "#edb2f1";
   // const doubleWrappedColor = "#abdbfb";
 
-  if (selectionLayer.overlapsSelf) {
+  if (selectionLayer && selectionLayer.overlapsSelf) {
     selectionLayers.push({
       start: selectionLayer.end + 1,
       end: selectionLayer.start - 1,

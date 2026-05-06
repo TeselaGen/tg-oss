@@ -4,6 +4,7 @@ import {
   commandMenuEnhancer,
   FillWindow
 } from "@teselagen/ui";
+import { SizeMe } from "react-sizeme";
 
 import { CircularView } from "./CircularView";
 import { LinearView } from "./LinearView";
@@ -142,11 +143,11 @@ export default props => {
   );
   const inner = ({ width, height }) => (
     <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>
-      <div style={{ width: "fit-content" }}>
+      <div style={{ width: "100%", height: "100%" }}>
         {(withDownload ||
           withChoosePreviewType ||
           withFullscreen ||
-          VisibilityOptions) && (
+          withVisibilityOptions) && (
           <div
             style={{
               marginLeft: 10,
@@ -218,8 +219,17 @@ export default props => {
           {...{
             showCicularViewInternalLabels: true,
             className: `${editorName} veEditor tg-simple-dna-view`,
-            width: 300,
-            height: 300,
+            width: width || props.width || 300,
+            height: Math.max(
+              100,
+              (height || props.height || 300) -
+                (withDownload ||
+                withChoosePreviewType ||
+                withFullscreen ||
+                withVisibilityOptions
+                  ? 40
+                  : 0)
+            ),
             noWarnings,
             partClicked: annotationClicked,
             featureClicked: annotationClicked,
@@ -279,7 +289,25 @@ export default props => {
       </FillWindow>
     );
   }
-  return inner({});
+  return (
+    <div style={{ width: "100%", height: "100%", position: "relative" }}>
+      <SizeMe monitorHeight monitorWidth>
+        {({ size }) => (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%"
+            }}
+          >
+            {inner(size)}
+          </div>
+        )}
+      </SizeMe>
+    </div>
+  );
 };
 
 const DownloadBtn = withHandlers({ exportSequenceToFile })(props => {

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.43 (2026-05-04)
+
+- feat: Add "Import from Sequences" dialog for adding new sequences to the project
+
 ## 0.8.42 (2026-04-16)
 
 - fix: better color parsing for snapgene files

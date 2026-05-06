@@ -29,10 +29,10 @@ nx run <package-name>:<command>
 ```
 
 ```bash
-nx run ui:start
-nx run ove:start
-nx run ove:launch-e2e
-nx run ove:build
+nx run @teselagen/ui:start
+nx run @teselagen/ove:start
+nx run @teselagen/ove:launch-e2e
+nx run @teselagen/ove:build
 ```
 
 ```bash

@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "@teselagen/ui",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/ui/src",
   "projectType": "library",
@@ -17,8 +17,6 @@
     },
     "build_umd": {},
     "pushToGhPages": {
-      //tnw: waiting for https://github.com/nrwl/nx/issues/15064 to be able to work with "build:demo"
-      // "dependsOn": ["build:demo"],
       "command": "yarn gh-pages -a -d demo-dist"
     },
     "start": {

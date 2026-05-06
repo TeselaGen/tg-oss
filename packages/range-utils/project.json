@@ -1,5 +1,5 @@
 {
-  "name": "range-utils",
+  "name": "@teselagen/range-utils",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/range-utils/src",
   "projectType": "library",

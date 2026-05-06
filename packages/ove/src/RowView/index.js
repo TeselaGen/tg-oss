@@ -176,14 +176,19 @@ class _RowView extends React.Component {
     }
     const {
       caretPosition = -1,
-      selectionLayer = {},
-      matchedSearchLayer = {}
+      selectionLayer: _selectionLayer = {},
+      matchedSearchLayer: _matchedSearchLayer = {}
     } = newProps;
+    const selectionLayer = _selectionLayer || {};
+    const matchedSearchLayer = _matchedSearchLayer || {};
+
     const {
       caretPosition: caretPositionOld = -1,
-      selectionLayer: selectionLayerOld = {},
-      matchedSearchLayer: matchedSearchLayerOld = {}
+      selectionLayer: _selectionLayerOld = {},
+      matchedSearchLayer: _matchedSearchLayerOld = {}
     } = oldProps;
+    const selectionLayerOld = _selectionLayerOld || {};
+    const matchedSearchLayerOld = _matchedSearchLayerOld || {};
 
     const bpsPerRow = getBpsPerRow(newProps);
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES

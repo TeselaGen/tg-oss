@@ -284,7 +284,10 @@ const fileCommandDefs = {
   },
   exportSequenceAsTeselagenJson: {
     name: "Download Teselagen JSON File",
-    handler: props => props.exportSequenceToFile("teselagenJson", { getAcceptedInsertChars: props.getAcceptedInsertChars})
+    handler: props =>
+      props.exportSequenceToFile("teselagenJson", {
+        getAcceptedInsertChars: props.getAcceptedInsertChars
+      })
   },
 
   viewProperties: {
@@ -1374,6 +1377,16 @@ const toolCommandDefs = {
       });
     },
     isHidden: props => props.overrideManageEnzymes
+  },
+  importFeatures: {
+    name: "Import Features from Another Sequence",
+    isDisabled: props => props.readOnly,
+    handler: () => {
+      showDialog({
+        dialogType: "ImportFeaturesDialog",
+        props: {}
+      });
+    }
   }
 };
 

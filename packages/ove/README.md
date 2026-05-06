@@ -695,7 +695,7 @@ IMPORTANT! First make sure you make an issue for whatever it is you'd like to se
 fork your own branch of tg-oss from https://github.com/TeselaGen/tg-oss
 cd tg-oss
 yarn
-yarn nx run ove:start #this will start the demo app
+yarn nx run @teselagen/ove:start #this will start the demo app
 navigate to the output url (usually http://127.0.0.1:8805)
 ```
 
@@ -705,7 +705,7 @@ set up a cypress test for your fix/feature if applicable
 you can run the cypress dev tool by running
 
 ```
-yarn nx run ove:launch-e2e #this will run the cypress tests
+yarn nx run @teselagen/ove:launch-e2e #this will run the cypress tests
 ```
 
 you can view existing cypress tests in the packages/ove/cypress/e2e folder

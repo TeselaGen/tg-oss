@@ -13,7 +13,8 @@ function autoAnnotate({
   seqsToAnnotateById,
   annotationsToCheckById,
   compareName,
-  warnIfMoreThan
+  warnIfMoreThan,
+  maxMatches = 1000
 }) {
   const annotationsToAddBySeqId = {};
 
@@ -22,12 +23,22 @@ function autoAnnotate({
     forEach(
       omitBy(seqsToAnnotateById, s => !s.sequence.length),
       ({ circular, sequence }, id) => {
-        function getMatches({ seqToMatchAgainst, isReverse, seqLen }) {
+        function getMatches({
+          seqToMatchAgainst,
+          isReverse,
+          seqLen,
+          maxMatches: _maxMatches = 1000
+        }) {
           let match;
           let lastMatch;
           // const matches = []
           try {
             while ((match = reg.exec(seqToMatchAgainst))) {
+              if (
+                annotationsToAddBySeqId[id] &&
+                annotationsToAddBySeqId[id].length >= _maxMatches
+              )
+                break;
               const { index: matchStart, 0: matchSeq } = match;
               if (matchStart >= seqLen) return;
               const matchEnd = matchStart + matchSeq.length;
@@ -69,12 +80,14 @@ function autoAnnotate({
         const revSeq = getReverseComplementSequenceString(sequence);
         getMatches({
           seqLen,
-          seqToMatchAgainst: circular ? sequence + sequence : sequence
+          seqToMatchAgainst: circular ? sequence + sequence : sequence,
+          maxMatches
         });
         getMatches({
           seqLen,
           isReverse: true,
-          seqToMatchAgainst: circular ? revSeq + revSeq : revSeq
+          seqToMatchAgainst: circular ? revSeq + revSeq : revSeq,
+          maxMatches
         });
       }
     );

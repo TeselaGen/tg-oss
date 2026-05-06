@@ -56,8 +56,8 @@ Bump the version and add a "-beta" suffix to the version. Push to the beta branc
 Unit tests are run automatically via precommit hook that runs a `bun test` command at the top level
 
 Cypress e2e tests can be run locally via the following commands:
-`nx run ove:launch-e2e`
-`nx run ui:launch-e2e`
+`nx run @teselagen/ove:launch-e2e`
+`nx run @teselagen/ui:launch-e2e`
 
 CI is run via GitHub Actions on every push and pull request and runs a suite of Cypress e2e tests
 
