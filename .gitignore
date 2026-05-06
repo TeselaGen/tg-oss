@@ -51,3 +51,5 @@ playwright/.cache
 downloads
 .vite
 .nx
+
+.claude/worktrees
