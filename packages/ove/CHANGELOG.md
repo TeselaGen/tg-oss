@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.43 (2026-06-04)
+
+- fix: case-insensitive approximate match search in alignment view
+
 ## 0.8.42 (2026-04-16)
 
 - fix: better color parsing for snapgene files

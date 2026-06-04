@@ -214,8 +214,8 @@ export function AlignmentSearchBar(props) {
           mismatchesAllowed > 0
         ) {
           const approxMatches = findApproxMatches(
-            query.toLowerCase(),
-            rawSeq.toLowerCase(),
+            query,
+            rawSeq,
             mismatchesAllowed,
             false
           );

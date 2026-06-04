@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.43 (2026-06-04)
+
+- fix: make findApproxMatches case-insensitive
+
 ## 0.3.41 (2025-01-05)
 
 - Initialize changelog

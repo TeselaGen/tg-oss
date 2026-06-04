@@ -38,7 +38,9 @@ export default {
   ],
   features: [
     {
-      notes: {},
+      notes: {
+        codon_start: [3]
+      },
       type: "CDS",
       strand: -1,
       name: "araC",
