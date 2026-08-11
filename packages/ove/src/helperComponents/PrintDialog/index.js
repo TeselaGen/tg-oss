@@ -1,5 +1,4 @@
 import React from "react";
-import { findDOMNode } from "react-dom";
 import PropTypes from "prop-types";
 
 import { reduxForm } from "redux-form";
@@ -64,12 +63,13 @@ class PrintDialog extends React.Component {
           </div>
         )}
         <br />
-        <ComponentToPrint
-          fullscreen={this.state && this.state.fullscreen}
-          circular={isCirc}
-          editorName={editorName || "StandaloneEditor"}
-          ref={el => (this.componentRef = el)}
-        />
+        <div ref={el => (this.componentRef = el)}>
+          <ComponentToPrint
+            fullscreen={this.state && this.state.fullscreen}
+            circular={isCirc}
+            editorName={editorName || "StandaloneEditor"}
+          />
+        </div>
         <br />
         {!hidePrintButton && (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -235,7 +235,7 @@ class ReactToPrint extends React.Component {
 
     // if (printPreview)  defaultPageStyle += " "
 
-    const contentNodes = findDOMNode(contentEl);
+    const contentNodes = contentEl;
     const linkNodes = document.querySelectorAll('link[rel="stylesheet"]');
 
     this.linkTotal = linkNodes.length || 0;

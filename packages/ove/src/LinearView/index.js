@@ -34,12 +34,13 @@ const defaultMarginWidth = 10;
 
 class _LinearView extends React.Component {
   state = {};
+  linearViewRef = React.createRef();
   bindOutsideChangeHelper = {};
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     //loop through all the rendered rows to see if the click event lands in one of them
     const isProtein = this.props.sequenceData?.isProtein;
     let nearestCaretPos = 0;
-    let rowDomNode = this.linearView;
+    let rowDomNode = this.linearViewRef.current;
     rowDomNode = rowDomNode.querySelector(".veRowItem");
     const boundingRowRect = rowDomNode.getBoundingClientRect();
     const maxEnd = this.getMaxLength();
@@ -234,6 +235,7 @@ class _LinearView extends React.Component {
           ));
     return (
       <Draggable
+        nodeRef={this.linearViewRef}
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
         onDrag={event => {
@@ -253,7 +255,7 @@ class _LinearView extends React.Component {
         onStop={this.props.editorDragStopped || editorDragStopped}
       >
         <div
-          ref={ref => (this.linearView = ref)}
+          ref={this.linearViewRef}
           className={classNames("veLinearView", className, {
             isLinViewZoomed
           })}
@@ -337,7 +339,9 @@ class _LinearView extends React.Component {
                 onScroll: () => {
                   this.easyStore.viewportWidth = width;
                   const row =
-                    this.linearView.querySelector(".veRowItemWrapper");
+                    this.linearViewRef.current.querySelector(
+                      ".veRowItemWrapper"
+                    );
                   const scrollPercentage =
                     row.scrollLeft / (row.scrollWidth - row.clientWidth);
                   this.easyStore.percentScrolled = scrollPercentage;

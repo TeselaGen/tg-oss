@@ -374,6 +374,10 @@ export default class Minimap extends React.Component {
  */
 const YellowScrollHandle = view(
   class YellowScrollHandleInner extends React.Component {
+    dragRef = React.createRef();
+    leftResizeRef = React.createRef();
+    rightResizeRef = React.createRef();
+
     render() {
       const {
         scrollHandleWidth,
@@ -391,6 +395,7 @@ const YellowScrollHandle = view(
       const xScroll = percentScrolled * (width - scrollHandleWidth);
       return (
         <Draggable
+          nodeRef={this.dragRef}
           bounds="parent"
           zIndex={105}
           handle=".handle"
@@ -402,6 +407,7 @@ const YellowScrollHandle = view(
           onStart={handleDragStart}
         >
           <div
+            ref={this.dragRef}
             style={{
               height: minimapTracksPartialHeight || 0,
               // height: "100%",
@@ -413,6 +419,7 @@ const YellowScrollHandle = view(
           >
             {/* left hand side drag handle */}
             <Draggable
+              nodeRef={this.leftResizeRef}
               bounds={{
                 left: -xScroll,
                 right: scrollHandleWidth - minSliderSize
@@ -437,6 +444,7 @@ const YellowScrollHandle = view(
             >
               {/* caret component */}
               <div
+                ref={this.leftResizeRef}
                 style={{
                   height: minimapTracksPartialHeight || 0,
                   // height: "100%",
@@ -486,6 +494,7 @@ const YellowScrollHandle = view(
             </div>
             {/* right hand side drag handle */}
             <Draggable
+              nodeRef={this.rightResizeRef}
               bounds={{
                 right: minSliderSize + width - xScroll,
                 left: minSliderSize
@@ -505,6 +514,7 @@ const YellowScrollHandle = view(
               }}
             >
               <div
+                ref={this.rightResizeRef}
                 style={{
                   height: minimapTracksPartialHeight || 0,
                   // height: "100%",

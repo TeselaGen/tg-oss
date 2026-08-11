@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import makeStore from "./makeStore";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import Editor from "../Editor";
 import updateEditor from "../updateEditor";
@@ -11,6 +11,24 @@ import sizeMe from "react-sizeme";
 import VersionHistoryView from "../VersionHistoryView";
 
 let store;
+const roots = new WeakMap();
+
+function renderIntoNode(element, node) {
+  let root = roots.get(node);
+  if (!root) {
+    root = createRoot(node);
+    roots.set(node, root);
+  }
+  root.render(element);
+  return root;
+}
+
+function unmountNode(node) {
+  const root = roots.get(node);
+  if (!root) return;
+  root.unmount();
+  roots.delete(node);
+}
 
 function StandaloneEditor(props) {
   if (!store) {
@@ -64,12 +82,12 @@ export default function createVectorEditor(
     node = _node;
   }
   const editor = {};
-  editor.renderResponse = render(
+  editor.renderResponse = renderIntoNode(
     <StandaloneEditor {...{ editorName, ...rest }} />,
     node
   );
   editor.close = () => {
-    unmountComponentAtNode(node);
+    unmountNode(node);
     node.remove();
   };
   editor.updateEditor = values => {
@@ -93,7 +111,7 @@ export function createVersionHistoryView(
     store = makeStore();
   }
   const editor = {};
-  editor.renderResponse = render(
+  editor.renderResponse = renderIntoNode(
     <StandaloneVersionHistoryView {...{ editorName, ...rest }} />,
     node
   );
@@ -114,7 +132,10 @@ export function createAlignmentView(node, props = {}) {
     store = makeStore();
   }
   const editor = {};
-  editor.renderResponse = render(<SizedStandaloneAlignment {...props} />, node);
+  editor.renderResponse = renderIntoNode(
+    <SizedStandaloneAlignment {...props} />,
+    node
+  );
 
   editor.updateAlignment = values => {
     addAlignment(store, values);
