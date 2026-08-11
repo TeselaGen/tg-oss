@@ -7,7 +7,6 @@
 import ReflexSplitter from "./ReflexSplitter";
 import ReflexEvents from "./ReflexEvents";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 import React from "react";
 import { cloneDeep, round } from "lodash-es";
 
@@ -34,6 +33,8 @@ class ReflexContainer extends React.Component {
     this.onElementSize = this.onElementSize.bind(this);
 
     this.children = [];
+    this.childRefs = {};
+    this.containerRef = React.createRef();
   }
 
   /////////////////////////////////////////////////////////
@@ -130,9 +131,7 @@ class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   getSize(element) {
-    const ref = element.ref ? this.refs[element.ref] : element;
-
-    const domElement = ReactDOM.findDOMNode(ref);
+    const domElement = this.childRefs[element.props.index];
 
     switch (this.props.orientation) {
       case "horizontal":
@@ -280,12 +279,13 @@ class ReflexContainer extends React.Component {
 
     document.body.style.cursor = "auto";
 
-    const resizedRefs = this.elements.map(element => {
-      return element.ref;
-    });
+    const resizedIndexes = this.elements.map(element => element.props.index);
 
     const elements = this.children.filter(child => {
-      return !this.isSplitterElement(child) && resizedRefs.includes(child.ref);
+      return (
+        !this.isSplitterElement(child) &&
+        resizedIndexes.includes(child.props.index)
+      );
     });
 
     this.emitElementsEvent(elements, "onStopResize");
@@ -472,7 +472,7 @@ class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   computePixelFlex() {
-    const domElement = ReactDOM.findDOMNode(this);
+    const domElement = this.containerRef.current;
 
     switch (this.props.orientation) {
       case "horizontal":
@@ -615,10 +615,8 @@ class ReflexContainer extends React.Component {
   emitElementsEvent(elements, event) {
     this.toArray(elements).forEach(element => {
       if (element.props[event]) {
-        const ref = this.refs[element.ref];
-
         element.props[event]({
-          domElement: ReactDOM.findDOMNode(ref),
+          domElement: this.childRefs[element.props.index],
           component: element
         });
       }
@@ -660,7 +658,6 @@ class ReflexContainer extends React.Component {
         sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
         minFlex: (props.minSize || 1) * pixelFlex,
         constrained: props.flex !== undefined,
-        guid: props.ref || this.guid(),
         flex: props.flex || 0,
         type: child.type
       };
@@ -704,24 +701,8 @@ class ReflexContainer extends React.Component {
 
     return flexData.map(entry => {
       return {
-        flex: !this.isSplitterElement(entry) ? entry.flex : 0.0,
-        guid: entry.guid
+        flex: !this.isSplitterElement(entry) ? entry.flex : 0.0
       };
-    });
-  }
-
-  /////////////////////////////////////////////////////////
-  // Utility method that generates a new unique GUID
-  //
-  /////////////////////////////////////////////////////////
-  guid(format = "xxxx-xxxx") {
-    let d = new Date().getTime();
-
-    return format.replace(/[xy]/g, function (c) {
-      const r = (d + Math.random() * 16) % 16 | 0;
-      d = Math.floor(d / 16);
-      // eslint-disable-next-line eqeqeq
-      return (c == "x" ? r : (r & 0x7) | 0x8).toString(16);
     });
   }
 
@@ -763,7 +744,13 @@ class ReflexContainer extends React.Component {
           minSize: child.props.minSize || 1,
           events: this.events,
           flex: round(flexData.flex, 5), //tnr: this rounding is necessary because flex was getting computed very slightly off (eg -1.423432e-17). This corrects for that
-          ref: flexData.guid,
+          domRef: node => {
+            if (node) {
+              this.childRefs[idx] = node;
+            } else {
+              delete this.childRefs[idx];
+            }
+          },
           index: idx
         });
 
@@ -772,7 +759,11 @@ class ReflexContainer extends React.Component {
     );
 
     return (
-      <div className={classNames.join(" ")} style={this.props.style}>
+      <div
+        ref={this.containerRef}
+        className={classNames.join(" ")}
+        style={this.props.style}
+      >
         {this.children}
       </div>
     );
