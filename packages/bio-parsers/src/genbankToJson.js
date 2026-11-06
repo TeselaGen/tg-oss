@@ -121,6 +121,22 @@ function genbankToJson(string, options = {}) {
   let result;
   let currentFeatureNote;
 
+  //molecule-type flags are derived per record from that record's LOCUS line.
+  //they must never be written back onto the shared options object, because a
+  //single options object is used for every record of a multi-record file, and
+  //a flag set by one record would then leak into all the records after it.
+  //the caller may still seed them through options (e.g. isProtein).
+  const initialMolTypeFlags = {
+    sequenceTypeFromLocus: options.sequenceTypeFromLocus,
+    isProtein: options.isProtein,
+    isDNA: options.isDNA,
+    isDoubleStrandedDNA: options.isDoubleStrandedDNA,
+    isSingleStrandedDNA: options.isSingleStrandedDNA,
+    isRna: options.isRna,
+    isDoubleStrandedRNA: options.isDoubleStrandedRNA
+  };
+  let molType = { ...initialMolTypeFlags };
+
   const genbankAnnotationKey = {
     LOCUS_TAG: "LOCUS",
     DEFINITION_TAG: "DEFINITION",
@@ -222,7 +238,7 @@ function genbankToJson(string, options = {}) {
           parseOrigin(line, key);
           break;
         case genbankAnnotationKey.END_SEQUENCE_TAG:
-          endSeq(options);
+          endSeq();
           break;
         case genbankAnnotationKey.DEFINITION_TAG:
           line = line.replace(/DEFINITION/, "");
@@ -361,10 +377,10 @@ function genbankToJson(string, options = {}) {
 
   return results;
 
-  function endSeq(options) {
+  function endSeq() {
     //do some post processing clean-up
     hasFoundLocus = false;
-    postProcessCurSeq(options);
+    postProcessCurSeq();
     //push the result into the resultsArray
     resultsArray.push(result || { success: false });
   }
@@ -381,7 +397,7 @@ function genbankToJson(string, options = {}) {
     }
   }
 
-  function postProcessCurSeq(options) {
+  function postProcessCurSeq() {
     if (result && result.parsedSequence && result.parsedSequence.features) {
       for (let i = 0; i < result.parsedSequence.features.length; i++) {
         result.parsedSequence.features[i] = postProcessGenbankFeature(
@@ -402,6 +418,9 @@ function genbankToJson(string, options = {}) {
 
   function parseLocus(line) {
     result = createInitialSequence(options);
+    //start this record from the caller's flags again, so that nothing detected
+    //on a previous record's LOCUS line carries over to this one
+    molType = { ...initialMolTypeFlags };
     let circular;
 
     let gbDivision;
@@ -435,8 +454,8 @@ function genbankToJson(string, options = {}) {
       }
       // isProtein
       if (j === 3 && item.match(/aa/i)) {
-        options.sequenceTypeFromLocus = item;
-        options.isProtein = true;
+        molType.sequenceTypeFromLocus = item;
+        molType.isProtein = true;
       }
 
       if (
@@ -446,22 +465,22 @@ function genbankToJson(string, options = {}) {
           item.match(/dna/i) ||
           item.match(/rna/i))
       ) {
-        if (options.isProtein === undefined) {
-          options.isProtein = false;
+        if (molType.isProtein === undefined) {
+          molType.isProtein = false;
         }
-        options.sequenceTypeFromLocus = item;
+        molType.sequenceTypeFromLocus = item;
         if (item.match(/ss-dna/i)) {
-          options.isDNA = true;
-          options.isSingleStrandedDNA = true;
+          molType.isDNA = true;
+          molType.isSingleStrandedDNA = true;
         } else if (item.match(/rna/i)) {
-          options.isRna = true;
+          molType.isRna = true;
         } else if (item.match(/ds-dna/i) || item.match(/dna/i)) {
-          options.isDNA = true;
-          options.isDoubleStrandedDNA = true;
+          molType.isDNA = true;
+          molType.isDoubleStrandedDNA = true;
         }
 
         if (item.match(/rna/i) && !item.match(/ss-rna/i)) {
-          options.isDoubleStrandedRNA = true;
+          molType.isDoubleStrandedRNA = true;
         }
       }
 
@@ -482,12 +501,15 @@ function genbankToJson(string, options = {}) {
       result.parsedSequence.name = locusName;
     }
     result.parsedSequence.gbDivision = gbDivision;
-    result.parsedSequence.sequenceTypeFromLocus = options.sequenceTypeFromLocus;
-    result.parsedSequence.isDNA = options.isDNA;
-    result.parsedSequence.isDoubleStrandedDNA = options.isDoubleStrandedDNA;
-    result.parsedSequence.isSingleStrandedDNA = options.isSingleStrandedDNA;
-    result.parsedSequence.isRna = options.isRna;
-    result.parsedSequence.isDoubleStrandedRNA = options.isDoubleStrandedRNA;
+    result.parsedSequence.sequenceTypeFromLocus = molType.sequenceTypeFromLocus;
+    //isProtein used to reach the sequence only through validateSequence copying it
+    //off the shared options object; set it on the record itself instead
+    result.parsedSequence.isProtein = molType.isProtein;
+    result.parsedSequence.isDNA = molType.isDNA;
+    result.parsedSequence.isDoubleStrandedDNA = molType.isDoubleStrandedDNA;
+    result.parsedSequence.isSingleStrandedDNA = molType.isSingleStrandedDNA;
+    result.parsedSequence.isRna = molType.isRna;
+    result.parsedSequence.isDoubleStrandedRNA = molType.isDoubleStrandedRNA;
     result.parsedSequence.date = date;
     result.parsedSequence.circular = circular;
   }
@@ -534,7 +556,7 @@ function genbankToJson(string, options = {}) {
         feat.locations = feat.locations.concat(
           parseFeatureLocation(
             line.trim(),
-            options.isProtein,
+            molType.isProtein,
             inclusive1BasedStart,
             inclusive1BasedEnd,
             result.parsedSequence.circular,
@@ -582,7 +604,7 @@ function genbankToJson(string, options = {}) {
         feat.locations = feat.locations.concat(
           parseFeatureLocation(
             val,
-            options.isProtein,
+            molType.isProtein,
             inclusive1BasedStart,
             inclusive1BasedEnd,
             result.parsedSequence.circular,
