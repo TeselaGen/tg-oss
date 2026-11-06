@@ -2,8 +2,7 @@ import React, { useMemo } from "react";
 import { Provider } from "react-redux";
 
 import store from "./store";
-// import { createRoot } from "react-dom/client";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import {
   CircularView,
@@ -131,5 +130,4 @@ const WrapSimpleDemo = ({ children }) => {
   return children;
 };
 
-// createRoot(document.querySelector("#demo")).render(<Demo />);
-render(<Demo />, document.querySelector("#demo"));
+createRoot(document.querySelector("#demo")).render(<Demo />);

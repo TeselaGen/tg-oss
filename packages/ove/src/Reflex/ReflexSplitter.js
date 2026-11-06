@@ -5,7 +5,6 @@
 //
 ///////////////////////////////////////////////////////////
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 import Browser from "./Browser";
 import React from "react";
 
@@ -112,7 +111,7 @@ export default class ReflexSplitter extends React.Component {
 
       if (this.props.onResize) {
         this.props.onResize({
-          domElement: ReactDOM.findDOMNode(this),
+          domElement: this.domElement,
           component: this
         });
       }
@@ -137,7 +136,7 @@ export default class ReflexSplitter extends React.Component {
       // to onStartResize
       if (
         this.props.onStartResize({
-          domElement: ReactDOM.findDOMNode(this),
+          domElement: this.domElement,
           component: this
         })
       ) {
@@ -163,7 +162,7 @@ export default class ReflexSplitter extends React.Component {
 
       if (this.props.onStopResize) {
         this.props.onStopResize({
-          domElement: ReactDOM.findDOMNode(this),
+          domElement: this.domElement,
           component: this
         });
       }
@@ -192,6 +191,10 @@ export default class ReflexSplitter extends React.Component {
 
     return (
       <div
+        ref={node => {
+          this.domElement = node;
+          this.props.domRef && this.props.domRef(node);
+        }}
         className={classNames.join(" ")}
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}

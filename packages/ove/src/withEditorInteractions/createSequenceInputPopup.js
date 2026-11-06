@@ -1,4 +1,4 @@
-import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import { getRangeLength } from "@teselagen/range-utils";
 // import Tether from "tether";
@@ -17,6 +17,7 @@ import { getNodeToRefocus } from "../utils/editorUtils";
 import { noop } from "lodash-es";
 
 let div;
+let root;
 
 class SequenceInputNoHotkeys extends React.Component {
   state = {
@@ -37,24 +38,16 @@ class SequenceInputNoHotkeys extends React.Component {
     );
   }
   handleUnmountIfClickOustidePopup = e => {
-    const n = findDOMNode(this);
-    if (!n) return;
-    const node = n.parentNode;
-    if (!node) return;
-    if (node.contains(e.target)) {
+    const node = this.props.popupContainer;
+    if (!node || node.contains(e.target)) {
       return;
     }
     this.handleUnmount();
   };
   handleUnmount = () => {
     setTimeout(() => {
-      const n = findDOMNode(this);
-      if (!n) return;
-      const node = n.parentNode;
-      if (!node) return;
-      unmountComponentAtNode(node);
+      this.props.unmountPopup();
       this.props.nodeToReFocus && this.props.nodeToReFocus.focus();
-      document.getElementById("sequenceInputBubble").outerHTML = "";
     });
   };
   handleInsert() {
@@ -233,23 +226,45 @@ export default function createSequenceInputPopup(props) {
   // function closeInput() {
   //   sequenceInputBubble.remove();
   // }
-  if (document.getElementById("sequenceInputBubble")) {
-    // remove the old one if it exists
-    document.getElementById("sequenceInputBubble").outerHTML = "";
+  if (root) {
+    root.unmount();
+    root = undefined;
   }
-  div = document.createElement("div");
-  div.style.zIndex = "400000";
-  div.id = "sequenceInputBubble";
-  document.body.appendChild(div);
+  if (div) {
+    div.remove();
+    div = undefined;
+  }
+  const existingPopup = document.getElementById("sequenceInputBubble");
+  if (existingPopup) {
+    existingPopup.remove();
+  }
 
-  const innerEl = (
+  const popupDiv = document.createElement("div");
+  popupDiv.style.zIndex = "400000";
+  popupDiv.id = "sequenceInputBubble";
+  document.body.appendChild(popupDiv);
+  div = popupDiv;
+
+  const popupRoot = createRoot(popupDiv);
+  root = popupRoot;
+  let isUnmounted = false;
+  const unmountPopup = () => {
+    if (isUnmounted) return;
+    isUnmounted = true;
+    popupRoot.unmount();
+    popupDiv.remove();
+    if (root === popupRoot) root = undefined;
+    if (div === popupDiv) div = undefined;
+  };
+
+  popupRoot.render(
     <SequenceInputNoHotkeys
+      popupContainer={popupDiv}
+      unmountPopup={unmountPopup}
       nodeToReFocus={caretEl.nodeToRefocus || getNodeToRefocus(caretEl)}
       {...props}
     />
   );
-
-  render(innerEl, div);
 
   if (!caretEl) {
     return console.error(
@@ -257,7 +272,7 @@ export default function createSequenceInputPopup(props) {
     );
   }
 
-  new Popper(caretEl, div, {
+  new Popper(caretEl, popupDiv, {
     placement: "bottom",
     modifiers: {
       offset: { offset: "94" }
