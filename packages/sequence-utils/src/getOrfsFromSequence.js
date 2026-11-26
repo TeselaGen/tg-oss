@@ -1,4 +1,4 @@
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 import getReverseComplementSequenceString from "./getReverseComplementSequenceString";
 
 /**
@@ -61,7 +61,7 @@ export default function getOrfsFromSequence(options) {
           forward: forward,
           annotationTypePlural: "orfs",
           isOrf: true,
-          id: shortid()
+          id: nanoid()
         });
       }
     }

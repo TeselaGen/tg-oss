@@ -1,5 +1,5 @@
 import { generateRandomRange } from "@teselagen/range-utils";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 const seqLen = 1000000;
 
@@ -50,7 +50,7 @@ function generateAnnotation(start, stop, maxLength) {
     ...range,
     name: getRandomInt(0, 100000).toString(),
     type: "misc_feature",
-    id: shortid(),
+    id: nanoid(),
     forward: getRandomInt(0, 1) > 0.5,
     notes: {}
   };

@@ -4,7 +4,7 @@
 import { unparse } from "papaparse";
 import pluralize from "pluralize";
 import { SubmissionError, reduxForm } from "redux-form";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 import CreateAnnotationsPage from "./CreateAnnotationsPage";
 import { formName } from "./constants";
 import { AutoAnnotateBpMatchingDialog } from "./AutoAnnotateBpMatchingDialog";
@@ -403,7 +403,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               if (ann.matchType === "protein") {
                 ann.sequence = convertProteinSeqToDNAIupac(ann.sequence);
               }
-              const id = shortid();
+              const id = nanoid();
               annotationsToCheckById[id] = {
                 ...ann,
                 sequence: ann.isRegex
@@ -428,7 +428,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                     ...annotationsToCheckById[a.id],
                     ...a,
                     forward: a.strand !== -1,
-                    id: shortid()
+                    id: nanoid()
                   };
                   toRet.color =
                     toRet.color || getFeatureToColorMap()[toRet.type];

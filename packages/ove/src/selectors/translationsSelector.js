@@ -1,5 +1,5 @@
 import { reduce, mapValues } from "lodash-es";
-import uuid from "shortid";
+import { nanoid } from "nanoid";
 import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
@@ -30,7 +30,7 @@ function translationsSelector(
   const translationsToPass = {
     ...translationSearchMatches.reduce((acc, match) => {
       if (!match) return acc;
-      const id = match.id || uuid();
+      const id = match.id || nanoid();
       acc[id] = {
         ...match,
         id,
@@ -81,7 +81,7 @@ function translationsSelector(
       (acc, isActive, frameName) => {
         const frameOffset = Number(frameName);
         if (isActive) {
-          const id = uuid();
+          const id = nanoid();
           acc[id] = {
             id,
             start:

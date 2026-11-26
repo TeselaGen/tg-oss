@@ -1,6 +1,6 @@
 import { cloneDeep, get, some } from "lodash-es";
 import { getFeatureToColorMap, getFeatureTypes } from "./featureTypesAndColors";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 export default function tidyUpAnnotation(
   _annotation,
@@ -34,10 +34,10 @@ export default function tidyUpAnnotation(
     annotation.name = "Untitled annotation";
   }
   if (provideNewIdsForAnnotations) {
-    annotation.id = shortid();
+    annotation.id = nanoid();
   }
   if (!annotation.id && annotation.id !== 0 && !doNotProvideIdsForAnnotations) {
-    annotation.id = shortid();
+    annotation.id = nanoid();
     messages.push(
       "Unable to detect valid ID for annotation, setting ID to " + annotation.id
     );
