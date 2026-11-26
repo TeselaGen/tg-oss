@@ -1,4 +1,4 @@
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 import { cloneDeep, startCase } from "lodash-es";
 import { convertRangeTo1Based } from "@teselagen/range-utils";
@@ -40,10 +40,10 @@ export function showDialog({
   dialogHolder.overrideName = overrideName;
   if (dialogHolder.editorName && dialogHolder?.[dialogHolder.editorName]) {
     dialogHolder?.[dialogHolder.editorName]?.setUniqKeyToForceRerender?.(
-      shortid()
+      nanoid()
     );
   } else {
-    dialogHolder?.setUniqKeyToForceRerender?.(shortid());
+    dialogHolder?.setUniqKeyToForceRerender?.(nanoid());
   }
 }
 export function hideDialog() {
