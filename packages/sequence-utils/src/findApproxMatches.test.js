@@ -110,6 +110,16 @@ describe("findApproxMatches", () => {
     expect(actual).toEqual(expected);
   });
 
+  it("is case insensitive", () => {
+    expect(findApproxMatches("atg", "GATGC", 0)).toEqual([
+      { index: 1, match: "ATG", mismatchPositions: [], numMismatches: 0 }
+    ]);
+
+    expect(findApproxMatches("ATG", "actg", 1)).toEqual([
+      { index: 1, match: "ctg", mismatchPositions: [0], numMismatches: 1 }
+    ]);
+  });
+
   it("tracks exact positions of mismatches", () => {
     // Test specific positions of mismatches
     const result = findApproxMatches("ATGCTA", "ATCCAA", 2);
