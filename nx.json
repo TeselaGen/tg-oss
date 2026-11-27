@@ -56,6 +56,12 @@
         "cypressConfig": "{projectRoot}/cypress.config.ts",
         "devServerTarget": "{projectName}:start:ci",
         "testingType": "e2e"
+      },
+      "configurations": {
+        "local": {
+          "parallel": false,
+          "record": false
+        }
       }
     },
     "launch-e2e": {
