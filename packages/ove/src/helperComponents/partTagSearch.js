@@ -1,6 +1,6 @@
 import React from "react";
 import withEditorProps from "../withEditorProps";
-import { TgSelect, getKeyedTagsAndTagOptions } from "@teselagen/ui";
+import { TgSelect, getKeyedTagsAndTagOptions } from "@opencloning/tg-oss-ui";
 import { flatMap } from "lodash-es";
 import { uniqBy } from "lodash-es";
 

@@ -1,4 +1,4 @@
-import { genericCommandFactory } from "@teselagen/ui";
+import { genericCommandFactory } from "@opencloning/tg-oss-ui";
 import { noop } from "lodash-es";
 
 export function oveCommandFactory(instance, commandDefs) {

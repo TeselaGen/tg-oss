@@ -10,19 +10,19 @@ import {
   TextareaField,
   wrapDialog,
   tgFormValues
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   isRangeWithinRange,
   checkIfPotentiallyCircularRangesOverlap
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 import {
   getFeatureToColorMap,
   getFeatureTypes,
   tidyUpAnnotation
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 import classNames from "classnames";
 
 import { withEditorProps } from "../../../src";

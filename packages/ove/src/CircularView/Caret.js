@@ -1,9 +1,9 @@
 import isNumber from "lodash/isNumber";
-import { getRangeAngles } from "@teselagen/range-utils";
+import { getRangeAngles } from "@opencloning/tg-oss-range-utils";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
-import { pureNoFunc } from "@teselagen/ui";
+import { pureNoFunc } from "@opencloning/tg-oss-ui";
 import { getSelectionMessage } from "../utils/editorUtils";
 
 function Caret({

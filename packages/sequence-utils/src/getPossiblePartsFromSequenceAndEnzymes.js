@@ -1,5 +1,5 @@
 import getComplementSequenceString from "./getComplementSequenceString";
-import { normalizePositionByRangeLength } from "@teselagen/range-utils";
+import { normalizePositionByRangeLength } from "@opencloning/tg-oss-range-utils";
 import cutSequenceByRestrictionEnzyme from "./cutSequenceByRestrictionEnzyme";
 
 export default function getPossiblePartsFromSequenceAndEnzyme(

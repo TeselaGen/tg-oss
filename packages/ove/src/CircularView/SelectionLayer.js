@@ -1,11 +1,11 @@
-import { noop } from "@teselagen/ui";
+import { noop } from "@opencloning/tg-oss-ui";
 import Caret from "./Caret";
 import sector from "paths-js/sector";
 import getRangeAngles from "./getRangeAnglesSpecial";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
-import { pureNoFunc } from "@teselagen/ui";
+import { pureNoFunc } from "@opencloning/tg-oss-ui";
 import {
   getSelectionMessage,
   preventDefaultStopPropagation

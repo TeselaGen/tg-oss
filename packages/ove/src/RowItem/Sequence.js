@@ -25,10 +25,10 @@ import dnaToColor, {
   colorScheme
 } from "../constants/dnaToColor";
 import { hoveredAnnEasyStore } from "../helperComponents/withHover";
-import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "@opencloning/tg-oss-range-utils";
 import { partOverhangs } from "./partOverhangs";
-import { isPositionWithinRange } from "@teselagen/range-utils";
-import { isSafari } from "@teselagen/ui";
+import { isPositionWithinRange } from "@opencloning/tg-oss-range-utils";
+import { isSafari } from "@opencloning/tg-oss-ui";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));

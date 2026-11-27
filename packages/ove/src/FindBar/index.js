@@ -12,11 +12,11 @@ import {
 import withEditorProps from "../withEditorProps";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import "./style.css";
-import { InfoHelper, TgHTMLSelect } from "@teselagen/ui";
+import { InfoHelper, TgHTMLSelect } from "@opencloning/tg-oss-ui";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
-import { getFeatureToColorMap } from "@teselagen/sequence-utils";
-import { getReverseComplementSequenceString } from "@teselagen/sequence-utils";
+import { getFeatureToColorMap } from "@opencloning/tg-oss-sequence-utils";
+import { getReverseComplementSequenceString } from "@opencloning/tg-oss-sequence-utils";
 import isMobile from "is-mobile";
 
 const opts = [

@@ -1,4 +1,4 @@
-import { FileUploadField, wrapDialog } from "@teselagen/ui";
+import { FileUploadField, wrapDialog } from "@opencloning/tg-oss-ui";
 import React from "react";
 import { compose } from "recompose";
 import { reduxForm } from "redux-form";

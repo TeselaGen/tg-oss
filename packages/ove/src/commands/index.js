@@ -3,15 +3,15 @@ import { Tag, Classes, NumericInput, Slider } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   getSequenceWithinRange
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
-import { showConfirmationDialog } from "@teselagen/ui";
+import { showConfirmationDialog } from "@opencloning/tg-oss-ui";
 import {
   adjustBpsToReplaceOrInsert,
   annotationTypes,
   getSequenceDataBetweenRange
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 import { oveCommandFactory } from "../utils/commandUtils";
 import {
   upperFirst,
@@ -284,7 +284,10 @@ const fileCommandDefs = {
   },
   exportSequenceAsTeselagenJson: {
     name: "Download Teselagen JSON File",
-    handler: props => props.exportSequenceToFile("teselagenJson", { getAcceptedInsertChars: props.getAcceptedInsertChars})
+    handler: props =>
+      props.exportSequenceToFile("teselagenJson", {
+        getAcceptedInsertChars: props.getAcceptedInsertChars
+      })
   },
 
   viewProperties: {

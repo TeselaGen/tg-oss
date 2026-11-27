@@ -5,19 +5,19 @@ import {
   DropdownButton,
   generateField,
   RadioGroupField
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import {
   filterSequenceString,
   getReverseComplementSequenceString,
   calculatePercentGC,
   calculateEndStability
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
-import { convertRangeTo0Based } from "@teselagen/range-utils";
+import { convertRangeTo0Based } from "@opencloning/tg-oss-range-utils";
 import classNames from "classnames";
 import "./style.css";
-import { getSequenceWithinRange } from "@teselagen/range-utils";
+import { getSequenceWithinRange } from "@opencloning/tg-oss-range-utils";
 import { flatMap } from "lodash-es";
 import CaretPositioning, {
   selectionSaveCaretPosition

@@ -2,10 +2,10 @@ import React from "react";
 import {
   getSequenceWithinRange,
   zeroSubrangeByContainerRange
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 import AASliver from "./AASliver";
-import { pureNoFunc } from "@teselagen/ui";
-import { proteinAlphabet } from "@teselagen/sequence-utils";
+import { pureNoFunc } from "@opencloning/tg-oss-ui";
+import { proteinAlphabet } from "@opencloning/tg-oss-sequence-utils";
 
 class Translation extends React.Component {
   state = {

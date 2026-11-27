@@ -10,7 +10,7 @@ import {
 import {
   getStringFromReactComponent,
   doesSearchValMatchText
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import { lifecycle, mapProps } from "recompose";
 import { omit } from "lodash-es";
 import ReactMarkdown from "react-markdown";

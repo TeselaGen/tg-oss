@@ -19,13 +19,13 @@
 ## Installing
 
 ```
-npm install @teselagen/range-utils
+npm install @opencloning/tg-oss-range-utils
 ```
 
 ## Usage
 
 ```
-import { getRangeLength } from '@teselagen/range-utils';
+import { getRangeLength } from '@opencloning/tg-oss-range-utils';
 ```
 
 ## About this Repo

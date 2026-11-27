@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import React from "react";
 import { store, view } from "@risingstack/react-easy-state";
-import { modifiableTypes } from "@teselagen/sequence-utils";
+import { modifiableTypes } from "@opencloning/tg-oss-sequence-utils";
 
 export const HoveredIdContext = React.createContext({
   hoveredId: "" // default value

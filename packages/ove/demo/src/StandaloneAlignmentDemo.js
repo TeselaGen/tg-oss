@@ -2,7 +2,7 @@ import React from "react";
 
 import { Dialog, Button } from "@blueprintjs/core";
 import { times } from "lodash-es";
-import { generateSequenceData } from "@teselagen/sequence-utils";
+import { generateSequenceData } from "@opencloning/tg-oss-sequence-utils";
 
 const exampleAlignmentData = {
   alignmentTracks: times(10).map(() => {

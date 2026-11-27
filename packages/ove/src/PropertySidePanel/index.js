@@ -9,7 +9,7 @@ import {
   scrollToAlignmentSelection,
   updateCaretPosition
 } from "../AlignmentView/utils";
-import { DataTable } from "@teselagen/ui";
+import { DataTable } from "@opencloning/tg-oss-ui";
 
 export default ({ properties, setProperties, style }) => {
   const sidebarRef = React.useRef(null);

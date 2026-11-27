@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Intent } from "@blueprintjs/core";
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
-import { DataTable } from "@teselagen/ui";
+import { tidyUpSequenceData } from "@opencloning/tg-oss-sequence-utils";
+import { DataTable } from "@opencloning/tg-oss-ui";
 
 import Editor from "../Editor";
 import FillWindow from "../Editor/FillWindow";

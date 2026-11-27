@@ -1,6 +1,6 @@
 import { set } from "lodash-es";
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
-import { annotationTypes } from "@teselagen/sequence-utils";
+import { tidyUpSequenceData } from "@opencloning/tg-oss-sequence-utils";
+import { annotationTypes } from "@opencloning/tg-oss-sequence-utils";
 
 export default function updateEditor(
   store,

@@ -4,14 +4,14 @@ import {
   DataTable,
   withSelectedEntities,
   createCommandMenu
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import getCommands from "../../commands";
 import { map } from "lodash-es";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@opencloning/tg-oss-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
-import { getMassOfAaString } from "@teselagen/sequence-utils";
+import { getMassOfAaString } from "@opencloning/tg-oss-sequence-utils";
 import { translationsSubmenu } from "../../MenuBar/viewSubmenu";
 import { getVisFilter } from "./GenericAnnotationProperties";
 import { getMemoOrfs } from "./utils";

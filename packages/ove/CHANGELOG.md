@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0 (2026-11-27)
+
+- BREAKING: package renamed from `@teselagen/ove` to `@opencloning/tg-oss-ove`. This is a fork of [TeselaGen/tg-oss](https://github.com/TeselaGen/tg-oss), which is no longer maintained by its original authors. Update your dependencies and imports, or keep existing imports with an npm alias: `"@teselagen/ove": "npm:@opencloning/tg-oss-ove@^1.0.0"`
+- depends on `@opencloning/tg-oss-bio-parsers`, `@opencloning/tg-oss-file-utils`, `@opencloning/tg-oss-range-utils`, `@opencloning/tg-oss-sequence-utils`, `@opencloning/tg-oss-ui` instead of the `@teselagen` versions
+- change: replace the unmaintained `shortid` with `nanoid`, so generated ids are now 21 characters long (previously ~7-14) using the same URL-safe alphabet
+- fix(deps): update `lodash` to ^4.18.1 (security advisory)
+
 ## 0.8.42 (2026-04-16)
 
 - fix: better color parsing for snapgene files

@@ -1,11 +1,11 @@
-import { DialogFooter, wrapDialog } from "@teselagen/ui";
+import { DialogFooter, wrapDialog } from "@opencloning/tg-oss-ui";
 
 import { Button, Callout, Card } from "@blueprintjs/core";
 
 import { hideDialog } from "../GlobalDialogUtils";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import React, { useState } from "react";
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
+import { tidyUpSequenceData } from "@opencloning/tg-oss-sequence-utils";
 
 export const MultipleSeqsDetectedOnImportDialog = wrapDialog({
   title: "Multiple Sequences Detected"

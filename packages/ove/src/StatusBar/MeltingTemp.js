@@ -5,10 +5,10 @@ import {
   calculateTm,
   calculateNebTm,
   calculateSantaLuciaTm
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 
 import { isNumber, isString } from "lodash-es";
-import { popoverOverflowModifiers } from "@teselagen/ui";
+import { popoverOverflowModifiers } from "@opencloning/tg-oss-ui";
 import useTmType from "../utils/useTmType";
 
 export default function MeltingTemp({

@@ -4,7 +4,7 @@ import { Callout } from "@blueprintjs/core";
 
 import { SimpleCircularOrLinearView } from "../../src";
 import renderToggle from "./utils/renderToggle";
-import { DataTable } from "@teselagen/ui";
+import { DataTable } from "@opencloning/tg-oss-ui";
 
 const defaultState = {
   hoverPart: false,

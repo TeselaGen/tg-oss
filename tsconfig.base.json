@@ -13,13 +13,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@teselagen/bio-parsers": ["packages/bio-parsers/src/index.js"],
-      "@teselagen/file-utils": ["packages/file-utils/src/index.js"],
-      "@teselagen/ove": ["packages/ove/src/index.js"],
-      "@teselagen/range-utils": ["packages/range-utils/src/index.js"],
-      "@teselagen/sequence-utils": ["packages/sequence-utils/src/index.js"],
-      "@teselagen/shared-demo": ["packages/shared-demo/src/index.js"],
-      "@teselagen/ui": ["packages/ui/src/index.js"]
+      "@opencloning/tg-oss-bio-parsers": ["packages/bio-parsers/src/index.js"],
+      "@opencloning/tg-oss-file-utils": ["packages/file-utils/src/index.js"],
+      "@opencloning/tg-oss-ove": ["packages/ove/src/index.js"],
+      "@opencloning/tg-oss-range-utils": ["packages/range-utils/src/index.js"],
+      "@opencloning/tg-oss-sequence-utils": [
+        "packages/sequence-utils/src/index.js"
+      ],
+      "@opencloning/shared-demo": ["packages/shared-demo/src/index.js"],
+      "@opencloning/tg-oss-ui": ["packages/ui/src/index.js"]
     },
     "module": "ES6",
     "allowJs": true,

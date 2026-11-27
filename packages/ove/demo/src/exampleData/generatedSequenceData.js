@@ -1,4 +1,4 @@
-import { generateRandomRange } from "@teselagen/range-utils";
+import { generateRandomRange } from "@opencloning/tg-oss-range-utils";
 import { nanoid } from "nanoid";
 
 const seqLen = 1000000;

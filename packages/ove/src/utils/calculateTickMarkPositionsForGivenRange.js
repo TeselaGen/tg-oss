@@ -1,5 +1,5 @@
-import { normalizePositionByRangeLength as norm } from "@teselagen/range-utils";
-import { getRangeLength } from "@teselagen/range-utils";
+import { normalizePositionByRangeLength as norm } from "@opencloning/tg-oss-range-utils";
+import { getRangeLength } from "@opencloning/tg-oss-range-utils";
 
 export default function calculateTickMarkPositionsForGivenRange({
   tickSpacing: _tickSpacing = 10,

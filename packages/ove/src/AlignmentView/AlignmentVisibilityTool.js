@@ -8,7 +8,7 @@ import {
 } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash-es";
-import { pureNoFunc, wrapDialog } from "@teselagen/ui";
+import { pureNoFunc, wrapDialog } from "@opencloning/tg-oss-ui";
 import { compose } from "redux";
 import { showDialog } from "../GlobalDialogUtils";
 // import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";

@@ -3,7 +3,7 @@ import {
   getSequenceWithinRange,
   normalizePositionByRangeLength,
   isPositionCloserToRangeStartThanRangeEnd
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 
 export default function getLeftAndRightOfSequenceInRangeGivenPosition(
   range,

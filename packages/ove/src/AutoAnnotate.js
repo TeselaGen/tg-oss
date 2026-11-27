@@ -12,7 +12,7 @@ import {
   parseCsvFile,
   validateCSVRequiredHeaders,
   validateCSVRow
-} from "@teselagen/file-utils";
+} from "@opencloning/tg-oss-file-utils";
 import downloadjs from "downloadjs";
 import {
   autoAnnotate,
@@ -20,7 +20,7 @@ import {
   convertProteinSeqToDNAIupac,
   getFeatureToColorMap,
   getFeatureTypes
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 import { hideDialog, showDialog } from "./GlobalDialogUtils";
 import { compose } from "redux";
 import {
@@ -30,7 +30,7 @@ import {
   InfoHelper,
   showConfirmationDialog,
   wrapDialog
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import { startCase } from "lodash-es";
 import withEditorProps from "./withEditorProps";
 import { useEffect, useState } from "react";

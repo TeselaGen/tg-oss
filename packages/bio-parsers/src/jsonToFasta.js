@@ -1,4 +1,4 @@
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
+import { tidyUpSequenceData } from "@opencloning/tg-oss-sequence-utils";
 import { mangleOrStripUrls } from "./utils/unmangleUrls";
 
 export default function jsonToFasta(jsonSequence, options) {

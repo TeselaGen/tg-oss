@@ -5,16 +5,16 @@ import {
   DataTable,
   SwitchField,
   useTableEntities
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import { compose } from "redux";
 import { Button, Classes, Popover } from "@blueprintjs/core";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { forEach, camelCase, startCase } from "lodash-es";
 import { sizeSchema } from "../PropertiesDialog/utils";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@opencloning/tg-oss-range-utils";
 import { useFormValue } from "../../utils/useFormValue";
-import { convertDnaCaretPositionOrRangeToAA } from "@teselagen/sequence-utils";
+import { convertDnaCaretPositionOrRangeToAA } from "@opencloning/tg-oss-sequence-utils";
 
 const dialogFormName = "RemoveDuplicatesDialog";
 const dataTableFormName = "duplicatesToRemove";

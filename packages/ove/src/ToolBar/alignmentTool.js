@@ -6,9 +6,9 @@ import {
   EditableTextField,
   CheckboxField,
   wrapDialog
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import { reduxForm, FieldArray } from "redux-form";
-import { anyToJson } from "@teselagen/bio-parsers";
+import { anyToJson } from "@opencloning/tg-oss-bio-parsers";
 import { flatMap } from "lodash-es";
 import { nanoid } from "nanoid";
 import { cloneDeep } from "lodash-es";

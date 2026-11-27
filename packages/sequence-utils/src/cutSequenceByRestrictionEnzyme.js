@@ -6,7 +6,7 @@ import {
   getSequenceWithinRange,
   normalizePositionByRangeLength,
   reversePositionInRange
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 
 export default function cutSequenceByRestrictionEnzyme(
   pSequence,

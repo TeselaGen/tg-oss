@@ -1,5 +1,5 @@
 {
-  "name": "@teselagen/source",
+  "name": "@opencloning/source",
   "version": "0.2.0",
   "license": "MIT",
   "scripts": {
@@ -9,7 +9,7 @@
     "test": "nx affected -t test"
   },
   "type": "module",
-  "repository": "https://github.com/TeselaGen/tg-oss",
+  "repository": "https://github.com/manulera/tg-oss",
   "private": true,
   "dependencies": {},
   "devDependencies": {

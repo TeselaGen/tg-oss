@@ -1,4 +1,4 @@
-import { normalizeRange } from "@teselagen/range-utils";
+import { normalizeRange } from "@opencloning/tg-oss-range-utils";
 function findNearestRangeOfSequenceOverlapToPosition(
   sequenceToSearch,
   overlapSequence,

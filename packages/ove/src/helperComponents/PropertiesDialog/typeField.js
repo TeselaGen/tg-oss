@@ -1,5 +1,5 @@
 import React from "react";
-import { getFeatureToColorMap } from "@teselagen/sequence-utils";
+import { getFeatureToColorMap } from "@opencloning/tg-oss-sequence-utils";
 
 export const typeField = {
   path: "type",

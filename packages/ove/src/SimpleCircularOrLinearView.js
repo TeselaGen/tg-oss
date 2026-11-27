@@ -3,7 +3,7 @@ import {
   showContextMenu,
   commandMenuEnhancer,
   FillWindow
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 
 import { CircularView } from "./CircularView";
 import { LinearView } from "./LinearView";

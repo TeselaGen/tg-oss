@@ -5,7 +5,7 @@ import {
   trimNumberToFitWithin0ToAnotherNumber,
   normalizePositionByRangeLength,
   expandOrContractRangeToPosition
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 
 let dragInProgress = false;
 let selectionStartOrEndGrabbed;

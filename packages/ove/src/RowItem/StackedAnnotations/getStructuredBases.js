@@ -1,7 +1,10 @@
 import { clone } from "lodash-es";
-import { getRangeLength, getSequenceWithinRange } from "@teselagen/range-utils";
-import { getComplementSequenceString } from "@teselagen/sequence-utils";
-import { bioData } from "@teselagen/sequence-utils";
+import {
+  getRangeLength,
+  getSequenceWithinRange
+} from "@opencloning/tg-oss-range-utils";
+import { getComplementSequenceString } from "@opencloning/tg-oss-sequence-utils";
+import { bioData } from "@opencloning/tg-oss-sequence-utils";
 const { ambiguous_dna_values } = bioData;
 export function getStructuredBases({
   annotationRange,

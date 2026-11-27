@@ -21,10 +21,15 @@ import {
   AnchorButton,
   EditableText
 } from "@blueprintjs/core";
-import { InfoHelper, Loading, showContextMenu, withStore } from "@teselagen/ui";
+import {
+  InfoHelper,
+  Loading,
+  showContextMenu,
+  withStore
+} from "@opencloning/tg-oss-ui";
 import { store as _store } from "@risingstack/react-easy-state";
 import { throttle, map, some, isFunction, unset, omit } from "lodash-es";
-import { getSequenceDataBetweenRange } from "@teselagen/sequence-utils";
+import { getSequenceDataBetweenRange } from "@opencloning/tg-oss-sequence-utils";
 import ReactList from "@teselagen/react-list";
 import ReactDOM from "react-dom";
 

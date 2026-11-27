@@ -1,7 +1,7 @@
 import {
   findSequenceMatches,
   findApproxMatches
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 import sequenceSelector from "./sequenceSelector";
 import { createSelector } from "reselect";
 import circularSelector from "./circularSelector";

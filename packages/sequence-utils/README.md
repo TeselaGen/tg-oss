@@ -19,13 +19,13 @@
 ## Installing
 
 ```
-npm install @teselagen/sequence-utils
+npm install @opencloning/tg-oss-sequence-utils
 ```
 
 ## Usage
 
 ```
-import { getComplementSequence } from '@teselagen/sequence-utils';
+import { getComplementSequence } from '@opencloning/tg-oss-sequence-utils';
 
 const mySequence = 'ATGAGAG';
 const myComplement = getComplementSequence(mySequence);

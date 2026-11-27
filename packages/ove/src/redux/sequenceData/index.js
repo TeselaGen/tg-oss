@@ -1,5 +1,5 @@
 import deepEqual from "deep-equal";
-import { tidyUpSequenceData } from "@teselagen/sequence-utils";
+import { tidyUpSequenceData } from "@opencloning/tg-oss-sequence-utils";
 import { nanoid } from "nanoid";
 
 import createAction from "../utils/createMetaAction";

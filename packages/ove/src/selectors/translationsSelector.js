@@ -4,13 +4,13 @@ import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
 
-import { getAminoAcidDataForEachBaseOfDna } from "@teselagen/sequence-utils";
+import { getAminoAcidDataForEachBaseOfDna } from "@opencloning/tg-oss-sequence-utils";
 import translationsRawSelector from "./translationsRawSelector";
 import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
 import {
   expandOrContractRangeByLength,
   normalizePositionByRangeLength
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 import cdsFeaturesSelector from "./cdsFeaturesSelector";
 import circularSelector from "./circularSelector";
 

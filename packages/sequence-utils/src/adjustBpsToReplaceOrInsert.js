@@ -4,7 +4,7 @@ import {
   getRangeLength,
   invertRange,
   isPositionWithinRange
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 
 import spliceString from "string-splice";
 

@@ -3,10 +3,10 @@ import {
   DataTable,
   withSelectedEntities,
   createCommandMenu
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import { map } from "lodash-es";
 // import { Button } from "@blueprintjs/core";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@opencloning/tg-oss-range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";

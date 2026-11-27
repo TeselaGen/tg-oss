@@ -5,7 +5,7 @@ import color from "color";
 import pragmasAndTypes from "./utils/pragmasAndTypes.js";
 import { mangleOrStripUrls } from "./utils/unmangleUrls.js";
 import { reformatName } from "./utils/NameUtils.js";
-import { getFeatureToColorMap } from "@teselagen/sequence-utils";
+import { getFeatureToColorMap } from "@opencloning/tg-oss-sequence-utils";
 
 const StringUtil = {
   /** Trims white space at beginning and end of string

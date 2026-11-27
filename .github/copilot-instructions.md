@@ -6,12 +6,12 @@ Prefer bun over node for running scripts.
 
 TeselaGen's monorepo contains multiple open-source packages focused on biological sequence visualization, manipulation, and analysis:
 
-- **@teselagen/ove**: Open Vector Editor - DNA/AA sequence viewer and editor
-- **@teselagen/ui**: Reusable React UI components library
-- **@teselagen/bio-parsers**: Parsers for biological file formats (GenBank, FASTA, etc.)
-- **@teselagen/sequence-utils**: Utilities for manipulating biological sequences
-- **@teselagen/range-utils**: Utilities for working with biological sequence ranges
-- **@teselagen/file-utils**: General file manipulation utilities
+- **@opencloning/tg-oss-ove**: Open Vector Editor - DNA/AA sequence viewer and editor
+- **@opencloning/tg-oss-ui**: Reusable React UI components library
+- **@opencloning/tg-oss-bio-parsers**: Parsers for biological file formats (GenBank, FASTA, etc.)
+- **@opencloning/tg-oss-sequence-utils**: Utilities for manipulating biological sequences
+- **@opencloning/tg-oss-range-utils**: Utilities for working with biological sequence ranges
+- **@opencloning/tg-oss-file-utils**: General file manipulation utilities
 
 ## Architecture
 
@@ -27,7 +27,7 @@ TeselaGen's monorepo contains multiple open-source packages focused on biologica
 
 ### Key Packages
 
-#### @teselagen/ove (Open Vector Editor)
+#### @opencloning/tg-oss-ove (Open Vector Editor)
 
 - React/Redux-based DNA sequence editor
 - Key components:
@@ -37,7 +37,7 @@ TeselaGen's monorepo contains multiple open-source packages focused on biologica
 - UMD build available for non-React environments
 - Supports DNA and Protein sequence visualization
 
-#### @teselagen/ui
+#### @opencloning/tg-oss-ui
 
 - Blueprint-based UI component library
 - Contains reusable components like:

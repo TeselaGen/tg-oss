@@ -9,7 +9,7 @@ import tidyUpAnnotation from "./tidyUpAnnotation";
 import getDegenerateDnaStringFromAaString from "./getDegenerateDnaStringFromAAString";
 import { getFeatureTypes } from "./featureTypesAndColors";
 import getAminoAcidStringFromSequenceString from "./getAminoAcidStringFromSequenceString";
-import { expandOrContractRangeByLength } from "@teselagen/range-utils";
+import { expandOrContractRangeByLength } from "@opencloning/tg-oss-range-utils";
 
 export default function tidyUpSequenceData(pSeqData, options = {}) {
   const {

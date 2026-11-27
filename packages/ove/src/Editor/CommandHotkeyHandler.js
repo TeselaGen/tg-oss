@@ -1,13 +1,13 @@
 import React from "react";
 import { compose } from "redux";
 import withEditorProps from "../withEditorProps";
-import { withHotkeys } from "@teselagen/ui";
+import { withHotkeys } from "@opencloning/tg-oss-ui";
 import getCommands from "../commands";
 import {
   getCommandHotkeys,
   getCommandHotkeyHandlers,
   HotkeysDialog
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 
 class CommandHotkeyHandler extends React.Component {
   constructor(props) {

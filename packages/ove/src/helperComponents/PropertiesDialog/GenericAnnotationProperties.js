@@ -10,8 +10,8 @@ import {
   popoverOverflowModifiers,
   removeDuplicatesIcon,
   useMemoDeepEqual
-} from "@teselagen/ui";
-import { convertDnaCaretPositionOrRangeToAA } from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-ui";
+import { convertDnaCaretPositionOrRangeToAA } from "@opencloning/tg-oss-sequence-utils";
 import { map, upperFirst, pick, startCase, isFunction } from "lodash-es";
 import {
   AnchorButton,
@@ -21,7 +21,7 @@ import {
   Tag,
   Tooltip
 } from "@blueprintjs/core";
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@opencloning/tg-oss-range-utils";
 import pluralize from "pluralize";
 // import { Popover } from "@blueprintjs/core";
 // import ColorPicker from "./ColorPicker";
@@ -31,8 +31,8 @@ import commands from "../../commands";
 import { sizeSchema } from "./utils";
 import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
 import { typeField } from "./typeField";
-import { getSequenceWithinRange } from "@teselagen/range-utils";
-import { getReverseComplementSequenceString } from "@teselagen/sequence-utils";
+import { getSequenceWithinRange } from "@opencloning/tg-oss-range-utils";
+import { getReverseComplementSequenceString } from "@opencloning/tg-oss-sequence-utils";
 
 const genericAnnotationProperties = ({
   annotationType,

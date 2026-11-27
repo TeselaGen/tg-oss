@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import {
   defaultEnzymesByName,
   aliasedEnzymesByName
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 
 export default createSelector(
   () => defaultEnzymesByName,

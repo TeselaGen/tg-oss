@@ -1,6 +1,6 @@
 import React from "react";
 import { isEqual } from "lodash-es";
-import { convertRangeTo1Based } from "@teselagen/range-utils";
+import { convertRangeTo1Based } from "@opencloning/tg-oss-range-utils";
 import selectors from "../../selectors";
 
 export const sizeSchema = () => ({

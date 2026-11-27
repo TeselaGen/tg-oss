@@ -1,4 +1,4 @@
-import { modulatePositionByRange } from "@teselagen/range-utils";
+import { modulatePositionByRange } from "@opencloning/tg-oss-range-utils";
 
 /**
  * This function gets the overlapping of one sequence to another based on sequence equality.

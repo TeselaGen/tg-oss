@@ -1,11 +1,11 @@
 import AnnotationPositioner from "../AnnotationPositioner";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import React from "react";
-import { pureNoFunc } from "@teselagen/ui";
+import { pureNoFunc } from "@opencloning/tg-oss-ui";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "@opencloning/tg-oss-range-utils";
 
 function DeletionLayers(props) {
   const {

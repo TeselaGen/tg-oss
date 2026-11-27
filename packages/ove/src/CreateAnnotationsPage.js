@@ -8,11 +8,11 @@ import {
   DialogFooter,
   withSelectTableRecords,
   withSelectedEntities
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import { useEffect } from "react";
 import { hideDialog } from "./GlobalDialogUtils";
 import { startCase } from "lodash-es";
-import { tidyUpAnnotation } from "@teselagen/sequence-utils";
+import { tidyUpAnnotation } from "@opencloning/tg-oss-sequence-utils";
 
 const schemaFeatures = ["name", typeField, "start", "end", "strand"];
 const schemaOther = ["name", "start", "end", "strand"];

@@ -1,5 +1,5 @@
 import { cloneDeep } from "lodash-es";
-import { getYOffsetsForPotentiallyCircularRanges } from "@teselagen/range-utils";
+import { getYOffsetsForPotentiallyCircularRanges } from "@opencloning/tg-oss-range-utils";
 import { annotationTypes } from "./annotationTypes";
 
 //basically just adds yOffsets to the annotations

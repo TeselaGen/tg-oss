@@ -1,4 +1,4 @@
-// let {getCutsitesFromSequence} = require('@teselagen/sequence-utils');
+// let {getCutsitesFromSequence} = require('@opencloning/tg-oss-sequence-utils');
 // let {assign} = require('lodash');
 
 // module.exports = function createFragmentsLines({input: {geneRuler, enzymes}, state, output}) {

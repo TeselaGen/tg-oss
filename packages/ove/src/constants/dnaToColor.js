@@ -1,4 +1,4 @@
-import { DNAComplementMap } from "@teselagen/sequence-utils";
+import { DNAComplementMap } from "@opencloning/tg-oss-sequence-utils";
 
 const dnaToColor = {
   a: "lightgreen",

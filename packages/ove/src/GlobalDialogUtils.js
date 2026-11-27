@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 
 import { cloneDeep, startCase } from "lodash-es";
-import { convertRangeTo1Based } from "@teselagen/range-utils";
+import { convertRangeTo1Based } from "@opencloning/tg-oss-range-utils";
 
 export const dialogHolder = {};
 //if an overrideName is passed, then that dialog can be overridden if an overriding dialog is passed as a prop to the <Editor/>

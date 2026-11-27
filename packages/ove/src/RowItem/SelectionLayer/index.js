@@ -2,11 +2,11 @@
 import draggableClassnames from "../../constants/draggableClassnames";
 import React from "react";
 import Caret from "../Caret";
-import { pureNoFunc } from "@teselagen/ui";
+import { pureNoFunc } from "@opencloning/tg-oss-ui";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "@opencloning/tg-oss-range-utils";
 import {
   getSelectionMessage,
   preventDefaultStopPropagation

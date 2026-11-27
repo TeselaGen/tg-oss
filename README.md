@@ -1,30 +1,38 @@
-# Teselagen's Open Source Mono Repo
+# OpenCloning fork of TeselaGen's Open Source Mono Repo
+
+This is a fork of [TeselaGen/tg-oss](https://github.com/TeselaGen/tg-oss), which is no longer maintained by its original authors. The packages are published to npm under the `@opencloning` scope (previously `@teselagen`).
+
+To migrate from the `@teselagen/*` packages, replace the scope in your dependencies and imports, or keep your existing imports by using an npm alias:
+
+```json
+"@teselagen/ove": "npm:@opencloning/tg-oss-ove@^1.0.0"
+```
 
 # Packages
 
-**@teselagen/ove** (open-source vector editor - a tool for viewing and manipulating DNA/AA sequences)
+**@opencloning/tg-oss-ove** (open-source vector editor - a tool for viewing and manipulating DNA/AA sequences)
 
 - DEMO: https://teselagen.github.io/tg-oss/ove
 - CODE: [packages/ove](./packages/ove)
 
-**@teselagen/ui** (reusable react components)
+**@opencloning/tg-oss-ui** (reusable react components)
 
 - DEMO: https://teselagen.github.io/tg-oss/ui
 - CODE: [packages/ui](./packages/ui)
 
-**@teselagen/bio-parsers** (parsers and formatters for genbank/fasta/json/snapgene/geneious/jbei-xml)
+**@opencloning/tg-oss-bio-parsers** (parsers and formatters for genbank/fasta/json/snapgene/geneious/jbei-xml)
 
 - CODE: [packages/bio-parsers](./packages/bio-parsers)
 
-**@teselagen/sequence-utils** (util functions for working with biological sequences (dna/rna/protein))
+**@opencloning/tg-oss-sequence-utils** (util functions for working with biological sequences (dna/rna/protein))
 
 - CODE: [packages/sequence-utils](./packages/sequence-utils)
 
-**@teselagen/range-utils** (util functions for working with biological ranges e.g. {start: 2, end: 61})
+**@opencloning/tg-oss-range-utils** (util functions for working with biological ranges e.g. {start: 2, end: 61})
 
 - CODE: [packages/range-utils](./packages/range-utils)
 
-**@teselagen/file-utils** (util functions for working with files and blobs)
+**@opencloning/tg-oss-file-utils** (util functions for working with files and blobs)
 
 - CODE: [packages/file-utils](./packages/file-utils)
 
@@ -65,4 +73,4 @@ CI is run via GitHub Actions on every push and pull request and runs a suite of 
 
 Duplicate an existing package that is most similar to the new package being added and make the necessary changes.
 
-You'll need to ask a Teselagen admin to update the trusted publishers settings in the npm registry for the new package (a maintainer will need to manually publish the first version in order to add it to the registry).
+You'll need to ask an `@opencloning` npm org admin to update the trusted publishers settings in the npm registry for the new package (a maintainer will need to manually publish the first version in order to add it to the registry).

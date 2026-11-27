@@ -1,6 +1,6 @@
 import React from "react";
-import { Editor, updateEditor } from "@teselagen/ove";
-import "@teselagen/ove/style.css";
+import { Editor, updateEditor } from "@opencloning/tg-oss-ove";
+import "@opencloning/tg-oss-ove/style.css";
 
 import store from "./store";
 

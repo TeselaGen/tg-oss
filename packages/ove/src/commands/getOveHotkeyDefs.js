@@ -1,5 +1,5 @@
 import getCommands from "./index";
-import { getCommandHotkeys } from "@teselagen/ui";
+import { getCommandHotkeys } from "@opencloning/tg-oss-ui";
 
 export default function getOveHotkeyDefs({ store, editorName }) {
   const commands = getCommands({

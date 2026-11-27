@@ -20,7 +20,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: /node_modules\/(?!@teselagen\/ove)/,
+        exclude: /node_modules\/(?!@opencloning\/tg-oss-ove)/,
         use: [
           { loader: "style-loader" },
           {

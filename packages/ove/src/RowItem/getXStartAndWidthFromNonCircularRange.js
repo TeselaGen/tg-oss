@@ -1,4 +1,4 @@
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@opencloning/tg-oss-range-utils";
 
 export default function getXStartAndWidthFromNonCircularRange(
   range,

@@ -5,8 +5,8 @@ import {
   getTagsAndTagOptions,
   CheckboxField,
   InfoHelper
-} from "@teselagen/ui";
-import { getFeatureTypes } from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-ui";
+import { getFeatureTypes } from "@opencloning/tg-oss-sequence-utils";
 import { get } from "lodash-es";
 
 const RenderTypes = ({ readOnly, type }) => (

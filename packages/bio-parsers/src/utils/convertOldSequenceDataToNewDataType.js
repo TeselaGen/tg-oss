@@ -1,4 +1,4 @@
-import { isRangeWithinRange } from "@teselagen/range-utils";
+import { isRangeWithinRange } from "@opencloning/tg-oss-range-utils";
 
 export default function convertOldSequenceDataToNewDataType(
   oldTeselagenJson,

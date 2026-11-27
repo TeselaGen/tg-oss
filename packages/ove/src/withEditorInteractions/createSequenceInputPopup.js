@@ -1,6 +1,6 @@
 import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
 
-import { getRangeLength } from "@teselagen/range-utils";
+import { getRangeLength } from "@opencloning/tg-oss-range-utils";
 // import Tether from "tether";
 import Popper from "popper.js";
 
@@ -8,7 +8,7 @@ import {
   getInsertBetweenVals,
   convertDnaCaretPositionOrRangeToAA,
   filterSequenceString
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 import React from "react";
 import { divideBy3 } from "../utils/proteinUtils";
 import "./createSequenceInputPopupStyle.css";
@@ -154,7 +154,7 @@ class SequenceInputNoHotkeys extends React.Component {
                 ...sequenceData,
                 name: undefined,
                 getAcceptedInsertChars
-              },
+              }
             );
             if (warnings.length) {
               this.setState({

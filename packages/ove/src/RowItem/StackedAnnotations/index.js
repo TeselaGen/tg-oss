@@ -1,11 +1,11 @@
-import { getFeatureToColorMap } from "@teselagen/sequence-utils";
+import { getFeatureToColorMap } from "@opencloning/tg-oss-sequence-utils";
 import "./style.css";
 import forEach from "lodash/forEach";
 import React from "react";
 import IntervalTree from "node-interval-tree";
 import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
 
-import { getAnnotationRangeType } from "@teselagen/range-utils";
+import { getAnnotationRangeType } from "@opencloning/tg-oss-range-utils";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import AnnotationPositioner from "../AnnotationPositioner";
 import PointedAnnotation from "./PointedAnnotation";

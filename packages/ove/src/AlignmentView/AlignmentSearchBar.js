@@ -16,12 +16,12 @@ import {
   TextArea,
   Tooltip
 } from "@blueprintjs/core";
-import { InfoHelper, TgHTMLSelect } from "@teselagen/ui";
+import { InfoHelper, TgHTMLSelect } from "@opencloning/tg-oss-ui";
 import {
   findApproxMatches,
   findSequenceMatches,
   getFeatureToColorMap
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 import { debounce } from "lodash-es";
 import { getSingular } from "../utils/annotationTypes";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";

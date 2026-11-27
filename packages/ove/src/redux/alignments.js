@@ -1,8 +1,8 @@
 import {
   tidyUpSequenceData /* generateSequenceData */,
   condensePairwiseAlignmentDifferences
-} from "@teselagen/sequence-utils";
-import { convertBasePosTraceToPerBpTrace } from "@teselagen/bio-parsers";
+} from "@opencloning/tg-oss-sequence-utils";
+import { convertBasePosTraceToPerBpTrace } from "@opencloning/tg-oss-bio-parsers";
 import { nanoid } from "nanoid";
 
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";

@@ -3,7 +3,7 @@ import { flatMap, cloneDeep } from "lodash-es";
 import {
   normalizePositionByRangeLength,
   getRangeLength
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 import getCutsitesFromSequence from "./getCutsitesFromSequence";
 
 function computeDigestFragments({

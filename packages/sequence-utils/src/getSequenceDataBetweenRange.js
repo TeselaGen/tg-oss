@@ -1,11 +1,14 @@
 import { flatMap, extend, forEach, startCase } from "lodash-es";
-import { getRangeLength, isRangeWithinRange } from "@teselagen/range-utils";
+import {
+  getRangeLength,
+  isRangeWithinRange
+} from "@opencloning/tg-oss-range-utils";
 import convertDnaCaretPositionOrRangeToAa from "./convertDnaCaretPositionOrRangeToAA";
 import insertSequenceDataAtPosition from "./insertSequenceDataAtPosition";
 import {
   getSequenceWithinRange,
   getZeroedRangeOverlaps
-} from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-range-utils";
 import tidyUpSequenceData from "./tidyUpSequenceData";
 import { annotationTypes } from "./annotationTypes";
 
@@ -117,7 +120,7 @@ function getAnnotationsBetweenRange(
           // Filter the 'allLocations' that in this overlap
           const newLocations = allLocations.filter(loc => {
             return isRangeWithinRange(loc, overlap, maxLength);
-          })
+          });
           return extend({}, annotation, overlap, {
             locations: newLocations
           });

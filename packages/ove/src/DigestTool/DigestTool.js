@@ -1,6 +1,9 @@
 import React, { useMemo, useState } from "react";
-import { DataTable, useStableReference } from "@teselagen/ui";
-import { getCutsiteType, getVirtualDigest } from "@teselagen/sequence-utils";
+import { DataTable, useStableReference } from "@opencloning/tg-oss-ui";
+import {
+  getCutsiteType,
+  getVirtualDigest
+} from "@opencloning/tg-oss-sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
 import {

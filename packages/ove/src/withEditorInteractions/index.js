@@ -2,19 +2,19 @@ import {
   getSequenceDataBetweenRange,
   tidyUpSequenceData,
   getAminoAcidStringFromSequenceString
-} from "@teselagen/sequence-utils";
-import { getSequenceWithinRange } from "@teselagen/range-utils";
+} from "@opencloning/tg-oss-sequence-utils";
+import { getSequenceWithinRange } from "@opencloning/tg-oss-range-utils";
 import Clipboard from "clipboard";
 import { compose } from "redux";
 import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
-} from "@teselagen/sequence-utils";
+} from "@opencloning/tg-oss-sequence-utils";
 import { some, map, noop } from "lodash-es";
 import { Menu } from "@blueprintjs/core";
 import { branch } from "recompose";
 
-import { normalizePositionByRangeLength } from "@teselagen/range-utils";
+import { normalizePositionByRangeLength } from "@opencloning/tg-oss-range-utils";
 import React from "react";
 
 import Combokeys from "combokeys";
@@ -23,8 +23,8 @@ import {
   showConfirmationDialog,
   commandMenuEnhancer,
   withStore
-} from "@teselagen/ui";
-import { jsonToGenbank } from "@teselagen/bio-parsers";
+} from "@opencloning/tg-oss-ui";
+import { jsonToGenbank } from "@opencloning/tg-oss-bio-parsers";
 import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
 import moveCaret from "./moveCaret";
@@ -286,7 +286,7 @@ function VectorInteractionHOC(Component /* options */) {
         copyOptions,
         disableBpEditing,
         readOnly,
-        getAcceptedInsertChars,
+        getAcceptedInsertChars
       } = this.props;
       const onCut = this.props.onCut || this.props.onCopy || noop;
       const seqData = tidyUpSequenceData(

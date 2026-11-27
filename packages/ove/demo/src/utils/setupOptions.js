@@ -3,7 +3,7 @@ import {
   // getCurrentParamsFromUrl,
   setCurrentParamsOnUrl,
   getCurrentParamsFromUrl
-} from "@teselagen/ui";
+} from "@opencloning/tg-oss-ui";
 import { transform, isEqual, isObject } from "lodash-es";
 
 export function setupOptions({ that, defaultState, props }) {

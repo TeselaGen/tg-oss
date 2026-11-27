@@ -1,6 +1,6 @@
 import React from "react";
 import shouldFlipText from "./shouldFlipText";
-import { getComplementSequenceString } from "@teselagen/sequence-utils";
+import { getComplementSequenceString } from "@opencloning/tg-oss-sequence-utils";
 import { getDnaColor } from "../constants/dnaToColor";
 
 export function CircularDnaSequence({

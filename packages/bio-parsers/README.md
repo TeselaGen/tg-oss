@@ -119,11 +119,11 @@ const generalizedJsonFormat = {
 
 ### install
 
-`npm install -S @teselagen/bio-parsers`
+`npm install -S @opencloning/tg-oss-bio-parsers`
 
 or
 
-`yarn add @teselagen/bio-parsers`
+`yarn add @opencloning/tg-oss-bio-parsers`
 
 or
 

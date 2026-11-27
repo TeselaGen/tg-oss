@@ -1,5 +1,5 @@
 import React from "react";
-import { Editor, updateEditor } from "@teselagen/ove";
+import { Editor, updateEditor } from "@opencloning/tg-oss-ove";
 import store from "./store";
 
 import "./App.css";

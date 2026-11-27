@@ -7,7 +7,7 @@ import { createSelector } from "reselect";
 import { isEqual } from "lodash-es";
 
 import { flatMap as flatmap, map } from "lodash-es";
-import { getCutsitesFromSequence } from "@teselagen/sequence-utils";
+import { getCutsitesFromSequence } from "@opencloning/tg-oss-sequence-utils";
 import { getLowerCaseObj } from "../utils/arrayUtils";
 
 // [{ args: {sequence,circular,enzymeList,cutsiteLabelColors}, result }]
