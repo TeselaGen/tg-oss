@@ -1,0 +1,61 @@
+{
+  "name": "tg-oss dev container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      "TZ": "Europe/London",
+      "CLAUDE_CODE_VERSION": "stable"
+    }
+  },
+  // NET_ADMIN/NET_RAW are needed by init-firewall.sh. Docker's default 64 MB /dev/shm
+  // makes Cypress's Electron renderer crash on the larger ove specs, so raise it.
+  "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW", "--shm-size=2g"],
+  "forwardPorts": [8805, 7614],
+  "portsAttributes": {
+    // Ports come from getPort.ts (a hash of the package name)
+    "8805": { "label": "ove demo" },
+    "7614": { "label": "ui demo" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "redhat.vscode-yaml",
+        "timonwong.shellcheck",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "shelex.vscode-cy-helper",
+        "nrwl.angular-console"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "remoteUser": "node",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=${localWorkspaceFolder}/.git,target=/workspace/.git,type=bind,readonly",
+    // Keep Linux node_modules (esbuild, rollup, cypress binaries) separate from any host install
+    "source=tg-oss-node_modules-${devcontainerId},target=/workspace/node_modules,type=volume",
+    "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
+    "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "DISABLE_AUTOUPDATER": "1"
+  },
+  "remoteEnv": {
+    "SSH_AUTH_SOCK": ""
+  },
+  "initializeCommand": "git submodule update --init --remote || echo 'Reference repos not updated; using current versions'",
+  // Runs before the firewall exists. The node_modules volume takes node ownership from the image directory.
+  // husky's "prepare" prints an error on the read-only .git, but the install still succeeds.
+  "postCreateCommand": "cd /workspace && yarn install --frozen-lockfile && yarn cypress install",
+  "postStartCommand": "sudo /usr/local/bin/init-firewall.sh && /usr/local/bin/check-isolation.sh",
+  "postAttachCommand": "/usr/local/bin/check-isolation.sh",
+  "waitFor": "postStartCommand"
+}

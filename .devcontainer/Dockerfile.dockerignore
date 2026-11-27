@@ -1,0 +1,4 @@
+# Build context is the repo root; send only what the Dockerfile uses
+*
+!.devcontainer/init-firewall.sh
+!.devcontainer/check-isolation.sh
