@@ -77,8 +77,10 @@
 }
 
 /* this is necessary to allow the editor and its portals to sit at the top of the z-index stack for jbei */
-
-.ove-portal {
+/* Blueprint 3 used legacy React child context for this. Keep the same stacking
+   behavior without relying on childContextTypes. */
+.ove-portal,
+body.tg-ove-editor-mounted .bp3-portal {
   z-index: 100000;
 }
 body.tg-no-scroll-body {

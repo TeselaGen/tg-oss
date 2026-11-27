@@ -26,7 +26,6 @@ import { store as _store } from "@risingstack/react-easy-state";
 import { throttle, map, some, isFunction, unset, omit } from "lodash-es";
 import { getSequenceDataBetweenRange } from "@teselagen/sequence-utils";
 import ReactList from "@teselagen/react-list";
-import ReactDOM from "react-dom";
 
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap, { getTrimmedRangesToDisplay } from "./Minimap";
@@ -1320,6 +1319,7 @@ export const AlignmentView = props => {
             onScroll={isTemplate ? handleTopScroll : handleScroll}
           >
             <ReactDraggable
+              nodeRef={veTracksAndAlignmentHolder}
               disabled={isTrackDragging}
               bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
               onDrag={
@@ -1502,9 +1502,8 @@ export const AlignmentView = props => {
                   <ReactList
                     ref={c => {
                       InfiniteScroller.current = c;
-                      const domNode = ReactDOM.findDOMNode(c);
-                      if (domNode instanceof HTMLElement) {
-                        drop_provided.innerRef(domNode);
+                      if (c?.items instanceof HTMLElement) {
+                        drop_provided.innerRef(c.items);
                       }
                     }}
                     type="variable"

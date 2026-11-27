@@ -148,7 +148,14 @@ export default class ReflexElement extends React.Component {
     return (
       <Measure bounds onResize={this.onResize}>
         {({ measureRef }) => (
-          <div ref={measureRef} className={className} style={outerStyle}>
+          <div
+            ref={node => {
+              measureRef(node);
+              this.props.domRef && this.props.domRef(node);
+            }}
+            className={className}
+            style={outerStyle}
+          >
             <div className="tg-reflex-element-inner" style={innerStyle}>
               {this.renderChildren()}
             </div>

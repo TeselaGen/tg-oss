@@ -8,7 +8,6 @@ import {
   Tooltip,
   ContextMenu
 } from "@blueprintjs/core";
-import PropTypes from "prop-types";
 
 import VersionHistoryView from "../VersionHistoryView";
 import { importSequenceFromFile } from "../withEditorProps";
@@ -59,6 +58,9 @@ import { tabHeight } from "../constants";
 //   const {whyDidYouUpdate} = require('why-did-you-update');
 //   whyDidYouUpdate(React);
 // }
+
+const OVE_EDITOR_MOUNTED_CLASS = "tg-ove-editor-mounted";
+let mountedEditorCount = 0;
 
 const _panelMap = {
   circular: {
@@ -121,10 +123,6 @@ export class Editor extends React.Component {
     return [];
   };
 
-  getChildContext() {
-    //tnrtodo this will need to be updated once blueprint uses the react 16 api
-    return { blueprintPortalClassName: "ove-portal" };
-  }
   componentDidUpdate(prevProps) {
     if (
       this.props.initialAnnotationToEdit &&
@@ -163,6 +161,9 @@ export class Editor extends React.Component {
   }, 100);
 
   componentDidMount() {
+    mountedEditorCount += 1;
+    document.body.classList.add(OVE_EDITOR_MOUNTED_CLASS);
+
     if (isMobile()) {
       let firstActivePanelId;
       some(this.getPanelsToShow()[0], panel => {
@@ -214,6 +215,10 @@ export class Editor extends React.Component {
   }
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
+    mountedEditorCount = Math.max(0, mountedEditorCount - 1);
+    if (mountedEditorCount === 0) {
+      document.body.classList.remove(OVE_EDITOR_MOUNTED_CLASS);
+    }
   }
 
   onTabDragStart = () => {
@@ -982,10 +987,6 @@ export class Editor extends React.Component {
     );
   }
 }
-
-Editor.childContextTypes = {
-  blueprintPortalClassName: PropTypes.string
-};
 
 export default compose(
   connectToEditor(
